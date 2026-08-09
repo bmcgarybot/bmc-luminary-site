@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMC Luminary Ventures LLC</title>
+<meta name="description" content="BMC Luminary Ventures LLC — A diversified holding company based in Prescott, Arizona. Parent company of Quantum NeuroShift and future ventures.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Base ── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #060e1a;
+  color: #e0e0e0;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── Colors ── */
+:root {
+  --navy: #0a1628;
+  --navy-deep: #060e1a;
+  --gold: #c9a84c;
+  --gold-light: #e2c96d;
+  --gold-dark: #a8872e;
+  --text: #d4d4d4;
+  --text-muted: #8899aa;
+  --white: #f5f5f5;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; color: var(--gold); }
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.2; }
+h2 { font-size: clamp(1.5rem, 3.5vw, 2.5rem); font-weight: 600; margin-bottom: 1rem; }
+h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+p { color: var(--text); margin-bottom: 1rem; }
+
+/* ── Layout ── */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+section { padding: 80px 0; }
+
+/* ── Decorative Line ── */
+.gold-line {
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  margin: 0 auto 2rem;
+}
+.gold-line.left { margin: 0 0 1.5rem; }
+
+/* ── Nav ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(6, 14, 26, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+  transition: box-shadow 0.3s;
+}
+nav.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.4); }
+.nav-inner {
+  max-width: 1100px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 70px;
+}
+.nav-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 2px; text-transform: uppercase;
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  color: var(--text-muted); text-decoration: none;
+  font-size: 0.85rem; font-weight: 500;
+  letter-spacing: 1px; text-transform: uppercase;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+
+/* Mobile menu */
+.menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+.menu-toggle span { display: block; width: 24px; height: 2px; background: var(--gold); margin: 5px 0; transition: 0.3s; }
+
+@media (max-width: 768px) {
+  .menu-toggle { display: block; }
+  .nav-links {
+    position: fixed; top: 70px; left: 0; right: 0;
+    background: rgba(6, 14, 26, 0.98);
+    flex-direction: column; align-items: center;
+    padding: 2rem 0; gap: 24px;
+    transform: translateY(-120%);
+    transition: transform 0.3s;
+  }
+  .nav-links.open { transform: translateY(0); }
+}
+
+/* ── Hero ── */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  padding-top: 70px;
+  position: relative;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(201, 168, 76, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(201, 168, 76, 0.04) 0%, transparent 50%),
+    var(--navy-deep);
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 120px;
+  background: linear-gradient(transparent, var(--navy-deep));
+}
+.hero-logo {
+  width: 200px; height: auto;
+  margin-bottom: 2rem;
+  border: 2px solid rgba(201, 168, 76, 0.3);
+  border-radius: 4px;
+}
+.hero-tagline {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.9rem, 2vw, 1.15rem);
+  color: var(--text-muted);
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 1rem;
+  margin-bottom: 2.5rem;
+}
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--text);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+/* ── About ── */
+.about { background: var(--navy); }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.about-text { }
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.stat-card {
+  background: rgba(201, 168, 76, 0.05);
+  border: 1px solid rgba(201, 168, 76, 0.12);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+}
+.stat-card .stat-icon { font-size: 2rem; margin-bottom: 8px; }
+.stat-card h4 { font-size: 0.9rem; color: var(--gold); margin-bottom: 4px; }
+.stat-card p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+
+@media (max-width: 768px) {
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* ── Ventures ── */
+.ventures { background: var(--navy-deep); }
+.ventures-header { text-align: center; margin-bottom: 3rem; }
+.venture-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+.venture-card {
+  background: linear-gradient(145deg, rgba(10, 22, 40, 0.8), rgba(6, 14, 26, 0.9));
+  border: 1px solid rgba(201, 168, 76, 0.12);
+  border-radius: 12px;
+  padding: 40px 32px;
+  transition: transform 0.3s, border-color 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.venture-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.venture-card:hover { transform: translateY(-4px); border-color: rgba(201, 168, 76, 0.3); }
+.venture-card:hover::before { opacity: 1; }
+.venture-card .card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.venture-card h3 { color: var(--gold); }
+.venture-card p { color: var(--text-muted); font-size: 0.95rem; margin: 0; }
+.venture-card .card-link {
+  display: inline-block; margin-top: 1rem;
+  color: var(--gold); text-decoration: none;
+  font-size: 0.85rem; font-weight: 500;
+  letter-spacing: 1px; text-transform: uppercase;
+  transition: color 0.3s;
+}
+.venture-card .card-link:hover { color: var(--gold-light); }
+.venture-card .card-badge {
+  display: inline-block;
+  background: rgba(201, 168, 76, 0.1);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  color: var(--gold);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-top: 1rem;
+}
+
+/* ── Vision ── */
+.vision {
+  background: var(--navy);
+  position: relative;
+}
+.vision-content {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+.vision blockquote {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  color: var(--gold-light);
+  font-style: italic;
+  line-height: 1.8;
+  border: none;
+  padding: 0;
+  margin: 2rem 0;
+}
+.vision blockquote::before { content: '"'; font-size: 3rem; color: var(--gold-dark); line-height: 0; vertical-align: -0.5em; margin-right: 4px; }
+.vision blockquote::after { content: '"'; font-size: 3rem; color: var(--gold-dark); line-height: 0; vertical-align: -0.5em; margin-left: 4px; }
+
+/* ── Contact ── */
+.contact { background: var(--navy-deep); }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+.contact-info h3 { color: var(--gold); margin-bottom: 1rem; }
+.contact-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  margin-bottom: 1.5rem;
+}
+.contact-item .ci-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+.contact-item .ci-text { font-size: 0.95rem; color: var(--text-muted); }
+.contact-item .ci-text a { color: var(--gold); text-decoration: none; }
+.contact-item .ci-text a:hover { text-decoration: underline; }
+
+.contact-form { display: flex; flex-direction: column; gap: 16px; }
+.contact-form input, .contact-form textarea {
+  background: rgba(10, 22, 40, 0.8);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  border-radius: 6px;
+  padding: 14px 18px;
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  transition: border-color 0.3s;
+}
+.contact-form input:focus, .contact-form textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+.contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--text-muted); }
+.contact-form textarea { min-height: 120px; resize: vertical; }
+.contact-form button {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  color: var(--navy-deep);
+  border: none;
+  border-radius: 6px;
+  padding: 14px 32px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+  align-self: flex-start;
+}
+.contact-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(201, 168, 76, 0.25);
+}
+
+@media (max-width: 768px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* ── Footer ── */
+footer {
+  background: rgba(6, 14, 26, 0.95);
+  border-top: 1px solid rgba(201, 168, 76, 0.1);
+  padding: 40px 0;
+  text-align: center;
+}
+footer p { color: var(--text-muted); font-size: 0.8rem; margin: 0; }
+footer .footer-brand {
+  font-family: 'Playfair Display', serif;
+  color: var(--gold-dark);
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+/* ── Animations ── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--navy-deep); }
+::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">BMC Luminary</a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#about" onclick="document.querySelector('.nav-links').classList.remove('open')">About</a></li>
+      <li><a href="#ventures" onclick="document.querySelector('.nav-links').classList.remove('open')">Ventures</a></li>
+      <li><a href="#vision" onclick="document.querySelector('.nav-links').classList.remove('open')">Vision</a></li>
+      <li><a href="#contact" onclick="document.querySelector('.nav-links').classList.remove('open')">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="fade-up">
+      <img src="assets/logo.jpg" alt="BMC Luminary Ventures LLC" class="hero-logo">
+      <h1>BMC Luminary Ventures LLC</h1>
+      <p class="hero-tagline">Building Foundations for Generational Wealth</p>
+      <p class="hero-sub">A diversified holding company based in Prescott, Arizona — unifying innovative businesses under one strategic vision.</p>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid fade-up">
+      <div class="about-text">
+        <h2>About Us</h2>
+        <div class="gold-line left"></div>
+        <p>BMC Luminary Ventures LLC is a holding company that serves as the strategic foundation for a growing family of businesses. Based in Prescott, Arizona, we provide the corporate infrastructure, vision, and long-term planning that allows our operating companies to thrive.</p>
+        <p>Our approach is simple: build real businesses that solve real problems, operate them with integrity, and create lasting value that grows over generations — not just quarters.</p>
+        <p>Every venture under the BMC Luminary umbrella shares a common thread — the belief that innovation, technology, and genuine service can create meaningful impact while building sustainable wealth.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-card">
+          <div class="stat-icon">🏛️</div>
+          <h4>Holding Company</h4>
+          <p>Strategic parent for all operating businesses</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📍</div>
+          <h4>Prescott, AZ</h4>
+          <p>Headquartered in Arizona's highlands</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🔧</div>
+          <h4>Active Operations</h4>
+          <p>Growing portfolio of service & tech ventures</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🌱</div>
+          <h4>Long-Term Vision</h4>
+          <p>Building generational wealth & impact</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Ventures -->
+<section class="ventures" id="ventures">
+  <div class="container">
+    <div class="ventures-header fade-up">
+      <h2>Our Ventures</h2>
+      <div class="gold-line"></div>
+      <p style="max-width:600px;margin:0 auto;color:var(--text-muted);">Each company under BMC Luminary Ventures operates independently while benefiting from shared resources, strategy, and vision.</p>
+    </div>
+    <div class="venture-cards">
+      <div class="venture-card fade-up">
+        <div class="card-icon">🧠</div>
+        <h3>Quantum NeuroShift</h3>
+        <p>Solution-based hypnotherapy, NLP, and EFT/TFT tapping services. Helping motivated adults rewrite stress patterns, improve sleep quality, break unwanted habits, and unlock peak performance through evidence-based subconscious techniques.</p>
+        <a href="https://quantumneuroshift.com" target="_blank" rel="noopener" class="card-link">Visit Website →</a>
+        <div><span class="card-badge">Flagship</span></div>
+      </div>
+      <div class="venture-card fade-up">
+        <div class="card-icon">⚡</div>
+        <h3>QNS Tech</h3>
+        <p>Technology innovation arm developing accessible tools at the intersection of neuroscience and technology. Building apps and platforms that extend the reach of evidence-based wellness techniques.</p>
+        <div><span class="card-badge">In Development</span></div>
+      </div>
+      <div class="venture-card fade-up">
+        <div class="card-icon">💡</div>
+        <h3>Future Ventures</h3>
+        <p>BMC Luminary Ventures is always exploring new opportunities that align with our mission of creating meaningful impact. New ventures will be announced as they develop.</p>
+        <div><span class="card-badge">Coming Soon</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Vision -->
+<section class="vision" id="vision">
+  <div class="container">
+    <div class="vision-content fade-up">
+      <h2>Our Vision</h2>
+      <div class="gold-line"></div>
+      <blockquote>Building a legacy isn't about one big move — it's about making the right moves, consistently, with intention and integrity.</blockquote>
+      <p style="color:var(--text-muted);max-width:550px;margin:0 auto;">BMC Luminary Ventures exists to build something that outlasts any single business, product, or market cycle. We're creating the infrastructure for generational wealth — businesses that serve people, technology that empowers communities, and a foundation built to last.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="fade-up">
+      <h2 style="text-align:center;">Get In Touch</h2>
+      <div class="gold-line"></div>
+    </div>
+    <div class="contact-grid fade-up">
+      <div class="contact-info">
+        <h3>Contact Information</h3>
+        <div class="contact-item">
+          <span class="ci-icon">📍</span>
+          <div class="ci-text">Prescott, Arizona</div>
+        </div>
+        <div class="contact-item">
+          <span class="ci-icon">✉️</span>
+          <div class="ci-text"><a href="mailto:contact@bmcluminaryventures.com">contact@bmcluminaryventures.com</a></div>
+        </div>
+        <div class="contact-item">
+          <span class="ci-icon">🌐</span>
+          <div class="ci-text">
+            <a href="https://quantumneuroshift.com" target="_blank" rel="noopener">quantumneuroshift.com</a>
+          </div>
+        </div>
+      </div>
+      <form class="contact-form" id="contactForm" onsubmit="handleSubmit(event)">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <input type="text" name="subject" placeholder="Subject">
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p class="footer-brand">BMC LUMINARY VENTURES LLC</p>
+    <p>&copy; <span id="year"></span> BMC Luminary Ventures LLC. All rights reserved. Prescott, Arizona.</p>
+  </div>
+</footer>
+
+<script>
+// Year
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Nav scroll effect
+window.addEventListener('scroll', function() {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Fade-up on scroll
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-up').forEach(function(el) {
+  observer.observe(el);
+});
+
+// Contact form (mailto fallback — no backend needed)
+function handleSubmit(e) {
+  e.preventDefault();
+  var f = e.target;
+  var name = f.name.value || f.querySelector('[name="name"]').value;
+  var email = f.email.value || f.querySelector('[name="email"]').value;
+  var subject = f.subject.value || f.querySelector('[name="subject"]').value || 'Website Inquiry';
+  var message = f.message.value || f.querySelector('[name="message"]').value;
+  var body = 'Name: ' + name + '%0D%0AEmail: ' + email + '%0D%0A%0D%0A' + encodeURIComponent(message);
+  window.location.href = 'mailto:contact@bmcluminaryventures.com?subject=' + encodeURIComponent(subject) + '&body=' + body;
+}
+</script>
+
+</body>
+</html>
