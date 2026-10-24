@@ -24,6 +24,12 @@ create table if not exists vendors (
   status text default 'prospect',
   quality_score numeric,
   association_signal text,
+  territory_notes text,
+  minimum_job text,
+  capacity text,
+  after_hours text,
+  license_notes text,
+  insurance_notes text,
   notes text,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
@@ -183,3 +189,10 @@ alter table buyers add column if not exists source_url text;
 alter table buyers add column if not exists likely_services text;
 alter table buyers add column if not exists priority text;
 alter table buyers add column if not exists campaign text;
+
+alter table vendors add column if not exists territory_notes text;
+alter table vendors add column if not exists minimum_job text;
+alter table vendors add column if not exists capacity text;
+alter table vendors add column if not exists after_hours text;
+alter table vendors add column if not exists license_notes text;
+alter table vendors add column if not exists insurance_notes text;
