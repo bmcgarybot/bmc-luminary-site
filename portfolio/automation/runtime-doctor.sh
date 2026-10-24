@@ -12,7 +12,7 @@ fail(){ printf 'FAIL  %s\n' "$1"; failures=$((failures+1)); }
 
 env_value(){
   local key="$1"
-  grep -m1 "^\${key}=" .env 2>/dev/null | cut -d= -f2-
+  grep -m1 "^${key}=" "$ENV_FILE" 2>/dev/null | cut -d= -f2-
 }
 
 echo "BMC runtime doctor"
@@ -82,7 +82,7 @@ db_query(){
 }
 
 if service_count="$(db_query 'select count(*) from services;' 2>/dev/null)"; then
-  if [ "\${service_count:-0}" -ge 48 ]; then pass "Service registry seeded (\${service_count})"; else fail "Service registry has only \${service_count:-0} rows"; fi
+  if [ "${service_count:-0}" -ge 48 ]; then pass "Service registry seeded (${service_count})"; else fail "Service registry has only ${service_count:-0} rows"; fi
 else
   fail "Postgres query failed"
   service_count=0
@@ -94,11 +94,11 @@ fw_vendor_count="$(db_query "select count(*) from outreach where entity_type='ve
 fw_buyer_count="$(db_query "select count(*) from outreach where entity_type='buyer' and wave='pilot1';" 2>/dev/null || echo 0)"
 research_count="$(db_query "select count(*) from research_backlog where status='queued';" 2>/dev/null || echo 0)"
 
-[ "\${vendor_count:-0}" -ge 200 ] && pass "Vendor research pool seeded (\${vendor_count})" || fail "Vendor research pool unexpectedly small (\${vendor_count:-0})"
-[ "\${buyer_count:-0}" -ge 150 ] && pass "Buyer research pool seeded (\${buyer_count})" || fail "Buyer research pool unexpectedly small (\${buyer_count:-0})"
-[ "\${fw_vendor_count:-0}" -eq 12 ] && pass "First Wave provider cohort is exactly 12" || fail "First Wave provider cohort is \${fw_vendor_count:-0}, expected 12"
-[ "\${fw_buyer_count:-0}" -eq 7 ] && pass "First Wave buyer cohort is exactly 7" || fail "First Wave buyer cohort is \${fw_buyer_count:-0}, expected 7"
-[ "\${research_count:-0}" -gt 0 ] && pass "Research backlog is seeded (\${research_count} queued)" || warn "Research backlog has no queued rows"
+[ "${vendor_count:-0}" -ge 200 ] && pass "Vendor research pool seeded (${vendor_count})" || fail "Vendor research pool unexpectedly small (${vendor_count:-0})"
+[ "${buyer_count:-0}" -ge 150 ] && pass "Buyer research pool seeded (${buyer_count})" || fail "Buyer research pool unexpectedly small (${buyer_count:-0})"
+[ "${fw_vendor_count:-0}" -eq 12 ] && pass "First Wave provider cohort is exactly 12" || fail "First Wave provider cohort is ${fw_vendor_count:-0}, expected 12"
+[ "${fw_buyer_count:-0}" -eq 7 ] && pass "First Wave buyer cohort is exactly 7" || fail "First Wave buyer cohort is ${fw_buyer_count:-0}, expected 7"
+[ "${research_count:-0}" -gt 0 ] && pass "Research backlog is seeded (${research_count} queued)" || warn "Research backlog has no queued rows"
 
 ADMIN_KEY="$(env_value BMC_ADMIN_KEY)"
 if [ -n "$ADMIN_KEY" ] && [[ "$ADMIN_KEY" != *CHANGE_ME* ]]; then
