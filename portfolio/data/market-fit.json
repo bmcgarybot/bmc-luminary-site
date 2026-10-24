@@ -1,0 +1,185 @@
+{
+  "version": "2026-10-24",
+  "rule": "Prioritize by environment and local demand signals; do not force every service into every city.",
+  "markets": {
+    "Prescott": {
+      "tier1": [
+        "tree-removal",
+        "defensible-space",
+        "landscaping",
+        "junk-hauling",
+        "towing-roadside"
+      ],
+      "tier2": [
+        "pet-waste",
+        "septic-earthwork",
+        "storm-cleanup",
+        "gutter-roof-cleanup"
+      ],
+      "notes": "Forested WUI, monsoon/storm debris, established residential market."
+    },
+    "Prescott Valley": {
+      "tier1": [
+        "landscaping",
+        "junk-hauling",
+        "pet-waste",
+        "towing-roadside"
+      ],
+      "tier2": [
+        "tree-service",
+        "water-hauling",
+        "septic-earthwork",
+        "mobile-auto"
+      ],
+      "notes": "Fast-growing residential market with shared Prescott vendor coverage."
+    },
+    "Chino Valley": {
+      "tier1": [
+        "water-hauling",
+        "septic-earthwork",
+        "grading-excavation",
+        "junk-hauling"
+      ],
+      "tier2": [
+        "landscaping",
+        "tree-service",
+        "well-pump",
+        "towing-roadside"
+      ],
+      "notes": "More rural parcels; infrastructure and land-service needs matter."
+    },
+    "Cottonwood": {
+      "tier1": [
+        "septic-earthwork",
+        "tree-service",
+        "landscaping",
+        "junk-hauling"
+      ],
+      "tier2": [
+        "towing-roadside",
+        "property-cleanout",
+        "pet-waste"
+      ],
+      "notes": "Verde Valley mix of residential, rural and tourism-linked properties."
+    },
+    "Camp Verde": {
+      "tier1": [
+        "septic-earthwork",
+        "grading-excavation",
+        "well-pump",
+        "landscaping"
+      ],
+      "tier2": [
+        "tree-service",
+        "junk-hauling",
+        "towing-roadside",
+        "water-hauling"
+      ],
+      "notes": "Town guidance explicitly flags septic, wells and soil/geotechnical concerns."
+    },
+    "Sedona": {
+      "tier1": [
+        "defensible-space",
+        "tree-service",
+        "premium-landscaping",
+        "str-property-care"
+      ],
+      "tier2": [
+        "junk-hauling",
+        "hot-tub-pool",
+        "window-cleaning",
+        "turnover-cleaning"
+      ],
+      "notes": "Wildfire exposure plus large visitor/STR property-care opportunity."
+    },
+    "Flagstaff": {
+      "tier1": [
+        "tree-removal",
+        "defensible-space",
+        "snow-removal",
+        "towing-roadside"
+      ],
+      "tier2": [
+        "junk-hauling",
+        "water-hauling",
+        "str-property-care",
+        "landscaping"
+      ],
+      "notes": "High-elevation forest market; private snow service is a direct seasonal need."
+    },
+    "Winslow": {
+      "tier1": [
+        "towing-roadside",
+        "mobile-tire",
+        "mobile-mechanic",
+        "vehicle-transport"
+      ],
+      "tier2": [
+        "junk-hauling",
+        "property-cleanup",
+        "commercial-cleaning"
+      ],
+      "notes": "I-40 corridor makes vehicle service the strongest environment-specific wedge."
+    },
+    "Kingman": {
+      "tier1": [
+        "water-hauling",
+        "septic-earthwork",
+        "grading-excavation",
+        "towing-roadside"
+      ],
+      "tier2": [
+        "junk-hauling",
+        "mobile-tire",
+        "mobile-mechanic",
+        "desert-landscaping"
+      ],
+      "notes": "Rural/desert service mix plus I-40/US-93 corridor."
+    },
+    "Phoenix": {
+      "tier1": [
+        "hvac",
+        "pool-service",
+        "desert-landscaping",
+        "junk-hauling"
+      ],
+      "tier2": [
+        "pest-control",
+        "towing-roadside",
+        "mobile-auto",
+        "commercial-cleaning"
+      ],
+      "notes": "Extreme heat and pool-heavy metro; large service volume."
+    },
+    "Scottsdale": {
+      "tier1": [
+        "pool-service",
+        "pool-barrier",
+        "premium-landscaping",
+        "str-property-care"
+      ],
+      "tier2": [
+        "mobile-detailing",
+        "junk-hauling",
+        "pest-control",
+        "commercial-cleaning"
+      ],
+      "notes": "Pool/STR compliance and premium property-care fit."
+    },
+    "Tucson": {
+      "tier1": [
+        "hvac",
+        "pool-service",
+        "desert-landscaping",
+        "pest-control"
+      ],
+      "tier2": [
+        "junk-hauling",
+        "mobile-auto",
+        "water-hauling",
+        "commercial-cleaning"
+      ],
+      "notes": "Extreme heat and desert property-service profile."
+    }
+  }
+}
