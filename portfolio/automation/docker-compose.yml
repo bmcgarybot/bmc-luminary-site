@@ -14,6 +14,7 @@ services:
       - ./seed-buyers.sql:/docker-entrypoint-initdb.d/030-seed-buyers.sql:ro
       - ./seed-outreach.sql:/docker-entrypoint-initdb.d/040-seed-outreach.sql:ro
       - ./seed-buyer-outreach.sql:/docker-entrypoint-initdb.d/050-seed-buyer-outreach.sql:ro
+      - ./seed-first-wave.sql:/docker-entrypoint-initdb.d/055-seed-first-wave.sql:ro
       - ./seed-products.sql:/docker-entrypoint-initdb.d/060-seed-products.sql:ro
     networks: [bmc_internal]
     healthcheck:
@@ -41,9 +42,11 @@ services:
       SMTP_STARTTLS: ${SMTP_STARTTLS}
       OUTREACH_ENABLED: ${OUTREACH_ENABLED}
       OUTREACH_DAILY_LIMIT: ${OUTREACH_DAILY_LIMIT}
+      OUTREACH_WAVE: ${OUTREACH_WAVE}
       BUSINESS_POSTAL_ADDRESS: ${BUSINESS_POSTAL_ADDRESS}
       BUYER_OUTREACH_ENABLED: ${BUYER_OUTREACH_ENABLED}
       BUYER_OUTREACH_DAILY_LIMIT: ${BUYER_OUTREACH_DAILY_LIMIT}
+      BUYER_OUTREACH_WAVE: ${BUYER_OUTREACH_WAVE}
       IMAP_ENABLED: ${IMAP_ENABLED}
       IMAP_HOST: ${IMAP_HOST}
       IMAP_PORT: ${IMAP_PORT}
