@@ -8,6 +8,12 @@
     const other=document.createElement("option");other.value="Other Arizona";other.textContent="Other Arizona";sel.appendChild(other);
   });
   document.querySelectorAll("[data-year]").forEach(function(el){el.textContent=new Date().getFullYear();});
+  document.querySelectorAll(".footer-in").forEach(function(el){
+    if(el.querySelector("[data-bmc-legal-links]"))return;
+    const span=document.createElement("span");span.dataset.bmcLegalLinks="true";
+    span.innerHTML='<a href="/portfolio/how-it-works/">How it works</a> · <a href="/portfolio/privacy/">Privacy</a> · <a href="/portfolio/terms/">Terms</a>';
+    el.appendChild(span);
+  });
 
   if(!document.querySelector('link[rel="canonical"]')){
     const canonical=document.createElement("link");canonical.rel="canonical";canonical.href=location.origin+location.pathname;document.head.appendChild(canonical);
