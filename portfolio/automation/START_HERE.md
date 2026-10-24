@@ -109,6 +109,8 @@ docker compose --profile local-ai exec ollama ollama pull qwen3:1.7b
 
 `OUTREACH_ENABLED=false` and `BUYER_OUTREACH_ENABLED=false` are the defaults.
 
+The runtime also defaults to `OUTREACH_WAVE=pilot1` and `BUYER_OUTREACH_WAVE=pilot1`. The `pilot1` cohort is intentionally limited to **12 Prescott-area providers and 7 buyers** selected in the Master Operations `First Wave` tab. All other email-ready prospects remain `backlog` and are ineligible until the wave is deliberately changed.
+
 Keep both false until:
 - sending identity is correct
 - real postal address is configured
