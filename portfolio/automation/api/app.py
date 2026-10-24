@@ -774,10 +774,10 @@ async def record_revenue(conn,product_key,amount,currency,model,notes):
 async def stripe_webhook(request:Request,stripe_signature:str|None=Header(default=None,alias="Stripe-Signature")):
     payload=await request.body()
     verify_stripe_signature(payload,stripe_signature)
-    try:event=json.loads(payload)
+    try:evt=json.loads(payload)
     except json.JSONDecodeError: raise HTTPException(400,"Invalid JSON")
-    event_id=clean(event.get("id")); event_type=clean(event.get("type"))
-    obj=nested(event,"data","object") or {}
+    event_id=clean(evt.get("id")); event_type=clean(evt.get("type"))
+    obj=nested(evt,"data","object") or {}
     if not event_id or not event_type: raise HTTPException(400,"Invalid Stripe event")
     async with app.state.pool.acquire() as conn:
       async with conn.transaction():
@@ -791,7 +791,7 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
         object_id=clean(obj.get("id"))
         await conn.execute("""insert into payment_events(stripe_event_id,event_type,stripe_object_id,product_key,customer_email,amount_cents,currency,status,raw_payload)
           values($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb)""",
-          event_id,event_type,object_id,product_key,customer_email,amount,currency,status,json.dumps(event))
+          event_id,event_type,object_id,product_key,customer_email,amount,currency,status,json.dumps(evt))
 
         if event_type in ("checkout.session.completed","checkout.session.async_payment_succeeded"):
             mode=clean(obj.get("mode"))
@@ -799,7 +799,7 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
             if mode!="subscription" and paid:
                 await record_revenue(conn,product_key,amount,currency,"stripe_checkout",f"Stripe event {event_id}; session {object_id}")
                 await event(conn,"payment",event_id,"payment_received",{"product_key":product_key,"amount_cents":amount,"email":customer_email},"stripe")
-        elif event_type in ("invoice.paid","invoice.payment_succeeded"):
+        elif event_type=="invoice.paid":
             if amount>0:
                 await record_revenue(conn,product_key,amount,currency,"stripe_subscription_invoice",f"Stripe event {event_id}; invoice {object_id}")
                 await event(conn,"payment",event_id,"subscription_payment_received",{"product_key":product_key,"amount_cents":amount,"email":customer_email},"stripe")
@@ -814,7 +814,7 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
                     status=excluded.status,current_period_end=excluded.current_period_end,cancel_at_period_end=excluded.cancel_at_period_end,
                     raw_payload=excluded.raw_payload,updated_at=now()""",
                   sid,product_key,customer_email,clean(obj.get("status")),period_dt,bool(obj.get("cancel_at_period_end")),json.dumps(obj))
-        elif event_type in ("refund.created","charge.refunded"):
+        elif event_type=="refund.created":
             refunded=int(obj.get("amount") or obj.get("amount_refunded") or 0)
             if refunded>0:
                 await record_revenue(conn,product_key,-refunded,currency,"stripe_refund",f"Stripe refund event {event_id}; object {object_id}")
