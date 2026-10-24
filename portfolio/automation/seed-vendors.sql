@@ -1,10 +1,12 @@
 -- Public-business vendor seed generated from the BMC Master Operations sheet.
+-- Safety: reruns refresh prospect research only; applicant/pending/pilot/active/paused/suppressed records preserve live provider-submitted state.
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
 values('v_prescott_tree_morgan','Morgan Tree Service','info@morgantreeaz.com','928-232-0011','https://morgantreeaz.com/','https://morgantreeaz.com/contact','4.9 / 18','prospect',0,NULL,'Prescott + surrounding towns',NULL,NULL,'Veteran-owned; public site lists tree work',NULL,'Seed from public business/site data')
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_tree_morgan','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_tree_morgan','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -12,7 +14,8 @@ values('v_prescott_landscape_aspen','Aspen Landscaping',NULL,'928-832-2590',NULL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_landscape_aspen','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_landscape_aspen','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -20,7 +23,8 @@ values('v_prescott_junk_chuckit','Chuck It! Junk Removal',NULL,'928-308-0414',NU
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_junk_chuckit','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_junk_chuckit','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -28,7 +32,8 @@ values('v_prescott_tow_tricity','Tri-City Towing and Off-Road Recovery',NULL,'92
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_tow_tricity','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_tow_tricity','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -36,7 +41,8 @@ values('v_pv_pet_scoop','Scoop & Skedaddle','scoopskedaddle@outlook.com','928-30
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_pv_pet_scoop','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_pet_scoop','pet_waste' where exists(select 1 from services where service_key='pet_waste') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -44,7 +50,8 @@ values('v_prescott_tree_jonny','Jonny''s Tree and Landscaping Co., LLC','jonny@j
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_tree_jonny','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_tree_jonny','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_tree_jonny','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
@@ -53,7 +60,8 @@ values('v_prescott_tree_ac','A and C Tree Services','aandcservicesaz@gmail.com',
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_tree_ac','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_tree_ac','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_tree_ac','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
@@ -64,7 +72,8 @@ values('v_prescott_landscape_mountain','Mountain Country Landscaping LLC','mount
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_landscape_mountain','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_landscape_mountain','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_landscape_mountain','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
@@ -74,7 +83,8 @@ values('v_prescott_junk_donny','Donny''s Services','donaldmata@icloud.com','928-
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_junk_donny','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_junk_donny','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_junk_donny','property_services' where exists(select 1 from services where service_key='property_services') on conflict do nothing;
@@ -83,7 +93,8 @@ values('v_prescott_landscape_prescottscapes','Prescottscapes','kyle.prescottscap
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_landscape_prescottscapes','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_landscape_prescottscapes','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_landscape_prescottscapes','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
@@ -92,7 +103,8 @@ values('v_yavapai_tree_bobs','Bob''s Tree & Landscape',NULL,'928-778-7100',NULL,
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_yavapai_tree_bobs','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_yavapai_tree_bobs','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_yavapai_tree_bobs','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
@@ -101,7 +113,8 @@ values('v_yavapai_firewise_bradshaw','Bradshaw Fuel Mitigation LLC','bradshawfue
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_yavapai_firewise_bradshaw','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_yavapai_firewise_bradshaw','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -109,7 +122,8 @@ values('v_prescott_zebrascapes','ZebraScapes Landscaping & Services','info@zebra
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_zebrascapes','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_zebrascapes','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_zebrascapes','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
@@ -119,7 +133,8 @@ values('v_prescott_thumbbutte','Thumb Butte Tree Service',NULL,'928-642-8659','h
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_thumbbutte','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_thumbbutte','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -127,7 +142,8 @@ values('v_prescott_yavapai_land','Yavapai Landscaping','office@yavapailandscapin
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_yavapai_land','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_yavapai_land','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_yavapai_land','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
@@ -136,7 +152,8 @@ values('v_chino_vicente','Vicente Landscaping','service@vicentelandscaping.com',
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_chino_vicente','Chino Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_chino_vicente','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_chino_vicente','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
@@ -145,7 +162,8 @@ values('v_prescott_justintime','Just-In-Time Landscaping',NULL,'928-899-7725',NU
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_justintime','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_justintime','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -153,7 +171,8 @@ values('v_pv_kings_tree','The Kings'' Tree Care, LLC',NULL,'928-499-7111',NULL,N
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_pv_kings_tree','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_kings_tree','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -161,7 +180,8 @@ values('v_pv_89a','89A Haul Away',NULL,'928-925-0893',NULL,NULL,'4.9 / 46','pros
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_pv_89a','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_89a','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -169,7 +189,8 @@ values('v_pv_dustdevil','Dust Devil Towing',NULL,'928-277-3048',NULL,NULL,'5.0 /
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_pv_dustdevil','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_dustdevil','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -177,7 +198,8 @@ values('v_prescott_septic','Prescott Septic Services',NULL,'928-320-3700',NULL,N
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_septic','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_septic','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_septic','grease_drain' where exists(select 1 from services where service_key='grease_drain') on conflict do nothing;
@@ -186,7 +208,8 @@ values('v_pv_lassila','Lassila Liquid Waste Disposal',NULL,'928-772-8015',NULL,N
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_pv_lassila','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_lassila','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -194,7 +217,8 @@ values('v_pv_affordable_exc','Affordable Excavation LLC',NULL,'928-224-8060',NUL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_pv_affordable_exc','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_affordable_exc','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -202,7 +226,8 @@ values('v_pv_millers_dirt','Miller''s Dirt Works',NULL,'928-300-0812',NULL,'http
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_pv_millers_dirt','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_millers_dirt','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -210,7 +235,8 @@ values('v_pv_highland','Highland Grading & Excavating',NULL,'928-533-7031',NULL,
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_pv_highland','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_highland','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -218,7 +244,8 @@ values('v_chino_cm_land','C&M''s Landscaping',NULL,'928-963-4705',NULL,'https://
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_chino_cm_land','Chino Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_chino_cm_land','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -226,7 +253,8 @@ values('v_chino_manzanita','Manzanita Landscaping',NULL,'928-848-8025',NULL,'htt
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_chino_manzanita','Chino Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_chino_manzanita','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -234,7 +262,8 @@ values('v_chino_kbd','KBD Contracting LLC','KBDContracting1@gmail.com','928-458-
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_chino_kbd','Chino Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_chino_kbd','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_chino_kbd','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
@@ -243,7 +272,8 @@ values('v_chino_milehi','Mile Hi Excavation',NULL,'928-777-8070',NULL,'https://w
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_chino_milehi','Chino Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_chino_milehi','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -251,7 +281,8 @@ values('v_chino_creativeyard','Creative Yard Works',NULL,'928-420-0240',NULL,'ht
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_chino_creativeyard','Chino Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_chino_creativeyard','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_chino_creativeyard','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
@@ -261,7 +292,8 @@ values('v_chino_eagleseye','Eagle''s Eye Landscaping',NULL,'928-642-0196',NULL,'
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_chino_eagleseye','Chino Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_chino_eagleseye','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -269,7 +301,8 @@ values('v_cottonwood_arborist','Arborist Standards Tree Care',NULL,'928-592-3477
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_cottonwood_arborist','Cottonwood') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_cottonwood_arborist','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -277,7 +310,8 @@ values('v_cottonwood_lukas','Lukas Scape LLC',NULL,'928-284-8866',NULL,NULL,'5.0
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_cottonwood_lukas','Cottonwood') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_cottonwood_lukas','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -285,7 +319,8 @@ values('v_cottonwood_gotjunk','Got Junk LLC-Cottonwood/Prescott Valley AZ',NULL,
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_cottonwood_gotjunk','Cottonwood') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_cottonwood_gotjunk','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -293,7 +328,8 @@ values('v_cottonwood_blackhills','Blackhills Towing',NULL,'928-649-5799',NULL,NU
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_cottonwood_blackhills','Cottonwood') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_cottonwood_blackhills','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -301,7 +337,8 @@ values('v_cottonwood_advseptic','Advanced Septic Service',NULL,'928-821-5114',NU
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_cottonwood_advseptic','Cottonwood') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_cottonwood_advseptic','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -309,7 +346,8 @@ values('v_cottonwood_merrell','Merrell Excavating',NULL,'928-899-3807',NULL,NULL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_cottonwood_merrell','Cottonwood') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_cottonwood_merrell','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -317,7 +355,8 @@ values('v_cottonwood_star','Star Maintenance',NULL,'928-451-6839',NULL,NULL,'No/
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_cottonwood_star','Cottonwood') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_cottonwood_star','commercial_cleaning' where exists(select 1 from services where service_key='commercial_cleaning') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -325,7 +364,8 @@ values('v_campverde_bluz','Bluz affordable tree service',NULL,'928-301-7003',NUL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_campverde_bluz','Camp Verde') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_campverde_bluz','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -333,7 +373,8 @@ values('v_campverde_mario','Mario and Mario Landscaping',NULL,'928-282-3118',NUL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_campverde_mario','Camp Verde') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_campverde_mario','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_campverde_mario','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
@@ -342,7 +383,8 @@ values('v_campverde_notrace','No Trace Hauling',NULL,'602-859-0842',NULL,NULL,'5
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_campverde_notrace','Camp Verde') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_campverde_notrace','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -350,7 +392,8 @@ values('v_campverde_atow','A Tow Truck',NULL,'928-254-8145',NULL,NULL,'4.7 / 26'
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_campverde_atow','Camp Verde') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_campverde_atow','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -358,7 +401,8 @@ values('v_campverde_joshua','The Joshua Tree & Landscape Company','joshuatreesca
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_campverde_joshua','Camp Verde') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_campverde_joshua','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_campverde_joshua','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
@@ -367,7 +411,8 @@ values('v_campverde_kpventures','KP Ventures Well Drilling & Pump Co',NULL,'928-
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_campverde_kpventures','Camp Verde') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_campverde_kpventures','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -375,7 +420,8 @@ values('v_campverde_ligon','Ligon Excavation Inc',NULL,NULL,NULL,'https://campve
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_campverde_ligon','Camp Verde') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_campverde_ligon','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_campverde_ligon','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
@@ -384,7 +430,8 @@ values('v_campverde_aid','A.I.D. Development Inc',NULL,'928-300-4578',NULL,'http
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_campverde_aid','Camp Verde') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_campverde_aid','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_campverde_aid','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
@@ -393,7 +440,8 @@ values('v_campverde_greenriver','Green River Hauling LLC',NULL,'928-300-0991',NU
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_campverde_greenriver','Camp Verde') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_campverde_greenriver','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -401,7 +449,8 @@ values('v_campverde_kmdrilling','Km Drilling Inc',NULL,'928-567-3633',NULL,'http
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_campverde_kmdrilling','Camp Verde') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_campverde_kmdrilling','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -409,7 +458,8 @@ values('v_sedona_squeaky','Squeaky Clean Services',NULL,'928-325-5865','https://
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_sedona_squeaky','Sedona') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_squeaky','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -417,7 +467,8 @@ values('v_flagstaff_apex','Apex Arbor Services','apexarborservices@gmail.com','9
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_apex','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_apex','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -425,7 +476,8 @@ values('v_flagstaff_kaibab','Kaibab Landscaping','c@kaibablandscaping.com','928-
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_kaibab','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_kaibab','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -433,7 +485,8 @@ values('v_flagstaff_pinecountry','Pine Country Window Cleaning Flagstaff',NULL,'
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_pinecountry','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_pinecountry','commercial_cleaning' where exists(select 1 from services where service_key='commercial_cleaning') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_pinecountry','snow_service' where exists(select 1 from services where service_key='snow_service') on conflict do nothing;
@@ -442,7 +495,8 @@ values('v_flagstaff_johnson','Johnson''s Heavy Towing Inc',NULL,'928-526-9393',N
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_johnson','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_johnson','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -450,7 +504,8 @@ values('v_flagstaff_junk','Flagstaff Junk Removal',NULL,'928-310-0789',NULL,NULL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_junk','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_junk','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -458,7 +513,8 @@ values('v_flagstaff_clean','Flagstaff Cleaning Company LLC','support@flagstaffcl
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_clean','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_clean','commercial_cleaning' where exists(select 1 from services where service_key='commercial_cleaning') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_clean','str_property_care' where exists(select 1 from services where service_key='str_property_care') on conflict do nothing;
@@ -467,7 +523,8 @@ values('v_flagstaff_pinnacle','Pinnacle Building Services','sales@pinnacleflag.c
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_pinnacle','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_pinnacle','commercial_cleaning' where exists(select 1 from services where service_key='commercial_cleaning') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -475,7 +532,8 @@ values('v_flagstaff_supertree','Supertree Services LLC',NULL,'928-526-2287',NULL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_supertree','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_supertree','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -483,7 +541,8 @@ values('v_flagstaff_aztree','Arizona Tree Service',NULL,'928-606-8125',NULL,'htt
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_aztree','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_aztree','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -491,7 +550,8 @@ values('v_flagstaff_gts','GTS Gaun''s Tree Service LLC',NULL,'928-606-4371',NULL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_gts','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_gts','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -499,7 +559,8 @@ values('v_flagstaff_revolver','Revolver Hauling & Sitework',NULL,'928-814-9363',
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_revolver','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_revolver','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_revolver','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
@@ -508,7 +569,8 @@ values('v_flagstaff_ponderosa','Ponderosa Pathways',NULL,'928-202-0713',NULL,'ht
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_ponderosa','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_ponderosa','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_ponderosa','snow_service' where exists(select 1 from services where service_key='snow_service') on conflict do nothing;
@@ -517,7 +579,8 @@ values('v_flagstaff_morningdew','Morning Dew Landscaping','info@morningdewlandsc
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_morningdew','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_morningdew','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_morningdew','snow_service' where exists(select 1 from services where service_key='snow_service') on conflict do nothing;
@@ -526,7 +589,8 @@ values('v_flagstaff_grandslam','Grand Slam Janitorial','info@grandslamjanitorial
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_grandslam','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_grandslam','commercial_cleaning' where exists(select 1 from services where service_key='commercial_cleaning') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -534,7 +598,8 @@ values('v_flagstaff_twilight','Twilight Janitorial Service, Inc.',NULL,'928-853-
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_twilight','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_twilight','commercial_cleaning' where exists(select 1 from services where service_key='commercial_cleaning') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -542,7 +607,8 @@ values('v_winslow_trir','Tri-R Towing - Winslow',NULL,'928-289-4239',NULL,NULL,'
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_winslow_trir','Winslow') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_winslow_trir','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -550,7 +616,8 @@ values('v_winslow_dalton','Dalton Motors',NULL,'928-289-2241',NULL,'https://npc.
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_winslow_dalton','Winslow') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_winslow_dalton','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_winslow_dalton','vehicle_services' where exists(select 1 from services where service_key='vehicle_services') on conflict do nothing;
@@ -559,7 +626,8 @@ values('v_winslow_ohaco','O''Haco Tire & Auto',NULL,'928-289-3611',NULL,NULL,'3.
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_winslow_ohaco','Winslow') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_winslow_ohaco','vehicle_services' where exists(select 1 from services where service_key='vehicle_services') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -567,7 +635,8 @@ values('v_winslow_akal','Akal truck trailer repair',NULL,'928-951-5130',NULL,NUL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_winslow_akal','Winslow') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_winslow_akal','vehicle_services' where exists(select 1 from services where service_key='vehicle_services') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -575,7 +644,8 @@ values('v_winslow_goodyear','Goodyear Commercial Tire & Service Center',NULL,'92
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_winslow_goodyear','Winslow') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_winslow_goodyear','vehicle_services' where exists(select 1 from services where service_key='vehicle_services') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -583,7 +653,8 @@ values('v_kingman_a1septic','A1 Septic Tanks and Systems','kh364536@gmail.com','
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_a1septic','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_a1septic','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -591,7 +662,8 @@ values('v_kingman_mohaveground','Mohave Ground Work LLC','doug@mohavegroundwork.
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_mohaveground','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_mohaveground','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -599,7 +671,8 @@ values('v_kingman_mohaveseptic','Mohave Septic & Excavating',NULL,'928-716-0763'
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_mohaveseptic','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_mohaveseptic','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -607,7 +680,8 @@ values('v_kingman_tlc','TLC Excavating Inc','tlcexcavating@gmail.com','928-692-6
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_tlc','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_tlc','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -615,7 +689,8 @@ values('v_kingman_gleason','Gleason and Sons Excavating & Grading LLC','gleasona
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_gleason','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_gleason','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -623,7 +698,8 @@ values('v_kingman_js','J & S Excavation LLC','joshmillergbrsla@gmail.com','928-4
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_js','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_js','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -631,7 +707,8 @@ values('v_kingman_main','Main Construction & Landscape LLC','mainconstructionand
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_main','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_main','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_main','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
@@ -640,7 +717,8 @@ values('v_kingman_lewis','Lewis Equipment Services LLC','dslewis@citlink.net','9
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_lewis','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_lewis','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -648,7 +726,8 @@ values('v_kingman_mcfadyen','McFadyen Siteworx LLC','m.siteworx@gmail.com','928-
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_mcfadyen','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_mcfadyen','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -656,7 +735,8 @@ values('v_kingman_signature','Signature Plumbing LLC','Joshbudka@live.com','928-
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_signature','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_signature','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -664,7 +744,8 @@ values('v_kingman_aes','Advanced Environmental Systems LLC','Louie@aes.earth','9
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_aes','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_aes','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -672,7 +753,8 @@ values('v_kingman_mcintosh','McIntosh Potable Water LLC',NULL,'928-279-4136',NUL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_mcintosh','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_mcintosh','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -680,7 +762,8 @@ values('v_kingman_oasis','Oasis Pump',NULL,'928-293-0186',NULL,NULL,'4.6 / 21','
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_oasis','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_oasis','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -688,7 +771,8 @@ values('v_kingman_thomaswater','Thomas Water Trucks LLC',NULL,'316-371-5441',NUL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_thomaswater','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_thomaswater','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -696,7 +780,8 @@ values('v_kingman_ranchwater','Ranch Water Service, Inc.',NULL,'928-757-9027',NU
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_ranchwater','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_ranchwater','rural_property' where exists(select 1 from services where service_key='rural_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -704,7 +789,8 @@ values('v_kingman_junkout','Junk Out Services','junkoutservices@yahoo.com','928-
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_junkout','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_junkout','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -712,7 +798,8 @@ values('v_kingman_ontime','On Time & Ready Rubbish Cleanup',NULL,'928-681-7070',
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_ontime','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_ontime','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -720,7 +807,8 @@ values('v_kingman_dumpsters','Kingman Dumpsters',NULL,'928-716-8895',NULL,NULL,'
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_dumpsters','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_dumpsters','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -728,7 +816,8 @@ values('v_kingman_patriot','Patriot Emergency Roadside','contact@patriotemergenc
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_patriot','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_patriot','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -736,7 +825,8 @@ values('v_kingman_citytow','City Towing LLC','citytowingllc@outlook.com','928-69
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_citytow','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_citytow','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -744,7 +834,8 @@ values('v_kingman_allamericanland','All American Landscape',NULL,'928-715-3065',
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_allamericanland','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_allamericanland','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -752,7 +843,8 @@ values('v_kingman_lightning','Lightning Enterprises Landscape',NULL,'928-715-461
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_lightning','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_lightning','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -760,7 +852,8 @@ values('v_sedona_ontime','On Time Landscape & Masonry, LLC',NULL,'928-202-8492',
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_sedona_ontime','Sedona') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_ontime','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -768,7 +861,8 @@ values('v_sedona_crystal','Sedona Crystal Clean',NULL,'928-284-7886',NULL,'busin
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_sedona_crystal','Sedona') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_crystal','commercial_cleaning' where exists(select 1 from services where service_key='commercial_cleaning') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_crystal','str_property_care' where exists(select 1 from services where service_key='str_property_care') on conflict do nothing;
@@ -777,7 +871,8 @@ values('v_sedona_alpha','Alpha Towing & Transport',NULL,'928-567-5130',NULL,'bus
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_sedona_alpha','Sedona') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_alpha','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -785,7 +880,8 @@ values('v_sedona_desertscape','Desert Scape, LLC',NULL,'928-282-2194',NULL,'http
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_sedona_desertscape','Sedona') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_desertscape','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -793,7 +889,8 @@ values('v_sedona_landscapemagic','Landscape Magic',NULL,'928-284-9314',NULL,'htt
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_sedona_landscapemagic','Sedona') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_landscapemagic','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -801,7 +898,8 @@ values('v_sedona_reandsons','R.E. And Sons Landscaping',NULL,'928-433-7527',NULL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_sedona_reandsons','Sedona') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_reandsons','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -809,7 +907,8 @@ values('v_phx_reliance','Reliance Heating & Air Conditioning',NULL,'602-607-2150
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_reliance','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_reliance','hvac_heat' where exists(select 1 from services where service_key='hvac_heat') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -817,7 +916,8 @@ values('v_phx_anago','Anago Cleaning Systems of Phoenix',NULL,'480-771-2703',NUL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_anago','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_anago','commercial_cleaning' where exists(select 1 from services where service_key='commercial_cleaning') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -825,7 +925,8 @@ values('v_phx_janiking','Jani-King of Phoenix',NULL,'602-433-0550',NULL,'https:/
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_janiking','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_janiking','commercial_cleaning' where exists(select 1 from services where service_key='commercial_cleaning') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -833,7 +934,8 @@ values('v_phx_integrity','Integrity A/C & Heating, LLC',NULL,'602-971-0567',NULL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_integrity','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_integrity','hvac_heat' where exists(select 1 from services where service_key='hvac_heat') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -841,7 +943,8 @@ values('v_phx_ammechanical','A & M Mechanical, LLC',NULL,'602-405-8289',NULL,'ht
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_ammechanical','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_ammechanical','hvac_heat' where exists(select 1 from services where service_key='hvac_heat') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -849,7 +952,8 @@ values('v_scotts_clearvalue','Clear Value Pools',NULL,'480-602-7665','https://cl
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_scotts_clearvalue','Scottsdale') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_clearvalue','pool_desert_property' where exists(select 1 from services where service_key='pool_desert_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -857,7 +961,8 @@ values('v_scotts_green2','GREEN 2 CRYSTAL CLEAR POOLS',NULL,'480-589-1672',NULL,
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_scotts_green2','Scottsdale') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_green2','pool_desert_property' where exists(select 1 from services where service_key='pool_desert_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -865,7 +970,8 @@ values('v_scotts_luxe','Luxe Outdoor Environments of Scottsdale',NULL,'480-725-3
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_scotts_luxe','Scottsdale') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_luxe','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_luxe','pool_desert_property' where exists(select 1 from services where service_key='pool_desert_property') on conflict do nothing;
@@ -874,7 +980,8 @@ values('v_scotts_towncountry','Town & Country Office Cleaning',NULL,'480-905-559
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_scotts_towncountry','Scottsdale') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_towncountry','commercial_cleaning' where exists(select 1 from services where service_key='commercial_cleaning') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -882,7 +989,8 @@ values('v_phx_prime_detail','Prime Mobile Detailing',NULL,'602-849-2649',NULL,'b
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_prime_detail','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_prime_detail','vehicle_services' where exists(select 1 from services where service_key='vehicle_services') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -890,7 +998,8 @@ values('v_tuc_tempcontrol','Temperature Control, Inc.',NULL,'520-775-3566',NULL,
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_tempcontrol','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_tempcontrol','hvac_heat' where exists(select 1 from services where service_key='hvac_heat') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -898,7 +1007,8 @@ values('v_tuc_ambiance','Ambiance Pool Service',NULL,'520-467-6262',NULL,'busine
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_ambiance','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_ambiance','pool_desert_property' where exists(select 1 from services where service_key='pool_desert_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -906,7 +1016,8 @@ values('v_tuc_joesyard','Joe''s Yard, Tree, & Irrigation',NULL,'520-849-7676',NU
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_joesyard','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_joesyard','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_joesyard','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
@@ -915,7 +1026,8 @@ values('v_phx_environment','Environment Control',NULL,'602-864-1825',NULL,'https
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_environment','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_environment','commercial_cleaning' where exists(select 1 from services where service_key='commercial_cleaning') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -923,7 +1035,8 @@ values('v_pv_sweptaway','Swept Away AZ, LLC','office@sweptawayaz.com','928-775-0
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_pv_sweptaway','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_sweptaway','parking_lot' where exists(select 1 from services where service_key='parking_lot') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_sweptaway','pressure_washing' where exists(select 1 from services where service_key='pressure_washing') on conflict do nothing;
@@ -936,7 +1049,8 @@ values('v_prescott_windowwranglers','Window Wranglers','windowwranglers@gmail.co
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_windowwranglers','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_windowwranglers','window_cleaning' where exists(select 1 from services where service_key='window_cleaning') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_windowwranglers','pressure_washing' where exists(select 1 from services where service_key='pressure_washing') on conflict do nothing;
@@ -945,7 +1059,8 @@ values('v_pv_wisewindow','Wise Window Washing','wisewindowwashing@outlook.com','
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_pv_wisewindow','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_wisewindow','window_cleaning' where exists(select 1 from services where service_key='window_cleaning') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_wisewindow','pressure_washing' where exists(select 1 from services where service_key='pressure_washing') on conflict do nothing;
@@ -954,7 +1069,8 @@ values('v_prescott_platinumedge','Platinum Edge Services','info@platinumedgeserv
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_platinumedge','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_platinumedge','fleet_washing' where exists(select 1 from services where service_key='fleet_washing') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_platinumedge','window_cleaning' where exists(select 1 from services where service_key='window_cleaning') on conflict do nothing;
@@ -964,7 +1080,8 @@ values('v_prescott_americancrown','American Crown Commercial Cleaning','donna@am
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_americancrown','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_americancrown','commercial_cleaning' where exists(select 1 from services where service_key='commercial_cleaning') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_americancrown','window_cleaning' where exists(select 1 from services where service_key='window_cleaning') on conflict do nothing;
@@ -976,7 +1093,8 @@ values('v_prescott_patriotpest','Patriot Pest & Termite Control',NULL,'928-985-3
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_patriotpest','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_patriotpest','pest_control' where exists(select 1 from services where service_key='pest_control') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -984,7 +1102,8 @@ values('v_prescott_tccarpet','T.C. Carpet Care',NULL,'928-550-8900',NULL,'busine
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_tccarpet','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_tccarpet','floor_carpet' where exists(select 1 from services where service_key='floor_carpet') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -992,7 +1111,8 @@ values('v_prescott_lifeproperty','Life & Property Safety',NULL,'928-910-6213',NU
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_lifeproperty','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_lifeproperty','fire_safety' where exists(select 1 from services where service_key='fire_safety') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_lifeproperty','backflow_plumbing' where exists(select 1 from services where service_key='backflow_plumbing') on conflict do nothing;
@@ -1001,7 +1121,8 @@ values('v_prescott_highdesertlock','High Desert Lock and Safe',NULL,'928-445-019
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_highdesertlock','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_highdesertlock','locksmith_access' where exists(select 1 from services where service_key='locksmith_access') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1009,7 +1130,8 @@ values('v_prescott_ventpro','Vent Pro: Duct & Vent Care',NULL,'928-800-2727',NUL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_ventpro','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_ventpro','duct_vent' where exists(select 1 from services where service_key='duct_vent') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_ventpro','hvac_heat' where exists(select 1 from services where service_key='hvac_heat') on conflict do nothing;
@@ -1018,7 +1140,8 @@ values('v_prescott_maurer','Maurer Sealing & Striping LLC',NULL,'928-499-8875',N
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_maurer','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_maurer','parking_lot' where exists(select 1 from services where service_key='parking_lot') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1026,7 +1149,8 @@ values('v_pv_neumann','Neumann High Country Doors',NULL,'928-772-9738',NULL,'bus
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_pv_neumann','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_neumann','garage_door' where exists(select 1 from services where service_key='garage_door') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1034,7 +1158,8 @@ values('v_prescott_pristine','Pristine Auto Detail',NULL,'928-433-2660',NULL,'bu
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_pristine','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_pristine','mobile_detailing' where exists(select 1 from services where service_key='mobile_detailing') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1042,7 +1167,8 @@ values('v_prescott_pressurewash','Prescott Pressure Washing','Prescottpressurewa
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_pressurewash','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_pressurewash','pressure_washing' where exists(select 1 from services where service_key='pressure_washing') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_pressurewash','fleet_washing' where exists(select 1 from services where service_key='fleet_washing') on conflict do nothing;
@@ -1052,7 +1178,8 @@ values('v_prescott_servpro','SERVPRO of Prescott',NULL,NULL,NULL,'https://www.se
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_servpro','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_servpro','commercial_cleaning' where exists(select 1 from services where service_key='commercial_cleaning') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_servpro','floor_carpet' where exists(select 1 from services where service_key='floor_carpet') on conflict do nothing;
@@ -1062,7 +1189,8 @@ values('v_prescott_crrs','CRRS, LLC - Commercial Refrigeration & Restaurant Serv
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_crrs','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_crrs','restaurant_repair' where exists(select 1 from services where service_key='restaurant_repair') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_crrs','restaurant_equipment' where exists(select 1 from services where service_key='restaurant_equipment') on conflict do nothing;
@@ -1073,7 +1201,8 @@ values('v_prescott_sourceone','Source One Supply','INFO@SOURCEONERS.COM','928-77
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_sourceone','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_sourceone','used_equipment' where exists(select 1 from services where service_key='used_equipment') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_sourceone','equipment_quotes' where exists(select 1 from services where service_key='equipment_quotes') on conflict do nothing;
@@ -1083,7 +1212,8 @@ values('v_pv_pcrefrigeration','PC Refrigeration',NULL,'928-356-8060',NULL,'https
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_pv_pcrefrigeration','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_pcrefrigeration','restaurant_repair' where exists(select 1 from services where service_key='restaurant_repair') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_pcrefrigeration','ice_machine' where exists(select 1 from services where service_key='ice_machine') on conflict do nothing;
@@ -1092,7 +1222,8 @@ values('v_az_cfe','Commercial Food Equipment Co. (CFE)','office@cfeservice.com',
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_az_cfe','Phoenix Metro / Statewide') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_az_cfe','restaurant_repair' where exists(select 1 from services where service_key='restaurant_repair') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_az_cfe','restaurant_equipment' where exists(select 1 from services where service_key='restaurant_equipment') on conflict do nothing;
@@ -1103,7 +1234,8 @@ values('v_az_tech24','Tech24 Commercial Foodservice Repair',NULL,'602-234-2443',
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_az_tech24','Phoenix / Statewide') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_az_tech24','restaurant_repair' where exists(select 1 from services where service_key='restaurant_repair') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_az_tech24','restaurant_equipment' where exists(select 1 from services where service_key='restaurant_equipment') on conflict do nothing;
@@ -1113,7 +1245,8 @@ values('v_prescott_cookairclean','Cook Air Clean',NULL,'602-854-4990','https://c
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_cookairclean','Prescott / Yavapai') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_cookairclean','hood_exhaust' where exists(select 1 from services where service_key='hood_exhaust') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1121,7 +1254,8 @@ values('v_pv_dovestires','Dove''s Tires Mobile Service',NULL,'928-600-4606',NULL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_pv_dovestires','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_dovestires','mobile_tire_battery' where exists(select 1 from services where service_key='mobile_tire_battery') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_dovestires','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
@@ -1130,7 +1264,8 @@ values('v_prescott_magicglass','Magic Glass Prescott',NULL,'928-910-7262',NULL,'
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_magicglass','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_magicglass','auto_glass' where exists(select 1 from services where service_key='auto_glass') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1138,7 +1273,8 @@ values('v_prescott_doggedly','Doggedly Devoted',NULL,'928-771-0111',NULL,'busine
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_doggedly','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_doggedly','pet_sitting' where exists(select 1 from services where service_key='pet_sitting') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1146,7 +1282,8 @@ values('v_prescott_morgan_groom','Morgan Mobile Pet Grooming',NULL,'928-277-6664
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_morgan_groom','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_morgan_groom','mobile_pet_grooming' where exists(select 1 from services where service_key='mobile_pet_grooming') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1154,7 +1291,8 @@ values('v_prescott_optimyze','Optimyze Cleaning Services',NULL,'928-800-1703',NU
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_optimyze','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_optimyze','turnover_cleaning' where exists(select 1 from services where service_key='turnover_cleaning') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_optimyze','window_cleaning' where exists(select 1 from services where service_key='window_cleaning') on conflict do nothing;
@@ -1164,7 +1302,8 @@ values('v_flagstaff_ae_refrig','A&E Refrigeration',NULL,'928-323-0812',NULL,'bus
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_ae_refrig','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_ae_refrig','restaurant_repair' where exists(select 1 from services where service_key='restaurant_repair') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_ae_refrig','restaurant_equipment' where exists(select 1 from services where service_key='restaurant_equipment') on conflict do nothing;
@@ -1176,7 +1315,8 @@ values('v_flagstaff_bareclean','Bare Carpet Care / Bare Clean',NULL,'928-202-797
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_bareclean','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_bareclean','floor_carpet' where exists(select 1 from services where service_key='floor_carpet') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_bareclean','duct_vent' where exists(select 1 from services where service_key='duct_vent') on conflict do nothing;
@@ -1187,7 +1327,8 @@ values('v_flagstaff_arizonaespresso','Arizona Espresso',NULL,'928-284-8100',NULL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flagstaff_arizonaespresso','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_arizonaespresso','restaurant_equipment' where exists(select 1 from services where service_key='restaurant_equipment') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flagstaff_arizonaespresso','equipment_quotes' where exists(select 1 from services where service_key='equipment_quotes') on conflict do nothing;
@@ -1197,7 +1338,8 @@ values('v_kingman_comfortair','Comfort Air Solutions LLC','office.comfortairsolu
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_comfortair','Kingman / Mohave County') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_comfortair','restaurant_repair' where exists(select 1 from services where service_key='restaurant_repair') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_comfortair','ice_machine' where exists(select 1 from services where service_key='ice_machine') on conflict do nothing;
@@ -1208,7 +1350,8 @@ values('v_prescott_underdog','Underdog Towing',NULL,'928-533-1909',NULL,'https:/
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_underdog','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_underdog','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1216,7 +1359,8 @@ values('v_prescott_nastow','Nastow Towing & Recovery',NULL,'928-778-4357',NULL,'
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_nastow','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_nastow','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1224,7 +1368,8 @@ values('v_prescott_american_tow','American Towing of Prescott',NULL,'928-772-420
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_american_tow','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_american_tow','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1232,7 +1377,8 @@ values('v_prescott_dashhound','Dash Hound Towing & Off Road Recovery',NULL,'928-
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_dashhound','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_dashhound','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1240,7 +1386,8 @@ values('v_prescott_hoist','Hoist Towing & Off Road Recovery',NULL,'928-660-0606'
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_prescott_hoist','Prescott') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_prescott_hoist','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1248,7 +1395,8 @@ values('v_flag_naztowing','Northern Arizona Towing & Off Road Recovery LLC',NULL
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flag_naztowing','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flag_naztowing','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1256,7 +1404,8 @@ values('v_flag_ampm','AM PM Towing & Recovery','flagstaffampmdispatch@gmail.com'
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flag_ampm','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flag_ampm','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1264,7 +1413,8 @@ values('v_flag_jett','JETT LLC Towing',NULL,'928-714-0354','https://www.jetttowi
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flag_jett','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flag_jett','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1272,7 +1422,8 @@ values('v_flag_countryclub','Country Club Towing & Recovery',NULL,'928-527-8697'
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flag_countryclub','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flag_countryclub','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1280,7 +1431,8 @@ values('v_flag_united','United Towing',NULL,'928-526-1839','https://unitedtowing
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flag_united','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flag_united','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1288,7 +1440,8 @@ values('v_flag_murphys','Murphys Heavy Towing & Semi Truck Repair','murphysdispa
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flag_murphys','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flag_murphys','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flag_murphys','vehicle_services' where exists(select 1 from services where service_key='vehicle_services') on conflict do nothing;
@@ -1298,7 +1451,8 @@ values('v_flag_noz','NOZ Towing','flagstafftowingco@gmail.com','928-396-3581','h
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_flag_noz','Flagstaff') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_flag_noz','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1306,7 +1460,8 @@ values('v_kingman_adan','Adan Repair & Towing LLC','ADANREPAIR@HOTMAIL.COM','928
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_adan','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_adan','vehicle_services' where exists(select 1 from services where service_key='vehicle_services') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_adan','towing_roadside' where exists(select 1 from services where service_key='towing_roadside') on conflict do nothing;
@@ -1316,7 +1471,8 @@ values('v_kingman_ac24','AC 24hr Roadside Repair LLC',NULL,'951-575-8552',NULL,'
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_ac24','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_ac24','vehicle_services' where exists(select 1 from services where service_key='vehicle_services') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_ac24','mobile_tire_battery' where exists(select 1 from services where service_key='mobile_tire_battery') on conflict do nothing;
@@ -1326,7 +1482,8 @@ values('v_kingman_roadservice','Kingman Road Service','Roadside@KingmanRoadServi
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_kingman_roadservice','Kingman') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_roadservice','vehicle_services' where exists(select 1 from services where service_key='vehicle_services') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_kingman_roadservice','mobile_tire_battery' where exists(select 1 from services where service_key='mobile_tire_battery') on conflict do nothing;
@@ -1336,7 +1493,8 @@ values('v_phx_swimhappy','SwimHappy Pool Service & Repair',NULL,'602-638-2400',N
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_swimhappy','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_swimhappy','pool_desert_property' where exists(select 1 from services where service_key='pool_desert_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1344,7 +1502,8 @@ values('v_phx_poolfix','Swimming Pool Service & Repair',NULL,'602-267-7203','htt
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_poolfix','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_poolfix','pool_desert_property' where exists(select 1 from services where service_key='pool_desert_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1352,7 +1511,8 @@ values('v_sedona_totalproperty','Total Property Care Arizona','propertycareaz@ma
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_sedona_totalproperty','Sedona') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_totalproperty','str_property_care' where exists(select 1 from services where service_key='str_property_care') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_totalproperty','turnover_cleaning' where exists(select 1 from services where service_key='turnover_cleaning') on conflict do nothing;
@@ -1361,7 +1521,8 @@ values('v_sedona_deserthaven','Desert Haven Home Management','hello@sedonadesert
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_sedona_deserthaven','Sedona') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_deserthaven','str_property_care' where exists(select 1 from services where service_key='str_property_care') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_deserthaven','turnover_cleaning' where exists(select 1 from services where service_key='turnover_cleaning') on conflict do nothing;
@@ -1370,7 +1531,8 @@ values('v_sedona_rentredrock','Rent Red Rocks',NULL,NULL,'https://www.rentredroc
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_sedona_rentredrock','Sedona') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_rentredrock','str_property_care' where exists(select 1 from services where service_key='str_property_care') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1378,7 +1540,8 @@ values('v_sedona_premier','Sedona Premier',NULL,'928-399-7888',NULL,'business:tu
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_sedona_premier','Sedona') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_premier','str_property_care' where exists(select 1 from services where service_key='str_property_care') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_premier','turnover_cleaning' where exists(select 1 from services where service_key='turnover_cleaning') on conflict do nothing;
@@ -1387,7 +1550,8 @@ values('v_sedona_hostco','TheHostCo','tj@thehostco.com','928-499-8066','https://
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_sedona_hostco','Sedona') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_hostco','str_property_care' where exists(select 1 from services where service_key='str_property_care') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_hostco','turnover_cleaning' where exists(select 1 from services where service_key='turnover_cleaning') on conflict do nothing;
@@ -1396,7 +1560,8 @@ values('v_scotts_roadrunner','Roadrunner Escapes',NULL,'602-345-1379',NULL,'busi
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_scotts_roadrunner','Scottsdale') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_roadrunner','str_property_care' where exists(select 1 from services where service_key='str_property_care') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_roadrunner','pool_desert_property' where exists(select 1 from services where service_key='pool_desert_property') on conflict do nothing;
@@ -1405,7 +1570,8 @@ values('v_sedona_verdevalleytree','Verde Valley Tree Care','VVTreeCare@proton.me
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_sedona_verdevalleytree','Sedona') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_verdevalleytree','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1413,7 +1579,8 @@ values('v_sedona_aznorth','Arizona North Tree Service','paul@aznorthtree.com','9
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_sedona_aznorth','Sedona') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_aznorth','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1421,7 +1588,8 @@ values('v_sedona_tree_landscape','Sedona Tree and Landscape','Sedonatree@gmail.c
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_sedona_tree_landscape','Sedona') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_tree_landscape','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_sedona_tree_landscape','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
@@ -1430,7 +1598,8 @@ values('v_scotts_sunkissed','The Sun Kissed Group','info@thesunkissedgroup.com',
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_scotts_sunkissed','Scottsdale') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_sunkissed','str_property_care' where exists(select 1 from services where service_key='str_property_care') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_sunkissed','turnover_cleaning' where exists(select 1 from services where service_key='turnover_cleaning') on conflict do nothing;
@@ -1439,7 +1608,8 @@ values('v_scotts_veranza','Veranza','hello@stayveranza.com','602-281-0003','http
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_scotts_veranza','Scottsdale') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_veranza','str_property_care' where exists(select 1 from services where service_key='str_property_care') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_veranza','turnover_cleaning' where exists(select 1 from services where service_key='turnover_cleaning') on conflict do nothing;
@@ -1448,7 +1618,8 @@ values('v_scotts_ark','ARK Rentals','gus@arkrentals.co','760-578-7854','https://
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_scotts_ark','Scottsdale') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_ark','str_property_care' where exists(select 1 from services where service_key='str_property_care') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_ark','turnover_cleaning' where exists(select 1 from services where service_key='turnover_cleaning') on conflict do nothing;
@@ -1457,7 +1628,8 @@ values('v_scotts_sway','Sway Vacation Rental Management','hello@swayvrm.com','60
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_scotts_sway','Scottsdale') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_sway','str_property_care' where exists(select 1 from services where service_key='str_property_care') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_sway','turnover_cleaning' where exists(select 1 from services where service_key='turnover_cleaning') on conflict do nothing;
@@ -1466,7 +1638,8 @@ values('v_scotts_bellapalazzo','Bella Palazzo','bellateam@bellapalazzo.com','480
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_scotts_bellapalazzo','Scottsdale') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_bellapalazzo','str_property_care' where exists(select 1 from services where service_key='str_property_care') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_bellapalazzo','turnover_cleaning' where exists(select 1 from services where service_key='turnover_cleaning') on conflict do nothing;
@@ -1475,7 +1648,8 @@ values('v_scotts_itrip','iTrip Scottsdale','scottsdaleinfo@itrip.net','602-900-1
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_scotts_itrip','Scottsdale') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_itrip','str_property_care' where exists(select 1 from services where service_key='str_property_care') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_itrip','turnover_cleaning' where exists(select 1 from services where service_key='turnover_cleaning') on conflict do nothing;
@@ -1484,7 +1658,8 @@ values('v_scotts_baro','Baro Stays','rk@staybaro.com',NULL,'https://staybaro.com
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_scotts_baro','Scottsdale') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_baro','str_property_care' where exists(select 1 from services where service_key='str_property_care') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_baro','turnover_cleaning' where exists(select 1 from services where service_key='turnover_cleaning') on conflict do nothing;
@@ -1493,7 +1668,8 @@ values('v_scotts_nadine','Nadine Duncan STR Management','nadineduncan.rei@gmail.
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_scotts_nadine','Scottsdale') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_nadine','str_property_care' where exists(select 1 from services where service_key='str_property_care') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_scotts_nadine','turnover_cleaning' where exists(select 1 from services where service_key='turnover_cleaning') on conflict do nothing;
@@ -1502,7 +1678,8 @@ values('v_phx_hghauling','HG Hauling Services','angelhg@hghaulingservices.com','
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_hghauling','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_hghauling','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1510,7 +1687,8 @@ values('v_phx_junkking','Junk King Phoenix',NULL,'480-719-0467','https://www.jun
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_junkking','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_junkking','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1518,7 +1696,8 @@ values('v_phx_dryheat','Dry Heat Junk Removal & Dumpster Rentals',NULL,'602-793-
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_dryheat','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_dryheat','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1526,7 +1705,8 @@ values('v_tuc_pestfriends','Pest Friends',NULL,'520-999-2847','https://pestfrien
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_pestfriends','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_pestfriends','pest_control' where exists(select 1 from services where service_key='pest_control') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1534,7 +1714,8 @@ values('v_winslow_joesglass','Joe''s Glass and Locksmith Shop, Inc.','joesglass@
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_winslow_joesglass','Winslow') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_winslow_joesglass','auto_glass' where exists(select 1 from services where service_key='auto_glass') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_winslow_joesglass','locksmith_access' where exists(select 1 from services where service_key='locksmith_access') on conflict do nothing;
@@ -1543,7 +1724,8 @@ values('v_winslow_southerntire','Southern Tire Mart at Pilot',NULL,'928-289-1112
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_winslow_southerntire','Winslow') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_winslow_southerntire','mobile_tire_battery' where exists(select 1 from services where service_key='mobile_tire_battery') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_winslow_southerntire','vehicle_services' where exists(select 1 from services where service_key='vehicle_services') on conflict do nothing;
@@ -1552,7 +1734,8 @@ values('v_phx_landcom','LandCom Landscaping','landcom.us@gmail.com','602-849-387
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_landcom','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_landcom','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1560,7 +1743,8 @@ values('v_phx_desertgreen','Desert Green Land Care','mike@dglandcare.com','602-5
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_desertgreen','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_desertgreen','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1568,7 +1752,8 @@ values('v_phx_patriotland','Patriot Landscaping & Design LLC','jmattie@pldaz.com
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_patriotland','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_patriotland','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1576,7 +1761,8 @@ values('v_phx_keepers','Keepers Landscape','carlos@keeperslandscapeaz.com','480-
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_keepers','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_keepers','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1584,7 +1770,8 @@ values('v_phx_mikesland','Mikes Land Enhancements LLC','mikeslandscape2019@gmail
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_mikesland','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_mikesland','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_mikesland','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
@@ -1593,7 +1780,8 @@ values('v_phx_safari','Safari Pools & Landscaping','office@safaripools.com','480
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_phx_safari','Phoenix') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_safari','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_phx_safari','pool_desert_property' where exists(select 1 from services where service_key='pool_desert_property') on conflict do nothing;
@@ -1602,7 +1790,8 @@ values('v_cottonwood_jaybobs','Jaybobs Landscaping','JAYBOBSLANDSCAPING@GMAIL.CO
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_cottonwood_jaybobs','Cottonwood') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_cottonwood_jaybobs','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_cottonwood_jaybobs','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
@@ -1611,7 +1800,8 @@ values('v_campverde_sj','S & J Landscaping and Maintenance LLC','admin@landscape
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_campverde_sj','Camp Verde') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_campverde_sj','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_campverde_sj','tree_service' where exists(select 1 from services where service_key='tree_service') on conflict do nothing;
@@ -1621,7 +1811,8 @@ values('v_chino_copperstatejunk','Copper State Junk Removal & Hauling','junk@cop
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_chino_copperstatejunk','Chino Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_chino_copperstatejunk','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1629,7 +1820,8 @@ values('v_chino_husbandwife','Husband & Wife Junk Removal LLC','husbandwifejunkt
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_chino_husbandwife','Chino Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_chino_husbandwife','junk_hauling' where exists(select 1 from services where service_key='junk_hauling') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1637,7 +1829,8 @@ values('v_pv_clickapro','Clickapro',NULL,'928-224-2884',NULL,'business:turn78761
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_pv_clickapro','Prescott Valley') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_clickapro','pet_waste' where exists(select 1 from services where service_key='pet_waste') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_pv_clickapro','property_services' where exists(select 1 from services where service_key='property_services') on conflict do nothing;
@@ -1646,7 +1839,8 @@ values('v_tuc_clearpool','Clear Pool Solutions','tucson@clearpoolsolutions.com',
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_clearpool','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_clearpool','pool_desert_property' where exists(select 1 from services where service_key='pool_desert_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1654,7 +1848,8 @@ values('v_tuc_pimachem','Arizona Pima Chemical Pool Service','arizonapimachemica
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_pimachem','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_pimachem','pool_desert_property' where exists(select 1 from services where service_key='pool_desert_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1662,7 +1857,8 @@ values('v_tuc_azpooldesigns','Arizona Pool Designs LLC','arizonapooldesigns@gmai
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_azpooldesigns','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_azpooldesigns','pool_desert_property' where exists(select 1 from services where service_key='pool_desert_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1670,7 +1866,8 @@ values('v_tuc_perfectionpools','Perfection Pools','perfectionpools@cox.net','520
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_perfectionpools','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_perfectionpools','pool_desert_property' where exists(select 1 from services where service_key='pool_desert_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1678,7 +1875,8 @@ values('v_tuc_splashpool','Splash Pool Service','office@splashpoolservice.com','
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_splashpool','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_splashpool','pool_desert_property' where exists(select 1 from services where service_key='pool_desert_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1686,7 +1884,8 @@ values('v_tuc_preservation','Preservation Pros Inc.','PreservationPros1@gmail.co
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_preservation','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_preservation','pool_desert_property' where exists(select 1 from services where service_key='pool_desert_property') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1694,7 +1893,8 @@ values('v_tuc_legacyland','Legacy Landscaping and Design',NULL,'520-488-2537',NU
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_legacyland','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_legacyland','landscaping' where exists(select 1 from services where service_key='landscaping') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1702,7 +1902,8 @@ values('v_tuc_greenshield','GreenShield Pest Control',NULL,'520-393-3352',NULL,'
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_greenshield','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_greenshield','pest_control' where exists(select 1 from services where service_key='pest_control') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1710,7 +1911,8 @@ values('v_tuc_apollo','Apollo Air Conditioning Systems','teamapollo@apolloacs.co
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_apollo','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_apollo','hvac_heat' where exists(select 1 from services where service_key='hvac_heat') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1718,7 +1920,8 @@ values('v_tuc_capstone','Capstone Cooling & Heating LLC','info@capstonecooling.c
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_capstone','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_capstone','hvac_heat' where exists(select 1 from services where service_key='hvac_heat') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1726,7 +1929,8 @@ values('v_tuc_affordableair','American Affordable Air','officemanager@americanaf
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_affordableair','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_affordableair','hvac_heat' where exists(select 1 from services where service_key='hvac_heat') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1734,7 +1938,8 @@ values('v_tuc_airzona','AirZona Heating Cooling & Plumbing','airzonahvac@gmail.c
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_airzona','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_airzona','hvac_heat' where exists(select 1 from services where service_key='hvac_heat') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_airzona','backflow_plumbing' where exists(select 1 from services where service_key='backflow_plumbing') on conflict do nothing;
@@ -1743,7 +1948,8 @@ values('v_tuc_djv','DJV Heating Cooling LLC','info@djvhvac.com','520-345-9451','
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_djv','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_djv','hvac_heat' where exists(select 1 from services where service_key='hvac_heat') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1751,7 +1957,8 @@ values('v_tuc_rightfirst','Right The First Time HVAC LLC','info@rightthefirsttim
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_rightfirst','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_rightfirst','hvac_heat' where exists(select 1 from services where service_key='hvac_heat') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1759,7 +1966,8 @@ values('v_tuc_comfortx','ComfortX HVAC','comfortxhvac@gmail.com','520-222-7012',
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_comfortx','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_comfortx','hvac_heat' where exists(select 1 from services where service_key='hvac_heat') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1767,7 +1975,8 @@ values('v_tuc_familyair','Family Air Cooling & Heating','familyairllc@gmail.com'
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_familyair','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_familyair','hvac_heat' where exists(select 1 from services where service_key='hvac_heat') on conflict do nothing;
 insert into vendors(vendor_id,business_name,public_email,public_phone,website,source_url,rating_signal,status,quality_score,association_signal,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
@@ -1775,7 +1984,8 @@ values('v_tuc_sonoran','Sonoran HVAC & Plumbing','contact@sonoranhvac.com','520-
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_tuc_sonoran','Tucson') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_sonoran','hvac_heat' where exists(select 1 from services where service_key='hvac_heat') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_tuc_sonoran','backflow_plumbing' where exists(select 1 from services where service_key='backflow_plumbing') on conflict do nothing;
@@ -1784,6 +1994,7 @@ values('v_winslow_autoglassone','Auto Glass One',NULL,'928-289-5155',NULL,'https
 on conflict(vendor_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,public_phone=excluded.public_phone,website=excluded.website,
 source_url=excluded.source_url,rating_signal=excluded.rating_signal,status=case when vendors.status in ('active','pilot','paused','suppressed') then vendors.status else excluded.status end,
 quality_score=coalesce(vendors.quality_score,excluded.quality_score),association_signal=excluded.association_signal,territory_notes=excluded.territory_notes,
-minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now();
+minimum_job=excluded.minimum_job,capacity=excluded.capacity,license_notes=excluded.license_notes,insurance_notes=excluded.insurance_notes,notes=excluded.notes,updated_at=now()
+where vendors.status not in ('applicant','pilot_pending_review','pilot','active','paused','suppressed');
 insert into vendor_markets(vendor_id,market) values('v_winslow_autoglassone','Winslow') on conflict do nothing;
 insert into vendor_services(vendor_id,service_key) select 'v_winslow_autoglassone','auto_glass' where exists(select 1 from services where service_key='auto_glass') on conflict do nothing;
