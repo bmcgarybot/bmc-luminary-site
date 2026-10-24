@@ -124,6 +124,52 @@ async def handle_vendor_application(conn,p):
     await event(conn,"vendor",vid,"application_received",p)
     return {"ok":True,"status":"application_received","vendor_id":vid,"message":"Application received. BMC will review the service and territory details."}
 
+
+
+FACILITY_SERVICE_FIELDS={
+    "need_commercial_cleaning":"commercial_cleaning",
+    "need_floor_carpet":"floor_carpet",
+    "need_window_cleaning":"window_cleaning",
+    "need_landscaping":"landscaping",
+    "need_tree_service":"tree_service",
+    "need_junk_hauling":"junk_hauling",
+    "need_pest_control":"pest_control",
+    "need_hvac_heat":"hvac_heat",
+    "need_parking_lot":"parking_lot",
+    "need_fire_safety":"fire_safety",
+    "need_sign_lighting":"sign_lighting",
+    "need_locksmith_access":"locksmith_access",
+    "need_backflow_plumbing":"backflow_plumbing"
+}
+
+async def handle_facility_lead(conn,p):
+    market=clean(p.get("market")); consent=clean(p.get("consent")).lower()=="yes"
+    if not market or not consent: raise HTTPException(400,"Market and consent are required")
+    requested=[sk for field,sk in FACILITY_SERVICE_FIELDS.items() if clean(p.get(field)).lower() in ("yes","on","true","1")]
+    if not requested:
+        raise HTTPException(400,"Choose at least one facility service category")
+    submission_id=clean(p.get("submission_id")) or str(uuid.uuid4())
+    existing=await conn.fetchrow("select lead_id,status from leads where submission_id=$1",submission_id)
+    if existing:return {"ok":True,"status":existing["status"],"lead_id":str(existing["lead_id"]),"message":"Facility request already received."}
+    scope=clean(p.get("scope")); urgency=clean(p.get("timing")); facility_type=clean(p.get("facility_type"))
+    score=(20 if p.get("email") or p.get("phone") else 0)+(20 if scope else 0)+40+(20 if urgency in ["ASAP","Urgent","Same day if possible"] else 0)
+    parent_id=await conn.fetchval("""insert into leads(submission_id,form_type,market,service_key,service_type,customer_name,business_name,email,phone,scope,urgency,source_page,consent,lead_score,status,raw_payload)
+      values($1,'facility_maintenance',$2,'facility_maintenance',$3,$4,$5,$6,$7,$8,$9,$10,true,$11,'split',$12::jsonb) returning lead_id""",
+      submission_id,market,facility_type,clean(p.get("contact_name")),clean(p.get("business_name")),clean(p.get("email")),clean(p.get("phone")),scope,urgency,clean(p.get("page")),score,json.dumps(p))
+    await event(conn,"lead",parent_id,"facility_request_received",{"services":requested,"facility_type":facility_type})
+    for sk in requested:
+        child_id=await conn.fetchval("""insert into leads(parent_lead_id,submission_id,form_type,market,service_key,service_type,customer_name,business_name,email,phone,scope,urgency,source_page,consent,lead_score,status,raw_payload)
+          values($1,$2,'facility_child',$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true,$13,'received',$14::jsonb) returning lead_id""",
+          parent_id,f"{submission_id}:{sk}",market,sk,facility_type,clean(p.get("contact_name")),clean(p.get("business_name")),clean(p.get("email")),clean(p.get("phone")),
+          f"{facility_type}: {scope}",urgency,clean(p.get("page")),score,json.dumps(p))
+        child=await conn.fetchrow("select * from leads where lead_id=$1",child_id)
+        await event(conn,"lead",child_id,"facility_child_created",{"parent_lead_id":str(parent_id),"service_key":sk})
+        await offer_next(conn,child)
+    if p.get("email"):
+        await send_mail(clean(p.get("email")),"BMC received your facility request",
+          f"We received one facility request covering {len(requested)} service categories in {market}. BMC split the work into the appropriate service workflows so each category can be matched separately.\n\nReference: {parent_id}\nBMC Luminary Ventures LLC")
+    return {"ok":True,"status":"split","lead_id":str(parent_id),"child_requests":len(requested),"message":f"Facility request received. BMC split it into {len(requested)} service workflows for matching."}
+
 async def handle_lead(conn,p):
     form_type=clean(p.get("form_type")) or "general"
     market=clean(p.get("market"))
@@ -200,6 +246,7 @@ async def intake(request:Request):
             if ft=="vendor_response": return await handle_vendor_response(conn,p)
             if ft=="job_update": return await handle_job_update(conn,p)
             if ft=="vendor_partner": return await handle_vendor_application(conn,p)
+            if ft=="facility_maintenance": return await handle_facility_lead(conn,p)
             return await handle_lead(conn,p)
 
 @app.post("/api/process-expired")
