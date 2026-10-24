@@ -1,4 +1,4 @@
-import os, json, uuid, re, imaplib, email, asyncio, urllib.request
+import os, json, uuid, re, imaplib, email, asyncio, urllib.request, hmac, hashlib, time
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 from email.utils import parseaddr
@@ -33,6 +33,7 @@ IMAP_FOLDER=os.getenv("IMAP_FOLDER","INBOX")
 LOCAL_AI_URL=os.getenv("LOCAL_AI_URL","").rstrip("/")
 LOCAL_AI_MODEL=os.getenv("LOCAL_AI_MODEL","qwen3:1.7b")
 LOCAL_AI_ENABLED=os.getenv("LOCAL_AI_ENABLED","true").lower()=="true"
+STRIPE_WEBHOOK_SECRET=os.getenv("STRIPE_WEBHOOK_SECRET","").strip()
 
 app=FastAPI(title="BMC Portfolio Ops API",version="0.1.0")
 app.add_middleware(CORSMiddleware,allow_origins=[
@@ -719,3 +720,103 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
         try: box.logout()
         except Exception: pass
     return {"ok":True,"enabled":True,"processed":processed,"matched":matched}
+
+
+def verify_stripe_signature(payload,header,tolerance=300):
+    if not STRIPE_WEBHOOK_SECRET or "CHANGE_ME" in STRIPE_WEBHOOK_SECRET:
+        raise HTTPException(503,"Stripe webhook is not configured")
+    fields={}
+    for part in (header or "").split(","):
+        if "=" in part:
+            k,v=part.split("=",1); fields.setdefault(k,[]).append(v)
+    try: ts=int(fields.get("t",["0"])[0])
+    except ValueError: raise HTTPException(400,"Invalid Stripe signature timestamp")
+    if abs(int(time.time())-ts)>tolerance:
+        raise HTTPException(400,"Stripe signature timestamp outside tolerance")
+    expected=hmac.new(STRIPE_WEBHOOK_SECRET.encode(),str(ts).encode()+b"."+payload,hashlib.sha256).hexdigest()
+    if not any(hmac.compare_digest(expected,sig) for sig in fields.get("v1",[])):
+        raise HTTPException(400,"Invalid Stripe signature")
+
+def nested(obj,*path):
+    cur=obj
+    for key in path:
+        if not isinstance(cur,dict): return None
+        cur=cur.get(key)
+    return cur
+
+async def stripe_product_key(conn,obj):
+    metadata=obj.get("metadata") or {}
+    key=clean(metadata.get("product_key"))
+    if key and await conn.fetchval("select 1 from products where product_key=$1",key):
+        return key
+    link=clean(obj.get("payment_link"))
+    if link:
+        found=await conn.fetchval("select product_key from products where stripe_payment_link_id=$1 or payment_link_url=$1",link)
+        if found:return found
+    price_id=None
+    items=nested(obj,"items","data") or nested(obj,"lines","data") or []
+    if items:
+        item=items[0] or {}
+        price_id=clean(nested(item,"price","id") or nested(item,"pricing","price_details","price"))
+    if price_id:
+        return await conn.fetchval("select product_key from products where stripe_price_id=$1",price_id)
+    return None
+
+def stripe_email(obj):
+    return clean(nested(obj,"customer_details","email") or obj.get("customer_email") or nested(obj,"customer","email"))
+
+async def record_revenue(conn,product_key,amount,currency,model,notes):
+    service_key=await conn.fetchval("select service_key from products where product_key=$1",product_key) if product_key else None
+    await conn.execute("""insert into revenue_events(service_key,model,amount_cents,status,notes)
+      values($1,$2,$3,'earned',$4)""",service_key,model,int(amount or 0),notes)
+
+@app.post("/api/stripe-webhook")
+async def stripe_webhook(request:Request,stripe_signature:str|None=Header(default=None,alias="Stripe-Signature")):
+    payload=await request.body()
+    verify_stripe_signature(payload,stripe_signature)
+    try:event=json.loads(payload)
+    except json.JSONDecodeError: raise HTTPException(400,"Invalid JSON")
+    event_id=clean(event.get("id")); event_type=clean(event.get("type"))
+    obj=nested(event,"data","object") or {}
+    if not event_id or not event_type: raise HTTPException(400,"Invalid Stripe event")
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        if await conn.fetchval("select 1 from payment_events where stripe_event_id=$1",event_id):
+            return {"received":True,"duplicate":True}
+        product_key=await stripe_product_key(conn,obj)
+        customer_email=stripe_email(obj)
+        amount=int(obj.get("amount_total") or obj.get("amount_paid") or obj.get("amount") or 0)
+        currency=clean(obj.get("currency") or "usd")
+        status=clean(obj.get("payment_status") or obj.get("status") or "received")
+        object_id=clean(obj.get("id"))
+        await conn.execute("""insert into payment_events(stripe_event_id,event_type,stripe_object_id,product_key,customer_email,amount_cents,currency,status,raw_payload)
+          values($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb)""",
+          event_id,event_type,object_id,product_key,customer_email,amount,currency,status,json.dumps(event))
+
+        if event_type in ("checkout.session.completed","checkout.session.async_payment_succeeded"):
+            mode=clean(obj.get("mode"))
+            paid=status in ("paid","complete") or event_type=="checkout.session.async_payment_succeeded"
+            if mode!="subscription" and paid:
+                await record_revenue(conn,product_key,amount,currency,"stripe_checkout",f"Stripe event {event_id}; session {object_id}")
+                await event(conn,"payment",event_id,"payment_received",{"product_key":product_key,"amount_cents":amount,"email":customer_email},"stripe")
+        elif event_type in ("invoice.paid","invoice.payment_succeeded"):
+            if amount>0:
+                await record_revenue(conn,product_key,amount,currency,"stripe_subscription_invoice",f"Stripe event {event_id}; invoice {object_id}")
+                await event(conn,"payment",event_id,"subscription_payment_received",{"product_key":product_key,"amount_cents":amount,"email":customer_email},"stripe")
+        elif event_type in ("customer.subscription.created","customer.subscription.updated","customer.subscription.deleted","customer.subscription.paused","customer.subscription.resumed"):
+            sid=object_id
+            if sid:
+                period=nested(obj,"current_period_end")
+                period_dt=datetime.fromtimestamp(period,timezone.utc) if isinstance(period,(int,float)) else None
+                await conn.execute("""insert into subscriptions(stripe_subscription_id,product_key,customer_email,status,current_period_end,cancel_at_period_end,raw_payload,updated_at)
+                  values($1,$2,$3,$4,$5,$6,$7::jsonb,now())
+                  on conflict(stripe_subscription_id) do update set product_key=excluded.product_key,customer_email=excluded.customer_email,
+                    status=excluded.status,current_period_end=excluded.current_period_end,cancel_at_period_end=excluded.cancel_at_period_end,
+                    raw_payload=excluded.raw_payload,updated_at=now()""",
+                  sid,product_key,customer_email,clean(obj.get("status")),period_dt,bool(obj.get("cancel_at_period_end")),json.dumps(obj))
+        elif event_type in ("refund.created","charge.refunded"):
+            refunded=int(obj.get("amount") or obj.get("amount_refunded") or 0)
+            if refunded>0:
+                await record_revenue(conn,product_key,-refunded,currency,"stripe_refund",f"Stripe refund event {event_id}; object {object_id}")
+                await event(conn,"payment",event_id,"refund_recorded",{"product_key":product_key,"amount_cents":refunded},"stripe")
+    return {"received":True}
