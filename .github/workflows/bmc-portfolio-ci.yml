@@ -106,6 +106,13 @@ jobs:
           assert data["status"] == "pilot_pending_review"
           PY
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from vendors where vendor_id='v_prescott_zebrascapes';")" = "pilot_pending_review"
+
+          # Bootstrap/seed reruns must never erase a live provider activation submission.
+          docker compose --env-file .env.ci exec -T postgres psql -v ON_ERROR_STOP=1 -U bmc_automation -d bmc_portfolio < seed-vendors.sql
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from vendors where vendor_id='v_prescott_zebrascapes';")" = "pilot_pending_review"
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select capacity from vendors where vendor_id='v_prescott_zebrascapes';")" = "3 new jobs per week"
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select insurance_notes from vendors where vendor_id='v_prescott_zebrascapes';")" = "CI insurance review"
+
           curl -fsS http://127.0.0.1:8000/api/admin/pilot-reviews \
             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_pilot_reviews.json
           python - <<'PY'
