@@ -335,3 +335,28 @@ on research_backlog(status,market_priority,research_priority,market,service_key,
 -- Normalize legacy research queue status casing so older databases remain compatible.
 update research_backlog set status=lower(status)
 where status is not null and status<>lower(status);
+
+
+create table if not exists research_candidates (
+  candidate_id uuid primary key default gen_random_uuid(),
+  research_id uuid references research_backlog(research_id) on delete cascade,
+  task_id uuid references tasks(task_id) on delete set null,
+  side text not null check (side in ('vendor','buyer')),
+  market text not null,
+  service_key text references services(service_key) on delete set null,
+  candidate_name text,
+  source_title text,
+  source_url text not null,
+  source_domain text,
+  snippet text,
+  search_query text,
+  source_rank integer,
+  status text default 'discovered',
+  evidence jsonb default '{}'::jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now(),
+  unique(research_id,source_url)
+);
+
+create index if not exists idx_research_candidates_review
+on research_candidates(status,side,market,service_key,created_at);
