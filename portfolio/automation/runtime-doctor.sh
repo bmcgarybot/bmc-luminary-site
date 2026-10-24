@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -u
 cd "$(dirname "$0")"
+ENV_FILE="${1:-.env}"
 
 failures=0
 warnings=0
@@ -31,10 +32,10 @@ else
   fail "Docker Compose plugin is unavailable"
 fi
 
-if [ -f .env ]; then
-  pass ".env exists"
+if [ -f "$ENV_FILE" ]; then
+  pass "$ENV_FILE exists"
 else
-  fail ".env is missing; run ./bootstrap.sh first"
+  fail "$ENV_FILE is missing; run ./bootstrap.sh first"
   echo "Core failures: $failures · warnings: $warnings"
   exit 1
 fi
@@ -57,7 +58,7 @@ else
   warn "One or both outbound wave selectors are not pilot1"
 fi
 
-if docker compose --env-file .env config >/dev/null 2>&1; then
+if docker compose --env-file "$ENV_FILE" config >/dev/null 2>&1; then
   pass "Docker Compose configuration validates"
 else
   fail "Docker Compose configuration does not validate"
@@ -77,7 +78,7 @@ fi
 DBUSER="$(env_value POSTGRES_USER)"
 DBNAME="$(env_value POSTGRES_DB)"
 db_query(){
-  docker compose --env-file .env exec -T postgres psql -U "$DBUSER" -d "$DBNAME" -Atc "$1" 2>/dev/null
+  docker compose --env-file "$ENV_FILE" exec -T postgres psql -U "$DBUSER" -d "$DBNAME" -Atc "$1" 2>/dev/null
 }
 
 if service_count="$(db_query 'select count(*) from services;' 2>/dev/null)"; then
