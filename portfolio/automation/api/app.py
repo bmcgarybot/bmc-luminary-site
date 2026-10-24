@@ -326,7 +326,7 @@ async def handle_vendor_pilot_activation(conn,p):
       capacity=coalesce(nullif($7,''),capacity),
       license_notes=coalesce(nullif($8,''),license_notes),
       insurance_notes=coalesce(nullif($9,''),insurance_notes),
-      notes=concat_ws(E'\n',nullif(notes,''),$10),
+      notes=concat_ws(E'\n',nullif(notes,''),$10::text),
       updated_at=now()
       where vendor_id=$1""",
       vendor_id,email,phone,website,clean(p.get("territory")),clean(p.get("minimum_job")),
