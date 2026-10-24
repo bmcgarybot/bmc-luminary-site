@@ -121,6 +121,24 @@ PY
   else
     fail "Private admin preflight endpoint failed"
   fi
+
+  if curl -fsS http://127.0.0.1:8000/api/admin/agent-status -H "X-BMC-Admin-Key: $ADMIN_KEY" >/tmp/bmc_runtime_agent.json 2>/dev/null; then
+    pass "Private agent status endpoint is reachable"
+    python3 - <<'PY'
+import json
+d=json.load(open("/tmp/bmc_runtime_agent.json"))
+print("Agent:")
+print(f"  enabled: {d.get('enabled')}")
+print(f"  mode: {d.get('mode')}")
+print(f"  external actions allowed: {d.get('external_actions_allowed')}")
+q=d.get("queues",{})
+print(f"  open agent tasks: {q.get('open_agent_tasks',0)}")
+print(f"  research queued: {q.get('research_queued',0)}")
+print(f"  research assigned: {q.get('research_assigned',0)}")
+PY
+  else
+    fail "Private agent status endpoint failed"
+  fi
 else
   fail "BMC_ADMIN_KEY is missing or still a placeholder"
 fi
