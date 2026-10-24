@@ -1,0 +1,18 @@
+{
+  "results": [
+    {
+      "title": "CI Arizona Service Candidate",
+      "url": "https://example.com/bmc-ci-candidate",
+      "content": "Mock public business result used only to verify autonomous research staging.",
+      "engine": "ci-mock",
+      "score": 1.0
+    },
+    {
+      "title": "CI Arizona Buyer Candidate",
+      "url": "https://example.org/bmc-ci-buyer",
+      "content": "Second mock result used to verify deduplicated evidence staging.",
+      "engine": "ci-mock",
+      "score": 0.9
+    }
+  ]
+}
