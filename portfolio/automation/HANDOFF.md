@@ -221,9 +221,7 @@ Start with:
 
 ## Validation state
 
-Latest verified CI after the shell-quoting repair:
-- full BMC Portfolio CI run succeeded on commit `ab4b5280c9b007cad47a45400193da1c1a614806`
-- subsequent scheduler-only refactor runs were still in progress when this handoff was refreshed; verify current head before claiming latest green
+Current GitHub master head at this refresh: `1cb62cdd2ad8ea677b320d7a6f9263f617bf3e77`. Re-check CI on any newer head before claiming green.
 
 
 GitHub Pages build/deploy has succeeded.
@@ -261,7 +259,7 @@ Still needed:
 
 Do not add random new business ideas before clearing these:
 
-1. Persist First Wave to runtime seed/queue.
+1. First Wave is already persisted to `seed-first-wave.sql`; keep the global send switches OFF.
 2. Prepare exact first-send messages, but do not send.
 3. Deploy HP runtime.
 4. Configure SMTP/reply mailbox/postal address.
