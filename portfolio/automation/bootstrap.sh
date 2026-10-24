@@ -46,3 +46,5 @@ echo "API health: http://localhost:8000/health"
 echo "Optional AI: docker compose --profile local-ai up -d ollama"
 echo "Public tunnel: docker compose --profile tunnel up -d cloudflared"
 echo "OUTREACH_ENABLED remains false until explicitly changed."
+echo
+bash runtime-doctor.sh .env
