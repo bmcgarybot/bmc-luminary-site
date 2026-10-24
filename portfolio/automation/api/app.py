@@ -5,6 +5,7 @@ import asyncpg
 import aiosmtplib
 from fastapi import FastAPI, Request, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 
 DB_DSN=os.getenv("DATABASE_URL","postgresql://bmc_automation:change@postgres:5432/bmc_portfolio")
 PUBLIC_SITE_URL=os.getenv("PUBLIC_SITE_URL","https://bmcluminaryventures.com").rstrip("/")
@@ -118,8 +119,11 @@ async def handle_vendor_application(conn,p):
     business=clean(p.get("business_name")); market=clean(p.get("market"))
     if not business or not market: raise HTTPException(400,"Business name and market required")
     vid=f"app_{slug(business)}_{uuid.uuid4().hex[:8]}"
-    await conn.execute("""insert into vendors(vendor_id,business_name,public_email,public_phone,website,status,notes)
-      values($1,$2,$3,$4,$5,'applicant',$6)""",vid,business,clean(p.get("email")),clean(p.get("phone")),clean(p.get("business_url")),json.dumps(p))
+    await conn.execute("""insert into vendors(vendor_id,business_name,public_email,public_phone,website,status,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
+      values($1,$2,$3,$4,$5,'applicant',$6,$7,$8,$9,$10,$11)""",
+      vid,business,clean(p.get("email")),clean(p.get("phone")),clean(p.get("business_url")),
+      clean(p.get("territory")),clean(p.get("minimum_job")),clean(p.get("capacity")),
+      clean(p.get("credentials")),clean(p.get("insurance")),json.dumps(p))
     await conn.execute("insert into vendor_markets(vendor_id,market) values($1,$2) on conflict do nothing",vid,market)
     await conn.execute("insert into exceptions(type,vendor_id,severity,summary,recommended_action) values('vendor_application_review',$1,'normal',$2,$3)",
                        vid,f"Review vendor application: {business}","Verify services, territory, licensing/insurance where applicable")
@@ -488,3 +492,108 @@ async def process_buyer_outreach(x_bmc_admin_key:str|None=Header(default=None)):
         await event(conn,"buyer",row["entity_id"],"outreach_sent",{"campaign":row["campaign"],"step":step,"email":row["public_email"]})
         sent+=1
     return {"ok":True,"enabled":True,"sent":sent,"daily_limit":BUYER_OUTREACH_DAILY_LIMIT}
+
+
+def require_admin(key):
+    if not ADMIN_KEY or key!=ADMIN_KEY:
+        raise HTTPException(403,"Forbidden")
+
+@app.get("/admin",response_class=HTMLResponse)
+async def admin_page():
+    return """<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>BMC Local Admin</title><style>
+body{font-family:system-ui;max-width:1000px;margin:30px auto;padding:0 20px;background:#f7f7f7}
+input,textarea,select,button{font:inherit;padding:8px;margin:4px 0;width:100%;box-sizing:border-box}
+button{width:auto;cursor:pointer}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.card{background:white;border:1px solid #ddd;border-radius:10px;padding:14px}pre{white-space:pre-wrap}.section{margin:24px 0}
+</style></head><body>
+<h1>BMC Local Admin</h1><p>Private/local operations page. Do not publish through the public gateway.</p>
+<div class='section'><label>Admin key<input id='key' type='password'></label><button onclick='loadSummary()'>Load summary</button><div id='summary' class='grid'></div></div>
+<div class='section card'><h2>Vendor activation</h2><input id='vendor_id' placeholder='vendor_id'><select id='vendor_status'><option>pilot</option><option>active</option><option>paused</option><option>suppressed</option></select><input id='vendor_services' placeholder='service keys comma-separated'><input id='vendor_markets' placeholder='markets comma-separated'><button onclick='vendorUpdate()'>Save vendor</button><pre id='vendor_result'></pre></div>
+<div class='section card'><h2>Classify unresolved lead</h2><input id='lead_id' placeholder='lead UUID'><input id='service_key' placeholder='service_key'><button onclick='classifyLead()'>Classify + route</button><pre id='lead_result'></pre></div>
+<div class='section card'><h2>Suppress outreach email</h2><input id='suppress_email' placeholder='email'><input id='suppress_reason' placeholder='reason'><button onclick='suppressEmail()'>Suppress</button><pre id='suppress_result'></pre></div>
+<script>
+function headers(){return {'Content-Type':'application/json','X-BMC-Admin-Key':document.getElementById('key').value}}
+async function loadSummary(){const r=await fetch('/api/admin/summary',{headers:headers()});const j=await r.json();const el=document.getElementById('summary');el.innerHTML='';Object.entries(j).forEach(function(pair){const d=document.createElement('div');d.className='card';d.innerHTML='<b>'+pair[0]+'</b><pre>'+JSON.stringify(pair[1],null,2)+'</pre>';el.appendChild(d)})}
+async function vendorUpdate(){const body={vendor_id:document.getElementById('vendor_id').value,status:document.getElementById('vendor_status').value,services:document.getElementById('vendor_services').value.split(',').map(function(x){return x.trim()}).filter(Boolean),markets:document.getElementById('vendor_markets').value.split(',').map(function(x){return x.trim()}).filter(Boolean)};const r=await fetch('/api/admin/vendor-status',{method:'POST',headers:headers(),body:JSON.stringify(body)});document.getElementById('vendor_result').textContent=JSON.stringify(await r.json(),null,2)}
+async function classifyLead(){const body={lead_id:document.getElementById('lead_id').value,service_key:document.getElementById('service_key').value};const r=await fetch('/api/admin/classify-lead',{method:'POST',headers:headers(),body:JSON.stringify(body)});document.getElementById('lead_result').textContent=JSON.stringify(await r.json(),null,2)}
+async function suppressEmail(){const body={email:document.getElementById('suppress_email').value,reason:document.getElementById('suppress_reason').value};const r=await fetch('/api/admin/suppress',{method:'POST',headers:headers(),body:JSON.stringify(body)});document.getElementById('suppress_result').textContent=JSON.stringify(await r.json(),null,2)}
+</script></body></html>"""
+
+@app.get("/api/admin/summary")
+async def admin_summary(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    async with app.state.pool.acquire() as conn:
+        leads=await conn.fetch("select status,count(*) n from leads group by status order by n desc")
+        vendors=await conn.fetch("select status,count(*) n from vendors group by status order by n desc")
+        outreach=await conn.fetch("select entity_type,status,count(*) n from outreach group by entity_type,status order by entity_type,status")
+        exceptions=await conn.fetchval("select count(*) from exceptions where status='open'")
+        revenue=await conn.fetchval("select coalesce(sum(amount_cents),0) from revenue_events where status='earned'")
+    return {"leads":{r["status"]:r["n"] for r in leads},"vendors":{r["status"]:r["n"] for r in vendors},"outreach":[dict(r) for r in outreach],"open_exceptions":exceptions,"earned_revenue_cents":revenue}
+
+@app.post("/api/admin/vendor-status")
+async def admin_vendor_status(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    p=await request.json()
+    vid=clean(p.get("vendor_id")); status=clean(p.get("status"))
+    if not vid or status not in ("prospect","applicant","pilot","active","paused","suppressed"):
+        raise HTTPException(400,"Invalid vendor/status")
+    services=p.get("services") or []; markets=p.get("markets") or []
+    async with app.state.pool.acquire() as conn:
+        async with conn.transaction():
+            found=await conn.fetchval("select 1 from vendors where vendor_id=$1",vid)
+            if not found: raise HTTPException(404,"Vendor not found")
+            await conn.execute("update vendors set status=$2,updated_at=now() where vendor_id=$1",vid,status)
+            if services:
+                await conn.execute("delete from vendor_services where vendor_id=$1",vid)
+                for sk in services:
+                    await conn.execute("insert into vendor_services(vendor_id,service_key) select $1,$2 where exists(select 1 from services where service_key=$2) on conflict do nothing",vid,clean(sk))
+            if markets:
+                await conn.execute("delete from vendor_markets where vendor_id=$1",vid)
+                for m in markets:
+                    await conn.execute("insert into vendor_markets(vendor_id,market) values($1,$2) on conflict do nothing",vid,clean(m))
+            await event(conn,"vendor",vid,"status_updated",{"status":status,"services":services,"markets":markets},"admin")
+    return {"ok":True,"vendor_id":vid,"status":status}
+
+@app.post("/api/admin/classify-lead")
+async def admin_classify_lead(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    p=await request.json(); lid=clean(p.get("lead_id")); sk=clean(p.get("service_key"))
+    async with app.state.pool.acquire() as conn:
+        async with conn.transaction():
+            valid=await conn.fetchval("select 1 from services where service_key=$1 and is_active=true",sk)
+            if not valid: raise HTTPException(400,"Unknown service key")
+            lead=await conn.fetchrow("update leads set service_key=$2,status='received',exception_reason=null,updated_at=now() where lead_id=$1::uuid returning *",lid,sk)
+            if not lead: raise HTTPException(404,"Lead not found")
+            await conn.execute("update exceptions set status='resolved',resolved_at=now(),resolution='classified by admin' where lead_id=$1 and status='open'",lead["lead_id"])
+            await event(conn,"lead",lead["lead_id"],"classified",{"service_key":sk},"admin")
+            await offer_next(conn,lead)
+    return {"ok":True,"lead_id":lid,"service_key":sk}
+
+@app.post("/api/admin/suppress")
+async def admin_suppress(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    p=await request.json(); email=clean(p.get("email")).lower()
+    if not email or "@" not in email: raise HTTPException(400,"Valid email required")
+    async with app.state.pool.acquire() as conn:
+        await conn.execute("insert into outreach_suppressions(email,reason,source) values($1,$2,'admin') on conflict(email) do update set reason=excluded.reason,source='admin'",email,clean(p.get("reason")))
+        await conn.execute("""update outreach set opt_out=true,status='suppressed'
+          where (entity_type='vendor' and entity_id in (select vendor_id from vendors where lower(public_email)=lower($1)))
+             or (entity_type='buyer' and entity_id in (select buyer_id from buyers where lower(public_email)=lower($1)))""",email)
+    return {"ok":True,"email":email,"suppressed":True}
+
+@app.post("/api/admin/record-reply")
+async def admin_record_reply(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    p=await request.json(); email=clean(p.get("email")).lower(); classification=clean(p.get("classification")).lower()
+    if not email: raise HTTPException(400,"email required")
+    async with app.state.pool.acquire() as conn:
+        await conn.execute("""update outreach set replied_at=now(),reply_type=$2,status=case when $2='opt_out' then 'suppressed' else 'replied' end,
+          opt_out=case when $2='opt_out' then true else opt_out end
+          where outreach_id=(select outreach_id from outreach o
+            where (o.entity_type='vendor' and o.entity_id in (select vendor_id from vendors where lower(public_email)=lower($1)))
+               or (o.entity_type='buyer' and o.entity_id in (select buyer_id from buyers where lower(public_email)=lower($1)))
+            order by created_at desc limit 1)""",email,classification or "other")
+        if classification=="opt_out":
+            await conn.execute("insert into outreach_suppressions(email,reason,source) values($1,'reply opt-out','reply') on conflict(email) do nothing",email)
+    return {"ok":True,"email":email,"classification":classification or "other"}
