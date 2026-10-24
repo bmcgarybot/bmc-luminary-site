@@ -63,6 +63,10 @@ services:
       AGENT_CYCLE_LIMIT: ${AGENT_CYCLE_LIMIT}
       AGENT_RESEARCH_TASK_LIMIT: ${AGENT_RESEARCH_TASK_LIMIT}
       AGENT_ALLOW_EXTERNAL_ACTIONS: ${AGENT_ALLOW_EXTERNAL_ACTIONS}
+      RESEARCH_SEARCH_ENABLED: ${RESEARCH_SEARCH_ENABLED}
+      RESEARCH_SEARCH_URL: ${RESEARCH_SEARCH_URL}
+      RESEARCH_SEARCH_RESULTS: ${RESEARCH_SEARCH_RESULTS}
+      RESEARCH_WORKER_BATCH: ${RESEARCH_WORKER_BATCH}
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
     ports:
       - "127.0.0.1:8000:8000"
@@ -109,6 +113,19 @@ services:
       - "127.0.0.1:5678:5678"
     volumes:
       - bmc_n8n:/home/node/.n8n
+    networks: [bmc_internal]
+
+  searxng:
+    image: docker.io/searxng/searxng:latest
+    restart: unless-stopped
+    environment:
+      SEARXNG_SECRET: ${SEARXNG_SECRET}
+      SEARXNG_BIND_ADDRESS: 0.0.0.0
+    volumes:
+      - ./searxng/settings.yml:/etc/searxng/settings.yml:ro
+      - bmc_searxng_cache:/var/cache/searxng
+    ports:
+      - "127.0.0.1:8888:8080"
     networks: [bmc_internal]
 
   ollama:
