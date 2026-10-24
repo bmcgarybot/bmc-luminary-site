@@ -1,0 +1,79 @@
+{
+  "name": "BMC - Lead Route and Provider Offer",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "bmc-intake",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Public Intake",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "bmc-intake"
+    },
+    {
+      "parameters": {
+        "jsCode": "const p=$json.body??$json; const req=['form_type','market']; const missing=req.filter(k=>!String(p[k]??'').trim()); const consent=String(p.consent??'').toLowerCase()==='yes' || p.form_type==='vendor_response'; const serviceKey=p.form_type; let score=0; if(p.email||p.phone)score+=20;if(p.scope||p.problem)score+=20;if(p.market)score+=20;if(consent)score+=20;if(['ASAP','Urgent','Same day if possible'].includes(p.timing||p.urgency))score+=20; return [{json:{...p,service_key:serviceKey,consent,lead_score:score,status:missing.length||!consent?'exception':'received',exception_reason:missing.length?'missing:'+missing.join(','):(!consent?'missing_consent':'')}}];"
+      },
+      "id": "normalize",
+      "name": "Normalize",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {ok:$json.status!=='exception',status:$json.status,message:$json.status==='exception'?'Request needs review.':'Request received and queued for matching.'} }}",
+        "options": {}
+      },
+      "id": "respond",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Public Intake": {
+      "main": [
+        [
+          {
+            "node": "Normalize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false,
+  "tags": []
+}
