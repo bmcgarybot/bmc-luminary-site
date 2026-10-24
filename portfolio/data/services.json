@@ -1,6 +1,6 @@
 {
   "version": "2026-10-24",
-  "count": 47,
+  "count": 48,
   "services": [
     {
       "service_key": "restaurant_repair",
@@ -750,6 +750,22 @@
       "intake_status": "built",
       "automation_status": "backend_ready_not_connected",
       "seo_status": "index_candidate",
+      "vendor_goal": 8,
+      "buyer_goal": 8,
+      "launch_gate": "needs_live_webhook_and_coverage"
+    },
+    {
+      "service_key": "facility_maintenance",
+      "display_name": "Institutional Facility Maintenance Concierge",
+      "category": "Institutional / facility",
+      "primary_offer": "Multi-service facility cleaning and maintenance coordination",
+      "monetization": "subscription / lead / referral",
+      "priority": "A",
+      "live_front": "/portfolio/facility-maintenance/",
+      "notes": "Churches, schools, theaters, community centers, gyms, daycare, senior living; noindex until buyer/vendor depth",
+      "intake_status": "built",
+      "automation_status": "backend_ready_not_connected",
+      "seo_status": "hold_noindex",
       "vendor_goal": 8,
       "buyer_goal": 8,
       "launch_gate": "needs_live_webhook_and_coverage"
