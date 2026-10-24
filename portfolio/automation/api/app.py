@@ -1,6 +1,7 @@
-import os, json, uuid, re
+import os, json, uuid, re, imaplib, email
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
+from email.utils import parseaddr
 import asyncpg
 import aiosmtplib
 from fastapi import FastAPI, Request, Header, HTTPException
@@ -23,6 +24,12 @@ BUYER_OUTREACH_ENABLED=os.getenv("BUYER_OUTREACH_ENABLED","false").lower()=="tru
 BUYER_OUTREACH_DAILY_LIMIT=int(os.getenv("BUYER_OUTREACH_DAILY_LIMIT","15"))
 BUSINESS_POSTAL_ADDRESS=os.getenv("BUSINESS_POSTAL_ADDRESS","").strip()
 PARTNER_URL=f"{PUBLIC_SITE_URL}/portfolio/vendor-partner/"
+IMAP_ENABLED=os.getenv("IMAP_ENABLED","false").lower()=="true"
+IMAP_HOST=os.getenv("IMAP_HOST","")
+IMAP_PORT=int(os.getenv("IMAP_PORT","993"))
+IMAP_USER=os.getenv("IMAP_USER","")
+IMAP_PASSWORD=os.getenv("IMAP_PASSWORD","")
+IMAP_FOLDER=os.getenv("IMAP_FOLDER","INBOX")
 
 app=FastAPI(title="BMC Portfolio Ops API",version="0.1.0")
 app.add_middleware(CORSMiddleware,allow_origins=[
@@ -597,3 +604,67 @@ async def admin_record_reply(request:Request,x_bmc_admin_key:str|None=Header(def
         if classification=="opt_out":
             await conn.execute("insert into outreach_suppressions(email,reason,source) values($1,'reply opt-out','reply') on conflict(email) do nothing",email)
     return {"ok":True,"email":email,"classification":classification or "other"}
+
+
+def reply_text(msg):
+    parts=[]
+    if msg.is_multipart():
+        for part in msg.walk():
+            if part.get_content_type()=="text/plain" and "attachment" not in str(part.get("Content-Disposition","")).lower():
+                try: parts.append(part.get_payload(decode=True).decode(part.get_content_charset() or "utf-8","ignore"))
+                except Exception: pass
+    else:
+        try: parts.append(msg.get_payload(decode=True).decode(msg.get_content_charset() or "utf-8","ignore"))
+        except Exception: pass
+    return "\n".join(parts)[:10000]
+
+def classify_reply_text(body):
+    t=(body or "").lower()
+    optout=["unsubscribe","remove me","stop emailing","stop email","do not contact","don't contact","no thanks","not interested","take me off"]
+    positive=["interested","tell me more","send me","sign me up","sounds good","let's talk","lets talk","yes please","call me"]
+    if any(x in t for x in optout): return "opt_out"
+    if any(x in t for x in positive): return "positive"
+    return "other"
+
+@app.post("/api/process-replies")
+async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    if not IMAP_ENABLED:
+        return {"ok":True,"enabled":False,"processed":0,"message":"IMAP reply polling is disabled."}
+    if not all([IMAP_HOST,IMAP_USER,IMAP_PASSWORD]):
+        raise HTTPException(409,"IMAP credentials are incomplete")
+    processed=0; matched=0
+    box=imaplib.IMAP4_SSL(IMAP_HOST,IMAP_PORT)
+    try:
+        box.login(IMAP_USER,IMAP_PASSWORD); box.select(IMAP_FOLDER)
+        status,data=box.search(None,"UNSEEN")
+        ids=(data[0].split() if status=="OK" and data and data[0] else [])[-100:]
+        async with app.state.pool.acquire() as conn:
+            for mid in ids:
+                status,msgdata=box.fetch(mid,"(RFC822)")
+                if status!="OK" or not msgdata: continue
+                raw=next((x[1] for x in msgdata if isinstance(x,tuple)),None)
+                if not raw: continue
+                msg=email.message_from_bytes(raw)
+                sender=parseaddr(msg.get("From",""))[1].lower().strip()
+                if not sender: continue
+                row=await conn.fetchrow("""select o.outreach_id,o.entity_type,o.entity_id
+                  from outreach o
+                  where (o.entity_type='vendor' and o.entity_id in (select vendor_id from vendors where lower(public_email)=lower($1)))
+                     or (o.entity_type='buyer' and o.entity_id in (select buyer_id from buyers where lower(public_email)=lower($1)))
+                  order by o.created_at desc limit 1""",sender)
+                processed+=1
+                if not row: continue
+                body=reply_text(msg); classification=classify_reply_text(body)
+                await conn.execute("""update outreach set replied_at=now(),reply_type=$2,
+                  status=case when $2='opt_out' then 'suppressed' else 'replied' end,
+                  opt_out=case when $2='opt_out' then true else opt_out end
+                  where outreach_id=$1""",row["outreach_id"],classification)
+                if classification=="opt_out":
+                    await conn.execute("insert into outreach_suppressions(email,reason,source) values($1,'reply opt-out','imap') on conflict(email) do nothing",sender)
+                await event(conn,row["entity_type"],row["entity_id"],"outreach_reply",{"classification":classification,"email":sender})
+                box.store(mid,"+FLAGS","\\Seen"); matched+=1
+    finally:
+        try: box.logout()
+        except Exception: pass
+    return {"ok":True,"enabled":True,"processed":processed,"matched":matched}
