@@ -33,7 +33,7 @@ for i in $(seq 1 30); do
   sleep 2
 done
 
-for file in schema.sql seed-services.sql seed-vendors.sql seed-buyers.sql seed-outreach.sql seed-buyer-outreach.sql seed-first-wave.sql seed-products.sql; do
+for file in schema.sql seed-services.sql seed-vendors.sql seed-buyers.sql seed-outreach.sql seed-buyer-outreach.sql seed-first-wave.sql seed-products.sql seed-research.sql; do
   echo "Applying $file"
   docker compose exec -T postgres psql -v ON_ERROR_STOP=1 -U "$DBUSER" -d "$DBNAME" < "$file"
 done
