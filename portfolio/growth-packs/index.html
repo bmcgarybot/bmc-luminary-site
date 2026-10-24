@@ -5,7 +5,10 @@
 <div class="card"><h3>100 targeted prospects</h3><p>Company/property name, available public contact information, qualification reason, and priority.</p></div>
 <div class="card"><h3>Personalized outreach angles</h3><p>Opening angles and message direction based on what the prospect appears to need.</p></div>
 <div class="card"><h3>Local competitor snapshot</h3><p>A concise view of notable competitors, positioning patterns, and useful gaps to test.</p></div>
-</div><div class="card" style="margin-top:18px"><span class="kicker">Pilot price</span><div class="price">$499</div><p>For the first version, orders are reviewed before payment is collected so we can confirm the niche and geography are suitable.</p></div></div></section>
+</div><div class="grid" style="margin-top:18px">
+<div class="card"><span class="kicker">Starter</span><div class="price">$499</div><h3>100-Prospect Local Growth Pack</h3><p>Qualified local prospect list, public contact channels, fit notes, priority, outreach angles, and a concise competitor snapshot.</p><div class="actions"><a class="btn btn-primary" data-product="growth_pack_starter" href="#order">Request Starter Pack</a></div></div>
+<div class="card"><span class="kicker">Premium</span><div class="price">$749</div><h3>Premium Local Growth Pack</h3><p>Starter deliverable plus deeper competitor/market analysis and a more developed outreach plan for the territory.</p><div class="actions"><a class="btn btn-primary" data-product="growth_pack_premium" href="#order">Request Premium Pack</a></div></div>
+</div><p class="section-lead" style="margin-top:16px">Orders are reviewed before payment while the fulfillment workflow is being validated. When Stripe payment links are activated, eligible packages can be purchased directly from this page.</p></div></section>
 <section class="section" id="order"><div class="wrap form-shell"><div class="form-copy"><span class="kicker">Order intake</span><h2>Tell us what a good prospect looks like.</h2><p class="section-lead">No discovery call required. If the niche is workable, the next step can be handled by email.</p></div>
 <form class="form" data-bmc-form data-form-type="growth_pack" data-email="contact@bmcluminaryventures.com" data-subject="Growth Pack order request">
 <input class="hidden" name="website" tabindex="-1" autocomplete="off">
@@ -18,4 +21,12 @@
 <label class="check"><input type="checkbox" required><span>I understand this is a research and prospecting deliverable, not a guarantee of replies, appointments, or sales.</span></label>
 <div class="notice" data-form-notice></div><div class="actions"><button class="btn btn-primary" type="submit" data-label="Request Growth Pack">Request Growth Pack</button></div>
 </form></div></section>
-<footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>Productized B2B research</span></div></footer><script src="../assets/core.js"></script></body></html>
+<footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>Productized B2B research</span></div></footer><script src="../assets/core.js"></script>
+<script>
+fetch('../data/products.json').then(r=>r.json()).then(data=>{
+  data.products.filter(p=>p.service_key==='growth_pack'&&p.active).forEach(p=>{
+    const el=document.querySelector('[data-product="'+p.product_key+'"]');
+    if(el&&p.payment_link_url){el.href=p.payment_link_url;el.textContent='Buy Now';el.target='_blank';el.rel='noopener';}
+  });
+}).catch(()=>{});
+</script></body></html>
