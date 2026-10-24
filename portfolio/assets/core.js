@@ -1,6 +1,6 @@
 (function(){
   const markets=["Prescott","Prescott Valley","Chino Valley","Cottonwood","Camp Verde","Sedona","Flagstaff","Winslow","Kingman","Phoenix","Scottsdale","Tucson"];
-  const GLOBAL_WEBHOOK=window.BMC_WEBHOOK_URL||"";
+  const GLOBAL_WEBHOOK=window.BMC_WEBHOOK_URL||"https://hooks.bmcluminaryventures.com/api/intake";
 
   document.querySelectorAll("[data-market-select]").forEach(function(sel){
     if(sel.options.length>1)return;
@@ -9,7 +9,6 @@
   });
   document.querySelectorAll("[data-year]").forEach(function(el){el.textContent=new Date().getFullYear();});
 
-  // Consistent entity/canonical signals across the shared portfolio.
   if(!document.querySelector('link[rel="canonical"]')){
     const canonical=document.createElement("link");canonical.rel="canonical";canonical.href=location.origin+location.pathname;document.head.appendChild(canonical);
   }
@@ -28,9 +27,7 @@
     new FormData(form).forEach(function(v,k){if(k!=="website")data[k]=String(v).trim();});
     data.form_type=form.dataset.formType||"general";
     data.submission_id=(crypto.randomUUID?crypto.randomUUID():("sub_"+Date.now()+"_"+Math.random().toString(36).slice(2)));
-    data.page=location.href;
-    data.path=location.pathname;
-    data.referrer=document.referrer||"";
+    data.page=location.href;data.path=location.pathname;data.referrer=document.referrer||"";
     const q=new URLSearchParams(location.search);
     ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(k=>{if(q.get(k))data[k]=q.get(k)});
     data.submitted_at=new Date().toISOString();
@@ -48,25 +45,21 @@
     form.addEventListener("submit",async function(e){
       e.preventDefault();
       if(form.querySelector('[name="website"]')?.value)return;
-      const button=form.querySelector('button[type="submit"]');
-      const note=form.querySelector("[data-form-notice]");
-      const data=payloadFrom(form);
+      const button=form.querySelector('button[type="submit"]'),note=form.querySelector("[data-form-notice]"),data=payloadFrom(form);
       const pageEndpoint=document.querySelector('meta[name="bmc-webhook"]')?.content||"";
       const endpoint=form.dataset.endpoint||((pageEndpoint&&!pageEndpoint.includes("REPLACE_ME"))?pageEndpoint:GLOBAL_WEBHOOK);
       if(button){button.disabled=true;button.textContent="Sending…";}
       try{
-        if(endpoint){
-          const r=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
-          if(!r.ok)throw new Error("Webhook returned "+r.status);
-          const response=await r.json().catch(()=>({}));
-          if(note){note.textContent=response.message||"Received. We’ll route this request and follow up using the contact method you selected.";note.classList.add("show");}
-          form.reset();
-        }else{
-          mailFallback(form,data);
-        }
+        const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),5000);
+        const r=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data),signal:controller.signal});
+        clearTimeout(timer);
+        if(!r.ok)throw new Error("Webhook returned "+r.status);
+        const response=await r.json().catch(()=>({}));
+        if(note){note.textContent=response.message||"Received. We’ll route this request and follow up using the contact method you selected.";note.classList.add("show");}
+        form.reset();
       }catch(err){
         console.error(err);
-        if(note){note.textContent="The automated intake is temporarily unavailable. Your email app will open with the request details as a fallback.";note.classList.add("show");}
+        if(note){note.textContent="Automated intake is not reachable yet. Your email app will open with the request details so nothing is lost.";note.classList.add("show");}
         mailFallback(form,data);
       }finally{
         if(button){button.disabled=false;button.textContent=button.dataset.label||"Submit request";}
