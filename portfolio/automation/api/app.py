@@ -66,9 +66,9 @@ async def event(conn,etype,eid,kind,payload=None,actor="system"):
 async def classify_with_local_ai(conn,market,scope):
     if not LOCAL_AI_ENABLED or not LOCAL_AI_URL or not scope:
         return None
-    services=await conn.fetch("select service_key,display_name,category,primary_offer from services where is_active=true order by priority,display_name")
+    services=await conn.fetch("select service_key,display_name,category,monetization from services where is_active=true order by priority,display_name")
     allowed={r["service_key"] for r in services}
-    catalog="\n".join(f'{r["service_key"]}: {r["display_name"]} — {r["primary_offer"] or r["category"] or ""}' for r in services)
+    catalog="\n".join(f'{r["service_key"]}: {r["display_name"]} — {r["category"] or ""} — {r["monetization"] or ""}' for r in services)
     prompt=f"""Classify this Arizona service request into exactly one service_key from the catalog.
 
 Market: {market}
