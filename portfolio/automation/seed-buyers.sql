@@ -340,7 +340,7 @@ insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email
  public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
  notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
 insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email,public_phone,source_url,likely_services,priority,status,notes,campaign)
- values('b_prescott_trinityschool','Trinity Christian School','Prescott','school','https://www.trinitychristianaz.com/','office@trinitychristianaz.com','928-445-6306','https://www.trinitychristianaz.com/contact','commercial_cleaning|floor_carpet|window_cleaning|landscaping|pest_control|parking_lot|hvac_heat|fire_safety|facility_maintenance','A','new','Could combine school/church facility needs','institutional_facilities')
+ values('b_prescott_trinityschool','Trinity Christian School','Prescott','private_school','https://www.trinitychristianaz.com/','office@trinitychristianaz.com','928-445-6306','https://www.trinitychristianaz.com/contact','commercial_cleaning|floor_carpet|window_cleaning|landscaping|junk_hauling|pest_control|parking_lot|hvac_heat|fire_safety|facility_maintenance','A','new','Private-school facility buyer; multi-service campus opportunity','education_facilities')
  on conflict(buyer_id) do update set business_name=excluded.business_name,market=excluded.market,buyer_type=excluded.buyer_type,website=excluded.website,public_email=excluded.public_email,
  public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
  notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
@@ -350,7 +350,7 @@ insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email
  public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
  notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
 insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email,public_phone,source_url,likely_services,priority,status,notes,campaign)
- values('b_prescott_elks','Elks Theatre & Performing Arts Center','Prescott','theater','https://prescottelkstheater.com/',NULL,'928-777-1370','https://www.prescott.org/arts-culture-and-family-fun.html','commercial_cleaning|floor_carpet|window_cleaning|junk_hauling|hvac_heat|sign_lighting|fire_safety|facility_maintenance','A','new','Strong deep-cleaning/floor/HVAC/events facility prospect','institutional_facilities')
+ values('b_prescott_elks','Prescott Elks Theatre & Performing Arts Center','Prescott','theater_event_venue','https://prescottelkstheater.com/',NULL,'928-777-1370','https://prescottelkstheater.com/','commercial_cleaning|floor_carpet|window_cleaning|junk_hauling|parking_lot|hvac_heat|fire_safety|sign_lighting|facility_maintenance','A','new','Event turnover, floors, seating, restrooms and facility upkeep','arts_facilities')
  on conflict(buyer_id) do update set business_name=excluded.business_name,market=excluded.market,buyer_type=excluded.buyer_type,website=excluded.website,public_email=excluded.public_email,
  public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
  notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
@@ -380,7 +380,7 @@ insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email
  public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
  notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
 insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email,public_phone,source_url,likely_services,priority,status,notes,campaign)
- values('b_flag_chabad','Chabad Jewish Community Center','Flagstaff','religious_center',NULL,NULL,'928-255-5756','https://business.flagstaffchamber.com/list/category/churches-1314','commercial_cleaning|floor_carpet|window_cleaning|landscaping|snow_service|junk_hauling|hvac_heat|facility_maintenance','A','new','High-traffic facility prospect','institutional_facilities')
+ values('b_flag_chabad','Chabad Jewish Community Center','Flagstaff','church_religious_center',NULL,NULL,'928-255-5756','https://business.flagstaffchamber.com/list/category/churches-1314','commercial_cleaning|floor_carpet|window_cleaning|landscaping|snow_service|junk_hauling|parking_lot|hvac_heat|fire_safety|pest_control|facility_maintenance','A','new','Multi-service high-traffic facility prospect','church_facilities')
  on conflict(buyer_id) do update set business_name=excluded.business_name,market=excluded.market,buyer_type=excluded.buyer_type,website=excluded.website,public_email=excluded.public_email,
  public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
  notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
@@ -465,12 +465,12 @@ insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email
  public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
  notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
 insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email,public_phone,source_url,likely_services,priority,status,notes,campaign)
- values('b_kingman_beale','Beale Street Theater / Kingman Center for the Arts','Kingman','theater','https://bealestreettheater.com/',NULL,NULL,'https://bealestreettheater.com/beale-street-theater','commercial_cleaning|floor_carpet|window_cleaning|junk_hauling|hvac_heat|sign_lighting|fire_safety|facility_maintenance','A','new','Deep cleaning + maintenance + event turnover prospect','institutional_facilities')
+ values('b_kingman_beale','Beale Street Theater / Kingman Center for the Arts','Kingman','theater_event_venue','https://bealestreettheater.com/',NULL,'928-228-5817','https://bealestreettheater.com/beale-street-theater','commercial_cleaning|floor_carpet|window_cleaning|junk_hauling|parking_lot|hvac_heat|sign_lighting|fire_safety|facility_maintenance','A','new','Event cleanup plus recurring facility maintenance','arts_facilities')
  on conflict(buyer_id) do update set business_name=excluded.business_name,market=excluded.market,buyer_type=excluded.buyer_type,website=excluded.website,public_email=excluded.public_email,
  public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
  notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
 insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email,public_phone,source_url,likely_services,priority,status,notes,campaign)
- values('b_kingman_kusd','Kingman Unified School District #20','Kingman','school_district','https://www.kusd.org/',NULL,'928-753-5678','https://www.kusd.org/page/the-arts','commercial_cleaning|floor_carpet|window_cleaning|landscaping|junk_hauling|pest_control|hvac_heat|parking_lot|fire_safety|facility_maintenance','A','new','Large buyer; public procurement required','institutional_facilities')
+ values('b_kingman_kusd','Kingman Unified School District Facilities & Operations','Kingman','public_school_district','https://www.kusd.org/','tracy.humphrey@sscserv.com','928-716-5177','https://www.kusd.org/page/maintenance-and-facilities','commercial_cleaning|floor_carpet|window_cleaning|landscaping|junk_hauling|parking_lot|hvac_heat|fire_safety|pest_control|facility_maintenance','A','new','Public procurement target; official facilities contact','education_facilities')
  on conflict(buyer_id) do update set business_name=excluded.business_name,market=excluded.market,buyer_type=excluded.buyer_type,website=excluded.website,public_email=excluded.public_email,
  public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
  notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
@@ -675,16 +675,6 @@ insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email
  public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
  notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
 insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email,public_phone,source_url,likely_services,priority,status,notes,campaign)
- values('b_prescott_trinityschool','Trinity Christian School','Prescott','private_school','https://www.trinitychristianaz.com/','office@trinitychristianaz.com','928-445-6306','https://www.trinitychristianaz.com/contact','commercial_cleaning|floor_carpet|window_cleaning|landscaping|junk_hauling|parking_lot|hvac_heat|fire_safety|pest_control','A','new','Private-school facility buyer; easier procurement than district work','education_facilities')
- on conflict(buyer_id) do update set business_name=excluded.business_name,market=excluded.market,buyer_type=excluded.buyer_type,website=excluded.website,public_email=excluded.public_email,
- public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
- notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
-insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email,public_phone,source_url,likely_services,priority,status,notes,campaign)
- values('b_prescott_elks','Prescott Elks Theater & Performing Arts Center','Prescott','theater_event_venue',NULL,NULL,'928-777-1370','business:turn955773business2','commercial_cleaning|floor_carpet|window_cleaning|junk_hauling|parking_lot|hvac_heat|fire_safety|sign_lighting','A','new','Event turnover, floors, seating areas, restrooms, facility upkeep','arts_facilities')
- on conflict(buyer_id) do update set business_name=excluded.business_name,market=excluded.market,buyer_type=excluded.buyer_type,website=excluded.website,public_email=excluded.public_email,
- public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
- notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
-insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email,public_phone,source_url,likely_services,priority,status,notes,campaign)
  values('b_pv_findlaycenter','Findlay Toyota Center','Prescott Valley','arena_event_venue',NULL,NULL,'928-772-1819','business:turn955773business3','commercial_cleaning|floor_carpet|window_cleaning|junk_hauling|parking_lot|hvac_heat|fire_safety|sign_lighting','A','new','Large venue with event-driven cleaning/maintenance demand','arts_facilities')
  on conflict(buyer_id) do update set business_name=excluded.business_name,market=excluded.market,buyer_type=excluded.buyer_type,website=excluded.website,public_email=excluded.public_email,
  public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
@@ -715,11 +705,6 @@ insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email
  public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
  notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
 insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email,public_phone,source_url,likely_services,priority,status,notes,campaign)
- values('b_flag_chabad','Chabad Jewish Community Center','Flagstaff','church_religious_center',NULL,NULL,'928-255-5756','https://business.flagstaffchamber.com/list/category/churches-1314?dm=True&o=alpha','commercial_cleaning|floor_carpet|window_cleaning|snow_service|landscaping|junk_hauling|parking_lot|hvac_heat|fire_safety|pest_control','A','new','Chamber signal + multi-service facility buyer','church_facilities')
- on conflict(buyer_id) do update set business_name=excluded.business_name,market=excluded.market,buyer_type=excluded.buyer_type,website=excluded.website,public_email=excluded.public_email,
- public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
- notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
-insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email,public_phone,source_url,likely_services,priority,status,notes,campaign)
  values('b_flag_christschurch','Christ''s Church of Flagstaff','Flagstaff','church',NULL,NULL,'928-522-0462','https://business.flagstaffchamber.com/list/category/churches-1314?dm=True&o=alpha','commercial_cleaning|floor_carpet|window_cleaning|snow_service|landscaping|junk_hauling|parking_lot|hvac_heat|fire_safety|pest_control','A','new','Chamber signal + recurring facility work','church_facilities')
  on conflict(buyer_id) do update set business_name=excluded.business_name,market=excluded.market,buyer_type=excluded.buyer_type,website=excluded.website,public_email=excluded.public_email,
  public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
@@ -736,16 +721,6 @@ insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email
  notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
 insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email,public_phone,source_url,likely_services,priority,status,notes,campaign)
  values('b_kingman_emmanuel','Emmanuel Christian Academy','Kingman','private_school',NULL,NULL,'928-681-4220','business:turn955773business9','commercial_cleaning|floor_carpet|window_cleaning|landscaping|junk_hauling|parking_lot|hvac_heat|fire_safety|pest_control','A','new','Private-school facility prospect','education_facilities')
- on conflict(buyer_id) do update set business_name=excluded.business_name,market=excluded.market,buyer_type=excluded.buyer_type,website=excluded.website,public_email=excluded.public_email,
- public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
- notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
-insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email,public_phone,source_url,likely_services,priority,status,notes,campaign)
- values('b_kingman_beale','Beale Street Theater','Kingman','theater_event_venue',NULL,NULL,'928-228-5817','business:turn955773business10','commercial_cleaning|floor_carpet|window_cleaning|junk_hauling|parking_lot|hvac_heat|fire_safety|sign_lighting','A','new','Event cleanup + recurring facility maintenance','arts_facilities')
- on conflict(buyer_id) do update set business_name=excluded.business_name,market=excluded.market,buyer_type=excluded.buyer_type,website=excluded.website,public_email=excluded.public_email,
- public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
- notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
-insert into buyers(buyer_id,business_name,market,buyer_type,website,public_email,public_phone,source_url,likely_services,priority,status,notes,campaign)
- values('b_kingman_kusd','Kingman Unified School District Facilities & Operations','Kingman','public_school_district','https://www.kusd.org/','tracy.humphrey@sscserv.com','928-716-5177','https://www.kusd.org/page/maintenance-and-facilities','commercial_cleaning|floor_carpet|window_cleaning|landscaping|junk_hauling|parking_lot|hvac_heat|fire_safety|pest_control','A','new','Procurement/contract target; official facilities contact','education_facilities')
  on conflict(buyer_id) do update set business_name=excluded.business_name,market=excluded.market,buyer_type=excluded.buyer_type,website=excluded.website,public_email=excluded.public_email,
  public_phone=excluded.public_phone,source_url=excluded.source_url,likely_services=excluded.likely_services,priority=excluded.priority,status=excluded.status,
  notes=excluded.notes,campaign=excluded.campaign,updated_at=now();
