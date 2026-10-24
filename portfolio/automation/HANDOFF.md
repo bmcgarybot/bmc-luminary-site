@@ -301,9 +301,9 @@ The current research worker is first-pass discovery from search-result evidence.
 ## Validation state
 
 Current verified code head:
-`adcc8ebba4dc76ab64de3fee7c60a27c61071548`
+`756194cf1d430458aa80f12a479419cb365c7e20`
 
-GitHub Actions run `40139304182` completed successfully on 2026-10-24 after the autonomous-operator/research-worker work and the pilot-activation SQL typing fix.
+GitHub Actions run `40141528910` completed successfully on 2026-10-24 after the cloud-VPS retarget. It includes the previously verified autonomous operator/research worker and the new 8 GB cloud resource limits, log rotation, startup/backup changes, cloud deployment docs and handoff.
 
 The green CI now proves:
 - Python API syntax
@@ -329,7 +329,7 @@ The green CI now proves:
 - internal Growth Pack fulfillment path
 - Stripe webhook/revenue/order/dedupe path
 
-The application code was CI-verified before the cloud retarget and is **not deployed to the production VPS yet**. Re-run/verify CI after cloud-runtime changes before treating the newest head as green.
+The cloud-targeted code is **CI GREEN and not deployed to the production VPS yet**.
 
 ## SEO / AI discovery
 
