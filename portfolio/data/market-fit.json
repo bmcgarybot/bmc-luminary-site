@@ -1,183 +1,267 @@
 {
   "version": "2026-10-24",
   "rule": "Prioritize by environment and local demand signals; do not force every service into every city.",
+  "tier_goals": {
+    "tier1": {
+      "vendor_goal": 5,
+      "buyer_goal": 8
+    },
+    "tier2": {
+      "vendor_goal": 3,
+      "buyer_goal": 5
+    },
+    "core_b2b": {
+      "vendor_goal": 3,
+      "buyer_goal": 5
+    },
+    "restaurant": {
+      "vendor_goal": 2,
+      "buyer_goal": 4
+    },
+    "internal": {
+      "vendor_goal": 0,
+      "buyer_goal": 5
+    },
+    "hold": {
+      "vendor_goal": 0,
+      "buyer_goal": 0
+    }
+  },
+  "global_groups": {
+    "internal": [
+      "growth_pack",
+      "competitor_intel",
+      "market_expansion",
+      "vendor_savings",
+      "quote_sourcing",
+      "waste_audit"
+    ],
+    "core_b2b": [
+      "commercial_cleaning",
+      "facility_maintenance",
+      "window_cleaning",
+      "pressure_washing",
+      "pest_control",
+      "floor_carpet",
+      "fire_safety",
+      "backflow_plumbing",
+      "sign_lighting",
+      "locksmith_access",
+      "duct_vent",
+      "coffee_water",
+      "parking_lot",
+      "epoxy_flooring",
+      "turnover_cleaning",
+      "garage_door"
+    ],
+    "restaurant": [
+      "restaurant_repair",
+      "ice_machine",
+      "hood_exhaust",
+      "grease_drain",
+      "restaurant_equipment",
+      "used_equipment",
+      "equipment_quotes",
+      "restaurant_maintenance",
+      "linen_laundry"
+    ]
+  },
   "markets": {
     "Prescott": {
       "tier1": [
-        "tree-removal",
-        "defensible-space",
+        "tree_service",
         "landscaping",
-        "junk-hauling",
-        "towing-roadside"
+        "junk_hauling",
+        "towing_roadside",
+        "facility_maintenance"
       ],
       "tier2": [
-        "pet-waste",
-        "septic-earthwork",
-        "storm-cleanup",
-        "gutter-roof-cleanup"
+        "pet_waste",
+        "rural_property",
+        "commercial_cleaning",
+        "pressure_washing",
+        "window_cleaning",
+        "vehicle_services"
       ],
-      "notes": "Forested WUI, monsoon/storm debris, established residential market."
+      "notes": "Forested WUI, monsoon/storm debris, established residential market and regional service hub."
     },
     "Prescott Valley": {
       "tier1": [
         "landscaping",
-        "junk-hauling",
-        "pet-waste",
-        "towing-roadside"
+        "junk_hauling",
+        "pet_waste",
+        "towing_roadside",
+        "facility_maintenance"
       ],
       "tier2": [
-        "tree-service",
-        "water-hauling",
-        "septic-earthwork",
-        "mobile-auto"
+        "tree_service",
+        "rural_property",
+        "commercial_cleaning",
+        "pressure_washing",
+        "vehicle_services",
+        "mobile_tire_battery"
       ],
       "notes": "Fast-growing residential market with shared Prescott vendor coverage."
     },
     "Chino Valley": {
       "tier1": [
-        "water-hauling",
-        "septic-earthwork",
-        "grading-excavation",
-        "junk-hauling"
+        "rural_property",
+        "junk_hauling",
+        "landscaping",
+        "facility_maintenance"
       ],
       "tier2": [
-        "landscaping",
-        "tree-service",
-        "well-pump",
-        "towing-roadside"
+        "tree_service",
+        "towing_roadside",
+        "commercial_cleaning",
+        "mobile_tire_battery"
       ],
-      "notes": "More rural parcels; infrastructure and land-service needs matter."
+      "notes": "Rural parcels and acreage make infrastructure, earthwork and hauling especially relevant."
     },
     "Cottonwood": {
       "tier1": [
-        "septic-earthwork",
-        "tree-service",
+        "rural_property",
+        "tree_service",
         "landscaping",
-        "junk-hauling"
+        "junk_hauling"
       ],
       "tier2": [
-        "towing-roadside",
-        "property-cleanout",
-        "pet-waste"
+        "towing_roadside",
+        "pet_waste",
+        "facility_maintenance",
+        "commercial_cleaning",
+        "turnover_cleaning"
       ],
       "notes": "Verde Valley mix of residential, rural and tourism-linked properties."
     },
     "Camp Verde": {
       "tier1": [
-        "septic-earthwork",
-        "grading-excavation",
-        "well-pump",
-        "landscaping"
+        "rural_property",
+        "landscaping",
+        "junk_hauling",
+        "facility_maintenance"
       ],
       "tier2": [
-        "tree-service",
-        "junk-hauling",
-        "towing-roadside",
-        "water-hauling"
+        "tree_service",
+        "towing_roadside",
+        "commercial_cleaning"
       ],
-      "notes": "Town guidance explicitly flags septic, wells and soil/geotechnical concerns."
+      "notes": "Town guidance flags septic, wells and soil/geotechnical concerns; rural property work is a natural wedge."
     },
     "Sedona": {
       "tier1": [
-        "defensible-space",
-        "tree-service",
-        "premium-landscaping",
-        "str-property-care"
+        "tree_service",
+        "landscaping",
+        "str_property_care",
+        "facility_maintenance"
       ],
       "tier2": [
-        "junk-hauling",
-        "hot-tub-pool",
-        "window-cleaning",
-        "turnover-cleaning"
+        "junk_hauling",
+        "pool_desert_property",
+        "window_cleaning",
+        "turnover_cleaning",
+        "commercial_cleaning"
       ],
-      "notes": "Wildfire exposure plus large visitor/STR property-care opportunity."
+      "notes": "Wildfire exposure plus tourism and STR property-care demand."
     },
     "Flagstaff": {
       "tier1": [
-        "tree-removal",
-        "defensible-space",
-        "snow-removal",
-        "towing-roadside"
+        "tree_service",
+        "snow_service",
+        "towing_roadside",
+        "facility_maintenance"
       ],
       "tier2": [
-        "junk-hauling",
-        "water-hauling",
-        "str-property-care",
-        "landscaping"
+        "junk_hauling",
+        "str_property_care",
+        "landscaping",
+        "commercial_cleaning",
+        "window_cleaning",
+        "vehicle_services"
       ],
-      "notes": "High-elevation forest market; private snow service is a direct seasonal need."
+      "notes": "High-elevation forest market, snow and I-40/I-17 traffic."
     },
     "Winslow": {
       "tier1": [
-        "towing-roadside",
-        "mobile-tire",
-        "mobile-mechanic",
-        "vehicle-transport"
+        "towing_roadside",
+        "vehicle_services",
+        "mobile_tire_battery",
+        "auto_glass"
       ],
       "tier2": [
-        "junk-hauling",
-        "property-cleanup",
-        "commercial-cleaning"
+        "junk_hauling",
+        "commercial_cleaning",
+        "facility_maintenance",
+        "mobile_detailing"
       ],
       "notes": "I-40 corridor makes vehicle service the strongest environment-specific wedge."
     },
     "Kingman": {
       "tier1": [
-        "water-hauling",
-        "septic-earthwork",
-        "grading-excavation",
-        "towing-roadside"
+        "rural_property",
+        "towing_roadside",
+        "junk_hauling",
+        "vehicle_services"
       ],
       "tier2": [
-        "junk-hauling",
-        "mobile-tire",
-        "mobile-mechanic",
-        "desert-landscaping"
+        "mobile_tire_battery",
+        "landscaping",
+        "facility_maintenance",
+        "commercial_cleaning",
+        "auto_glass"
       ],
       "notes": "Rural/desert service mix plus I-40/US-93 corridor."
     },
     "Phoenix": {
       "tier1": [
-        "hvac",
-        "pool-service",
-        "desert-landscaping",
-        "junk-hauling"
+        "hvac_heat",
+        "pool_desert_property",
+        "landscaping",
+        "junk_hauling",
+        "facility_maintenance"
       ],
       "tier2": [
-        "pest-control",
-        "towing-roadside",
-        "mobile-auto",
-        "commercial-cleaning"
+        "pest_control",
+        "towing_roadside",
+        "vehicle_services",
+        "commercial_cleaning",
+        "mobile_detailing",
+        "auto_glass"
       ],
-      "notes": "Extreme heat and pool-heavy metro; large service volume."
+      "notes": "Extreme heat, pool-heavy metro and large service volume."
     },
     "Scottsdale": {
       "tier1": [
-        "pool-service",
-        "pool-barrier",
-        "premium-landscaping",
-        "str-property-care"
+        "pool_desert_property",
+        "landscaping",
+        "str_property_care",
+        "facility_maintenance"
       ],
       "tier2": [
-        "mobile-detailing",
-        "junk-hauling",
-        "pest-control",
-        "commercial-cleaning"
+        "mobile_detailing",
+        "junk_hauling",
+        "pest_control",
+        "commercial_cleaning",
+        "auto_glass",
+        "turnover_cleaning"
       ],
-      "notes": "Pool/STR compliance and premium property-care fit."
+      "notes": "Pools, STRs and premium property care support higher-value recurring services."
     },
     "Tucson": {
       "tier1": [
-        "hvac",
-        "pool-service",
-        "desert-landscaping",
-        "pest-control"
+        "hvac_heat",
+        "pool_desert_property",
+        "landscaping",
+        "pest_control",
+        "facility_maintenance"
       ],
       "tier2": [
-        "junk-hauling",
-        "mobile-auto",
-        "water-hauling",
-        "commercial-cleaning"
+        "junk_hauling",
+        "vehicle_services",
+        "rural_property",
+        "commercial_cleaning",
+        "mobile_detailing",
+        "auto_glass"
       ],
       "notes": "Extreme heat and desert property-service profile."
     }
