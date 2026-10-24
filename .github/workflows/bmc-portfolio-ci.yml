@@ -40,6 +40,18 @@ jobs:
           assert not dup, f"Duplicate service keys: {sorted(dup)}"
           assert not missing, f"Missing service fronts: {missing}"
           print(f"Validated {len(services)} registered services")
+          import re
+          allowed=set(s["service_key"] for s in services) | {"universal_request","vendor_partner","vendor_response","job_update","facility_maintenance"}
+          invalid=[]
+          forms=0
+          for html in root.rglob("*.html"):
+              text=html.read_text(errors="ignore")
+              for form_type in re.findall(r'data-form-type="([^"]+)"',text):
+                  forms+=1
+                  if form_type not in allowed:
+                      invalid.append((str(html),form_type))
+          assert not invalid, f"Invalid form types: {invalid}"
+          print(f"Validated {forms} form endpoints")
           PY
       - name: Validate Compose
         working-directory: portfolio/automation
