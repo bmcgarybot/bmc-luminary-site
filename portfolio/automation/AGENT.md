@@ -66,13 +66,13 @@ Those are separate workers and integrations, not reasons to weaken the V1 safety
 ## Agent roadmap
 
 ### Phase 1 — bounded operator
-Status: BUILT, pending CI + HP deployment verification.
+Status: BUILT, pending CI + cloud VPS deployment verification.
 
 Goal:
 Keep the operating system moving safely without Brett manually checking every queue.
 
 ### Phase 2 — research/enrichment worker
-Status: BUILT, pending CI + HP deployment verification.
+Status: BUILT, pending CI + cloud VPS deployment verification.
 
 Implemented with a private self-hosted SearXNG search service and `research_candidates` staging table.
 
@@ -120,7 +120,7 @@ A future fulfillment worker can execute research/drafting steps and move deliver
 
 ## Deployment
 
-The operator lives inside `ops_api`; no extra public service is exposed.
+The operator lives inside `ops_api`; no extra public service is exposed. Production target is the isolated cloud VPS described in `CLOUD_DEPLOY.md`.
 
 The scheduler invokes it every 15 minutes.
 
