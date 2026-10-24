@@ -1,4 +1,4 @@
-import os, json, uuid, re, imaplib, email
+import os, json, uuid, re, imaplib, email, asyncio, urllib.request
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 from email.utils import parseaddr
@@ -30,6 +30,9 @@ IMAP_PORT=int(os.getenv("IMAP_PORT","993"))
 IMAP_USER=os.getenv("IMAP_USER","")
 IMAP_PASSWORD=os.getenv("IMAP_PASSWORD","")
 IMAP_FOLDER=os.getenv("IMAP_FOLDER","INBOX")
+LOCAL_AI_URL=os.getenv("LOCAL_AI_URL","").rstrip("/")
+LOCAL_AI_MODEL=os.getenv("LOCAL_AI_MODEL","qwen3:1.7b")
+LOCAL_AI_ENABLED=os.getenv("LOCAL_AI_ENABLED","true").lower()=="true"
 
 app=FastAPI(title="BMC Portfolio Ops API",version="0.1.0")
 app.add_middleware(CORSMiddleware,allow_origins=[
@@ -57,6 +60,49 @@ def slug(v): return re.sub(r"[^a-z0-9]+","-",clean(v).lower()).strip("-")[:40] o
 async def event(conn,etype,eid,kind,payload=None,actor="system"):
     await conn.execute("insert into events(entity_type,entity_id,event_type,actor,payload) values($1,$2,$3,$4,$5::jsonb)",
                        etype,str(eid),kind,actor,json.dumps(payload or {}))
+
+
+
+async def classify_with_local_ai(conn,market,scope):
+    if not LOCAL_AI_ENABLED or not LOCAL_AI_URL or not scope:
+        return None
+    services=await conn.fetch("select service_key,display_name,category,primary_offer from services where is_active=true order by priority,display_name")
+    allowed={r["service_key"] for r in services}
+    catalog="\n".join(f'{r["service_key"]}: {r["display_name"]} — {r["primary_offer"] or r["category"] or ""}' for r in services)
+    prompt=f"""Classify this Arizona service request into exactly one service_key from the catalog.
+
+Market: {market}
+Request: {scope}
+
+Catalog:
+{catalog}
+
+Return JSON only:
+{{"service_key":"one_key","confidence":0.0,"reason":"short reason"}}
+
+If no catalog item fits reliably, return service_key "unclassified". Do not invent keys."""
+    payload=json.dumps({
+        "model":LOCAL_AI_MODEL,
+        "messages":[{"role":"user","content":prompt}],
+        "stream":False,
+        "format":"json",
+        "options":{"temperature":0.1,"num_ctx":4096}
+    }).encode()
+    def call():
+        req=urllib.request.Request(LOCAL_AI_URL+"/api/chat",data=payload,headers={"Content-Type":"application/json"},method="POST")
+        with urllib.request.urlopen(req,timeout=15) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    try:
+        raw=await asyncio.to_thread(call)
+        content=raw.get("message",{}).get("content","")
+        parsed=json.loads(content)
+        key=clean(parsed.get("service_key"))
+        confidence=float(parsed.get("confidence") or 0)
+        if key in allowed and confidence>=0.70:
+            return {"service_key":key,"confidence":confidence,"reason":clean(parsed.get("reason"))[:300]}
+    except Exception:
+        return None
+    return None
 
 async def next_vendor(conn,lead_id,market,service_key):
     return await conn.fetchrow("""
@@ -187,7 +233,12 @@ async def handle_lead(conn,p):
     form_type=clean(p.get("form_type")) or "general"
     market=clean(p.get("market"))
     service_key=clean(p.get("service_key")) or form_type
-    if form_type=="universal_request" and not clean(p.get("service_key")): service_key="unclassified"
+    ai_classification=None
+    if form_type=="universal_request" and not clean(p.get("service_key")):
+        service_key="unclassified"
+        ai_classification=await classify_with_local_ai(conn,market,clean(p.get("scope") or p.get("problem") or p.get("notes")))
+        if ai_classification:
+            service_key=ai_classification["service_key"]
     consent=clean(p.get("consent")).lower()=="yes"
     if not market or not consent: raise HTTPException(400,"Market and consent are required")
     submission_id=clean(p.get("submission_id")) or str(uuid.uuid4())
@@ -201,7 +252,7 @@ async def handle_lead(conn,p):
       values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,true,$14,$15,$16::jsonb) returning lead_id""",
       submission_id,form_type,market,service_key,clean(p.get("service_type")),clean(p.get("contact_name")),clean(p.get("business_name")),
       clean(p.get("email")),clean(p.get("phone")),clean(p.get("preferred_contact")),scope,urgency,clean(p.get("page")),score,status,json.dumps(p))
-    await event(conn,"lead",lead_id,"received",{"service_key":service_key,"market":market})
+    await event(conn,"lead",lead_id,"received",{"service_key":service_key,"market":market,"ai_classification":ai_classification})
     if p.get("email"):
         await send_mail(clean(p.get("email")),"BMC received your request",
           f"We received your request for {service_key} in {market}. BMC will qualify and route it through the appropriate workflow.\n\nReference: {lead_id}\nBMC Luminary Ventures LLC")
