@@ -249,6 +249,38 @@ BMC Luminary Ventures LLC
     await offer_next(conn,lead)
     return {"ok":True,"status":"declined","message":"Declined. BMC recorded your response and is rerouting the request."}
 
+
+async def handle_vendor_pilot_activation(conn,p):
+    vendor_id=clean(p.get("vendor_id"))
+    if not vendor_id: raise HTTPException(400,"Vendor ID is required")
+    if clean(p.get("pilot_terms")).lower()!="accepted":
+        raise HTTPException(400,"Provider pilot terms must be acknowledged")
+    vendor=await conn.fetchrow("select * from vendors where vendor_id=$1",vendor_id)
+    if not vendor: raise HTTPException(404,"Vendor record not found")
+    email=clean(p.get("email")) or clean(vendor["public_email"])
+    phone=clean(p.get("phone")) or clean(vendor["public_phone"])
+    website=clean(p.get("business_url")) or clean(vendor["website"])
+    await conn.execute("""update vendors set
+      public_email=$2,public_phone=$3,website=$4,status='pilot_pending_review',
+      territory_notes=coalesce(nullif($5,''),territory_notes),
+      minimum_job=coalesce(nullif($6,''),minimum_job),
+      capacity=coalesce(nullif($7,''),capacity),
+      license_notes=coalesce(nullif($8,''),license_notes),
+      insurance_notes=coalesce(nullif($9,''),insurance_notes),
+      notes=concat_ws(E'\n',nullif(notes,''),$10),
+      updated_at=now()
+      where vendor_id=$1""",
+      vendor_id,email,phone,website,clean(p.get("territory")),clean(p.get("minimum_job")),
+      clean(p.get("capacity")),clean(p.get("credentials")),clean(p.get("insurance")),
+      "Pilot activation submitted: "+json.dumps({k:v for k,v in p.items() if k not in ("website",)}))
+    await conn.execute("""insert into exceptions(type,vendor_id,severity,summary,recommended_action)
+      values('pilot_activation_review',$1,'high',$2,$3)""",
+      vendor_id,f"Review pilot activation: {vendor['business_name']}",
+      "Verify pilot terms, territory, capacity, licensing/insurance where applicable; then move vendor to pilot if approved")
+    await event(conn,"vendor",vendor_id,"pilot_activation_submitted",p,vendor_id)
+    return {"ok":True,"status":"pilot_pending_review","vendor_id":vendor_id,
+      "message":"Pilot details received. BMC will review the service, territory, capacity, and credentials before activating routing."}
+
 async def handle_vendor_application(conn,p):
     business=clean(p.get("business_name")); market=clean(p.get("market"))
     if not business or not market: raise HTTPException(400,"Business name and market required")
@@ -451,6 +483,7 @@ async def intake(request:Request):
             ft=clean(p.get("form_type"))
             if ft=="vendor_response": return await handle_vendor_response(conn,p)
             if ft=="job_update": return await handle_job_update(conn,p)
+            if ft=="vendor_pilot_activation": return await handle_vendor_pilot_activation(conn,p)
             if ft=="vendor_partner": return await handle_vendor_application(conn,p)
             if ft=="facility_maintenance": return await handle_facility_lead(conn,p)
             return await handle_lead(conn,p)
