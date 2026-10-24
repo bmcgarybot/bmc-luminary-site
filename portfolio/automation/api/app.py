@@ -10,6 +10,8 @@ from fastapi.responses import HTMLResponse
 
 DB_DSN=os.getenv("DATABASE_URL","postgresql://bmc_automation:change@postgres:5432/bmc_portfolio")
 PUBLIC_SITE_URL=os.getenv("PUBLIC_SITE_URL","https://bmcluminaryventures.com").rstrip("/")
+WEBHOOK_URL=os.getenv("WEBHOOK_URL","").strip()
+CLOUDFLARE_TUNNEL_TOKEN=os.getenv("CLOUDFLARE_TUNNEL_TOKEN","").strip()
 ADMIN_KEY=os.getenv("BMC_ADMIN_KEY","")
 OFFER_HOURS=int(os.getenv("OFFER_HOURS","2"))
 SMTP_HOST=os.getenv("SMTP_HOST","")
