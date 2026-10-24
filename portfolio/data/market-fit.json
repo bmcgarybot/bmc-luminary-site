@@ -4,11 +4,11 @@
   "tier_goals": {
     "tier1": {
       "vendor_goal": 5,
-      "buyer_goal": 8
+      "buyer_goal": 3
     },
     "tier2": {
       "vendor_goal": 3,
-      "buyer_goal": 5
+      "buyer_goal": 2
     },
     "core_b2b": {
       "vendor_goal": 3,
