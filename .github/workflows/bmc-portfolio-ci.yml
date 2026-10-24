@@ -41,7 +41,7 @@ jobs:
           assert not missing, f"Missing service fronts: {missing}"
           print(f"Validated {len(services)} registered services")
           import re
-          allowed=set(s["service_key"] for s in services) | {"universal_request","vendor_partner","vendor_response","job_update","facility_maintenance"}
+          allowed=set(s["service_key"] for s in services) | {"universal_request","vendor_partner","vendor_pilot_activation","vendor_response","job_update","facility_maintenance"}
           invalid=[]
           forms=0
           for html in root.rglob("*.html"):
