@@ -16,6 +16,10 @@ SMTP_USER=os.getenv("SMTP_USER","")
 SMTP_PASSWORD=os.getenv("SMTP_PASSWORD","")
 SMTP_FROM=os.getenv("SMTP_FROM",SMTP_USER or "contact@bmcluminaryventures.com")
 SMTP_STARTTLS=os.getenv("SMTP_STARTTLS","true").lower()=="true"
+OUTREACH_ENABLED=os.getenv("OUTREACH_ENABLED","false").lower()=="true"
+OUTREACH_DAILY_LIMIT=int(os.getenv("OUTREACH_DAILY_LIMIT","25"))
+BUSINESS_POSTAL_ADDRESS=os.getenv("BUSINESS_POSTAL_ADDRESS","").strip()
+PARTNER_URL=f"{PUBLIC_SITE_URL}/portfolio/vendor-partner/"
 
 app=FastAPI(title="BMC Portfolio Ops API",version="0.1.0")
 app.add_middleware(CORSMiddleware,allow_origins=[
@@ -245,3 +249,109 @@ Closing the loop helps BMC route future work more accurately.
           await event(conn,"lead",row["lead_id"],"provider_followup_sent",{"vendor_id":row["vendor_id"]})
           sent+=1
     return {"ok":True,"sent":sent}
+
+
+def vendor_recruitment_copy(row,step):
+    market=row["market"] or "your area"
+    service=row["service_key"] or "local service"
+    business=row["business_name"]
+    signal=clean(row["association_signal"])
+    if step==1:
+        if signal:
+            subject=f"Put your local credibility to work in {market}"
+            body=f"""Hi {business},
+
+You have already invested in local credibility through {signal}. BMC Luminary Ventures is building an active request-and-referral channel for {service} in {market}.
+
+The goal is simple: add qualified local work on top of the credibility you already paid to establish, rather than selling you another passive directory listing.
+
+If you are taking new work, tell us the territory, job types, and capacity you want here:
+{PARTNER_URL}
+
+No sales meeting is required. We will confirm any paid lead or territory terms before anything is activated.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+If this is not relevant, reply no and we will suppress future outreach."""
+        else:
+            subject=f"{market} {service} partner"
+            body=f"""Hi {business},
+
+BMC Luminary Ventures is building a local request-and-referral channel for {service} in {market}.
+
+We are selecting providers by service area and job fit rather than sending every request to a giant list. If you are taking new work, tell us the territory, job types, and capacity you want here:
+{PARTNER_URL}
+
+No sales meeting is required. We will confirm any paid lead or territory terms before anything is activated.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+If this is not relevant, reply no and we will suppress future outreach."""
+    elif step==2:
+        subject=f"Re: {market} {service} partner"
+        body=f"""Hi {business},
+
+Following up in case additional {service} work in {market} is relevant. The partner form lets you specify exactly which jobs and territory you want:
+{PARTNER_URL}
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+Reply no if you do not want future outreach."""
+    else:
+        subject=f"Last note: {market} {service} requests"
+        body=f"""Hi {business},
+
+Last note from me on the BMC {service} partner pool in {market}. If you want to be considered for qualified local requests, the partner form is here:
+{PARTNER_URL}
+
+If not, no action is needed and we will close this sequence.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+Reply no to suppress future outreach."""
+    return subject,body
+
+@app.post("/api/process-outreach")
+async def process_outreach(x_bmc_admin_key:str|None=Header(default=None)):
+    if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY: raise HTTPException(403,"Forbidden")
+    if not OUTREACH_ENABLED:
+        return {"ok":True,"enabled":False,"sent":0,"message":"Outbound outreach is disabled."}
+    if not BUSINESS_POSTAL_ADDRESS or "CHANGE_ME" in BUSINESS_POSTAL_ADDRESS:
+        raise HTTPException(409,"BUSINESS_POSTAL_ADDRESS must be configured before outbound outreach can send.")
+    sent=0
+    async with app.state.pool.acquire() as conn:
+      already=await conn.fetchval("select count(*) from outreach where sent_at>=date_trunc('day',now())")
+      allowance=max(0,OUTREACH_DAILY_LIMIT-int(already or 0))
+      if allowance<=0:return {"ok":True,"enabled":True,"sent":0,"message":"Daily outreach limit reached."}
+      rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,
+          v.business_name,v.public_email,v.association_signal,
+          vm.market,vs.service_key
+        from outreach o
+        join vendors v on v.vendor_id=o.entity_id
+        left join lateral (select market from vendor_markets where vendor_id=v.vendor_id order by market limit 1) vm on true
+        left join lateral (select service_key from vendor_services where vendor_id=v.vendor_id order by service_key limit 1) vs on true
+        where o.entity_type='vendor' and o.campaign='vendor_recruitment'
+          and o.opt_out=false and v.public_email is not null and v.public_email<>''
+          and (
+            o.status='queued'
+            or (o.status='sent' and o.next_followup_at<=now() and o.sequence_step<3)
+          )
+          and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(v.public_email))
+        order by coalesce(o.next_followup_at,o.created_at) asc
+        limit $1""",allowance)
+      for row in rows:
+        step=1 if row["status"]=="queued" else int(row["sequence_step"])+1
+        subject,body=vendor_recruitment_copy(row,step)
+        ok=await send_mail(row["public_email"],subject,body)
+        if not ok: continue
+        next_at=datetime.now(timezone.utc)+(timedelta(days=4) if step==1 else timedelta(days=7))
+        status="completed" if step>=3 else "sent"
+        await conn.execute("""update outreach set sequence_step=$2,status=$3,subject=$4,body=$5,sent_at=now(),
+            next_followup_at=$6 where outreach_id=$1""",row["outreach_id"],step,status,subject,body,next_at)
+        await event(conn,"vendor",row["entity_id"],"outreach_sent",{"campaign":"vendor_recruitment","step":step,"email":row["public_email"]})
+        sent+=1
+    return {"ok":True,"enabled":True,"sent":sent,"daily_limit":OUTREACH_DAILY_LIMIT}
