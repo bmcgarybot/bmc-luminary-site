@@ -40,6 +40,11 @@ LOCAL_AI_URL=os.getenv("LOCAL_AI_URL","").rstrip("/")
 LOCAL_AI_MODEL=os.getenv("LOCAL_AI_MODEL","qwen3:1.7b")
 LOCAL_AI_ENABLED=os.getenv("LOCAL_AI_ENABLED","true").lower()=="true"
 STRIPE_WEBHOOK_SECRET=os.getenv("STRIPE_WEBHOOK_SECRET","").strip()
+AGENT_ENABLED=os.getenv("AGENT_ENABLED","true").lower()=="true"
+AGENT_MIN_CONFIDENCE=float(os.getenv("AGENT_MIN_CONFIDENCE","0.82"))
+AGENT_CYCLE_LIMIT=max(1,int(os.getenv("AGENT_CYCLE_LIMIT","10")))
+AGENT_RESEARCH_TASK_LIMIT=max(0,int(os.getenv("AGENT_RESEARCH_TASK_LIMIT","5")))
+AGENT_ALLOW_EXTERNAL_ACTIONS=os.getenv("AGENT_ALLOW_EXTERNAL_ACTIONS","false").lower()=="true"
 
 app=FastAPI(title="BMC Portfolio Ops API",version="0.1.0")
 app.add_middleware(CORSMiddleware,allow_origins=[
@@ -820,6 +825,159 @@ async function vendorUpdate(){const body={vendor_id:document.getElementById('ven
 async function classifyLead(){const body={lead_id:document.getElementById('lead_id').value,service_key:document.getElementById('service_key').value};const r=await fetch('/api/admin/classify-lead',{method:'POST',headers:headers(),body:JSON.stringify(body)});document.getElementById('lead_result').textContent=JSON.stringify(await r.json(),null,2)}
 async function suppressEmail(){const body={email:document.getElementById('suppress_email').value,reason:document.getElementById('suppress_reason').value};const r=await fetch('/api/admin/suppress',{method:'POST',headers:headers(),body:JSON.stringify(body)});document.getElementById('suppress_result').textContent=JSON.stringify(await r.json(),null,2)}
 </script></body></html>"""
+
+
+@app.post("/api/agent-cycle")
+async def agent_cycle(x_bmc_admin_key:str|None=Header(default=None)):
+    """Bounded autonomous operator cycle.
+
+    V1 may classify ambiguous leads and create internal work. It never sends
+    prospecting, approves providers, changes credentials, charges/refunds money,
+    or performs any other external/high-risk action.
+    """
+    require_admin(x_bmc_admin_key)
+    if not AGENT_ENABLED:
+        return {"ok":True,"enabled":False,"message":"BMC operator agent is disabled."}
+    classified=0
+    review_tasks=0
+    research_tasks=0
+    actions=[]
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        run_id=await conn.fetchval("""insert into agent_runs(status,actions)
+          values('running','[]'::jsonb) returning run_id""")
+
+        leads=await conn.fetch("""select l.*
+          from leads l
+          join exceptions e on e.lead_id=l.lead_id
+          where e.type='classification_needed' and e.status='open'
+            and coalesce(l.service_key,'')='unclassified'
+          order by l.submitted_at
+          limit $1""",AGENT_CYCLE_LIMIT)
+        for lead in leads:
+            result=await classify_with_local_ai(conn,lead["market"],clean(lead["scope"]))
+            if result and float(result.get("confidence") or 0)>=AGENT_MIN_CONFIDENCE:
+                updated=await conn.fetchrow("""update leads
+                  set service_key=$2,status='received',exception_reason=null,updated_at=now()
+                  where lead_id=$1 returning *""",lead["lead_id"],result["service_key"])
+                await conn.execute("""update exceptions
+                  set status='resolved',resolved_at=now(),resolution=$2
+                  where lead_id=$1 and type='classification_needed' and status='open'""",
+                  lead["lead_id"],f"BMC operator AI classified as {result['service_key']} ({result['confidence']:.2f})")
+                await event(conn,"lead",lead["lead_id"],"agent_classified",result,"bmc_agent")
+                await offer_next(conn,updated)
+                classified+=1
+                actions.append({"action":"classified_lead","lead_id":str(lead["lead_id"]),"service_key":result["service_key"],"confidence":result["confidence"]})
+            else:
+                exists=await conn.fetchval("""select 1 from tasks
+                  where lead_id=$1 and task_type='human_classification'
+                    and status in ('open','queued','assigned') limit 1""",lead["lead_id"])
+                if not exists:
+                    await conn.execute("""insert into tasks(lead_id,service_key,task_type,status,priority,owner,summary,payload)
+                      values($1,null,'human_classification','open','high','bmc_operator',$2,$3::jsonb)""",
+                      lead["lead_id"],f"Classify unrecognized request in {lead['market']}",json.dumps({"source":"agent_cycle","reason":"AI unavailable or below confidence threshold"}))
+                    review_tasks+=1
+                    actions.append({"action":"queued_human_classification","lead_id":str(lead["lead_id"])})
+
+        exceptions=await conn.fetch("""select exception_id,type,lead_id,vendor_id,severity,summary,recommended_action
+          from exceptions
+          where status='open'
+            and type not in ('classification_needed','pilot_activation_review','vendor_application_review')
+          order by case severity when 'critical' then 0 when 'high' then 1 else 2 end,created_at
+          limit $1""",AGENT_CYCLE_LIMIT)
+        for ex in exceptions:
+            exists=await conn.fetchval("""select 1 from tasks
+              where task_type='resolve_exception' and status in ('open','queued','assigned')
+                and payload->>'exception_id'=$1 limit 1""",str(ex["exception_id"]))
+            if not exists:
+                await conn.execute("""insert into tasks(lead_id,task_type,status,priority,owner,summary,payload)
+                  values($1,'resolve_exception','open',$2,'bmc_operator',$3,$4::jsonb)""",
+                  ex["lead_id"],"high" if ex["severity"] in ("critical","high") else "normal",
+                  ex["summary"] or f"Resolve {ex['type']}",
+                  json.dumps({"exception_id":str(ex["exception_id"]),"type":ex["type"],"vendor_id":ex["vendor_id"],"recommended_action":ex["recommended_action"]}))
+                review_tasks+=1
+                actions.append({"action":"queued_exception","exception_id":str(ex["exception_id"]),"type":ex["type"]})
+
+        if AGENT_RESEARCH_TASK_LIMIT>0:
+            gaps=await conn.fetch("""select rb.research_id,rb.market,rb.service_key,rb.side,rb.market_priority,
+                     rb.target_gap,rb.current_count,rb.goal,rb.research_priority,rb.research_method,
+                     s.display_name
+              from research_backlog rb
+              left join services s on s.service_key=rb.service_key
+              where rb.status='queued'
+              order by rb.market_priority,rb.research_priority,rb.target_gap desc,rb.market,rb.service_key,rb.side
+              limit $1""",AGENT_RESEARCH_TASK_LIMIT)
+            for gap in gaps:
+                task_type="research_vendor_gap" if gap["side"]=="vendor" else "research_buyer_gap"
+                summary=f"Research {gap['side']} coverage: {gap['display_name'] or gap['service_key']} in {gap['market']}"
+                task_id=await conn.fetchval("""insert into tasks(service_key,task_type,status,priority,owner,summary,payload)
+                  values($1,$2,'open',$3,'research_agent',$4,$5::jsonb) returning task_id""",
+                  gap["service_key"],task_type,
+                  "high" if clean(gap["research_priority"]).upper() in ("HIGH","CRITICAL") else "normal",
+                  summary,json.dumps({
+                    "research_id":str(gap["research_id"]),"market":gap["market"],"side":gap["side"],
+                    "target_gap":gap["target_gap"],"current_count":gap["current_count"],"goal":gap["goal"],
+                    "research_method":gap["research_method"],"external_action_allowed":False
+                  }))
+                await conn.execute("""update research_backlog
+                  set status='assigned',last_attempt_at=now(),notes=coalesce(notes,'') || $2,updated_at=now()
+                  where research_id=$1""",gap["research_id"],f"\nAssigned to BMC research agent task {task_id}")
+                research_tasks+=1
+                actions.append({"action":"assigned_research","research_id":str(gap["research_id"]),"task_id":str(task_id),"market":gap["market"],"service_key":gap["service_key"],"side":gap["side"]})
+
+        await conn.execute("""update agent_runs
+          set completed_at=now(),status='completed',classified_leads=$2,
+              review_tasks_created=$3,research_tasks_created=$4,actions=$5::jsonb
+          where run_id=$1""",run_id,classified,review_tasks,research_tasks,json.dumps(actions))
+        await event(conn,"agent",run_id,"cycle_completed",{
+          "classified_leads":classified,"review_tasks_created":review_tasks,
+          "research_tasks_created":research_tasks,"external_actions_performed":0
+        },"bmc_agent")
+    return {
+      "ok":True,"enabled":True,"run_id":str(run_id),
+      "classified_leads":classified,"review_tasks_created":review_tasks,
+      "research_tasks_created":research_tasks,"external_actions_performed":0,
+      "external_actions_allowed":False,
+      "actions":actions
+    }
+
+@app.get("/api/admin/agent-status")
+async def admin_agent_status(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    async with app.state.pool.acquire() as conn:
+        last=await conn.fetchrow("""select run_id,started_at,completed_at,status,classified_leads,
+          review_tasks_created,research_tasks_created from agent_runs
+          order by started_at desc limit 1""")
+        open_agent_tasks=await conn.fetchval("""select count(*) from tasks
+          where owner in ('bmc_operator','research_agent') and status in ('open','queued','assigned')""")
+        assigned_research=await conn.fetchval("select count(*) from research_backlog where status='assigned'")
+        queued_research=await conn.fetchval("select count(*) from research_backlog where status='queued'")
+        classification_needed=await conn.fetchval("""select count(*) from exceptions
+          where type='classification_needed' and status='open'""")
+        open_exceptions=await conn.fetchval("select count(*) from exceptions where status='open'")
+    last_run=None
+    if last:
+        last_run={
+          "run_id":str(last["run_id"]),"started_at":last["started_at"],"completed_at":last["completed_at"],
+          "status":last["status"],"classified_leads":last["classified_leads"],
+          "review_tasks_created":last["review_tasks_created"],"research_tasks_created":last["research_tasks_created"]
+        }
+    return {
+      "ok":True,
+      "enabled":AGENT_ENABLED,
+      "mode":"bounded_internal_operator_v1",
+      "external_actions_allowed":False,
+      "configured_external_action_flag":AGENT_ALLOW_EXTERNAL_ACTIONS,
+      "ai":{"enabled":LOCAL_AI_ENABLED,"model":LOCAL_AI_MODEL,"minimum_confidence":AGENT_MIN_CONFIDENCE},
+      "queues":{
+        "open_agent_tasks":int(open_agent_tasks or 0),
+        "research_assigned":int(assigned_research or 0),
+        "research_queued":int(queued_research or 0),
+        "classification_needed":int(classification_needed or 0),
+        "open_exceptions":int(open_exceptions or 0)
+      },
+      "last_run":last_run
+    }
 
 @app.get("/api/admin/summary")
 async def admin_summary(x_bmc_admin_key:str|None=Header(default=None)):
