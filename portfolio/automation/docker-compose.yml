@@ -13,6 +13,7 @@ services:
       - ./seed-vendors.sql:/docker-entrypoint-initdb.d/020-seed-vendors.sql:ro
       - ./seed-buyers.sql:/docker-entrypoint-initdb.d/030-seed-buyers.sql:ro
       - ./seed-outreach.sql:/docker-entrypoint-initdb.d/040-seed-outreach.sql:ro
+      - ./seed-buyer-outreach.sql:/docker-entrypoint-initdb.d/050-seed-buyer-outreach.sql:ro
     networks: [bmc_internal]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
@@ -62,6 +63,10 @@ services:
           curl -fsS -X POST http://ops_api:8000/api/process-expired -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
           if [ $(($i % 12)) -eq 0 ]; then
             curl -fsS -X POST http://ops_api:8000/api/process-followups -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
+          fi
+          if [ $(($i % 24)) -eq 0 ]; then
+            curl -fsS -X POST http://ops_api:8000/api/process-outreach -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
+            curl -fsS -X POST http://ops_api:8000/api/process-buyer-outreach -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
           fi
           i=$(($i+1))
           sleep 300
