@@ -63,11 +63,11 @@ Important tabs:
 - 48 registered service businesses
 - 12 Arizona market hubs
 - 576 market × service combinations
-- 141 researched vendor prospects
-- 145 unique researched buyer prospects
-- 41 vendor prospects with public business email
-- 33 buyer prospects with public business email
-- 86 institutional/facility prospects
+- 164 researched vendor prospects
+- 156 unique researched buyer prospects
+- 49 vendor prospects with public business email
+- 34 buyer prospects with public business email
+- 86+ institutional/facility prospects
 - 0 active/pilot providers
 - 0 live leads because runtime is not deployed yet
 - First Wave: 19 READY — NOT SENT
@@ -75,6 +75,26 @@ Important tabs:
   - 7 buyers
 
 All new service fronts are under the BMC portfolio. Do not touch the existing QNS properties.
+
+## Pilot Activation
+
+Google Sheet tab: `Pilot Activation`
+
+The 12 First Wave providers have explicit readiness checks for:
+- pilot terms
+- identity verification
+- credentials review
+- routing status
+- automatic READY / HOLD activation gate
+
+No provider should move from prospect to pilot/active until the relevant checks are complete.
+
+## Research Queue
+
+Google Sheet tab: `Research Queue`
+
+The environment-aware research backlog is generated from Coverage and also seeded into Postgres as `research_backlog`.
+At the last regeneration it contained 702 real research tasks, with Tier-1 work sorted ahead of Tier-2/core research. Regenerate after major prospect batches so gap counts stay current.
 
 ## First Wave provider cohort
 
