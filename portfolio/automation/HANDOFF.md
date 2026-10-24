@@ -70,6 +70,9 @@ Important tabs:
 - 34 buyer prospects with public business email
 - 86+ institutional/facility prospects
 - 0 active/pilot providers
+- First Wave public credential review: 4 COMPLETE / 8 PARTIAL
+- Prescott tree/landscape cluster has 3 publicly credential-complete candidates: ZebraScapes, Yavapai Landscaping, and Jonny's
+- public credential review does **not** replace direct provider COI/license confirmation or pilot acceptance
 - 0 live leads because runtime is not deployed yet
 - First Wave: 19 READY — NOT SENT
   - 12 providers
@@ -97,7 +100,7 @@ The production flow now preserves the existing researched vendor record end-to-e
 - explicit BMC approval is required before status becomes `pilot`
 - approval resolves the pilot-review exception and records a `pilot_approved` event
 
-No provider should move from prospect to pilot/active until the relevant checks are complete.
+No provider should move from prospect to pilot/active until the relevant checks are complete. Public research may move `credentials_review` to COMPLETE, but actual routing approval still requires provider pilot acceptance plus direct credential/insurance confirmation appropriate to the service.
 
 ## Research Queue
 
@@ -290,8 +293,8 @@ Do not add random new business ideas before clearing these:
 3. Confirm the newest GitHub Actions run is green before treating that HP deploy as release-ready.
 4. Configure transactional SMTP, monitored reply/IMAP, SPF/DKIM/DMARC, and the real BMC postal address.
 5. Configure the Cloudflare Tunnel and route `hooks.bmcluminaryventures.com`.
-6. Invite only the curated `pilot1` providers using their dedicated activation links.
-7. Review activation submissions in the private **Pending pilot reviews** queue and explicitly approve 3+ providers in one first niche.
+6. Invite only the curated `pilot1` providers using their dedicated activation links. The Prescott tree/landscape cluster already has three publicly credential-complete targets (ZebraScapes, Yavapai Landscaping, Jonny's).
+7. Review activation submissions in the private **Pending pilot reviews** queue, obtain direct COI/license confirmation as applicable, and explicitly approve 3+ providers in that first niche.
 8. Run one synthetic lead end-to-end.
 9. Run one real lead end-to-end.
 10. Complete Stripe activation and create the four Payment Links.
