@@ -34,6 +34,8 @@ Important paths:
 - `portfolio/automation/OUTREACH.md`
 - `portfolio/automation/EMAIL_TEMPLATES.md`
 - `portfolio/automation/runtime-doctor.sh`
+- `portfolio/automation/AGENT.md`
+- `portfolio/automation/searxng/settings.yml`
 
 ### Google Drive
 Connected account verified earlier:
@@ -216,6 +218,7 @@ Planned HP x360 automation appliance:
 - scheduler
 - nginx webhook-only gateway
 - Cloudflare Tunnel
+- private SearXNG research search
 - optional Ollama + Qwen3 1.7B utility model
 
 ENVY/Mac/Bonsai remain escalation AI workers. AI is not required for core intake/routing.
@@ -245,14 +248,27 @@ Private endpoints:
 - `POST /api/agent-cycle`
 - `GET /api/admin/agent-status`
 
-V1 performs **zero external actions**. It cannot:
+The operator now also has a bounded autonomous research worker:
+- private self-hosted SearXNG search service;
+- operator holds at most 5 outstanding `research_agent` tasks by default;
+- research worker runs one task per hour by default;
+- search results are staged in `research_candidates` with title, URL, domain, snippet, query, rank and evidence;
+- private admin exposes the staged candidate queue for review/reject state;
+- discoveries are never inserted directly into the live provider network;
+- discoveries are never contacted automatically.
+
+Additional private endpoints:
+- `POST /api/process-research`
+- `GET /api/admin/research-candidates`
+- `POST /api/admin/research-candidate-status`
+
+The agent still performs **zero consequential external actions**. It cannot:
 - send vendor/buyer prospecting;
 - approve providers or credentials;
 - activate a provider;
-- charge/refund money;
-- independently browse the public web.
+- charge/refund money.
 
-The next agent build is the research/enrichment worker that consumes `research_agent` tasks, browses/searches public sources, stages evidence-backed candidates, deduplicates them, and returns them for review. Do not describe assigned research tasks as completed research until that worker exists.
+The current research worker is first-pass discovery from search-result evidence. Deeper candidate-site crawling, contact extraction, multi-source evidence scoring, and reviewed-candidate promotion remain future improvements.
 
 ## Current runtime blockers
 
@@ -269,18 +285,26 @@ The next agent build is the research/enrichment worker that consumes `research_a
 
 ## Validation state
 
-Latest code head immediately before this handoff refresh: `8b66f0e77f912bc6a4c939a90c7903f12df00b60`.
+Current verified code head:
+`adcc8ebba4dc76ab64de3fee7c60a27c61071548`
 
-The last directly recorded GitHub Actions run was green before the newest activation-review/runtime-doctor commits. The available GitHub connector can read the latest commits and workflow file but does not expose push-based Actions check-runs for this repository, so **do not claim the newest head is green until the latest Actions run is independently confirmed**.
+GitHub Actions run `40139304182` completed successfully on 2026-10-24 after the autonomous-operator/research-worker work and the pilot-activation SQL typing fix.
 
-The CI workflow itself now covers:
+The green CI now proves:
 - Python API syntax
 - 48-service/front registry validation
 - Docker Compose validation
 - Postgres + API boot
 - service/vendor/buyer seeds
+- 651 normalized queued research gaps on a fresh database
 - exact 12-provider + 7-buyer First Wave cohort
 - `runtime-doctor.sh`
+- bounded operator creates exactly 5 concurrent research tasks
+- second operator cycle respects the 5-task cap
+- deterministic mock web search is processed by the research worker
+- research results become review-only staged candidates
+- research candidate admin review state works
+- zero outreach is sent during agent/research execution
 - live provider state survives vendor-seed reruns
 - dedicated First Wave activation URL/copy
 - existing-vendor activation to `pilot_pending_review`
@@ -290,7 +314,7 @@ The CI workflow itself now covers:
 - internal Growth Pack fulfillment path
 - Stripe webhook/revenue/order/dedupe path
 
-The Master Operations Dashboard now labels backend smoke status **GREEN — LAST VERIFIED**, not current-head green. Re-check GitHub Actions before changing that wording back.
+The code is CI-verified but **not deployed to the HP yet**.
 
 ## SEO / AI discovery
 
@@ -316,8 +340,8 @@ Still needed:
 Do not add random new business ideas before clearing these:
 
 1. Keep both global outreach switches OFF.
-2. Deploy the HP runtime from `START_HERE.md`; bootstrap now runs `runtime-doctor.sh` automatically.
-3. Confirm the newest GitHub Actions run is green before treating that HP deploy as release-ready.
+2. Deploy the HP runtime from `START_HERE.md`; bootstrap now starts the private research search and runs `runtime-doctor.sh` automatically.
+3. Confirm the deployed agent status and staged-research queue locally on the HP.
 4. Configure transactional SMTP, monitored reply/IMAP, SPF/DKIM/DMARC, and the real BMC postal address.
 5. Configure the Cloudflare Tunnel and route `hooks.bmcluminaryventures.com`.
 6. Invite only the curated `pilot1` providers using their dedicated activation links. The Prescott tree/landscape cluster already has three publicly credential-complete targets (ZebraScapes, Yavapai Landscaping, Jonny's).
@@ -326,7 +350,7 @@ Do not add random new business ideas before clearing these:
 9. Run one real lead end-to-end.
 10. Complete Stripe activation and create the four Payment Links.
 11. Sell the first paid Growth/Competitor/Expansion product.
-12. Submit Google/Bing search properties and sitemaps.
+12. Reconcile the Windsor.ai connection state, then verify the BMC Google Search Console property/data before marking Search Console complete; configure Bing/IndexNow separately.
 13. Expand provider and buyer coverage according to Coverage gaps.
 
 ## Working rule
