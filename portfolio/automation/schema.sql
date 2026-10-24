@@ -292,3 +292,27 @@ create table if not exists tasks (
 );
 
 create index if not exists idx_tasks_status_due on tasks(status,due_at);
+
+
+create table if not exists research_backlog (
+  research_id uuid primary key default gen_random_uuid(),
+  market text not null,
+  service_key text references services(service_key) on delete cascade,
+  side text not null check (side in ('vendor','buyer')),
+  market_priority text not null,
+  target_gap integer default 0,
+  current_count integer default 0,
+  goal integer default 0,
+  research_priority text default 'MEDIUM',
+  research_method text,
+  status text default 'queued',
+  last_attempt_at timestamptz,
+  candidates_found integer default 0,
+  notes text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now(),
+  unique(market,service_key,side)
+);
+
+create index if not exists idx_research_backlog_queue
+on research_backlog(status,market_priority,research_priority,market,service_key,side);
