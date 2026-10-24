@@ -18,6 +18,8 @@ SMTP_FROM=os.getenv("SMTP_FROM",SMTP_USER or "contact@bmcluminaryventures.com")
 SMTP_STARTTLS=os.getenv("SMTP_STARTTLS","true").lower()=="true"
 OUTREACH_ENABLED=os.getenv("OUTREACH_ENABLED","false").lower()=="true"
 OUTREACH_DAILY_LIMIT=int(os.getenv("OUTREACH_DAILY_LIMIT","25"))
+BUYER_OUTREACH_ENABLED=os.getenv("BUYER_OUTREACH_ENABLED","false").lower()=="true"
+BUYER_OUTREACH_DAILY_LIMIT=int(os.getenv("BUYER_OUTREACH_DAILY_LIMIT","15"))
 BUSINESS_POSTAL_ADDRESS=os.getenv("BUSINESS_POSTAL_ADDRESS","").strip()
 PARTNER_URL=f"{PUBLIC_SITE_URL}/portfolio/vendor-partner/"
 
@@ -402,3 +404,87 @@ async def process_outreach(x_bmc_admin_key:str|None=Header(default=None)):
         await event(conn,"vendor",row["entity_id"],"outreach_sent",{"campaign":"vendor_recruitment","step":step,"email":row["public_email"]})
         sent+=1
     return {"ok":True,"enabled":True,"sent":sent,"daily_limit":OUTREACH_DAILY_LIMIT}
+
+
+def buyer_landing(row):
+    campaign=clean(row["campaign"])
+    if campaign in ("institutional_facilities","property_management","hospitality","multifamily","facilities"):
+        return f"{PUBLIC_SITE_URL}/portfolio/facility-maintenance/"
+    if campaign=="restaurants":
+        return f"{PUBLIC_SITE_URL}/portfolio/restaurant-repair/"
+    if campaign=="automotive":
+        return f"{PUBLIC_SITE_URL}/portfolio/request/?service=vehicle_services"
+    return f"{PUBLIC_SITE_URL}/portfolio/request/"
+
+def buyer_outreach_copy(row,step):
+    business=row["business_name"]; market=row["market"] or "your area"; btype=clean(row["buyer_type"])
+    landing=buyer_landing(row)
+    likely=clean(row["likely_services"]).replace("|",", ")
+    public_note=""
+    if "school" in btype or "government" in btype:
+        public_note=" We understand formal procurement or approved-vendor rules may apply."
+    if step==1:
+        subject=f"One request for facility work in {market}"
+        body=f"""Hi {business},
+
+BMC Luminary Ventures is building an Arizona service-coordination network for organizations that repeatedly need local vendors.{public_note}
+
+Instead of calling separate companies for every project, you can submit one request and BMC can route the work by service and market. Based on your type of facility, common categories may include {likely or 'cleaning, grounds, repairs, and recurring maintenance'}.
+
+Request or test the concierge here:
+{landing}
+
+There is no sales call required.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+Reply no if you do not want future outreach."""
+    else:
+        subject=f"Re: facility service coordination in {market}"
+        body=f"""Hi {business},
+
+Just following up once on the BMC service concierge. If your organization has a deep-cleaning project, recurring maintenance need, or several vendor categories to coordinate, you can submit it here:
+
+{landing}
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+Reply no if you do not want future outreach."""
+    return subject,body
+
+@app.post("/api/process-buyer-outreach")
+async def process_buyer_outreach(x_bmc_admin_key:str|None=Header(default=None)):
+    if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY: raise HTTPException(403,"Forbidden")
+    if not BUYER_OUTREACH_ENABLED:
+        return {"ok":True,"enabled":False,"sent":0,"message":"Buyer outreach is disabled."}
+    if not BUSINESS_POSTAL_ADDRESS or "CHANGE_ME" in BUSINESS_POSTAL_ADDRESS:
+        raise HTTPException(409,"BUSINESS_POSTAL_ADDRESS must be configured before buyer outreach can send.")
+    sent=0
+    async with app.state.pool.acquire() as conn:
+      already=await conn.fetchval("""select count(*) from outreach where entity_type='buyer'
+        and sent_at>=date_trunc('day',now())""")
+      allowance=max(0,BUYER_OUTREACH_DAILY_LIMIT-int(already or 0))
+      if allowance<=0:return {"ok":True,"enabled":True,"sent":0,"message":"Buyer daily outreach limit reached."}
+      rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,
+          b.business_name,b.public_email,b.market,b.buyer_type,b.campaign,b.likely_services
+        from outreach o join buyers b on b.buyer_id=o.entity_id
+        where o.entity_type='buyer' and o.opt_out=false
+          and b.public_email is not null and b.public_email<>''
+          and (o.status='queued' or (o.status='sent' and o.next_followup_at<=now() and o.sequence_step<2))
+          and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(b.public_email))
+        order by case when b.priority='A' then 0 else 1 end,coalesce(o.next_followup_at,o.created_at) asc
+        limit $1""",allowance)
+      for row in rows:
+        step=1 if row["status"]=="queued" else 2
+        subject,body=buyer_outreach_copy(row,step)
+        ok=await send_mail(row["public_email"],subject,body)
+        if not ok: continue
+        status="completed" if step>=2 else "sent"
+        next_at=datetime.now(timezone.utc)+timedelta(days=5)
+        await conn.execute("""update outreach set sequence_step=$2,status=$3,subject=$4,body=$5,sent_at=now(),
+          next_followup_at=$6 where outreach_id=$1""",row["outreach_id"],step,status,subject,body,next_at)
+        await event(conn,"buyer",row["entity_id"],"outreach_sent",{"campaign":row["campaign"],"step":step,"email":row["public_email"]})
+        sent+=1
+    return {"ok":True,"enabled":True,"sent":sent,"daily_limit":BUYER_OUTREACH_DAILY_LIMIT}
