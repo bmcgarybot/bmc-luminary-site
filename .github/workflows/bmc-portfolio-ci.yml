@@ -81,6 +81,34 @@ jobs:
 
           # Prove First Wave provider copy uses the dedicated existing-vendor activation path.
           export BMC_ADMIN_KEY="$(grep '^BMC_ADMIN_KEY=' .env.ci | cut -d= -f2-)"
+
+          # Prove the bounded operator performs internal work while external actions remain impossible.
+          curl -fsS -X POST http://127.0.0.1:8000/api/agent-cycle \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_agent_cycle.json
+          cat /tmp/bmc_agent_cycle.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_agent_cycle.json"))
+          assert data["ok"] is True
+          assert data["enabled"] is True
+          assert data["external_actions_performed"] == 0
+          assert data["external_actions_allowed"] is False
+          assert data["research_tasks_created"] > 0
+          PY
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from agent_runs where status='completed';")" -ge 1
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from tasks where owner='research_agent' and status='open';")" -ge 1
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where sent_at is not null;")" -eq 0
+
+          curl -fsS http://127.0.0.1:8000/api/admin/agent-status \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_agent_status.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_agent_status.json"))
+          assert data["mode"] == "bounded_internal_operator_v1"
+          assert data["external_actions_allowed"] is False
+          assert data["last_run"]["status"] == "completed"
+          PY
+
           curl -fsS http://127.0.0.1:8000/api/admin/first-wave \
             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_first_wave.json
           python - <<'PY'
