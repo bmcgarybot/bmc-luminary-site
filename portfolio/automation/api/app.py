@@ -45,6 +45,10 @@ AGENT_MIN_CONFIDENCE=float(os.getenv("AGENT_MIN_CONFIDENCE","0.82"))
 AGENT_CYCLE_LIMIT=max(1,int(os.getenv("AGENT_CYCLE_LIMIT","10")))
 AGENT_RESEARCH_TASK_LIMIT=max(0,int(os.getenv("AGENT_RESEARCH_TASK_LIMIT","5")))
 AGENT_ALLOW_EXTERNAL_ACTIONS=os.getenv("AGENT_ALLOW_EXTERNAL_ACTIONS","false").lower()=="true"
+RESEARCH_SEARCH_ENABLED=os.getenv("RESEARCH_SEARCH_ENABLED","true").lower()=="true"
+RESEARCH_SEARCH_URL=os.getenv("RESEARCH_SEARCH_URL","http://searxng:8080/search").strip()
+RESEARCH_SEARCH_RESULTS=max(1,min(20,int(os.getenv("RESEARCH_SEARCH_RESULTS","8"))))
+RESEARCH_WORKER_BATCH=max(1,min(5,int(os.getenv("RESEARCH_WORKER_BATCH","1"))))
 
 app=FastAPI(title="BMC Portfolio Ops API",version="0.1.0")
 app.add_middleware(CORSMiddleware,allow_origins=[
@@ -120,6 +124,55 @@ If no catalog item fits reliably, return service_key "unclassified". Do not inve
     except Exception:
         return None
     return None
+
+
+def build_research_query(side,market,service_name,research_method=""):
+    service=clean(service_name).replace('"'," ")
+    place=clean(market).replace('"'," ")
+    if side=="vendor":
+        return f'"{service}" "{place}" Arizona company service contractor'
+    if "B2B" in clean(research_method).upper():
+        return f'"{place}" Arizona business facility property manager school church "{service}"'
+    return f'"{place}" Arizona business organization "{service}"'
+
+async def search_research_web(query):
+    if not RESEARCH_SEARCH_ENABLED or not RESEARCH_SEARCH_URL:
+        return []
+    params=urllib.parse.urlencode({
+        "q":query,
+        "format":"json",
+        "language":"en-US",
+        "safesearch":"1"
+    })
+    url=RESEARCH_SEARCH_URL+("&" if "?" in RESEARCH_SEARCH_URL else "?")+params
+    def call():
+        req=urllib.request.Request(url,headers={
+            "User-Agent":"BMC-Luminary-Research/1.0",
+            "Accept":"application/json"
+        })
+        with urllib.request.urlopen(req,timeout=25) as resp:
+            return json.loads(resp.read(2_000_000).decode("utf-8","replace"))
+    raw=await asyncio.to_thread(call)
+    out=[]
+    for item in (raw.get("results") or [])[:RESEARCH_SEARCH_RESULTS]:
+        source_url=clean(item.get("url"))
+        try:
+            parsed=urllib.parse.urlparse(source_url)
+        except Exception:
+            continue
+        if parsed.scheme not in ("http","https") or not parsed.netloc:
+            continue
+        host=(parsed.hostname or "").lower()
+        if host.startswith("www."): host=host[4:]
+        out.append({
+            "title":clean(item.get("title"))[:500],
+            "url":source_url[:3000],
+            "domain":host[:255],
+            "snippet":clean(item.get("content") or item.get("snippet"))[:3000],
+            "engine":clean(item.get("engine"))[:100],
+            "score":item.get("score")
+        })
+    return out
 
 async def next_vendor(conn,lead_id,market,service_key):
     return await conn.fetchrow("""
@@ -986,6 +1039,105 @@ async def admin_agent_status(x_bmc_admin_key:str|None=Header(default=None)):
       },
       "last_run":last_run
     }
+
+
+@app.post("/api/process-research")
+async def process_research(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    if not RESEARCH_SEARCH_ENABLED:
+        return {"ok":True,"enabled":False,"processed":0,"staged":0,"errors":[]}
+    processed=0
+    staged=0
+    errors=[]
+    async with app.state.pool.acquire() as conn:
+      tasks=await conn.fetch("""select t.task_id,t.service_key,t.payload,rb.research_id,rb.market,rb.side,
+             rb.research_method,s.display_name
+        from tasks t
+        join research_backlog rb on rb.research_id::text=t.payload->>'research_id'
+        left join services s on s.service_key=t.service_key
+        where t.owner='research_agent' and t.status='open'
+        order by case t.priority when 'critical' then 0 when 'high' then 1 else 2 end,t.created_at
+        limit $1""",RESEARCH_WORKER_BATCH)
+      for task in tasks:
+        query=build_research_query(task["side"],task["market"],task["display_name"] or task["service_key"],task["research_method"])
+        try:
+            results=await search_research_web(query)
+        except Exception as exc:
+            errors.append({"task_id":str(task["task_id"]),"error":str(exc)[:300]})
+            await event(conn,"task",task["task_id"],"research_search_failed",{"query":query,"error":str(exc)[:300]},"research_agent")
+            continue
+        async with conn.transaction():
+            rank=0
+            for result in results:
+                rank+=1
+                inserted=await conn.fetchval("""insert into research_candidates(
+                    research_id,task_id,side,market,service_key,candidate_name,source_title,
+                    source_url,source_domain,snippet,search_query,source_rank,status,evidence)
+                  values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,'discovered',$13::jsonb)
+                  on conflict(research_id,source_url) do nothing
+                  returning candidate_id""",
+                  task["research_id"],task["task_id"],task["side"],task["market"],task["service_key"],
+                  result["title"],result["title"],result["url"],result["domain"],result["snippet"],query,rank,
+                  json.dumps({"search_engine":result["engine"],"search_score":result["score"]}))
+                if inserted:
+                    staged+=1
+            total=await conn.fetchval("select count(*) from research_candidates where research_id=$1",task["research_id"])
+            new_status="review" if int(total or 0)>0 else "searched_no_results"
+            await conn.execute("""update research_backlog
+              set status=$2,last_attempt_at=now(),candidates_found=$3,updated_at=now()
+              where research_id=$1""",task["research_id"],new_status,int(total or 0))
+            await conn.execute("""update tasks set status='completed',updated_at=now(),
+              payload=payload || $2::jsonb where task_id=$1""",task["task_id"],
+              json.dumps({"search_query":query,"results_returned":len(results),"staged_candidates":int(total or 0)}))
+            await event(conn,"research",task["research_id"],"search_completed",{
+              "task_id":str(task["task_id"]),"query":query,"results_returned":len(results),
+              "staged_candidates":int(total or 0)
+            },"research_agent")
+            processed+=1
+    return {"ok":True,"enabled":True,"processed":processed,"staged":staged,"errors":errors}
+
+@app.get("/api/admin/research-candidates")
+async def admin_research_candidates(status:str="discovered",limit:int=100,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    safe_limit=max(1,min(250,limit))
+    async with app.state.pool.acquire() as conn:
+        rows=await conn.fetch("""select rc.*,s.display_name
+          from research_candidates rc
+          left join services s on s.service_key=rc.service_key
+          where ($1='' or rc.status=$1)
+          order by rc.created_at desc
+          limit $2""",clean(status),safe_limit)
+    records=[]
+    for r in rows:
+        records.append({
+          "candidate_id":str(r["candidate_id"]),
+          "research_id":str(r["research_id"]) if r["research_id"] else None,
+          "task_id":str(r["task_id"]) if r["task_id"] else None,
+          "side":r["side"],"market":r["market"],"service_key":r["service_key"],
+          "service_name":r["display_name"],"candidate_name":r["candidate_name"],
+          "source_title":r["source_title"],"source_url":r["source_url"],
+          "source_domain":r["source_domain"],"snippet":r["snippet"],
+          "search_query":r["search_query"],"source_rank":r["source_rank"],
+          "status":r["status"],"evidence":r["evidence"],"created_at":r["created_at"]
+        })
+    return {"ok":True,"count":len(records),"records":records}
+
+@app.post("/api/admin/research-candidate-status")
+async def admin_research_candidate_status(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    p=await request.json()
+    cid=clean(p.get("candidate_id"))
+    status=clean(p.get("status")).lower()
+    if status not in ("discovered","reviewed","rejected","promoted"):
+        raise HTTPException(400,"Invalid research candidate status")
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        row=await conn.fetchrow("""update research_candidates set status=$2,updated_at=now()
+          where candidate_id=$1::uuid returning *""",cid,status)
+        if not row:
+            raise HTTPException(404,"Research candidate not found")
+        await event(conn,"research_candidate",cid,"status_changed",{"status":status},"admin")
+    return {"ok":True,"candidate_id":cid,"status":status}
 
 @app.get("/api/admin/summary")
 async def admin_summary(x_bmc_admin_key:str|None=Header(default=None)):
