@@ -85,7 +85,8 @@ The 12 First Wave providers have explicit readiness checks for:
 - identity verification
 - credentials review
 - routing status
-- automatic READY / HOLD activation gate
+- unique activation URL
+- automatic HOLD / READY FOR BMC REVIEW gate
 
 No provider should move from prospect to pilot/active until the relevant checks are complete.
 
@@ -259,9 +260,11 @@ Still needed:
 
 Do not add random new business ideas before clearing these:
 
-1. First Wave is already persisted to `seed-first-wave.sql`; keep the global send switches OFF.
-2. Prepare exact first-send messages, but do not send.
-3. Deploy HP runtime.
+1. First Wave is persisted to `seed-first-wave.sql`; keep the global send switches OFF.
+2. First Wave provider activation links are live in the Sheet and route to `/portfolio/provider-pilot-activate/`.
+3. Provider pilot activation updates the existing researched vendor record to `pilot_pending_review`; it does **not** auto-activate routing.
+4. Exact First Wave provider email copy exists in `EMAIL_TEMPLATES.md`; do not send until sender/postal/opt-out prerequisites are satisfied.
+5. Deploy HP runtime.
 4. Configure SMTP/reply mailbox/postal address.
 5. Configure Cloudflare Tunnel.
 6. Activate 3+ pilot providers in one first niche.
