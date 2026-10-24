@@ -6,6 +6,9 @@ This directory is the reusable front-end layer for BMC Luminary Ventures' low-ca
 - `restaurant-repair/` — urgent restaurant refrigeration and equipment repair intake
 - `growth-packs/` — productized B2B prospecting / local growth pack
 - `commercial-cleaning/` — commercial cleaning and facility-service intake
+- `property-services/` — tree work, defensible-space cleanup, landscaping, junk removal, hauling, and outdoor-property jobs
+- `pet-waste/` — recurring pet-waste cleanup routes and commercial/HOA requests
+- `vehicle-services/` — towing, roadside, mobile mechanic, tire, transport, fleet and related vehicle-service intake
 - `vendor-partner/` — shared vendor partner onboarding
 - `index.html` — portfolio launch hub
 
@@ -16,6 +19,20 @@ All pages reuse:
 - the same 12 Arizona markets
 - the same webhook contract
 - BMC's existing contact email as a zero-cost fallback
+
+## Northern Arizona priority cluster
+Prescott and Northern Arizona are treated as the first proving ground for:
+- tree trimming / removal
+- hazard-tree work
+- defensible-space / fuel reduction
+- landscaping / yard cleanup
+- junk removal
+- hauling
+- storm cleanup
+- pet-waste route service
+- towing / roadside
+- mobile mechanic / tire / lockout
+- fleet service / detailing / glass
 
 ## Form automation
 Each form supports a future webhook without redesigning the page.
