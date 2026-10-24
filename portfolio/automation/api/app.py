@@ -453,7 +453,10 @@ async def process_outreach(x_bmc_admin_key:str|None=Header(default=None)):
             or (o.status='sent' and o.next_followup_at<=now() and o.sequence_step<3)
           )
           and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(v.public_email))
-        order by coalesce(o.next_followup_at,o.created_at) asc
+        order by
+          case when v.association_signal is not null and v.association_signal<>'' then 0 else 1 end,
+          v.quality_score desc nulls last,
+          coalesce(o.next_followup_at,o.created_at) asc
         limit $1""",allowance)
       for row in rows:
         step=1 if row["status"]=="queued" else int(row["sequence_step"])+1
@@ -471,7 +474,7 @@ async def process_outreach(x_bmc_admin_key:str|None=Header(default=None)):
 
 def buyer_landing(row):
     campaign=clean(row["campaign"])
-    if campaign in ("institutional_facilities","property_management","hospitality","multifamily","facilities"):
+    if campaign in ("institutional_facilities","church_facilities","education_facilities","arts_facilities","property_management","hospitality","multifamily","facilities"):
         return f"{PUBLIC_SITE_URL}/portfolio/facility-maintenance/"
     if campaign=="restaurants":
         return f"{PUBLIC_SITE_URL}/portfolio/restaurant-repair/"
