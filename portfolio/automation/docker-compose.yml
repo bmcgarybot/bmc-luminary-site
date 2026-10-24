@@ -16,6 +16,7 @@ services:
       - ./seed-buyer-outreach.sql:/docker-entrypoint-initdb.d/050-seed-buyer-outreach.sql:ro
       - ./seed-first-wave.sql:/docker-entrypoint-initdb.d/055-seed-first-wave.sql:ro
       - ./seed-products.sql:/docker-entrypoint-initdb.d/060-seed-products.sql:ro
+      - ./seed-research.sql:/docker-entrypoint-initdb.d/070-seed-research.sql:ro
     networks: [bmc_internal]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
