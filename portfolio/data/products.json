@@ -1,0 +1,45 @@
+{
+  "version": "2026-10-24",
+  "products": [
+    {
+      "product_key": "growth_pack_starter",
+      "service_key": "growth_pack",
+      "display_name": "100-Prospect Local Growth Pack",
+      "amount_cents": 49900,
+      "currency": "usd",
+      "billing_type": "one_time",
+      "payment_link_url": null,
+      "active": true
+    },
+    {
+      "product_key": "growth_pack_premium",
+      "service_key": "growth_pack",
+      "display_name": "Premium Local Growth Pack",
+      "amount_cents": 74900,
+      "currency": "usd",
+      "billing_type": "one_time",
+      "payment_link_url": null,
+      "active": true
+    },
+    {
+      "product_key": "competitor_intelligence_pack",
+      "service_key": "competitor_intel",
+      "display_name": "Local Competitor Intelligence Pack",
+      "amount_cents": 29900,
+      "currency": "usd",
+      "billing_type": "one_time",
+      "payment_link_url": null,
+      "active": true
+    },
+    {
+      "product_key": "market_expansion_pack",
+      "service_key": "market_expansion",
+      "display_name": "Local Market Expansion Pack",
+      "amount_cents": 69900,
+      "currency": "usd",
+      "billing_type": "one_time",
+      "payment_link_url": null,
+      "active": true
+    }
+  ]
+}
