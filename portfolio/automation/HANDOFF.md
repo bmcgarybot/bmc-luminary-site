@@ -35,6 +35,9 @@ Important paths:
 - `portfolio/automation/EMAIL_TEMPLATES.md`
 - `portfolio/automation/runtime-doctor.sh`
 - `portfolio/automation/AGENT.md`
+- `portfolio/automation/CLOUD_DEPLOY.md`
+- `portfolio/automation/WHITE_LABEL.md`
+- `portfolio/automation/provision-cloud.sh`
 - `portfolio/automation/searxng/settings.yml`
 
 ### Google Drive
@@ -207,13 +210,16 @@ Backend already supports Stripe webhook event verification, payment/revenue even
 
 ## Runtime architecture
 
-Planned HP x360 automation appliance:
-- 2018 HP x360
+Production target is now a small always-on cloud VPS rather than a home appliance.
+
+Initial class:
+- Ubuntu 24.04 LTS x86_64
+- 4 vCPU
 - 8 GB RAM
-- ideally lightweight Linux
-- Docker
+- 75+ GB NVMe
+- Docker Engine + Compose
 - PostgreSQL
-- BMC deterministic FastAPI ops API
+- BMC deterministic FastAPI Ops API
 - n8n
 - scheduler
 - nginx webhook-only gateway
@@ -221,12 +227,21 @@ Planned HP x360 automation appliance:
 - private SearXNG research search
 - optional Ollama + Qwen3 1.7B utility model
 
-ENVY/Mac/Bonsai remain escalation AI workers. AI is not required for core intake/routing.
+The current intended commercial target is the OVHcloud VPS-2 class, but the stack is provider-neutral.
+
+All application ports bind to 127.0.0.1. Cloudflare Tunnel provides public webhook ingress without publishing n8n, SearXNG, Ollama, Postgres, or the admin interface. Private admin/n8n access should use SSH port forwarding.
+
+The Compose stack now has memory ceilings and log rotation sized for the 8 GB class. The deterministic core runs without an LLM; the resident model is optional and capped so it cannot become the business operating system.
+
+ENVY/Mac/Bonsai remain optional escalation AI workers.
 
 Start with:
-`portfolio/automation/START_HERE.md`
+- `portfolio/automation/START_HERE.md`
+- `portfolio/automation/CLOUD_DEPLOY.md`
 
-After bootstrap, `runtime-doctor.sh` verifies the local core instead of treating "containers started" as success. It checks Docker/Compose, API/Postgres health, service/vendor/buyer seeds, exact 12-provider + 7-buyer `pilot1` cohort, outreach OFF switches, research backlog, and the private launch preflight. Missing SMTP/IMAP/postal/Cloudflare/Stripe setup is reported as an external warning rather than silently hidden.
+Future white-label direction is documented in `portfolio/automation/WHITE_LABEL.md`: isolated, clonable single-tenant deployments first; multi-tenant SaaS later only after BMC proves the transaction loop.
+
+After bootstrap, `runtime-doctor.sh` verifies Docker/Compose, cloud target resources, API/Postgres health, service/vendor/buyer seeds, exact 12-provider + 7-buyer `pilot1` cohort, outreach OFF switches, research backlog, private agent status and remaining external launch blockers.
 
 Seed rerun safety is now enforced: `seed-vendors.sql` refreshes researched prospect records but will not overwrite vendors once their status is `applicant`, `pilot_pending_review`, `pilot`, `active`, `paused`, or `suppressed`. CI re-applies the vendor seed after a simulated activation submission and verifies the pending status, capacity, and insurance data survive. This matters because `bootstrap.sh` deliberately re-applies seeds on rerun.
 
@@ -272,9 +287,9 @@ The current research worker is first-pass discovery from search-result evidence.
 
 ## Current runtime blockers
 
-1. HP appliance not deployed yet.
+1. Cloud VPS not purchased/deployed yet.
 2. Cloudflare Tunnel not authorized/configured.
-3. `hooks.bmcluminaryventures.com` not routed to the HP.
+3. `hooks.bmcluminaryventures.com` not routed to the cloud webhook proxy.
 4. SMTP sender not configured.
 5. Reply/IMAP mailbox not configured.
 6. BMC postal address not configured for outbound.
@@ -314,7 +329,7 @@ The green CI now proves:
 - internal Growth Pack fulfillment path
 - Stripe webhook/revenue/order/dedupe path
 
-The code is CI-verified but **not deployed to the HP yet**.
+The application code was CI-verified before the cloud retarget and is **not deployed to the production VPS yet**. Re-run/verify CI after cloud-runtime changes before treating the newest head as green.
 
 ## SEO / AI discovery
 
@@ -340,8 +355,8 @@ Still needed:
 Do not add random new business ideas before clearing these:
 
 1. Keep both global outreach switches OFF.
-2. Deploy the HP runtime from `START_HERE.md`; bootstrap now starts the private research search and runs `runtime-doctor.sh` automatically.
-3. Confirm the deployed agent status and staged-research queue locally on the HP.
+2. Purchase/deploy the 4-vCPU / 8-GB cloud VPS from `START_HERE.md` / `CLOUD_DEPLOY.md`; run `provision-cloud.sh`, then bootstrap.
+3. Confirm runtime doctor, deployed agent status, staged-research queue and backup on the VPS; access private admin/n8n through SSH forwarding.
 4. Configure transactional SMTP, monitored reply/IMAP, SPF/DKIM/DMARC, and the real BMC postal address.
 5. Configure the Cloudflare Tunnel and route `hooks.bmcluminaryventures.com`.
 6. Invite only the curated `pilot1` providers using their dedicated activation links. The Prescott tree/landscape cluster already has three publicly credential-complete targets (ZebraScapes, Yavapai Landscaping, Jonny's).
