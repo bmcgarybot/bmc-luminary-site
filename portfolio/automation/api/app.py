@@ -250,6 +250,7 @@ BMC Luminary Ventures LLC
 async def handle_vendor_application(conn,p):
     business=clean(p.get("business_name")); market=clean(p.get("market"))
     if not business or not market: raise HTTPException(400,"Business name and market required")
+    if clean(p.get("pilot_terms")).lower()!="accepted": raise HTTPException(400,"Provider pilot terms must be acknowledged")
     vid=f"app_{slug(business)}_{uuid.uuid4().hex[:8]}"
     await conn.execute("""insert into vendors(vendor_id,business_name,public_email,public_phone,website,status,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
       values($1,$2,$3,$4,$5,'applicant',$6,$7,$8,$9,$10,$11)""",
