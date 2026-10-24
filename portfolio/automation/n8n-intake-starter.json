@@ -1,0 +1,86 @@
+{
+  "name": "BMC Portfolio - Intake Normalize Starter",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "bmc-intake",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "bmc-webhook",
+      "name": "BMC Intake Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "bmc-portfolio-intake"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $json.body ?? $json;\\nconst required = ['form_type','market','submitted_at'];\\nconst missing = required.filter(k => !String(input[k] ?? '').trim());\\nconst urgencyMap = {'ASAP':20,'Urgent':20,'Same day if possible':20,'Today':15,'Within 7 days':10,'Within 30 days':5};\\nconst urgency = input.timing || input.urgency || '';\\nconst consent = String(input.consent || '').toLowerCase() === 'yes';\\nlet score = urgencyMap[urgency] || 0;\\nif (input.email || input.phone) score += 20;\\nif (String(input.scope || input.problem || '').length >= 20) score += 15;\\nif (consent) score += 20;\\nif (input.market) score += 15;\\nconst normalized = {\\n  lead_id: `lead_${Date.now()}_${Math.random().toString(36).slice(2,8)}`,\\n  submitted_at: input.submitted_at || new Date().toISOString(),\\n  form_type: input.form_type || 'unknown',\\n  market: input.market || '',\\n  service_type: input.service_type || input.equipment_type || '',\\n  customer_name: input.contact_name || input.name || '',\\n  business_name: input.business_name || '',\\n  email: input.email || '',\\n  phone: input.phone || '',\\n  preferred_contact: input.preferred_contact || '',\\n  scope: input.scope || input.problem || input.notes || '',\\n  urgency,\\n  source_page: input.page || '',\\n  consent,\\n  lead_score: score,\\n  status: missing.length || !consent ? 'exception' : 'received',\\n  exception_reason: missing.length ? `missing:${missing.join(',')}` : (!consent ? 'missing_consent' : '')\\n};\\nreturn [{json:normalized}];"
+      },
+      "id": "normalize",
+      "name": "Normalize & Score",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { ok: $json.status !== 'exception', lead_id: $json.lead_id, status: $json.status, message: $json.status === 'exception' ? 'Request needs review.' : 'Request received.' } }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "respond",
+      "name": "Respond to Request",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "BMC Intake Webhook": {
+      "main": [
+        [
+          {
+            "node": "Normalize & Score",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize & Score": {
+      "main": [
+        [
+          {
+            "node": "Respond to Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false,
+  "versionId": "bmc-portfolio-intake-starter",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

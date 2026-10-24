@@ -1,0 +1,62 @@
+{
+  "version": "2026-10-24",
+  "service_aliases": {
+    "Tree removal": "tree_service",
+    "Tree trimming": "tree_service",
+    "Defensible-space / fuel reduction": "tree_service",
+    "Junk removal": "junk_hauling",
+    "Hauling / dump run": "junk_hauling",
+    "Recurring maintenance": "landscaping",
+    "One-time yard cleanup": "landscaping",
+    "Septic pumping / inspection": "rural_property",
+    "Septic repair / installation": "rural_property",
+    "Grading / excavation": "rural_property",
+    "Potable / bulk water hauling": "rural_property",
+    "Well / pump service": "rural_property",
+    "Tow": "towing_roadside",
+    "Jump start / battery": "towing_roadside",
+    "Lockout": "towing_roadside",
+    "Flat tire / mobile tire": "towing_roadside",
+    "Driveway plowing": "snow_service",
+    "Snow berm removal": "snow_service",
+    "Recurring pool service": "pool_desert_property",
+    "Pool repair / equipment": "pool_desert_property",
+    "No-cool / repair": "hvac_heat",
+    "Replacement estimate": "hvac_heat",
+    "Turnover cleaning": "str_property_care",
+    "Recurring property-care coordination": "str_property_care"
+  },
+  "scoring": {
+    "urgency": {
+      "ASAP": 20,
+      "Urgent": 20,
+      "Same day if possible": 20,
+      "Today": 15,
+      "Within 7 days": 10,
+      "Within 30 days": 5
+    },
+    "consent_required": true,
+    "market_required": true,
+    "contact_required": true
+  },
+  "routing_order": [
+    "exact market + exact service",
+    "exact market + compatible service",
+    "adjacent-market vendor within declared territory",
+    "exception_queue"
+  ],
+  "vendor_status_allowed": [
+    "active",
+    "pilot"
+  ],
+  "exception_reasons": [
+    "no_vendor_match",
+    "missing_required_data",
+    "duplicate_suspected",
+    "licensing_review",
+    "payment_failure",
+    "delivery_failure",
+    "customer_dispute",
+    "vendor_dispute"
+  ]
+}
