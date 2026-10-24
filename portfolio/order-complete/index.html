@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow"><title>Order Received | BMC Luminary Ventures</title><link rel="stylesheet" href="../assets/core.css"></head><body>
+<nav class="nav"><div class="wrap nav-in"><a class="brand" href="../">BMC Service Portfolio</a></div></nav>
+<header class="hero"><div class="wrap"><div class="eyebrow">Payment received</div><h1>Your BMC order is in.</h1><p>Stripe handles the payment confirmation. BMC uses the order details and your intake information to start fulfillment and contact you if anything is missing.</p><div class="actions"><a class="btn btn-primary" id="next" href="../request/">Add project details</a><a class="btn btn-secondary" href="../">Return to BMC</a></div></div></header>
+<section class="section"><div class="wrap"><div class="card"><h3>What happens next</h3><p>For research products, fulfillment begins after BMC has the market, service, ideal-customer, and exclusion details needed to build the deliverable. Keep your Stripe receipt for your records.</p></div></div></section>
+<footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>Order confirmation</span></div></footer>
+<script src="../assets/core.js"></script><script>
+const q=new URLSearchParams(location.search),offer=q.get('offer')||'';
+const map={'growth-pack':'../growth-packs/#order','growth-pack-premium':'../growth-packs/#order','competitor-intelligence':'../competitor-intelligence/#request','market-expansion':'../market-expansion-pack/#request'};
+if(map[offer])document.getElementById('next').href=map[offer];
+</script></body></html>
