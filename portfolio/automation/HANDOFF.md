@@ -33,6 +33,7 @@ Important paths:
 - `portfolio/automation/START_HERE.md`
 - `portfolio/automation/OUTREACH.md`
 - `portfolio/automation/EMAIL_TEMPLATES.md`
+- `portfolio/automation/runtime-doctor.sh`
 
 ### Google Drive
 Connected account verified earlier:
@@ -87,6 +88,14 @@ The 12 First Wave providers have explicit readiness checks for:
 - routing status
 - unique activation URL
 - automatic HOLD / READY FOR BMC REVIEW gate
+
+The production flow now preserves the existing researched vendor record end-to-end:
+- `pilot1` provider outreach uses the dedicated `/portfolio/provider-pilot-activate/` link, not the generic vendor application
+- submission changes only that vendor to `pilot_pending_review`
+- the provider remains unroutable in that state
+- the private local `/admin` page has a **Pending pilot reviews** queue
+- explicit BMC approval is required before status becomes `pilot`
+- approval resolves the pilot-review exception and records a `pilot_approved` event
 
 No provider should move from prospect to pilot/active until the relevant checks are complete.
 
@@ -207,6 +216,8 @@ ENVY/Mac/Bonsai remain escalation AI workers. AI is not required for core intake
 Start with:
 `portfolio/automation/START_HERE.md`
 
+After bootstrap, `runtime-doctor.sh` verifies the local core instead of treating "containers started" as success. It checks Docker/Compose, API/Postgres health, service/vendor/buyer seeds, exact 12-provider + 7-buyer `pilot1` cohort, outreach OFF switches, research backlog, and the private launch preflight. Missing SMTP/IMAP/postal/Cloudflare/Stripe setup is reported as an external warning rather than silently hidden.
+
 ## Current runtime blockers
 
 1. HP appliance not deployed yet.
@@ -222,20 +233,27 @@ Start with:
 
 ## Validation state
 
-Current GitHub master head at this refresh: `1cb62cdd2ad8ea677b320d7a6f9263f617bf3e77`. Re-check CI on any newer head before claiming green.
+Latest code head immediately before this handoff refresh: `89572120b2524718f65e4af07548b13d67ef6ccd`.
 
+The last directly recorded GitHub Actions run was green before the newest activation-review/runtime-doctor commits. The available GitHub connector can read the latest commits and workflow file but does not expose push-based Actions check-runs for this repository, so **do not claim the newest head is green until the latest Actions run is independently confirmed**.
 
-GitHub Pages build/deploy has succeeded.
+The CI workflow itself now covers:
+- Python API syntax
+- 48-service/front registry validation
+- Docker Compose validation
+- Postgres + API boot
+- service/vendor/buyer seeds
+- exact 12-provider + 7-buyer First Wave cohort
+- `runtime-doctor.sh`
+- dedicated First Wave activation URL/copy
+- existing-vendor activation to `pilot_pending_review`
+- private BMC pilot approval to `pilot`
+- ordinary lead intake
+- real provider accept/contact-release path
+- internal Growth Pack fulfillment path
+- Stripe webhook/revenue/order/dedupe path
 
-Full CI smoke test has succeeded on the current architecture:
-- Postgres starts
-- schema and seeds load
-- API health passes
-- intake path works
-- Stripe webhook/revenue path works
-- dedupe behavior works
-
-If a new thread continues work, re-check current CI before assuming latest commits are green.
+The Master Operations Dashboard now labels backend smoke status **GREEN — LAST VERIFIED**, not current-head green. Re-check GitHub Actions before changing that wording back.
 
 ## SEO / AI discovery
 
@@ -260,20 +278,19 @@ Still needed:
 
 Do not add random new business ideas before clearing these:
 
-1. First Wave is persisted to `seed-first-wave.sql`; keep the global send switches OFF.
-2. First Wave provider activation links are live in the Sheet and route to `/portfolio/provider-pilot-activate/`.
-3. Provider pilot activation updates the existing researched vendor record to `pilot_pending_review`; it does **not** auto-activate routing.
-4. Exact First Wave provider email copy exists in `EMAIL_TEMPLATES.md`; do not send until sender/postal/opt-out prerequisites are satisfied.
-5. Deploy HP runtime.
-4. Configure SMTP/reply mailbox/postal address.
-5. Configure Cloudflare Tunnel.
-6. Activate 3+ pilot providers in one first niche.
-7. Run one synthetic lead end-to-end.
-8. Run one real lead end-to-end.
-9. Complete Stripe activation and create Payment Links.
-10. Sell first paid Growth/Competitor/Expansion product.
-11. Submit search properties/sitemaps.
-12. Expand provider and buyer coverage according to Coverage gaps.
+1. Keep both global outreach switches OFF.
+2. Deploy the HP runtime from `START_HERE.md`; bootstrap now runs `runtime-doctor.sh` automatically.
+3. Confirm the newest GitHub Actions run is green before treating that HP deploy as release-ready.
+4. Configure transactional SMTP, monitored reply/IMAP, SPF/DKIM/DMARC, and the real BMC postal address.
+5. Configure the Cloudflare Tunnel and route `hooks.bmcluminaryventures.com`.
+6. Invite only the curated `pilot1` providers using their dedicated activation links.
+7. Review activation submissions in the private **Pending pilot reviews** queue and explicitly approve 3+ providers in one first niche.
+8. Run one synthetic lead end-to-end.
+9. Run one real lead end-to-end.
+10. Complete Stripe activation and create the four Payment Links.
+11. Sell the first paid Growth/Competitor/Expansion product.
+12. Submit Google/Bing search properties and sitemaps.
+13. Expand provider and buyer coverage according to Coverage gaps.
 
 ## Working rule
 
