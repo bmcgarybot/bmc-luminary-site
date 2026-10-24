@@ -153,18 +153,79 @@ Only accept if this fits your territory and current capacity.
 async def handle_vendor_response(conn,p):
     lead_id=clean(p.get("lead_id")); vendor_id=clean(p.get("vendor_id")); token=clean(p.get("token")); response=clean(p.get("response"))
     if not all([lead_id,vendor_id,token,response]): raise HTTPException(400,"Missing response fields")
-    row=await conn.fetchrow("""select lm.*,l.market,l.service_key,l.email,l.customer_name,l.scope
+    row=await conn.fetchrow("""select lm.*,l.market,l.service_key,l.email,l.phone,l.customer_name,l.business_name,
+      l.preferred_contact,l.scope,l.urgency
       from lead_matches lm join leads l on l.lead_id=lm.lead_id
       where lm.lead_id=$1::uuid and lm.vendor_id=$2 and lm.response_token=$3 and lm.status='offered'""",lead_id,vendor_id,token)
     if not row: raise HTTPException(409,"Offer is invalid, expired, or already answered")
     if response=="accept":
+        vendor=await conn.fetchrow("""select vendor_id,business_name,public_email,public_phone,website
+          from vendors where vendor_id=$1""",vendor_id)
+        if not vendor: raise HTTPException(409,"Provider record is unavailable")
         await conn.execute("update lead_matches set status='accepted',responded_at=now() where match_id=$1",row["match_id"])
         await conn.execute("update leads set status='provider_accepted',updated_at=now() where lead_id=$1",row["lead_id"])
         await event(conn,"lead",row["lead_id"],"provider_accepted",{"vendor_id":vendor_id},vendor_id)
-        if row["email"]:
-            await send_mail(row["email"],"Your BMC service request was accepted",
-              f"A participating provider accepted your {row['service_key']} request in {row['market']}. We are moving the request into contact/estimate follow-up.\n\nBMC Luminary Ventures LLC")
-        return {"ok":True,"status":"accepted","message":"Accepted. BMC recorded your response and will continue the workflow."}
+
+        job_link=f"{PUBLIC_SITE_URL}/portfolio/provider-job-update/?lead_id={row['lead_id']}&vendor_id={vendor_id}&token={token}"
+        customer_name=clean(row["customer_name"]) or "Customer"
+        customer_business=clean(row["business_name"])
+        customer_email=clean(row["email"])
+        customer_phone=clean(row["phone"])
+        preferred=clean(row["preferred_contact"])
+        scope=clean(row["scope"])
+        urgency=clean(row["urgency"])
+
+        provider_body=f"""You accepted a BMC service request. The customer's contact details are now released for this request.
+
+Market: {row['market']}
+Service: {row['service_key']}
+Customer: {customer_name}
+Business / property: {customer_business or 'Not provided'}
+Email: {customer_email or 'Not provided'}
+Phone: {customer_phone or 'Not provided'}
+Preferred contact: {preferred or 'Not specified'}
+Timing: {urgency or 'Not specified'}
+
+Scope:
+{scope}
+
+Please contact the customer promptly. After contact/estimate, close the loop here:
+{job_link}
+
+Customer information is provided only for this service request and should not be sold or used for unrelated marketing.
+
+BMC Luminary Ventures LLC
+"""
+        await send_mail(vendor["public_email"],f"Customer contact released: {row['service_key']} in {row['market']}",provider_body)
+
+        provider_contact=[]
+        if clean(vendor["public_phone"]): provider_contact.append(f"Phone: {clean(vendor['public_phone'])}")
+        if clean(vendor["public_email"]): provider_contact.append(f"Email: {clean(vendor['public_email'])}")
+        if clean(vendor["website"]): provider_contact.append(f"Website: {clean(vendor['website'])}")
+        contact_block="\n".join(provider_contact) or "The provider will contact you using the details in your request."
+        if customer_email:
+            customer_body=f"""A participating provider accepted your BMC service request.
+
+Provider: {vendor['business_name']}
+Market: {row['market']}
+Service: {row['service_key']}
+
+{contact_block}
+
+The provider is an independent business and will communicate its own pricing, scope, scheduling, warranties, and job terms directly with you. BMC will follow the request through the estimate/outcome stage.
+
+Reference: {row['lead_id']}
+BMC Luminary Ventures LLC
+"""
+            await send_mail(customer_email,f"Provider matched for your {row['service_key']} request",customer_body)
+
+        await event(conn,"lead",row["lead_id"],"contact_released",{
+          "vendor_id":vendor_id,
+          "customer_email_released":bool(customer_email),
+          "customer_phone_released":bool(customer_phone)
+        },"system")
+        return {"ok":True,"status":"accepted","message":"Accepted. Customer contact details have been released and BMC will continue outcome follow-up."}
+
     await conn.execute("update lead_matches set status='declined',responded_at=now(),decline_reason=$2 where match_id=$1",row["match_id"],clean(p.get("notes")))
     await event(conn,"lead",row["lead_id"],"provider_declined",{"vendor_id":vendor_id,"reason":clean(p.get("notes"))},vendor_id)
     lead=await conn.fetchrow("select * from leads where lead_id=$1",row["lead_id"])
