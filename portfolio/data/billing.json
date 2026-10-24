@@ -1,0 +1,44 @@
+{
+  "version": "2026-10-24",
+  "stripe_account": "acct_1UU9OfQU2BLM8GhL",
+  "livemode": true,
+  "checkout_status": "blocked_account_activation",
+  "offers": {
+    "growth_pack_starter": {
+      "name": "BMC Local Growth Pack",
+      "amount_usd": 499,
+      "stripe_product_id": "prod_VVALyVr6R1NGuw",
+      "stripe_price_id": "price_1UUA0jQU2BLM8GhLhFJt2sDd",
+      "payment_link_id": null,
+      "payment_link_url": null,
+      "fallback_url": "/portfolio/growth-packs/#order"
+    },
+    "growth_pack_premium": {
+      "name": "BMC Premium Growth Pack",
+      "amount_usd": 749,
+      "stripe_product_id": "prod_VVALITlv81V4Tp",
+      "stripe_price_id": "price_1UUA0pQU2BLM8GhLnyZQPMPu",
+      "payment_link_id": null,
+      "payment_link_url": null,
+      "fallback_url": "/portfolio/growth-packs/#order"
+    },
+    "competitor_intelligence_pack": {
+      "name": "BMC Local Competitor Intelligence Pack",
+      "amount_usd": 299,
+      "stripe_product_id": "prod_VVALDbksuY3Urv",
+      "stripe_price_id": "price_1UUA0rQU2BLM8GhLFCfeeSZ1",
+      "payment_link_id": null,
+      "payment_link_url": null,
+      "fallback_url": "/portfolio/competitor-intelligence/#request"
+    },
+    "market_expansion_pack": {
+      "name": "BMC Local Market Expansion Pack",
+      "amount_usd": 699,
+      "stripe_product_id": "prod_VVALUxBVT90wjM",
+      "stripe_price_id": "price_1UUA0tQU2BLM8GhLP9LS7wUn",
+      "payment_link_id": null,
+      "payment_link_url": null,
+      "fallback_url": "/portfolio/market-expansion-pack/#request"
+    }
+  }
+}
