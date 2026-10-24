@@ -18,6 +18,7 @@ SMTP_USER=os.getenv("SMTP_USER","")
 SMTP_PASSWORD=os.getenv("SMTP_PASSWORD","")
 SMTP_FROM=os.getenv("SMTP_FROM",SMTP_USER or "contact@bmcluminaryventures.com")
 SMTP_STARTTLS=os.getenv("SMTP_STARTTLS","true").lower()=="true"
+SMTP_DRY_RUN=os.getenv("SMTP_DRY_RUN","false").lower()=="true"
 OUTREACH_ENABLED=os.getenv("OUTREACH_ENABLED","false").lower()=="true"
 OUTREACH_DAILY_LIMIT=int(os.getenv("OUTREACH_DAILY_LIMIT","25"))
 OUTREACH_WAVE=os.getenv("OUTREACH_WAVE","pilot1").strip() or "pilot1"
@@ -51,11 +52,16 @@ async def shutdown():
     await app.state.pool.close()
 
 async def send_mail(to,subject,body):
-    if not SMTP_HOST or not to: return False
-    msg=EmailMessage(); msg["From"]=SMTP_FROM; msg["To"]=to; msg["Subject"]=subject; msg.set_content(body)
-    await aiosmtplib.send(msg,hostname=SMTP_HOST,port=SMTP_PORT,username=SMTP_USER or None,
-        password=SMTP_PASSWORD or None,start_tls=SMTP_STARTTLS)
-    return True
+    if not to: return False
+    if SMTP_DRY_RUN: return True
+    if not SMTP_HOST or "CHANGE_ME" in SMTP_HOST: return False
+    try:
+        msg=EmailMessage(); msg["From"]=SMTP_FROM; msg["To"]=to; msg["Subject"]=subject; msg.set_content(body)
+        await aiosmtplib.send(msg,hostname=SMTP_HOST,port=SMTP_PORT,username=SMTP_USER or None,
+            password=SMTP_PASSWORD or None,start_tls=SMTP_STARTTLS)
+        return True
+    except Exception:
+        return False
 
 def clean(v): return str(v or "").strip()
 def slug(v): return re.sub(r"[^a-z0-9]+","-",clean(v).lower()).strip("-")[:40] or "vendor"
@@ -114,6 +120,7 @@ async def next_vendor(conn,lead_id,market,service_key):
       join vendor_services vs on vs.vendor_id=v.vendor_id
       join vendor_markets vm on vm.vendor_id=v.vendor_id
       where vs.service_key=$1 and vm.market=$2 and v.status in ('pilot','active')
+        and v.public_email is not null and v.public_email<>''
         and not exists(select 1 from lead_matches lm where lm.lead_id=$3 and lm.vendor_id=v.vendor_id)
       order by v.quality_score desc nulls last, v.updated_at asc
       limit 1
@@ -146,7 +153,15 @@ Accept or decline securely:
 
 Only accept if this fits your territory and current capacity.
 """
-    await send_mail(vendor["public_email"],f"New {lead['service_key']} request in {lead['market']}",body)
+    delivered=await send_mail(vendor["public_email"],f"New {lead['service_key']} request in {lead['market']}",body)
+    if not delivered:
+        await conn.execute("update lead_matches set status='delivery_failed',responded_at=now() where lead_id=$1 and vendor_id=$2",lead["lead_id"],vendor["vendor_id"])
+        await conn.execute("update leads set status='exception',exception_reason='provider_offer_delivery_failure',updated_at=now() where lead_id=$1",lead["lead_id"])
+        await conn.execute("""insert into exceptions(type,lead_id,vendor_id,severity,summary,recommended_action)
+          values('provider_offer_delivery_failure',$1,$2,'high',$3,$4)""",
+          lead["lead_id"],vendor["vendor_id"],f"Could not deliver provider offer to {vendor['business_name']}","Verify outbound mail and provider email before rerouting")
+        await event(conn,"lead",lead["lead_id"],"provider_offer_delivery_failed",{"vendor_id":vendor["vendor_id"]})
+        return None
     await event(conn,"lead",lead["lead_id"],"provider_offered",{"vendor_id":vendor["vendor_id"]})
     return vendor
 
@@ -224,7 +239,7 @@ BMC Luminary Ventures LLC
           "customer_email_released":bool(customer_email),
           "customer_phone_released":bool(customer_phone)
         },"system")
-        return {"ok":True,"status":"accepted","message":"Accepted. Customer contact details have been released and BMC will continue outcome follow-up."}
+        return {"ok":True,"status":"accepted","message":f"Accepted. Contact: {customer_name}; email: {customer_email or 'not provided'}; phone: {customer_phone or 'not provided'}. BMC will continue outcome follow-up."}
 
     await conn.execute("update lead_matches set status='declined',responded_at=now(),decline_reason=$2 where match_id=$1",row["match_id"],clean(p.get("notes")))
     await event(conn,"lead",row["lead_id"],"provider_declined",{"vendor_id":vendor_id,"reason":clean(p.get("notes"))},vendor_id)
