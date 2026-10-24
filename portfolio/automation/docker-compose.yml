@@ -37,10 +37,24 @@ services:
       WEBHOOK_URL: ${WEBHOOK_URL}
       EXECUTIONS_DATA_PRUNE: "true"
       EXECUTIONS_DATA_MAX_AGE: "336"
+      LOCAL_AI_URL: ${LOCAL_AI_URL}
+      LOCAL_AI_MODEL: ${LOCAL_AI_MODEL}
     ports:
       - "127.0.0.1:5678:5678"
     volumes:
       - bmc_n8n:/home/node/.n8n
+    networks: [bmc_internal]
+
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    profiles: ["local-ai"]
+    environment:
+      OLLAMA_KEEP_ALIVE: "10m"
+    volumes:
+      - bmc_ollama:/root/.ollama
+    ports:
+      - "127.0.0.1:11434:11434"
     networks: [bmc_internal]
 
   webhook_proxy:
@@ -67,3 +81,4 @@ networks:
 volumes:
   bmc_postgres:
   bmc_n8n:
+  bmc_ollama:
