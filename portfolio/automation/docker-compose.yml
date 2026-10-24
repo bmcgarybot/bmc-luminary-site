@@ -14,6 +14,7 @@ services:
       - ./seed-buyers.sql:/docker-entrypoint-initdb.d/030-seed-buyers.sql:ro
       - ./seed-outreach.sql:/docker-entrypoint-initdb.d/040-seed-outreach.sql:ro
       - ./seed-buyer-outreach.sql:/docker-entrypoint-initdb.d/050-seed-buyer-outreach.sql:ro
+      - ./seed-products.sql:/docker-entrypoint-initdb.d/060-seed-products.sql:ro
     networks: [bmc_internal]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
@@ -52,6 +53,7 @@ services:
       LOCAL_AI_ENABLED: ${LOCAL_AI_ENABLED}
       LOCAL_AI_URL: ${LOCAL_AI_URL}
       LOCAL_AI_MODEL: ${LOCAL_AI_MODEL}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
     ports:
       - "127.0.0.1:8000:8000"
     networks: [bmc_internal]
