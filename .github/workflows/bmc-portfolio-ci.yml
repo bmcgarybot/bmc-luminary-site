@@ -1,0 +1,46 @@
+name: BMC Portfolio CI
+
+on:
+  push:
+    paths:
+      - "portfolio/**"
+      - ".github/workflows/bmc-portfolio-ci.yml"
+  pull_request:
+    paths:
+      - "portfolio/**"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate API syntax
+        run: python -m py_compile portfolio/automation/api/app.py
+      - name: Validate service registry and fronts
+        run: |
+          python - <<'PY'
+          import json, pathlib, sys
+          root=pathlib.Path("portfolio")
+          data=json.loads((root/"data/services.json").read_text())
+          services=data["services"]
+          assert len(services) >= 47, f"Expected >=47 services, got {len(services)}"
+          missing=[]
+          dup=set(); seen=set()
+          for s in services:
+              key=s["service_key"]
+              if key in seen: dup.add(key)
+              seen.add(key)
+              front=s.get("live_front","")
+              if front.startswith("/portfolio/"):
+                  rel=front[len("/portfolio/"):].strip("/")
+                  if not (root/rel/"index.html").exists(): missing.append((key,front))
+          assert not dup, f"Duplicate service keys: {sorted(dup)}"
+          assert not missing, f"Missing service fronts: {missing}"
+          print(f"Validated {len(services)} registered services")
+          PY
+      - name: Validate Compose
+        working-directory: portfolio/automation
+        run: docker compose --env-file .env.example config >/dev/null
