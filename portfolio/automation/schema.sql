@@ -164,3 +164,10 @@ create table if not exists revenue_events (
   status text default 'earned',
   notes text
 );
+
+create table if not exists outreach_suppressions (
+  email text primary key,
+  reason text,
+  source text,
+  created_at timestamptz default now()
+);
