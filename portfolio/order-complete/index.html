@@ -4,7 +4,12 @@
 <section class="section"><div class="wrap"><div class="card"><h3>What happens next</h3><p>For research products, fulfillment begins after BMC has the market, service, ideal-customer, and exclusion details needed to build the deliverable. Keep your Stripe receipt for your records.</p></div></div></section>
 <footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>Order confirmation</span></div></footer>
 <script src="../assets/core.js"></script><script>
-const q=new URLSearchParams(location.search),offer=q.get('offer')||'';
+const q=new URLSearchParams(location.search),offer=q.get('offer')||'',sessionId=q.get('session_id')||'';
 const map={'growth-pack':'../growth-packs/#order','growth-pack-premium':'../growth-packs/#order','competitor-intelligence':'../competitor-intelligence/#request','market-expansion':'../market-expansion-pack/#request'};
-if(map[offer])document.getElementById('next').href=map[offer];
+if(map[offer]){
+  const parts=map[offer].split('#'),params=new URLSearchParams();
+  if(sessionId)params.set('session_id',sessionId);
+  if(offer)params.set('offer',offer);
+  document.getElementById('next').href=parts[0]+(params.toString()?'?'+params.toString():'')+(parts[1]?'#'+parts[1]:'');
+}
 </script></body></html>
