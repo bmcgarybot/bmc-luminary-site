@@ -201,3 +201,49 @@ alter table vendors add column if not exists insurance_notes text;
 
 alter table vendors add column if not exists source_url text;
 alter table vendors add column if not exists rating_signal text;
+
+create table if not exists products (
+  product_key text primary key,
+  service_key text references services(service_key) on delete set null,
+  display_name text not null,
+  billing_type text not null,
+  amount_cents integer,
+  currency text default 'usd',
+  billing_interval text,
+  stripe_product_id text,
+  stripe_price_id text,
+  stripe_payment_link_id text,
+  payment_link_url text,
+  active boolean default true,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table if not exists payment_events (
+  stripe_event_id text primary key,
+  event_type text not null,
+  stripe_object_id text,
+  product_key text references products(product_key) on delete set null,
+  customer_email text,
+  amount_cents integer,
+  currency text,
+  status text,
+  raw_payload jsonb not null,
+  processed_at timestamptz default now()
+);
+
+create table if not exists subscriptions (
+  stripe_subscription_id text primary key,
+  product_key text references products(product_key) on delete set null,
+  customer_email text,
+  vendor_id text references vendors(vendor_id) on delete set null,
+  buyer_id text references buyers(buyer_id) on delete set null,
+  status text,
+  current_period_end timestamptz,
+  cancel_at_period_end boolean default false,
+  raw_payload jsonb not null,
+  updated_at timestamptz default now()
+);
+
+create index if not exists idx_payment_events_product on payment_events(product_key,processed_at);
+create index if not exists idx_subscriptions_status on subscriptions(status);
