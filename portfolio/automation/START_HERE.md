@@ -14,6 +14,7 @@ As of October 24, 2026:
 - provider accept/decline + job-outcome tracking
 - automatic offer expiry/rerouting and follow-up scheduler
 - bounded autonomous operator for classification, exception triage, and research-queue ownership
+- private autonomous research worker with staged candidate review
 - Stripe webhook/revenue/subscription event handling
 - four live Stripe products/prices created for fixed-price research offers
 - GitHub Pages deploy pipeline active
@@ -52,6 +53,7 @@ These require account/device configuration rather than more application code:
 - n8n — orchestration, Sheets sync, research, AI helpers, reports
 - scheduler — offer expiry/reroute, follow-up, guarded outreach, operator cycle
 - BMC autonomous operator — internal classification/triage/research assignment; external actions locked
+- SearXNG — private/local-only web search for research tasks
 - nginx — webhook/API gateway
 - Cloudflare Tunnel — public HTTPS ingress
 - Ollama/Qwen3 1.7B — optional utility AI
@@ -71,11 +73,12 @@ The core starts privately. Public outreach remains disabled.
 
 ```bash
 curl http://127.0.0.1:8000/health
+curl http://127.0.0.1:8888/config
 docker compose ps
 bash runtime-doctor.sh
 ```
 
-The health response should report `ok: true`. `runtime-doctor.sh` also verifies the seeded 48-service registry, the 210-vendor / 156-buyer research pools, the exact 12-provider + 7-buyer First Wave, the outbound safety switches, the private admin preflight, the private agent status endpoint, and the remaining external launch blockers.
+The health response should report `ok: true`. `runtime-doctor.sh` also verifies the seeded 48-service registry, the 210-vendor / 156-buyer research pools, the 651-item research backlog, the exact 12-provider + 7-buyer First Wave, the outbound safety switches, the private admin preflight, the private agent status endpoint, private research-search availability, and the remaining external launch blockers.
 
 Agent documentation: `AGENT.md`.
 
@@ -85,7 +88,7 @@ Private status:
 curl http://127.0.0.1:8000/api/admin/agent-status -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY"
 ```
 
-The operator runs every 15 minutes. V1 may classify high-confidence ambiguous leads and create/assign internal work, but it cannot send prospecting, approve providers, make credential decisions, or move money.
+The operator runs every 15 minutes. It may classify high-confidence ambiguous leads, triage exceptions, and maintain a five-task research queue. The research worker runs hourly by default and stages search discoveries for review. It cannot send prospecting, approve providers, make credential decisions, or move money.
 
 Open the private local admin interface on the HP:
 
@@ -93,7 +96,7 @@ Open the private local admin interface on the HP:
 http://127.0.0.1:8000/admin
 ```
 
-The private admin now includes a **Pending pilot reviews** queue. Provider activation submissions remain `pilot_pending_review` and unroutable until BMC explicitly approves them there after credential/insurance review.
+The private admin now includes both a **Pending pilot reviews** queue and a **Research candidates** queue. Provider activation submissions remain `pilot_pending_review` and unroutable until BMC explicitly approves them there after credential/insurance review. Research discoveries remain review-only evidence and are never auto-activated or auto-contacted.
 
 Do not publish the admin interface through the public gateway.
 
