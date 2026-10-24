@@ -64,6 +64,7 @@ jobs:
           sed -i 's/^SMTP_DRY_RUN=.*/SMTP_DRY_RUN=true/' .env.ci
           sed -i 's#^STRIPE_WEBHOOK_SECRET=.*#STRIPE_WEBHOOK_SECRET=whsec_ci_test#' .env.ci
           sed -i 's#^BMC_ADMIN_KEY=.*#BMC_ADMIN_KEY=ci_admin_key#' .env.ci
+          sed -i 's#^RESEARCH_SEARCH_URL=.*#RESEARCH_SEARCH_URL=http://research-mock:8080/search#' .env.ci
           docker compose --env-file .env.ci up -d --build postgres ops_api
           for i in $(seq 1 30); do
             if curl -fsS http://127.0.0.1:8000/health >/tmp/bmc_health.json; then
@@ -72,9 +73,13 @@ jobs:
             sleep 2
           done
           cat /tmp/bmc_health.json
+          POSTGRES_CONTAINER="$(docker compose --env-file .env.ci ps -q postgres)"
+          BMC_NETWORK="$(docker inspect "$POSTGRES_CONTAINER" --format '{{range $k,$v := .NetworkSettings.Networks}}{{$k}}{{end}}')"
+          docker run -d --rm --name research-mock --network "$BMC_NETWORK" -v "$PWD/ci:/srv:ro" python:3.12-alpine python -m http.server 8080 --directory /srv
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from services;')" -ge 48
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from vendors;')" -ge 111
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from buyers;')" -ge 140
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_backlog where status='queued';")" -ge 600
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='vendor' and wave='pilot1';")" -eq 12
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='buyer' and wave='pilot1';")" -eq 7
           bash runtime-doctor.sh .env.ci
@@ -93,11 +98,50 @@ jobs:
           assert data["enabled"] is True
           assert data["external_actions_performed"] == 0
           assert data["external_actions_allowed"] is False
-          assert data["research_tasks_created"] > 0
+          assert data["research_tasks_created"] == 5
           PY
           test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from agent_runs where status='completed';") -ge 1
-          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from tasks where owner='research_agent' and status='open';") -ge 1
+          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from tasks where owner='research_agent' and status='open';") -eq 5
           test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where sent_at is not null;") -eq 0
+
+          # A second operator cycle must respect the five-task research concurrency cap.
+          curl -fsS -X POST http://127.0.0.1:8000/api/agent-cycle \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_agent_cycle_2.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_agent_cycle_2.json"))
+          assert data["research_tasks_created"] == 0
+          assert data["external_actions_performed"] == 0
+          PY
+          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from tasks where owner='research_agent' and status='open';") -eq 5
+
+          # Prove the research worker converts deterministic search results into review-only candidates.
+          curl -fsS -X POST http://127.0.0.1:8000/api/process-research \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_research.json
+          cat /tmp/bmc_research.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_research.json"))
+          assert data["ok"] is True
+          assert data["enabled"] is True
+          assert data["processed"] == 1
+          assert data["staged"] == 2
+          assert data["errors"] == []
+          PY
+          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_candidates where status='discovered';") -eq 2
+          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from tasks where owner='research_agent' and status='open';") -eq 4
+
+          curl -fsS 'http://127.0.0.1:8000/api/admin/research-candidates?status=discovered&limit=10' \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_research_candidates.json
+          export RESEARCH_CANDIDATE_ID="$(python -c 'import json; d=json.load(open("/tmp/bmc_research_candidates.json")); assert d["count"]==2; print(d["records"][0]["candidate_id"])')"
+          python - <<'PY' >/tmp/bmc_candidate_review.json
+          import json, os
+          print(json.dumps({"candidate_id":os.environ["RESEARCH_CANDIDATE_ID"],"status":"reviewed"}))
+          PY
+          curl -fsS -X POST http://127.0.0.1:8000/api/admin/research-candidate-status \
+            -H 'Content-Type: application/json' -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" \
+            --data-binary @/tmp/bmc_candidate_review.json >/tmp/bmc_candidate_review_result.json
+          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_candidates where status='reviewed';") -eq 1
 
           curl -fsS http://127.0.0.1:8000/api/admin/agent-status \
             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_agent_status.json
@@ -232,4 +276,6 @@ jobs:
       - name: Tear down smoke stack
         if: always()
         working-directory: portfolio/automation
-        run: docker compose --env-file .env.ci down -v
+        run: |
+          docker rm -f research-mock 2>/dev/null || true
+          docker compose --env-file .env.ci down -v
