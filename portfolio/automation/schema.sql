@@ -100,6 +100,7 @@ create table if not exists lead_matches (
   decline_reason text,
   quoted_amount_cents integer,
   bmc_fee_cents integer,
+  last_followup_at timestamptz,
   unique (lead_id, vendor_id)
 );
 
