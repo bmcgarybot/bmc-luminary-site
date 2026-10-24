@@ -43,13 +43,50 @@ Important:
 /portfolio/vendor-partner/
 
 ## Campaign B — B2B buyer acquisition
-Target: restaurants, property managers, HOAs, STR managers, fleets, offices, retail, hospitality, and other buyers of recurring/urgent local services.
+Target recurring and project buyers, including:
+- restaurants and hospitality
+- property managers, HOAs, apartments, STR managers
+- fleets and auto businesses
+- offices, retail, medical/dental
+- **churches and religious campuses**
+- **private schools, public-school facilities departments, charter schools**
+- **theaters, performing-arts centers, cinemas, arenas and event venues**
+- community centers, gyms and recreation facilities
+- senior living and care facilities
+- warehouses and light industrial
+
+### Facility-buyer strategy
+Churches, schools, theaters and venues are treated as **multi-service accounts**, not cleaning-only prospects.
+
+Potential cross-sell categories:
+- recurring janitorial
+- one-time deep cleaning
+- carpet / upholstery
+- floor stripping, waxing, polishing and gym floors
+- windows
+- pressure washing
+- event / post-event cleanup
+- landscaping / grounds
+- snow service where relevant
+- junk / cleanouts
+- parking lot sweeping / striping
+- HVAC
+- pest control
+- fire-safety / suppression coordination
+- plumbing / backflow
+- signage / lighting
+
+Outreach should lead with a real likely need, not dump a giant menu into the first email.
+
+### Public-school rule
+Public school districts often use procurement processes, existing facility contracts, or third-party facilities operators. Research the facilities/operations/procurement contact and contract structure first. Do not target teachers or classroom staff as service buyers.
 
 ### Sequence
 1. Identify a concrete service fit.
 2. Send a short plain-text email offering the request/quote route.
-3. Link directly to the service intake page for the relevant market/service.
+3. Link directly to the relevant service intake.
 4. Follow up once or twice, then suppress.
+5. For larger multi-service facilities, move positive replies into a facility-account / recurring-maintenance opportunity.
 
 ## Campaign C — Existing-lead vendor routing
 Only after a real customer request exists.
@@ -100,6 +137,7 @@ Safe to automate:
 
 Human/exception review initially:
 - licensing ambiguity
+- public-sector procurement ambiguity
 - customer/vendor disputes
 - refunds
 - high-dollar exclusive contracts
