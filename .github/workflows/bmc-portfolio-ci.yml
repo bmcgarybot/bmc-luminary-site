@@ -44,3 +44,35 @@ jobs:
       - name: Validate Compose
         working-directory: portfolio/automation
         run: docker compose --env-file .env.example config >/dev/null
+
+      - name: Boot database and API smoke test
+        working-directory: portfolio/automation
+        run: |
+          docker compose --env-file .env.example up -d --build postgres ops_api
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/health >/tmp/bmc_health.json; then
+              break
+            fi
+            sleep 2
+          done
+          cat /tmp/bmc_health.json
+          test "$(docker compose --env-file .env.example exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from services;')" -ge 48
+          test "$(docker compose --env-file .env.example exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from vendors;')" -ge 111
+          test "$(docker compose --env-file .env.example exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from buyers;')" -ge 134
+          curl -fsS -X POST http://127.0.0.1:8000/api/intake             -H 'Content-Type: application/json'             -d '{"submission_id":"ci-smoke-lead","form_type":"tree_service","market":"Prescott","scope":"CI smoke test: tree removal request","timing":"Within 7 days","consent":"yes"}'             >/tmp/bmc_intake.json
+          cat /tmp/bmc_intake.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_intake.json"))
+          assert data["ok"] is True
+          assert data.get("lead_id")
+          PY
+          test "$(docker compose --env-file .env.example exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from leads where submission_id='ci-smoke-lead';")" -eq 1
+      - name: Show automation logs on failure
+        if: failure()
+        working-directory: portfolio/automation
+        run: docker compose --env-file .env.example logs --no-color postgres ops_api
+      - name: Tear down smoke stack
+        if: always()
+        working-directory: portfolio/automation
+        run: docker compose --env-file .env.example down -v
