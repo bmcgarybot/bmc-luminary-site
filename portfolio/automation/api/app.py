@@ -20,8 +20,10 @@ SMTP_FROM=os.getenv("SMTP_FROM",SMTP_USER or "contact@bmcluminaryventures.com")
 SMTP_STARTTLS=os.getenv("SMTP_STARTTLS","true").lower()=="true"
 OUTREACH_ENABLED=os.getenv("OUTREACH_ENABLED","false").lower()=="true"
 OUTREACH_DAILY_LIMIT=int(os.getenv("OUTREACH_DAILY_LIMIT","25"))
+OUTREACH_WAVE=os.getenv("OUTREACH_WAVE","pilot1").strip() or "pilot1"
 BUYER_OUTREACH_ENABLED=os.getenv("BUYER_OUTREACH_ENABLED","false").lower()=="true"
 BUYER_OUTREACH_DAILY_LIMIT=int(os.getenv("BUYER_OUTREACH_DAILY_LIMIT","15"))
+BUYER_OUTREACH_WAVE=os.getenv("BUYER_OUTREACH_WAVE","pilot1").strip() or "pilot1"
 BUSINESS_POSTAL_ADDRESS=os.getenv("BUSINESS_POSTAL_ADDRESS","").strip()
 PARTNER_URL=f"{PUBLIC_SITE_URL}/portfolio/vendor-partner/"
 IMAP_ENABLED=os.getenv("IMAP_ENABLED","false").lower()=="true"
@@ -447,7 +449,7 @@ async def process_outreach(x_bmc_admin_key:str|None=Header(default=None)):
         left join lateral (select market from vendor_markets where vendor_id=v.vendor_id order by market limit 1) vm on true
         left join lateral (select service_key from vendor_services where vendor_id=v.vendor_id order by service_key limit 1) vs on true
         where o.entity_type='vendor' and o.campaign='vendor_recruitment'
-          and o.opt_out=false and v.public_email is not null and v.public_email<>''
+          and o.wave=$2 and o.opt_out=false and v.public_email is not null and v.public_email<>''
           and (
             o.status='queued'
             or (o.status='sent' and o.next_followup_at<=now() and o.sequence_step<3)
@@ -457,7 +459,7 @@ async def process_outreach(x_bmc_admin_key:str|None=Header(default=None)):
           case when v.association_signal is not null and v.association_signal<>'' then 0 else 1 end,
           v.quality_score desc nulls last,
           coalesce(o.next_followup_at,o.created_at) asc
-        limit $1""",allowance)
+        limit $1""",allowance,OUTREACH_WAVE)
       for row in rows:
         step=1 if row["status"]=="queued" else int(row["sequence_step"])+1
         subject,body=vendor_recruitment_copy(row,step)
@@ -536,12 +538,12 @@ async def process_buyer_outreach(x_bmc_admin_key:str|None=Header(default=None)):
       rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,
           b.business_name,b.public_email,b.market,b.buyer_type,b.campaign,b.likely_services
         from outreach o join buyers b on b.buyer_id=o.entity_id
-        where o.entity_type='buyer' and o.opt_out=false
+        where o.entity_type='buyer' and o.wave=$2 and o.opt_out=false
           and b.public_email is not null and b.public_email<>''
           and (o.status='queued' or (o.status='sent' and o.next_followup_at<=now() and o.sequence_step<2))
           and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(b.public_email))
         order by case when b.priority='A' then 0 else 1 end,coalesce(o.next_followup_at,o.created_at) asc
-        limit $1""",allowance)
+        limit $1""",allowance,BUYER_OUTREACH_WAVE)
       for row in rows:
         step=1 if row["status"]=="queued" else 2
         subject,body=buyer_outreach_copy(row,step)
