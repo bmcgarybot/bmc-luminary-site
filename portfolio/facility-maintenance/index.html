@@ -12,7 +12,22 @@
 <form class="form" data-bmc-form data-form-type="facility_maintenance" data-email="contact@bmcluminaryventures.com" data-subject="Facility maintenance request">
 <input class="hidden" name="website" tabindex="-1" autocomplete="off">
 <div class="row"><div class="field"><label>City / market</label><select name="market" data-market-select required><option value="">Choose market</option></select></div><div class="field"><label>Facility type</label><select name="facility_type" required><option>Church / faith organization</option><option>School / education</option><option>Theater / performing arts</option><option>Community / recreation center</option><option>Gym / fitness</option><option>Daycare / preschool</option><option>Senior living</option><option>Medical / dental office</option><option>Other commercial facility</option></select></div></div>
-<div class="field"><label>Service categories</label><textarea name="service_categories" required placeholder="Deep cleaning, carpet/floors, windows, landscaping, HVAC, pest control, parking lot, junk removal, fire-safety service, etc."></textarea></div>
+<div class="field"><label>Service categories — choose everything that applies</label>
+<div class="grid">
+<label class="check"><input type="checkbox" name="need_commercial_cleaning" value="yes"><span>Deep / commercial cleaning</span></label>
+<label class="check"><input type="checkbox" name="need_floor_carpet" value="yes"><span>Carpet / floor care</span></label>
+<label class="check"><input type="checkbox" name="need_window_cleaning" value="yes"><span>Window cleaning</span></label>
+<label class="check"><input type="checkbox" name="need_landscaping" value="yes"><span>Landscaping / grounds</span></label>
+<label class="check"><input type="checkbox" name="need_tree_service" value="yes"><span>Tree / defensible-space work</span></label>
+<label class="check"><input type="checkbox" name="need_junk_hauling" value="yes"><span>Junk / hauling / cleanout</span></label>
+<label class="check"><input type="checkbox" name="need_pest_control" value="yes"><span>Pest control</span></label>
+<label class="check"><input type="checkbox" name="need_hvac_heat" value="yes"><span>HVAC / cooling / heating</span></label>
+<label class="check"><input type="checkbox" name="need_parking_lot" value="yes"><span>Parking lot / striping / sweeping</span></label>
+<label class="check"><input type="checkbox" name="need_fire_safety" value="yes"><span>Fire extinguisher / suppression service</span></label>
+<label class="check"><input type="checkbox" name="need_sign_lighting" value="yes"><span>Signs / exterior lighting</span></label>
+<label class="check"><input type="checkbox" name="need_locksmith_access" value="yes"><span>Locks / access control</span></label>
+<label class="check"><input type="checkbox" name="need_backflow_plumbing" value="yes"><span>Backflow / commercial plumbing</span></label>
+</div></div>
 <div class="row"><div class="field"><label>Contact name</label><input name="contact_name" required></div><div class="field"><label>Organization</label><input name="business_name" required></div></div>
 <div class="row"><div class="field"><label>Email</label><input type="email" name="email" required></div><div class="field"><label>Phone</label><input type="tel" name="phone"></div></div>
 <div class="field"><label>Scope / project details</label><textarea name="scope" required placeholder="What needs to be done, approximate building/area size, frequency, deadlines, special access, or other details."></textarea></div>
