@@ -74,8 +74,8 @@ jobs:
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from services;')" -ge 48
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from vendors;')" -ge 111
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from buyers;')" -ge 140
-          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc \"select count(*) from outreach where entity_type='vendor' and wave='pilot1';\")" -eq 12
-          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc \"select count(*) from outreach where entity_type='buyer' and wave='pilot1';\")" -eq 7
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='vendor' and wave='pilot1';")" -eq 12
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='buyer' and wave='pilot1';")" -eq 7
           curl -fsS -X POST http://127.0.0.1:8000/api/intake             -H 'Content-Type: application/json'             -d '{"submission_id":"ci-smoke-lead","form_type":"tree_service","market":"Prescott","scope":"CI smoke test: tree removal request","timing":"Within 7 days","consent":"yes"}'             >/tmp/bmc_intake.json
           cat /tmp/bmc_intake.json
           python - <<'PY'
