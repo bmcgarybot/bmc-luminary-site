@@ -899,14 +899,22 @@ async def agent_cycle(x_bmc_admin_key:str|None=Header(default=None)):
                 actions.append({"action":"queued_exception","exception_id":str(ex["exception_id"]),"type":ex["type"]})
 
         if AGENT_RESEARCH_TASK_LIMIT>0:
-            gaps=await conn.fetch("""select rb.research_id,rb.market,rb.service_key,rb.side,rb.market_priority,
-                     rb.target_gap,rb.current_count,rb.goal,rb.research_priority,rb.research_method,
-                     s.display_name
-              from research_backlog rb
-              left join services s on s.service_key=rb.service_key
-              where rb.status='queued'
-              order by rb.market_priority,rb.research_priority,rb.target_gap desc,rb.market,rb.service_key,rb.side
-              limit $1""",AGENT_RESEARCH_TASK_LIMIT)
+            open_research=await conn.fetchval("""select count(*) from tasks
+              where owner='research_agent' and status in ('open','queued','assigned','in_progress')""")
+            available=max(0,AGENT_RESEARCH_TASK_LIMIT-int(open_research or 0))
+            gaps=[]
+            if available>0:
+                gaps=await conn.fetch("""select rb.research_id,rb.market,rb.service_key,rb.side,rb.market_priority,
+                         rb.target_gap,rb.current_count,rb.goal,rb.research_priority,rb.research_method,
+                         s.display_name
+                  from research_backlog rb
+                  left join services s on s.service_key=rb.service_key
+                  where rb.status='queued'
+                  order by
+                    case rb.market_priority when 'TIER1' then 0 when 'TIER2' then 1 when 'CORE' then 2 when 'INTERNAL' then 3 else 4 end,
+                    case upper(rb.research_priority) when 'CRITICAL' then 0 when 'HIGH' then 1 when 'MEDIUM' then 2 when 'LOW' then 3 else 4 end,
+                    rb.target_gap desc,rb.market,rb.service_key,rb.side
+                  limit $1""",available)
             for gap in gaps:
                 task_type="research_vendor_gap" if gap["side"]=="vendor" else "research_buyer_gap"
                 summary=f"Research {gap['side']} coverage: {gap['display_name'] or gap['service_key']} in {gap['market']}"
