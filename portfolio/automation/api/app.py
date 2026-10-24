@@ -150,6 +150,37 @@ async def handle_lead(conn,p):
         await offer_next(conn,lead)
     return {"ok":True,"status":status,"lead_id":str(lead_id),"message":"Request received. BMC has started the matching workflow."}
 
+
+async def handle_job_update(conn,p):
+    lead_id=clean(p.get("lead_id")); vendor_id=clean(p.get("vendor_id")); token=clean(p.get("token")); status=clean(p.get("job_status"))
+    if not all([lead_id,vendor_id,token,status]): raise HTTPException(400,"Missing job update fields")
+    if status not in ("contacted","estimate","won","lost"): raise HTTPException(400,"Invalid job status")
+    row=await conn.fetchrow("""select lm.*,l.market,l.service_key,l.email,l.customer_name
+      from lead_matches lm join leads l on l.lead_id=lm.lead_id
+      where lm.lead_id=$1::uuid and lm.vendor_id=$2 and lm.response_token=$3
+        and lm.status in ('accepted','contacted','estimate')""",lead_id,vendor_id,token)
+    if not row: raise HTTPException(409,"Job link is invalid or this match is already closed")
+    amount=clean(p.get("quoted_amount"))
+    cents=None
+    if amount:
+        try: cents=int(round(float(amount.replace("$","").replace(",",""))*100))
+        except ValueError: cents=None
+    notes=clean(p.get("notes"))
+    if status=="contacted":
+        await conn.execute("update lead_matches set status='contacted',contacted_at=coalesce(contacted_at,now()),last_followup_at=now() where match_id=$1",row["match_id"])
+        await conn.execute("update leads set status='contacted',updated_at=now() where lead_id=$1",row["lead_id"])
+    elif status=="estimate":
+        await conn.execute("update lead_matches set status='estimate',estimate_at=coalesce(estimate_at,now()),quoted_amount_cents=coalesce($2,quoted_amount_cents),last_followup_at=now() where match_id=$1",row["match_id"],cents)
+        await conn.execute("update leads set status='estimate',updated_at=now() where lead_id=$1",row["lead_id"])
+    elif status=="won":
+        await conn.execute("update lead_matches set status='won',won_at=now(),quoted_amount_cents=coalesce($2,quoted_amount_cents),last_followup_at=now() where match_id=$1",row["match_id"],cents)
+        await conn.execute("update leads set status='won',updated_at=now() where lead_id=$1",row["lead_id"])
+    else:
+        await conn.execute("update lead_matches set status='lost',lost_at=now(),decline_reason=$2,last_followup_at=now() where match_id=$1",row["match_id"],notes)
+        await conn.execute("update leads set status='lost',updated_at=now() where lead_id=$1",row["lead_id"])
+    await event(conn,"lead",row["lead_id"],"job_"+status,{"vendor_id":vendor_id,"quoted_amount_cents":cents,"notes":notes},vendor_id)
+    return {"ok":True,"status":status,"message":"Job status recorded. Thank you for closing the loop with BMC."}
+
 @app.get("/health")
 async def health():
     async with app.state.pool.acquire() as conn:
@@ -163,6 +194,7 @@ async def intake(request:Request):
         async with conn.transaction():
             ft=clean(p.get("form_type"))
             if ft=="vendor_response": return await handle_vendor_response(conn,p)
+            if ft=="job_update": return await handle_job_update(conn,p)
             if ft=="vendor_partner": return await handle_vendor_application(conn,p)
             return await handle_lead(conn,p)
 
@@ -178,3 +210,38 @@ async def process_expired(x_bmc_admin_key:str|None=Header(default=None)):
           await conn.execute("update lead_matches set status='expired',responded_at=now() where lead_id=$1 and status='offered' and expires_at<now()",lead["lead_id"])
           await offer_next(conn,lead); count+=1
     return {"ok":True,"processed":count}
+
+
+@app.post("/api/process-followups")
+async def process_followups(x_bmc_admin_key:str|None=Header(default=None)):
+    if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY: raise HTTPException(403,"Forbidden")
+    sent=0
+    async with app.state.pool.acquire() as conn:
+      rows=await conn.fetch("""select lm.*,v.public_email,v.business_name,l.market,l.service_key
+        from lead_matches lm join vendors v on v.vendor_id=lm.vendor_id join leads l on l.lead_id=lm.lead_id
+        where v.public_email is not null and v.public_email<>''
+          and (
+            (lm.status='accepted' and lm.responded_at < now()-interval '4 hours') or
+            (lm.status='contacted' and lm.contacted_at < now()-interval '24 hours') or
+            (lm.status='estimate' and lm.estimate_at < now()-interval '48 hours')
+          )
+          and (lm.last_followup_at is null or lm.last_followup_at < now()-interval '24 hours')
+        order by coalesce(lm.last_followup_at,lm.responded_at,lm.offered_at) asc limit 100""")
+      for row in rows:
+        link=f"{PUBLIC_SITE_URL}/portfolio/provider-job-update/?lead_id={row['lead_id']}&vendor_id={row['vendor_id']}&token={row['response_token']}"
+        ok=await send_mail(row["public_email"],f"Update BMC request: {row['service_key']} in {row['market']}",
+          f"""Please update the outcome of the BMC request you accepted.
+
+Market: {row['market']}
+Service: {row['service_key']}
+
+Mark contacted, estimate sent, won, or lost:
+{link}
+
+Closing the loop helps BMC route future work more accurately.
+""")
+        if ok:
+          await conn.execute("update lead_matches set last_followup_at=now() where match_id=$1",row["match_id"])
+          await event(conn,"lead",row["lead_id"],"provider_followup_sent",{"vendor_id":row["vendor_id"]})
+          sent+=1
+    return {"ok":True,"sent":sent}
