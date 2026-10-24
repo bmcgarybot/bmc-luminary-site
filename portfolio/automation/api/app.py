@@ -311,37 +311,97 @@ async def handle_facility_lead(conn,p):
 async def handle_lead(conn,p):
     form_type=clean(p.get("form_type")) or "general"
     market=clean(p.get("market"))
+    scope=clean(p.get("scope") or p.get("problem") or p.get("notes"))
+    service_type=clean(p.get("service_type"))
     service_key=clean(p.get("service_key")) or form_type
     ai_classification=None
+
     if form_type=="universal_request" and not clean(p.get("service_key")):
         service_key="unclassified"
-        ai_text=(clean(p.get("scope") or p.get("problem") or p.get("notes"))+"\nRequest type: "+clean(p.get("service_type"))).strip()\n        ai_classification=await classify_with_local_ai(conn,market,ai_text)
+        ai_text=(scope+"\nRequest type: "+service_type).strip()
+        ai_classification=await classify_with_local_ai(conn,market,ai_text)
         if ai_classification:
             service_key=ai_classification["service_key"]
+
     consent=clean(p.get("consent")).lower()=="yes"
-    if not market or not consent: raise HTTPException(400,"Market and consent are required")
+    if not market or not consent:
+        raise HTTPException(400,"Market and consent are required")
+
+    service=None
+    fulfillment_mode="provider_match"
+    if service_key!="unclassified":
+        service=await conn.fetchrow("""select service_key,display_name,fulfillment_mode
+          from services where service_key=$1 and is_active=true""",service_key)
+        if not service:
+            service_key="unclassified"
+        else:
+            fulfillment_mode=clean(service["fulfillment_mode"]) or "provider_match"
+
     submission_id=clean(p.get("submission_id")) or str(uuid.uuid4())
     existing=await conn.fetchrow("select lead_id,status from leads where submission_id=$1",submission_id)
-    if existing:return {"ok":True,"status":existing["status"],"lead_id":str(existing["lead_id"]),"message":"Request already received."}
-    scope=clean(p.get("scope") or p.get("problem") or p.get("notes"))
+    if existing:
+        return {"ok":True,"status":existing["status"],"lead_id":str(existing["lead_id"]),"message":"Request already received."}
+
     urgency=clean(p.get("timing") or p.get("urgency"))
     score=(20 if p.get("email") or p.get("phone") else 0)+(20 if scope else 0)+20+20+(20 if urgency in ["ASAP","Urgent","Same day if possible"] else 0)
-    status="needs_classification" if service_key=="unclassified" else "received"
+    if service_key=="unclassified":
+        status="needs_classification"
+    elif fulfillment_mode=="provider_match":
+        status="received"
+    else:
+        status="internal_queue"
+
     lead_id=await conn.fetchval("""insert into leads(submission_id,form_type,market,service_key,service_type,customer_name,business_name,email,phone,preferred_contact,scope,urgency,source_page,consent,lead_score,status,raw_payload)
       values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,true,$14,$15,$16::jsonb) returning lead_id""",
-      submission_id,form_type,market,service_key,clean(p.get("service_type")),clean(p.get("contact_name")),clean(p.get("business_name")),
+      submission_id,form_type,market,service_key,service_type,clean(p.get("contact_name")),clean(p.get("business_name")),
       clean(p.get("email")),clean(p.get("phone")),clean(p.get("preferred_contact")),scope,urgency,clean(p.get("page")),score,status,json.dumps(p))
-    await event(conn,"lead",lead_id,"received",{"service_key":service_key,"market":market,"ai_classification":ai_classification})
+
+    await event(conn,"lead",lead_id,"received",{
+      "service_key":service_key,"market":market,"fulfillment_mode":fulfillment_mode,"ai_classification":ai_classification
+    })
+
+    order_id=None
+    stripe_session_id=clean(p.get("stripe_session_id"))
+    if stripe_session_id:
+        order=await conn.fetchrow("""select order_id,payment_status from orders
+          where stripe_checkout_session_id=$1""",stripe_session_id)
+        if order:
+            order_id=order["order_id"]
+            order_status="ready_for_fulfillment" if clean(order["payment_status"]) in ("paid","complete") else "intake_received"
+            await conn.execute("""update orders set intake_submission_id=$2,lead_id=$3,status=$4,updated_at=now()
+              where order_id=$1""",order_id,submission_id,lead_id,order_status)
+            await event(conn,"order",order_id,"intake_linked",{"lead_id":str(lead_id),"submission_id":submission_id})
+
     if p.get("email"):
+        workflow_text="provider matching" if fulfillment_mode=="provider_match" else "BMC fulfillment"
         await send_mail(clean(p.get("email")),"BMC received your request",
-          f"We received your request for {service_key} in {market}. BMC will qualify and route it through the appropriate workflow.\n\nReference: {lead_id}\nBMC Luminary Ventures LLC")
+          f"We received your request for {service_key} in {market}. It is now in the {workflow_text} workflow.\n\nReference: {lead_id}\nBMC Luminary Ventures LLC")
+
     if service_key=="unclassified":
-        await conn.execute("insert into exceptions(type,lead_id,severity,summary,recommended_action) values('classification_needed',$1,'normal',$2,$3)",
-                           lead_id,f"Universal request needs classification: {scope[:250]}","Classify service_key, then route")
-    else:
+        await conn.execute("""insert into exceptions(type,lead_id,severity,summary,recommended_action)
+          values('classification_needed',$1,'normal',$2,$3)""",
+          lead_id,f"Request needs classification: {scope[:250]}","Classify service_key, then route")
+        return {"ok":True,"status":"needs_classification","lead_id":str(lead_id),"message":"Request received. BMC will classify it before routing."}
+
+    if fulfillment_mode=="provider_match":
         lead=await conn.fetchrow("select * from leads where lead_id=$1",lead_id)
         await offer_next(conn,lead)
-    return {"ok":True,"status":status,"lead_id":str(lead_id),"message":"Request received. BMC has started the matching workflow."}
+        final_status=await conn.fetchval("select status from leads where lead_id=$1",lead_id)
+        return {"ok":True,"status":final_status,"lead_id":str(lead_id),"message":"Request received. BMC has started provider matching."}
+
+    task_type={
+      "internal_delivery":"fulfill_internal_product",
+      "managed_sourcing":"managed_sourcing",
+      "managed_concierge":"managed_concierge",
+      "facility_split":"facility_triage"
+    }.get(fulfillment_mode,"internal_review")
+    display_name=clean(service["display_name"]) if service else service_key
+    summary=f"{display_name}: {clean(p.get('business_name')) or clean(p.get('contact_name')) or 'customer'} in {market}"
+    task_id=await conn.fetchval("""insert into tasks(lead_id,order_id,service_key,task_type,status,priority,summary,payload)
+      values($1,$2,$3,$4,'open',$5,$6,$7::jsonb) returning task_id""",
+      lead_id,order_id,service_key,task_type,"high" if urgency in ["ASAP","Urgent","Same day if possible"] else "normal",summary,json.dumps(p))
+    await event(conn,"task",task_id,"created",{"lead_id":str(lead_id),"service_key":service_key,"fulfillment_mode":fulfillment_mode})
+    return {"ok":True,"status":"internal_queue","lead_id":str(lead_id),"task_id":str(task_id),"message":"Request received and queued for BMC fulfillment."}
 
 
 async def handle_job_update(conn,p):
