@@ -1016,6 +1016,7 @@ async def admin_agent_status(x_bmc_admin_key:str|None=Header(default=None)):
           where owner in ('bmc_operator','research_agent') and status in ('open','queued','assigned')""")
         assigned_research=await conn.fetchval("select count(*) from research_backlog where status='assigned'")
         queued_research=await conn.fetchval("select count(*) from research_backlog where status='queued'")
+        staged_candidates=await conn.fetchval("select count(*) from research_candidates where status='discovered'")
         classification_needed=await conn.fetchval("""select count(*) from exceptions
           where type='classification_needed' and status='open'""")
         open_exceptions=await conn.fetchval("select count(*) from exceptions where status='open'")
@@ -1033,10 +1034,12 @@ async def admin_agent_status(x_bmc_admin_key:str|None=Header(default=None)):
       "external_actions_allowed":False,
       "configured_external_action_flag":AGENT_ALLOW_EXTERNAL_ACTIONS,
       "ai":{"enabled":LOCAL_AI_ENABLED,"model":LOCAL_AI_MODEL,"minimum_confidence":AGENT_MIN_CONFIDENCE},
+      "research_search":{"enabled":RESEARCH_SEARCH_ENABLED,"worker_batch":RESEARCH_WORKER_BATCH,"result_limit":RESEARCH_SEARCH_RESULTS},
       "queues":{
         "open_agent_tasks":int(open_agent_tasks or 0),
         "research_assigned":int(assigned_research or 0),
         "research_queued":int(queued_research or 0),
+        "research_candidates_staged":int(staged_candidates or 0),
         "classification_needed":int(classification_needed or 0),
         "open_exceptions":int(open_exceptions or 0)
       },
