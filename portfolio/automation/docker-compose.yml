@@ -40,6 +40,28 @@ services:
       - "127.0.0.1:8000:8000"
     networks: [bmc_internal]
 
+
+  scheduler:
+    image: curlimages/curl:8.11.1
+    restart: unless-stopped
+    depends_on: [ops_api]
+    environment:
+      BMC_ADMIN_KEY: ${BMC_ADMIN_KEY}
+    command:
+      - /bin/sh
+      - -c
+      - |
+        i=0
+        while true; do
+          curl -fsS -X POST http://ops_api:8000/api/process-expired -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
+          if [ $(($i % 12)) -eq 0 ]; then
+            curl -fsS -X POST http://ops_api:8000/api/process-followups -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
+          fi
+          i=$(($i+1))
+          sleep 300
+        done
+    networks: [bmc_internal]
+
   n8n:
     image: docker.n8n.io/n8nio/n8n:latest
     restart: unless-stopped
