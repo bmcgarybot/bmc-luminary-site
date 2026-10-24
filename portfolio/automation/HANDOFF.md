@@ -94,7 +94,7 @@ No provider should move from prospect to pilot/active until the relevant checks 
 Google Sheet tab: `Research Queue`
 
 The environment-aware research backlog is generated from Coverage and also seeded into Postgres as `research_backlog`.
-At the last regeneration it contained 702 real research tasks, with Tier-1 work sorted ahead of Tier-2/core research. Regenerate after major prospect batches so gap counts stay current.
+At the last regeneration it contained 651 real research tasks, with Tier-1 work sorted ahead of Tier-2/core research. Regenerate after major prospect batches so gap counts stay current.
 
 ## First Wave provider cohort
 
@@ -220,6 +220,11 @@ Start with:
 10. Bing Webmaster / IndexNow not configured.
 
 ## Validation state
+
+Latest verified CI after the shell-quoting repair:
+- full BMC Portfolio CI run succeeded on commit `ab4b5280c9b007cad47a45400193da1c1a614806`
+- subsequent scheduler-only refactor runs were still in progress when this handoff was refreshed; verify current head before claiming latest green
+
 
 GitHub Pages build/deploy has succeeded.
 
