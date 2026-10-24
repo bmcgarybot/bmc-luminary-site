@@ -76,6 +76,57 @@ jobs:
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from buyers;')" -ge 140
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='vendor' and wave='pilot1';")" -eq 12
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='buyer' and wave='pilot1';")" -eq 7
+
+          # Prove First Wave provider copy uses the dedicated existing-vendor activation path.
+          export BMC_ADMIN_KEY="$(grep '^BMC_ADMIN_KEY=' .env.ci | cut -d= -f2-)"
+          curl -fsS http://127.0.0.1:8000/api/admin/first-wave \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_first_wave.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_first_wave.json"))
+          assert data["count"] == 19
+          provider=next(x for x in data["records"] if x["side"]=="vendor")
+          assert "/portfolio/provider-pilot-activate/?" in provider["activation_url"]
+          assert "/portfolio/provider-pilot-activate/?" in provider["body"]
+          assert "/portfolio/vendor-partner/" not in provider["body"]
+          PY
+
+          # Prove a First Wave provider can submit against its existing record, stays unroutable,
+          # appears in the private review queue, and only becomes pilot after BMC approval.
+          curl -fsS -X POST http://127.0.0.1:8000/api/intake \
+            -H 'Content-Type: application/json' \
+            -d '{"form_type":"vendor_pilot_activation","vendor_id":"v_prescott_zebrascapes","email":"info@zebrascapes.com","territory":"Prescott and surrounding Yavapai County","minimum_job":"500","capacity":"3 new jobs per week","credentials":"CI credential review","insurance":"CI insurance review","pilot_terms":"accepted"}' \
+            >/tmp/bmc_pilot_activation.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_pilot_activation.json"))
+          assert data["ok"] is True
+          assert data["status"] == "pilot_pending_review"
+          PY
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from vendors where vendor_id='v_prescott_zebrascapes';")" = "pilot_pending_review"
+          curl -fsS http://127.0.0.1:8000/api/admin/pilot-reviews \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_pilot_reviews.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_pilot_reviews.json"))
+          row=next(x for x in data["records"] if x["vendor_id"]=="v_prescott_zebrascapes")
+          assert row["territory_notes"]
+          assert row["capacity"]
+          PY
+          curl -fsS -X POST http://127.0.0.1:8000/api/admin/approve-pilot \
+            -H 'Content-Type: application/json' \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" \
+            -d '{"vendor_id":"v_prescott_zebrascapes","confirm_credentials":true,"notes":"CI approval"}' \
+            >/tmp/bmc_pilot_approve.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_pilot_approve.json"))
+          assert data["ok"] is True
+          assert data["status"] == "pilot"
+          PY
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from vendors where vendor_id='v_prescott_zebrascapes';")" = "pilot"
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from exceptions where vendor_id='v_prescott_zebrascapes' and type='pilot_activation_review' and status='open';")" -eq 0
+
           curl -fsS -X POST http://127.0.0.1:8000/api/intake             -H 'Content-Type: application/json'             -d '{"submission_id":"ci-smoke-lead","form_type":"tree_service","market":"Prescott","scope":"CI smoke test: tree removal request","timing":"Within 7 days","consent":"yes"}'             >/tmp/bmc_intake.json
           cat /tmp/bmc_intake.json
           python - <<'PY'
