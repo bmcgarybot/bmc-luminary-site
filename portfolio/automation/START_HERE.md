@@ -8,7 +8,7 @@ As of October 24, 2026:
 - 48 registered BMC service businesses
 - 12 Arizona market hubs
 - 141 researched vendor prospects
-- 150 researched B2B buyer prospects
+- 145 unique researched B2B buyer prospects
 - public vendor and buyer outreach queues
 - deterministic lead intake/matching API
 - provider accept/decline + job-outcome tracking
