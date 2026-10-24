@@ -20,6 +20,25 @@ Target: local service providers that can fulfill BMC-generated leads.
 4. Close loop
    - mark no-response and suppress for 60–90 days
 
+### Credibility-leverage personalization
+When a public source verifies that the company has already invested in a local credibility channel, use that as the personalized opener.
+
+Examples:
+- Chamber of Commerce membership
+- BBB accreditation
+- Firewise / defensible-space contractor lists
+- county contractor lists
+- trade-association membership
+- local tourism or business-directory membership
+
+Positioning:
+"You already invested in local credibility. Let's help turn it into qualified work."
+
+Important:
+- Chamber membership and BBB accreditation are not interchangeable terms.
+- Never claim a membership/accreditation unless verified from a public source.
+- Treat these signals as personalization and quality signals, not proof that BMC endorses or guarantees the provider.
+
 ### Partner CTA
 /portfolio/vendor-partner/
 
@@ -52,6 +71,7 @@ Every public-business prospect should capture:
 - public business phone
 - source URL
 - relevant license/public credential source when applicable
+- chamber / BBB / association signal
 - service territory
 - rating/review signal
 - last outreach
@@ -69,6 +89,7 @@ Safe to automate:
 - enrichment from public business sources
 - deduplication
 - service/market classification
+- verified credibility-signal detection
 - draft personalization
 - sending approved B2B sequences
 - follow-up timing
