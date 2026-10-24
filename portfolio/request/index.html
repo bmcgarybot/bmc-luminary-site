@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Request Any Local Service | BMC Arizona</title><meta name="description" content="Tell BMC what you need and we will classify and route the request to the appropriate Arizona service workflow."><meta name="bmc-webhook" content="REPLACE_ME"><link rel="stylesheet" href="../assets/core.css"></head><body>
+<nav class="nav"><div class="wrap nav-in"><a class="brand" href="../">BMC Service Portfolio</a><div class="nav-links"><a href="../vendor-partner/">Provider network</a></div></div></nav>
+<header class="hero"><div class="wrap"><div class="eyebrow">BMC Service Concierge</div><h1>You don’t need to know which service page you belong on.</h1><p>Tell us what needs to happen. BMC can classify the request, match the market and service category, and route it into the correct managed workflow.</p><div class="actions"><a class="btn btn-primary" href="#request">Start one request</a></div></div></header>
+<section class="section" id="request"><div class="wrap form-shell"><div class="form-copy"><span class="kicker">Universal intake</span><h2>What do you need?</h2><p class="section-lead">Use this for anything from a dead pine in Prescott to water hauling in Kingman, snow removal in Flagstaff, restaurant repair, commercial cleaning, fleet service, or a business research project.</p></div>
+<form class="form" data-bmc-form data-form-type="universal_request" data-email="contact@bmcluminaryventures.com" data-subject="BMC universal service request">
+<input class="hidden" name="website" tabindex="-1" autocomplete="off">
+<div class="row"><div class="field"><label>City / market</label><select name="market" data-market-select required><option value="">Choose market</option></select></div>
+<div class="field"><label>Service if you know it</label><select name="service_key" id="serviceSelect"><option value="">Not sure — classify it for me</option></select></div></div>
+<div class="row"><div class="field"><label>Name</label><input name="contact_name" required></div><div class="field"><label>Business / property</label><input name="business_name"></div></div>
+<div class="row"><div class="field"><label>Email</label><input type="email" name="email" required></div><div class="field"><label>Phone</label><input type="tel" name="phone"></div></div>
+<div class="field"><label>Describe what you need</label><textarea name="scope" required placeholder="Describe the problem, project, recurring need, equipment, property, vehicle, or business goal in your own words."></textarea></div>
+<div class="row"><div class="field"><label>Timing</label><select name="timing"><option>ASAP</option><option>Within 7 days</option><option>Within 30 days</option><option>Planning / quote only</option></select></div><div class="field"><label>Budget / project size if known</label><input name="budget"></div></div>
+<label class="check"><input type="checkbox" name="consent" value="yes" required><span>I am requesting help and agree that BMC may use these details to classify, fulfill, or coordinate this request with participating providers.</span></label>
+<div class="notice" data-form-notice></div><div class="actions"><button class="btn btn-primary" type="submit" data-label="Send request to BMC">Send request to BMC</button></div>
+</form></div></section>
+<footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>Arizona managed-service concierge</span></div></footer>
+<script src="../assets/core.js"></script><script>
+(async()=>{try{const r=await fetch('../data/services.json');const data=await r.json();const s=document.getElementById('serviceSelect');data.services.filter(x=>x.service_key!=='growth_pack').sort((a,b)=>a.display_name.localeCompare(b.display_name)).forEach(x=>{const o=document.createElement('option');o.value=x.service_key;o.textContent=x.display_name;s.appendChild(o)});const q=new URLSearchParams(location.search);if(q.get('service'))s.value=q.get('service');}catch(e){console.error(e)}})();
+</script></body></html>
