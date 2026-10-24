@@ -49,6 +49,10 @@ create table if not exists buyers (
   public_email text,
   public_phone text,
   website text,
+  source_url text,
+  likely_services text,
+  priority text,
+  campaign text,
   status text default 'prospect',
   notes text,
   created_at timestamptz default now(),
@@ -174,3 +178,8 @@ create table if not exists outreach_suppressions (
 );
 
 alter table leads add column if not exists parent_lead_id uuid references leads(lead_id) on delete cascade;
+
+alter table buyers add column if not exists source_url text;
+alter table buyers add column if not exists likely_services text;
+alter table buyers add column if not exists priority text;
+alter table buyers add column if not exists campaign text;
