@@ -294,6 +294,21 @@ create table if not exists tasks (
 create index if not exists idx_tasks_status_due on tasks(status,due_at);
 
 
+create table if not exists agent_runs (
+  run_id uuid primary key default gen_random_uuid(),
+  started_at timestamptz default now(),
+  completed_at timestamptz,
+  status text default 'running',
+  classified_leads integer default 0,
+  review_tasks_created integer default 0,
+  research_tasks_created integer default 0,
+  actions jsonb default '[]'::jsonb,
+  error text
+);
+
+create index if not exists idx_agent_runs_started
+on agent_runs(started_at desc);
+
 create table if not exists research_backlog (
   research_id uuid primary key default gen_random_uuid(),
   market text not null,
