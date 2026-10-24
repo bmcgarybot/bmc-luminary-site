@@ -10,6 +10,7 @@ create table if not exists services (
   monetization text,
   live_front text,
   priority text default 'B',
+  fulfillment_mode text default 'provider_match',
   is_active boolean default true,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
@@ -251,3 +252,43 @@ create index if not exists idx_subscriptions_status on subscriptions(status);
 
 alter table outreach add column if not exists wave text default 'backlog';
 create index if not exists idx_outreach_wave_status on outreach(entity_type,wave,status,next_followup_at);
+
+alter table services add column if not exists fulfillment_mode text default 'provider_match';
+
+create table if not exists orders (
+  order_id uuid primary key default gen_random_uuid(),
+  product_key text references products(product_key) on delete set null,
+  stripe_checkout_session_id text unique,
+  stripe_payment_intent_id text,
+  customer_email text,
+  amount_cents integer,
+  currency text default 'usd',
+  payment_status text,
+  intake_submission_id text,
+  lead_id uuid references leads(lead_id) on delete set null,
+  status text default 'paid_needs_intake',
+  raw_payload jsonb default '{}'::jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create index if not exists idx_orders_status on orders(status,created_at);
+create index if not exists idx_orders_email on orders(lower(customer_email));
+
+create table if not exists tasks (
+  task_id uuid primary key default gen_random_uuid(),
+  lead_id uuid references leads(lead_id) on delete set null,
+  order_id uuid references orders(order_id) on delete set null,
+  service_key text references services(service_key) on delete set null,
+  task_type text not null,
+  status text default 'open',
+  priority text default 'normal',
+  owner text,
+  summary text,
+  due_at timestamptz,
+  payload jsonb default '{}'::jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create index if not exists idx_tasks_status_due on tasks(status,due_at);
