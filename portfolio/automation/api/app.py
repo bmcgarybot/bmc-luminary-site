@@ -939,7 +939,32 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
             paid=status in ("paid","complete") or event_type=="checkout.session.async_payment_succeeded"
             if mode!="subscription" and paid:
                 await record_revenue(conn,product_key,amount,currency,"stripe_checkout",f"Stripe event {event_id}; session {object_id}")
-                await event(conn,"payment",event_id,"payment_received",{"product_key":product_key,"amount_cents":amount,"email":customer_email},"stripe")
+                payment_intent_id=clean(obj.get("payment_intent"))
+                order_id=await conn.fetchval("""insert into orders(product_key,stripe_checkout_session_id,stripe_payment_intent_id,customer_email,amount_cents,currency,payment_status,status,raw_payload)
+                  values($1,$2,$3,$4,$5,$6,$7,'paid_needs_intake',$8::jsonb)
+                  on conflict(stripe_checkout_session_id) do update set
+                    product_key=coalesce(excluded.product_key,orders.product_key),
+                    stripe_payment_intent_id=coalesce(excluded.stripe_payment_intent_id,orders.stripe_payment_intent_id),
+                    customer_email=coalesce(excluded.customer_email,orders.customer_email),
+                    amount_cents=excluded.amount_cents,currency=excluded.currency,payment_status=excluded.payment_status,
+                    raw_payload=excluded.raw_payload,updated_at=now()
+                  returning order_id""",
+                  product_key,object_id,payment_intent_id,customer_email,amount,currency,status,json.dumps(obj))
+                service_key=await conn.fetchval("select service_key from products where product_key=$1",product_key) if product_key else None
+                if customer_email and service_key:
+                    recent=await conn.fetchrow("""select l.lead_id,l.submission_id
+                      from leads l
+                      where lower(l.email)=lower($1) and l.service_key=$2 and l.status='internal_queue'
+                        and l.submitted_at>=now()-interval '7 days'
+                        and not exists(select 1 from orders o where o.lead_id=l.lead_id and o.order_id<>$3)
+                      order by l.submitted_at desc limit 1""",customer_email,service_key,order_id)
+                    if recent:
+                        await conn.execute("""update orders set lead_id=$2,intake_submission_id=$3,status='ready_for_fulfillment',updated_at=now()
+                          where order_id=$1""",order_id,recent["lead_id"],recent["submission_id"])
+                        await conn.execute("update tasks set order_id=$2,updated_at=now() where lead_id=$1 and order_id is null",recent["lead_id"],order_id)
+                        await event(conn,"order",order_id,"intake_auto_linked",{"lead_id":str(recent["lead_id"]),"submission_id":recent["submission_id"]},"stripe")
+                await event(conn,"order",order_id,"paid",{"product_key":product_key,"amount_cents":amount,"email":customer_email},"stripe")
+                await event(conn,"payment",event_id,"payment_received",{"product_key":product_key,"amount_cents":amount,"email":customer_email,"order_id":str(order_id)},"stripe")
         elif event_type=="invoice.paid":
             if amount>0:
                 await record_revenue(conn,product_key,amount,currency,"stripe_subscription_invoice",f"Stripe event {event_id}; invoice {object_id}")
