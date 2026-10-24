@@ -35,7 +35,7 @@
     data.submission_id=(crypto.randomUUID?crypto.randomUUID():("sub_"+Date.now()+"_"+Math.random().toString(36).slice(2)));
     data.page=location.href;data.path=location.pathname;data.referrer=document.referrer||"";
     const q=new URLSearchParams(location.search);
-    ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(k=>{if(q.get(k))data[k]=q.get(k)});
+    ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(k=>{if(q.get(k))data[k]=q.get(k)});\n    if(q.get("session_id"))data.stripe_session_id=q.get("session_id");\n    if(q.get("offer"))data.offer_key=q.get("offer");
     data.submitted_at=new Date().toISOString();
     return data;
   }
