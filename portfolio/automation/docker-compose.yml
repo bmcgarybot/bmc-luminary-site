@@ -12,6 +12,7 @@ services:
       - ./seed-services.sql:/docker-entrypoint-initdb.d/010-seed-services.sql:ro
       - ./seed-vendors.sql:/docker-entrypoint-initdb.d/020-seed-vendors.sql:ro
       - ./seed-buyers.sql:/docker-entrypoint-initdb.d/030-seed-buyers.sql:ro
+      - ./seed-outreach.sql:/docker-entrypoint-initdb.d/040-seed-outreach.sql:ro
     networks: [bmc_internal]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
@@ -36,6 +37,9 @@ services:
       SMTP_PASSWORD: ${SMTP_PASSWORD}
       SMTP_FROM: ${SMTP_FROM}
       SMTP_STARTTLS: ${SMTP_STARTTLS}
+      OUTREACH_ENABLED: ${OUTREACH_ENABLED}
+      OUTREACH_DAILY_LIMIT: ${OUTREACH_DAILY_LIMIT}
+      BUSINESS_POSTAL_ADDRESS: ${BUSINESS_POSTAL_ADDRESS}
     ports:
       - "127.0.0.1:8000:8000"
     networks: [bmc_internal]
