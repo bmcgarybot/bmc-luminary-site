@@ -63,6 +63,7 @@ jobs:
           cp .env.example .env.ci
           sed -i 's/^SMTP_DRY_RUN=.*/SMTP_DRY_RUN=true/' .env.ci
           sed -i 's#^STRIPE_WEBHOOK_SECRET=.*#STRIPE_WEBHOOK_SECRET=whsec_ci_test#' .env.ci
+          sed -i 's#^BMC_ADMIN_KEY=.*#BMC_ADMIN_KEY=ci_admin_key#' .env.ci
           docker compose --env-file .env.ci up -d --build postgres ops_api
           for i in $(seq 1 30); do
             if curl -fsS http://127.0.0.1:8000/health >/tmp/bmc_health.json; then
@@ -76,6 +77,7 @@ jobs:
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from buyers;')" -ge 140
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='vendor' and wave='pilot1';")" -eq 12
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='buyer' and wave='pilot1';")" -eq 7
+          bash runtime-doctor.sh .env.ci
 
           # Prove First Wave provider copy uses the dedicated existing-vendor activation path.
           export BMC_ADMIN_KEY="$(grep '^BMC_ADMIN_KEY=' .env.ci | cut -d= -f2-)"
