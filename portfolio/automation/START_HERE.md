@@ -13,6 +13,7 @@ As of October 24, 2026:
 - deterministic lead intake/matching API
 - provider accept/decline + job-outcome tracking
 - automatic offer expiry/rerouting and follow-up scheduler
+- bounded autonomous operator for classification, exception triage, and research-queue ownership
 - Stripe webhook/revenue/subscription event handling
 - four live Stripe products/prices created for fixed-price research offers
 - GitHub Pages deploy pipeline active
@@ -49,7 +50,8 @@ These require account/device configuration rather than more application code:
 - PostgreSQL — leads, vendors, matches, outreach, events, payments, revenue
 - BMC Ops API — deterministic intake/matching/status/payment engine
 - n8n — orchestration, Sheets sync, research, AI helpers, reports
-- scheduler — offer expiry/reroute, follow-up, guarded outreach
+- scheduler — offer expiry/reroute, follow-up, guarded outreach, operator cycle
+- BMC autonomous operator — internal classification/triage/research assignment; external actions locked
 - nginx — webhook/API gateway
 - Cloudflare Tunnel — public HTTPS ingress
 - Ollama/Qwen3 1.7B — optional utility AI
@@ -73,7 +75,17 @@ docker compose ps
 bash runtime-doctor.sh
 ```
 
-The health response should report `ok: true`. `runtime-doctor.sh` also verifies the seeded 48-service registry, the 210-vendor / 156-buyer research pools, the exact 12-provider + 7-buyer First Wave, the outbound safety switches, the private admin preflight, and the remaining external launch blockers.
+The health response should report `ok: true`. `runtime-doctor.sh` also verifies the seeded 48-service registry, the 210-vendor / 156-buyer research pools, the exact 12-provider + 7-buyer First Wave, the outbound safety switches, the private admin preflight, the private agent status endpoint, and the remaining external launch blockers.
+
+Agent documentation: `AGENT.md`.
+
+Private status:
+
+```bash
+curl http://127.0.0.1:8000/api/admin/agent-status -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY"
+```
+
+The operator runs every 15 minutes. V1 may classify high-confidence ambiguous leads and create/assign internal work, but it cannot send prospecting, approve providers, make credential decisions, or move money.
 
 Open the private local admin interface on the HP:
 
