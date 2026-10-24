@@ -21,6 +21,8 @@ create table if not exists vendors (
   public_email text,
   public_phone text,
   website text,
+  source_url text,
+  rating_signal text,
   status text default 'prospect',
   quality_score numeric,
   association_signal text,
@@ -196,3 +198,6 @@ alter table vendors add column if not exists capacity text;
 alter table vendors add column if not exists after_hours text;
 alter table vendors add column if not exists license_notes text;
 alter table vendors add column if not exists insurance_notes text;
+
+alter table vendors add column if not exists source_url text;
+alter table vendors add column if not exists rating_signal text;
