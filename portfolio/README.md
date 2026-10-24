@@ -64,3 +64,21 @@ A niche is "MVP live" when:
 5. customer can complete the normal action without a call
 
 Do not buy separate infrastructure per niche. Promote winners to custom domains after proof.
+
+## Environment-fit expansion (Oct. 24, 2026)
+Dedicated fronts now also include:
+- `tree-service/`
+- `junk-hauling/`
+- `landscaping/`
+- `septic-earthwork-water/`
+- `snow-service/`
+- `towing-roadside/`
+- `pool-desert-property/`
+- `str-property-care/`
+- `hvac-heat/`
+
+Market-specific front doors live under `markets/<city>/` for all 12 initial Arizona markets.
+The routing priority source of truth is `data/market-fit.json`.
+
+## Autonomy files
+The `automation/` folder defines the normalized lead/vendor schema and deterministic routing blueprint. A live public n8n webhook plus outbound-email credentials are still required before the portfolio can be called autonomous.
