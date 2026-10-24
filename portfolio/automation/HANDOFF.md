@@ -187,10 +187,14 @@ Live Stripe products/prices already created:
   - product `prod_VVALUxBVT90wjM`
   - price `price_1UUA0tQU2BLM8GhLP9LS7wUn`
 
-Current Stripe blocker:
-all payment method types, including card, report unavailable because onboarding/activation is incomplete.
+Current Stripe blocker, independently re-checked against the live account on 2026-10-24:
+- `details_submitted=false`
+- `charges_enabled=false`
+- `payouts_enabled=false`
+- `card_payments=inactive`
+- Stripe still requires completion of business profile, representative information, statement descriptor, and Terms acceptance
 
-Payment Links could not yet be created.
+Payment Links cannot be created until account onboarding enables payment methods. Do not treat this as a code defect.
 
 Do not create Stripe Connect yet. BMC is not currently collecting the contractor's full job payment and splitting it to vendors.
 
@@ -218,6 +222,8 @@ Start with:
 
 After bootstrap, `runtime-doctor.sh` verifies the local core instead of treating "containers started" as success. It checks Docker/Compose, API/Postgres health, service/vendor/buyer seeds, exact 12-provider + 7-buyer `pilot1` cohort, outreach OFF switches, research backlog, and the private launch preflight. Missing SMTP/IMAP/postal/Cloudflare/Stripe setup is reported as an external warning rather than silently hidden.
 
+Seed rerun safety is now enforced: `seed-vendors.sql` refreshes researched prospect records but will not overwrite vendors once their status is `applicant`, `pilot_pending_review`, `pilot`, `active`, `paused`, or `suppressed`. CI re-applies the vendor seed after a simulated activation submission and verifies the pending status, capacity, and insurance data survive. This matters because `bootstrap.sh` deliberately re-applies seeds on rerun.
+
 ## Current runtime blockers
 
 1. HP appliance not deployed yet.
@@ -233,7 +239,7 @@ After bootstrap, `runtime-doctor.sh` verifies the local core instead of treating
 
 ## Validation state
 
-Latest code head immediately before this handoff refresh: `89572120b2524718f65e4af07548b13d67ef6ccd`.
+Latest code head immediately before this handoff refresh: `8b66f0e77f912bc6a4c939a90c7903f12df00b60`.
 
 The last directly recorded GitHub Actions run was green before the newest activation-review/runtime-doctor commits. The available GitHub connector can read the latest commits and workflow file but does not expose push-based Actions check-runs for this repository, so **do not claim the newest head is green until the latest Actions run is independently confirmed**.
 
@@ -245,6 +251,7 @@ The CI workflow itself now covers:
 - service/vendor/buyer seeds
 - exact 12-provider + 7-buyer First Wave cohort
 - `runtime-doctor.sh`
+- live provider state survives vendor-seed reruns
 - dedicated First Wave activation URL/copy
 - existing-vendor activation to `pilot_pending_review`
 - private BMC pilot approval to `pilot`
