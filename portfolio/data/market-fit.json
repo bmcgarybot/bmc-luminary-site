@@ -25,6 +25,10 @@
     "hold": {
       "vendor_goal": 0,
       "buyer_goal": 0
+    },
+    "concierge": {
+      "vendor_goal": 0,
+      "buyer_goal": 8
     }
   },
   "global_groups": {
@@ -33,7 +37,6 @@
       "competitor_intel",
       "market_expansion",
       "vendor_savings",
-      "quote_sourcing",
       "waste_audit"
     ],
     "core_b2b": [
@@ -64,6 +67,11 @@
       "equipment_quotes",
       "restaurant_maintenance",
       "linen_laundry"
+    ],
+    "concierge": [
+      "facility_maintenance",
+      "restaurant_maintenance",
+      "quote_sourcing"
     ]
   },
   "markets": {
