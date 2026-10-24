@@ -26,7 +26,7 @@ jobs:
           root=pathlib.Path("portfolio")
           data=json.loads((root/"data/services.json").read_text())
           services=data["services"]
-          assert len(services) >= 47, f"Expected >=47 services, got {len(services)}"
+          assert len(services) >= 48, f"Expected >=48 services, got {len(services)}"
           missing=[]
           dup=set(); seen=set()
           for s in services:
