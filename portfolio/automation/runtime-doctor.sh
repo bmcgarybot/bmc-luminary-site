@@ -18,6 +18,41 @@ env_value(){
 echo "BMC runtime doctor"
 echo "=================="
 
+DEPLOYMENT_TARGET="$(env_value DEPLOYMENT_TARGET)"
+if [ "$DEPLOYMENT_TARGET" = "cloud-vps" ]; then
+  pass "Deployment target is cloud-vps"
+elif [ -n "$DEPLOYMENT_TARGET" ]; then
+  warn "Deployment target is $DEPLOYMENT_TARGET (production design target is cloud-vps)"
+else
+  warn "DEPLOYMENT_TARGET is not set"
+fi
+
+if [ -r /proc/meminfo ]; then
+  mem_kb="$(awk '/^MemTotal:/ {print $2}' /proc/meminfo)"
+  mem_mb=$((${mem_kb:-0}/1024))
+  if [ "$mem_mb" -ge 7168 ]; then
+    pass "Host memory fits 8 GB production class (${mem_mb} MB visible)"
+  elif [ "$mem_mb" -ge 4096 ]; then
+    warn "Host has ${mem_mb} MB RAM; core may run but optional local AI should stay off"
+  else
+    warn "Host has only ${mem_mb} MB RAM; below intended production class"
+  fi
+fi
+
+disk_kb="$(df -Pk . 2>/dev/null | awk 'NR==2 {print $4}')"
+disk_gb=$((${disk_kb:-0}/1024/1024))
+if [ "$disk_gb" -ge 20 ]; then
+  pass "Working filesystem has ${disk_gb} GB free"
+else
+  warn "Working filesystem has only ${disk_gb} GB free"
+fi
+
+if command -v swapon >/dev/null 2>&1 && swapon --show --noheadings 2>/dev/null | grep -q .; then
+  pass "Emergency swap is configured"
+else
+  warn "No swap detected; 2 GB emergency swap is recommended on the 8 GB VPS"
+fi
+
 if command -v docker >/dev/null 2>&1; then
   pass "Docker command is installed"
 else
@@ -149,6 +184,14 @@ for key in SMTP_HOST SMTP_USER SMTP_PASSWORD BUSINESS_POSTAL_ADDRESS CLOUDFLARE_
     warn "$key is not configured yet"
   fi
 done
+
+if [ "$(env_value LOCAL_AI_ENABLED)" = "true" ]; then
+  if curl -fsS "http://127.0.0.1:11434/api/tags" >/tmp/bmc_ollama_tags.json 2>/dev/null; then
+    pass "Optional local AI service is reachable"
+  else
+    warn "LOCAL_AI_ENABLED is true but Ollama is not running; deterministic core remains available"
+  fi
+fi
 
 if [ "$(env_value RESEARCH_SEARCH_ENABLED)" = "true" ]; then
   if curl -fsS "http://127.0.0.1:8888/config" >/tmp/bmc_research_search.json 2>/dev/null; then
