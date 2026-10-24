@@ -61,6 +61,7 @@ jobs:
         working-directory: portfolio/automation
         run: |
           cp .env.example .env.ci
+          sed -i 's/^SMTP_DRY_RUN=.*/SMTP_DRY_RUN=true/' .env.ci
           sed -i 's#^STRIPE_WEBHOOK_SECRET=.*#STRIPE_WEBHOOK_SECRET=whsec_ci_test#' .env.ci
           docker compose --env-file .env.ci up -d --build postgres ops_api
           for i in $(seq 1 30); do
