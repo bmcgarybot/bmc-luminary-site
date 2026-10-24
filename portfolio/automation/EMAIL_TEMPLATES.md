@@ -88,3 +88,22 @@ If this fits your territory and capacity, use the partner response link below to
 {{accept_url}}
 
 This message is only sent for an actual submitted request.
+
+
+## First Wave invited provider
+Subject: {{market}} {{service}} pilot with BMC
+
+Hi {{business_name}},
+
+BMC Luminary Ventures is building a managed local request channel for {{service}} in {{market}}. You are in the first provider group we are inviting because your service area and public business profile fit the work we expect to route.
+
+For the pilot, the first qualified request may be offered at no charge where stated in your invitation. There is no subscription and no surprise paid lead fee. Any future pricing is presented separately before it becomes active.
+
+If you want to be considered, confirm the territory, job types, minimum job size, capacity, and applicable credential information here:
+
+{{activation_url}}
+
+No sales meeting is required.
+
+BMC Luminary Ventures LLC
+Prescott, Arizona
