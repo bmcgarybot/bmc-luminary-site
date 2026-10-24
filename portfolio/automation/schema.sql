@@ -1,5 +1,5 @@
 -- BMC Portfolio Core PostgreSQL schema
--- Designed for n8n + managed local-service marketplace operations.
+-- Designed for the deterministic ops API + n8n managed marketplace workflows.
 
 create extension if not exists pgcrypto;
 
@@ -57,6 +57,7 @@ create table if not exists buyers (
 
 create table if not exists leads (
   lead_id uuid primary key default gen_random_uuid(),
+  submission_id text unique,
   submitted_at timestamptz default now(),
   form_type text not null,
   market text not null,
@@ -88,6 +89,7 @@ create table if not exists lead_matches (
   vendor_id text references vendors(vendor_id) on delete cascade,
   rank integer,
   status text default 'offered',
+  response_token text unique,
   offered_at timestamptz default now(),
   expires_at timestamptz,
   responded_at timestamptz,
@@ -100,6 +102,9 @@ create table if not exists lead_matches (
   bmc_fee_cents integer,
   unique (lead_id, vendor_id)
 );
+
+create index if not exists idx_lead_matches_offer_expiry
+on lead_matches (status, expires_at);
 
 create table if not exists outreach (
   outreach_id uuid primary key default gen_random_uuid(),
@@ -158,6 +163,3 @@ create table if not exists revenue_events (
   status text default 'earned',
   notes text
 );
-
--- State rules are enforced by n8n initially rather than database triggers
--- so workflow changes stay visible and easy to iterate.
