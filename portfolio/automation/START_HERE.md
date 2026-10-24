@@ -7,8 +7,8 @@ The GitHub build is the software package. It is **not running on the HP yet** un
 As of October 24, 2026:
 - 48 registered BMC service businesses
 - 12 Arizona market hubs
-- 141 researched vendor prospects
-- 145 unique researched B2B buyer prospects
+- 210 researched vendor prospects
+- 156 unique researched B2B buyer prospects
 - public vendor and buyer outreach queues
 - deterministic lead intake/matching API
 - provider accept/decline + job-outcome tracking
@@ -59,7 +59,7 @@ These require account/device configuration rather than more application code:
 ```bash
 git clone https://github.com/bmcgarybot/bmc-luminary-site.git
 cd bmc-luminary-site/portfolio/automation
-chmod +x bootstrap.sh start.sh stop.sh backup.sh
+chmod +x bootstrap.sh start.sh stop.sh backup.sh runtime-doctor.sh
 ./bootstrap.sh
 ```
 
@@ -70,15 +70,18 @@ The core starts privately. Public outreach remains disabled.
 ```bash
 curl http://127.0.0.1:8000/health
 docker compose ps
+bash runtime-doctor.sh
 ```
 
-The health response should report `ok: true`.
+The health response should report `ok: true`. `runtime-doctor.sh` also verifies the seeded 48-service registry, the 210-vendor / 156-buyer research pools, the exact 12-provider + 7-buyer First Wave, the outbound safety switches, the private admin preflight, and the remaining external launch blockers.
 
 Open the private local admin interface on the HP:
 
 ```
 http://127.0.0.1:8000/admin
 ```
+
+The private admin now includes a **Pending pilot reviews** queue. Provider activation submissions remain `pilot_pending_review` and unroutable until BMC explicitly approves them there after credential/insurance review.
 
 Do not publish the admin interface through the public gateway.
 
