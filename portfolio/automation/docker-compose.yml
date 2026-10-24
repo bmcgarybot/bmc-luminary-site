@@ -49,6 +49,9 @@ services:
       IMAP_USER: ${IMAP_USER}
       IMAP_PASSWORD: ${IMAP_PASSWORD}
       IMAP_FOLDER: ${IMAP_FOLDER}
+      LOCAL_AI_ENABLED: ${LOCAL_AI_ENABLED}
+      LOCAL_AI_URL: ${LOCAL_AI_URL}
+      LOCAL_AI_MODEL: ${LOCAL_AI_MODEL}
     ports:
       - "127.0.0.1:8000:8000"
     networks: [bmc_internal]
