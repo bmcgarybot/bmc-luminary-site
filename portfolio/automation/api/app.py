@@ -734,6 +734,57 @@ async def admin_summary(x_bmc_admin_key:str|None=Header(default=None)):
         revenue=await conn.fetchval("select coalesce(sum(amount_cents),0) from revenue_events where status='earned'")
     return {"leads":{r["status"]:r["n"] for r in leads},"vendors":{r["status"]:r["n"] for r in vendors},"outreach":[dict(r) for r in outreach],"open_exceptions":exceptions,"earned_revenue_cents":revenue}
 
+@app.get("/api/admin/preflight")
+async def admin_preflight(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    def configured(value):
+        return bool(value and "CHANGE_ME" not in value)
+    smtp_ready=configured(SMTP_HOST) and configured(SMTP_USER) and configured(SMTP_PASSWORD)
+    imap_ready=IMAP_ENABLED and configured(IMAP_HOST) and configured(IMAP_USER) and configured(IMAP_PASSWORD)
+    postal_ready=configured(BUSINESS_POSTAL_ADDRESS)
+    stripe_ready=configured(STRIPE_WEBHOOK_SECRET)
+    tunnel_ready=configured(CLOUDFLARE_TUNNEL_TOKEN) and configured(WEBHOOK_URL)
+    async with app.state.pool.acquire() as conn:
+        pilot_vendors=await conn.fetchval("select count(*) from vendors where status in ('pilot','active')")
+        first_wave_vendors=await conn.fetchval("select count(*) from outreach where entity_type='vendor' and wave='pilot1'")
+        first_wave_buyers=await conn.fetchval("select count(*) from outreach where entity_type='buyer' and wave='pilot1'")
+        research_queued=await conn.fetchval("select count(*) from research_backlog where status='queued'")
+        open_exceptions=await conn.fetchval("select count(*) from exceptions where status='open'")
+    live_intake_ready=bool(smtp_ready and tunnel_ready and int(pilot_vendors or 0)>=1)
+    outreach_ready=bool(smtp_ready and imap_ready and postal_ready)
+    return {
+      "ok":True,
+      "gates":{"live_intake_ready":live_intake_ready,"outreach_ready":outreach_ready,"payments_ready":stripe_ready},
+      "config":{
+        "public_site_url":PUBLIC_SITE_URL,
+        "webhook_url":WEBHOOK_URL or None,
+        "cloudflare_tunnel_configured":tunnel_ready,
+        "smtp_configured":smtp_ready,
+        "imap_configured":imap_ready,
+        "postal_address_configured":postal_ready,
+        "stripe_webhook_configured":stripe_ready,
+        "vendor_outreach_enabled":OUTREACH_ENABLED,
+        "buyer_outreach_enabled":BUYER_OUTREACH_ENABLED
+      },
+      "operations":{
+        "pilot_or_active_vendors":int(pilot_vendors or 0),
+        "first_wave_vendors":int(first_wave_vendors or 0),
+        "first_wave_buyers":int(first_wave_buyers or 0),
+        "research_backlog_queued":int(research_queued or 0),
+        "open_exceptions":int(open_exceptions or 0)
+      },
+      "next_required":[
+        item for item,ready in [
+          ("Configure Cloudflare Tunnel / WEBHOOK_URL",tunnel_ready),
+          ("Configure transactional SMTP",smtp_ready),
+          ("Activate at least one verified pilot provider",int(pilot_vendors or 0)>=1),
+          ("Configure monitored IMAP inbox before outbound prospecting",imap_ready),
+          ("Set real BMC postal address before outbound prospecting",postal_ready),
+          ("Configure Stripe webhook after Stripe activation",stripe_ready)
+        ] if not ready
+      ]
+    }
+
 @app.get("/api/admin/first-wave")
 async def admin_first_wave(x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)
