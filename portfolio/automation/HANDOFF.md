@@ -227,6 +227,33 @@ After bootstrap, `runtime-doctor.sh` verifies the local core instead of treating
 
 Seed rerun safety is now enforced: `seed-vendors.sql` refreshes researched prospect records but will not overwrite vendors once their status is `applicant`, `pilot_pending_review`, `pilot`, `active`, `paused`, or `suppressed`. CI re-applies the vendor seed after a simulated activation submission and verifies the pending status, capacity, and insurance data survive. This matters because `bootstrap.sh` deliberately re-applies seeds on rerun.
 
+## Autonomous operator
+
+The bounded BMC operator V1 is now implemented in the Ops API and documented in `portfolio/automation/AGENT.md`.
+
+It runs every 15 minutes through the scheduler and can:
+- inspect open `classification_needed` leads;
+- use the optional local Qwen/Ollama classifier;
+- auto-apply only catalog-valid classifications at or above 0.82 confidence;
+- route that lead through the existing deterministic matcher;
+- create human-review tasks for low-confidence/unavailable AI;
+- convert unresolved operational exceptions into owned tasks;
+- assign the highest-priority queued coverage gaps to `research_agent` tasks;
+- persist every run in `agent_runs` and `events`.
+
+Private endpoints:
+- `POST /api/agent-cycle`
+- `GET /api/admin/agent-status`
+
+V1 performs **zero external actions**. It cannot:
+- send vendor/buyer prospecting;
+- approve providers or credentials;
+- activate a provider;
+- charge/refund money;
+- independently browse the public web.
+
+The next agent build is the research/enrichment worker that consumes `research_agent` tasks, browses/searches public sources, stages evidence-backed candidates, deduplicates them, and returns them for review. Do not describe assigned research tasks as completed research until that worker exists.
+
 ## Current runtime blockers
 
 1. HP appliance not deployed yet.
