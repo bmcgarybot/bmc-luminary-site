@@ -52,9 +52,9 @@ The V1 implementation always reports `external_actions_allowed=false` and perfor
 The research queue assignment is real, but the agent does not yet have a browser/search worker capable of independently discovering and verifying new public vendors/buyers.
 
 It also does not yet:
-- browse the public web for prospects;
+- deeply crawl/fetch candidate sites beyond search-result evidence;
 - enrich/verify candidate contact data from multiple sources;
-- write newly discovered candidates into a staging/review table;
+- automatically promote reviewed candidates into the prospect tables;
 - sync operator actions back to the Google Sheet automatically;
 - generate a daily owner digest;
 - call ENVY/Bonsai automatically for difficult reasoning;
@@ -72,19 +72,23 @@ Goal:
 Keep the operating system moving safely without Brett manually checking every queue.
 
 ### Phase 2 — research/enrichment worker
-Status: NOT BUILT.
+Status: BUILT, pending CI + HP deployment verification.
 
-Add a search provider/browser adapter and a staging model for evidence-backed candidates.
+Implemented with a private self-hosted SearXNG search service and `research_candidates` staging table.
 
-Required behavior:
-- consume `research_agent` tasks;
-- search by market + service + vendor/buyer side;
-- collect public business identity, source URL, public contact channels, service/market evidence and credential evidence where relevant;
-- deduplicate against existing vendors/buyers;
-- store candidates as reviewable research, never directly as active/pilot providers;
-- preserve source URLs/evidence;
-- mark the research backlog with attempts/results;
-- require human/provider confirmation for license/insurance and pilot activation.
+Current behavior:
+- consumes `research_agent` tasks;
+- runs one research task per hour by default;
+- searches by market + service + vendor/buyer side;
+- stores source title, URL, domain, snippet, query, rank and search evidence;
+- keeps discoveries in `research_candidates` with status `discovered`;
+- updates the research backlog and completes the research task;
+- exposes candidates in the private admin UI for review/reject status;
+- never inserts a discovery directly into the live provider network;
+- never contacts a discovery automatically;
+- never treats public search evidence as direct license/insurance confirmation.
+
+The current worker performs first-pass public discovery. Deeper page fetching, multi-source enrichment, contact extraction, and automated evidence scoring remain future improvements.
 
 ### Phase 3 — owner digest + escalation
 Status: NOT BUILT.
