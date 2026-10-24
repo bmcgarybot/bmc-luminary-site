@@ -1,7 +1,15 @@
+x-default-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   postgres:
     image: postgres:16-alpine
     restart: unless-stopped
+    mem_limit: 1g
+    logging: *default-logging
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -27,6 +35,8 @@ services:
   ops_api:
     build: ./api
     restart: unless-stopped
+    mem_limit: 768m
+    logging: *default-logging
     depends_on:
       postgres:
         condition: service_healthy
@@ -72,10 +82,11 @@ services:
       - "127.0.0.1:8000:8000"
     networks: [bmc_internal]
 
-
   scheduler:
     image: curlimages/curl:8.11.1
     restart: unless-stopped
+    mem_limit: 128m
+    logging: *default-logging
     depends_on: [ops_api]
     environment:
       BMC_ADMIN_KEY: ${BMC_ADMIN_KEY}
@@ -87,6 +98,8 @@ services:
   n8n:
     image: docker.n8n.io/n8nio/n8n:latest
     restart: unless-stopped
+    mem_limit: 1536m
+    logging: *default-logging
     depends_on:
       postgres:
         condition: service_healthy
@@ -118,6 +131,8 @@ services:
   searxng:
     image: docker.io/searxng/searxng:latest
     restart: unless-stopped
+    mem_limit: 768m
+    logging: *default-logging
     environment:
       SEARXNG_SECRET: ${SEARXNG_SECRET}
       SEARXNG_BIND_ADDRESS: 0.0.0.0
@@ -131,9 +146,13 @@ services:
   ollama:
     image: ollama/ollama:latest
     restart: unless-stopped
+    mem_limit: 2500m
+    logging: *default-logging
     profiles: ["local-ai"]
     environment:
       OLLAMA_KEEP_ALIVE: "10m"
+      OLLAMA_NUM_PARALLEL: "1"
+      OLLAMA_MAX_LOADED_MODELS: "1"
     volumes:
       - bmc_ollama:/root/.ollama
     ports:
@@ -143,6 +162,8 @@ services:
   webhook_proxy:
     image: nginx:alpine
     restart: unless-stopped
+    mem_limit: 128m
+    logging: *default-logging
     depends_on: [ops_api,n8n]
     volumes:
       - ./nginx-webhooks.conf:/etc/nginx/conf.d/default.conf:ro
@@ -153,6 +174,8 @@ services:
   cloudflared:
     image: cloudflare/cloudflared:latest
     restart: unless-stopped
+    mem_limit: 128m
+    logging: *default-logging
     profiles: ["tunnel"]
     command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
     depends_on: [webhook_proxy]
