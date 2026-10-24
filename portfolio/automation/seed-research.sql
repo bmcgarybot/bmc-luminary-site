@@ -1,36 +1,12 @@
 -- Research backlog generated from the BMC Master Operations Research Queue.
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Scottsdale','str_property_care','buyer','TIER1',6,2,8,'HIGH','B2B buyer discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Kingman','vehicle_services','vendor','TIER1',5,0,5,'HIGH','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Phoenix','junk_hauling','vendor','TIER1',5,0,5,'MEDIUM','public business discovery','QUEUED','')
+values('Scottsdale','str_property_care','buyer','TIER1',6,2,8,'MEDIUM','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Phoenix','landscaping','vendor','TIER1',5,0,5,'MEDIUM','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Phoenix','pool_desert_property','vendor','TIER1',5,0,5,'MEDIUM','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Scottsdale','str_property_care','vendor','TIER1',5,0,5,'HIGH','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Sedona','str_property_care','buyer','TIER1',5,3,8,'HIGH','B2B buyer discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Sedona','tree_service','vendor','TIER1',5,0,5,'MEDIUM','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Tucson','pest_control','vendor','TIER1',5,0,5,'MEDIUM','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Winslow','mobile_tire_battery','vendor','TIER1',5,0,5,'HIGH','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Winslow','auto_glass','vendor','TIER1',5,0,5,'HIGH','public business discovery','QUEUED','')
+values('Sedona','str_property_care','buyer','TIER1',5,3,8,'MEDIUM','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Chino Valley','junk_hauling','vendor','TIER1',4,1,5,'MEDIUM','public business discovery','QUEUED','')
@@ -48,19 +24,13 @@ insert into research_backlog(market,service_key,side,market_priority,target_gap,
 values('Flagstaff','facility_maintenance','buyer','TIER1',4,4,8,'MEDIUM','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Flagstaff','towing_roadside','vendor','TIER1',4,1,5,'MEDIUM','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Prescott','towing_roadside','vendor','TIER1',4,1,5,'MEDIUM','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Prescott Valley','pet_waste','vendor','TIER1',4,1,5,'MEDIUM','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Scottsdale','landscaping','vendor','TIER1',4,1,5,'MEDIUM','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Sedona','str_property_care','vendor','TIER1',4,1,5,'HIGH','public business discovery','QUEUED','')
+values('Tucson','pest_control','vendor','TIER1',4,1,5,'MEDIUM','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Tucson','hvac_heat','vendor','TIER1',4,1,5,'MEDIUM','public business discovery','QUEUED','')
@@ -72,43 +42,28 @@ insert into research_backlog(market,service_key,side,market_priority,target_gap,
 values('Tucson','pool_desert_property','vendor','TIER1',4,1,5,'MEDIUM','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Camp Verde','landscaping','vendor','TIER1',3,2,5,'LOW','public business discovery','QUEUED','')
+values('Winslow','mobile_tire_battery','vendor','TIER1',4,1,5,'MEDIUM','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Camp Verde','rural_property','buyer','TIER1',3,0,3,'MEDIUM','B2B buyer discovery','QUEUED','')
+values('Winslow','auto_glass','vendor','TIER1',4,1,5,'MEDIUM','public business discovery','QUEUED','')
+on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
+insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
+values('Camp Verde','landscaping','vendor','TIER1',3,2,5,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Chino Valley','rural_property','vendor','TIER1',3,2,5,'MEDIUM','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Cottonwood','rural_property','vendor','TIER1',3,2,5,'MEDIUM','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Cottonwood','rural_property','buyer','TIER1',3,0,3,'MEDIUM','B2B buyer discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Cottonwood','tree_service','buyer','TIER1',3,0,3,'MEDIUM','B2B buyer discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Flagstaff','towing_roadside','buyer','TIER1',3,0,3,'MEDIUM','B2B buyer discovery','QUEUED','')
+values('Cottonwood','rural_property','vendor','TIER1',3,2,5,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Flagstaff','tree_service','buyer','TIER1',3,0,3,'MEDIUM','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Kingman','towing_roadside','vendor','TIER1',3,2,5,'MEDIUM','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Kingman','towing_roadside','buyer','TIER1',3,0,3,'MEDIUM','B2B buyer discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Kingman','vehicle_services','buyer','TIER1',3,0,3,'HIGH','B2B buyer discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Phoenix','facility_maintenance','buyer','TIER1',3,5,8,'LOW','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Prescott','towing_roadside','buyer','TIER1',3,0,3,'MEDIUM','B2B buyer discovery','QUEUED','')
+values('Phoenix','pool_desert_property','vendor','TIER1',3,2,5,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Prescott Valley','facility_maintenance','buyer','TIER1',3,5,8,'LOW','B2B buyer discovery','QUEUED','')
@@ -123,16 +78,7 @@ insert into research_backlog(market,service_key,side,market_priority,target_gap,
 values('Prescott Valley','towing_roadside','buyer','TIER1',3,0,3,'MEDIUM','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Winslow','mobile_tire_battery','buyer','TIER1',3,0,3,'HIGH','B2B buyer discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Winslow','towing_roadside','vendor','TIER1',3,2,5,'MEDIUM','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Winslow','towing_roadside','buyer','TIER1',3,0,3,'MEDIUM','B2B buyer discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Winslow','auto_glass','buyer','TIER1',3,0,3,'HIGH','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Chino Valley','rural_property','buyer','TIER1',2,1,3,'MEDIUM','B2B buyer discovery','QUEUED','')
@@ -147,43 +93,70 @@ insert into research_backlog(market,service_key,side,market_priority,target_gap,
 values('Kingman','rural_property','buyer','TIER1',2,1,3,'LOW','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
+values('Kingman','vehicle_services','vendor','TIER1',2,3,5,'LOW','public business discovery','QUEUED','')
+on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
+insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Phoenix','hvac_heat','vendor','TIER1',2,3,5,'LOW','public business discovery','QUEUED','')
+on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
+insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
+values('Phoenix','junk_hauling','vendor','TIER1',2,3,5,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Prescott','junk_hauling','vendor','TIER1',2,3,5,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
+values('Prescott','towing_roadside','buyer','TIER1',2,1,3,'LOW','B2B buyer discovery','QUEUED','')
+on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
+insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Prescott Valley','landscaping','vendor','TIER1',2,3,5,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Scottsdale','pool_desert_property','vendor','TIER1',2,3,5,'LOW','public business discovery','QUEUED','')
+values('Sedona','tree_service','vendor','TIER1',2,3,5,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Tucson','facility_maintenance','buyer','TIER1',2,6,8,'LOW','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Winslow','vehicle_services','buyer','TIER1',2,1,3,'LOW','B2B buyer discovery','QUEUED','')
+values('Winslow','mobile_tire_battery','buyer','TIER1',2,1,3,'MEDIUM','B2B buyer discovery','QUEUED','')
+on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
+insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
+values('Winslow','towing_roadside','buyer','TIER1',2,1,3,'MEDIUM','B2B buyer discovery','QUEUED','')
+on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
+insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
+values('Winslow','auto_glass','buyer','TIER1',2,1,3,'MEDIUM','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Camp Verde','junk_hauling','vendor','TIER1',1,4,5,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Camp Verde','rural_property','vendor','TIER1',1,4,5,'MEDIUM','public business discovery','QUEUED','')
+values('Camp Verde','rural_property','vendor','TIER1',1,4,5,'LOW','public business discovery','QUEUED','')
+on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
+insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
+values('Camp Verde','rural_property','buyer','TIER1',1,2,3,'LOW','B2B buyer discovery','QUEUED','')
+on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
+insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
+values('Flagstaff','towing_roadside','buyer','TIER1',1,2,3,'LOW','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Flagstaff','tree_service','vendor','TIER1',1,4,5,'MEDIUM','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
+values('Kingman','towing_roadside','buyer','TIER1',1,2,3,'LOW','B2B buyer discovery','QUEUED','')
+on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
+insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
+values('Kingman','vehicle_services','buyer','TIER1',1,2,3,'LOW','B2B buyer discovery','QUEUED','')
+on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
+insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Prescott','tree_service','buyer','TIER1',1,2,3,'LOW','B2B buyer discovery','QUEUED','')
+on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
+insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
+values('Scottsdale','pool_desert_property','vendor','TIER1',1,4,5,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Sedona','facility_maintenance','buyer','TIER1',1,7,8,'LOW','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Sedona','landscaping','vendor','TIER1',1,4,5,'LOW','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Winslow','vehicle_services','vendor','TIER1',1,4,5,'LOW','public business discovery','QUEUED','')
+values('Winslow','vehicle_services','buyer','TIER1',1,2,3,'LOW','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Flagstaff','str_property_care','buyer','TIER2',5,0,5,'MEDIUM','B2B buyer discovery','QUEUED','')
@@ -201,22 +174,16 @@ insert into research_backlog(market,service_key,side,market_priority,target_gap,
 values('Chino Valley','towing_roadside','vendor','TIER2',3,0,3,'MEDIUM','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Cottonwood','turnover_cleaning','vendor','TIER2',3,0,3,'MEDIUM','public business discovery','QUEUED','')
+values('Cottonwood','turnover_cleaning','vendor','TIER2',3,0,3,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Cottonwood','pet_waste','vendor','TIER2',3,0,3,'MEDIUM','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Flagstaff','vehicle_services','vendor','TIER2',3,0,3,'MEDIUM','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Kingman','commercial_cleaning','vendor','TIER2',3,0,3,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Kingman','mobile_tire_battery','vendor','TIER2',3,0,3,'MEDIUM','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Kingman','auto_glass','vendor','TIER2',3,0,3,'MEDIUM','public business discovery','QUEUED','')
+values('Kingman','auto_glass','vendor','TIER2',3,0,3,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Phoenix','pest_control','vendor','TIER2',3,0,3,'LOW','public business discovery','QUEUED','')
@@ -234,7 +201,7 @@ insert into research_backlog(market,service_key,side,market_priority,target_gap,
 values('Prescott','pet_waste','vendor','TIER2',3,0,3,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Prescott','vehicle_services','vendor','TIER2',3,0,3,'MEDIUM','public business discovery','QUEUED','')
+values('Prescott','vehicle_services','vendor','TIER2',3,0,3,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Prescott Valley','vehicle_services','vendor','TIER2',3,0,3,'MEDIUM','public business discovery','QUEUED','')
@@ -249,16 +216,10 @@ insert into research_backlog(market,service_key,side,market_priority,target_gap,
 values('Scottsdale','mobile_detailing','vendor','TIER2',3,0,3,'MEDIUM','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Scottsdale','turnover_cleaning','vendor','TIER2',3,0,3,'MEDIUM','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Scottsdale','auto_glass','vendor','TIER2',3,0,3,'MEDIUM','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Sedona','window_cleaning','vendor','TIER2',3,0,3,'LOW','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Sedona','turnover_cleaning','vendor','TIER2',3,0,3,'MEDIUM','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Sedona','pool_desert_property','vendor','TIER2',3,0,3,'LOW','public business discovery','QUEUED','')
@@ -297,9 +258,6 @@ insert into research_backlog(market,service_key,side,market_priority,target_gap,
 values('Camp Verde','towing_roadside','buyer','TIER2',2,0,2,'MEDIUM','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Camp Verde','tree_service','buyer','TIER2',2,0,2,'LOW','B2B buyer discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Chino Valley','mobile_tire_battery','buyer','TIER2',2,0,2,'MEDIUM','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
@@ -307,9 +265,6 @@ values('Chino Valley','towing_roadside','buyer','TIER2',2,0,2,'MEDIUM','B2B buye
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Cottonwood','commercial_cleaning','vendor','TIER2',2,1,3,'LOW','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Cottonwood','turnover_cleaning','buyer','TIER2',2,0,2,'MEDIUM','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Cottonwood','pet_waste','buyer','TIER2',2,0,2,'MEDIUM','B2B buyer discovery','QUEUED','')
@@ -327,13 +282,7 @@ insert into research_backlog(market,service_key,side,market_priority,target_gap,
 values('Flagstaff','str_property_care','vendor','TIER2',2,1,3,'MEDIUM','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Flagstaff','vehicle_services','buyer','TIER2',2,0,2,'MEDIUM','B2B buyer discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Kingman','mobile_tire_battery','buyer','TIER2',2,0,2,'MEDIUM','B2B buyer discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Kingman','auto_glass','buyer','TIER2',2,0,2,'MEDIUM','B2B buyer discovery','QUEUED','')
+values('Flagstaff','vehicle_services','vendor','TIER2',2,1,3,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Phoenix','mobile_detailing','buyer','TIER2',2,0,2,'MEDIUM','B2B buyer discovery','QUEUED','')
@@ -381,7 +330,7 @@ insert into research_backlog(market,service_key,side,market_priority,target_gap,
 values('Scottsdale','mobile_detailing','buyer','TIER2',2,0,2,'MEDIUM','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Scottsdale','turnover_cleaning','buyer','TIER2',2,0,2,'MEDIUM','B2B buyer discovery','QUEUED','')
+values('Scottsdale','turnover_cleaning','buyer','TIER2',2,0,2,'LOW','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Scottsdale','auto_glass','buyer','TIER2',2,0,2,'MEDIUM','B2B buyer discovery','QUEUED','')
@@ -393,7 +342,7 @@ insert into research_backlog(market,service_key,side,market_priority,target_gap,
 values('Sedona','junk_hauling','vendor','TIER2',2,1,3,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Sedona','turnover_cleaning','buyer','TIER2',2,0,2,'MEDIUM','B2B buyer discovery','QUEUED','')
+values('Sedona','turnover_cleaning','buyer','TIER2',2,0,2,'LOW','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Tucson','mobile_detailing','buyer','TIER2',2,0,2,'MEDIUM','B2B buyer discovery','QUEUED','')
@@ -417,16 +366,10 @@ insert into research_backlog(market,service_key,side,market_priority,target_gap,
 values('Chino Valley','tree_service','buyer','TIER2',1,1,2,'LOW','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Cottonwood','facility_maintenance','buyer','TIER2',1,4,5,'LOW','B2B buyer discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Flagstaff','junk_hauling','vendor','TIER2',1,2,3,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Prescott','commercial_cleaning','vendor','TIER2',1,2,3,'LOW','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Prescott','vehicle_services','buyer','TIER2',1,1,2,'MEDIUM','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Prescott Valley','commercial_cleaning','vendor','TIER2',1,2,3,'LOW','public business discovery','QUEUED','')
@@ -532,9 +475,6 @@ values('Camp Verde','epoxy_flooring','buyer','CORE',5,0,5,'HIGH','B2B buyer disc
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Camp Verde','garage_door','buyer','CORE',5,0,5,'HIGH','B2B buyer discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Camp Verde','turnover_cleaning','buyer','CORE',5,0,5,'HIGH','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Camp Verde','coffee_water','buyer','CORE',5,0,5,'HIGH','B2B buyer discovery','QUEUED','')
@@ -783,7 +723,7 @@ insert into research_backlog(market,service_key,side,market_priority,target_gap,
 values('Winslow','duct_vent','buyer','CORE',5,0,5,'HIGH','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Winslow','locksmith_access','buyer','CORE',5,0,5,'HIGH','B2B buyer discovery','QUEUED','')
+values('Winslow','locksmith_access','buyer','CORE',5,0,5,'MEDIUM','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Winslow','pressure_washing','buyer','CORE',5,0,5,'HIGH','B2B buyer discovery','QUEUED','')
@@ -861,7 +801,10 @@ insert into research_backlog(market,service_key,side,market_priority,target_gap,
 values('Camp Verde','garage_door','vendor','CORE',3,0,3,'HIGH','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Camp Verde','turnover_cleaning','vendor','CORE',3,0,3,'HIGH','public business discovery','QUEUED','')
+values('Camp Verde','turnover_cleaning','vendor','CORE',3,0,3,'MEDIUM','public business discovery','QUEUED','')
+on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
+insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
+values('Camp Verde','turnover_cleaning','buyer','CORE',3,2,5,'MEDIUM','B2B buyer discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Camp Verde','coffee_water','vendor','CORE',3,0,3,'HIGH','public business discovery','QUEUED','')
@@ -1242,9 +1185,6 @@ insert into research_backlog(market,service_key,side,market_priority,target_gap,
 values('Winslow','floor_carpet','vendor','CORE',3,0,3,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
-values('Winslow','locksmith_access','vendor','CORE',3,0,3,'HIGH','public business discovery','QUEUED','')
-on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
-insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Winslow','pest_control','vendor','CORE',3,0,3,'LOW','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
@@ -1336,6 +1276,9 @@ values('Sedona','pest_control','buyer','CORE',2,3,5,'MEDIUM','B2B buyer discover
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Sedona','fire_safety','buyer','CORE',2,3,5,'MEDIUM','B2B buyer discovery','QUEUED','')
+on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
+insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
+values('Winslow','locksmith_access','vendor','CORE',2,1,3,'MEDIUM','public business discovery','QUEUED','')
 on conflict(market,service_key,side) do update set market_priority=excluded.market_priority,target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,research_priority=excluded.research_priority,research_method=excluded.research_method,status=excluded.status,notes=excluded.notes,updated_at=now();
 insert into research_backlog(market,service_key,side,market_priority,target_gap,current_count,goal,research_priority,research_method,status,notes)
 values('Chino Valley','parking_lot','buyer','CORE',1,4,5,'MEDIUM','B2B buyer discovery','QUEUED','')
