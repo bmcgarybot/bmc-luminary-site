@@ -300,7 +300,7 @@ async def handle_lead(conn,p):
     ai_classification=None
     if form_type=="universal_request" and not clean(p.get("service_key")):
         service_key="unclassified"
-        ai_classification=await classify_with_local_ai(conn,market,clean(p.get("scope") or p.get("problem") or p.get("notes")))
+        ai_text=(clean(p.get("scope") or p.get("problem") or p.get("notes"))+"\nRequest type: "+clean(p.get("service_type"))).strip()\n        ai_classification=await classify_with_local_ai(conn,market,ai_text)
         if ai_classification:
             service_key=ai_classification["service_key"]
     consent=clean(p.get("consent")).lower()=="yes"
