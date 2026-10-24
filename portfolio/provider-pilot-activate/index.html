@@ -1,0 +1,23 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Activate BMC Provider Pilot</title><meta name="description" content="Confirm BMC provider pilot territory, capacity, and credentials."><link rel="stylesheet" href="../assets/core.css"></head><body>
+<nav class="nav"><div class="wrap nav-in"><a class="brand" href="../">BMC Service Portfolio</a><div class="nav-links"><a href="../provider-pilot/" target="_blank" rel="noopener">Pilot terms</a></div></div></nav>
+<header class="hero"><div class="wrap"><div class="eyebrow">Provider Pilot Activation</div><h1>Tell BMC what work you actually want.</h1><p>This form is for providers BMC has already researched or invited. Submitting it does not create paid terms or automatically activate routing. BMC reviews the territory, capacity, and applicable credentials first.</p></div></header>
+<section class="section"><div class="wrap form-shell"><div class="form-copy"><span class="kicker">Pilot setup</span><h2>Confirm your operating fit.</h2><p class="section-lead">The first pilot request may be offered at no charge where stated in your invitation. Any later paid lead, territory, subscription, or referral terms are presented separately before activation.</p></div>
+<form class="form" data-bmc-form data-form-type="vendor_pilot_activation" data-email="contact@bmcluminaryventures.com" data-subject="BMC provider pilot activation">
+<input class="hidden" name="website" tabindex="-1" autocomplete="off"><input type="hidden" name="vendor_id" data-query="vendor_id">
+<div class="row"><div class="field"><label>Business name</label><input name="business_name" data-query="business_name" required></div><div class="field"><label>Website</label><input name="business_url"></div></div>
+<div class="row"><div class="field"><label>Contact name</label><input name="contact_name" required></div><div class="field"><label>Business email</label><input type="email" name="email" required></div></div>
+<div class="row"><div class="field"><label>Phone</label><input type="tel" name="phone"></div><div class="field"><label>Primary market</label><select name="market" data-market-select required><option value="">Choose market</option></select></div></div>
+<div class="field"><label>Territory / cities you will accept</label><textarea name="territory" required placeholder="Prescott, Prescott Valley, Chino Valley..."></textarea></div>
+<div class="field"><label>Services you want BMC to route</label><textarea name="services" required placeholder="Tree removal, defensible space, landscaping..."></textarea></div>
+<div class="row"><div class="field"><label>Minimum job size</label><input name="minimum_job" placeholder="$300, $1,000, no minimum..."></div><div class="field"><label>Current capacity</label><input name="capacity" placeholder="3 new jobs/week, 10/month..."></div></div>
+<div class="field"><label>License / certification details or verification URL where applicable</label><textarea name="credentials"></textarea></div>
+<div class="field"><label>Insurance details or confirmation</label><textarea name="insurance" placeholder="Carrier/coverage or 'available on request'"></textarea></div>
+<label class="check"><input type="checkbox" name="pilot_terms" value="accepted" required><span>I reviewed the <a href="../provider-pilot/" target="_blank" rel="noopener">BMC Provider Pilot Terms</a>. I understand the pilot does not guarantee leads or exclusivity, and no paid lead/subscription/referral charge begins until separate pricing terms are presented and accepted.</span></label>
+<div class="notice" data-form-notice></div><div class="actions"><button class="btn btn-primary" type="submit" data-label="Submit pilot details">Submit pilot details</button></div>
+</form></div></section>
+<footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>Provider pilot activation</span></div></footer>
+<script src="../assets/core.js"></script><script>
+const q=new URLSearchParams(location.search);document.querySelectorAll('[data-query]').forEach(e=>{const v=q.get(e.dataset.query);if(v)e.value=v});
+const market=q.get('market');if(market){const s=document.querySelector('[name="market"]');setTimeout(()=>{s.value=market},0)}
+</script></body></html>
