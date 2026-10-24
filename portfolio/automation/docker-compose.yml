@@ -165,3 +165,4 @@ volumes:
   bmc_postgres:
   bmc_n8n:
   bmc_ollama:
+  bmc_searxng_cache:
