@@ -125,6 +125,7 @@ create table if not exists outreach (
   entity_type text not null,
   entity_id text not null,
   campaign text not null,
+  wave text default 'backlog',
   channel text default 'email',
   sequence_step integer default 1,
   status text default 'queued',
@@ -247,3 +248,6 @@ create table if not exists subscriptions (
 
 create index if not exists idx_payment_events_product on payment_events(product_key,processed_at);
 create index if not exists idx_subscriptions_status on subscriptions(status);
+
+alter table outreach add column if not exists wave text default 'backlog';
+create index if not exists idx_outreach_wave_status on outreach(entity_type,wave,status,next_followup_at);
