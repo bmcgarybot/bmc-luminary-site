@@ -57,6 +57,7 @@ create table if not exists buyers (
 
 create table if not exists leads (
   lead_id uuid primary key default gen_random_uuid(),
+  parent_lead_id uuid references leads(lead_id) on delete cascade,
   submission_id text unique,
   submitted_at timestamptz default now(),
   form_type text not null,
@@ -171,3 +172,5 @@ create table if not exists outreach_suppressions (
   source text,
   created_at timestamptz default now()
 );
+
+alter table leads add column if not exists parent_lead_id uuid references leads(lead_id) on delete cascade;
