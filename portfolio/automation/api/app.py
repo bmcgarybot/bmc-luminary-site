@@ -1,4 +1,4 @@
-import os, json, uuid, re, imaplib, email, asyncio, urllib.request, hmac, hashlib, time
+import os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, hmac, hashlib, time
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 from email.utils import parseaddr
@@ -29,6 +29,7 @@ BUYER_OUTREACH_DAILY_LIMIT=int(os.getenv("BUYER_OUTREACH_DAILY_LIMIT","15"))
 BUYER_OUTREACH_WAVE=os.getenv("BUYER_OUTREACH_WAVE","pilot1").strip() or "pilot1"
 BUSINESS_POSTAL_ADDRESS=os.getenv("BUSINESS_POSTAL_ADDRESS","").strip()
 PARTNER_URL=f"{PUBLIC_SITE_URL}/portfolio/vendor-partner/"
+PILOT_ACTIVATION_URL=f"{PUBLIC_SITE_URL}/portfolio/provider-pilot-activate/"
 IMAP_ENABLED=os.getenv("IMAP_ENABLED","false").lower()=="true"
 IMAP_HOST=os.getenv("IMAP_HOST","")
 IMAP_PORT=int(os.getenv("IMAP_PORT","993"))
@@ -537,6 +538,67 @@ Closing the loop helps BMC route future work more accurately.
     return {"ok":True,"sent":sent}
 
 
+def pilot_activation_url(row):
+    params=urllib.parse.urlencode({
+      "vendor_id":clean(row["entity_id"]),
+      "business_name":clean(row["business_name"]),
+      "market":clean(row["market"])
+    })
+    return f"{PILOT_ACTIVATION_URL}?{params}"
+
+def first_wave_vendor_copy(row,step):
+    market=clean(row["market"]) or "your area"
+    service=clean(row["service_key"]) or "local service"
+    business=clean(row["business_name"])
+    activation=pilot_activation_url(row)
+    if step==1:
+        subject=f"{market} {service} pilot with BMC"
+        body=f"""Hi {business},
+
+BMC Luminary Ventures is building a managed local request channel for {service} in {market}. You are in the first provider group we are inviting because your service area and public business profile fit the work we expect to route.
+
+For the pilot, the first qualified request may be offered at no charge where stated in your invitation. There is no subscription and no surprise paid lead fee. Any future pricing is presented separately before it becomes active.
+
+If you want to be considered, confirm the territory, job types, minimum job size, capacity, and applicable credential information here:
+
+{activation}
+
+No sales meeting is required.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+If this is not relevant, reply no and we will suppress future outreach."""
+    elif step==2:
+        subject=f"Re: {market} {service} pilot with BMC"
+        body=f"""Hi {business},
+
+Following up once on the BMC pilot invitation. If additional {service} requests in {market} are relevant, you can confirm the territory and work you want here:
+
+{activation}
+
+There is no subscription and no paid lead term becomes active without your agreement.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+Reply no if you do not want future outreach."""
+    else:
+        subject=f"Last note: {market} {service} pilot"
+        body=f"""Hi {business},
+
+Last note on the BMC {service} pilot in {market}. If you want to be considered for qualified local requests, your activation link is here:
+
+{activation}
+
+If not, no action is needed and we will close this sequence.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+Reply no to suppress future outreach."""
+    return subject,body
+
 def vendor_recruitment_copy(row,step):
     market=row["market"] or "your area"
     service=row["service_key"] or "local service"
@@ -613,7 +675,7 @@ async def process_outreach(x_bmc_admin_key:str|None=Header(default=None)):
       already=await conn.fetchval("select count(*) from outreach where sent_at>=date_trunc('day',now())")
       allowance=max(0,OUTREACH_DAILY_LIMIT-int(already or 0))
       if allowance<=0:return {"ok":True,"enabled":True,"sent":0,"message":"Daily outreach limit reached."}
-      rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,
+      rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,o.wave,
           v.business_name,v.public_email,v.association_signal,
           vm.market,vs.service_key
         from outreach o
@@ -634,7 +696,7 @@ async def process_outreach(x_bmc_admin_key:str|None=Header(default=None)):
         limit $1""",allowance,OUTREACH_WAVE)
       for row in rows:
         step=1 if row["status"]=="queued" else int(row["sequence_step"])+1
-        subject,body=vendor_recruitment_copy(row,step)
+        subject,body=(first_wave_vendor_copy(row,step) if row["wave"]=="pilot1" else vendor_recruitment_copy(row,step))
         ok=await send_mail(row["public_email"],subject,body)
         if not ok: continue
         next_at=datetime.now(timezone.utc)+(timedelta(days=4) if step==1 else timedelta(days=7))
@@ -744,13 +806,16 @@ button{width:auto;cursor:pointer}.grid{display:grid;grid-template-columns:repeat
 .card{background:white;border:1px solid #ddd;border-radius:10px;padding:14px}pre{white-space:pre-wrap}.section{margin:24px 0}
 </style></head><body>
 <h1>BMC Local Admin</h1><p>Private/local operations page. Do not publish through the public gateway.</p>
-<div class='section'><label>Admin key<input id='key' type='password'></label><button onclick='loadSummary()'>Load summary</button><button onclick='loadPreflight()'>Launch preflight</button><button onclick='loadFirstWave()'>Preview First Wave</button><div id='summary' class='grid'></div><div id='preflight' class='card' style='margin-top:12px'></div></div><div class='section'><h2>First Wave preview</h2><div id='first_wave'></div></div>
+<div class='section'><label>Admin key<input id='key' type='password'></label><button onclick='loadSummary()'>Load summary</button><button onclick='loadPreflight()'>Launch preflight</button><button onclick='loadFirstWave()'>Preview First Wave</button><button onclick='loadPilotReviews()'>Pending pilot reviews</button><div id='summary' class='grid'></div><div id='preflight' class='card' style='margin-top:12px'></div></div><div class='section'><h2>First Wave preview</h2><div id='first_wave'></div></div>
+<div class='section'><h2>Pending pilot reviews</h2><p>Providers stay unroutable until BMC explicitly approves them here.</p><div id='pilot_reviews'></div></div>
 <div class='section card'><h2>Vendor activation</h2><input id='vendor_id' placeholder='vendor_id'><select id='vendor_status'><option>pilot</option><option>active</option><option>paused</option><option>suppressed</option></select><input id='vendor_services' placeholder='service keys comma-separated'><input id='vendor_markets' placeholder='markets comma-separated'><button onclick='vendorUpdate()'>Save vendor</button><pre id='vendor_result'></pre></div>
 <div class='section card'><h2>Classify unresolved lead</h2><input id='lead_id' placeholder='lead UUID'><input id='service_key' placeholder='service_key'><button onclick='classifyLead()'>Classify + route</button><pre id='lead_result'></pre></div>
 <div class='section card'><h2>Suppress outreach email</h2><input id='suppress_email' placeholder='email'><input id='suppress_reason' placeholder='reason'><button onclick='suppressEmail()'>Suppress</button><pre id='suppress_result'></pre></div>
 <script>
 function headers(){return {'Content-Type':'application/json','X-BMC-Admin-Key':document.getElementById('key').value}}
 async function loadSummary(){const r=await fetch('/api/admin/summary',{headers:headers()});const j=await r.json();const el=document.getElementById('summary');el.innerHTML='';Object.entries(j).forEach(function(pair){const d=document.createElement('div');d.className='card';d.innerHTML='<b>'+pair[0]+'</b><pre>'+JSON.stringify(pair[1],null,2)+'</pre>';el.appendChild(d)})}\nasync function loadPreflight(){const r=await fetch('/api/admin/preflight',{headers:headers()});const j=await r.json();document.getElementById('preflight').innerHTML='<h2>Launch preflight</h2><pre>'+JSON.stringify(j,null,2)+'</pre>'}\nasync function loadFirstWave(){const r=await fetch('/api/admin/first-wave',{headers:headers()});const j=await r.json();const el=document.getElementById('first_wave');el.innerHTML='';(j.records||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>'+x.side.toUpperCase()+' · '+x.business_name+'</b><div>'+x.market+' · '+x.email+'</div><div><strong>'+x.subject+'</strong></div><pre>'+x.body+'</pre>';el.appendChild(d)})}
+async function loadPilotReviews(){const r=await fetch('/api/admin/pilot-reviews',{headers:headers()});const j=await r.json();const el=document.getElementById('pilot_reviews');el.innerHTML='';if(!(j.records||[]).length){el.textContent='No providers are pending review.';return}(j.records||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';const title=document.createElement('b');title.textContent=x.business_name+' · '+x.vendor_id;const pre=document.createElement('pre');pre.textContent=JSON.stringify(x,null,2);const btn=document.createElement('button');btn.textContent='Approve as pilot';btn.onclick=function(){approvePilot(x.vendor_id)};d.appendChild(title);d.appendChild(pre);d.appendChild(btn);el.appendChild(d)})}
+async function approvePilot(id){if(!confirm('Approve '+id+' for live pilot routing after credential/insurance review?'))return;const body={vendor_id:id,confirm_credentials:true};const r=await fetch('/api/admin/approve-pilot',{method:'POST',headers:headers(),body:JSON.stringify(body)});const j=await r.json();alert(j.message||JSON.stringify(j));await loadPilotReviews();await loadSummary()}
 async function vendorUpdate(){const body={vendor_id:document.getElementById('vendor_id').value,status:document.getElementById('vendor_status').value,services:document.getElementById('vendor_services').value.split(',').map(function(x){return x.trim()}).filter(Boolean),markets:document.getElementById('vendor_markets').value.split(',').map(function(x){return x.trim()}).filter(Boolean)};const r=await fetch('/api/admin/vendor-status',{method:'POST',headers:headers(),body:JSON.stringify(body)});document.getElementById('vendor_result').textContent=JSON.stringify(await r.json(),null,2)}
 async function classifyLead(){const body={lead_id:document.getElementById('lead_id').value,service_key:document.getElementById('service_key').value};const r=await fetch('/api/admin/classify-lead',{method:'POST',headers:headers(),body:JSON.stringify(body)});document.getElementById('lead_result').textContent=JSON.stringify(await r.json(),null,2)}
 async function suppressEmail(){const body={email:document.getElementById('suppress_email').value,reason:document.getElementById('suppress_reason').value};const r=await fetch('/api/admin/suppress',{method:'POST',headers:headers(),body:JSON.stringify(body)});document.getElementById('suppress_result').textContent=JSON.stringify(await r.json(),null,2)}
@@ -823,16 +888,17 @@ async def admin_first_wave(x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)
     records=[]
     async with app.state.pool.acquire() as conn:
-        vendors=await conn.fetch("""select o.entity_id,v.business_name,v.public_email,vm.market,vs.service_key,v.association_signal
+        vendors=await conn.fetch("""select o.entity_id,o.wave,v.business_name,v.public_email,vm.market,vs.service_key,v.association_signal
           from outreach o join vendors v on v.vendor_id=o.entity_id
           left join lateral (select market from vendor_markets where vendor_id=v.vendor_id order by market limit 1) vm on true
           left join lateral (select service_key from vendor_services where vendor_id=v.vendor_id order by service_key limit 1) vs on true
           where o.entity_type='vendor' and o.wave='pilot1'
           order by o.created_at,o.entity_id""")
         for row in vendors:
-            subject,body=vendor_recruitment_copy(row,1)
+            subject,body=first_wave_vendor_copy(row,1)
             records.append({"side":"vendor","entity_id":row["entity_id"],"business_name":row["business_name"],
-              "email":row["public_email"],"market":row["market"],"subject":subject,"body":body})
+              "email":row["public_email"],"market":row["market"],"subject":subject,"body":body,
+              "activation_url":pilot_activation_url(row)})
         buyers=await conn.fetch("""select o.entity_id,b.business_name,b.public_email,b.market,b.buyer_type,b.campaign,b.likely_services
           from outreach o join buyers b on b.buyer_id=o.entity_id
           where o.entity_type='buyer' and o.wave='pilot1'
@@ -843,12 +909,62 @@ async def admin_first_wave(x_bmc_admin_key:str|None=Header(default=None)):
               "email":row["public_email"],"market":row["market"],"subject":subject,"body":body})
     return {"ok":True,"count":len(records),"records":records}
 
+@app.get("/api/admin/pilot-reviews")
+async def admin_pilot_reviews(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    async with app.state.pool.acquire() as conn:
+        rows=await conn.fetch("""select v.vendor_id,v.business_name,v.public_email,v.public_phone,v.website,
+          v.territory_notes,v.minimum_job,v.capacity,v.license_notes,v.insurance_notes,v.updated_at,
+          array(select vs.service_key from vendor_services vs where vs.vendor_id=v.vendor_id order by vs.service_key) services,
+          array(select vm.market from vendor_markets vm where vm.vendor_id=v.vendor_id order by vm.market) markets,
+          (select e.occurred_at from events e where e.entity_type='vendor' and e.entity_id=v.vendor_id
+             and e.event_type='pilot_activation_submitted' order by e.occurred_at desc limit 1) submitted_at
+          from vendors v where v.status='pilot_pending_review'
+          order by coalesce((select e.occurred_at from events e where e.entity_type='vendor' and e.entity_id=v.vendor_id
+             and e.event_type='pilot_activation_submitted' order by e.occurred_at desc limit 1),v.updated_at),v.business_name""")
+    return {"ok":True,"count":len(rows),"records":[dict(r) for r in rows]}
+
+@app.post("/api/admin/approve-pilot")
+async def admin_approve_pilot(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    p=await request.json()
+    vid=clean(p.get("vendor_id"))
+    confirmed=clean(p.get("confirm_credentials")).lower() in ("true","yes","1")
+    if not vid: raise HTTPException(400,"vendor_id required")
+    if not confirmed: raise HTTPException(400,"BMC credential/insurance review confirmation is required")
+    async with app.state.pool.acquire() as conn:
+        async with conn.transaction():
+            vendor=await conn.fetchrow("select * from vendors where vendor_id=$1 for update",vid)
+            if not vendor: raise HTTPException(404,"Vendor not found")
+            if vendor["status"]!="pilot_pending_review":
+                raise HTTPException(409,"Vendor is not pending pilot review")
+            raw=await conn.fetchval("""select payload from events
+              where entity_type='vendor' and entity_id=$1 and event_type='pilot_activation_submitted'
+              order by occurred_at desc limit 1""",vid)
+            try:
+                activation=json.loads(raw) if isinstance(raw,str) else (raw or {})
+            except Exception:
+                activation={}
+            if clean(activation.get("pilot_terms")).lower()!="accepted":
+                raise HTTPException(409,"Provider pilot acceptance is not recorded")
+            if not clean(vendor["territory_notes"]) or not clean(vendor["capacity"]):
+                raise HTTPException(409,"Provider territory and capacity must be recorded before pilot approval")
+            await conn.execute("update vendors set status='pilot',updated_at=now() where vendor_id=$1",vid)
+            await conn.execute("""update exceptions set status='resolved',resolved_at=now(),resolution=$2
+              where vendor_id=$1 and type='pilot_activation_review' and status='open'""",
+              vid,clean(p.get("notes")) or "Approved for pilot routing after BMC review")
+            await event(conn,"vendor",vid,"pilot_approved",{
+              "credentials_review_confirmed":True,
+              "notes":clean(p.get("notes"))
+            },"admin")
+    return {"ok":True,"vendor_id":vid,"status":"pilot","message":"Provider approved for pilot routing."}
+
 @app.post("/api/admin/vendor-status")
 async def admin_vendor_status(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)
     p=await request.json()
     vid=clean(p.get("vendor_id")); status=clean(p.get("status"))
-    if not vid or status not in ("prospect","applicant","pilot","active","paused","suppressed"):
+    if not vid or status not in ("prospect","applicant","pilot_pending_review","pilot","active","paused","suppressed"):
         raise HTTPException(400,"Invalid vendor/status")
     services=p.get("services") or []; markets=p.get("markets") or []
     async with app.state.pool.acquire() as conn:
