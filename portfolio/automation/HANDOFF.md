@@ -63,9 +63,9 @@ Important tabs:
 - 48 registered service businesses
 - 12 Arizona market hubs
 - 576 market × service combinations
-- 181 researched vendor prospects
+- 210 researched vendor prospects
 - 156 unique researched buyer prospects
-- 62 vendor prospects with public business email
+- 87 vendor prospects with public business email
 - 34 buyer prospects with public business email
 - 86+ institutional/facility prospects
 - 0 active/pilot providers
