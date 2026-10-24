@@ -150,6 +150,14 @@ for key in SMTP_HOST SMTP_USER SMTP_PASSWORD BUSINESS_POSTAL_ADDRESS CLOUDFLARE_
   fi
 done
 
+if [ "$(env_value RESEARCH_SEARCH_ENABLED)" = "true" ]; then
+  if curl -fsS "http://127.0.0.1:8888/config" >/tmp/bmc_research_search.json 2>/dev/null; then
+    pass "Private research search is reachable"
+  else
+    warn "RESEARCH_SEARCH_ENABLED is true but private SearXNG is not reachable on 127.0.0.1:8888"
+  fi
+fi
+
 if [ "$(env_value IMAP_ENABLED)" != "true" ]; then
   warn "IMAP reply polling is disabled"
 fi
