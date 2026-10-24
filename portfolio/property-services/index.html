@@ -7,9 +7,9 @@
 <div class="card"><h3>Junk removal & hauling</h3><p>Furniture, garage cleanouts, property debris, yard debris, construction cleanup, appliance haul-away, and dump runs where accepted.</p></div>
 </div></div></section>
 <section class="section" id="request"><div class="wrap form-shell"><div class="form-copy"><span class="kicker">Property-service intake</span><h2>What needs to get done?</h2><p class="section-lead">The goal is to collect enough detail for a local provider to decide whether the job fits before they contact you.</p></div>
-<form class="form" data-bmc-form data-form-type="property_services" data-email="contact@bmcluminaryventures.com" data-subject="Northern Arizona property service request">
+<form class="form" data-bmc-form data-form-type="universal_request" data-email="contact@bmcluminaryventures.com" data-subject="Northern Arizona property service request">
 <input class="hidden" name="website" tabindex="-1" autocomplete="off">
-<div class="row"><div class="field"><label>City</label><select name="market" data-market-select required><option value="">Choose market</option></select></div><div class="field"><label>Service needed</label><select name="service_type" required><option value="">Choose service</option><option>Tree trimming</option><option>Tree removal</option><option>Defensible-space / fuel reduction</option><option>Brush / pine-needle cleanup</option><option>Landscaping / yard cleanup</option><option>Junk removal</option><option>Hauling / dump run</option><option>Storm cleanup</option><option>Other property service</option></select></div></div>
+<input type="hidden" name="service_key" id="propertyServiceKey"><div class="row"><div class="field"><label>City</label><select name="market" data-market-select required><option value="">Choose market</option></select></div><div class="field"><label>Service needed</label><select name="service_type" id="propertyServiceType" required><option value="">Choose service</option><option>Tree trimming</option><option>Tree removal</option><option>Defensible-space / fuel reduction</option><option>Brush / pine-needle cleanup</option><option>Landscaping / yard cleanup</option><option>Junk removal</option><option>Hauling / dump run</option><option>Storm cleanup</option><option>Other property service</option></select></div></div>
 <div class="row"><div class="field"><label>Name</label><input name="contact_name" required></div><div class="field"><label>Email</label><input type="email" name="email" required></div></div>
 <div class="row"><div class="field"><label>Phone</label><input type="tel" name="phone"></div><div class="field"><label>Property type</label><select name="property_type"><option>Home</option><option>Rental / short-term rental</option><option>Commercial property</option><option>HOA / multifamily</option><option>Vacant land</option><option>Other</option></select></div></div>
 <div class="field"><label>Describe the job</label><textarea name="scope" required placeholder="How many trees, approximate size, amount of debris/junk, access issues, recurring landscape needs, etc."></textarea></div>
@@ -17,4 +17,17 @@
 <label class="check"><input type="checkbox" name="consent" value="yes" required><span>I am requesting service and agree that BMC may share this request and my contact information with participating local providers.</span></label>
 <div class="notice" data-form-notice></div><div class="actions"><button class="btn btn-primary" type="submit" data-label="Submit property request">Submit property request</button></div>
 </form></div></section>
-<footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>Northern Arizona pilot</span></div></footer><script src="../assets/core.js"></script></body></html>
+<footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>Northern Arizona pilot</span></div></footer><script src="../assets/core.js"></script><script>
+const propertyType=document.getElementById('propertyServiceType'),propertyKey=document.getElementById('propertyServiceKey');
+const propertyMap={
+  'Tree trimming':'tree_service',
+  'Tree removal':'tree_service',
+  'Defensible-space / fuel reduction':'tree_service',
+  'Brush / pine-needle cleanup':'tree_service',
+  'Landscaping / yard cleanup':'landscaping',
+  'Junk removal':'junk_hauling',
+  'Hauling / dump run':'junk_hauling'
+};
+function syncPropertyKey(){propertyKey.value=propertyMap[propertyType.value]||'';}
+propertyType.addEventListener('change',syncPropertyKey);syncPropertyKey();
+</script></body></html>
