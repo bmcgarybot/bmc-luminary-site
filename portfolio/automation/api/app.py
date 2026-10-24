@@ -708,13 +708,13 @@ button{width:auto;cursor:pointer}.grid{display:grid;grid-template-columns:repeat
 .card{background:white;border:1px solid #ddd;border-radius:10px;padding:14px}pre{white-space:pre-wrap}.section{margin:24px 0}
 </style></head><body>
 <h1>BMC Local Admin</h1><p>Private/local operations page. Do not publish through the public gateway.</p>
-<div class='section'><label>Admin key<input id='key' type='password'></label><button onclick='loadSummary()'>Load summary</button><div id='summary' class='grid'></div></div>
+<div class='section'><label>Admin key<input id='key' type='password'></label><button onclick='loadSummary()'>Load summary</button><button onclick='loadFirstWave()'>Preview First Wave</button><div id='summary' class='grid'></div></div><div class='section'><h2>First Wave preview</h2><div id='first_wave'></div></div>
 <div class='section card'><h2>Vendor activation</h2><input id='vendor_id' placeholder='vendor_id'><select id='vendor_status'><option>pilot</option><option>active</option><option>paused</option><option>suppressed</option></select><input id='vendor_services' placeholder='service keys comma-separated'><input id='vendor_markets' placeholder='markets comma-separated'><button onclick='vendorUpdate()'>Save vendor</button><pre id='vendor_result'></pre></div>
 <div class='section card'><h2>Classify unresolved lead</h2><input id='lead_id' placeholder='lead UUID'><input id='service_key' placeholder='service_key'><button onclick='classifyLead()'>Classify + route</button><pre id='lead_result'></pre></div>
 <div class='section card'><h2>Suppress outreach email</h2><input id='suppress_email' placeholder='email'><input id='suppress_reason' placeholder='reason'><button onclick='suppressEmail()'>Suppress</button><pre id='suppress_result'></pre></div>
 <script>
 function headers(){return {'Content-Type':'application/json','X-BMC-Admin-Key':document.getElementById('key').value}}
-async function loadSummary(){const r=await fetch('/api/admin/summary',{headers:headers()});const j=await r.json();const el=document.getElementById('summary');el.innerHTML='';Object.entries(j).forEach(function(pair){const d=document.createElement('div');d.className='card';d.innerHTML='<b>'+pair[0]+'</b><pre>'+JSON.stringify(pair[1],null,2)+'</pre>';el.appendChild(d)})}
+async function loadSummary(){const r=await fetch('/api/admin/summary',{headers:headers()});const j=await r.json();const el=document.getElementById('summary');el.innerHTML='';Object.entries(j).forEach(function(pair){const d=document.createElement('div');d.className='card';d.innerHTML='<b>'+pair[0]+'</b><pre>'+JSON.stringify(pair[1],null,2)+'</pre>';el.appendChild(d)})}\nasync function loadFirstWave(){const r=await fetch('/api/admin/first-wave',{headers:headers()});const j=await r.json();const el=document.getElementById('first_wave');el.innerHTML='';(j.records||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>'+x.side.toUpperCase()+' · '+x.business_name+'</b><div>'+x.market+' · '+x.email+'</div><div><strong>'+x.subject+'</strong></div><pre>'+x.body+'</pre>';el.appendChild(d)})}
 async function vendorUpdate(){const body={vendor_id:document.getElementById('vendor_id').value,status:document.getElementById('vendor_status').value,services:document.getElementById('vendor_services').value.split(',').map(function(x){return x.trim()}).filter(Boolean),markets:document.getElementById('vendor_markets').value.split(',').map(function(x){return x.trim()}).filter(Boolean)};const r=await fetch('/api/admin/vendor-status',{method:'POST',headers:headers(),body:JSON.stringify(body)});document.getElementById('vendor_result').textContent=JSON.stringify(await r.json(),null,2)}
 async function classifyLead(){const body={lead_id:document.getElementById('lead_id').value,service_key:document.getElementById('service_key').value};const r=await fetch('/api/admin/classify-lead',{method:'POST',headers:headers(),body:JSON.stringify(body)});document.getElementById('lead_result').textContent=JSON.stringify(await r.json(),null,2)}
 async function suppressEmail(){const body={email:document.getElementById('suppress_email').value,reason:document.getElementById('suppress_reason').value};const r=await fetch('/api/admin/suppress',{method:'POST',headers:headers(),body:JSON.stringify(body)});document.getElementById('suppress_result').textContent=JSON.stringify(await r.json(),null,2)}
@@ -730,6 +730,31 @@ async def admin_summary(x_bmc_admin_key:str|None=Header(default=None)):
         exceptions=await conn.fetchval("select count(*) from exceptions where status='open'")
         revenue=await conn.fetchval("select coalesce(sum(amount_cents),0) from revenue_events where status='earned'")
     return {"leads":{r["status"]:r["n"] for r in leads},"vendors":{r["status"]:r["n"] for r in vendors},"outreach":[dict(r) for r in outreach],"open_exceptions":exceptions,"earned_revenue_cents":revenue}
+
+@app.get("/api/admin/first-wave")
+async def admin_first_wave(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    records=[]
+    async with app.state.pool.acquire() as conn:
+        vendors=await conn.fetch("""select o.entity_id,v.business_name,v.public_email,vm.market,vs.service_key,v.association_signal
+          from outreach o join vendors v on v.vendor_id=o.entity_id
+          left join lateral (select market from vendor_markets where vendor_id=v.vendor_id order by market limit 1) vm on true
+          left join lateral (select service_key from vendor_services where vendor_id=v.vendor_id order by service_key limit 1) vs on true
+          where o.entity_type='vendor' and o.wave='pilot1'
+          order by o.created_at,o.entity_id""")
+        for row in vendors:
+            subject,body=vendor_recruitment_copy(row,1)
+            records.append({"side":"vendor","entity_id":row["entity_id"],"business_name":row["business_name"],
+              "email":row["public_email"],"market":row["market"],"subject":subject,"body":body})
+        buyers=await conn.fetch("""select o.entity_id,b.business_name,b.public_email,b.market,b.buyer_type,b.campaign,b.likely_services
+          from outreach o join buyers b on b.buyer_id=o.entity_id
+          where o.entity_type='buyer' and o.wave='pilot1'
+          order by case when b.priority='A' then 0 else 1 end,o.created_at,o.entity_id""")
+        for row in buyers:
+            subject,body=buyer_outreach_copy(row,1)
+            records.append({"side":"buyer","entity_id":row["entity_id"],"business_name":row["business_name"],
+              "email":row["public_email"],"market":row["market"],"subject":subject,"body":body})
+    return {"ok":True,"count":len(records),"records":records}
 
 @app.post("/api/admin/vendor-status")
 async def admin_vendor_status(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
