@@ -989,7 +989,7 @@ button{width:auto;cursor:pointer}.grid{display:grid;grid-template-columns:repeat
 .card{background:white;border:1px solid #ddd;border-radius:10px;padding:14px}pre{white-space:pre-wrap}.section{margin:24px 0}
 </style></head><body>
 <h1>BMC Local Admin</h1><p>Private/local operations page. Do not publish through the public gateway.</p>
-<div class='section'><label>Admin key<input id='key' type='password'></label><button onclick='loadSummary()'>Load summary</button><button onclick='loadPreflight()'>Launch preflight</button><button onclick='loadFirstWave()'>Preview First Wave</button><button onclick='loadPilotReviews()'>Pending pilot reviews</button><button onclick='loadResearchCandidates()'>Research candidates</button><div id='summary' class='grid'></div><div id='preflight' class='card' style='margin-top:12px'></div></div><div class='section'><h2>First Wave preview</h2><div id='first_wave'></div></div>
+<div class='section'><label>Admin key<input id='key' type='password'></label><button onclick='loadSummary()'>Load summary</button><button onclick='loadPreflight()'>Launch preflight</button><button onclick='loadFirstWave()'>Preview First Wave</button><button onclick='loadPilotReviews()'>Pending pilot reviews</button><button onclick='loadResearchCandidates()'>Research candidates</button><button onclick='loadLaunchCell()'>Prescott/PV launch cell</button><button onclick='queueLaunchGaps()'>Queue launch gaps</button><div id='summary' class='grid'></div><div id='preflight' class='card' style='margin-top:12px'></div></div><div class='section'><h2>Prescott / Prescott Valley launch cell</h2><p>Green = verified pilot/active provider. Yellow = recruitable providers with public email. Red = research gap.</p><div id='launch_cell' class='grid'></div></div><div class='section'><h2>First Wave preview</h2><div id='first_wave'></div></div>
 <div class='section'><h2>Pending pilot reviews</h2><p>Providers stay unroutable until BMC explicitly approves them here.</p><div id='pilot_reviews'></div></div>
 <div class='section'><h2>Research candidates</h2><p>Autonomous search discoveries are evidence only until reviewed. They are not active providers and are never contacted automatically.</p><div id='research_candidates'></div></div>
 <div class='section card'><h2>Vendor activation</h2><input id='vendor_id' placeholder='vendor_id'><select id='vendor_status'><option>pilot</option><option>active</option><option>paused</option><option>suppressed</option></select><input id='vendor_services' placeholder='service keys comma-separated'><input id='vendor_markets' placeholder='markets comma-separated'><button onclick='vendorUpdate()'>Save vendor</button><pre id='vendor_result'></pre></div>
@@ -997,7 +997,9 @@ button{width:auto;cursor:pointer}.grid{display:grid;grid-template-columns:repeat
 <div class='section card'><h2>Suppress outreach email</h2><input id='suppress_email' placeholder='email'><input id='suppress_reason' placeholder='reason'><button onclick='suppressEmail()'>Suppress</button><pre id='suppress_result'></pre></div>
 <script>
 function headers(){return {'Content-Type':'application/json','X-BMC-Admin-Key':document.getElementById('key').value}}
-async function loadSummary(){const r=await fetch('/api/admin/summary',{headers:headers()});const j=await r.json();const el=document.getElementById('summary');el.innerHTML='';Object.entries(j).forEach(function(pair){const d=document.createElement('div');d.className='card';d.innerHTML='<b>'+pair[0]+'</b><pre>'+JSON.stringify(pair[1],null,2)+'</pre>';el.appendChild(d)})}\nasync function loadPreflight(){const r=await fetch('/api/admin/preflight',{headers:headers()});const j=await r.json();document.getElementById('preflight').innerHTML='<h2>Launch preflight</h2><pre>'+JSON.stringify(j,null,2)+'</pre>'}\nasync function loadFirstWave(){const r=await fetch('/api/admin/first-wave',{headers:headers()});const j=await r.json();const el=document.getElementById('first_wave');el.innerHTML='';(j.records||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>'+x.side.toUpperCase()+' · '+x.business_name+'</b><div>'+x.market+' · '+x.email+'</div><div><strong>'+x.subject+'</strong></div><pre>'+x.body+'</pre>';el.appendChild(d)})}
+async function loadSummary(){const r=await fetch('/api/admin/summary',{headers:headers()});const j=await r.json();const el=document.getElementById('summary');el.innerHTML='';Object.entries(j).forEach(function(pair){const d=document.createElement('div');d.className='card';d.innerHTML='<b>'+pair[0]+'</b><pre>'+JSON.stringify(pair[1],null,2)+'</pre>';el.appendChild(d)})}\nasync function loadPreflight(){const r=await fetch('/api/admin/preflight',{headers:headers()});const j=await r.json();document.getElementById('preflight').innerHTML='<h2>Launch preflight</h2><pre>'+JSON.stringify(j,null,2)+'</pre>'}\nasync function loadLaunchCell(){const r=await fetch('/api/admin/launch-cell',{headers:headers()});const j=await r.json();const el=document.getElementById('launch_cell');el.innerHTML='';(j.records||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.borderLeft='7px solid '+(x.readiness==='green'?'#238636':x.readiness==='yellow'?'#bf8700':'#cf222e');const title=document.createElement('b');title.textContent=x.service_name+' · '+x.readiness.toUpperCase();const pre=document.createElement('pre');pre.textContent='researched: '+x.researched_providers+'\nemail-ready: '+x.email_ready_providers+'\npilot/active: '+x.pilot_or_active_providers+'\nqueued outreach: '+x.queued_provider_outreach+'\nbuyer prospects: '+x.buyer_prospects+'\nlive markets: '+(x.live_markets||[]).join(', ')+'\nnext: '+x.next_action;d.appendChild(title);d.appendChild(pre);el.appendChild(d)})}
+async function queueLaunchGaps(){const r=await fetch('/api/admin/queue-launch-gaps',{method:'POST',headers:headers()});const j=await r.json();alert('Queued '+(j.queued_count||0)+' launch research gaps.');await loadLaunchCell()}
+async function loadFirstWave(){const r=await fetch('/api/admin/first-wave',{headers:headers()});const j=await r.json();const el=document.getElementById('first_wave');el.innerHTML='';(j.records||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>'+x.side.toUpperCase()+' · '+x.business_name+'</b><div>'+x.market+' · '+x.email+'</div><div><strong>'+x.subject+'</strong></div><pre>'+x.body+'</pre>';el.appendChild(d)})}
 async function loadPilotReviews(){const r=await fetch('/api/admin/pilot-reviews',{headers:headers()});const j=await r.json();const el=document.getElementById('pilot_reviews');el.innerHTML='';if(!(j.records||[]).length){el.textContent='No providers are pending review.';return}(j.records||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';const title=document.createElement('b');title.textContent=x.business_name+' · '+x.vendor_id;const pre=document.createElement('pre');pre.textContent=JSON.stringify(x,null,2);const btn=document.createElement('button');btn.textContent='Approve as pilot';btn.onclick=function(){approvePilot(x.vendor_id)};d.appendChild(title);d.appendChild(pre);d.appendChild(btn);el.appendChild(d)})}
 async function loadResearchCandidates(){const r=await fetch('/api/admin/research-candidates?status=discovered&limit=100',{headers:headers()});const j=await r.json();const el=document.getElementById('research_candidates');el.innerHTML='';if(!(j.records||[]).length){el.textContent='No staged research candidates.';return}(j.records||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';const title=document.createElement('b');title.textContent=(x.candidate_name||x.source_title||x.source_domain)+' · '+x.market+' · '+x.service_name;const a=document.createElement('a');a.href=x.source_url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.source_url;const pre=document.createElement('pre');pre.textContent=x.snippet||'';const review=document.createElement('button');review.textContent='Mark reviewed';review.onclick=function(){setResearchCandidateStatus(x.candidate_id,'reviewed')};const reject=document.createElement('button');reject.textContent='Reject';reject.onclick=function(){setResearchCandidateStatus(x.candidate_id,'rejected')};d.appendChild(title);d.appendChild(document.createElement('br'));d.appendChild(a);d.appendChild(pre);d.appendChild(review);d.appendChild(reject);el.appendChild(d)})}
 async function setResearchCandidateStatus(id,status){const r=await fetch('/api/admin/research-candidate-status',{method:'POST',headers:headers(),body:JSON.stringify({candidate_id:id,status:status})});const j=await r.json();if(!j.ok)alert(JSON.stringify(j));await loadResearchCandidates()}
@@ -1269,6 +1271,144 @@ async def admin_research_candidate_status(request:Request,x_bmc_admin_key:str|No
             raise HTTPException(404,"Research candidate not found")
         await event(conn,"research_candidate",cid,"status_changed",{"status":status},"admin")
     return {"ok":True,"candidate_id":cid,"status":status}
+
+LAUNCH_CELL_MARKETS=("Prescott","Prescott Valley")
+LAUNCH_CELL_SERVICES=(
+    "electrical_service","hvac_heat","handyman_repairs","residential_cleaning",
+    "tree_service","landscaping","junk_hauling","towing_roadside",
+    "commercial_cleaning","facility_maintenance"
+)
+
+@app.get("/api/admin/launch-cell")
+async def admin_launch_cell(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    records=[]
+    async with app.state.pool.acquire() as conn:
+        for service_key in LAUNCH_CELL_SERVICES:
+            service_name=await service_display_name(conn,service_key)
+            researched=await conn.fetchval("""select count(distinct v.vendor_id)
+              from vendors v
+              join vendor_services vs on vs.vendor_id=v.vendor_id
+              join vendor_markets vm on vm.vendor_id=v.vendor_id
+              where vs.service_key=$1 and vm.market=any($2::text[])
+                and v.status not in ('suppressed')""",service_key,list(LAUNCH_CELL_MARKETS))
+            email_ready=await conn.fetchval("""select count(distinct v.vendor_id)
+              from vendors v
+              join vendor_services vs on vs.vendor_id=v.vendor_id
+              join vendor_markets vm on vm.vendor_id=v.vendor_id
+              where vs.service_key=$1 and vm.market=any($2::text[])
+                and v.public_email is not null and v.public_email<>''
+                and v.status not in ('suppressed')""",service_key,list(LAUNCH_CELL_MARKETS))
+            pilot_active=await conn.fetchval("""select count(distinct v.vendor_id)
+              from vendors v
+              join vendor_services vs on vs.vendor_id=v.vendor_id
+              join vendor_markets vm on vm.vendor_id=v.vendor_id
+              where vs.service_key=$1 and vm.market=any($2::text[])
+                and v.status in ('pilot','active') and v.vendor_id not like 'test_%'""",service_key,list(LAUNCH_CELL_MARKETS))
+            queued_outreach=await conn.fetchval("""select count(distinct v.vendor_id)
+              from vendors v
+              join vendor_services vs on vs.vendor_id=v.vendor_id
+              join vendor_markets vm on vm.vendor_id=v.vendor_id
+              join outreach o on o.entity_type='vendor' and o.entity_id=v.vendor_id
+              where vs.service_key=$1 and vm.market=any($2::text[])
+                and o.status in ('queued','sent') and o.opt_out=false""",service_key,list(LAUNCH_CELL_MARKETS))
+            buyer_prospects=await conn.fetchval("""select count(*) from buyers b
+              where b.market=any($2::text[])
+                and $1=any(string_to_array(coalesce(b.likely_services,''),'|'))
+                and b.status not in ('suppressed')""",service_key,list(LAUNCH_CELL_MARKETS))
+            markets_live=await conn.fetch("""select distinct vm.market
+              from vendors v join vendor_services vs on vs.vendor_id=v.vendor_id
+              join vendor_markets vm on vm.vendor_id=v.vendor_id
+              where vs.service_key=$1 and vm.market=any($2::text[])
+                and v.status in ('pilot','active') and v.vendor_id not like 'test_%'
+              order by vm.market""",service_key,list(LAUNCH_CELL_MARKETS))
+            if int(pilot_active or 0)>=1:
+                readiness="green"
+                next_action="Route a controlled real request when demand exists."
+            elif int(email_ready or 0)>=2:
+                readiness="yellow"
+                next_action="Recruit and verify at least one provider."
+            else:
+                readiness="red"
+                next_action="Research more providers with public business contact paths."
+            records.append({
+                "service_key":service_key,"service_name":service_name,
+                "researched_providers":int(researched or 0),
+                "email_ready_providers":int(email_ready or 0),
+                "pilot_or_active_providers":int(pilot_active or 0),
+                "queued_provider_outreach":int(queued_outreach or 0),
+                "buyer_prospects":int(buyer_prospects or 0),
+                "live_markets":[r["market"] for r in markets_live],
+                "readiness":readiness,"next_action":next_action
+            })
+    return {
+      "ok":True,
+      "markets":list(LAUNCH_CELL_MARKETS),
+      "green":sum(1 for r in records if r["readiness"]=="green"),
+      "yellow":sum(1 for r in records if r["readiness"]=="yellow"),
+      "red":sum(1 for r in records if r["readiness"]=="red"),
+      "records":records
+    }
+
+@app.post("/api/admin/queue-launch-gaps")
+async def admin_queue_launch_gaps(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    queued=[]
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        for market in LAUNCH_CELL_MARKETS:
+          for service_key in LAUNCH_CELL_SERVICES:
+            email_ready=await conn.fetchval("""select count(distinct v.vendor_id)
+              from vendors v
+              join vendor_services vs on vs.vendor_id=v.vendor_id
+              join vendor_markets vm on vm.vendor_id=v.vendor_id
+              where vs.service_key=$1 and vm.market=$2
+                and v.public_email is not null and v.public_email<>''
+                and v.status not in ('suppressed')""",service_key,market)
+            goal=3
+            gap=max(0,goal-int(email_ready or 0))
+            if gap>0:
+                await conn.execute("""insert into research_backlog(
+                    market,service_key,side,market_priority,target_gap,current_count,goal,
+                    research_priority,research_method,status,notes)
+                  values($1,$2,'vendor','TIER1',$3,$4,$5,'CRITICAL',
+                    'Find local provider with public business website/email','queued',
+                    'Prescott/PV revenue launch cell')
+                  on conflict(market,service_key,side) do update set
+                    target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,
+                    market_priority='TIER1',research_priority='CRITICAL',
+                    research_method=excluded.research_method,
+                    status=case when research_backlog.status in ('assigned','review') then research_backlog.status else 'queued' end,
+                    notes='Prescott/PV revenue launch cell',updated_at=now()""",
+                  market,service_key,gap,int(email_ready or 0),goal)
+                queued.append({"side":"vendor","market":market,"service_key":service_key,"gap":gap})
+
+        for market in LAUNCH_CELL_MARKETS:
+          for service_key in ("facility_maintenance","commercial_cleaning"):
+            buyers=await conn.fetchval("""select count(*) from buyers b
+              where b.market=$2
+                and $1=any(string_to_array(coalesce(b.likely_services,''),'|'))
+                and b.public_email is not null and b.public_email<>''
+                and b.status not in ('suppressed')""",service_key,market)
+            goal=5
+            gap=max(0,goal-int(buyers or 0))
+            if gap>0:
+                await conn.execute("""insert into research_backlog(
+                    market,service_key,side,market_priority,target_gap,current_count,goal,
+                    research_priority,research_method,status,notes)
+                  values($1,$2,'buyer','TIER1',$3,$4,$5,'HIGH',
+                    'B2B facility buyers: churches schools theaters property managers medical offices gyms daycare',
+                    'queued','Prescott/PV revenue launch cell')
+                  on conflict(market,service_key,side) do update set
+                    target_gap=excluded.target_gap,current_count=excluded.current_count,goal=excluded.goal,
+                    market_priority='TIER1',research_priority='HIGH',
+                    research_method=excluded.research_method,
+                    status=case when research_backlog.status in ('assigned','review') then research_backlog.status else 'queued' end,
+                    notes='Prescott/PV revenue launch cell',updated_at=now()""",
+                  market,service_key,gap,int(buyers or 0),goal)
+                queued.append({"side":"buyer","market":market,"service_key":service_key,"gap":gap})
+        await event(conn,"launch_cell","prescott_pv","research_gaps_queued",{"count":len(queued),"gaps":queued},"admin")
+    return {"ok":True,"queued_count":len(queued),"gaps":queued}
 
 @app.get("/api/admin/summary")
 async def admin_summary(x_bmc_admin_key:str|None=Header(default=None)):
