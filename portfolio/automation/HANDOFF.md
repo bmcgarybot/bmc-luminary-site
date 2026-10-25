@@ -78,7 +78,7 @@ Important tabs:
 - First Wave public credential review: 4 COMPLETE / 8 PARTIAL
 - Prescott tree/landscape cluster has 3 publicly credential-complete candidates: ZebraScapes, Yavapai Landscaping, and Jonny's
 - public credential review does **not** replace direct provider COI/license confirmation or pilot acceptance
-- 0 live leads because runtime is not deployed yet
+- 0 live leads; production cloud runtime is now deployed and healthy, but public ingress/provider activation are not live yet
 - First Wave: 19 READY — NOT SENT
   - 12 providers
   - 7 buyers
@@ -287,7 +287,7 @@ The current research worker is first-pass discovery from search-result evidence.
 
 ## Current runtime blockers
 
-1. Cloud VPS not purchased/deployed yet.
+1. Cloud VPS deployed and healthy; remaining runtime work is public ingress/integrations.
 2. Cloudflare Tunnel not authorized/configured.
 3. `hooks.bmcluminaryventures.com` not routed to the cloud webhook proxy.
 4. SMTP sender not configured.
@@ -329,7 +329,7 @@ The green CI now proves:
 - internal Growth Pack fulfillment path
 - Stripe webhook/revenue/order/dedupe path
 
-The cloud-targeted code is **CI GREEN and not deployed to the production VPS yet**.
+The cloud-targeted code is **CI GREEN and deployed to the production VPS**. Runtime doctor reports `Core failures: 0`; first checksummed Postgres backup created at `backups/bmc_20261025_004243.dump`.
 
 ## SEO / AI discovery
 
@@ -355,8 +355,8 @@ Still needed:
 Do not add random new business ideas before clearing these:
 
 1. Keep both global outreach switches OFF.
-2. Purchase/deploy the 4-vCPU / 8-GB cloud VPS from `START_HERE.md` / `CLOUD_DEPLOY.md`; run `provision-cloud.sh`, then bootstrap.
-3. Confirm runtime doctor, deployed agent status, staged-research queue and backup on the VPS; access private admin/n8n through SSH forwarding.
+2. Keep the deployed cloud VPS healthy; runtime doctor is green and first checksummed backup is complete.
+3. Configure Cloudflare Tunnel/public webhook ingress, then verify external intake while keeping admin/n8n private via SSH forwarding.
 4. Configure transactional SMTP, monitored reply/IMAP, SPF/DKIM/DMARC, and the real BMC postal address.
 5. Configure the Cloudflare Tunnel and route `hooks.bmcluminaryventures.com`.
 6. Invite only the curated `pilot1` providers using their dedicated activation links. The Prescott tree/landscape cluster already has three publicly credential-complete targets (ZebraScapes, Yavapai Landscaping, Jonny's).
