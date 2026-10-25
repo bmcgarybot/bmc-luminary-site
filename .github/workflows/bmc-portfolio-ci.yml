@@ -52,6 +52,16 @@ jobs:
                       invalid.append((str(html),form_type))
           assert not invalid, f"Invalid form types: {invalid}"
           print(f"Validated {forms} form endpoints")
+          required=[
+              root/"solutions/index.html",
+              root/"provider-login/index.html",
+              root/"provider-dashboard/index.html",
+              root/"providers/index.html",
+              root/"services/index.html",
+          ]
+          missing_required=[str(p) for p in required if not p.exists()]
+          assert not missing_required, f"Missing required public surfaces: {missing_required}"
+          print("Validated provider portal and solution hub surfaces")
           PY
       - name: Validate generated priority storefronts
         run: python portfolio/automation/generate-storefronts.py --check
@@ -138,6 +148,28 @@ jobs:
 
           # Prove First Wave provider copy uses the dedicated existing-vendor activation path.
           export BMC_ADMIN_KEY="$(grep '^BMC_ADMIN_KEY=' .env.ci | cut -d= -f2-)"
+
+          # Exact real-world search regressions from manual QA.
+          curl -fsS -X POST http://127.0.0.1:8000/api/service-search \
+            -H 'Content-Type: application/json' \
+            -d '{"query":"fix my fryer"}' >/tmp/bmc_search_fryer.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_search_fryer.json"))
+          assert data["ok"] is True
+          assert data["match"]["service_key"] == "restaurant_equipment", data
+          PY
+
+          curl -fsS -X POST http://127.0.0.1:8000/api/service-search \
+            -H 'Content-Type: application/json' \
+            -d '{"query":"real estate"}' >/tmp/bmc_search_real_estate.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_search_real_estate.json"))
+          assert data["ok"] is True
+          assert data["match"]["service_key"] == "realtor_listing_prep", data
+          assert any(x["service_key"]=="home_staging" for x in data["related"])
+          PY
 
           curl -fsS http://127.0.0.1:8000/api/admin/provider-funnel \
             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_provider_funnel.json
@@ -298,6 +330,35 @@ jobs:
           PY
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from vendors where vendor_id='v_prescott_zebrascapes';")" = "pilot"
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from exceptions where vendor_id='v_prescott_zebrascapes' and type='pilot_activation_review' and status='open';")" -eq 0
+
+          # Prove an approved provider can load and update the self-service dashboard.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c \
+            "delete from vendor_portal_tokens where vendor_id='v_prescott_zebrascapes';
+             insert into vendor_portal_tokens(vendor_id,token_hash,expires_at)
+             values('v_prescott_zebrascapes',encode(digest('ci-provider-token','sha256'),'hex'),now()+interval '1 day');"
+
+          curl -fsS 'http://127.0.0.1:8000/api/provider/dashboard?token=ci-provider-token' >/tmp/bmc_provider_dashboard.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_provider_dashboard.json"))
+          assert data["ok"] is True
+          assert data["provider"]["vendor_id"] == "v_prescott_zebrascapes"
+          assert data["provider"]["status"] == "pilot"
+          assert isinstance(data["opportunities"], list)
+          assert isinstance(data["active_jobs"], list)
+          PY
+
+          curl -fsS -X POST http://127.0.0.1:8000/api/provider/settings \
+            -H 'Content-Type: application/json' \
+            -d '{"token":"ci-provider-token","capacity":"4 new jobs per week","minimum_job":"750","territory_notes":"Prescott, Prescott Valley","markets":["Prescott","Prescott Valley"],"services":["landscaping","tree_service"]}' \
+            >/tmp/bmc_provider_settings.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_provider_settings.json"))
+          assert data["ok"] is True
+          PY
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select capacity from vendors where vendor_id='v_prescott_zebrascapes';")" = "4 new jobs per week"
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from vendor_markets where vendor_id='v_prescott_zebrascapes';")" -eq 2
 
           curl -fsS -X POST http://127.0.0.1:8000/api/intake             -H 'Content-Type: application/json'             -d '{"submission_id":"ci-smoke-lead","form_type":"tree_service","market":"Prescott","scope":"CI smoke test: tree removal request","timing":"Within 7 days","consent":"yes"}'             >/tmp/bmc_intake.json
           cat /tmp/bmc_intake.json
