@@ -370,6 +370,24 @@ create table if not exists research_sources (
 create index if not exists idx_research_sources_active
 on research_sources(is_active,side,market,county,priority);
 
+create table if not exists source_native_state (
+  source_key text not null,
+  market text not null,
+  cursor integer default 0,
+  last_run_at timestamptz,
+  last_success_at timestamptz,
+  last_source_date text,
+  records_seen integer default 0,
+  records_upserted integer default 0,
+  metadata jsonb default '{}'::jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now(),
+  primary key(source_key,market)
+);
+
+create index if not exists idx_source_native_state_run
+on source_native_state(source_key,last_success_at,market);
+
 -- Normalize legacy research queue status casing so older databases remain compatible.
 update research_backlog set status=lower(status)
 where status is not null and status<>lower(status);
