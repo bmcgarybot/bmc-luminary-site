@@ -1,4 +1,4 @@
-import os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, hmac, hashlib, time
+import os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, hmac, hashlib, time, html
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 from email.utils import parseaddr
@@ -63,12 +63,14 @@ async def startup():
 async def shutdown():
     await app.state.pool.close()
 
-async def send_mail(to,subject,body):
+async def send_mail(to,subject,body,html_body=None):
     if not to: return False
     if SMTP_DRY_RUN: return True
     if not SMTP_HOST or "CHANGE_ME" in SMTP_HOST: return False
     try:
         msg=EmailMessage(); msg["From"]=SMTP_FROM; msg["To"]=to; msg["Subject"]=subject; msg.set_content(body)
+        if html_body:
+            msg.add_alternative(html_body,subtype="html")
         await aiosmtplib.send(msg,hostname=SMTP_HOST,port=SMTP_PORT,username=SMTP_USER or None,
             password=SMTP_PASSWORD or None,start_tls=SMTP_STARTTLS)
         return True
@@ -77,6 +79,16 @@ async def send_mail(to,subject,body):
 
 def clean(v): return str(v or "").strip()
 def slug(v): return re.sub(r"[^a-z0-9]+","-",clean(v).lower()).strip("-")[:40] or "vendor"
+
+def workflow_email_html(title,body_lines,button_label=None,button_url=None):
+    rows="".join(f"<p style='margin:0 0 14px;line-height:1.55'>{html.escape(clean(line))}</p>" for line in body_lines if clean(line))
+    button=""
+    fallback=""
+    if button_label and button_url:
+        safe_url=html.escape(clean(button_url),quote=True)
+        button=f"<p style='margin:24px 0'><a href='{safe_url}' style='display:inline-block;background:#1557d6;color:#fff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px'>{html.escape(clean(button_label))}</a></p>"
+        fallback=f"<p style='margin:18px 0 0;font-size:12px;color:#666;line-height:1.45'>If the button does not work, copy and paste this link:<br><span style='word-break:break-all'>{safe_url}</span></p>"
+    return f"""<!doctype html><html><body style='margin:0;background:#f5f7fa;font-family:Arial,sans-serif;color:#1f2937'><div style='max-width:620px;margin:0 auto;padding:28px 16px'><div style='background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:28px'><h1 style='font-size:24px;margin:0 0 22px'>{html.escape(clean(title))}</h1>{rows}{button}{fallback}<p style='margin:28px 0 0;font-size:12px;color:#6b7280'>BMC Service Network · BMC Luminary Ventures LLC</p></div></div></body></html>"""
 
 async def service_display_name(conn,service_key):
     row=await conn.fetchrow("select display_name from services where service_key=$1",service_key)
@@ -220,7 +232,19 @@ Accept or decline securely:
 
 Only accept if this fits your territory and current capacity.
 """
-    delivered=await send_mail(vendor["public_email"],f"New {service_name} request in {lead['market']}",body)
+    offer_html=workflow_email_html(
+      f"New {service_name} request in {lead['market']}",
+      [
+        f"Market: {lead['market']}",
+        f"Service: {service_name}",
+        f"Timing: {clean(lead.get('urgency')) or 'Not specified'}",
+        f"Scope: {summary}",
+        "Only accept if this fits your territory and current capacity."
+      ],
+      "Accept or decline request",
+      link
+    )
+    delivered=await send_mail(vendor["public_email"],f"New {service_name} request in {lead['market']}",body,offer_html)
     if not delivered:
         await conn.execute("update lead_matches set status='delivery_failed',responded_at=now() where lead_id=$1 and vendor_id=$2",lead["lead_id"],vendor["vendor_id"])
         await conn.execute("update leads set status='exception',exception_reason='provider_offer_delivery_failure',updated_at=now() where lead_id=$1",lead["lead_id"])
@@ -279,7 +303,23 @@ Customer information is provided only for this service request and should not be
 
 BMC Luminary Ventures LLC
 """
-        await send_mail(vendor["public_email"],f"Customer contact released: {service_name} in {row['market']}",provider_body)
+        provider_html=workflow_email_html(
+          f"Customer contact released: {service_name}",
+          [
+            f"Market: {row['market']}",
+            f"Customer: {customer_name}",
+            f"Business / property: {customer_business or 'Not provided'}",
+            f"Email: {customer_email or 'Not provided'}",
+            f"Phone: {customer_phone or 'Not provided'}",
+            f"Preferred contact: {preferred or 'Not specified'}",
+            f"Timing: {urgency or 'Not specified'}",
+            f"Scope: {scope}",
+            "Please contact the customer promptly, then update the outcome."
+          ],
+          "Update job status",
+          job_link
+        )
+        await send_mail(vendor["public_email"],f"Customer contact released: {service_name} in {row['market']}",provider_body,provider_html)
 
         provider_contact=[]
         if clean(vendor["public_phone"]): provider_contact.append(f"Phone: {clean(vendor['public_phone'])}")
@@ -300,7 +340,18 @@ The provider is an independent business and will communicate its own pricing, sc
 Reference: {row['lead_id']}
 BMC Luminary Ventures LLC
 """
-            await send_mail(customer_email,f"Provider matched for your {service_name} request",customer_body)
+            customer_html=workflow_email_html(
+              f"Provider matched for your {service_name} request",
+              [
+                f"Provider: {vendor['business_name']}",
+                f"Market: {row['market']}",
+                f"Service: {service_name}",
+                contact_block,
+                "The provider is an independent business and will communicate its own pricing, scope, scheduling, warranties, and job terms directly with you.",
+                f"Reference: {row['lead_id']}"
+              ]
+            )
+            await send_mail(customer_email,f"Provider matched for your {service_name} request",customer_body,customer_html)
 
         await event(conn,"lead",row["lead_id"],"contact_released",{
           "vendor_id":vendor_id,
@@ -476,8 +527,13 @@ async def handle_lead(conn,p):
     if p.get("email"):
         workflow_text="provider matching" if fulfillment_mode=="provider_match" else "BMC fulfillment"
         receipt_service_name=(clean(service["display_name"]) if service else service_key.replace("_"," ").title())
-        await send_mail(clean(p.get("email")),"BMC received your request",
-          f"We received your request for {receipt_service_name} in {market}. It is now in the {workflow_text} workflow.\n\nReference: {lead_id}\nBMC Luminary Ventures LLC")
+        receipt_body=f"We received your request for {receipt_service_name} in {market}. It is now in the {workflow_text} workflow.\n\nReference: {lead_id}\nBMC Luminary Ventures LLC"
+        receipt_html=workflow_email_html("BMC received your request",[
+          f"We received your request for {receipt_service_name} in {market}.",
+          f"It is now in the {workflow_text} workflow.",
+          f"Reference: {lead_id}"
+        ])
+        await send_mail(clean(p.get("email")),"BMC received your request",receipt_body,receipt_html)
 
     if service_key=="unclassified":
         await conn.execute("""insert into exceptions(type,lead_id,severity,summary,recommended_action)
