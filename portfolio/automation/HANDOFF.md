@@ -680,6 +680,16 @@ These are now corrected in the repo:
 - broken special forms should fail CI if required fields do not match the API contract;
 - outreach remains OFF until deployment and live smoke tests are completed.
 
+**Additional provider autonomy / live-journey fixes**
+- Provider Dashboard now has **Pause new work / Resume new work** so providers can manage availability without BMC staff.
+- Providers may remove services themselves, but requested new trade/service types create a review exception and remain unroutable until BMC approves them.
+- Private admin now has Provider Service Change Reviews with approve/reject actions.
+- Magic-link login email requests are rate-limited for known providers.
+- Provider outcome follow-up worker bug fixed: it now resolves the service display name correctly and keeps the one-click secure job-update link.
+- Watchdog now checks semantic service-search health using `fix my fryer` and treats configured Ollama failure as an operational failure.
+- Restaurant Equipment Repair was rebuilt into a guided visual funnel with Fryer, Oven/Range/Griddle, Dish Machine, Prep Equipment, Holding Equipment and an Ice Machine branch.
+- CI now covers provider pause/resume and service-addition approval behavior.
+
 Static Cloudflare Pages deploys automatically from GitHub.
 
 Ops API / watchdog changes do NOT magically deploy to the VPS.
