@@ -1,0 +1,18 @@
+{
+  "results": [
+    {
+      "cms_certification_number_ccn": "031500",
+      "facility_name": "CI Prescott Hospice",
+      "address_line_1": "600 Comfort Way",
+      "address_line_2": "SUITE 10",
+      "citytown": "PRESCOTT",
+      "state": "AZ",
+      "zip_code": "86301",
+      "countyparish": "YAVAPAI",
+      "telephone_number": "928-555-0230",
+      "cms_region": "9",
+      "ownership_type": "For-Profit",
+      "certification_date": "04/07/2022"
+    }
+  ]
+}
