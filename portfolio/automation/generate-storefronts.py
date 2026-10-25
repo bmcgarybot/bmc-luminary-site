@@ -43,12 +43,12 @@ def render(key: str, p: dict) -> str:
 </div></header>
 
 <section class="editorial-section alt" id="common"><div class="wrap">
-<div class="editorial-intro"><div class="editorial-kicker">Common jobs</div><h2>A few things we can help with.</h2><p>Pick one or tell us what you need.</p></div>
+<div class="editorial-intro"><div class="editorial-kicker">Common jobs</div><h2>{esc(p.get("common_heading","A few things we can help with."))}</h2><p>{esc(p.get("common_text","Pick one or tell us what you need."))}</p></div>
 <div class="category-tiles">{needs}</div>
 </div></section>
 
 <section class="editorial-section"><div class="wrap"><div class="soft-panel">
-<div class="editorial-intro"><div class="editorial-kicker">Get started</div><h2>Tell us what you need.</h2><p>Add the location and timing.</p></div>
+<div class="editorial-intro"><div class="editorial-kicker">Get started</div><h2>{esc(p.get("start_heading","Tell us what you need."))}</h2><p>{esc(p.get("start_text","Add the location and timing."))}</p></div>
 <div class="actions"><a class="btn btn-primary" href="#request">Start my request</a></div>
 </div></div></section>
 
