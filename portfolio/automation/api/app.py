@@ -106,6 +106,22 @@ MARKET_RESEARCH_CONTEXT={
 }
 ENVIRONMENT_SENSITIVE_SERVICES={"tree_service","landscaping","rural_property","snow_service","pool_desert_property","hvac_heat","pest_control","towing_roadside"}
 
+ROC_RESEARCH_SERVICES={
+    "electrical_service","hvac_heat","backflow_plumbing","landscaping",
+    "pool_desert_property","garage_door","epoxy_flooring","sign_lighting","fire_safety"
+}
+FACILITY_BUYER_RESEARCH_SERVICES={
+    "commercial_cleaning","floor_carpet","window_cleaning","hvac_heat","pest_control",
+    "parking_lot","fire_safety","sign_lighting","locksmith_access","backflow_plumbing",
+    "landscaping","tree_service","junk_hauling","restaurant_equipment","hood_exhaust",
+    "ice_machine","linen_laundry","facility_maintenance","electrical_service","duct_vent",
+    "pressure_washing","grease_drain","turnover_cleaning","residential_cleaning",
+    "handyman_repairs","coffee_water","waste_audit"
+}
+FOOD_FACILITY_BUYER_RESEARCH_SERVICES=FACILITY_BUYER_RESEARCH_SERVICES | {
+    "used_equipment","equipment_quotes","restaurant_maintenance"
+}
+
 
 PUBLIC_OPPORTUNITY_SOURCES=(
     {"key":"prescott","name":"City of Prescott","market":"Prescott","domain":"prescott-az.gov",
@@ -396,12 +412,46 @@ async def local_ai_status():
     return status
 
 
-def build_research_query(side,market,service_name,research_method="",service_key="",research_pass=0):
+def authoritative_source_allowed(source,side,service_key):
+    key=clean(source.get("source_key") if isinstance(source,dict) else source["source_key"])
+    source_type=clean(source.get("source_type") if isinstance(source,dict) else source["source_type"])
+    sk=clean(service_key)
+    if source_type=="verification" or key=="az_acc_entities":
+        return False
+    if side=="vendor":
+        if key=="az_opm_registry":
+            return sk=="pest_control"
+        if key in ("az_roc_active","az_roc_search"):
+            return sk in ROC_RESEARCH_SERVICES
+        return False
+    if side=="buyer":
+        if key in ("adhs_facilities","adhs_gis"):
+            return sk in FACILITY_BUYER_RESEARCH_SERVICES
+        if key in ("maricopa_food","pima_food","yavapai_food","coconino_food","mohave_food","navajo_food"):
+            return sk in FOOD_FACILITY_BUYER_RESEARCH_SERVICES
+    return False
+
+def choose_authoritative_source(sources,side,service_key,research_pass):
+    p=max(0,int(research_pass or 0))
+    if p%2==0:
+        return None
+    eligible=[dict(s) for s in sources if authoritative_source_allowed(s,side,service_key)]
+    if not eligible:
+        return None
+    return eligible[(p//2)%len(eligible)]
+
+def build_research_query(side,market,service_name,research_method="",service_key="",research_pass=0,authoritative_source=None):
     service=clean(service_name).replace('"'," ")
     place=clean(market).replace('"'," ")
     method=clean(research_method).upper()
     p=max(0,int(research_pass or 0))
     variant=min(p,3)
+    if authoritative_source:
+        domain=clean(authoritative_source.get("source_domain"))
+        hint=clean(authoritative_source.get("query_hint")).replace('"'," ")
+        if side=="vendor":
+            return f'site:{domain} "{place}" "{service}" {hint} -jobs -careers'.strip()
+        return f'site:{domain} "{place}" {hint}'.strip()
     if side=="vendor":
         context=MARKET_RESEARCH_CONTEXT.get(place,"") if clean(service_key) in ENVIRONMENT_SENSITIVE_SERVICES else ""
         variants=(
@@ -1986,9 +2036,23 @@ async def process_research(x_bmc_admin_key:str|None=Header(default=None)):
         order by case t.priority when 'critical' then 0 when 'high' then 1 else 2 end,t.created_at
         limit $1""",RESEARCH_WORKER_BATCH)
       for task in tasks:
-        query=build_research_query(task["side"],task["market"],task["display_name"] or task["service_key"],task["research_method"],task["service_key"],task["research_pass"])
+        source_rows=await conn.fetch("""select source_key,source_name,side,source_type,market,county,
+               source_domain,source_url,query_hint,priority
+          from research_sources
+          where is_active=true and side in ($1,'both') and (market is null or market=$2)
+          order by case when market=$2 then 0 else 1 end,
+                   case upper(priority) when 'CRITICAL' then 0 when 'HIGH' then 1 when 'MEDIUM' then 2 else 3 end,
+                   source_key""",task["side"],task["market"])
+        authoritative_source=choose_authoritative_source(
+          source_rows,task["side"],task["service_key"],task["research_pass"])
+        query=build_research_query(
+          task["side"],task["market"],task["display_name"] or task["service_key"],
+          task["research_method"],task["service_key"],task["research_pass"],authoritative_source)
         try:
             results=await search_research_web(query)
+            if authoritative_source:
+                results=[r for r in results if public_source_host_allowed(
+                  r["domain"],authoritative_source["source_domain"])]
         except Exception as exc:
             errors.append({"task_id":str(task["task_id"]),"error":str(exc)[:300]})
             await event(conn,"task",task["task_id"],"research_search_failed",{"query":query,"error":str(exc)[:300]},"research_agent")
@@ -2007,6 +2071,9 @@ async def process_research(x_bmc_admin_key:str|None=Header(default=None)):
                   result["title"],result["title"],result["url"],result["domain"],result["snippet"],query,rank,
                   json.dumps({
                     "search_engine":result["engine"],"search_score":result["score"],
+                    "authoritative_source_key":authoritative_source["source_key"] if authoritative_source else None,
+                    "authoritative_source_name":authoritative_source["source_name"] if authoritative_source else None,
+                    "authoritative_source_domain":authoritative_source["source_domain"] if authoritative_source else None,
                     **extract_public_contact(f'{result["title"]} {result["snippet"]}')
                   }))
                 if inserted:
@@ -2029,11 +2096,14 @@ async def process_research(x_bmc_admin_key:str|None=Header(default=None)):
             await conn.execute("""update tasks set status='completed',updated_at=now(),
               payload=payload || $2::jsonb where task_id=$1""",task["task_id"],
               json.dumps({"search_query":query,"research_pass":next_pass,"results_returned":len(results),
-                          "staged_candidates":total,"remaining_gap":remaining,"backlog_status":new_status}))
+                          "staged_candidates":total,"remaining_gap":remaining,"backlog_status":new_status,
+                          "authoritative_source_key":authoritative_source["source_key"] if authoritative_source else None,
+                          "authoritative_source_name":authoritative_source["source_name"] if authoritative_source else None}))
             await event(conn,"research",task["research_id"],"search_completed",{
               "task_id":str(task["task_id"]),"query":query,"research_pass":next_pass,
               "results_returned":len(results),"staged_candidates":total,
-              "remaining_gap":remaining,"backlog_status":new_status
+              "remaining_gap":remaining,"backlog_status":new_status,
+              "authoritative_source_key":authoritative_source["source_key"] if authoritative_source else None
             },"research_agent")
             processed+=1
     return {"ok":True,"enabled":True,"processed":processed,"staged":staged,"errors":errors}
