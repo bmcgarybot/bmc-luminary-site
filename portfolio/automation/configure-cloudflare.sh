@@ -15,9 +15,15 @@ if ! command -v docker >/dev/null 2>&1 || ! docker compose version >/dev/null 2>
   exit 1
 fi
 
-printf "Paste the Cloudflare Tunnel token (input will be hidden): "
-IFS= read -r -s TUNNEL_TOKEN
+printf "Paste the Cloudflare Tunnel token OR the full Docker command (input will be hidden): "
+IFS= read -r -s TUNNEL_INPUT
 printf "\n"
+
+TUNNEL_TOKEN="$TUNNEL_INPUT"
+if [[ "$TUNNEL_INPUT" == *"--token"* ]]; then
+  TUNNEL_TOKEN="${TUNNEL_INPUT##*--token }"
+  TUNNEL_TOKEN="${TUNNEL_TOKEN%% *}"
+fi
 
 if [ -z "$TUNNEL_TOKEN" ] || [ "${#TUNNEL_TOKEN}" -lt 40 ]; then
   echo "Token looks empty or too short; no changes were made."
