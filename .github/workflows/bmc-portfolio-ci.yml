@@ -67,6 +67,8 @@ jobs:
         working-directory: portfolio/automation
         run: |
           docker run --rm \
+            --add-host ops_api:127.0.0.1 \
+            --add-host n8n:127.0.0.1 \
             -v "$PWD/nginx-webhooks.conf:/etc/nginx/conf.d/default.conf:ro" \
             nginx:alpine nginx -t
 
@@ -312,10 +314,15 @@ jobs:
       - name: Show automation logs on failure
         if: failure()
         working-directory: portfolio/automation
-        run: docker compose --env-file .env.ci logs --no-color postgres ops_api
+        run: |
+          if [ -f .env.ci ]; then
+            docker compose --env-file .env.ci logs --no-color postgres ops_api || true
+          fi
       - name: Tear down smoke stack
         if: always()
         working-directory: portfolio/automation
         run: |
           docker rm -f research-mock 2>/dev/null || true
-          docker compose --env-file .env.ci down -v
+          if [ -f .env.ci ]; then
+            docker compose --env-file .env.ci down -v || true
+          fi
