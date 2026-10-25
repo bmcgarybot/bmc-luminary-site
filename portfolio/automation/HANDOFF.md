@@ -1753,3 +1753,78 @@ Still unchanged:
 - no private social scraping;
 - no automatic contact to individual demand posters;
 - no automatic provider activation.
+
+
+## 26. SOURCE HEALTH / OWNER ATTENTION CHECKPOINT — 2026-10-25
+
+This section continues Section 25. Source-native research health now follows the owner-workload principle: healthy systems stay quiet; only material source failures/staleness enter **Needs Brett**.
+
+### Verified functional checkpoint
+
+Functional master:
+- `d2311574ce56eee5a4f3c31f7ee3193d758262f4`
+- BMC Portfolio CI run `40220094450`: **SUCCESS**
+- full database/API smoke: **SUCCESS**
+
+### Source-health behavior
+
+The private daily brief now includes:
+- `source_native_markets_tracked`
+- `source_native_stale_markets`
+- `source_native_issues`
+
+A tracked source/market is considered stale when:
+- it has attempted a source-native run, and
+- it has never completed successfully, or
+- its last successful refresh is more than 36 hours old.
+
+Healthy source state does **not** create a Brett review item.
+
+Stale source state:
+- contributes to `needs_brett=true`;
+- appears as a compact private UI card with source, market, last successful refresh and latest error context;
+- does not create or send any external communication.
+
+A successful source-native refresh clears the stored last-error marker.
+
+### CI proof
+
+CI explicitly:
+1. runs the deterministic ADHS importer successfully;
+2. verifies one tracked market and zero stale markets;
+3. verifies no source-health issue is shown;
+4. forces the source's `last_success_at` to more than 36 hours old;
+5. verifies the daily brief flips to `needs_brett=true`;
+6. verifies exactly one stale-source issue for Prescott;
+7. restores the healthy source state.
+
+This keeps routine research-source monitoring out of Brett's daily workload unless intervention is actually needed.
+
+### Key commits
+
+- `18efc96e081495ca4bef19d2858008fa1796c111` — source-health state in daily brief/private UI.
+- `d2311574ce56eee5a4f3c31f7ee3193d758262f4` — end-to-end source-health CI proof; run `40220094450` green.
+
+### Production state remains unchanged
+
+These changes are still GitHub/CI verified only. They are not yet independently verified on the VPS.
+
+After the eventual safe VPS deployment, verify:
+- source-native scheduler creates state rows;
+- successful source refreshes remain absent from Needs Brett;
+- intentionally failed/stale source state appears in Needs Brett;
+- all outreach switches remain OFF.
+
+### Next data-quality priority
+
+Add a second, more-current institutional buyer source so the older ADHS all-facilities layer is not the sole bulk healthcare discovery feed.
+
+Prefer official, structured, public datasets/APIs with:
+- organization/facility identity;
+- location;
+- facility/provider type;
+- recent update cadence;
+- stable source identifiers;
+- lawful public access without bypassing controls.
+
+Keep all imported entities prospect-only, source-attributed, deduplicated, and disconnected from outreach until separately approved.
