@@ -6,6 +6,21 @@ This file is the starting point for the next conversation/thread. Read this befo
 
 ## 1. What BMC actually is
 
+### Problem-solver architecture — authoritative
+
+The umbrella experience is now organized around customer outcomes rather than a catalog:
+
+- **Fix or handle a job** → universal/niche service request → provider match
+- **Get me options** → quote/procurement sourcing
+- **Keep it handled** → recurring facility/restaurant/property concierge
+- **Help me spend less** → vendor/waste audit + rebid/sourcing
+- **Help me get more customers** → Growth Packs / competitor intel / market expansion
+
+Read:
+- `portfolio/automation/CUSTOMER_PATHS.md`
+
+The homepage was updated to expose these five paths directly. Treat this as the current customer-journey architecture.
+
 Legal entity: **BMC Luminary Ventures LLC**
 
 Public umbrella: **BMC Service Network**
