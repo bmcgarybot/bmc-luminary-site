@@ -1,0 +1,338 @@
+{
+  "version": "2026-10-25",
+  "managed_service_keys": [
+    "hvac_heat",
+    "landscaping",
+    "home_staging",
+    "junk_hauling",
+    "tree_service",
+    "residential_cleaning",
+    "handyman_repairs",
+    "electrical_service",
+    "commercial_cleaning",
+    "realtor_listing_prep",
+    "facility_maintenance"
+  ],
+  "overrides": {
+    "hvac_heat": {
+      "slug": "hvac-heat",
+      "name": "Heating & Air Conditioning",
+      "title": "HVAC Repair & Service | Prescott Area",
+      "desc": "Request heating, air conditioning, heat pump repair, maintenance, or replacement service in the Prescott area.",
+      "headline": "No heat, no cooling, or an HVAC problem that needs a real fix?",
+      "sub": "Tell us what the system is doing, where you are, and how urgent it is. You do not need to diagnose it first.",
+      "image": "https://images.unsplash.com/photo-1505798577917-a65157d3320a?auto=format&fit=crop&w=1400&q=80",
+      "alt": "Home service professional working on residential equipment",
+      "proof": [
+        "Repair or replacement",
+        "Heating & cooling",
+        "Local service"
+      ],
+      "needs": [
+        [
+          "No heat / no cooling",
+          "System stopped working, weak airflow, strange cycling, or rooms that will not get comfortable."
+        ],
+        [
+          "Maintenance & tune-ups",
+          "Seasonal service, performance checks, and preventive maintenance."
+        ],
+        [
+          "Heat pumps & replacements",
+          "Heat-pump issues, aging equipment, replacement planning, and installation requests."
+        ]
+      ]
+    },
+    "landscaping": {
+      "slug": "landscaping",
+      "name": "Landscaping & Property Cleanup",
+      "title": "Landscaping & Property Cleanup | Prescott Area",
+      "desc": "Request recurring landscaping, yard cleanup, brush removal, and property cleanup in the Prescott area.",
+      "headline": "Need the yard cleaned up, maintained, or brought back under control?",
+      "sub": "From one-time cleanup to recurring landscape work, describe the property and what you want handled.",
+      "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80",
+      "alt": "Trees and landscaped residential property",
+      "proof": [
+        "One-time or recurring",
+        "Cleanup & maintenance",
+        "Property-focused"
+      ],
+      "needs": [
+        [
+          "Property cleanup",
+          "Overgrowth, leaves, debris, neglected areas, and seasonal cleanup."
+        ],
+        [
+          "Recurring maintenance",
+          "Routine yard care, trimming, cleanup, and ongoing property attention."
+        ],
+        [
+          "Brush & exterior work",
+          "Brush reduction, light hauling, curb-appeal work, and larger cleanup requests."
+        ]
+      ]
+    },
+    "home_staging": {
+      "slug": "home-staging",
+      "name": "Home Staging & Listing Styling",
+      "title": "Home Staging & Listing Styling | Prescott Area",
+      "desc": "Request occupied or vacant home staging and listing styling in the Prescott area.",
+      "headline": "Getting a home ready to sell should not turn into a second job.",
+      "sub": "Tell us about the property, timeline, and whether it is occupied or vacant. Start with the result you need before photos or showings.",
+      "image": "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&w=1400&q=78",
+      "alt": "Prepared residential interior ready for presentation",
+      "proof": [
+        "Occupied or vacant",
+        "Listing-focused",
+        "Timeline-aware"
+      ],
+      "needs": [
+        [
+          "Occupied staging",
+          "Room-by-room guidance using the seller’s existing furniture and decor."
+        ],
+        [
+          "Vacant staging",
+          "Furniture and styling needs for empty homes preparing to list."
+        ],
+        [
+          "Listing styling",
+          "Photo-day preparation, layout refinement, and presentation-focused touchups."
+        ]
+      ]
+    },
+    "junk_hauling": {
+      "slug": "junk-hauling",
+      "name": "Junk Removal & Hauling",
+      "title": "Junk Removal & Hauling | Prescott Area",
+      "desc": "Request junk removal, cleanouts, hauling, and property debris removal in the Prescott area.",
+      "headline": "Need the pile gone without spending the week figuring out who will take it?",
+      "sub": "Describe what needs hauled away, where it is, and any access issues. A rough description is enough to start.",
+      "image": "https://images.unsplash.com/photo-1505798577917-a65157d3320a?auto=format&fit=crop&w=1400&q=80",
+      "alt": "Home service professional working at a residential property",
+      "proof": [
+        "Cleanouts & hauling",
+        "One-time requests",
+        "Simple start"
+      ],
+      "needs": [
+        [
+          "Household junk",
+          "Furniture, boxes, unwanted household items, garage clutter, and general cleanouts."
+        ],
+        [
+          "Property debris",
+          "Yard debris, light project debris, and accumulated exterior material."
+        ],
+        [
+          "Move & estate cleanouts",
+          "Larger cleanouts tied to moving, downsizing, rentals, estates, or property turnover."
+        ]
+      ]
+    },
+    "tree_service": {
+      "slug": "tree-service",
+      "name": "Tree & Defensible Space",
+      "title": "Tree Service & Defensible Space | Prescott Area",
+      "desc": "Request tree removal, trimming, hazard work, brush clearing, and defensible-space service in the Prescott area.",
+      "headline": "Dead tree, overgrowth, or defensible-space work hanging over you?",
+      "sub": "Tell us what is near the tree or brush, what looks unsafe, and what you want cleared or trimmed.",
+      "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80",
+      "alt": "Trees around a northern Arizona style property",
+      "proof": [
+        "Tree & brush work",
+        "Hazard-focused",
+        "Defensible space"
+      ],
+      "needs": [
+        [
+          "Tree removal",
+          "Dead, damaged, unwanted, or poorly placed trees that need evaluation or removal."
+        ],
+        [
+          "Trimming & hazards",
+          "Limbs near roofs, roads, structures, or other high-risk areas."
+        ],
+        [
+          "Brush & fuel reduction",
+          "Defensible-space work, brush clearing, chipping, and fuel-load reduction."
+        ]
+      ]
+    },
+    "residential_cleaning": {
+      "slug": "house-cleaning",
+      "name": "House Cleaning",
+      "title": "House Cleaning & Deep Cleaning | Prescott Area",
+      "desc": "Request recurring house cleaning, deep cleaning, one-time cleaning, and move-related cleaning in the Prescott area.",
+      "headline": "Need the house cleaned without chasing cleaners around town?",
+      "sub": "Recurring cleaning, a deep reset, move-out work, or a one-time clean. Tell us the home size, timing, and what matters most.",
+      "image": "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1400&q=80",
+      "alt": "Professional cleaner working inside a home",
+      "proof": [
+        "Recurring or one-time",
+        "Deep cleaning",
+        "Move-in / move-out"
+      ],
+      "needs": [
+        [
+          "Recurring cleaning",
+          "Weekly, biweekly, monthly, or another regular schedule that keeps the home under control."
+        ],
+        [
+          "Deep cleaning",
+          "Bathrooms, kitchens, floors, baseboards, buildup, and detail work beyond a standard clean."
+        ],
+        [
+          "Move & listing cleaning",
+          "Move-in, move-out, pre-listing, post-project, and one-time reset cleaning."
+        ]
+      ]
+    },
+    "handyman_repairs": {
+      "slug": "handyman-repairs",
+      "name": "Handyman & Small Repairs",
+      "title": "Handyman & Small Home Repairs | Prescott Area",
+      "desc": "Request handyman work, small repairs, punch lists, mounting, drywall, doors, and fixture repairs in the Prescott area.",
+      "headline": "Small repairs piling up faster than you can get someone to show up?",
+      "sub": "Send the punch list once. Describe the repairs, fixtures, mounting, drywall, doors, or small jobs you need handled.",
+      "image": "https://images.unsplash.com/photo-1505798577917-a65157d3320a?auto=format&fit=crop&w=1400&q=80",
+      "alt": "Home service professional working on a residential repair",
+      "proof": [
+        "Punch lists welcome",
+        "Small repairs",
+        "Multiple tasks okay"
+      ],
+      "needs": [
+        [
+          "Punch lists",
+          "Several small repairs or finish items that make more sense as one visit."
+        ],
+        [
+          "Drywall, doors & fixtures",
+          "Minor drywall work, sticking doors, hardware, fixtures, shelves, and similar repairs."
+        ],
+        [
+          "Mounting & assembly",
+          "TVs, shelves, wall-mounted items, furniture assembly, and practical household installs."
+        ]
+      ]
+    },
+    "electrical_service": {
+      "slug": "electrical-service",
+      "name": "Electrical Service",
+      "title": "Electrical Repair & Installation | Prescott Area",
+      "desc": "Request electrical repair, panels, lighting, outlets, generators, and EV charging in the Prescott area.",
+      "headline": "Breaker tripping, outlet dead, lights acting up, or a bigger electrical project?",
+      "sub": "Describe what is happening and where. You do not need to diagnose the electrical problem before asking for help.",
+      "image": "https://images.unsplash.com/photo-1758101755915-462eddc23f57?auto=format&fit=crop&w=1400&q=80",
+      "alt": "Electrician working on residential electrical service",
+      "proof": [
+        "Repairs & troubleshooting",
+        "Panels & circuits",
+        "Lighting & charging"
+      ],
+      "needs": [
+        [
+          "Repairs & troubleshooting",
+          "Tripping breakers, dead outlets, flickering lights, wiring concerns, and other electrical faults."
+        ],
+        [
+          "Panels & circuits",
+          "Panel work, added circuits, 240V service, upgrades, and electrical capacity requests."
+        ],
+        [
+          "Lighting, generators & EV",
+          "Fixtures, exterior lighting, generator needs, EV charging, and related installation work."
+        ]
+      ]
+    },
+    "commercial_cleaning": {
+      "slug": "commercial-cleaning",
+      "name": "Commercial Cleaning",
+      "title": "Commercial Cleaning | Prescott Area",
+      "desc": "Request recurring or project-based commercial cleaning in the Prescott area.",
+      "headline": "Need a cleaner building without babysitting the cleaning schedule?",
+      "sub": "Tell us the facility type, approximate size, cleaning frequency, and any areas that need special attention.",
+      "image": "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1400&q=80",
+      "alt": "Professional cleaner performing detailed cleaning",
+      "proof": [
+        "Recurring or project",
+        "Facilities & workplaces",
+        "Scope-first request"
+      ],
+      "needs": [
+        [
+          "Recurring janitorial",
+          "Routine cleaning for offices, facilities, common areas, and customer-facing spaces."
+        ],
+        [
+          "Deep & project cleaning",
+          "One-time resets, seasonal cleaning, post-project cleanup, and detail work."
+        ],
+        [
+          "Multi-site or special scope",
+          "Multiple locations, higher-traffic spaces, specialty areas, or unusual schedules."
+        ]
+      ]
+    },
+    "realtor_listing_prep": {
+      "slug": "realtor-listing-prep",
+      "name": "Realtor Listing Prep",
+      "title": "Realtor Listing Prep Concierge | Prescott Area",
+      "desc": "Coordinate cleaning, staging, handyman work, hauling, and exterior prep before a property is listed.",
+      "headline": "Need the property market-ready without coordinating five different vendors?",
+      "sub": "Give us the punch list and target date. Cleaning, staging, repairs, hauling, and exterior prep can all start from one request.",
+      "image": "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&w=1400&q=78",
+      "alt": "Residential property prepared for listing presentation",
+      "proof": [
+        "One punch list",
+        "Deadline-focused",
+        "Multi-service prep"
+      ],
+      "needs": [
+        [
+          "Pre-listing cleanup",
+          "Cleaning, hauling, exterior cleanup, and the visible details buyers notice first."
+        ],
+        [
+          "Repairs & punch lists",
+          "Handyman items, fixtures, doors, drywall, touchups, and small corrections before photos or showings."
+        ],
+        [
+          "Staging & presentation",
+          "Occupied or vacant staging support, photo-day preparation, and final presentation work."
+        ]
+      ]
+    },
+    "facility_maintenance": {
+      "slug": "facility-maintenance",
+      "name": "Facility Maintenance Concierge",
+      "title": "Facility Maintenance Concierge | BMC Service Network",
+      "desc": "Coordinate multi-service facility cleaning and maintenance needs through one BMC request.",
+      "headline": "One building problem should not become six vendor searches.",
+      "sub": "For schools, churches, theaters, offices, care facilities, gyms, daycare, and other properties that need recurring or project-based maintenance help.",
+      "image": "https://images.unsplash.com/photo-1505798577917-a65157d3320a?auto=format&fit=crop&w=1400&q=80",
+      "alt": "Service professional working on a facility maintenance project",
+      "proof": [
+        "Multi-service requests",
+        "Recurring coordination",
+        "Facility-focused"
+      ],
+      "needs": [
+        [
+          "Cleaning & recurring upkeep",
+          "Routine cleaning, common-area attention, seasonal needs, and recurring facility support."
+        ],
+        [
+          "Repairs & maintenance",
+          "Electrical, plumbing, handyman, lighting, exterior, and other maintenance requests."
+        ],
+        [
+          "Projects & coordination",
+          "Larger cleanups, maintenance projects, multiple scopes, and situations that need more than one trade."
+        ]
+      ],
+      "noindex": true
+    }
+  }
+}
