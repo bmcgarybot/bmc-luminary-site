@@ -1672,7 +1672,12 @@ async def admin_provider_service_review(request:Request,x_bmc_admin_key:str|None
           where entity_type='vendor' and entity_id=$1 and event_type='portal_service_additions_requested'
             and occurred_at>= $2
           order by occurred_at desc limit 1""",row["vendor_id"],row["created_at"])
-        requested=list(requested or [])
+        if isinstance(requested,str):
+            try:
+                requested=json.loads(requested)
+            except Exception:
+                requested=[]
+        requested=[clean(x) for x in (requested or []) if clean(x)] if isinstance(requested,(list,tuple)) else []
         if decision=="approve":
             approved=[sk for sk in approved if sk in requested]
             if not approved:
