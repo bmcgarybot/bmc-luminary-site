@@ -538,9 +538,20 @@ async def handle_facility_lead(conn,p):
         await event(conn,"lead",child_id,"facility_child_created",{"parent_lead_id":str(parent_id),"service_key":sk})
         await offer_next(conn,child)
     if p.get("email"):
-        await send_mail(clean(p.get("email")),"BMC received your facility request",
-          f"We received one facility request covering {len(requested)} service categories in {market}. BMC split the work into the appropriate service workflows so each category can be matched separately.\n\nReference: {parent_id}\nBMC Luminary Ventures LLC")
-    return {"ok":True,"status":"split","lead_id":str(parent_id),"child_requests":len(requested),"message":f"Facility request received. BMC split it into {len(requested)} service workflows for matching."}
+        service_names=[]
+        for sk in requested:
+            service_names.append(await service_display_name(conn,sk))
+        await send_mail(clean(p.get("email")),"We got your building request",
+          f"""We received your building request in {market}.
+
+You asked for help with:
+- """+"\n- ".join(service_names)+f"""
+
+We’ll work through these items from the same request and follow up as the next steps become clear.
+
+Reference: {parent_id}
+BMC Luminary Ventures LLC""")
+    return {"ok":True,"status":"split","lead_id":str(parent_id),"child_requests":len(requested),"message":f"Got it. We received {len(requested)} building needs and will work through them from this request."}
 
 async def handle_lead(conn,p):
     form_type=clean(p.get("form_type")) or "general"
@@ -992,29 +1003,31 @@ Reply no if you do not want future outreach."""
         return subject,body
     public_note=""
     if "school" in btype or "government" in btype:
-        public_note=" We understand formal procurement or approved-vendor rules may apply."
+        public_note=" If your organization has approved-vendor or purchasing rules, we can work around those requirements."
     if step==1:
-        subject=f"One request for facility work in {market}"
+        subject=f"Too many building vendors to chase in {market}?"
         body=f"""Hi {business},
 
-BMC Luminary Ventures is building an Arizona service-coordination network for organizations that repeatedly need local vendors.{public_note}
+If one building problem keeps turning into another vendor search, BMC may be useful.{public_note}
 
-Instead of calling separate companies for every project, you can submit one request and BMC can route the work by service and market. Based on your type of facility, common categories may include {likely or 'cleaning, grounds, repairs, and recurring maintenance'}.
+You can send one request with everything that needs attention: cleaning, repairs, grounds, HVAC, electrical, parking-lot work, and other building needs.
 
-Request or test the concierge here:
+Start with the current problem here:
 {landing}
 
-There is no sales call required.
+You do not need a monthly plan just to send the first request.
 
 BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}
 
 Reply no if you do not want future outreach."""
     else:
-        subject=f"Re: facility service coordination in {market}"
+        subject=f"Re: building help in {market}"
         body=f"""Hi {business},
 
-Just following up once on the BMC service concierge. If your organization has a deep-cleaning project, recurring maintenance need, or several vendor categories to coordinate, you can submit it here:
+Just following up once.
+
+If you have a building punch list, cleaning need, repair, or several small maintenance items sitting around, you can send them in one request here:
 
 {landing}
 
