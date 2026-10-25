@@ -2915,3 +2915,86 @@ After Cloudflare Pages custom-domain state is reconfirmed, remove the BMC custom
 Cloudflare currently recommends adding DMARC for `@bmcservicenetwork.com`.
 
 Do this only after the website hostname repair, preserving the existing MX/SPF/DKIM records.
+
+
+## 32. STRIPE LIVE CHECKOUT + WEBHOOK — 2026-10-25
+
+Stripe onboarding is now complete on live account `acct_1UU9OfQU2BLM8GhL`:
+- charges enabled;
+- payouts enabled;
+- details submitted;
+- no outstanding requirements;
+- card payments active.
+
+Four live one-time Payment Links were created:
+
+- `growth_pack_starter` / BMC Local Growth Pack — $499
+  - `plink_1UUYdjQU2BLM8GhLWdq2uB1F`
+  - `https://buy.stripe.com/cNi00lfxD8pJdBxa5G1oI00`
+- `growth_pack_premium` / BMC Premium Growth Pack — $749
+  - `plink_1UUYdvQU2BLM8GhLe3QUR0Yg`
+  - `https://buy.stripe.com/6oUdRb3OV49t5515Pq1oI01`
+- `competitor_intelligence_pack` / BMC Local Competitor Intelligence Pack — $299
+  - `plink_1UUYe2QU2BLM8GhL6xBTBVC8`
+  - `https://buy.stripe.com/eVq5kFbhn21l0OLfq01oI02`
+- `market_expansion_pack` / BMC Local Market Expansion Pack — $699
+  - `plink_1UUYe6QU2BLM8GhLgTbWoNAJ`
+  - `https://buy.stripe.com/fZu6oJ99f21lfJF2De1oI03`
+
+All four links redirect after successful checkout to:
+- `https://bmcservicenetwork.com/order-complete/`
+with `offer` and `session_id={CHECKOUT_SESSION_ID}`.
+
+Updated in GitHub:
+- `portfolio/data/billing.json` -> checkout live + exact link IDs/URLs;
+- `portfolio/data/products.json` -> exact live link IDs/URLs;
+- `portfolio/automation/seed-products.sql` -> exact link IDs/URLs;
+- `migrate.sh` now applies `seed-products.sql` during safe production refreshes.
+
+Google Drive Master Operations:
+- Billing tab updated for all four products;
+- status = `live`;
+- old activation blockers removed;
+- exact live Payment Link IDs/URLs recorded.
+
+Live Stripe webhook endpoint created:
+- endpoint ID: `we_1UUYgvQU2BLM8GhLlqebzgMb`
+- URL: `https://hooks.bmcservicenetwork.com/api/stripe-webhook`
+- status: enabled
+- events:
+  - `checkout.session.completed`
+  - `checkout.session.async_payment_succeeded`
+  - `invoice.paid`
+  - `customer.subscription.created`
+  - `customer.subscription.updated`
+  - `customer.subscription.deleted`
+  - `customer.subscription.paused`
+  - `customer.subscription.resumed`
+  - `refund.created`
+
+The webhook signing secret is intentionally NOT stored in GitHub or in this handoff.
+
+Added:
+- `configure-stripe-webhook.sh`
+
+This script prompts invisibly for the Stripe signing secret, updates only `STRIPE_WEBHOOK_SECRET` in VPS `.env`, chmods the env back to 600, recreates `ops_api`, then runs runtime doctor + public ingress verification.
+
+Required final VPS step:
+
+```bash
+cd ~/bmc-luminary-site/portfolio/automation
+git pull --ff-only
+chmod +x configure-stripe-webhook.sh
+bash ./configure-stripe-webhook.sh .env
+```
+
+When prompted, paste the signing secret from the Stripe webhook endpoint. Do not paste it into chat.
+
+After that, perform one small real checkout validation and confirm:
+- Stripe payment succeeds;
+- redirect returns to BMC order-complete page;
+- webhook delivery returns 2xx;
+- payment event/order/revenue rows are created;
+- Growth Pack fulfillment intake linkage works.
+
+Outreach remains OFF.
