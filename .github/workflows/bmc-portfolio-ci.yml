@@ -458,9 +458,9 @@ jobs:
           # Add one healthy extra expected lane so the five-lane batch must leave it for a later rotation.
           docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
             insert into source_native_state(source_key,market,last_run_at,last_success_at,metadata)
-            values('cms_hospice','Phoenix',now(),now(),'{"expected":true}'::jsonb)
+            values('cms_hospice','Phoenix',now(),now(),jsonb_build_object('expected',true))
             on conflict(source_key,market) do update set
-              last_run_at=now(),last_success_at=now(),metadata='{ "expected": true }'::jsonb;"
+              last_run_at=now(),last_success_at=now(),metadata=jsonb_build_object('expected',true);"
 
           # Prove source-native healthcare research creates only internal buyer prospects and is idempotent.
           curl -fsS -X POST http://127.0.0.1:8000/api/process-source-native-research \
