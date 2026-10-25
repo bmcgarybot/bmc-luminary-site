@@ -40,6 +40,10 @@ insert into services(service_key,display_name,category,monetization,live_front,p
  on conflict(service_key) do update set display_name=excluded.display_name,category=excluded.category,monetization=excluded.monetization,
  live_front=excluded.live_front,priority=excluded.priority,fulfillment_mode=excluded.fulfillment_mode,is_active=true,updated_at=now();
 insert into services(service_key,display_name,category,monetization,live_front,priority,fulfillment_mode,is_active)
+ values('auto_repair_shop','Auto Repair Shop','Vehicle services','lead / booked job','/portfolio/auto-repair-shop/','A','provider_match',true)
+ on conflict(service_key) do update set display_name=excluded.display_name,category=excluded.category,monetization=excluded.monetization,
+ live_front=excluded.live_front,priority=excluded.priority,fulfillment_mode=excluded.fulfillment_mode,is_active=true,updated_at=now();
+insert into services(service_key,display_name,category,monetization,live_front,priority,fulfillment_mode,is_active)
  values('pet_waste','Pet Waste Cleanup','Pet / route service','lead / recurring referral','/portfolio/pet-waste/','A','provider_match',true)
  on conflict(service_key) do update set display_name=excluded.display_name,category=excluded.category,monetization=excluded.monetization,
  live_front=excluded.live_front,priority=excluded.priority,fulfillment_mode=excluded.fulfillment_mode,is_active=true,updated_at=now();
