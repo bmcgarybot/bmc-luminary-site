@@ -465,3 +465,102 @@ footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-s
   .request-card{border-radius:22px}
   .request-nav{align-items:stretch}
 }
+
+
+/* Conversion imagery + mobile-first v6 */
+.hero-photo{
+  position:relative;min-height:520px;border-radius:34px;overflow:hidden;
+  box-shadow:0 28px 70px rgba(24,34,40,.14);background:#d9d3c9;
+}
+.hero-photo img{
+  width:100%;height:100%;position:absolute;inset:0;object-fit:cover;object-position:center;
+  display:block;
+}
+.hero-photo:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(18,24,28,.02) 25%,rgba(18,24,28,.48) 100%);
+}
+.hero-photo-card{
+  position:absolute;left:24px;right:24px;bottom:24px;z-index:2;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+  padding:20px 22px;border-radius:18px;box-shadow:0 14px 36px rgba(0,0,0,.12)
+}
+.hero-photo-card small{
+  display:block;text-transform:uppercase;letter-spacing:.09em;font-weight:850;
+  color:#6a6178;font-size:.7rem;margin-bottom:7px
+}
+.hero-photo-card strong{
+  display:block;font-family:Georgia,"Times New Roman",serif;font-weight:500;
+  color:#1d252a;font-size:1.35rem;line-height:1.12
+}
+.hero-photo-card span{display:block;margin-top:7px;color:#677177;font-size:.9rem}
+
+.customer-proof{
+  display:flex;gap:18px;flex-wrap:wrap;margin-top:24px;color:#5f696e;font-size:.88rem;font-weight:700
+}
+.customer-proof span:before{content:"✓";margin-right:7px;color:#6f667e;font-weight:900}
+
+.image-service-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px
+}
+.image-service-card{
+  position:relative;min-height:330px;border-radius:24px;overflow:hidden;text-decoration:none;
+  box-shadow:0 18px 50px rgba(35,39,42,.10);background:#d8d4ce
+}
+.image-service-card img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .25s ease
+}
+.image-service-card:hover img{transform:scale(1.025)}
+.image-service-card:after{
+  content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 25%,rgba(14,20,24,.72) 100%)
+}
+.image-service-card .image-card-copy{
+  position:absolute;z-index:2;left:22px;right:22px;bottom:20px;color:white
+}
+.image-service-card strong{
+  display:block;font-family:Georgia,"Times New Roman",serif;font-weight:500;font-size:1.45rem
+}
+.image-service-card span{display:block;margin-top:5px;color:rgba(255,255,255,.82);font-size:.9rem}
+
+.mobile-sticky-cta{display:none}
+
+.editorial-site .provider-footer-link{
+  color:#6e7477;text-decoration:none;font-size:.84rem
+}
+.editorial-site .provider-footer-link:hover{text-decoration:underline}
+
+@media(max-width:850px){
+  .editorial-hero-grid{grid-template-columns:1fr}
+  .editorial-hero h1{font-size:clamp(2.65rem,12.4vw,4.25rem);line-height:.95}
+  .editorial-hero p{font-size:1rem;line-height:1.58}
+  .hero-photo{min-height:360px;border-radius:24px}
+  .hero-photo-card{left:14px;right:14px;bottom:14px;padding:16px}
+  .image-service-grid{grid-template-columns:1fr}
+  .image-service-card{min-height:280px}
+  .editorial-section{padding:58px 0}
+  .editorial-site .actions .btn{width:100%}
+  .request-shell{width:min(100% - 20px,820px)}
+  .request-card{padding:22px 18px}
+  .category-tiles{grid-template-columns:1fr}
+  .category-tile{min-height:auto}
+  .row{grid-template-columns:1fr}
+  body.editorial-site{padding-bottom:76px}
+  .mobile-sticky-cta{
+    display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:100;
+    padding:10px;background:rgba(255,253,248,.94);backdrop-filter:blur(12px);
+    border:1px solid #d8d0c6;border-radius:18px;box-shadow:0 14px 36px rgba(0,0,0,.15)
+  }
+  .mobile-sticky-cta .btn{width:100%;min-height:52px}
+}
+@media(max-width:560px){
+  .wrap{width:min(100% - 24px,1120px)}
+  .editorial-site .nav-in{min-height:64px;padding:10px 0}
+  .editorial-site .brand{font-size:1.05rem}
+  .editorial-hero{padding:18px 0 48px}
+  .editorial-kicker{font-size:.66rem;margin-bottom:13px}
+  .editorial-hero h1{font-size:clamp(2.55rem,13.2vw,3.7rem)}
+  .editorial-hero-grid{gap:26px}
+  .hero-photo{min-height:320px}
+  .request-question{font-size:1.45rem}
+  .request-nav{position:sticky;bottom:82px;background:#fffdf8;padding-top:10px}
+}
