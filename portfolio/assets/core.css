@@ -880,3 +880,53 @@ footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-s
   .hero-finder-panel{padding:12px;border-radius:20px}
   .visual-choice-card{min-height:240px}
 }
+
+
+/* Growth Pack spreadsheet sample */
+.growth-sheet{
+  overflow:hidden;border:1px solid #d7d0c6;border-radius:28px;background:#fffdf8;
+  box-shadow:0 22px 60px rgba(28,33,37,.10)
+}
+.growth-sheet-toolbar{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:20px 22px;background:#1c252b;color:#fff
+}
+.growth-sheet-toolbar strong{display:block;font-family:Georgia,"Times New Roman",serif;font-size:1.35rem;font-weight:500}
+.growth-sheet-toolbar span{display:block;color:rgba(255,255,255,.64);font-size:.82rem;margin-top:3px}
+.growth-sheet-actions{display:flex;gap:8px}
+.growth-sheet-actions a{
+  color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.24);border-radius:999px;
+  padding:8px 12px;font-size:.76rem;font-weight:800
+}
+.growth-sheet-actions a:hover{background:rgba(255,255,255,.1)}
+.growth-priority-key{
+  display:flex;flex-wrap:wrap;gap:18px;padding:14px 22px;background:#eee9f3;border-bottom:1px solid #d8d1df
+}
+.growth-priority-key span{display:flex;align-items:center;gap:8px;color:#5e5965;font-size:.82rem;font-weight:700}
+.priority-pill{
+  width:28px;height:28px;border-radius:8px;display:inline-grid;place-items:center;font-weight:900;font-size:.78rem
+}
+.priority-a{background:#dce9dd;color:#36523a}
+.priority-b{background:#f3ebcf;color:#6e5a1d}
+.priority-c{background:#ece7e1;color:#6a625b}
+.growth-sheet-table-wrap{overflow-x:auto}
+.growth-sheet-table{
+  width:100%;min-width:1050px;border-collapse:separate;border-spacing:0;font-size:.84rem;line-height:1.45
+}
+.growth-sheet-table th{
+  position:sticky;top:0;background:#263239;color:#fff;text-align:left;padding:13px 14px;
+  font-size:.74rem;letter-spacing:.02em;white-space:nowrap
+}
+.growth-sheet-table td{
+  padding:15px 14px;border-bottom:1px solid #e6e0d8;vertical-align:top;color:#555f64;background:#fffdf8
+}
+.growth-sheet-table tbody tr:nth-child(even) td{background:#f8f5ef}
+.growth-sheet-table td strong{color:#1f292f}
+.growth-sheet-table th:first-child,.growth-sheet-table td:first-child{text-align:center;width:72px}
+.growth-sheet-foot{
+  padding:14px 22px;background:#f4f0e9;color:#6a7073;font-size:.8rem;border-top:1px solid #ddd5ca
+}
+@media(max-width:650px){
+  .growth-sheet-toolbar{align-items:flex-start;flex-direction:column}
+  .growth-priority-key{gap:10px 16px}
+}
