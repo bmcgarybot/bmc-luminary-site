@@ -204,10 +204,40 @@ for key in SMTP_HOST SMTP_USER SMTP_PASSWORD BUSINESS_POSTAL_ADDRESS CLOUDFLARE_
 done
 
 if [ "$(env_value LOCAL_AI_ENABLED)" = "true" ]; then
+  MODEL="$(env_value LOCAL_AI_MODEL)"
   if curl -fsS "http://127.0.0.1:11434/api/tags" >/tmp/bmc_ollama_tags.json 2>/dev/null; then
-    pass "Optional local AI service is reachable"
+    pass "Local AI service is reachable"
+    if python3 - "$MODEL" <<'PY'
+import json,sys
+model=sys.argv[1]
+d=json.load(open("/tmp/bmc_ollama_tags.json"))
+names=[(m.get("name") or m.get("model") or "") for m in d.get("models",[])]
+raise SystemExit(0 if model in names else 1)
+PY
+    then
+      pass "Configured local AI model is loaded ($MODEL)"
+    else
+      warn "Ollama is reachable but configured model '$MODEL' is not loaded"
+    fi
   else
-    warn "LOCAL_AI_ENABLED is true but Ollama is not running; deterministic core remains available"
+    warn "LOCAL_AI_ENABLED is true but Ollama is not running; deterministic classification remains available"
+  fi
+
+  if [ "$api_health_ok" -eq 1 ]; then
+    if curl -fsS -X POST http://127.0.0.1:8000/api/service-search       -H 'Content-Type: application/json'       -d '{"query":"fix my fryer"}' >/tmp/bmc_runtime_search.json 2>/dev/null; then
+      if python3 - <<'PY'
+import json
+d=json.load(open("/tmp/bmc_runtime_search.json"))
+raise SystemExit(0 if (d.get("match") or {}).get("service_key")=="restaurant_equipment" else 1)
+PY
+      then
+        pass "Intelligent service search maps 'fix my fryer' to restaurant equipment repair"
+      else
+        fail "Service search did not map 'fix my fryer' to restaurant_equipment"
+      fi
+    else
+      fail "Public service-search API is not responding locally"
+    fi
   fi
 fi
 
