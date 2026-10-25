@@ -2081,9 +2081,10 @@ async def process_research(x_bmc_admin_key:str|None=Header(default=None)):
                     staged+=1
             total=int(await conn.fetchval("select count(*) from research_candidates where research_id=$1",task["research_id"]) or 0)
             next_pass=int(task["research_pass"] or 0)+1
-            current_count=int(task["current_count"] or 0)
+            current_count=int(await conn.fetchval(
+              "select current_count from research_backlog where research_id=$1",task["research_id"]) or 0)
             goal=int(task["goal"] or 0)
-            remaining=max(0,goal-current_count-total)
+            remaining=max(0,goal-current_count)
             if remaining<=0:
                 new_status="review" if total>0 else "completed"
             elif next_pass<RESEARCH_MAX_PASSES:
