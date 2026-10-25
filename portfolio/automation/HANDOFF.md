@@ -2788,3 +2788,87 @@ Do not inflate smaller-market coverage with unsafe postal-city aliases.
 A conservative alias may be added only when the official geography is defensible. Dewey-Humboldt has official evidence supporting Dewey/Humboldt naming, but Cordes Lakes, Williamson Valley and similar areas should not simply inherit all Mayer/Prescott institutions.
 
 Broad web research remains preferable to false source-native attribution.
+
+
+## 30. DNS AUTHORITY CORRECTION — CLOUDFLARE IS SOURCE OF TRUTH — 2026-10-25
+
+This section corrects a handoff regression introduced in Sections 28–29.
+
+### Authoritative correction
+
+`bmcservicenetwork.com` is registered at Namecheap **but authoritative DNS is already delegated to Cloudflare**:
+
+- `iris.ns.cloudflare.com`
+- `will.ns.cloudflare.com`
+
+Therefore all active BMC DNS changes belong in:
+- **Cloudflare -> bmcservicenetwork.com -> DNS -> Records**
+
+Do **not**:
+- switch nameservers back to Namecheap BasicDNS;
+- try to manage the active BMC A/CNAME/MX/TXT records in Namecheap Advanced DNS;
+- rebuild the Cloudflare Tunnel from scratch;
+- disturb existing `hooks`, MX, SPF, DKIM, DMARC, or mail-verification records.
+
+### Existing setup that was already completed before this thread
+
+Earlier handoff sections were correct that:
+- Cloudflare Tunnel had already been configured;
+- `hooks.bmcservicenetwork.com` had already been published to the restricted webhook gateway;
+- public ingress had already been verified;
+- Namecheap Private Email for `contact@bmcservicenetwork.com` was configured;
+- SMTP + IMAP were verified;
+- SPF/DKIM were configured.
+
+The newer Namecheap-DNS instructions in Sections 28–29 were wrong because they failed to reconcile that existing Cloudflare delegation.
+
+### Current Pages work already completed
+
+In this thread Brett already:
+- switched `bmcgarybot/bmc-luminary-site` Pages source to **GitHub Actions**;
+- ran **BMC Service Network Pages** successfully;
+- set GitHub Pages custom domain to `bmcservicenetwork.com`.
+
+GitHub now reports:
+- apex/custom domain accepted as primary;
+- `www.bmcservicenetwork.com` improperly configured / DNS record missing;
+- HTTPS unavailable until DNS is corrected.
+
+### Correct next step
+
+Inspect the existing **Cloudflare DNS Records** list before editing anything.
+
+For the static GitHub Pages site, the intended records are:
+- apex A -> `185.199.108.153`
+- apex A -> `185.199.109.153`
+- apex A -> `185.199.110.153`
+- apex A -> `185.199.111.153`
+- `www` CNAME -> `bmcgarybot.github.io`
+
+Preserve:
+- `hooks` Cloudflare Tunnel record;
+- mail MX records;
+- SPF;
+- DKIM;
+- DMARC;
+- all other working verification records.
+
+Review the existing Cloudflare record list first and only change website-conflicting rows.
+
+### Related repo ownership verified this thread
+
+- `bmcgarybot/bmcgarybot.github.io` owns `mycosmicsoulmap.com` and contains a CNAME for that domain.
+- `bmcgarybot/qns-site` owns `quantumneuroshift.com` and contains a CNAME for that domain.
+- `bmcgarybot/bmc-luminary-site` is the BMC Service Network repo and does not own those other sites.
+
+The account-level Cosmic Soul Maps custom domain caused project-site URLs such as `mycosmicsoulmap.com/bmc-luminary-site/`, but changing the BMC project's custom domain does not delete the separate Cosmic Soul Maps or QNS repositories/sites.
+
+### Process correction
+
+Before asking Brett to repeat infrastructure setup, first check:
+1. HANDOFF;
+2. current repo scripts/docs;
+3. current live/runtime verification output;
+4. existing DNS/provider ownership.
+
+Do not infer “not configured” from one UI screen when the handoff already records a verified setup.
