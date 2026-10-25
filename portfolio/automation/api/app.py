@@ -1086,8 +1086,12 @@ async def process_followups(x_bmc_admin_key:str|None=Header(default=None)):
     if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY: raise HTTPException(403,"Forbidden")
     sent=0
     async with app.state.pool.acquire() as conn:
-      rows=await conn.fetch("""select lm.*,v.public_email,v.business_name,l.market,l.service_key
-        from lead_matches lm join vendors v on v.vendor_id=lm.vendor_id join leads l on l.lead_id=lm.lead_id
+      rows=await conn.fetch("""select lm.*,v.public_email,v.business_name,l.market,l.service_key,
+          coalesce(s.display_name,l.service_key) as service_name
+        from lead_matches lm
+        join vendors v on v.vendor_id=lm.vendor_id
+        join leads l on l.lead_id=lm.lead_id
+        left join services s on s.service_key=l.service_key
         where v.public_email is not null and v.public_email<>''
           and (
             (lm.status='accepted' and lm.responded_at < now()-interval '4 hours') or
@@ -1097,17 +1101,18 @@ async def process_followups(x_bmc_admin_key:str|None=Header(default=None)):
           and (lm.last_followup_at is null or lm.last_followup_at < now()-interval '24 hours')
         order by coalesce(lm.last_followup_at,lm.responded_at,lm.offered_at) asc limit 100""")
       for row in rows:
-        link=f"{PUBLIC_SITE_URL}/provider-job-update/?lead_id={row['lead_id']}&vendor_id={row['vendor_id']}&token={row['response_token']}"
-        ok=await send_mail(row["public_email"],f"Update BMC request: {row['service_key']} in {row['market']}",
+        service_name=clean(row["service_name"]) or clean(row["service_key"]) or "service"
+        link=f"{PUBLIC_SITE_URL}/provider-dashboard/"
+        ok=await send_mail(row["public_email"],f"Update BMC request: {service_name} in {row['market']}",
           f"""Please update the outcome of the BMC request you accepted.
 
 Market: {row['market']}
 Service: {service_name}
 
-Mark contacted, estimate sent, won, or lost:
+Open your provider dashboard and mark the job contacted, estimate sent, won, or lost:
 {link}
 
-Closing the loop helps BMC route future work more accurately.
+Closing the loop helps BMC send work that fits your business.
 """)
         if ok:
           await conn.execute("update lead_matches set last_followup_at=now() where match_id=$1",row["match_id"])
