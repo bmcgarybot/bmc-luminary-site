@@ -1,6 +1,6 @@
 (function(){
   // BMC_TWO_SIDED_NAV: keep the two audiences obvious without hiding either path.
-  const markets=["Prescott","Prescott Valley","Chino Valley","Cottonwood","Camp Verde","Sedona","Flagstaff","Winslow","Kingman","Phoenix","Scottsdale","Tucson"];
+  const markets=["Prescott","Prescott Valley","Chino Valley","Dewey-Humboldt","Mayer","Cordes Lakes","Williamson Valley","Ash Fork","Seligman","Skull Valley","Cottonwood","Camp Verde","Sedona","Flagstaff","Winslow","Kingman","Golden Valley","Bullhead City","Phoenix","Scottsdale","Tucson"];
   const GLOBAL_WEBHOOK=window.BMC_WEBHOOK_URL||"https://hooks.bmcservicenetwork.com/api/intake";
   const CONTACT_EMAIL="contact@bmcservicenetwork.com";
 
@@ -80,7 +80,7 @@
   });
 
   if(!document.querySelector('link[rel="canonical"]')){
-    const canonical=document.createElement("link");canonical.rel="canonical";canonical.href=location.origin+location.pathname;document.head.appendChild(canonical);
+    const canonical=document.createElement("link");canonical.rel="canonical";canonical.href="https://bmcservicenetwork.com"+location.pathname;document.head.appendChild(canonical);
   }
   if(!document.querySelector('script[data-bmc-org-schema]')){
     const schema=document.createElement("script");schema.type="application/ld+json";schema.dataset.bmcOrgSchema="true";
