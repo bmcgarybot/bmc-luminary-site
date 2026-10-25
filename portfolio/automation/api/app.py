@@ -129,8 +129,18 @@ PUBLIC_OPPORTUNITY_SOURCES=(
      "query":'site:chinoaz.net (bid OR RFP OR solicitation) (janitorial OR cleaning OR landscaping OR locksmith OR HVAC OR plumbing OR facilities OR parking OR pest OR electrical)'},
     {"key":"winslow","name":"City of Winslow","market":"Winslow","domain":"winslowaz.gov",
      "query":'site:winslowaz.gov (bid OR RFP OR solicitation) (janitorial OR cleaning OR landscaping OR locksmith OR HVAC OR plumbing OR facilities OR parking OR pest OR electrical)'},
+    {"key":"prescott_valley","name":"Town of Prescott Valley","market":"Prescott Valley","domain":"prescottvalley-az.gov",
+     "query":'site:prescottvalley-az.gov (bid OR RFP OR RFQ OR solicitation OR contract) (janitorial OR cleaning OR landscaping OR locksmith OR "access control" OR HVAC OR plumbing OR facilities OR parking OR pest OR electrical OR "vehicle maintenance" OR "auto repair")'},
+    {"key":"camp_verde","name":"Town of Camp Verde","market":"Camp Verde","domain":"campverde.az.gov",
+     "query":'site:campverde.az.gov (bid OR RFP OR RFQ OR solicitation OR contract) (janitorial OR cleaning OR landscaping OR locksmith OR "access control" OR HVAC OR plumbing OR facilities OR parking OR pest OR electrical OR "vehicle maintenance" OR "auto repair")'},
+    {"key":"kingman","name":"City of Kingman","market":"Kingman","domain":"cityofkingman.gov",
+     "query":'site:cityofkingman.gov (bid OR RFP OR RFQ OR solicitation OR contract) (janitorial OR cleaning OR landscaping OR locksmith OR "access control" OR HVAC OR plumbing OR facilities OR parking OR pest OR electrical OR "vehicle maintenance" OR "auto repair")'},
+    {"key":"prescott_schools","name":"Prescott Unified School District","market":"Prescott","domain":"prescottschools.com",
+     "query":'site:prescottschools.com (bid OR RFP OR RFQ OR solicitation OR purchasing) (janitorial OR custodial OR cleaning OR landscaping OR locksmith OR "access control" OR HVAC OR plumbing OR facilities OR pest OR electrical OR "vehicle maintenance" OR "kitchen equipment")'},
+    {"key":"humboldt_schools","name":"Humboldt Unified School District","market":"Prescott Valley","domain":"humboldtunified.com",
+     "query":'site:humboldtunified.com (bid OR RFP OR RFQ OR solicitation OR purchasing) (janitorial OR custodial OR cleaning OR landscaping OR locksmith OR "access control" OR HVAC OR plumbing OR facilities OR pest OR electrical OR "vehicle maintenance" OR "kitchen equipment")'},
     {"key":"sam_federal","name":"SAM.gov Federal Opportunities","market":"Arizona","domain":"sam.gov",
-     "query":'site:sam.gov/opportunities Arizona (janitorial OR cleaning OR landscaping OR locksmith OR HVAC OR plumbing OR facility OR parking OR pest OR electrical OR laundry)'}
+     "query":'site:sam.gov/opportunities Arizona (janitorial OR cleaning OR landscaping OR locksmith OR "access control" OR HVAC OR plumbing OR facility OR parking OR pest OR electrical OR laundry OR "vehicle maintenance" OR "auto repair")'}
 )
 
 LOCAL_SIGNAL_MARKETS=("Prescott","Prescott Valley","Chino Valley","Camp Verde","Cottonwood","Sedona","Flagstaff","Winslow","Kingman","Phoenix","Scottsdale","Tucson")
@@ -138,7 +148,7 @@ LOCAL_SIGNAL_SOURCES=(
     {"key":"nextdoor_public","name":"Publicly indexed Nextdoor","domain":"nextdoor.com"},
     {"key":"facebook_public","name":"Publicly indexed Facebook","domain":"facebook.com"}
 )
-LOCAL_SIGNAL_SERVICE_TERMS='"plumber" OR "electrician" OR "locksmith" OR "HVAC" OR "heating" OR "air conditioning" OR "tree service" OR "landscaping" OR "junk removal" OR "handyman" OR "house cleaning" OR "garage door" OR "pest control" OR "towing"'
+LOCAL_SIGNAL_SERVICE_TERMS='"plumber" OR "electrician" OR "locksmith" OR "access control" OR "HVAC" OR "heating" OR "air conditioning" OR "tree service" OR "landscaping" OR "junk removal" OR "handyman" OR "house cleaning" OR "garage door" OR "pest control" OR "towing" OR "mechanic" OR "auto repair"'
 LOCAL_SIGNAL_INTENT_TERMS='"looking for" OR "recommend" OR "recommendation" OR "need a" OR "need an" OR "anyone know" OR "seeking" OR "looking to hire"'
 
 def build_local_signal_query(market,domain):
@@ -402,6 +412,8 @@ def classify_public_opportunity_service(text):
       (("septic","wastewater pumping"),"rural_property"),
       (("junk removal","solid waste hauling","hauling services"),"junk_hauling"),
       (("garage door",),"garage_door"),
+      (("fleet maintenance","vehicle maintenance","automotive repair","auto repair","vehicle repair"),"auto_repair_shop"),
+      (("towing service","tow truck","roadside assistance"),"towing_roadside"),
       (("electrical service","electrical maintenance","electrician"),"electrical_service"),
       (("facility maintenance","facilities maintenance","building maintenance","job order contracting","citywide construction"),"facility_maintenance")
     )
@@ -2397,21 +2409,44 @@ async def admin_daily_brief(x_bmc_admin_key:str|None=Header(default=None)):
         pilot_review_count=await conn.fetchval("select count(*) from vendors where status='pilot_pending_review'")
         service_review_count=await conn.fetchval("select count(*) from exceptions where type='provider_service_change_review' and status='open'")
         opportunity_count=await conn.fetchval("select count(*) from public_opportunities where status in ('discovered','actionable')")
+        actionable_opportunity_count=await conn.fetchval("select count(*) from public_opportunities where status='actionable'")
+        discovered_opportunity_count=await conn.fetchval("select count(*) from public_opportunities where status='discovered'")
         local_signal_count=await conn.fetchval("select count(*) from local_demand_signals where status in ('discovered','useful')")
+        useful_local_signal_count=await conn.fetchval("select count(*) from local_demand_signals where status='useful'")
+        discovered_local_signal_count=await conn.fetchval("select count(*) from local_demand_signals where status='discovered'")
         human_task_count=await conn.fetchval("""select count(*) from tasks where owner='bmc_operator'
           and status in ('open','queued','assigned','in_progress')""")
         research_candidate_count=await conn.fetchval("select count(*) from research_candidates where status='discovered'")
-    has_attention=any(int(x or 0)>0 for x in (open_exception_count,pilot_review_count,service_review_count,human_task_count))
+    has_attention=any(int(x or 0)>0 for x in (
+      open_exception_count,pilot_review_count,service_review_count,human_task_count,
+      actionable_opportunity_count,useful_local_signal_count
+    ))
+    has_review_queue=any(int(x or 0)>0 for x in (
+      discovered_opportunity_count,discovered_local_signal_count
+    ))
+    headline=(
+      "There are decisions or exceptions that need you."
+      if has_attention else
+      "New research is ready for a quick review."
+      if has_review_queue else
+      "Nothing urgent needs you."
+    )
     return {
       "ok":True,
-      "headline":"Nothing urgent needs you." if not has_attention else "There are operational items to review.",
+      "needs_brett":has_attention,
+      "review_ready":has_review_queue,
+      "headline":headline,
       "counts":{
         "open_exceptions":int(open_exception_count or 0),
         "provider_approvals":int(pilot_review_count or 0),
         "service_change_reviews":int(service_review_count or 0),
         "human_operator_tasks":int(human_task_count or 0),
         "public_opportunities":int(opportunity_count or 0),
+        "public_opportunities_actionable":int(actionable_opportunity_count or 0),
+        "public_opportunities_discovered":int(discovered_opportunity_count or 0),
         "local_demand_signals":int(local_signal_count or 0),
+        "local_demand_signals_useful":int(useful_local_signal_count or 0),
+        "local_demand_signals_discovered":int(discovered_local_signal_count or 0),
         "research_candidates_waiting":int(research_candidate_count or 0)
       },
       "exceptions":[dict(r) for r in exceptions],
