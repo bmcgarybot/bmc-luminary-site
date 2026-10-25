@@ -1,0 +1,11 @@
+# Local OS/editor noise
+.DS_Store
+
+# BMC production/runtime secrets and generated state
+portfolio/automation/.env
+portfolio/automation/.env.ci
+portfolio/automation/backups/
+
+# Python runtime artifacts
+**/__pycache__/
+*.pyc
