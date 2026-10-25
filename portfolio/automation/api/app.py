@@ -71,6 +71,10 @@ RESEARCH_AUTO_PROMOTE_CONTACTS=os.getenv("RESEARCH_AUTO_PROMOTE_CONTACTS","true"
 SOURCE_NATIVE_RESEARCH_ENABLED=os.getenv("SOURCE_NATIVE_RESEARCH_ENABLED","true").lower()=="true"
 ADHS_FACILITIES_URL=os.getenv("ADHS_FACILITIES_URL","https://services1.arcgis.com/mpVYz37anSdrK4d8/ArcGIS/rest/services/All_State_Licensed_Facilities_in_Arizona/FeatureServer/18/query").strip()
 ADHS_SOURCE_NATIVE_PAGE_SIZE=max(10,min(500,env_int("ADHS_SOURCE_NATIVE_PAGE_SIZE",100)))
+CMS_SOURCE_NATIVE_ENABLED=os.getenv("CMS_SOURCE_NATIVE_ENABLED","true").lower()=="true"
+CMS_SOURCE_NATIVE_PAGE_SIZE=max(10,min(500,env_int("CMS_SOURCE_NATIVE_PAGE_SIZE",100)))
+CMS_HOSPITALS_URL=os.getenv("CMS_HOSPITALS_URL","https://data.cms.gov/provider-data/api/1/datastore/query/xubh-q36u/0").strip()
+CMS_NURSING_HOMES_URL=os.getenv("CMS_NURSING_HOMES_URL","https://data.cms.gov/provider-data/api/1/datastore/query/4pq5-n9py/0").strip()
 
 BUYER_RESEARCH_HINTS={
     "commercial_cleaning":'"hospital" OR "clinic" OR "dental" OR "therapy" OR "pharmacy" OR "grocery" OR "retail" OR "insurance office" OR "school" OR "church" OR "hotel" OR "apartment" OR "restaurant"',
@@ -123,6 +127,24 @@ ADHS_FACILITY_CORE_SERVICES=(
 ADHS_SOURCE_KEY="adhs_facilities_arcgis"
 ADHS_SOURCE_NAME="Arizona Department of Health Services Licensed Facilities"
 ADHS_LAYER_PAGE="https://services1.arcgis.com/mpVYz37anSdrK4d8/ArcGIS/rest/services/All_State_Licensed_Facilities_in_Arizona/FeatureServer/18"
+CMS_SOURCE_DATASETS=(
+    {
+      "source_key":"cms_hospitals",
+      "source_name":"CMS Hospital General Information",
+      "dataset_id":"xubh-q36u",
+      "dataset_page":"https://data.cms.gov/provider-data/dataset/xubh-q36u",
+      "url":CMS_HOSPITALS_URL,
+      "kind":"hospital"
+    },
+    {
+      "source_key":"cms_nursing_homes",
+      "source_name":"CMS Nursing Home Provider Information",
+      "dataset_id":"4pq5-n9py",
+      "dataset_page":"https://data.cms.gov/provider-data/dataset/4pq5-n9py",
+      "url":CMS_NURSING_HOMES_URL,
+      "kind":"nursing_home"
+    }
+)
 
 ROC_RESEARCH_SERVICES={
     "electrical_service","hvac_heat","backflow_plumbing","landscaping",
@@ -645,6 +667,16 @@ def adhs_facility_record_url(attrs):
       "where":where,"outFields":"*","returnGeometry":"false","f":"json"
     })
 
+def merge_source_evidence(existing,source_key,evidence):
+    current=json_dict(existing)
+    sources=json_dict(current.get("sources"))
+    sources[clean(source_key)]=evidence
+    merged=dict(current)
+    merged.update(evidence)
+    merged["sources"]=sources
+    merged["source_key"]=clean(source_key)
+    return merged
+
 async def fetch_adhs_facility_page(market,cursor):
     place=clean(market).upper().replace("'","''")
     where=f"OPERATION_STATUS='ACTIVE' AND (UPPER(N_CITY)='{place}' OR UPPER(CITY)='{place}')"
@@ -660,6 +692,74 @@ async def fetch_adhs_facility_page(market,cursor):
     if raw.get("error"):
         raise RuntimeError("ADHS ArcGIS error: "+clean(raw["error"])[:400])
     return raw
+
+async def fetch_cms_provider_page(source,market,cursor):
+    params={
+      "offset":max(0,int(cursor or 0)),
+      "limit":CMS_SOURCE_NATIVE_PAGE_SIZE,
+      "conditions[0][property]":"state",
+      "conditions[0][value]":"AZ",
+      "conditions[0][operator]":"=",
+      "conditions[1][property]":"citytown",
+      "conditions[1][value]":clean(market).upper(),
+      "conditions[1][operator]":"="
+    }
+    raw=await fetch_json_url(source["url"],params)
+    if not isinstance(raw,dict):
+        raise RuntimeError("CMS Provider Data returned a non-object response")
+    if raw.get("error") or raw.get("errors"):
+        raise RuntimeError("CMS Provider Data error: "+clean(raw.get("error") or raw.get("errors"))[:400])
+    results=raw.get("results")
+    if not isinstance(results,list):
+        raise RuntimeError("CMS Provider Data response did not include a results list")
+    return raw
+
+def cms_buyer_record(source,row,market):
+    kind=source["kind"]
+    if kind=="hospital":
+        identity=clean(row.get("facility_id"))
+        name=clean(row.get("facility_name"))
+        address=clean(row.get("address"))
+        city=clean(row.get("citytown")) or market
+        zip_code=clean(row.get("zip_code"))
+        county=clean(row.get("countyparish"))
+        phone=clean(row.get("telephone_number"))
+        facility_type=clean(row.get("hospital_type")) or "Hospital"
+        ownership=clean(row.get("hospital_ownership"))
+        processing_date=None
+    else:
+        identity=clean(row.get("cms_certification_number_ccn"))
+        name=clean(row.get("provider_name"))
+        address=clean(row.get("provider_address"))
+        city=clean(row.get("citytown")) or market
+        zip_code=clean(row.get("zip_code"))
+        county=clean(row.get("countyparish"))
+        phone=clean(row.get("telephone_number"))
+        facility_type=clean(row.get("provider_type")) or "Nursing Home"
+        ownership=clean(row.get("ownership_type"))
+        processing_date=clean(row.get("processing_date")) or None
+    if not identity or not name:
+        return None
+    evidence={
+      "source_key":source["source_key"],
+      "source_name":source["source_name"],
+      "dataset_id":source["dataset_id"],
+      "dataset_page":source["dataset_page"],
+      "provider_id":identity,
+      "facility_type":facility_type,
+      "ownership":ownership or None,
+      "address":address or None,
+      "city":city or None,
+      "zip_code":zip_code or None,
+      "county":county or None,
+      "processing_date":processing_date,
+      "general_reference_only":True,
+      "current_organization_contact_requires_verification":True
+    }
+    return {
+      "identity":identity,"name":name,"phone":phone,"facility_type":facility_type,
+      "evidence":evidence,"source_url":source["dataset_page"]
+    }
 
 async def next_vendor(conn,lead_id,market,service_key):
     return await conn.fetchrow("""
