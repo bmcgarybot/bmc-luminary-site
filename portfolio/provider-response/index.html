@@ -1,13 +1,55 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Respond to BMC Service Request</title><meta name="robots" content="noindex,nofollow"><meta name="bmc-webhook" content="REPLACE_ME"><link rel="stylesheet" href="../assets/core.css"></head><body>
-<nav class="nav"><div class="wrap nav-in"><a class="brand" href="../">BMC Service Portfolio</a></div></nav>
-<header class="hero"><div class="wrap"><div class="eyebrow">Provider response</div><h1>Accept or decline this request.</h1><p>This secure link identifies the request and your provider record. Accept only if the job fits your territory and current capacity.</p></div></header>
-<section class="section"><div class="wrap form-shell"><div class="form-copy"><span class="kicker">Request response</span><h2>Choose an action.</h2><p class="section-lead">BMC records your response so declined or expired requests can be rerouted quickly.</p></div>
-<form class="form" data-bmc-form data-form-type="vendor_response" data-email="contact@bmcluminaryventures.com" data-subject="Vendor response">
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Can You Take This Job? | BMC Service Network</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="../assets/core.css">
+</head><body class="workflow-page">
+<nav class="nav"><div class="wrap nav-in"><a class="brand" href="../">BMC Service Network</a></div></nav>
+
+<header class="hero"><div class="wrap">
+<div class="eyebrow">New customer request</div>
+<h1>Can you take this job?</h1>
+<p>Tell us yes or no. If you accept, we’ll immediately send you the customer’s contact details.</p>
+</div></header>
+
+<section class="section"><div class="workflow-shell">
+<div class="workflow-card">
+<h2>Your response</h2>
+<p>This should take less than a minute.</p>
+
+<div class="workflow-note"><div><strong>No obligation.</strong> Passing on a request does not hurt your account. Only accept work that fits your service area and schedule.</div></div>
+
+<form class="form simple-choices" data-bmc-form data-form-type="vendor_response" data-subject="Provider response">
 <input class="hidden" name="website" tabindex="-1" autocomplete="off">
-<input type="hidden" name="lead_id" data-query="lead_id"><input type="hidden" name="vendor_id" data-query="vendor_id"><input type="hidden" name="token" data-query="token">
-<div class="field"><label>Response</label><select name="response" required><option value="">Choose</option><option value="accept">Accept request</option><option value="decline">Decline request</option></select></div>
-<div class="field"><label>Decline reason / notes</label><textarea name="notes" placeholder="Outside territory, schedule full, job too small, unsupported equipment, etc."></textarea></div>
-<div class="field"><label>Earliest contact / service timing</label><input name="availability" placeholder="Today after 3, tomorrow morning, etc."></div>
-<div class="notice" data-form-notice></div><div class="actions"><button class="btn btn-primary" type="submit" data-label="Submit response">Submit response</button></div>
-</form></div></section><footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>Provider workflow</span></div></footer><script src="../assets/core.js?v=e2e-provider-2"></script>
-<script>const q=new URLSearchParams(location.search);document.querySelectorAll('[data-query]').forEach(e=>e.value=q.get(e.dataset.query)||'');</script></body></html>
+<input type="hidden" name="lead_id" data-query="lead_id">
+<input type="hidden" name="vendor_id" data-query="vendor_id">
+<input type="hidden" name="token" data-query="token">
+
+<div class="field">
+<label for="response">Can you take this request?</label>
+<select id="response" name="response" required>
+<option value="">Choose one</option>
+<option value="accept">Yes — send me the customer details</option>
+<option value="decline">No — pass this one to someone else</option>
+</select>
+</div>
+
+<div class="field">
+<label for="availability">When could you contact the customer? <span class="muted">(optional)</span></label>
+<input id="availability" name="availability" placeholder="Example: This afternoon or tomorrow morning">
+</div>
+
+<div class="field">
+<label for="notes">Anything we should know? <span class="muted">(optional)</span></label>
+<textarea id="notes" name="notes" placeholder="If you are passing, you can tell us why: too far away, schedule full, job too small, etc."></textarea>
+</div>
+
+<div class="notice" data-form-notice></div>
+<div class="actions"><button class="btn btn-primary" type="submit" data-label="Send my response">Send my response</button></div>
+</form>
+</div></div></section>
+
+<footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>BMC Service Network</span></div></footer>
+<script src="../assets/core.js?v=workflow-3"></script>
+<script>const q=new URLSearchParams(location.search);document.querySelectorAll('[data-query]').forEach(e=>e.value=q.get(e.dataset.query)||'');</script>
+</body></html>
