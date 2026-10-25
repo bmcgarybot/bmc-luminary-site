@@ -5,6 +5,20 @@ from email.utils import parseaddr
 import asyncpg
 import aiosmtplib
 from fastapi import FastAPI, Request, Header, HTTPException
+
+def env_int(name,default):
+    raw=os.getenv(name)
+    try:
+        return int(raw) if raw is not None and str(raw).strip()!="" else int(default)
+    except (TypeError,ValueError):
+        return int(default)
+
+def env_float(name,default):
+    raw=os.getenv(name)
+    try:
+        return float(raw) if raw is not None and str(raw).strip()!="" else float(default)
+    except (TypeError,ValueError):
+        return float(default)
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 
@@ -13,29 +27,29 @@ PUBLIC_SITE_URL=os.getenv("PUBLIC_SITE_URL","https://bmcservicenetwork.com").rst
 WEBHOOK_URL=os.getenv("WEBHOOK_URL","").strip()
 CLOUDFLARE_TUNNEL_TOKEN=os.getenv("CLOUDFLARE_TUNNEL_TOKEN","").strip()
 ADMIN_KEY=os.getenv("BMC_ADMIN_KEY","")
-OFFER_HOURS=int(os.getenv("OFFER_HOURS","2"))
+OFFER_HOURS=env_int("OFFER_HOURS",2)
 SMTP_HOST=os.getenv("SMTP_HOST","")
-SMTP_PORT=int(os.getenv("SMTP_PORT","587"))
+SMTP_PORT=env_int("SMTP_PORT",587)
 SMTP_USER=os.getenv("SMTP_USER","")
 SMTP_PASSWORD=os.getenv("SMTP_PASSWORD","")
 SMTP_FROM=os.getenv("SMTP_FROM",SMTP_USER or "contact@bmcservicenetwork.com")
 SMTP_STARTTLS=os.getenv("SMTP_STARTTLS","true").lower()=="true"
 SMTP_DRY_RUN=os.getenv("SMTP_DRY_RUN","false").lower()=="true"
 OUTREACH_ENABLED=os.getenv("OUTREACH_ENABLED","false").lower()=="true"
-OUTREACH_DAILY_LIMIT=int(os.getenv("OUTREACH_DAILY_LIMIT","25"))
+OUTREACH_DAILY_LIMIT=env_int("OUTREACH_DAILY_LIMIT",25)
 OUTREACH_WAVE=os.getenv("OUTREACH_WAVE","pilot1").strip() or "pilot1"
 BUYER_OUTREACH_ENABLED=os.getenv("BUYER_OUTREACH_ENABLED","false").lower()=="true"
-BUYER_OUTREACH_DAILY_LIMIT=int(os.getenv("BUYER_OUTREACH_DAILY_LIMIT","15"))
+BUYER_OUTREACH_DAILY_LIMIT=env_int("BUYER_OUTREACH_DAILY_LIMIT",15)
 BUYER_OUTREACH_WAVE=os.getenv("BUYER_OUTREACH_WAVE","pilot1").strip() or "pilot1"
 GROWTH_OUTREACH_ENABLED=os.getenv("GROWTH_OUTREACH_ENABLED","false").lower()=="true"
-GROWTH_OUTREACH_DAILY_LIMIT=int(os.getenv("GROWTH_OUTREACH_DAILY_LIMIT","10"))
+GROWTH_OUTREACH_DAILY_LIMIT=env_int("GROWTH_OUTREACH_DAILY_LIMIT",10)
 GROWTH_OUTREACH_WAVE=os.getenv("GROWTH_OUTREACH_WAVE","growth1").strip() or "growth1"
 BUSINESS_POSTAL_ADDRESS=os.getenv("BUSINESS_POSTAL_ADDRESS","").strip()
 PARTNER_URL=f"{PUBLIC_SITE_URL}/providers/"
 PILOT_ACTIVATION_URL=f"{PUBLIC_SITE_URL}/provider-pilot-activate/"
 IMAP_ENABLED=os.getenv("IMAP_ENABLED","false").lower()=="true"
 IMAP_HOST=os.getenv("IMAP_HOST","")
-IMAP_PORT=int(os.getenv("IMAP_PORT","993"))
+IMAP_PORT=env_int("IMAP_PORT",993)
 IMAP_USER=os.getenv("IMAP_USER","")
 IMAP_PASSWORD=os.getenv("IMAP_PASSWORD","")
 IMAP_FOLDER=os.getenv("IMAP_FOLDER","INBOX")
@@ -44,14 +58,14 @@ LOCAL_AI_MODEL=os.getenv("LOCAL_AI_MODEL","qwen3:1.7b")
 LOCAL_AI_ENABLED=os.getenv("LOCAL_AI_ENABLED","true").lower()=="true"
 STRIPE_WEBHOOK_SECRET=os.getenv("STRIPE_WEBHOOK_SECRET","").strip()
 AGENT_ENABLED=os.getenv("AGENT_ENABLED","true").lower()=="true"
-AGENT_MIN_CONFIDENCE=float(os.getenv("AGENT_MIN_CONFIDENCE","0.82"))
-AGENT_CYCLE_LIMIT=max(1,int(os.getenv("AGENT_CYCLE_LIMIT","10")))
-AGENT_RESEARCH_TASK_LIMIT=max(0,int(os.getenv("AGENT_RESEARCH_TASK_LIMIT","5")))
+AGENT_MIN_CONFIDENCE=env_float("AGENT_MIN_CONFIDENCE",0.82)
+AGENT_CYCLE_LIMIT=max(1,env_int("AGENT_CYCLE_LIMIT",10))
+AGENT_RESEARCH_TASK_LIMIT=max(0,env_int("AGENT_RESEARCH_TASK_LIMIT",5))
 AGENT_ALLOW_EXTERNAL_ACTIONS=os.getenv("AGENT_ALLOW_EXTERNAL_ACTIONS","false").lower()=="true"
 RESEARCH_SEARCH_ENABLED=os.getenv("RESEARCH_SEARCH_ENABLED","true").lower()=="true"
 RESEARCH_SEARCH_URL=os.getenv("RESEARCH_SEARCH_URL","http://searxng:8080/search").strip()
-RESEARCH_SEARCH_RESULTS=max(1,min(20,int(os.getenv("RESEARCH_SEARCH_RESULTS","8"))))
-RESEARCH_WORKER_BATCH=max(1,min(5,int(os.getenv("RESEARCH_WORKER_BATCH","1"))))
+RESEARCH_SEARCH_RESULTS=max(1,min(20,env_int("RESEARCH_SEARCH_RESULTS",8)))
+RESEARCH_WORKER_BATCH=max(1,min(5,env_int("RESEARCH_WORKER_BATCH",1)))
 
 app=FastAPI(title="BMC Portfolio Ops API",version="0.1.0")
 app.add_middleware(CORSMiddleware,allow_origins=[
