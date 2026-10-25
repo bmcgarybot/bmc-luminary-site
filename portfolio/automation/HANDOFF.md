@@ -1237,3 +1237,92 @@ Unchanged:
 - no automatic contact to individual local-demand posters.
 
 Public/read-only research and opportunity discovery may continue internally.
+
+
+## 23. AUTONOMY BUILD CHECKPOINT — 2026-10-25
+
+This section continues Section 22 and records the autonomy/research work completed afterward. The operating target remains **2–3 short owner checks per day, ideally under 10 minutes each**. Outreach gates remain unchanged and OFF.
+
+### Current implementation direction
+
+The private operator experience is being reduced to decisions and exceptions rather than raw research administration.
+
+Implemented since Section 22:
+
+- **Needs Brett triage now separates actual decisions from review-only research.**
+  - `needs_brett` covers real exceptions, provider approvals, provider service-change approvals, operator tasks, actionable public opportunities and useful local-demand signals.
+  - `review_ready` covers newly discovered contract/local-demand research that is ready for a quick review.
+  - The private UI no longer dumps up to 50 public contracts plus 50 local-demand records when Brett clicks Needs Brett.
+  - Needs Brett now shows at most five public opportunities plus five local-demand signals; full lists remain available separately.
+
+- **Public procurement coverage expanded to 17 monitored source lanes.**
+  - Added Prescott Valley, Camp Verde, Kingman, Prescott Unified School District and Humboldt Unified School District.
+  - Existing city/county/state/federal lanes remain.
+  - Fleet/vehicle-maintenance opportunities can classify to `auto_repair_shop`; towing opportunities can classify to `towing_roadside`.
+  - This remains discovery/classification only. No bid may be submitted automatically.
+
+- **Public-index local-demand coverage expanded** to include access-control and traditional auto-repair language in addition to the existing trades.
+  - Search-indexed public signals only.
+  - No private-group login/scraping.
+  - No automatic contact to individual posters.
+
+- **Research review queues now age themselves.**
+  - Untouched discovered public opportunities expire after 30 days without a fresh sighting.
+  - Untouched discovered local-demand signals expire after 14 days.
+  - Items explicitly marked actionable/useful are preserved.
+
+- **Coverage research is now genuinely multi-pass instead of one-and-done.**
+  - Added configurable `RESEARCH_MAX_PASSES` with default 4.
+  - Each pass uses a different bounded query formulation.
+  - If a coverage gap remains after a pass and the max-pass limit is not reached, the backlog item automatically re-enters `queued`.
+  - The normal scheduler can therefore keep working the same gap over successive ~15-minute research cycles instead of stopping after the first search.
+  - CI proves a completed pass returns to the queue and is eligible for the next agent cycle while respecting the five-task concurrency cap.
+
+- **Human-approved research can now become an internal prospect with one click.**
+  - Private research UI has **Add as prospect**.
+  - A promoted vendor candidate becomes/reuses a `vendors` record with status `prospect` plus its service and market.
+  - A promoted buyer candidate becomes/reuses a `buyers` record with status `prospect` plus its likely service.
+  - Promotion updates research-gap counts.
+  - Promotion never activates a provider, never creates outreach, and never contacts anyone.
+  - CI explicitly verifies prospect-only status and zero outreach.
+
+- **Public contact details visible directly in search-result snippets are now retained.**
+  - Email/phone visible in the public search snippet are stored in research-candidate evidence.
+  - When Brett promotes that candidate, missing prospect email/phone fields are populated from that evidence.
+  - This does not fetch the candidate website or bypass any access control.
+  - Existing non-empty prospect contact data is not overwritten.
+  - A deterministic CI fixture and end-to-end assertions were added; the newest CI run was still executing when this checkpoint was written.
+
+### Key commits after Section 22
+
+- `89af796763eb1a52ee3eee2158aabb4df172ee94` — improved Needs Brett triage and expanded procurement coverage.
+- `a15278d1d105ac56ad40f1bc22eaae58e11078ae` — CI coverage for procurement/owner-brief changes; green.
+- `9bbc0d3d2f44e8e383f54e6fbec410af847ce328` — shortened Needs Brett review queue; green.
+- `39ae6848d3c8565973ee6297dbcc94f20a764770` + `2e91c6e8fab5242a1511d0cc0b6dbaa57aa82e89` — stale research aging + CI; green.
+- `e1c212d86b355125cb2f9e9161eaf5842fa8db8c` — genuine bounded multi-pass research.
+- `c662ab703058c21b769eaacc544c081ca4dc7303`, `130cf775bc3d8f699f9b774856ce35f6b21902b9`, `82b0950cb77107c06044e83e7945f71b6c9bfa12` — continuous-research CI/config wiring; green.
+- `b05d04eedcd1b6c1f3892964d98b636bfffa25cc` + `1ce3c22b62250d5875a8ca5494ee919fa82ecaa6` — safe one-click prospect promotion + CI; CI run `40218260057` green.
+- `ae6fd17e7d49d3c783312c27ed804f62fe705705`, `4d195551b0c85c472392bae55e38ceb138f96a11`, `7b08768ab49278d9180f6d5ba532aa89b6f5f03f` — public snippet contact capture, deterministic fixture and CI assertions; latest CI pending at checkpoint time.
+
+### Important newly identified next gap
+
+The `research_sources` authoritative-source registry is seeded with sources such as Arizona contractor/licensing and regulated-facility directories, but as of this checkpoint the runtime search path does **not yet consume that registry**. The next autonomy improvement should wire those sources selectively into relevant research passes rather than treating the registry as decorative data.
+
+Do this carefully:
+- use licensed-trade registries only for service categories they actually fit;
+- use medical/food/facility registries for relevant buyer discovery;
+- rotate authoritative queries into bounded passes rather than replacing broad discovery completely;
+- do not treat entity/license-directory presence as provider activation or credential approval.
+
+### Production status remains unchanged
+
+Current GitHub master is still ahead of the last verified VPS deployment.
+
+Do not mark the 54-service/current autonomy backend as production-deployed until the VPS safe-deploy block is run and production smoke tests pass.
+
+Outreach remains OFF:
+- vendor outreach OFF;
+- buyer outreach OFF;
+- Growth Pack outreach OFF;
+- no automatic procurement bids;
+- no automatic contact to individual public-demand posters.
