@@ -81,7 +81,11 @@
         "landscaping",
         "junk_hauling",
         "towing_roadside",
-        "facility_maintenance"
+        "facility_maintenance",
+        "electrical_service",
+        "handyman_repairs",
+        "residential_cleaning",
+        "realtor_listing_prep"
       ],
       "tier2": [
         "pet_waste",
@@ -89,7 +93,8 @@
         "commercial_cleaning",
         "pressure_washing",
         "window_cleaning",
-        "vehicle_services"
+        "vehicle_services",
+        "home_staging"
       ],
       "notes": "Forested WUI, monsoon/storm debris, established residential market and regional service hub."
     },
@@ -99,7 +104,10 @@
         "junk_hauling",
         "pet_waste",
         "towing_roadside",
-        "facility_maintenance"
+        "facility_maintenance",
+        "electrical_service",
+        "handyman_repairs",
+        "residential_cleaning"
       ],
       "tier2": [
         "tree_service",
@@ -107,7 +115,9 @@
         "commercial_cleaning",
         "pressure_washing",
         "vehicle_services",
-        "mobile_tire_battery"
+        "mobile_tire_battery",
+        "home_staging",
+        "realtor_listing_prep"
       ],
       "notes": "Fast-growing residential market with shared Prescott vendor coverage."
     },
@@ -116,13 +126,17 @@
         "rural_property",
         "junk_hauling",
         "landscaping",
-        "facility_maintenance"
+        "facility_maintenance",
+        "handyman_repairs"
       ],
       "tier2": [
         "tree_service",
         "towing_roadside",
         "commercial_cleaning",
-        "mobile_tire_battery"
+        "mobile_tire_battery",
+        "electrical_service",
+        "residential_cleaning",
+        "realtor_listing_prep"
       ],
       "notes": "Rural parcels and acreage make infrastructure, earthwork and hauling especially relevant."
     },
@@ -138,7 +152,11 @@
         "pet_waste",
         "facility_maintenance",
         "commercial_cleaning",
-        "turnover_cleaning"
+        "turnover_cleaning",
+        "electrical_service",
+        "handyman_repairs",
+        "residential_cleaning",
+        "realtor_listing_prep"
       ],
       "notes": "Verde Valley mix of residential, rural and tourism-linked properties."
     },
@@ -152,7 +170,10 @@
       "tier2": [
         "tree_service",
         "towing_roadside",
-        "commercial_cleaning"
+        "commercial_cleaning",
+        "electrical_service",
+        "handyman_repairs",
+        "residential_cleaning"
       ],
       "notes": "Town guidance flags septic, wells and soil/geotechnical concerns; rural property work is a natural wedge."
     },
@@ -161,14 +182,19 @@
         "tree_service",
         "landscaping",
         "str_property_care",
-        "facility_maintenance"
+        "facility_maintenance",
+        "residential_cleaning",
+        "realtor_listing_prep"
       ],
       "tier2": [
         "junk_hauling",
         "pool_desert_property",
         "window_cleaning",
         "turnover_cleaning",
-        "commercial_cleaning"
+        "commercial_cleaning",
+        "handyman_repairs",
+        "electrical_service",
+        "home_staging"
       ],
       "notes": "Wildfire exposure plus tourism and STR property-care demand."
     },
@@ -185,7 +211,11 @@
         "landscaping",
         "commercial_cleaning",
         "window_cleaning",
-        "vehicle_services"
+        "vehicle_services",
+        "electrical_service",
+        "handyman_repairs",
+        "residential_cleaning",
+        "realtor_listing_prep"
       ],
       "notes": "High-elevation forest market, snow and I-40/I-17 traffic."
     },
@@ -234,7 +264,12 @@
         "vehicle_services",
         "commercial_cleaning",
         "mobile_detailing",
-        "auto_glass"
+        "auto_glass",
+        "electrical_service",
+        "handyman_repairs",
+        "residential_cleaning",
+        "home_staging",
+        "realtor_listing_prep"
       ],
       "notes": "Extreme heat, pool-heavy metro and large service volume."
     },
@@ -243,7 +278,8 @@
         "pool_desert_property",
         "landscaping",
         "str_property_care",
-        "facility_maintenance"
+        "facility_maintenance",
+        "realtor_listing_prep"
       ],
       "tier2": [
         "mobile_detailing",
@@ -251,7 +287,11 @@
         "pest_control",
         "commercial_cleaning",
         "auto_glass",
-        "turnover_cleaning"
+        "turnover_cleaning",
+        "electrical_service",
+        "handyman_repairs",
+        "residential_cleaning",
+        "home_staging"
       ],
       "notes": "Pools, STRs and premium property care support higher-value recurring services."
     },
@@ -269,7 +309,12 @@
         "rural_property",
         "commercial_cleaning",
         "mobile_detailing",
-        "auto_glass"
+        "auto_glass",
+        "electrical_service",
+        "handyman_repairs",
+        "residential_cleaning",
+        "home_staging",
+        "realtor_listing_prep"
       ],
       "notes": "Extreme heat and desert property-service profile."
     }
