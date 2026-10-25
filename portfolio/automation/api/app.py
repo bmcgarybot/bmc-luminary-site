@@ -85,7 +85,8 @@ BUYER_RESEARCH_HINTS={
     "hood_exhaust":'"restaurant" OR "hotel" OR "hospital" OR "school" OR "senior living" OR "institutional kitchen"',
     "ice_machine":'"restaurant" OR "hotel" OR "hospital" OR "school" OR "senior living" OR "grocery" OR "convenience store"',
     "linen_laundry":'"hotel" OR "hospital" OR "senior living" OR "restaurant" OR "spa" OR "clinic" OR "public facility"',
-    "facility_maintenance":'"hospital" OR "clinic" OR "dental" OR "therapy" OR "pharmacy" OR "grocery" OR "retail" OR "insurance office" OR "school" OR "church" OR "hotel" OR "apartment" OR "restaurant" OR "warehouse" OR "public facility"'
+    "facility_maintenance":'"hospital" OR "clinic" OR "dental" OR "therapy" OR "pharmacy" OR "grocery" OR "retail" OR "insurance office" OR "school" OR "church" OR "hotel" OR "apartment" OR "restaurant" OR "warehouse" OR "public facility"',
+    "auto_repair_shop":'"fleet" OR "delivery company" OR "rental car" OR "service company" OR "contractor fleet" OR "property maintenance" OR "rideshare fleet" OR "auto dealer"'
 }
 
 MARKET_RESEARCH_CONTEXT={
@@ -160,7 +161,8 @@ def classify_local_signal_service(text):
       (("house cleaning","home cleaning","cleaner","maid service"),"residential_cleaning"),
       (("garage door","garage opener"),"garage_door"),
       (("pest control","exterminator","termites","rodent"),"pest_control"),
-      (("tow truck","towing","roadside assistance"),"towing_roadside")
+      (("tow truck","towing","roadside assistance"),"towing_roadside"),
+      (("mechanic","auto repair","brake repair","check engine","transmission","oil change","alignment"),"auto_repair_shop")
     )
     for needles,key in rules:
         if any(n in t for n in needles):
@@ -269,7 +271,8 @@ def classify_with_rules(text):
       ("towing_roadside",["tow truck","towing","roadside","lockout","jump start"]),
       ("mobile_tire_battery",["mobile tire","flat tire","battery replacement","car battery"]),
       ("auto_glass",["windshield","auto glass"]),
-      ("vehicle_services",["mobile mechanic","car repair","vehicle repair","fleet repair"]),
+      ("vehicle_services",["mobile mechanic","mechanic comes to me","mobile car repair","on site mechanic","fleet mobile repair"]),
+      ("auto_repair_shop",["auto repair","auto shop","repair shop","car repair","mechanic shop","brake repair","brakes","check engine","diagnostic","oil change","tune up","transmission","alignment","suspension","steering repair","exhaust repair","alternator","starter","engine repair","radiator","overheating"]),
       ("pet_waste",["pet waste","dog poop","pooper scooper"]),
       ("pet_sitting",["dog walking","dog walker","pet sitting","pet sitter"]),
       ("mobile_pet_grooming",["pet grooming","dog grooming","mobile groomer"]),
@@ -935,7 +938,8 @@ RELATED_SERVICE_KEYS={
   "growth_pack":["competitor_intel","market_expansion"],
   "electrical_service":["handyman_repairs","facility_maintenance"],
   "hvac_heat":["handyman_repairs","facility_maintenance"],
-  "vehicle_services":["towing_roadside","mobile_tire_battery","auto_glass"],
+  "vehicle_services":["auto_repair_shop","towing_roadside","mobile_tire_battery","auto_glass"],
+  "auto_repair_shop":["vehicle_services","towing_roadside","mobile_tire_battery","auto_glass"],
   "pet_sitting":["mobile_pet_grooming","pet_waste"]
 }
 
