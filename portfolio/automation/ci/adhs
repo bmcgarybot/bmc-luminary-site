@@ -1,0 +1,72 @@
+{
+  "objectIdFieldName": "OBJECTID",
+  "exceededTransferLimit": false,
+  "features": [
+    {
+      "attributes": {
+        "OBJECTID": 101,
+        "RUN_DATE": 1760918400000,
+        "FACID": "FAC-PRES-001",
+        "FACILITY_NAME": "CI Prescott Regional Medical Center",
+        "LICENSE_NUMBER": "ADHS-CI-001",
+        "Telephone": "928-555-0201",
+        "TYPE": "HOSPITAL",
+        "SUBTYPE": "GENERAL HOSPITAL",
+        "Category": "MEDICAL FACILITY",
+        "ADDRESS": "100 Health Way",
+        "CITY": "PRESCOTT",
+        "ZIP": 86301,
+        "COUNTY": "YAVAPAI",
+        "OPERATION_STATUS": "ACTIVE",
+        "N_ADDRESS": "100 Health Way",
+        "N_CITY": "PRESCOTT",
+        "N_COUNTY": "YAVAPAI",
+        "N_FULLADDR": "100 Health Way, Prescott, AZ 86301",
+        "N_ZIP": 86301
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID": 102,
+        "RUN_DATE": 1760918400000,
+        "FACID": "FAC-PRES-002",
+        "FACILITY_NAME": "CI Pine Behavioral Residence",
+        "LICENSE_NUMBER": "ADHS-CI-002",
+        "Telephone": "928-555-0202",
+        "TYPE": "RESIDENTIAL FACILITY",
+        "SUBTYPE": "BEHAVIORAL HEALTH",
+        "Category": "RESIDENTIAL FACILITY",
+        "ADDRESS": "200 Care Lane",
+        "CITY": "PRESCOTT",
+        "ZIP": 86303,
+        "COUNTY": "YAVAPAI",
+        "OPERATION_STATUS": "ACTIVE",
+        "N_ADDRESS": "200 Care Lane",
+        "N_CITY": "PRESCOTT",
+        "N_COUNTY": "YAVAPAI",
+        "N_FULLADDR": "200 Care Lane, Prescott, AZ 86303",
+        "N_ZIP": 86303
+      }
+    },
+    {
+      "attributes": {
+        "OBJECTID": 103,
+        "RUN_DATE": 1760918400000,
+        "FACID": "FAC-PRES-003",
+        "FACILITY_NAME": "CI Closed Facility",
+        "LICENSE_NUMBER": "ADHS-CI-003",
+        "Telephone": "928-555-0203",
+        "TYPE": "MEDICAL FACILITY",
+        "ADDRESS": "300 Closed Road",
+        "CITY": "PRESCOTT",
+        "ZIP": 86301,
+        "COUNTY": "YAVAPAI",
+        "OPERATION_STATUS": "INACTIVE",
+        "N_CITY": "PRESCOTT",
+        "N_COUNTY": "YAVAPAI",
+        "N_FULLADDR": "300 Closed Road, Prescott, AZ 86301",
+        "N_ZIP": 86301
+      }
+    }
+  ]
+}
