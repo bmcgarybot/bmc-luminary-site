@@ -108,6 +108,7 @@ jobs:
           sed -i 's#^BMC_ADMIN_KEY=.*#BMC_ADMIN_KEY=ci_admin_key#' .env.ci
           sed -i 's#^RESEARCH_SEARCH_URL=.*#RESEARCH_SEARCH_URL=http://research-mock:8080/search#' .env.ci
           sed -i 's#^SOURCE_NATIVE_MARKETS=.*#SOURCE_NATIVE_MARKETS=Prescott#' .env.ci
+          sed -i 's#^SOURCE_NATIVE_CHECK_BATCH=.*#SOURCE_NATIVE_CHECK_BATCH=5#' .env.ci
           sed -i 's#^ADHS_FACILITIES_URL=.*#ADHS_FACILITIES_URL=http://research-mock:8080/adhs#' .env.ci
           sed -i 's#^ADHS_SOURCE_NATIVE_PAGE_SIZE=.*#ADHS_SOURCE_NATIVE_PAGE_SIZE=10#' .env.ci
           sed -i 's#^CMS_SOURCE_NATIVE_ENABLED=.*#CMS_SOURCE_NATIVE_ENABLED=true#' .env.ci
@@ -417,6 +418,7 @@ jobs:
           assert data["source_native_research"]["adhs_page_size"] == 10
           assert data["source_native_research"]["cms_enabled"] is True
           assert data["source_native_research"]["cms_page_size"] == 10
+          assert data["source_native_research"]["lane_batch_limit"] == 5
           assert data["source_native_research"]["source_count"] == 5
           assert data["source_native_research"]["market_count"] == 1
           assert data["last_run"]["status"] == "completed"
@@ -453,6 +455,13 @@ jobs:
             update source_native_state set created_at=now()
             where source_key='cms_hospice' and market='Prescott';"
 
+          # Add one healthy extra expected lane so the five-lane batch must leave it for a later rotation.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            insert into source_native_state(source_key,market,last_run_at,last_success_at,metadata)
+            values('cms_hospice','Phoenix',now(),now(),'{"expected":true}'::jsonb)
+            on conflict(source_key,market) do update set
+              last_run_at=now(),last_success_at=now(),metadata='{ "expected": true }'::jsonb;"
+
           # Prove source-native healthcare research creates only internal buyer prospects and is idempotent.
           curl -fsS -X POST http://127.0.0.1:8000/api/process-source-native-research \
             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_source_native_1.json
@@ -465,6 +474,9 @@ jobs:
           assert data["sources"] == ["adhs_facilities_arcgis","cms_hospitals","cms_nursing_homes","cms_home_health","cms_hospice"], data
           assert data["markets_checked"] == 1, data
           assert data["source_checks"] == 5, data
+          assert data["lanes_selected"] == 5, data
+          assert data["lanes_remaining"] == 1, data
+          assert data["lane_batch_limit"] == 5, data
           assert data["records_seen"] == 6, data
           assert data["prospects_created"] == 5, data
           assert data["prospects_updated"] == 1, data
@@ -480,6 +492,11 @@ jobs:
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from buyers where business_name='CI Prescott Regional Medical Center';")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='buyer' and entity_id in (select buyer_id from buyers where campaign='source_native_research');")" -eq 0
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_backlog rb where rb.market='Prescott' and rb.service_key='commercial_cleaning' and rb.side='buyer' and rb.current_count=(select count(*) from buyers b where b.market='Prescott' and 'commercial_cleaning'=any(string_to_array(coalesce(b.likely_services,''),'|')) and b.status<>'suppressed');")" -eq 1
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from source_native_state where source_key='cms_hospice' and market='Phoenix' and records_seen=0;")" -eq 1
+
+          # Remove the synthetic sixth lane; the second pass should now process all five real Prescott lanes again.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            delete from source_native_state where source_key='cms_hospice' and market='Phoenix';"
 
           curl -fsS -X POST http://127.0.0.1:8000/api/process-source-native-research \
             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_source_native_2.json
@@ -487,6 +504,8 @@ jobs:
           import json
           data=json.load(open("/tmp/bmc_source_native_2.json"))
           assert data["source_checks"] == 5, data
+          assert data["lanes_selected"] == 5, data
+          assert data["lanes_remaining"] == 0, data
           assert data["records_seen"] == 6, data
           assert data["prospects_created"] == 0, data
           assert data["prospects_updated"] == 6, data
