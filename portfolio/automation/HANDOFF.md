@@ -465,3 +465,11 @@ Runtime doctor is healthy with 0 core failures. Public site and Cloudflare Tunne
 - Private admin routes remained blocked publicly.
 - Runtime doctor reported 0 core failures.
 - BMC database backup timer remained scheduled.
+
+
+### Business email configured (2026-10-24)
+- Mailbox: `contact@bmcservicenetwork.com` on Namecheap Private Email.
+- SMTP authentication verified successfully against `mail.privateemail.com:587` with STARTTLS.
+- IMAP authentication and INBOX access verified successfully against `mail.privateemail.com:993` over SSL.
+- VPS `.env` updated through `configure-email.sh`; ops API recreated with live mail settings.
+- Runtime doctor now reports no SMTP or IMAP warnings. Remaining launch actions are provider activation, business postal address, and Stripe webhook/activation.
