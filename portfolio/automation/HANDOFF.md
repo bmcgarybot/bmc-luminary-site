@@ -6,6 +6,15 @@ This file is the starting point for the next conversation/thread. Read this befo
 
 ## 1. What BMC actually is
 
+### Public copy rule — authoritative
+
+Customer-facing copy must use plain, natural language and must not narrate BMC's internal architecture or strategy.
+
+Read:
+- `portfolio/automation/PUBLIC_COPY_STYLE.md`
+
+Target roughly 6th-8th grade reading level. Customer pages should say what the customer can do or get. Internal documents explain routing, taxonomy, fulfillment, monetization, automation, and other operator concepts.
+
 ### Problem-solver architecture — authoritative
 
 The umbrella experience is now organized around customer outcomes rather than a catalog:
