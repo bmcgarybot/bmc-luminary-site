@@ -1940,6 +1940,7 @@ async def agent_cycle(x_bmc_admin_key:str|None=Header(default=None)):
                   order by
                     case rb.market_priority when 'TIER1' then 0 when 'TIER2' then 1 when 'CORE' then 2 when 'INTERNAL' then 3 else 4 end,
                     case upper(rb.research_priority) when 'CRITICAL' then 0 when 'HIGH' then 1 when 'MEDIUM' then 2 when 'LOW' then 3 else 4 end,
+                    case when coalesce(rb.research_pass,0)>0 then 0 else 1 end,
                     rb.target_gap desc,rb.market,rb.service_key,rb.side
                   limit $1""",available)
             for gap in gaps:
