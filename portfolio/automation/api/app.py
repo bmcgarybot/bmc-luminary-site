@@ -116,7 +116,7 @@ MARKET_RESEARCH_CONTEXT={
 }
 ENVIRONMENT_SENSITIVE_SERVICES={"tree_service","landscaping","rural_property","snow_service","pool_desert_property","hvac_heat","pest_control","towing_roadside"}
 
-DEFAULT_SOURCE_NATIVE_MARKETS=("Prescott","Prescott Valley","Chino Valley","Camp Verde","Cottonwood","Sedona","Flagstaff","Winslow","Kingman","Phoenix","Scottsdale","Tucson")
+DEFAULT_SOURCE_NATIVE_MARKETS=("Prescott","Prescott Valley","Chino Valley","Dewey-Humboldt","Mayer","Cordes Lakes","Williamson Valley","Ash Fork","Seligman","Skull Valley","Camp Verde","Cottonwood","Sedona","Flagstaff","Winslow","Kingman","Golden Valley","Bullhead City","Phoenix","Scottsdale","Tucson")
 SOURCE_NATIVE_MARKETS=tuple(
     x.strip() for x in os.getenv("SOURCE_NATIVE_MARKETS",",".join(DEFAULT_SOURCE_NATIVE_MARKETS)).split(",")
     if x.strip()
