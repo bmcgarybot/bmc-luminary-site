@@ -1,0 +1,58 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Auto Repair Shop | BMC Service Network</title>
+<meta name="description" content="Find help for brakes, check-engine lights, diagnostics, maintenance, suspension, exhaust, and general auto repair.">
+<meta name="bmc-webhook" content="REPLACE_ME">
+<link rel="stylesheet" href="../assets/core.css?v=clarity-14">
+</head><body class="editorial-site service-page">
+<nav class="nav"><div class="wrap nav-in"><a class="brand" href="../services/">Auto Repair Shop</a><div class="nav-links"><a href="#request">Get repair help</a><a href="../vehicle-services/">Need a mobile mechanic?</a><a href="../services/">Other services</a></div></div></nav>
+
+<header class="customer-hero"><div class="wrap editorial-hero-grid">
+<div><div class="editorial-kicker">Auto repair</div><h1>Need a mechanic or repair shop?</h1>
+<p class="hero-sub">Tell us what the car is doing. We’ll help route the request toward a shop that handles that kind of work.</p>
+<div class="actions"><a class="btn btn-primary" href="#common">What needs fixing?</a><a class="btn btn-secondary" href="../vehicle-services/">I need mobile service</a></div>
+<div class="customer-proof"><span>General repair</span><span>Diagnostics & maintenance</span><span>You choose what fits</span></div></div>
+<div class="hero-photo"><img src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=1400&q=80" alt="Auto repair shop" width="1400" height="1000" fetchpriority="high"><div class="hero-photo-card"><small>Auto Repair Shop</small><strong>Shop-based repair, diagnostics, and maintenance</strong><span>Brakes, warning lights, suspension, exhaust, tune-ups, and more.</span></div></div>
+</div></header>
+
+<section class="editorial-section alt" id="common"><div class="wrap">
+<div class="editorial-intro"><div class="editorial-kicker">Start with the problem</div><h2>What sounds closest?</h2><p>Pick one, then add the car details and what you’ve noticed.</p></div>
+<div class="category-tiles" id="repair-choices">
+<button class="category-tile" type="button" data-repair="Brakes"><span class="tile-icon">01</span><strong>Brakes</strong><span>Squealing, grinding, vibration, pads, rotors, or brake warning lights.</span></button>
+<button class="category-tile" type="button" data-repair="Check engine / diagnostics"><span class="tile-icon">02</span><strong>Check engine / diagnostics</strong><span>Warning lights, rough running, stalling, misfires, or something just feels wrong.</span></button>
+<button class="category-tile" type="button" data-repair="Maintenance"><span class="tile-icon">03</span><strong>Maintenance</strong><span>Oil, fluids, filters, tune-ups, belts, hoses, or scheduled service.</span></button>
+<button class="category-tile" type="button" data-repair="Suspension / steering"><span class="tile-icon">04</span><strong>Suspension / steering</strong><span>Clunks, pulling, shaking, steering problems, shocks, struts, or alignment concerns.</span></button>
+<button class="category-tile" type="button" data-repair="Starting / charging"><span class="tile-icon">05</span><strong>Starting / charging</strong><span>Starter, alternator, battery/charging issues, or intermittent no-start problems.</span></button>
+<button class="category-tile" type="button" data-repair="Engine / transmission / exhaust"><span class="tile-icon">06</span><strong>Engine / transmission / exhaust</strong><span>Leaks, overheating, shifting issues, noises, exhaust, or larger mechanical work.</span></button>
+</div>
+</div></section>
+
+<section class="editorial-section" id="request"><div class="request-shell">
+<form class="request-card" data-bmc-form data-form-type="auto_repair_shop" data-subject="Auto repair request">
+<input class="hidden" name="website" tabindex="-1" autocomplete="off">
+<input type="hidden" name="repair_type" id="repair-type">
+<h2>Tell us about the vehicle.</h2><p class="lead" id="repair-confirm">A short description is enough to start.</p>
+<div class="row"><div class="field"><label>Year / make / model <span class="muted">(optional)</span></label><input name="vehicle" placeholder="2018 Toyota Camry"></div><div class="field"><label>Mileage <span class="muted">(optional)</span></label><input name="mileage" placeholder="82,000"></div></div>
+<div class="field"><label>What is happening?</label><textarea name="scope" required placeholder="Describe the noise, warning light, leak, vibration, maintenance needed, or other problem."></textarea></div>
+<div class="row"><div class="field"><label>City / area</label><select name="market" data-market-select required><option value="">Choose your city / area</option></select></div><div class="field"><label>When do you need help?</label><select name="timing"><option>ASAP</option><option>Within 7 days</option><option>Within 30 days</option><option>Just planning / getting a quote</option></select></div></div>
+<div class="row"><div class="field"><label>Your name</label><input name="contact_name" autocomplete="name" required></div><div class="field"><label>Email</label><input type="email" name="email" autocomplete="email" required></div></div>
+<div class="field"><label>Phone <span class="muted">(optional)</span></label><input type="tel" name="phone" autocomplete="tel"></div>
+<label class="check"><input type="checkbox" name="consent" value="yes" required><span>I’m asking BMC to help with this request and understand that my contact details may be shared with a participating provider if that provider accepts the job.</span></label>
+<div class="notice" data-form-notice></div><div class="actions"><button class="btn btn-primary" type="submit" data-label="Find repair help">Find repair help</button></div>
+</form></div></section>
+
+<footer><div class="wrap footer-in"><span>Auto Repair Shop · BMC Service Network</span><span><a class="provider-footer-link" href="../providers/">I provide auto repair</a> · © <span data-year></span> BMC Luminary Ventures LLC</span></div></footer>
+<div class="mobile-sticky-cta"><a class="btn btn-primary" href="#request">Get repair help</a></div>
+<script src="../assets/core.js?v=clarity-14"></script>
+<script>
+document.querySelectorAll('[data-repair]').forEach(function(btn){
+ btn.addEventListener('click',function(){
+   document.querySelectorAll('[data-repair]').forEach(function(x){x.classList.remove('selected')});
+   btn.classList.add('selected');
+   document.getElementById('repair-type').value=btn.dataset.repair;
+   document.getElementById('repair-confirm').textContent='Selected: '+btn.dataset.repair+'. Add what the vehicle is doing below.';
+   document.getElementById('request').scrollIntoView({behavior:'smooth'});
+ });
+});
+</script>
+</body></html>
