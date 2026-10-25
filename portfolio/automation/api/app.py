@@ -1931,7 +1931,7 @@ button{width:auto;cursor:pointer}.grid{display:grid;grid-template-columns:repeat
 function headers(){return {'Content-Type':'application/json','X-BMC-Admin-Key':document.getElementById('key').value}}
 async function briefOpportunityCard(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';const title=document.createElement('b');title.textContent='Contract review · '+(x.status||'discovered')+' · '+(x.service_name||'Unclassified')+' · '+x.market;const a=document.createElement('a');a.href=x.source_url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.title||x.source_url;const act=document.createElement('button');act.textContent='Mark actionable';act.onclick=async function(){await setPublicOpportunityStatus(x.opportunity_id,'actionable');await loadDailyBrief()};const ignore=document.createElement('button');ignore.textContent='Ignore';ignore.onclick=async function(){await setPublicOpportunityStatus(x.opportunity_id,'ignored');await loadDailyBrief()};d.appendChild(title);d.appendChild(document.createElement('br'));d.appendChild(a);d.appendChild(document.createElement('br'));d.appendChild(act);d.appendChild(ignore);return d}
 async function briefLocalSignalCard(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';const title=document.createElement('b');title.textContent='Local demand review · '+(x.status||'discovered')+' · '+(x.service_name||'Unclassified')+' · '+x.market;const a=document.createElement('a');a.href=x.source_url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.title||x.source_url;const useful=document.createElement('button');useful.textContent='Mark useful';useful.onclick=async function(){await setLocalDemandSignalStatus(x.signal_id,'useful');await loadDailyBrief()};const ignore=document.createElement('button');ignore.textContent='Ignore';ignore.onclick=async function(){await setLocalDemandSignalStatus(x.signal_id,'ignored');await loadDailyBrief()};d.appendChild(title);d.appendChild(document.createElement('br'));d.appendChild(a);d.appendChild(document.createElement('br'));d.appendChild(useful);d.appendChild(ignore);return d}
-async function loadDailyBrief(){const r=await fetch('/api/admin/daily-brief',{headers:headers()});const j=await r.json();const el=document.getElementById('daily_brief');el.innerHTML='';const h=document.createElement('div');h.className='card';h.innerHTML='<b>'+j.headline+'</b><pre>'+JSON.stringify(j.counts||{},null,2)+'</pre>';el.appendChild(h);(j.exceptions||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>Exception · '+(x.severity||'')+'</b><pre>'+(x.summary||x.type||'')+'\\n'+(x.recommended_action||'')+'</pre>';el.appendChild(d)});(j.provider_approvals||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>Provider approval</b><pre>'+(x.business_name||x.vendor_id)+'\\n'+(x.public_email||'')+'</pre>';el.appendChild(d)});(j.service_change_reviews||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>Service change review</b><pre>'+(x.summary||'')+'\\n'+(x.recommended_action||'')+'</pre>';el.appendChild(d)});(j.operator_tasks||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>Operator task · '+(x.priority||'')+'</b><pre>'+(x.summary||x.task_type||'')+'</pre>';el.appendChild(d)});for(const x of (j.public_opportunities||[])){el.appendChild(await briefOpportunityCard(x))}for(const x of (j.local_demand_signals||[])){el.appendChild(await briefLocalSignalCard(x))}}
+async function loadDailyBrief(){const r=await fetch('/api/admin/daily-brief',{headers:headers()});const j=await r.json();const el=document.getElementById('daily_brief');el.innerHTML='';const h=document.createElement('div');h.className='card';h.innerHTML='<b>'+j.headline+'</b><pre>'+JSON.stringify(j.counts||{},null,2)+'</pre>';el.appendChild(h);(j.exceptions||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>Exception · '+(x.severity||'')+'</b><pre>'+(x.summary||x.type||'')+'\\n'+(x.recommended_action||'')+'</pre>';el.appendChild(d)});(j.provider_approvals||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>Provider approval</b><pre>'+(x.business_name||x.vendor_id)+'\\n'+(x.public_email||'')+'</pre>';el.appendChild(d)});(j.service_change_reviews||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>Service change review</b><pre>'+(x.summary||'')+'\\n'+(x.recommended_action||'')+'</pre>';el.appendChild(d)});(j.operator_tasks||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>Operator task · '+(x.priority||'')+'</b><pre>'+(x.summary||x.task_type||'')+'</pre>';el.appendChild(d)});(j.source_native_issues||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>Research source needs attention · '+(x.market||'')+'</b><pre>'+(x.source_key||'')+'\nlast success: '+(x.last_success_at||'never')+'\n'+(x.last_error||'Source has not completed successfully within 36 hours.')+'</pre>';el.appendChild(d)});for(const x of (j.public_opportunities||[])){el.appendChild(await briefOpportunityCard(x))}for(const x of (j.local_demand_signals||[])){el.appendChild(await briefLocalSignalCard(x))}}
 async function loadPublicOpportunities(){const r=await fetch('/api/admin/public-opportunities?status=&limit=50',{headers:headers()});const j=await r.json();const el=document.getElementById('public_opportunities');el.innerHTML='';const rows=(j.records||[]).filter(function(x){return x.status==='discovered'||x.status==='actionable'});if(!rows.length){el.textContent='No current public opportunities staged.';return}rows.forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';const title=document.createElement('b');title.textContent=(x.service_name||'Unclassified')+' · '+x.market+' · '+x.source_name;const a=document.createElement('a');a.href=x.source_url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.title||x.source_url;const pre=document.createElement('pre');pre.textContent=x.snippet||'';const act=document.createElement('button');act.textContent='Mark actionable';act.onclick=function(){setPublicOpportunityStatus(x.opportunity_id,'actionable')};const ignore=document.createElement('button');ignore.textContent='Ignore';ignore.onclick=function(){setPublicOpportunityStatus(x.opportunity_id,'ignored')};d.appendChild(title);d.appendChild(document.createElement('br'));d.appendChild(a);d.appendChild(pre);d.appendChild(act);d.appendChild(ignore);el.appendChild(d)})}
 async function setPublicOpportunityStatus(id,status){const r=await fetch('/api/admin/public-opportunity-status',{method:'POST',headers:headers(),body:JSON.stringify({opportunity_id:id,status:status})});const j=await r.json();if(!j.ok)alert(JSON.stringify(j));await loadPublicOpportunities()}
 async function loadLocalDemandSignals(){const r=await fetch('/api/admin/local-demand-signals?status=&limit=50',{headers:headers()});const j=await r.json();const el=document.getElementById('local_demand_signals');el.innerHTML='';const rows=(j.records||[]).filter(function(x){return x.status==='discovered'||x.status==='useful'});if(!rows.length){el.textContent='No public local-demand signals staged.';return}rows.forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';const title=document.createElement('b');title.textContent=(x.service_name||'Unclassified')+' · '+x.market+' · '+x.source_name;const a=document.createElement('a');a.href=x.source_url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.title||x.source_url;const pre=document.createElement('pre');pre.textContent=x.snippet||'';const useful=document.createElement('button');useful.textContent='Mark useful';useful.onclick=function(){setLocalDemandSignalStatus(x.signal_id,'useful')};const ignore=document.createElement('button');ignore.textContent='Ignore';ignore.onclick=function(){setLocalDemandSignalStatus(x.signal_id,'ignored')};d.appendChild(title);d.appendChild(document.createElement('br'));d.appendChild(a);d.appendChild(pre);d.appendChild(useful);d.appendChild(ignore);el.appendChild(d)})}
@@ -2340,7 +2340,7 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
             where source_key=$1 and market=$2""",
             ADHS_SOURCE_KEY,market,next_cursor,latest_source_date,page_seen,page_upserted,
             json.dumps({"page_size":ADHS_SOURCE_NATIVE_PAGE_SIZE,"last_cursor":cursor,
-                        "next_cursor":next_cursor,"last_page_records":len(features)}))
+                        "next_cursor":next_cursor,"last_page_records":len(features),"last_error":None}))
           for service_key in ADHS_FACILITY_CORE_SERVICES:
             count=await conn.fetchval("""select count(*) from buyers
               where market=$1 and $2=any(string_to_array(coalesce(likely_services,''),'|'))
@@ -2901,9 +2901,21 @@ async def admin_daily_brief(x_bmc_admin_key:str|None=Header(default=None)):
         human_task_count=await conn.fetchval("""select count(*) from tasks where owner='bmc_operator'
           and status in ('open','queued','assigned','in_progress')""")
         research_candidate_count=await conn.fetchval("select count(*) from research_candidates where status='discovered'")
+        source_native_tracked_count=await conn.fetchval("""select count(*) from source_native_state
+          where last_run_at is not null""")
+        source_native_stale_count=await conn.fetchval("""select count(*) from source_native_state
+          where last_run_at is not null
+            and (last_success_at is null or last_success_at < now()-interval '36 hours')""")
+        source_native_issues=await conn.fetch("""select source_key,market,last_run_at,last_success_at,
+                 last_source_date,metadata->>'last_error' last_error
+          from source_native_state
+          where last_run_at is not null
+            and (last_success_at is null or last_success_at < now()-interval '36 hours')
+          order by coalesce(last_success_at,'epoch'::timestamptz),market
+          limit 5""")
     has_attention=any(int(x or 0)>0 for x in (
       open_exception_count,pilot_review_count,service_review_count,human_task_count,
-      actionable_opportunity_count,useful_local_signal_count
+      actionable_opportunity_count,useful_local_signal_count,source_native_stale_count
     ))
     has_review_queue=any(int(x or 0)>0 for x in (
       discovered_opportunity_count,discovered_local_signal_count
@@ -2931,7 +2943,9 @@ async def admin_daily_brief(x_bmc_admin_key:str|None=Header(default=None)):
         "local_demand_signals":int(local_signal_count or 0),
         "local_demand_signals_useful":int(useful_local_signal_count or 0),
         "local_demand_signals_discovered":int(discovered_local_signal_count or 0),
-        "research_candidates_waiting":int(research_candidate_count or 0)
+        "research_candidates_waiting":int(research_candidate_count or 0),
+        "source_native_markets_tracked":int(source_native_tracked_count or 0),
+        "source_native_stale_markets":int(source_native_stale_count or 0)
       },
       "exceptions":[dict(r) for r in exceptions],
       "provider_approvals":[dict(r) for r in pilot_reviews],
@@ -2946,7 +2960,8 @@ async def admin_daily_brief(x_bmc_admin_key:str|None=Header(default=None)):
         "service_name":r["display_name"],"title":r["title"],"source_url":r["source_url"],
         "status":r["status"],"last_seen_at":r["last_seen_at"]
       } for r in local_signals],
-      "operator_tasks":[dict(r) for r in human_tasks]
+      "operator_tasks":[dict(r) for r in human_tasks],
+      "source_native_issues":[dict(r) for r in source_native_issues]
     }
 
 @app.get("/api/admin/summary")
