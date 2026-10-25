@@ -2643,3 +2643,148 @@ until Brett explicitly approves a small controlled batch after domain, intake, S
 7. Set up Search Console.
 8. Review provider launch readiness.
 9. Only with explicit approval, prepare the first tiny outbound batch.
+
+
+## 30. BOUNDED SOURCE-NATIVE ROTATION CHECKPOINT — 2026-10-25
+
+This section continues Section 29 and records the source-native scaling fix added after the final launch/VPS transfer checkpoint.
+
+### Verified functional checkpoint
+
+Current verified master at this checkpoint:
+- `4484a78a2e6dbd016b954d3bee4ec48f0c19ae4b`
+- BMC Portfolio CI run `40221507818`: **SUCCESS**
+- full database/API smoke: **SUCCESS**
+
+### Why this changed
+
+The expanded source-native footprint is now:
+
+- 21 Arizona markets
+- 5 institutional source lanes per market
+- 105 expected source/market lanes total
+
+The prior twice-daily implementation could therefore make up to 105 sequential external source requests in one API invocation.
+
+That was acceptable while the source-native footprint was small, but it is not a good autonomous production pattern at the expanded Arizona scale.
+
+### New bounded rotation
+
+Added:
+
+```env
+SOURCE_NATIVE_CHECK_BATCH=10
+```
+
+Production behavior:
+- source-native processing selects at most **10 expected lanes per invocation**;
+- selection is oldest-run-first;
+- never-run lanes are processed before already-run lanes;
+- source/market cursor state is retained;
+- each processed lane updates its own `last_run_at` / success/error state;
+- the endpoint reports:
+  - `lanes_selected`
+  - `lanes_remaining`
+  - `lane_batch_limit`
+
+At 105 expected lanes and a 10-lane batch, a normal healthy footprint rotates through roughly one complete sweep across successive hourly passes instead of one giant request.
+
+### Scheduler cadence
+
+Source-native research changed from one large twice-daily pass to a bounded hourly pass.
+
+The scheduler intentionally staggers it from the main hourly workload:
+
+```bash
+if [ $((i % 12)) -eq 6 ]; then
+  curl --max-time 360 -fsS -X POST http://ops_api:8000/api/process-source-native-research \
+    -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
+fi
+```
+
+This means:
+- the source-native pass starts around the half-hour relative to the scheduler loop;
+- each call has a six-minute outer timeout;
+- a broken external source cannot wedge the scheduler indefinitely;
+- the normal research agent, procurement scanner and local-demand scanner remain independent.
+
+### Rotation fairness
+
+Lane selection is ordered by:
+1. whether a lane has never run;
+2. oldest `last_run_at`;
+3. in-progress cursor state as a tie-breaker;
+4. source / market.
+
+This deliberately favors fairness across the Arizona footprint rather than letting a large multi-page Phoenix source monopolize every pass.
+
+A multi-page lane retains its cursor and returns on a later rotation.
+
+### CI proof
+
+CI uses:
+- one configured market: Prescott;
+- five real expected institutional source lanes;
+- `SOURCE_NATIVE_CHECK_BATCH=5`;
+- one extra synthetic expected Phoenix lane with a recent successful run.
+
+The first source-native pass must:
+- select exactly 5 lanes;
+- leave 1 lane remaining;
+- process the five never-run Prescott lanes;
+- leave the newer synthetic Phoenix lane untouched;
+- retain the existing five-source institutional buyer behavior;
+- create zero outreach.
+
+The synthetic lane is then removed.
+
+The second pass must:
+- select all five real Prescott lanes;
+- report zero remaining;
+- update the same buyer prospects idempotently;
+- preserve cross-source dedupe;
+- preserve zero outbound actions.
+
+BMC CI run `40221507818` passed this full rotation test.
+
+### Key commits
+
+- `399414b3156553e1d60df6392155a913b4cb9615` — bound source-native research into rotating lanes.
+- `57ef4fbc97fbd74c55cd469c0ce44afeaecccc17` — document/configure 10-lane default.
+- `eb79395b268513aa9a7dd0be3802eb524ff271cb` — pass the lane batch limit into Ops API.
+- `80c276ddb0c48e67846737bad588bea551142214` — rotate bounded source-native research hourly.
+- `aab3b8b853a28752c4a4ee7fabce86a3d45800b9` — add bounded-rotation CI proof.
+- `4484a78a2e6dbd016b954d3bee4ec48f0c19ae4b` — fix the test fixture JSON; CI `40221507818` green.
+
+### Source-health interaction
+
+This works together with the never-started / stale monitoring from Section 29:
+
+- every configured source/market lane exists in state at API startup;
+- fresh never-run lanes get a 36-hour grace period;
+- hourly batching should normally touch the full 105-lane footprint well within that grace period;
+- if the rotation stops, a lane never starts, or a source repeatedly fails, it eventually surfaces in **Needs Brett**.
+
+Routine healthy rotation remains invisible to Brett.
+
+### Production state
+
+Still not independently verified on the VPS.
+
+Do not claim the bounded source-native rotation is live until the current master is deployed and the production scheduler/state is checked.
+
+After deployment verify:
+- `SOURCE_NATIVE_CHECK_BATCH` resolves to 10 unless intentionally overridden;
+- expected source-native state count matches the configured market/source footprint;
+- hourly scheduler passes begin advancing `last_run_at`;
+- `lanes_selected` never exceeds the batch limit;
+- stale/never-started lanes remain absent when rotation is healthy;
+- all outreach switches remain OFF.
+
+### Remaining source-native geography rule
+
+Do not inflate smaller-market coverage with unsafe postal-city aliases.
+
+A conservative alias may be added only when the official geography is defensible. Dewey-Humboldt has official evidence supporting Dewey/Humboldt naming, but Cordes Lakes, Williamson Valley and similar areas should not simply inherit all Mayer/Prescott institutions.
+
+Broad web research remains preferable to false source-native attribution.
