@@ -4,6 +4,20 @@ Updated: 2026-10-25
 
 ## Core idea
 
+BMC is now explicitly organized around **problem-first customer paths**, not a directory-first experience.
+
+Primary public outcomes:
+1. Fix or handle a job
+2. Get me options
+3. Keep it handled
+4. Help me spend less
+5. Help me get more customers
+
+See:
+- `portfolio/automation/CUSTOMER_PATHS.md`
+
+The founding operating inspiration includes the agentic quote-sourcing / lead-generation / outreach model demonstrated in Chris Koerner's "I Let AI Make and Save Me Money for 6 Weeks (Here's What Worked)" video. The BMC adaptation is to use automation to remove searching, vendor chasing, quote gathering, comparison, research, and follow-up while keeping commercial and compliance controls.
+
 BMC is not a passive directory and it is not primarily "53 websites waiting for Google traffic."
 
 BMC Luminary Ventures LLC owns one shared operating system that supports:
