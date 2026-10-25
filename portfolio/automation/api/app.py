@@ -2365,7 +2365,9 @@ async def promote_research_candidate_to_prospect(conn,row,actor="admin",reason="
     public_phone=clean(evidence.get("public_phone"))
     if row["side"]=="vendor":
         existing=await conn.fetchrow("""select vendor_id from vendors
-          where source_url=$1 or website=$1 order by updated_at desc limit 1""",source_url)
+          where source_url=$1 or website=$1
+             or (nullif($2,'') is not null and lower(public_email)=lower($2))
+          order by updated_at desc limit 1""",source_url,public_email)
         if existing:
             entity_id=existing["vendor_id"]
             await conn.execute("""update vendors set
@@ -2395,7 +2397,9 @@ async def promote_research_candidate_to_prospect(conn,row,actor="admin",reason="
           row["service_key"],row["market"])
     else:
         existing=await conn.fetchrow("""select buyer_id,likely_services from buyers
-          where source_url=$1 or website=$1 order by updated_at desc limit 1""",source_url)
+          where source_url=$1 or website=$1
+             or (nullif($2,'') is not null and lower(public_email)=lower($2))
+          order by updated_at desc limit 1""",source_url,public_email)
         if existing:
             entity_id=existing["buyer_id"]
             services=[x for x in clean(existing["likely_services"]).split("|") if x]
