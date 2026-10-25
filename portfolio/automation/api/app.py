@@ -2033,7 +2033,9 @@ async def admin_agent_status(x_bmc_admin_key:str|None=Header(default=None)):
       "external_actions_allowed":False,
       "configured_external_action_flag":AGENT_ALLOW_EXTERNAL_ACTIONS,
       "ai":{"enabled":LOCAL_AI_ENABLED,"model":LOCAL_AI_MODEL,"minimum_confidence":AGENT_MIN_CONFIDENCE},
-      "research_search":{"enabled":RESEARCH_SEARCH_ENABLED,"worker_batch":RESEARCH_WORKER_BATCH,"result_limit":RESEARCH_SEARCH_RESULTS},
+      "research_search":{"enabled":RESEARCH_SEARCH_ENABLED,"worker_batch":RESEARCH_WORKER_BATCH,
+        "result_limit":RESEARCH_SEARCH_RESULTS,"max_passes":RESEARCH_MAX_PASSES,
+        "auto_promote_contact_ready":RESEARCH_AUTO_PROMOTE_CONTACTS},
       "queues":{
         "open_agent_tasks":int(open_agent_tasks or 0),
         "research_assigned":int(assigned_research or 0),
