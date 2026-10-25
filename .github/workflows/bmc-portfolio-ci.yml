@@ -65,7 +65,34 @@ jobs:
           sed -i 's#^STRIPE_WEBHOOK_SECRET=.*#STRIPE_WEBHOOK_SECRET=whsec_ci_test#' .env.ci
           sed -i 's#^BMC_ADMIN_KEY=.*#BMC_ADMIN_KEY=ci_admin_key#' .env.ci
           sed -i 's#^RESEARCH_SEARCH_URL=.*#RESEARCH_SEARCH_URL=http://research-mock:8080/search#' .env.ci
-          docker compose --env-file .env.ci up -d --build postgres ops_api
+          docker compose --env-file .env.ci up -d postgres
+
+          # Production bootstrap owns schema/seed application. CI must mirror that
+          # behavior rather than depending on docker-entrypoint-initdb.d.
+          for i in $(seq 1 60); do
+            logs="$(docker compose --env-file .env.ci logs --no-color postgres 2>&1 || true)"
+            if printf '%s' "$logs" | grep -Eq 'PostgreSQL init process complete; ready for start up|Skipping initialization'; then
+              break
+            fi
+            sleep 1
+          done
+          ready=0
+          for i in $(seq 1 60); do
+            if docker compose --env-file .env.ci exec -T postgres pg_isready -U bmc_automation -d bmc_portfolio >/dev/null 2>&1; then
+              ready=$((ready+1))
+              if [ "$ready" -ge 3 ]; then break; fi
+            else
+              ready=0
+            fi
+            sleep 1
+          done
+          test "$ready" -ge 3
+
+          for file in schema.sql seed-services.sql seed-vendors.sql seed-buyers.sql seed-outreach.sql seed-buyer-outreach.sql seed-first-wave.sql seed-products.sql seed-research.sql; do
+            docker compose --env-file .env.ci exec -T postgres psql -v ON_ERROR_STOP=1 -U bmc_automation -d bmc_portfolio < "$file"
+          done
+
+          docker compose --env-file .env.ci up -d --build ops_api
           for i in $(seq 1 30); do
             if curl -fsS http://127.0.0.1:8000/health >/tmp/bmc_health.json; then
               break
