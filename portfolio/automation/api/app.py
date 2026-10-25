@@ -67,6 +67,54 @@ RESEARCH_SEARCH_URL=os.getenv("RESEARCH_SEARCH_URL","http://searxng:8080/search"
 RESEARCH_SEARCH_RESULTS=max(1,min(20,env_int("RESEARCH_SEARCH_RESULTS",8)))
 RESEARCH_WORKER_BATCH=max(1,min(5,env_int("RESEARCH_WORKER_BATCH",1)))
 
+BUYER_RESEARCH_HINTS={
+    "commercial_cleaning":"hospital clinic dental therapy pharmacy grocery retail insurance office school church hotel apartment restaurant",
+    "floor_carpet":"hospital clinic dental therapy hotel school church theater office retail grocery property manager",
+    "window_cleaning":"hospital clinic dental hotel school church office retail grocery property manager",
+    "hvac_heat":"hospital clinic dental pharmacy grocery retail hotel school church office property manager",
+    "pest_control":"restaurant grocery pharmacy hotel school daycare senior living clinic property manager warehouse",
+    "parking_lot":"grocery retail pharmacy hotel school church medical office apartment auto dealer warehouse",
+    "fire_safety":"hospital clinic dental school church hotel restaurant grocery retail warehouse",
+    "sign_lighting":"retail grocery pharmacy restaurant hotel auto dealer office property manager",
+    "locksmith_access":"hospital clinic dental pharmacy retail grocery school church office property manager apartment",
+    "backflow_plumbing":"hospital clinic school restaurant hotel grocery property manager public facility",
+    "landscaping":"hospital clinic hotel school church property manager apartment retail public facility",
+    "tree_service":"hotel school church property manager apartment public facility",
+    "junk_hauling":"property manager apartment hotel school church retail office restaurant public facility",
+    "restaurant_equipment":"restaurant hotel hospital school senior living institutional kitchen",
+    "hood_exhaust":"restaurant hotel hospital school senior living institutional kitchen",
+    "ice_machine":"restaurant hotel hospital school senior living grocery convenience",
+    "linen_laundry":"hotel hospital senior living restaurant spa clinic public facility",
+    "facility_maintenance":"hospital clinic dental therapy pharmacy grocery retail insurance office school church hotel apartment restaurant warehouse public facility"
+}
+
+PUBLIC_OPPORTUNITY_SOURCES=(
+    {"key":"prescott","name":"City of Prescott","market":"Prescott","domain":"prescott-az.gov",
+     "query":'site:prescott-az.gov (bid OR RFP OR solicitation OR contract) (janitorial OR cleaning OR landscaping OR locksmith OR HVAC OR plumbing OR "facility maintenance" OR "parking lot" OR pest OR "fire extinguisher" OR lighting OR electrical OR laundry OR septic)'},
+    {"key":"yavapai_county","name":"Yavapai County","market":"Yavapai County","domain":"yavapaiaz.gov",
+     "query":'site:yavapaiaz.gov (bid OR RFP OR solicitation OR contract) (janitorial OR cleaning OR landscaping OR locksmith OR HVAC OR plumbing OR facilities OR parking OR pest OR fire OR lighting OR electrical)'},
+    {"key":"arizona_state","name":"State of Arizona","market":"Arizona","domain":"spo.az.gov",
+     "query":'site:spo.az.gov (solicitation OR bid OR contract) (janitorial OR cleaning OR landscaping OR locksmith OR HVAC OR plumbing OR facilities OR parking OR pest OR fire OR lighting OR electrical OR laundry)'},
+    {"key":"phoenix","name":"City of Phoenix","market":"Phoenix","domain":"procurement.opengov.com",
+     "query":'site:procurement.opengov.com/portal/phoenix (Open OR solicitation OR RFQ OR RFP OR IFB) (locksmith OR laundry OR janitorial OR cleaning OR landscaping OR HVAC OR plumbing OR facilities OR septic OR parking OR electrical)'},
+    {"key":"cottonwood","name":"City of Cottonwood","market":"Cottonwood","domain":"cottonwoodaz.gov",
+     "query":'site:cottonwoodaz.gov (bid OR RFP OR solicitation) (janitorial OR cleaning OR landscaping OR locksmith OR HVAC OR plumbing OR facilities OR parking OR pest OR electrical)'},
+    {"key":"flagstaff","name":"City of Flagstaff","market":"Flagstaff","domain":"flagstaff.az.gov",
+     "query":'site:flagstaff.az.gov (bid OR RFP OR solicitation) (janitorial OR cleaning OR landscaping OR locksmith OR HVAC OR plumbing OR facilities OR parking OR pest OR electrical)'},
+    {"key":"sedona","name":"City of Sedona","market":"Sedona","domain":"sedonaaz.gov",
+     "query":'site:sedonaaz.gov (bid OR RFP OR solicitation) (janitorial OR cleaning OR landscaping OR locksmith OR HVAC OR plumbing OR facilities OR parking OR pest OR electrical)'},
+    {"key":"tucson","name":"City of Tucson","market":"Tucson","domain":"tucsonaz.gov",
+     "query":'site:tucsonaz.gov (bid OR RFP OR solicitation) (janitorial OR cleaning OR landscaping OR locksmith OR HVAC OR plumbing OR facilities OR parking OR pest OR electrical OR laundry)'},
+    {"key":"scottsdale","name":"City of Scottsdale","market":"Scottsdale","domain":"scottsdaleaz.gov",
+     "query":'site:scottsdaleaz.gov (bid OR RFP OR solicitation) (janitorial OR cleaning OR landscaping OR locksmith OR HVAC OR plumbing OR facilities OR parking OR pest OR electrical)'},
+    {"key":"chino_valley","name":"Town of Chino Valley","market":"Chino Valley","domain":"chinoaz.net",
+     "query":'site:chinoaz.net (bid OR RFP OR solicitation) (janitorial OR cleaning OR landscaping OR locksmith OR HVAC OR plumbing OR facilities OR parking OR pest OR electrical)'},
+    {"key":"winslow","name":"City of Winslow","market":"Winslow","domain":"winslowaz.gov",
+     "query":'site:winslowaz.gov (bid OR RFP OR solicitation) (janitorial OR cleaning OR landscaping OR locksmith OR HVAC OR plumbing OR facilities OR parking OR pest OR electrical)'},
+    {"key":"sam_federal","name":"SAM.gov Federal Opportunities","market":"Arizona","domain":"sam.gov",
+     "query":'site:sam.gov/opportunities Arizona (janitorial OR cleaning OR landscaping OR locksmith OR HVAC OR plumbing OR facility OR parking OR pest OR electrical OR laundry)'}
+)
+
 app=FastAPI(title="BMC Portfolio Ops API",version="0.1.0")
 app.add_middleware(CORSMiddleware,allow_origins=[
     "https://bmcservicenetwork.com","https://www.bmcservicenetwork.com"
@@ -262,14 +310,54 @@ async def local_ai_status():
     return status
 
 
-def build_research_query(side,market,service_name,research_method=""):
+def build_research_query(side,market,service_name,research_method="",service_key=""):
     service=clean(service_name).replace('"'," ")
     place=clean(market).replace('"'," ")
+    method=clean(research_method).upper()
     if side=="vendor":
         return f'"{service}" "{place}" Arizona company service contractor'
-    if "B2B" in clean(research_method).upper():
-        return f'"{place}" Arizona business facility property manager school church "{service}"'
+    if "PROCUREMENT" in method or "PUBLIC BID" in method:
+        return f'"{place}" Arizona bid RFP solicitation contract "{service}"'
+    if "B2B" in method:
+        hints=BUYER_RESEARCH_HINTS.get(clean(service_key),BUYER_RESEARCH_HINTS["facility_maintenance"])
+        return f'"{place}" Arizona ({hints}) "{service}"'
     return f'"{place}" Arizona business organization "{service}"'
+
+def classify_public_opportunity_service(text):
+    t=clean(text).lower()
+    rules=(
+      (("locksmith","rekey","access control"),"locksmith_access"),
+      (("janitorial","custodial","commercial cleaning","cleaning services"),"commercial_cleaning"),
+      (("landscap","grounds maintenance","irrigation maintenance"),"landscaping"),
+      (("tree service","tree trimming","arborist","vegetation management"),"tree_service"),
+      (("hvac","heating","cooling","air conditioning"),"hvac_heat"),
+      (("backflow","plumbing","plumber"),"backflow_plumbing"),
+      (("pest control","exterminat"),"pest_control"),
+      (("parking lot","striping","parking maintenance","pavement marking","sweeping"),"parking_lot"),
+      (("fire extinguisher","fire suppression","fire safety"),"fire_safety"),
+      (("sign repair","signage","lighting repair","street lighting"),"sign_lighting"),
+      (("window cleaning","window washing"),"window_cleaning"),
+      (("carpet cleaning","floor care","flooring maintenance"),"floor_carpet"),
+      (("duct cleaning","dryer vent","air duct"),"duct_vent"),
+      (("ice machine","ice maker"),"ice_machine"),
+      (("hood cleaning","kitchen exhaust","exhaust cleaning"),"hood_exhaust"),
+      (("restaurant equipment","commercial kitchen equipment","foodservice equipment"),"restaurant_equipment"),
+      (("laundry","linen rental","linen service"),"linen_laundry"),
+      (("septic","wastewater pumping"),"rural_property"),
+      (("junk removal","solid waste hauling","hauling services"),"junk_hauling"),
+      (("garage door",),"garage_door"),
+      (("electrical service","electrical maintenance","electrician"),"electrical_service"),
+      (("facility maintenance","facilities maintenance","building maintenance","job order contracting","citywide construction"),"facility_maintenance")
+    )
+    for needles,key in rules:
+        if any(n in t for n in needles):
+            return key
+    return None
+
+def public_source_host_allowed(host,domain):
+    h=clean(host).lower()
+    d=clean(domain).lower()
+    return bool(h and d and (h==d or h.endswith("."+d)))
 
 async def search_research_web(query):
     if not RESEARCH_SEARCH_ENABLED or not RESEARCH_SEARCH_URL:
@@ -1769,7 +1857,7 @@ async def process_research(x_bmc_admin_key:str|None=Header(default=None)):
         order by case t.priority when 'critical' then 0 when 'high' then 1 else 2 end,t.created_at
         limit $1""",RESEARCH_WORKER_BATCH)
       for task in tasks:
-        query=build_research_query(task["side"],task["market"],task["display_name"] or task["service_key"],task["research_method"])
+        query=build_research_query(task["side"],task["market"],task["display_name"] or task["service_key"],task["research_method"],task["service_key"])
         try:
             results=await search_research_web(query)
         except Exception as exc:
@@ -1805,6 +1893,87 @@ async def process_research(x_bmc_admin_key:str|None=Header(default=None)):
             },"research_agent")
             processed+=1
     return {"ok":True,"enabled":True,"processed":processed,"staged":staged,"errors":errors}
+
+@app.post("/api/process-public-opportunities")
+async def process_public_opportunities(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    if not RESEARCH_SEARCH_ENABLED:
+        return {"ok":True,"enabled":False,"sources_checked":0,"new_opportunities":0,"errors":[]}
+    sources_checked=0
+    new_opportunities=0
+    errors=[]
+    async with app.state.pool.acquire() as conn:
+      for source in PUBLIC_OPPORTUNITY_SOURCES:
+        try:
+            results=await search_research_web(source["query"])
+            sources_checked+=1
+        except Exception as exc:
+            errors.append({"source":source["key"],"error":str(exc)[:300]})
+            continue
+        for result in results:
+            if not public_source_host_allowed(result["domain"],source["domain"]):
+                continue
+            combined=f'{result["title"]} {result["snippet"]}'
+            service_key=classify_public_opportunity_service(combined)
+            if not service_key:
+                continue
+            oid=await conn.fetchval("""insert into public_opportunities(
+                source_key,source_name,market,service_key,title,source_url,source_domain,snippet,search_query,status,evidence)
+              values($1,$2,$3,$4,$5,$6,$7,$8,$9,'discovered',$10::jsonb)
+              on conflict(source_key,source_url) do nothing
+              returning opportunity_id""",
+              source["key"],source["name"],source["market"],service_key,
+              result["title"],result["url"],result["domain"],result["snippet"],source["query"],
+              json.dumps({"search_engine":result["engine"],"search_score":result["score"]}))
+            if oid:
+                new_opportunities+=1
+                await event(conn,"public_opportunity",oid,"discovered",{
+                  "source":source["key"],"market":source["market"],"service_key":service_key,
+                  "source_url":result["url"]
+                },"research_agent")
+            else:
+                await conn.execute("""update public_opportunities
+                  set last_seen_at=now(),title=$3,snippet=$4,service_key=coalesce(service_key,$5),
+                      search_query=$6,updated_at=now()
+                  where source_key=$1 and source_url=$2""",
+                  source["key"],result["url"],result["title"],result["snippet"],service_key,source["query"])
+    return {"ok":True,"enabled":True,"sources_checked":sources_checked,
+      "new_opportunities":new_opportunities,"errors":errors}
+
+@app.get("/api/admin/public-opportunities")
+async def admin_public_opportunities(status:str="discovered",limit:int=100,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    safe_limit=max(1,min(250,limit))
+    async with app.state.pool.acquire() as conn:
+        rows=await conn.fetch("""select po.*,s.display_name
+          from public_opportunities po
+          left join services s on s.service_key=po.service_key
+          where ($1='' or po.status=$1)
+          order by po.last_seen_at desc
+          limit $2""",clean(status),safe_limit)
+    return {"ok":True,"count":len(rows),"records":[{
+      "opportunity_id":str(r["opportunity_id"]),"source_key":r["source_key"],"source_name":r["source_name"],
+      "market":r["market"],"service_key":r["service_key"],"service_name":r["display_name"],
+      "title":r["title"],"source_url":r["source_url"],"source_domain":r["source_domain"],
+      "snippet":r["snippet"],"status":r["status"],"first_seen_at":r["first_seen_at"],
+      "last_seen_at":r["last_seen_at"],"evidence":r["evidence"]
+    } for r in rows]}
+
+@app.post("/api/admin/public-opportunity-status")
+async def admin_public_opportunity_status(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    p=await request.json()
+    oid=clean(p.get("opportunity_id"))
+    status=clean(p.get("status")).lower()
+    if status not in ("discovered","reviewed","ignored","actionable","expired"):
+        raise HTTPException(400,"Invalid public opportunity status")
+    async with app.state.pool.acquire() as conn:
+        row=await conn.fetchrow("""update public_opportunities set status=$2,updated_at=now()
+          where opportunity_id=$1::uuid returning opportunity_id""",oid,status)
+        if not row:
+            raise HTTPException(404,"Public opportunity not found")
+        await event(conn,"public_opportunity",oid,"status_changed",{"status":status},"admin")
+    return {"ok":True,"opportunity_id":oid,"status":status}
 
 @app.get("/api/admin/research-candidates")
 async def admin_research_candidates(status:str="discovered",limit:int=100,x_bmc_admin_key:str|None=Header(default=None)):
