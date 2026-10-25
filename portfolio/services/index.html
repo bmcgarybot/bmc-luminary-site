@@ -1,35 +1,63 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Find a Local Service | BMC Service Network</title>
-<meta name="description" content="Search the BMC family of specialized service businesses by the problem you need solved.">
-<link rel="stylesheet" href="../assets/core.css">
-</head><body>
-<nav class="nav"><div class="wrap nav-in"><a class="brand" href="../">BMC Service Network</a><div class="nav-links"><a href="../request/">Not sure? Start one request</a><a href="../how-it-works/">How it works</a></div></div></nav>
+<meta name="description" content="Search local services by the problem you need solved. BMC helps route requests to the right local service path.">
+<link rel="stylesheet" href="../assets/core.css?v=editorial-5">
+</head><body class="editorial-site">
 
-<header class="hero"><div class="wrap">
-<div class="eyebrow">Find a service</div>
-<h1>Search by what you need, not by how BMC organizes it.</h1>
-<p>Type the problem, trade, job, or property need in normal words. You can also browse the families below.</p>
-<div class="actions"><a class="btn btn-secondary" href="../request/">I’m not sure what to choose</a></div>
+<nav class="nav"><div class="wrap nav-in">
+<a class="brand" href="../">BMC Service Network</a>
+<div class="nav-links"><a href="../request/">Start a request</a><a href="../how-it-works/">How it works</a></div>
+</div></nav>
+
+<header class="service-explore-hero"><div class="wrap">
+<div class="editorial-kicker">Local help, without the directory headache</div>
+<h1>What do you need taken care of?</h1>
+<p style="max-width:690px;color:#626d72;font-size:1.08rem">Search in normal words. “Electrician.” “House cleaner.” “Tree removal.” “Dog walker.” “Restaurant ice machine.” You do not need to know how BMC categorizes it.</p>
+
+<div class="service-explore-search">
+  <input id="venture-search" autocomplete="off" placeholder="Search by problem or service…">
+  <a class="btn btn-primary" href="../request/">I’m not sure</a>
+</div>
+<p id="search-count" class="search-count">Loading services…</p>
 </div></header>
 
-<section class="section" id="find"><div class="wrap">
-<div class="finder-panel">
-<div class="field finder-field"><label for="venture-search">What do you need help with?</label><input id="venture-search" autocomplete="off" placeholder="Try: electrician, heating and air, handyman, house cleaner, realtor, staging, ice machine…"></div>
-<div class="family-jumps" id="family-jumps"></div>
-<p id="search-count" class="search-count">Loading services…</p>
+<section class="editorial-section alt"><div class="wrap">
+<div class="editorial-intro">
+  <div class="editorial-kicker">Popular around Prescott & Prescott Valley</div>
+  <h2>Start with what people ask for most.</h2>
+  <p>These are the kinds of local needs BMC is prioritizing first. You can still search or browse everything below.</p>
 </div>
 
+<div class="category-tiles">
+  <a class="category-tile" href="../electrical-service/" style="text-decoration:none"><span class="tile-icon">01</span><strong>Electrician</strong><span>Repairs, outlets, breakers, panels, lighting, EV chargers.</span></a>
+  <a class="category-tile" href="../hvac-heat/" style="text-decoration:none"><span class="tile-icon">02</span><strong>Heating & air</strong><span>No heat, no cooling, maintenance, heat pumps, replacements.</span></a>
+  <a class="category-tile" href="../handyman-repairs/" style="text-decoration:none"><span class="tile-icon">03</span><strong>Handyman</strong><span>Small repairs, punch lists, mounting, drywall, doors, fixtures.</span></a>
+  <a class="category-tile" href="../house-cleaning/" style="text-decoration:none"><span class="tile-icon">04</span><strong>House cleaning</strong><span>Recurring cleaning, deep cleaning, move-in and move-out work.</span></a>
+  <a class="category-tile" href="../tree-service/" style="text-decoration:none"><span class="tile-icon">05</span><strong>Tree & defensible space</strong><span>Removal, trimming, dead trees, brush and fuel reduction.</span></a>
+  <a class="category-tile" href="../realtor-listing-prep/" style="text-decoration:none"><span class="tile-icon">06</span><strong>Listing prep</strong><span>Cleaning, repairs, hauling, staging and curb-appeal coordination.</span></a>
+</div>
+</div></section>
+
+<section class="editorial-section"><div class="wrap">
+<div class="editorial-intro">
+  <div class="editorial-kicker">Browse the full network</div>
+  <h2>More specialized services when you need them.</h2>
+  <p>Most people should never need to read this entire list. It is here for people who already know what they are looking for.</p>
+</div>
+
+<div class="family-jumps" id="family-jumps"></div>
 <div id="venture-families"></div>
+
 <div id="no-results" class="empty-state" hidden>
-<h2>We did not find an exact match.</h2>
-<p>Send us the problem in your own words and BMC will route it.</p>
-<a class="btn btn-primary" href="../request/">Tell BMC what you need</a>
+  <h2>We did not find an exact match.</h2>
+  <p>That does not mean BMC cannot help. Describe the problem and we’ll sort out the service path.</p>
+  <a class="btn btn-primary" href="../request/">Tell BMC what you need</a>
 </div>
 </div></section>
 
 <footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>BMC Service Network</span></div></footer>
-<script src="../assets/core.js?v=service-finder-2"></script>
+<script src="../assets/core.js?v=editorial-5"></script>
 <script>
 const familyOrder=[
   'Home, Property & Land',
@@ -96,21 +124,32 @@ function serviceHref(s){return '../'+s.live_front.replace(/^\/portfolio\//,'');}
 function esc(v){const d=document.createElement('div');d.textContent=v||'';return d.innerHTML;}
 
 function build(){
-  root.innerHTML='';
-  jumps.innerHTML='';
+  root.innerHTML='';jumps.innerHTML='';
   const groups={};familyOrder.forEach(f=>groups[f]=[]);
   all.forEach(s=>groups[familyFor(s)].push(s));
+
   familyOrder.forEach((fam,index)=>{
     if(!groups[fam].length)return;
     groups[fam].sort((a,b)=>a.display_name.localeCompare(b.display_name));
-    const jump=document.createElement('a');jump.href='#family-'+index;jump.textContent=fam;jumps.appendChild(jump);
-    const section=document.createElement('section');section.className='venture-family';section.id='family-'+index;section.dataset.family=fam;
-    section.innerHTML='<div class="family-head"><div><h2>'+esc(fam)+'</h2><p>'+esc(familyDescriptions[fam])+'</p></div><span class="family-count">'+groups[fam].length+' businesses</span></div><div class="venture-grid"></div>';
+
+    const jump=document.createElement('a');
+    jump.href='#family-'+index;
+    jump.textContent=fam;
+    jumps.appendChild(jump);
+
+    const section=document.createElement('section');
+    section.className='venture-family';
+    section.id='family-'+index;
+    section.innerHTML='<div class="family-head"><div><h2>'+esc(fam)+'</h2><p>'+esc(familyDescriptions[fam])+'</p></div><span class="family-count">'+groups[fam].length+' services</span></div><div class="venture-grid"></div>';
+
     const grid=section.querySelector('.venture-grid');
     groups[fam].forEach(s=>{
-      const a=document.createElement('a');a.className='venture-card';a.href=serviceHref(s);a.dataset.venture='1';
+      const a=document.createElement('a');
+      a.className='venture-card';
+      a.href=serviceHref(s);
+      a.dataset.venture='1';
       a.dataset.search=[s.display_name,s.category,s.primary_offer,fam,aliases[s.service_key]||''].join(' ').toLowerCase();
-      a.innerHTML='<div class="venture-name">'+esc((s.display_name||'').replace(/ Match$/,''))+'</div><div class="venture-offer">'+esc(s.primary_offer)+'</div><div class="venture-link">Open service →</div>';
+      a.innerHTML='<div class="venture-name">'+esc((s.display_name||'').replace(/ Match$/,''))+'</div><div class="venture-offer">'+esc(s.primary_offer)+'</div><div class="venture-link">View service →</div>';
       grid.appendChild(a);
     });
     root.appendChild(section);
@@ -124,7 +163,7 @@ function filter(){
   let visible=0;
   cards.forEach(card=>{const show=!q||card.dataset.search.includes(q);card.hidden=!show;if(show)visible++;});
   [...document.querySelectorAll('.venture-family')].forEach(f=>{f.hidden=![...f.querySelectorAll('[data-venture]')].some(c=>!c.hidden);});
-  count.textContent=visible+' service'+(visible===1?'':'s')+' shown';
+  count.textContent=q ? (visible+' result'+(visible===1?'':'s')) : (all.length+' services available');
   empty.hidden=visible!==0;
 }
 
@@ -133,7 +172,8 @@ fetch('../data/services.json').then(r=>r.json()).then(d=>{
   build();
   const q=new URLSearchParams(location.search).get('q');
   if(q){search.value=q;filter();}
-}).catch(()=>{count.textContent='Service list could not load. Use the general request form and BMC will route it.';});
+}).catch(()=>{count.textContent='Service list could not load. Start a general request and BMC will route it.';});
+
 search.addEventListener('input',filter);
 </script>
 </body></html>
