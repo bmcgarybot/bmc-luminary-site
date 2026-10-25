@@ -60,7 +60,7 @@ if [ "$ready" -lt 3 ]; then
   exit 1
 fi
 
-for file in schema.sql seed-services.sql seed-vendors.sql seed-buyers.sql seed-outreach.sql seed-buyer-outreach.sql seed-first-wave.sql seed-products.sql seed-research.sql; do
+for file in schema.sql seed-services.sql seed-vendors.sql seed-buyers.sql seed-outreach.sql seed-buyer-outreach.sql seed-growth-pack-sales.sql seed-first-wave.sql seed-products.sql seed-research.sql; do
   echo "Applying $file"
   docker compose exec -T postgres psql -v ON_ERROR_STOP=1 -U "$DBUSER" -d "$DBNAME" < "$file"
 done
