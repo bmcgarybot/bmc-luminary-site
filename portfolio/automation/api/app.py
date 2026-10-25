@@ -1651,7 +1651,7 @@ button{width:auto;cursor:pointer}.grid{display:grid;grid-template-columns:repeat
 .card{background:white;border:1px solid #ddd;border-radius:10px;padding:14px}pre{white-space:pre-wrap}.section{margin:24px 0}
 </style></head><body>
 <h1>BMC Local Admin</h1><p>Private/local operations page. Do not publish through the public gateway.</p>
-<div class='section'><label>Admin key<input id='key' type='password'></label><button onclick='loadSummary()'>Load summary</button><button onclick='loadPreflight()'>Launch preflight</button><button onclick='loadFirstWave()'>Preview First Wave</button><button onclick='loadPilotReviews()'>Pending pilot reviews</button><button onclick='loadServiceReviews()'>Service change reviews</button><button onclick='loadResearchCandidates()'>Research candidates</button><button onclick='loadLaunchCell()'>Prescott/PV launch cell</button><button onclick='queueLaunchGaps()'>Queue launch gaps</button><button onclick='loadProviderFunnel()'>Provider funnel</button><div id='summary' class='grid'></div><div id='preflight' class='card' style='margin-top:12px'></div></div><div class='section'><h2>Provider marketing funnel</h2><p>Invite → reply → application → approval → accepted work → won work.</p><div id='provider_funnel' class='grid'></div></div><div class='section'><h2>Prescott / Prescott Valley launch cell</h2><p>Green = verified pilot/active provider. Yellow = recruitable providers with public email. Red = research gap.</p><div id='launch_cell' class='grid'></div></div><div class='section'><h2>First Wave preview</h2><div id='first_wave'></div></div>
+<div class='section'><label>Admin key<input id='key' type='password'></label><button onclick='loadDailyBrief()'>Needs Brett</button><button onclick='loadSummary()'>Load summary</button><button onclick='loadPreflight()'>Launch preflight</button><button onclick='loadFirstWave()'>Preview First Wave</button><button onclick='loadPilotReviews()'>Pending pilot reviews</button><button onclick='loadServiceReviews()'>Service change reviews</button><button onclick='loadResearchCandidates()'>Research candidates</button><button onclick='loadLaunchCell()'>Prescott/PV launch cell</button><button onclick='queueLaunchGaps()'>Queue launch gaps</button><button onclick='loadProviderFunnel()'>Provider funnel</button><div id='summary' class='grid'></div><div id='preflight' class='card' style='margin-top:12px'></div></div><div class='section'><h2>Needs Brett</h2><p>Short review queue for exceptions, approvals, provider changes and public contract opportunities.</p><div id='daily_brief'></div></div><div class='section'><h2>Public contract opportunities</h2><p>Read-only discoveries from official public procurement sources. Review before any response or bid action.</p><div id='public_opportunities'></div></div><div class='section'><h2>Provider marketing funnel</h2><p>Invite → reply → application → approval → accepted work → won work.</p><div id='provider_funnel' class='grid'></div></div><div class='section'><h2>Prescott / Prescott Valley launch cell</h2><p>Green = verified pilot/active provider. Yellow = recruitable providers with public email. Red = research gap.</p><div id='launch_cell' class='grid'></div></div><div class='section'><h2>First Wave preview</h2><div id='first_wave'></div></div>
 <div class='section'><h2>Pending pilot reviews</h2><p>Providers stay unroutable until BMC explicitly approves them here.</p><div id='pilot_reviews'></div></div><div class='section'><h2>Provider service change reviews</h2><p>New trade types stay unroutable until approved here.</p><div id='service_reviews'></div></div>
 <div class='section'><h2>Research candidates</h2><p>Autonomous search discoveries are evidence only until reviewed. They are not active providers and are never contacted automatically.</p><div id='research_candidates'></div></div>
 <div class='section card'><h2>Vendor activation</h2><input id='vendor_id' placeholder='vendor_id'><select id='vendor_status'><option>pilot</option><option>active</option><option>paused</option><option>suppressed</option></select><input id='vendor_services' placeholder='service keys comma-separated'><input id='vendor_markets' placeholder='markets comma-separated'><button onclick='vendorUpdate()'>Save vendor</button><pre id='vendor_result'></pre></div>
@@ -1659,6 +1659,9 @@ button{width:auto;cursor:pointer}.grid{display:grid;grid-template-columns:repeat
 <div class='section card'><h2>Suppress outreach email</h2><input id='suppress_email' placeholder='email'><input id='suppress_reason' placeholder='reason'><button onclick='suppressEmail()'>Suppress</button><pre id='suppress_result'></pre></div>
 <script>
 function headers(){return {'Content-Type':'application/json','X-BMC-Admin-Key':document.getElementById('key').value}}
+async function loadDailyBrief(){const r=await fetch('/api/admin/daily-brief',{headers:headers()});const j=await r.json();const el=document.getElementById('daily_brief');el.innerHTML='';const h=document.createElement('div');h.className='card';h.innerHTML='<b>'+j.headline+'</b><pre>'+JSON.stringify(j.counts||{},null,2)+'</pre>';el.appendChild(h);(j.exceptions||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>Exception · '+(x.severity||'')+'</b><pre>'+(x.summary||x.type||'')+'\n'+(x.recommended_action||'')+'</pre>';el.appendChild(d)});(j.provider_approvals||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>Provider approval</b><pre>'+(x.business_name||x.vendor_id)+'\n'+(x.public_email||'')+'</pre>';el.appendChild(d)});(j.service_change_reviews||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>Service change review</b><pre>'+(x.summary||'')+'\n'+(x.recommended_action||'')+'</pre>';el.appendChild(d)});(j.operator_tasks||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>Operator task · '+(x.priority||'')+'</b><pre>'+(x.summary||x.task_type||'')+'</pre>';el.appendChild(d)});await loadPublicOpportunities()}
+async function loadPublicOpportunities(){const r=await fetch('/api/admin/public-opportunities?status=&limit=50',{headers:headers()});const j=await r.json();const el=document.getElementById('public_opportunities');el.innerHTML='';const rows=(j.records||[]).filter(function(x){return x.status==='discovered'||x.status==='actionable'});if(!rows.length){el.textContent='No current public opportunities staged.';return}rows.forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';const title=document.createElement('b');title.textContent=(x.service_name||'Unclassified')+' · '+x.market+' · '+x.source_name;const a=document.createElement('a');a.href=x.source_url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.title||x.source_url;const pre=document.createElement('pre');pre.textContent=x.snippet||'';const act=document.createElement('button');act.textContent='Mark actionable';act.onclick=function(){setPublicOpportunityStatus(x.opportunity_id,'actionable')};const ignore=document.createElement('button');ignore.textContent='Ignore';ignore.onclick=function(){setPublicOpportunityStatus(x.opportunity_id,'ignored')};d.appendChild(title);d.appendChild(document.createElement('br'));d.appendChild(a);d.appendChild(pre);d.appendChild(act);d.appendChild(ignore);el.appendChild(d)})}
+async function setPublicOpportunityStatus(id,status){const r=await fetch('/api/admin/public-opportunity-status',{method:'POST',headers:headers(),body:JSON.stringify({opportunity_id:id,status:status})});const j=await r.json();if(!j.ok)alert(JSON.stringify(j));await loadPublicOpportunities()}
 async function loadSummary(){const r=await fetch('/api/admin/summary',{headers:headers()});const j=await r.json();const el=document.getElementById('summary');el.innerHTML='';Object.entries(j).forEach(function(pair){const d=document.createElement('div');d.className='card';d.innerHTML='<b>'+pair[0]+'</b><pre>'+JSON.stringify(pair[1],null,2)+'</pre>';el.appendChild(d)})}\nasync function loadPreflight(){const r=await fetch('/api/admin/preflight',{headers:headers()});const j=await r.json();document.getElementById('preflight').innerHTML='<h2>Launch preflight</h2><pre>'+JSON.stringify(j,null,2)+'</pre>'}\nasync function loadProviderFunnel(){const r=await fetch('/api/admin/provider-funnel',{headers:headers()});const j=await r.json();const el=document.getElementById('provider_funnel');el.innerHTML='';const labels={invited:'Invited',sent:'Emails sent',replied:'Replies',positive_replies:'Positive replies',applied_or_activated:'Applied / activated',pending_review:'Pending review',approved:'Approved providers',job_offers:'Jobs offered',job_accepts:'Jobs accepted',jobs_won:'Jobs won'};Object.entries(j.stages||{}).forEach(function(pair){const d=document.createElement('div');d.className='card';d.innerHTML='<b>'+labels[pair[0]]+'</b><div style="font-size:28px;font-weight:800;margin-top:6px">'+pair[1]+'</div>';el.appendChild(d)});const rates=document.createElement('div');rates.className='card';rates.innerHTML='<b>Conversion rates</b><pre>'+JSON.stringify(j.rates||{},null,2)+'</pre>';el.appendChild(rates)}
 async function loadLaunchCell(){const r=await fetch('/api/admin/launch-cell',{headers:headers()});const j=await r.json();const el=document.getElementById('launch_cell');el.innerHTML='';(j.records||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.borderLeft='7px solid '+(x.readiness==='green'?'#238636':x.readiness==='yellow'?'#bf8700':'#cf222e');const title=document.createElement('b');title.textContent=x.service_name+' · '+x.readiness.toUpperCase();const pre=document.createElement('pre');pre.textContent='researched: '+x.researched_providers+'\nemail-ready: '+x.email_ready_providers+'\npilot/active: '+x.pilot_or_active_providers+'\nqueued outreach: '+x.queued_provider_outreach+'\nbuyer prospects: '+x.buyer_prospects+'\nlive markets: '+(x.live_markets||[]).join(', ')+'\nnext: '+x.next_action;d.appendChild(title);d.appendChild(pre);el.appendChild(d)})}
 async function queueLaunchGaps(){const r=await fetch('/api/admin/queue-launch-gaps',{method:'POST',headers:headers()});const j=await r.json();alert('Queued '+(j.queued_count||0)+' launch research gaps.');await loadLaunchCell()}
@@ -2216,6 +2219,59 @@ async def admin_ai_status(x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)
     return {"ok":True,**(await local_ai_status())}
 
+@app.get("/api/admin/daily-brief")
+async def admin_daily_brief(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    async with app.state.pool.acquire() as conn:
+        exceptions=await conn.fetch("""select exception_id,type,lead_id,vendor_id,severity,summary,recommended_action,created_at
+          from exceptions where status='open'
+          order by case severity when 'critical' then 0 when 'high' then 1 else 2 end,created_at
+          limit 10""")
+        pilot_reviews=await conn.fetch("""select vendor_id,business_name,public_email,updated_at
+          from vendors where status='pilot_pending_review'
+          order by updated_at limit 10""")
+        service_reviews=await conn.fetch("""select exception_id,vendor_id,summary,recommended_action,created_at
+          from exceptions where type='provider_service_change_review' and status='open'
+          order by created_at limit 10""")
+        opportunities=await conn.fetch("""select po.opportunity_id,po.source_name,po.market,po.title,po.source_url,
+                 po.status,po.last_seen_at,s.display_name
+          from public_opportunities po left join services s on s.service_key=po.service_key
+          where po.status in ('discovered','actionable')
+          order by case po.status when 'actionable' then 0 else 1 end,po.last_seen_at desc limit 10""")
+        human_tasks=await conn.fetch("""select task_id,task_type,priority,summary,due_at,created_at
+          from tasks where owner='bmc_operator' and status in ('open','queued','assigned','in_progress')
+          order by case priority when 'critical' then 0 when 'high' then 1 else 2 end,
+                   coalesce(due_at,created_at),created_at limit 10""")
+        open_exception_count=await conn.fetchval("select count(*) from exceptions where status='open'")
+        pilot_review_count=await conn.fetchval("select count(*) from vendors where status='pilot_pending_review'")
+        service_review_count=await conn.fetchval("select count(*) from exceptions where type='provider_service_change_review' and status='open'")
+        opportunity_count=await conn.fetchval("select count(*) from public_opportunities where status in ('discovered','actionable')")
+        human_task_count=await conn.fetchval("""select count(*) from tasks where owner='bmc_operator'
+          and status in ('open','queued','assigned','in_progress')""")
+        research_candidate_count=await conn.fetchval("select count(*) from research_candidates where status='discovered'")
+    needs_attention=int(open_exception_count or 0)+int(pilot_review_count or 0)+int(service_review_count or 0)+int(human_task_count or 0)
+    return {
+      "ok":True,
+      "headline":"Nothing urgent needs you." if needs_attention==0 else f"{needs_attention} operational items need review.",
+      "counts":{
+        "open_exceptions":int(open_exception_count or 0),
+        "provider_approvals":int(pilot_review_count or 0),
+        "service_change_reviews":int(service_review_count or 0),
+        "human_operator_tasks":int(human_task_count or 0),
+        "public_opportunities":int(opportunity_count or 0),
+        "research_candidates_waiting":int(research_candidate_count or 0)
+      },
+      "exceptions":[dict(r) for r in exceptions],
+      "provider_approvals":[dict(r) for r in pilot_reviews],
+      "service_change_reviews":[dict(r) for r in service_reviews],
+      "public_opportunities":[{
+        "opportunity_id":str(r["opportunity_id"]),"source_name":r["source_name"],"market":r["market"],
+        "service_name":r["display_name"],"title":r["title"],"source_url":r["source_url"],
+        "status":r["status"],"last_seen_at":r["last_seen_at"]
+      } for r in opportunities],
+      "operator_tasks":[dict(r) for r in human_tasks]
+    }
+
 @app.get("/api/admin/summary")
 async def admin_summary(x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)
@@ -2224,8 +2280,9 @@ async def admin_summary(x_bmc_admin_key:str|None=Header(default=None)):
         vendors=await conn.fetch("select status,count(*) n from vendors group by status order by n desc")
         outreach=await conn.fetch("select entity_type,status,count(*) n from outreach group by entity_type,status order by entity_type,status")
         exceptions=await conn.fetchval("select count(*) from exceptions where status='open'")
+        public_opportunities=await conn.fetchval("select count(*) from public_opportunities where status in ('discovered','actionable')")
         revenue=await conn.fetchval("select coalesce(sum(amount_cents),0) from revenue_events where status='earned'")
-    return {"leads":{r["status"]:r["n"] for r in leads},"vendors":{r["status"]:r["n"] for r in vendors},"outreach":[dict(r) for r in outreach],"open_exceptions":exceptions,"earned_revenue_cents":revenue}
+    return {"leads":{r["status"]:r["n"] for r in leads},"vendors":{r["status"]:r["n"] for r in vendors},"outreach":[dict(r) for r in outreach],"open_exceptions":exceptions,"public_opportunities":int(public_opportunities or 0),"earned_revenue_cents":revenue}
 
 @app.get("/api/admin/preflight")
 async def admin_preflight(x_bmc_admin_key:str|None=Header(default=None)):
