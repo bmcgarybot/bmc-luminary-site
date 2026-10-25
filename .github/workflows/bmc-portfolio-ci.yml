@@ -341,6 +341,22 @@ jobs:
             --data-binary @/tmp/bmc_candidate_review.json >/tmp/bmc_candidate_review_result.json
           test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_candidates where status='reviewed';") -eq 1
 
+          # A human-approved search result can become an internal prospect, but never an active provider or outbound action.
+          curl -fsS 'http://127.0.0.1:8000/api/admin/research-candidates?status=discovered&limit=10' \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_research_candidates_remaining.json
+          export PROMOTE_CANDIDATE_ID="$(python -c 'import json; d=json.load(open("/tmp/bmc_research_candidates_remaining.json")); assert d["count"]>=1; print(d["records"][0]["candidate_id"])')"
+          python - <<'PY' >/tmp/bmc_candidate_promote.json
+          import json, os
+          print(json.dumps({"candidate_id":os.environ["PROMOTE_CANDIDATE_ID"],"status":"promoted"}))
+          PY
+          curl -fsS -X POST http://127.0.0.1:8000/api/admin/research-candidate-status \
+            -H 'Content-Type: application/json' -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" \
+            --data-binary @/tmp/bmc_candidate_promote.json >/tmp/bmc_candidate_promote_result.json
+          export PROMOTED_ENTITY_ID="$(python -c 'import json; d=json.load(open("/tmp/bmc_candidate_promote_result.json")); assert d["ok"] is True; assert d["status"]=="promoted"; assert d["promoted_entity"]; print(d["promoted_entity"]["entity_id"])')"
+          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_candidates where status='promoted';") -eq 1
+          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from (select vendor_id as id,status from vendors union all select buyer_id as id,status from buyers) p where id='$PROMOTED_ENTITY_ID' and status='prospect';") -eq 1
+          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_id='$PROMOTED_ENTITY_ID';") -eq 0
+
           curl -fsS http://127.0.0.1:8000/api/admin/agent-status \
             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_agent_status.json
           python - <<'PY'
