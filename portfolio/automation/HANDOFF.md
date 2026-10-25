@@ -38,6 +38,10 @@ Important paths:
 - `portfolio/automation/CLOUD_DEPLOY.md`
 - `portfolio/automation/WHITE_LABEL.md`
 - `portfolio/automation/provision-cloud.sh`
+- `portfolio/automation/configure-cloudflare.sh`
+- `portfolio/automation/verify-public-ingress.sh`
+- `portfolio/automation/verify-backup.sh`
+- `portfolio/automation/install-backup-timer.sh`
 - `portfolio/automation/searxng/settings.yml`
 
 ### Google Drive
@@ -370,7 +374,7 @@ The green CI now proves:
 - internal Growth Pack fulfillment path
 - Stripe webhook/revenue/order/dedupe path
 
-The cloud-targeted code is **CI GREEN and deployed to the production VPS**. Runtime doctor reports `Core failures: 0`; first checksummed Postgres backup created at `backups/bmc_20261025_004243.dump`.
+The cloud-targeted code is **CI GREEN and deployed to the production VPS**. Runtime doctor reports `Core failures: 0`; first checksummed Postgres backup created at `backups/bmc_20261025_004243.dump`. GitHub also contains `verify-backup.sh` for an isolated real restore test and `install-backup-timer.sh` for a daily portable Postgres dump; these helpers still need to be pulled and run on the live VPS.
 
 ## SEO / AI discovery
 
@@ -396,8 +400,8 @@ Still needed:
 Do not add random new business ideas before clearing these:
 
 1. Keep both global outreach switches OFF.
-2. Keep the deployed cloud VPS healthy; runtime doctor is green and first checksummed backup is complete.
-3. Create the remotely managed Cloudflare Tunnel, run `./configure-cloudflare.sh`, publish `hooks.bmcluminaryventures.com` to `http://webhook_proxy:8080`, then run `./verify-public-ingress.sh`. Keep admin/n8n/SearXNG private via SSH forwarding.
+2. Pull the latest production helpers on the VPS, run `./verify-backup.sh`, then `./install-backup-timer.sh`; keep OVH automated backup as the provider-level layer.
+3. Create the remotely managed Cloudflare Tunnel, run `./configure-cloudflare.sh`, publish `hooks.bmcluminaryventures.com` to `http://webhook_proxy:8080`, then run `./verify-public-ingress.sh`. The verifier must prove `/admin` and `/api/admin/preflight` remain 404 publicly. Keep admin/n8n/SearXNG private via SSH forwarding.
 4. Configure transactional SMTP, monitored reply/IMAP, SPF/DKIM/DMARC, and the real BMC postal address.
 6. Invite only the curated `pilot1` providers using their dedicated activation links. The Prescott tree/landscape cluster already has three publicly credential-complete targets (ZebraScapes, Yavapai Landscaping, Jonny's).
 7. Review activation submissions in the private **Pending pilot reviews** queue, obtain direct COI/license confirmation as applicable, and explicitly approve 3+ providers in that first niche.
