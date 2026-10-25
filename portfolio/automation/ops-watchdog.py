@@ -40,6 +40,24 @@ def http_code(url, method="GET", timeout=15):
     except Exception as e:
         return None,str(e)
 
+def http_json(url, payload=None, timeout=15):
+    data=None
+    headers={"User-Agent":"BMC-Watchdog/1.0","Accept":"application/json"}
+    method="GET"
+    if payload is not None:
+        data=json.dumps(payload).encode("utf-8")
+        headers["Content-Type"]="application/json"
+        method="POST"
+    req=urllib.request.Request(url,data=data,method=method,headers=headers)
+    try:
+        with urllib.request.urlopen(req,timeout=timeout) as r:
+            raw=r.read(1_000_000).decode("utf-8","replace")
+            return int(r.status),json.loads(raw),None
+    except urllib.error.HTTPError as e:
+        return int(e.code),None,None
+    except Exception as e:
+        return None,None,str(e)
+
 def db_scalar(sql):
     user=ENV.get("POSTGRES_USER","")
     db=ENV.get("POSTGRES_DB","")
@@ -59,6 +77,8 @@ expected=[
     "bmc-postgres-1","bmc-ops_api-1","bmc-scheduler-1","bmc-n8n-1",
     "bmc-searxng-1","bmc-webhook_proxy-1","bmc-cloudflared-1"
 ]
+if ENV.get("LOCAL_AI_ENABLED","false").lower()=="true":
+    expected.append("bmc-ollama-1")
 missing=[x for x in expected if x not in running]
 add("Docker services",not missing,"all core services running" if not missing else "missing: "+", ".join(missing))
 
@@ -69,8 +89,26 @@ add("Postgres",rc==0 and out=="healthy",out or err or "unavailable")
 # Local app and n8n health.
 code,err=http_code("http://127.0.0.1:8000/health")
 add("Ops API",code==200,f"HTTP {code}" if code else err or "unreachable")
+
+search_code,search_data,search_err=http_json(
+    "http://127.0.0.1:8000/api/service-search",
+    {"query":"fix my fryer"},
+    timeout=8
+)
+search_key=((search_data or {}).get("match") or {}).get("service_key")
+add(
+    "Intelligent service search",
+    search_code==200 and search_key=="restaurant_equipment",
+    f"'fix my fryer' -> {search_key}" if search_code==200 else (search_err or f"HTTP {search_code}"),
+    "failure"
+)
 code,err=http_code("http://127.0.0.1:5678/healthz")
 add("n8n",code==200,f"HTTP {code}" if code else err or "unreachable")
+
+# Local AI is required only when configured; deterministic search still handles known phrases.
+if ENV.get("LOCAL_AI_ENABLED","false").lower()=="true":
+    code,err=http_code("http://127.0.0.1:11434/api/tags",timeout=6)
+    add("Local AI / Ollama",code==200,f"HTTP {code}" if code else err or "unreachable","failure")
 
 # Research is useful but not launch-critical.
 code,err=http_code("http://127.0.0.1:8888/")
