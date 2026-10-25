@@ -75,6 +75,8 @@ CMS_SOURCE_NATIVE_ENABLED=os.getenv("CMS_SOURCE_NATIVE_ENABLED","true").lower()=
 CMS_SOURCE_NATIVE_PAGE_SIZE=max(10,min(500,env_int("CMS_SOURCE_NATIVE_PAGE_SIZE",100)))
 CMS_HOSPITALS_URL=os.getenv("CMS_HOSPITALS_URL","https://data.cms.gov/provider-data/api/1/datastore/query/xubh-q36u/0").strip()
 CMS_NURSING_HOMES_URL=os.getenv("CMS_NURSING_HOMES_URL","https://data.cms.gov/provider-data/api/1/datastore/query/4pq5-n9py/0").strip()
+CMS_HOME_HEALTH_URL=os.getenv("CMS_HOME_HEALTH_URL","https://data.cms.gov/provider-data/api/1/datastore/query/6jpm-sxkc/0").strip()
+CMS_HOSPICE_URL=os.getenv("CMS_HOSPICE_URL","https://data.cms.gov/provider-data/api/1/datastore/query/yc9t-dgbk/0").strip()
 
 BUYER_RESEARCH_HINTS={
     "commercial_cleaning":'"hospital" OR "clinic" OR "dental" OR "therapy" OR "pharmacy" OR "grocery" OR "retail" OR "insurance office" OR "school" OR "church" OR "hotel" OR "apartment" OR "restaurant"',
@@ -130,6 +132,11 @@ CMS_FACILITY_CORE_SERVICES=(
     "electrical_service","duct_vent","pressure_washing","linen_laundry","restaurant_equipment",
     "ice_machine","landscaping","junk_hauling","waste_audit","coffee_water"
 )
+CMS_HEALTH_OFFICE_SERVICES=(
+    "commercial_cleaning","floor_carpet","window_cleaning","hvac_heat","pest_control",
+    "parking_lot","fire_safety","locksmith_access","backflow_plumbing","facility_maintenance",
+    "electrical_service","duct_vent","pressure_washing","waste_audit","coffee_water"
+)
 ADHS_SOURCE_KEY="adhs_facilities_arcgis"
 ADHS_SOURCE_NAME="Arizona Department of Health Services Licensed Facilities"
 ADHS_LAYER_PAGE="https://services1.arcgis.com/mpVYz37anSdrK4d8/ArcGIS/rest/services/All_State_Licensed_Facilities_in_Arizona/FeatureServer/18"
@@ -140,7 +147,8 @@ CMS_SOURCE_DATASETS=(
       "dataset_id":"xubh-q36u",
       "dataset_page":"https://data.cms.gov/provider-data/dataset/xubh-q36u",
       "url":CMS_HOSPITALS_URL,
-      "kind":"hospital"
+      "kind":"hospital",
+      "services":CMS_FACILITY_CORE_SERVICES
     },
     {
       "source_key":"cms_nursing_homes",
@@ -148,7 +156,26 @@ CMS_SOURCE_DATASETS=(
       "dataset_id":"4pq5-n9py",
       "dataset_page":"https://data.cms.gov/provider-data/dataset/4pq5-n9py",
       "url":CMS_NURSING_HOMES_URL,
-      "kind":"nursing_home"
+      "kind":"nursing_home",
+      "services":CMS_FACILITY_CORE_SERVICES
+    },
+    {
+      "source_key":"cms_home_health",
+      "source_name":"CMS Home Health Care Agencies",
+      "dataset_id":"6jpm-sxkc",
+      "dataset_page":"https://data.cms.gov/provider-data/dataset/6jpm-sxkc",
+      "url":CMS_HOME_HEALTH_URL,
+      "kind":"home_health",
+      "services":CMS_HEALTH_OFFICE_SERVICES
+    },
+    {
+      "source_key":"cms_hospice",
+      "source_name":"CMS Hospice General Information",
+      "dataset_id":"yc9t-dgbk",
+      "dataset_page":"https://data.cms.gov/provider-data/dataset/yc9t-dgbk",
+      "url":CMS_HOSPICE_URL,
+      "kind":"hospice",
+      "services":CMS_HEALTH_OFFICE_SERVICES
     }
 )
 
@@ -733,7 +760,7 @@ def cms_buyer_record(source,row,market):
         facility_type=clean(row.get("hospital_type")) or "Hospital"
         ownership=clean(row.get("hospital_ownership"))
         processing_date=None
-    else:
+    elif kind=="nursing_home":
         identity=clean(row.get("cms_certification_number_ccn"))
         name=clean(row.get("provider_name"))
         address=clean(row.get("provider_address"))
@@ -744,6 +771,29 @@ def cms_buyer_record(source,row,market):
         facility_type=clean(row.get("provider_type")) or "Nursing Home"
         ownership=clean(row.get("ownership_type"))
         processing_date=clean(row.get("processing_date")) or None
+    elif kind=="home_health":
+        identity=clean(row.get("cms_certification_number_ccn"))
+        name=clean(row.get("provider_name"))
+        address=clean(row.get("address"))
+        city=clean(row.get("citytown")) or market
+        zip_code=clean(row.get("zip_code"))
+        county=clean(row.get("countyparish"))
+        phone=clean(row.get("telephone_number"))
+        facility_type="Home Health Agency"
+        ownership=clean(row.get("type_of_ownership"))
+        processing_date=None
+    else:
+        identity=clean(row.get("cms_certification_number_ccn"))
+        name=clean(row.get("facility_name"))
+        address=" ".join(x for x in (
+          clean(row.get("address_line_1")),clean(row.get("address_line_2"))) if x)
+        city=clean(row.get("citytown")) or market
+        zip_code=clean(row.get("zip_code"))
+        county=clean(row.get("countyparish"))
+        phone=clean(row.get("telephone_number"))
+        facility_type="Hospice"
+        ownership=clean(row.get("ownership_type"))
+        processing_date=None
     if not identity or not name:
         return None
     evidence={
@@ -759,6 +809,7 @@ def cms_buyer_record(source,row,market):
       "zip_code":zip_code or None,
       "county":county or None,
       "processing_date":processing_date,
+      "certification_date":clean(row.get("certification_date")) or None,
       "general_reference_only":True,
       "current_organization_contact_requires_verification":True
     }
@@ -2515,7 +2566,7 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
                          and lower(business_name)=lower($2) and public_phone=$4)
                   order by case when buyer_id=$1 then 0 else 1 end limit 1""",
                   buyer_id,name,market,phone)
-                services=set(CMS_FACILITY_CORE_SERVICES)
+                services=set(source.get("services") or CMS_FACILITY_CORE_SERVICES)
                 if existing:
                     entity_id=existing["buyer_id"]
                     services.update(x for x in clean(existing["likely_services"]).split("|") if x)
@@ -2556,7 +2607,7 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
                 json.dumps({"page_size":CMS_SOURCE_NATIVE_PAGE_SIZE,"last_cursor":cursor,
                             "next_cursor":next_cursor,"last_page_records":len(rows),
                             "dataset_id":source["dataset_id"],"last_error":None}))
-              for service_key in CMS_FACILITY_CORE_SERVICES:
+              for service_key in (source.get("services") or CMS_FACILITY_CORE_SERVICES):
                 count=await conn.fetchval("""select count(*) from buyers
                   where market=$1 and $2=any(string_to_array(coalesce(likely_services,''),'|'))
                     and status<>'suppressed'""",market,service_key)
