@@ -13,6 +13,40 @@
   const GLOBAL_WEBHOOK=window.BMC_WEBHOOK_URL||"https://hooks.bmcservicenetwork.com/api/intake";
   const CONTACT_EMAIL="contact@bmcservicenetwork.com";
 
+  // BMC_SCROLL_MOTION_V7: lightweight progressive motion for the editorial customer experience.
+  const reduceMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(document.body.classList.contains("editorial-site")&&!reduceMotion){
+    document.documentElement.classList.add("js-motion");
+    const revealTargets=[...document.querySelectorAll(
+      ".editorial-intro,.image-service-card,.category-tile,.service-card,.venture-card,.steps .card,.reassure-strip,.soft-panel,.request-card"
+    )];
+    revealTargets.forEach(function(el,i){
+      el.classList.add("reveal-item");
+      el.style.setProperty("--reveal-delay",Math.min((i%6)*55,275)+"ms");
+    });
+    const observer=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){entry.target.classList.add("is-visible");observer.unobserve(entry.target);}
+      });
+    },{threshold:.12,rootMargin:"0px 0px -5% 0px"});
+    revealTargets.forEach(function(el){observer.observe(el);});
+
+    const heroImg=document.querySelector(".hero-photo img");
+    let ticking=false;
+    function motionFrame(){
+      const y=Math.min(window.scrollY,700);
+      if(heroImg&&window.innerWidth>850)heroImg.style.transform="translateY("+(y*.035)+"px) scale(1.055)";
+      document.querySelector(".editorial-site .nav")?.classList.toggle("is-scrolled",window.scrollY>18);
+      ticking=false;
+    }
+    window.addEventListener("scroll",function(){
+      if(!ticking){requestAnimationFrame(motionFrame);ticking=true;}
+    },{passive:true});
+    motionFrame();
+  } else {
+    document.querySelector(".editorial-site .nav")?.classList.toggle("is-scrolled",window.scrollY>18);
+  }
+
   document.querySelectorAll("[data-market-select]").forEach(function(sel){
     if(sel.options.length>1)return;
     markets.forEach(function(city){const o=document.createElement("option");o.value=city;o.textContent=city;sel.appendChild(o);});
