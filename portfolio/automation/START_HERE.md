@@ -6,20 +6,22 @@ Primary deployment guide: `CLOUD_DEPLOY.md`.
 
 ## Production target
 
-Initial production class:
-- Ubuntu 24.04 LTS x86_64
-- 4 vCPU
-- 8 GB RAM
-- 75+ GB NVMe
-- monthly billing initially
+Live production class:
+- OVHcloud VPS-3 2027, Beauharnois
+- Ubuntu 26.04 LTS x86_64
+- 6 vCPU
+- 12 GB RAM
+- 100 GB NVMe
+- 2 Gbps unlimited
+- no commitment / monthly billing
 - Cloudflare Tunnel for public ingress
-- provider snapshot/backup capability
+- OVH automated backup plus portable Postgres dumps
 
-The current intended purchase is the OVHcloud VPS-2 class, but the stack remains provider-neutral.
+The stack remains provider-neutral.
 
 ## Current durable build status
 
-As of October 24, 2026:
+As of October 25, 2026:
 - 48 registered BMC service businesses
 - 12 Arizona market hubs
 - 210 researched vendor prospects
@@ -32,30 +34,29 @@ As of October 24, 2026:
 - Stripe webhook/revenue/subscription event handling
 - four live Stripe products/prices
 - Google Drive Master Operations sheet as human-readable command center
+- live cloud VPS deployed and runtime-doctor green
+- first checksummed production Postgres backup completed
 - cloud VPS provisioning/runbook
-- resource limits/log rotation for the 8 GB production class
+- conservative resource limits/log rotation with headroom on the 12 GB host
 - clonable single-tenant foundation for future white-label deployments
 
 ## Current external blockers
 
-1. **Cloud VPS purchase/deployment**
-   - create the Ubuntu VPS
-   - clone this repo
-   - run `provision-cloud.sh`
-   - create the real `.env`
-   - run `bootstrap.sh`
-   - confirm runtime doctor
+1. **Public webhook ingress**
+   - create/authorize the Cloudflare Tunnel
+   - run `configure-cloudflare.sh`
+   - publish `hooks.bmcluminaryventures.com` to `http://webhook_proxy:8080`
+   - run `verify-public-ingress.sh`
 
 2. **Stripe account activation**
    - finish BMC Stripe onboarding/verification
    - enable card/payment methods
    - create the existing products' Payment Links
 
-3. **Public webhook ingress**
-   - create/authorize the Cloudflare Tunnel
-   - route `hooks.bmcluminaryventures.com` to `webhook_proxy:8080`
-   - create Stripe webhook endpoint
-   - store its signing secret in `.env`
+3. **Portable backup automation**
+   - run `verify-backup.sh` against the latest production dump
+   - install `install-backup-timer.sh` for daily portable dumps
+   - add a true off-host copy before meaningful customer data accumulates
 
 4. **Outbound mail**
    - configure SMTP
@@ -84,7 +85,7 @@ AI is not required for ordinary customer/provider flows. Templates and determini
 ```bash
 git clone https://github.com/bmcgarybot/bmc-luminary-site.git
 cd bmc-luminary-site/portfolio/automation
-chmod +x provision-cloud.sh bootstrap.sh start.sh stop.sh backup.sh runtime-doctor.sh
+chmod +x provision-cloud.sh bootstrap.sh start.sh stop.sh backup.sh runtime-doctor.sh configure-cloudflare.sh verify-public-ingress.sh verify-backup.sh install-backup-timer.sh
 ./provision-cloud.sh
 ```
 
@@ -130,12 +131,13 @@ Do not publish `/admin`.
 Use SSH port forwarding:
 
 ```bash
-ssh -L 8000:127.0.0.1:8000 -L 5678:127.0.0.1:5678 YOUR_USER@YOUR_VPS_IP
+ssh -L 8000:127.0.0.1:8000 -L 5678:127.0.0.1:5678 -L 8888:127.0.0.1:8888 ubuntu@148.113.151.47
 ```
 
 Then locally:
 - BMC admin: `http://127.0.0.1:8000/admin`
 - n8n: `http://127.0.0.1:5678`
+- SearXNG: `http://127.0.0.1:8888`
 
 Private agent status:
 
@@ -145,7 +147,7 @@ curl http://127.0.0.1:8000/api/admin/agent-status -H "X-BMC-Admin-Key: $BMC_ADMI
 
 ## Optional resident AI
 
-The 8 GB VPS is deliberately designed to run without an LLM in the critical path.
+The 12 GB VPS is deliberately designed to run without an LLM in the critical path.
 
 Start the conservative utility model only after the core is healthy:
 
@@ -154,17 +156,25 @@ docker compose --profile local-ai up -d ollama
 docker compose --profile local-ai exec ollama ollama pull qwen3:1.7b
 ```
 
-Use a 4B model only after measuring real memory headroom. Heavy reasoning can later escalate to ENVY/Bonsai or an API model without changing the core transaction system.
+A 3B–4B model can be tested later after measuring real memory/latency headroom. Heavy reasoning can later escalate to ENVY/Bonsai or an API model without changing the core transaction system.
 
 ## Public tunnel
 
-After the Cloudflare Tunnel token is configured:
+After creating a remotely managed tunnel in Cloudflare:
 
 ```bash
-docker compose --profile tunnel up -d cloudflared
+git pull --ff-only
+chmod +x configure-cloudflare.sh verify-public-ingress.sh
+./configure-cloudflare.sh
 ```
 
-The public gateway must not expose the admin interface.
+Publish `hooks.bmcluminaryventures.com` to `http://webhook_proxy:8080` in Cloudflare, then:
+
+```bash
+./verify-public-ingress.sh
+```
+
+The verifier fails if private admin routes appear publicly reachable.
 
 ## Outreach safety
 
@@ -187,11 +197,25 @@ After Stripe activation:
 
 ## Backup
 
+Create a portable dump:
+
 ```bash
 ./backup.sh
 ```
 
-Backups are compressed, checksummed and instance-named. Keep provider snapshots too, and add off-host backup before meaningful production data accumulates.
+Prove the latest dump can actually restore without touching production:
+
+```bash
+./verify-backup.sh
+```
+
+Install the daily systemd timer (about 3:15 AM Arizona time):
+
+```bash
+./install-backup-timer.sh
+```
+
+Backups are compressed, checksummed and instance-named. OVH's provider backup is useful, but add a true off-host copy before meaningful customer data accumulates.
 
 ## White-label path
 
