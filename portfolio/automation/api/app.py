@@ -865,6 +865,8 @@ async def handle_lead(conn,p):
           "service_key":"unclassified","service_name":None,
           "message":"We got your request. It needs one more classification step before we can send it to the right place."}
 
+    display_name=clean(service["display_name"]) if service else service_key.replace("_"," ").title()
+
     if fulfillment_mode=="provider_match":
         lead=await conn.fetchrow("select * from leads where lead_id=$1",lead_id)
         await offer_next(conn,lead)
@@ -884,7 +886,6 @@ async def handle_lead(conn,p):
       "managed_concierge":"managed_concierge",
       "facility_split":"facility_triage"
     }.get(fulfillment_mode,"internal_review")
-    display_name=clean(service["display_name"]) if service else service_key
     summary=f"{display_name}: {clean(p.get('business_name')) or clean(p.get('contact_name')) or 'customer'} in {market}"
     task_id=await conn.fetchval("""insert into tasks(lead_id,order_id,service_key,task_type,status,priority,summary,payload)
       values($1,$2,$3,$4,'open',$5,$6,$7::jsonb) returning task_id""",
