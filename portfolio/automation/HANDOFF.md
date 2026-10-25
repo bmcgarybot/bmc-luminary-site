@@ -1828,3 +1828,141 @@ Prefer official, structured, public datasets/APIs with:
 - lawful public access without bypassing controls.
 
 Keep all imported entities prospect-only, source-attributed, deduplicated, and disconnected from outreach until separately approved.
+
+
+## 27. CMS INSTITUTIONAL BUYER RESEARCH CHECKPOINT — 2026-10-25
+
+This section continues Section 26. CMS hospital and nursing-home directories are now integrated into source-native buyer research and CI-verified.
+
+### Verified functional checkpoint
+
+Functional master:
+- `b2c704480a00c7fd0d88d1bc49716ac2b2a14cf7`
+- BMC Portfolio CI run `40220461989`: **SUCCESS**
+- full database/API smoke: **SUCCESS**
+
+### CMS Provider Data Catalog integration
+
+BMC now uses three independent authoritative institutional-research lanes per configured market:
+
+1. `adhs_facilities_arcgis`
+2. `cms_hospitals`
+3. `cms_nursing_homes`
+
+CMS sources:
+- Hospital General Information — dataset ID `xubh-q36u`
+- Nursing Home Provider Information — dataset ID `4pq5-n9py`
+
+The CMS Provider Data Catalog API:
+- is public;
+- requires no API key;
+- supports stable dataset-ID endpoints across data refreshes;
+- supports offset pagination.
+
+CMS data freshness independently verified in this thread:
+- Nursing Home Provider Information was released October 8, 2026 from a September 30, 2026 modification and had another planned update October 28.
+- CMS reported a hospital dataset refresh September 30, 2026.
+- This gives BMC a materially fresher institutional source alongside the older ADHS all-facilities GIS layer.
+
+### Cross-source deduplication and evidence lineage
+
+Source-native buyer records now preserve a nested `source_data.sources` map.
+
+When ADHS and CMS describe the same organization:
+- BMC reuses one buyer prospect when market + business name + public phone align;
+- the buyer retains evidence for both sources;
+- the newest source does not erase the prior source lineage;
+- buyer count increases only once.
+
+The deterministic CI fixture intentionally makes the CMS hospital the same organization as the ADHS hospital.
+
+CI proves:
+- ADHS active hospital + ADHS behavioral/residential facility + CMS nursing home = 3 buyer prospects total;
+- the CMS hospital does **not** create a fourth buyer;
+- the hospital prospect contains both `adhs_facilities_arcgis` and `cms_hospitals` evidence;
+- the nursing-home prospect contains `cms_nursing_homes` evidence;
+- there is exactly one buyer record for the duplicated hospital;
+- no outreach rows are created.
+
+### CMS source-native behavior
+
+CMS rows are normalized into institutional buyer prospects using stable provider/facility identifiers, public address/phone, organization/facility type and ownership fields where available.
+
+Current CMS facility service coverage includes:
+- commercial cleaning
+- floor/carpet
+- window cleaning
+- HVAC
+- pest control
+- parking lot
+- fire safety
+- locksmith/access control
+- backflow/plumbing
+- facility maintenance
+- electrical
+- duct/vent
+- pressure washing
+- linen/laundry
+- restaurant equipment
+- ice machine
+- landscaping
+- junk hauling
+- waste audit
+- coffee/water
+
+Each CMS dataset has its own `source_native_state` row per market.
+
+A source-native cycle therefore has independent cursor/health state for ADHS, CMS hospitals and CMS nursing homes.
+
+### First-run / repeat-run CI proof
+
+With the deterministic Prescott fixtures:
+
+First run:
+- 1 market;
+- 3 successful source checks;
+- 4 accepted source records;
+- 3 new buyer prospects;
+- 1 cross-source buyer update;
+- zero outbound actions.
+
+Second identical run:
+- 3 successful source checks;
+- 4 source records;
+- 0 new prospects;
+- 4 updates to the same existing prospects;
+- zero duplicates;
+- zero outbound actions.
+
+The daily source-health brief now tracks all three source-market states independently.
+
+### Key commits
+
+- `1534fc07a4d4a165f10e5a7bfe13c9ba8d1445cd` — CMS source definitions, API normalization and multi-source merge helper.
+- `8dca437a8c421743dacd527b27e5c367980dff09` — preserve multi-source institutional evidence.
+- `f4da66c9b1070d5c56df3cc5087f0bf0201a153c` — CMS hospital + nursing-home source-native import loops.
+- `b3cb871b85f33332d1e9326d8a5ab184d4194294` / `2b231eb46ebfc2461fb351bf4ba98936ecf1cba0` — CMS runtime configuration.
+- `abec9eb3ff6dd0aec25d094c692cc87c402ac7d9` / `609ce8232b3b093f1307074729df8e438b7a2b5c` — deterministic CMS fixtures.
+- `b2c704480a00c7fd0d88d1bc49716ac2b2a14cf7` — end-to-end CMS + ADHS cross-source CI proof; run `40220461989` green.
+
+### Safe next institutional lanes
+
+Official CMS datasets already identified for possible next integration:
+- Home Health Care Agencies — `6jpm-sxkc`
+- Hospice General Information — `yc9t-dgbk`
+
+They should use the same rules:
+- buyer prospect only;
+- source-attributed;
+- deduplicated;
+- no automatic outreach;
+- no clinical/patient-level data;
+- no quality-score logic needed for acquisition.
+
+### Production state remains unchanged
+
+Current master remains ahead of the last verified VPS deployment.
+
+Do not treat ADHS/CMS source-native research as live until the VPS safe deploy and production source-native smoke tests are run.
+
+All outbound gates remain OFF.
