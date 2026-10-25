@@ -454,3 +454,14 @@ Runtime doctor is healthy with 0 core failures. Public site and Cloudflare Tunne
 - Configure monitored IMAP inbox before outbound prospecting.
 - Set the real BMC postal address before outbound prospecting.
 - Configure the Stripe webhook after Stripe activation.
+
+
+### Post-reboot production verification (2026-10-24)
+- Ubuntu updated to 26.04.1 LTS with 0 pending updates.
+- VPS reboot completed successfully.
+- Docker services auto-restarted via `restart: unless-stopped`.
+- Postgres returned healthy.
+- Cloudflare Tunnel returned healthy and public ingress verification passed after reboot.
+- Private admin routes remained blocked publicly.
+- Runtime doctor reported 0 core failures.
+- BMC database backup timer remained scheduled.
