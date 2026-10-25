@@ -210,6 +210,15 @@ async def send_mail(to,subject,body,html_body=None):
 def clean(v): return str(v or "").strip()
 def slug(v): return re.sub(r"[^a-z0-9]+","-",clean(v).lower()).strip("-")[:40] or "vendor"
 
+def extract_public_contact(text):
+    raw=clean(text)
+    email_match=re.search(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,63}\b",raw,re.I)
+    phone_match=re.search(r"(?<!\d)(?:\+?1[\s.\-]?)?(?:\(\d{3}\)|\d{3})[\s.\-]\d{3}[\s.\-]\d{4}(?!\d)",raw)
+    return {
+      "public_email":clean(email_match.group(0)).lower() if email_match else None,
+      "public_phone":clean(phone_match.group(0)) if phone_match else None
+    }
+
 def workflow_email_html(title,body_lines,button_label=None,button_url=None):
     rows="".join(f"<p style='margin:0 0 14px;line-height:1.55'>{html.escape(clean(line)).replace(chr(10),'<br>')}</p>" for line in body_lines if clean(line))
     button=""
@@ -1985,7 +1994,10 @@ async def process_research(x_bmc_admin_key:str|None=Header(default=None)):
                   returning candidate_id""",
                   task["research_id"],task["task_id"],task["side"],task["market"],task["service_key"],
                   result["title"],result["title"],result["url"],result["domain"],result["snippet"],query,rank,
-                  json.dumps({"search_engine":result["engine"],"search_score":result["score"]}))
+                  json.dumps({
+                    "search_engine":result["engine"],"search_score":result["score"],
+                    **extract_public_contact(f'{result["title"]} {result["snippet"]}')
+                  }))
                 if inserted:
                     staged+=1
             total=int(await conn.fetchval("select count(*) from research_candidates where research_id=$1",task["research_id"]) or 0)
@@ -2236,15 +2248,23 @@ async def admin_research_candidate_status(request:Request,x_bmc_admin_key:str|No
             if row["side"]=="vendor":
                 existing=await conn.fetchrow("""select vendor_id from vendors
                   where source_url=$1 or website=$1 order by updated_at desc limit 1""",source_url)
+                evidence=row["evidence"] if isinstance(row["evidence"],dict) else {}
+                public_email=clean(evidence.get("public_email"))
+                public_phone=clean(evidence.get("public_phone"))
                 if existing:
                     entity_id=existing["vendor_id"]
+                    await conn.execute("""update vendors set
+                        public_email=case when coalesce(public_email,'')='' then nullif($2,'') else public_email end,
+                        public_phone=case when coalesce(public_phone,'')='' then nullif($3,'') else public_phone end,
+                        updated_at=now()
+                      where vendor_id=$1""",entity_id,public_email,public_phone)
                 else:
                     entity_id="v_research_"+cid.replace("-","")[:16]
                     await conn.execute("""insert into vendors(
-                        vendor_id,business_name,website,source_url,status,notes)
-                      values($1,$2,$3,$3,'prospect',$4)
+                        vendor_id,business_name,public_email,public_phone,website,source_url,status,notes)
+                      values($1,$2,nullif($3,''),nullif($4,''),$5,$5,'prospect',$6)
                       on conflict(vendor_id) do nothing""",
-                      entity_id,candidate_name,source_url,
+                      entity_id,candidate_name,public_email,public_phone,source_url,
                       f"Unverified prospect promoted from autonomous research candidate {cid}. Verify identity, credentials, and public contact details before outreach or activation.")
                 if clean(row["service_key"]):
                     await conn.execute("""insert into vendor_services(vendor_id,service_key)
@@ -2261,21 +2281,27 @@ async def admin_research_candidate_status(request:Request,x_bmc_admin_key:str|No
             else:
                 existing=await conn.fetchrow("""select buyer_id,likely_services from buyers
                   where source_url=$1 or website=$1 order by updated_at desc limit 1""",source_url)
+                evidence=row["evidence"] if isinstance(row["evidence"],dict) else {}
+                public_email=clean(evidence.get("public_email"))
+                public_phone=clean(evidence.get("public_phone"))
                 if existing:
                     entity_id=existing["buyer_id"]
                     services=[x for x in clean(existing["likely_services"]).split("|") if x]
                     if clean(row["service_key"]) and row["service_key"] not in services:
                         services.append(row["service_key"])
-                        await conn.execute("""update buyers set likely_services=$2,updated_at=now()
-                          where buyer_id=$1""",entity_id,"|".join(services))
+                    await conn.execute("""update buyers set likely_services=$2,
+                        public_email=case when coalesce(public_email,'')='' then nullif($3,'') else public_email end,
+                        public_phone=case when coalesce(public_phone,'')='' then nullif($4,'') else public_phone end,
+                        updated_at=now()
+                      where buyer_id=$1""",entity_id,"|".join(services),public_email,public_phone)
                 else:
                     entity_id="b_research_"+cid.replace("-","")[:16]
                     await conn.execute("""insert into buyers(
-                        buyer_id,business_name,market,buyer_type,website,source_url,likely_services,
+                        buyer_id,business_name,market,buyer_type,public_email,public_phone,website,source_url,likely_services,
                         priority,campaign,status,notes)
-                      values($1,$2,$3,'research',$4,$4,$5,'research','autonomous_research','prospect',$6)
+                      values($1,$2,$3,'research',nullif($4,''),nullif($5,''),$6,$6,$7,'research','autonomous_research','prospect',$8)
                       on conflict(buyer_id) do nothing""",
-                      entity_id,candidate_name,row["market"],source_url,clean(row["service_key"]),
+                      entity_id,candidate_name,row["market"],public_email,public_phone,source_url,clean(row["service_key"]),
                       f"Unverified buyer prospect promoted from autonomous research candidate {cid}. Verify organization and public contact path before outreach.")
                 promoted_entity={"entity_type":"buyer","entity_id":entity_id}
                 current_count=await conn.fetchval("""select count(*) from buyers
