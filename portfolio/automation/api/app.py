@@ -68,25 +68,42 @@ RESEARCH_SEARCH_RESULTS=max(1,min(20,env_int("RESEARCH_SEARCH_RESULTS",8)))
 RESEARCH_WORKER_BATCH=max(1,min(5,env_int("RESEARCH_WORKER_BATCH",1)))
 
 BUYER_RESEARCH_HINTS={
-    "commercial_cleaning":"hospital clinic dental therapy pharmacy grocery retail insurance office school church hotel apartment restaurant",
-    "floor_carpet":"hospital clinic dental therapy hotel school church theater office retail grocery property manager",
-    "window_cleaning":"hospital clinic dental hotel school church office retail grocery property manager",
-    "hvac_heat":"hospital clinic dental pharmacy grocery retail hotel school church office property manager",
-    "pest_control":"restaurant grocery pharmacy hotel school daycare senior living clinic property manager warehouse",
-    "parking_lot":"grocery retail pharmacy hotel school church medical office apartment auto dealer warehouse",
-    "fire_safety":"hospital clinic dental school church hotel restaurant grocery retail warehouse",
-    "sign_lighting":"retail grocery pharmacy restaurant hotel auto dealer office property manager",
-    "locksmith_access":"hospital clinic dental pharmacy retail grocery school church office property manager apartment",
-    "backflow_plumbing":"hospital clinic school restaurant hotel grocery property manager public facility",
-    "landscaping":"hospital clinic hotel school church property manager apartment retail public facility",
-    "tree_service":"hotel school church property manager apartment public facility",
-    "junk_hauling":"property manager apartment hotel school church retail office restaurant public facility",
-    "restaurant_equipment":"restaurant hotel hospital school senior living institutional kitchen",
-    "hood_exhaust":"restaurant hotel hospital school senior living institutional kitchen",
-    "ice_machine":"restaurant hotel hospital school senior living grocery convenience",
-    "linen_laundry":"hotel hospital senior living restaurant spa clinic public facility",
-    "facility_maintenance":"hospital clinic dental therapy pharmacy grocery retail insurance office school church hotel apartment restaurant warehouse public facility"
+    "commercial_cleaning":'"hospital" OR "clinic" OR "dental" OR "therapy" OR "pharmacy" OR "grocery" OR "retail" OR "insurance office" OR "school" OR "church" OR "hotel" OR "apartment" OR "restaurant"',
+    "floor_carpet":'"hospital" OR "clinic" OR "dental" OR "therapy" OR "hotel" OR "school" OR "church" OR "theater" OR "office" OR "retail" OR "grocery" OR "property manager"',
+    "window_cleaning":'"hospital" OR "clinic" OR "dental" OR "hotel" OR "school" OR "church" OR "office" OR "retail" OR "grocery" OR "property manager"',
+    "hvac_heat":'"hospital" OR "clinic" OR "dental" OR "pharmacy" OR "grocery" OR "retail" OR "hotel" OR "school" OR "church" OR "office" OR "property manager"',
+    "pest_control":'"restaurant" OR "grocery" OR "pharmacy" OR "hotel" OR "school" OR "daycare" OR "senior living" OR "clinic" OR "property manager" OR "warehouse"',
+    "parking_lot":'"grocery" OR "retail" OR "pharmacy" OR "hotel" OR "school" OR "church" OR "medical office" OR "apartment" OR "auto dealer" OR "warehouse"',
+    "fire_safety":'"hospital" OR "clinic" OR "dental" OR "school" OR "church" OR "hotel" OR "restaurant" OR "grocery" OR "retail" OR "warehouse"',
+    "sign_lighting":'"retail" OR "grocery" OR "pharmacy" OR "restaurant" OR "hotel" OR "auto dealer" OR "office" OR "property manager"',
+    "locksmith_access":'"hospital" OR "clinic" OR "dental" OR "pharmacy" OR "retail" OR "grocery" OR "school" OR "church" OR "office" OR "property manager" OR "apartment"',
+    "backflow_plumbing":'"hospital" OR "clinic" OR "school" OR "restaurant" OR "hotel" OR "grocery" OR "property manager" OR "public facility"',
+    "landscaping":'"hospital" OR "clinic" OR "hotel" OR "school" OR "church" OR "property manager" OR "apartment" OR "retail" OR "public facility"',
+    "tree_service":'"hotel" OR "school" OR "church" OR "property manager" OR "apartment" OR "public facility"',
+    "junk_hauling":'"property manager" OR "apartment" OR "hotel" OR "school" OR "church" OR "retail" OR "office" OR "restaurant" OR "public facility"',
+    "restaurant_equipment":'"restaurant" OR "hotel" OR "hospital" OR "school" OR "senior living" OR "institutional kitchen"',
+    "hood_exhaust":'"restaurant" OR "hotel" OR "hospital" OR "school" OR "senior living" OR "institutional kitchen"',
+    "ice_machine":'"restaurant" OR "hotel" OR "hospital" OR "school" OR "senior living" OR "grocery" OR "convenience store"',
+    "linen_laundry":'"hotel" OR "hospital" OR "senior living" OR "restaurant" OR "spa" OR "clinic" OR "public facility"',
+    "facility_maintenance":'"hospital" OR "clinic" OR "dental" OR "therapy" OR "pharmacy" OR "grocery" OR "retail" OR "insurance office" OR "school" OR "church" OR "hotel" OR "apartment" OR "restaurant" OR "warehouse" OR "public facility"'
 }
+
+MARKET_RESEARCH_CONTEXT={
+    "Prescott":'"high desert" OR "defensible space" OR "wildfire" OR "septic" OR "well"',
+    "Prescott Valley":'"high desert" OR "defensible space" OR "wildfire" OR "septic" OR "well"',
+    "Chino Valley":'"acreage" OR "grading" OR "septic" OR "well" OR "land clearing"',
+    "Camp Verde":'"acreage" OR "irrigation" OR "septic" OR "well" OR "brush clearing"',
+    "Cottonwood":'"Verde Valley" OR "irrigation" OR "septic" OR "tree care"',
+    "Sedona":'"vacation rental" OR "hospitality" OR "desert landscape" OR "pool"',
+    "Flagstaff":'"snow" OR "ice" OR "freeze" OR "heating" OR "tree care"',
+    "Winslow":'"wind" OR "dust" OR "towing" OR "heating" OR "cooling"',
+    "Kingman":'"desert heat" OR "septic" OR "well" OR "water" OR "cooling"',
+    "Phoenix":'"extreme heat" OR "pool" OR "cooling" OR "pest" OR "desert landscape"',
+    "Scottsdale":'"extreme heat" OR "pool" OR "cooling" OR "pest" OR "desert landscape"',
+    "Tucson":'"extreme heat" OR "pool" OR "cooling" OR "pest" OR "desert landscape"'
+}
+ENVIRONMENT_SENSITIVE_SERVICES={"tree_service","landscaping","rural_property","snow_service","pool_desert_property","hvac_heat","pest_control","towing_roadside"}
+
 
 PUBLIC_OPPORTUNITY_SOURCES=(
     {"key":"prescott","name":"City of Prescott","market":"Prescott","domain":"prescott-az.gov",
@@ -315,7 +332,8 @@ def build_research_query(side,market,service_name,research_method="",service_key
     place=clean(market).replace('"'," ")
     method=clean(research_method).upper()
     if side=="vendor":
-        return f'"{service}" "{place}" Arizona company service contractor'
+        context=MARKET_RESEARCH_CONTEXT.get(place,"") if clean(service_key) in ENVIRONMENT_SENSITIVE_SERVICES else ""
+        return f'"{service}" "{place}" Arizona company service contractor {context}'.strip()
     if "PROCUREMENT" in method or "PUBLIC BID" in method:
         return f'"{place}" Arizona bid RFP solicitation contract "{service}"'
     if "B2B" in method:
