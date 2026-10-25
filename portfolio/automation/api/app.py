@@ -1102,15 +1102,19 @@ async def process_followups(x_bmc_admin_key:str|None=Header(default=None)):
         order by coalesce(lm.last_followup_at,lm.responded_at,lm.offered_at) asc limit 100""")
       for row in rows:
         service_name=clean(row["service_name"]) or clean(row["service_key"]) or "service"
-        link=f"{PUBLIC_SITE_URL}/provider-dashboard/"
+        link=f"{PUBLIC_SITE_URL}/provider-job-update/?lead_id={row['lead_id']}&vendor_id={row['vendor_id']}&token={row['response_token']}"
+        dashboard_login=f"{PUBLIC_SITE_URL}/provider-login/"
         ok=await send_mail(row["public_email"],f"Update BMC request: {service_name} in {row['market']}",
           f"""Please update the outcome of the BMC request you accepted.
 
 Market: {row['market']}
 Service: {service_name}
 
-Open your provider dashboard and mark the job contacted, estimate sent, won, or lost:
+Mark the job contacted, estimate sent, won, or lost:
 {link}
+
+For all BMC jobs and matching settings, use Provider Login:
+{dashboard_login}
 
 Closing the loop helps BMC send work that fits your business.
 """)
