@@ -632,6 +632,54 @@ Backend/ops work committed but **NOT confirmed deployed to VPS**:
 
 Current VPS redeploy must include these newer backend commits too.
 
+### 2026-10-25 architecture correction after live manual QA
+
+Manual QA exposed three important gaps:
+1. public search was only a browser text filter and was not connected to backend classification;
+2. provider operations existed as email links/admin actions but there was no provider login/dashboard;
+3. standard startup did not start the Docker `local-ai` profile even when `LOCAL_AI_ENABLED=true`.
+
+These are now corrected in the repo:
+
+**Intelligent search**
+- `POST /api/service-search` exposes the same rules + local-AI classification path used by intake;
+- rules now explicitly cover plain-language terms such as `fryer` and `real estate`;
+- `assets/service-finder.js` gives instant browser suggestions, then asks the VPS classifier and merges/reorders results;
+- searches such as `fix my fryer` and `real estate` are regression-tested in CI;
+- general request pages keep the original problem visible and show likely service matches before asking the user to continue;
+- successful forms now show a large confirmation card with the matched service and next steps.
+
+**Provider self-service**
+- schema includes expiring/revocable provider magic-link sessions;
+- `/provider-login/` emails approved providers a secure login link;
+- `/provider-dashboard/` shows:
+  - new opportunities;
+  - accept/pass;
+  - customer details after acceptance;
+  - active jobs;
+  - contacted/estimate/won/lost updates;
+  - capacity, minimum job, territory, service and market settings;
+- pilot approval now sends the provider directly to the dashboard;
+- provider portal API actions verify the provider session and ownership of each match.
+
+**AI startup**
+- `start.sh` now starts the `local-ai` Docker profile whenever `LOCAL_AI_ENABLED=true`;
+- it waits for Ollama, checks for the configured model, and pulls the model if missing;
+- `bootstrap.sh` does the same on first setup;
+- admin preflight reports AI enabled/reachable/model-available separately;
+- `runtime-doctor.sh` checks the model and runs the exact `fix my fryer` service-search smoke test.
+
+**Public architecture**
+- `/solutions/` is the accessible hub for the major BMC business models;
+- root BMC site is a fallback/rescue/search hub, NOT the intended landing page for most campaigns;
+- outreach/ads should deep-link into the specific offer/service page promised;
+- approved providers should use Provider Login / Provider Dashboard, not the marketing homepage.
+
+**QA**
+- CI now includes a public form-contract validator;
+- broken special forms should fail CI if required fields do not match the API contract;
+- outreach remains OFF until deployment and live smoke tests are completed.
+
 Static Cloudflare Pages deploys automatically from GitHub.
 
 Ops API / watchdog changes do NOT magically deploy to the VPS.
@@ -647,9 +695,10 @@ At start of next thread, after verifying GitHub CI:
 ```bash
 cd ~/bmc-luminary-site/portfolio/automation
 git pull --ff-only
-docker compose --env-file .env up -d --build --force-recreate ops_api
+docker compose --env-file .env build ops_api
+bash ./start.sh .env
 bash ./install-watchdog.sh
-bash ./runtime-doctor.sh
+bash ./runtime-doctor.sh .env
 ```
 
 Do not overwrite `.env`.
