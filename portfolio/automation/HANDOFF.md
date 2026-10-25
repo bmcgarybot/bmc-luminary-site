@@ -348,7 +348,7 @@ The current research worker is first-pass discovery from search-result evidence.
 
 1. Cloud VPS deployed and healthy; Cloudflare Pages is deployed; remaining runtime work is custom-domain attachment, hooks tunnel, email, Stripe, and provider activation.
 2. Cloudflare DNS is active for `bmcservicenetwork.com`; the Tunnel helper is built, but the production tunnel is not yet authorized/configured.
-3. Main site is live at `https://bmcservicenetwork.com` via Cloudflare Pages. The remaining public-ingress task is publishing `hooks.bmcservicenetwork.com` through Cloudflare Tunnel to `http://webhook_proxy:8080`.
+3. Main site is live at `https://bmcservicenetwork.com` via Cloudflare Pages. Public webhook ingress is also live through Cloudflare Tunnel at `https://hooks.bmcservicenetwork.com`, routed to `http://webhook_proxy:8080`. `verify-public-ingress.sh` passed on 2026-10-24: `/api/intake` and `/api/stripe-webhook` reached the gateway while `/admin` and `/api/admin/preflight` remained blocked.
 4. SMTP sender not configured.
 5. Reply/IMAP mailbox not configured.
 6. BMC postal address not configured for outbound.
