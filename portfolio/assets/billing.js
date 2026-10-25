@@ -1,5 +1,5 @@
 (function(){
-  fetch('/portfolio/data/billing.json').then(r=>r.json()).then(data=>{
+  function apply(data){
     document.querySelectorAll('[data-bmc-checkout]').forEach(el=>{
       const key=el.dataset.bmcCheckout,offer=data.offers&&data.offers[key];
       if(!offer)return;
@@ -13,5 +13,11 @@
       const offer=data.offers&&data.offers[el.dataset.bmcPrice];
       if(offer)el.textContent='$'+Number(offer.amount_usd).toLocaleString('en-US');
     });
-  }).catch(()=>{});
+  }
+
+  fetch('/data/billing.json')
+    .then(r=>{if(!r.ok)throw new Error('live-root billing path unavailable'); return r.json();})
+    .catch(()=>fetch('/portfolio/data/billing.json').then(r=>r.json()))
+    .then(apply)
+    .catch(()=>{});
 })();
