@@ -876,3 +876,318 @@ BMC should not rely on one acquisition channel. The bounded operator continuousl
 - Private daily brief: the intended owner workflow is a few short checks per day focused on exceptions, provider approvals/credential-sensitive service changes, actionable public contracts, and unusual operator tasks. Routine research and monitoring should continue without owner intervention.
 
 Outbound prospecting remains separately gated and OFF until explicitly approved. Public opportunity discovery and public-index research are read-only research activities.
+
+
+## 21. FINAL THREAD HANDOFF — 2026-10-25
+
+This section supersedes stale status notes above where they conflict.
+
+### Current repository / CI
+
+Current GitHub master at handoff:
+- `b9831d5f910bdfa4457ab269ea6f92039ea19738`
+- commit: `Show traditional auto repair in vehicle service family`
+
+Latest BMC Portfolio CI:
+- **SUCCESS**
+- run `40214025210`
+- completed 2026-10-25
+
+The registry now contains **54 services**, not 48 or 53. Traditional shop-based auto repair was added as a distinct service/front and is routed separately from mobile mechanic/tire/battery work.
+
+New auto-repair work:
+- dedicated customer funnel: `/portfolio/auto-repair-shop/`
+- service classification/research routing added
+- vehicle-service family page exposes traditional auto repair
+- CI is green after these changes
+
+### Production deployment status
+
+Last production state actually confirmed by Brett's terminal output:
+- Ops API healthy
+- 53-service registry at that time
+- vendor research pool 211
+- buyer research pool 156
+- First Wave 12 providers / 7 buyers
+- research backlog 632 queued
+- admin preflight reachable
+- local Ollama reachable with `qwen3:1.7b`
+- `fix my fryer` correctly classified to Restaurant Equipment Repair
+- SearXNG reachable
+- watchdog installed and timer confirmed ACTIVE
+- runtime doctor: **0 core failures, 1 warning**
+- warning was Stripe webhook not configured
+- live intake BLOCKED because no real verified provider had been activated
+- payments BLOCKED because Stripe onboarding/webhook not finished
+- outreach switches remained OFF
+
+Do **not** assume commits after that terminal deployment are already on the VPS. Current GitHub master is newer and must be deployed before treating the new research/brief/procurement features as production.
+
+### Correct current deploy path
+
+Because `start.sh` now performs safe additive database migrations automatically, normal production update is:
+
+```bash
+cd ~/bmc-luminary-site/portfolio/automation
+git pull --ff-only
+docker compose --env-file .env build ops_api
+bash ./start.sh .env
+bash ./runtime-doctor.sh .env
+```
+
+Do not overwrite `.env`.
+
+The watchdog is already installed/confirmed active; it does not need to be reinstalled on every deploy unless its systemd installation changes.
+
+### Autonomous operating target
+
+Brett's intended owner workload:
+- ideally 2–3 short checks per day;
+- each check should take roughly 10 minutes or less;
+- routine research, monitoring, classification, coverage-gap work, provider routing, follow-up and queue processing should continue 24/7 without Brett;
+- Brett should see only meaningful exceptions, approvals, credential-sensitive provider changes, promising contracts/opportunities, disputes, pricing/strategy decisions and unusual failures.
+
+A private **Needs Brett** daily brief has been added in code to support this.
+
+Do not turn BMC into a business that requires Brett to manually babysit every lead or research task.
+
+### Recovered business expansion ideas — preserve these
+
+The missing-message stretch contained valuable strategy. Preserve the following as source-of-truth ideas:
+
+1. BMC is much larger than a homeowner directory. Buyer/client research should include:
+   - hospitals and health systems;
+   - medical centers, doctors and specialists;
+   - dental groups and specialty dental offices;
+   - therapy / behavioral-health clinics;
+   - pharmacies and health retail;
+   - grocery stores;
+   - general retail;
+   - insurance agencies;
+   - financial/professional offices;
+   - hotels;
+   - apartments / property managers / HOAs;
+   - restaurants;
+   - warehouses;
+   - auto dealers and auto repair shops;
+   - churches;
+   - schools;
+   - theaters;
+   - public/government facilities;
+   - other facility-heavy organizations.
+
+2. Locksmith/access control is an important service category. Existing research already includes:
+   - High Desert Lock and Safe — Prescott
+   - Joe's Glass & Locksmith — Winslow
+   Continue building depth across Arizona.
+
+3. Government/public procurement is a core demand lane, not an afterthought:
+   - city;
+   - county;
+   - state;
+   - school/district;
+   - federal;
+   - cooperative/public-facility purchasing.
+   Monitor janitorial, landscaping, locksmith, HVAC, plumbing/backflow, electrical, lighting/signage, parking lot, fire-safety, laundry/linen, septic, restaurant-equipment, facility-maintenance and related opportunities.
+   Never auto-submit bids or accept procurement terms.
+
+4. Public local-demand signals can be a competitive advantage over Angi/Thumbtack:
+   - publicly indexed Nextdoor content;
+   - publicly indexed Facebook/community pages;
+   - other public/indexable local discussions and request sources.
+   Do **not** log into, bypass access controls on, or scrape private Facebook/Nextdoor groups.
+   Do not auto-contact individual posters by default.
+   Use these as demand intelligence/review signals unless a permitted workflow is explicitly approved.
+
+5. Research should be terrain/market aware:
+   - Prescott/PV: high desert, wildfire/defensible space, septic/well where relevant;
+   - Chino Valley: acreage, grading, septic, well, land clearing;
+   - Camp Verde: acreage, irrigation, septic, well, brush clearing;
+   - Verde Valley/Cottonwood: irrigation, tree care, septic;
+   - Sedona: hospitality/STR, pool/desert-property needs;
+   - Flagstaff: snow, freeze, heating, tree care;
+   - Phoenix/Scottsdale/Tucson: extreme heat, cooling/HVAC, pools, pest, desert landscaping;
+   - Kingman/Winslow: climate/terrain-specific property and roadside needs.
+   Do not use identical research prompts for every city/service.
+
+6. Campaign localization rule:
+   - generic BMC website should feel broad/capable;
+   - outreach should localize the message to the recipient.
+   Examples:
+     - Camp Verde recipient: "We're opening BMC service requests in Camp Verde..."
+     - Prescott recipient: Prescott-specific message
+     - regional/multi-location operator such as WKS: Northern Arizona/regional message
+   Do not make the generic website advertise BMC as a tiny/local experiment.
+   Do not foreground "pilot" unless it actually helps the recipient understand the offer.
+
+### Autonomous research / demand discovery added after the last confirmed production deploy
+
+Current repo includes:
+
+**Buyer research expansion**
+- explicit B2B buyer hints for medical, dental, therapy, pharmacy, grocery, retail, insurance/professional offices, hotels, schools, churches, restaurants, property managers, apartments, warehouses, public facilities, etc.
+- research queries use OR groups rather than generic "business organization" search
+- service-specific buyer targeting
+
+**Terrain-aware provider research**
+- market context is added only to environment-sensitive services where useful
+
+**Public procurement monitor**
+- table: `public_opportunities`
+- endpoint: `POST /api/process-public-opportunities`
+- admin list/status endpoints
+- searches official/public procurement sources
+- scheduled every 2 hours
+- read-only discovery; no automatic bids
+
+**Public local-demand signal monitor**
+- table: `local_demand_signals`
+- endpoint: `POST /api/process-local-demand-signals`
+- admin list/status endpoints
+- public-index-only intent discovery
+- currently aimed at common local needs such as locksmith, electrician, plumber, HVAC, tree, landscaping, junk, handyman, house cleaning, garage door, pest and towing
+- scheduled every 6 hours
+- no private-group scraping
+- no automatic contact with posters
+
+**Research cadence**
+- normal autonomous research was increased from roughly one task/hour to a pass every ~15 minutes
+- target: ~96 research passes/day without hammering search infrastructure
+
+**Needs Brett**
+- endpoint: `GET /api/admin/daily-brief`
+- private admin button/section added
+- focuses on:
+  - open exceptions;
+  - real provider approvals;
+  - provider service-change reviews;
+  - human/operator tasks;
+  - public procurement opportunities;
+  - local-demand signals;
+  - research inventory counts.
+
+### Research-source / scaling work added
+
+Current repo also includes:
+- research-pass tracking in schema;
+- authoritative-source registry;
+- `seed-research-sources.sql`;
+- market-size-aware research scaling via `seed-research-scale.sql`;
+- `migrate.sh` for safe additive DB updates;
+- `start.sh` now invokes safe migration automatically.
+
+Next thread should inspect these files before inventing a second research architecture.
+
+### Provider portal bug found and fixed
+
+CI exposed a real bug in provider service-addition approval:
+- requested service additions were read from Postgres JSON as text;
+- approval code could treat the JSON string like a list of characters;
+- review could resolve without actually adding the approved service.
+
+Fixed by parsing the JSON payload properly before approval.
+
+Also fixed:
+- matched `service_name` definition before provider-routing response in `handle_lead`.
+
+These fixes are in current GitHub master and CI is green.
+
+### Growth Pack sample / form status
+
+The first uploaded `.xlsx` sample was malformed and Excel rejected it.
+
+That file was subsequently replaced with a verified Excel workbook:
+- commit `9365a56a5d010cd97a1677fca1a4b9e1fab192af`
+- website sample page points to the formatted Excel version
+- raw CSV remains available as a plain-data option
+- CSV headers/data were cleaned
+- web preview was styled as a polished spreadsheet sample
+
+The Growth Pack form was also corrected to send backend-required `scope` rather than the old incompatible `offer` field.
+
+If the browser still downloads the corrupt old workbook, verify Cloudflare/static cache/deployment rather than rebuilding the workbook again.
+
+### Google Drive live-data snapshot from this thread
+
+Master workbook:
+`1Ka-RDKKniq-RaYD90a1QvSDVZRhsPVHJUe76rQJeaUE`
+
+At the time checked:
+- 210 provider/vendor prospect rows in Drive
+- 156 buyer/client prospect rows
+- 87 providers with public email
+- 34 buyers with public email
+- 121 directly email-reachable prospects
+- actual Leads tab: 0 submitted customer leads
+- Outreach tab: 0 sent outreach records
+- First Wave: 12 provider + 7 buyer = 19 total
+- no real approved/activated provider yet at that check
+
+Research Queue:
+- 651 research rows/tasks in Drive
+- 298 provider-side
+- 353 buyer-side
+- 533 medium priority
+- 118 low priority
+- approximately 1,936 missing prospect slots if every market/service goal were filled
+
+Important: Drive planning counts and live VPS counts are snapshots and do not always synchronize immediately.
+
+The Dashboard service count was updated to 53 during the thread, but repo now has **54** after adding traditional auto repair. Sync the Sheet again before trusting the displayed service-count KPI.
+
+New Buyer Vertical rows added in Drive:
+- Hospitals & Health Systems
+- Dental Groups & Specialty Practices
+- Therapy & Behavioral Health Facilities
+- Pharmacies & Health Retail
+- Insurance, Financial & Professional Offices
+- Public Contract & Bid Opportunities
+
+### Outreach / autonomy safety
+
+Still mandatory:
+- vendor outreach OFF until Brett explicitly approves;
+- buyer outreach OFF until Brett explicitly approves;
+- Growth Pack outreach OFF until Brett explicitly approves;
+- no private social scraping;
+- no auto-bidding public contracts;
+- no fake testimonials/outcomes/scarcity;
+- do not imply a provider is verified until actually approved/credentialed as appropriate.
+
+Public opportunity discovery and public research may run internally because they do not contact anyone or accept external terms.
+
+### Immediate next actions for the next thread
+
+1. Read this final section first, then `BUSINESS_MODEL.md`.
+2. Confirm current master is still at/after `b9831d5` and BMC CI is green.
+3. Deploy current backend/database changes to VPS using the safe deploy block above.
+4. Run `runtime-doctor.sh`.
+5. Confirm production registry becomes **54 services**.
+6. Smoke test:
+   - `fix my fryer`;
+   - traditional auto repair query;
+   - provider dashboard;
+   - provider service-addition approval;
+   - `/api/admin/daily-brief`;
+   - public-opportunity processor;
+   - local-demand processor.
+7. Sync Google Sheet Dashboard from 53 → 54 services if still stale.
+8. Inspect first real procurement/local-demand discoveries; tune false positives rather than manually hunting sites.
+9. Activate 1–3 real verified providers in the Prescott/PV first cell.
+10. Finish Stripe onboarding + webhook.
+11. Preview the first provider/buyer outreach privately.
+12. Only after Brett explicitly approves: send a tiny controlled wave and measure replies, intake, provider acceptance and revenue.
+13. Keep expanding research supply/demand autonomously while Brett works mainly from the Needs Brett queue.
+
+### Process rule after lost updates
+
+During long build sessions:
+- capture Brett's new business ideas/decisions into this handoff (or a dedicated idea/decision log) **before** disappearing into implementation;
+- send progress updates every few tool calls;
+- do not spend 30–60 minutes silently chasing CI;
+- if CI/debugging turns into a loop, report the current blocker before continuing;
+- preserving Brett's ideas is higher priority than squeezing in one more code fix.
+
+### Copy/paste starter for the next conversation
+
+> Continue the BMC Service Network build from section 21 of `portfolio/automation/HANDOFF.md` plus `BUSINESS_MODEL.md`. This is BMC Luminary Ventures LLC / BMC Service Network, not Quantum Neuroshift. Current GitHub master was `b9831d5` with green BMC CI when the prior thread ended. Production was last confirmed healthy on the earlier 53-service deploy, so treat newer procurement/local-demand/research/daily-brief/auto-repair changes as pending VPS deployment unless independently verified. First deploy current master safely, run runtime doctor, and verify the registry reaches 54 services. Then continue toward the autonomous operating target: 24/7 research and opportunity discovery, with Brett doing only 2–3 short exception/approval checks per day. Do not turn on vendor, buyer or Growth Pack outreach without my explicit approval. Preserve the recovered ideas in section 21, especially public procurement, medical/retail/professional buyers, terrain-aware research, locksmith depth, public local-demand signals, and localized outreach rather than localizing the generic website.
