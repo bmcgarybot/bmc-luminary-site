@@ -1108,7 +1108,7 @@ button{width:auto;cursor:pointer}.grid{display:grid;grid-template-columns:repeat
 .card{background:white;border:1px solid #ddd;border-radius:10px;padding:14px}pre{white-space:pre-wrap}.section{margin:24px 0}
 </style></head><body>
 <h1>BMC Local Admin</h1><p>Private/local operations page. Do not publish through the public gateway.</p>
-<div class='section'><label>Admin key<input id='key' type='password'></label><button onclick='loadSummary()'>Load summary</button><button onclick='loadPreflight()'>Launch preflight</button><button onclick='loadFirstWave()'>Preview First Wave</button><button onclick='loadPilotReviews()'>Pending pilot reviews</button><button onclick='loadResearchCandidates()'>Research candidates</button><button onclick='loadLaunchCell()'>Prescott/PV launch cell</button><button onclick='queueLaunchGaps()'>Queue launch gaps</button><div id='summary' class='grid'></div><div id='preflight' class='card' style='margin-top:12px'></div></div><div class='section'><h2>Prescott / Prescott Valley launch cell</h2><p>Green = verified pilot/active provider. Yellow = recruitable providers with public email. Red = research gap.</p><div id='launch_cell' class='grid'></div></div><div class='section'><h2>First Wave preview</h2><div id='first_wave'></div></div>
+<div class='section'><label>Admin key<input id='key' type='password'></label><button onclick='loadSummary()'>Load summary</button><button onclick='loadPreflight()'>Launch preflight</button><button onclick='loadFirstWave()'>Preview First Wave</button><button onclick='loadPilotReviews()'>Pending pilot reviews</button><button onclick='loadResearchCandidates()'>Research candidates</button><button onclick='loadLaunchCell()'>Prescott/PV launch cell</button><button onclick='queueLaunchGaps()'>Queue launch gaps</button><button onclick='loadProviderFunnel()'>Provider funnel</button><div id='summary' class='grid'></div><div id='preflight' class='card' style='margin-top:12px'></div></div><div class='section'><h2>Provider marketing funnel</h2><p>Invite → reply → application → approval → accepted work → won work.</p><div id='provider_funnel' class='grid'></div></div><div class='section'><h2>Prescott / Prescott Valley launch cell</h2><p>Green = verified pilot/active provider. Yellow = recruitable providers with public email. Red = research gap.</p><div id='launch_cell' class='grid'></div></div><div class='section'><h2>First Wave preview</h2><div id='first_wave'></div></div>
 <div class='section'><h2>Pending pilot reviews</h2><p>Providers stay unroutable until BMC explicitly approves them here.</p><div id='pilot_reviews'></div></div>
 <div class='section'><h2>Research candidates</h2><p>Autonomous search discoveries are evidence only until reviewed. They are not active providers and are never contacted automatically.</p><div id='research_candidates'></div></div>
 <div class='section card'><h2>Vendor activation</h2><input id='vendor_id' placeholder='vendor_id'><select id='vendor_status'><option>pilot</option><option>active</option><option>paused</option><option>suppressed</option></select><input id='vendor_services' placeholder='service keys comma-separated'><input id='vendor_markets' placeholder='markets comma-separated'><button onclick='vendorUpdate()'>Save vendor</button><pre id='vendor_result'></pre></div>
@@ -1116,7 +1116,8 @@ button{width:auto;cursor:pointer}.grid{display:grid;grid-template-columns:repeat
 <div class='section card'><h2>Suppress outreach email</h2><input id='suppress_email' placeholder='email'><input id='suppress_reason' placeholder='reason'><button onclick='suppressEmail()'>Suppress</button><pre id='suppress_result'></pre></div>
 <script>
 function headers(){return {'Content-Type':'application/json','X-BMC-Admin-Key':document.getElementById('key').value}}
-async function loadSummary(){const r=await fetch('/api/admin/summary',{headers:headers()});const j=await r.json();const el=document.getElementById('summary');el.innerHTML='';Object.entries(j).forEach(function(pair){const d=document.createElement('div');d.className='card';d.innerHTML='<b>'+pair[0]+'</b><pre>'+JSON.stringify(pair[1],null,2)+'</pre>';el.appendChild(d)})}\nasync function loadPreflight(){const r=await fetch('/api/admin/preflight',{headers:headers()});const j=await r.json();document.getElementById('preflight').innerHTML='<h2>Launch preflight</h2><pre>'+JSON.stringify(j,null,2)+'</pre>'}\nasync function loadLaunchCell(){const r=await fetch('/api/admin/launch-cell',{headers:headers()});const j=await r.json();const el=document.getElementById('launch_cell');el.innerHTML='';(j.records||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.borderLeft='7px solid '+(x.readiness==='green'?'#238636':x.readiness==='yellow'?'#bf8700':'#cf222e');const title=document.createElement('b');title.textContent=x.service_name+' · '+x.readiness.toUpperCase();const pre=document.createElement('pre');pre.textContent='researched: '+x.researched_providers+'\nemail-ready: '+x.email_ready_providers+'\npilot/active: '+x.pilot_or_active_providers+'\nqueued outreach: '+x.queued_provider_outreach+'\nbuyer prospects: '+x.buyer_prospects+'\nlive markets: '+(x.live_markets||[]).join(', ')+'\nnext: '+x.next_action;d.appendChild(title);d.appendChild(pre);el.appendChild(d)})}
+async function loadSummary(){const r=await fetch('/api/admin/summary',{headers:headers()});const j=await r.json();const el=document.getElementById('summary');el.innerHTML='';Object.entries(j).forEach(function(pair){const d=document.createElement('div');d.className='card';d.innerHTML='<b>'+pair[0]+'</b><pre>'+JSON.stringify(pair[1],null,2)+'</pre>';el.appendChild(d)})}\nasync function loadPreflight(){const r=await fetch('/api/admin/preflight',{headers:headers()});const j=await r.json();document.getElementById('preflight').innerHTML='<h2>Launch preflight</h2><pre>'+JSON.stringify(j,null,2)+'</pre>'}\nasync function loadProviderFunnel(){const r=await fetch('/api/admin/provider-funnel',{headers:headers()});const j=await r.json();const el=document.getElementById('provider_funnel');el.innerHTML='';const labels={invited:'Invited',sent:'Emails sent',replied:'Replies',positive_replies:'Positive replies',applied_or_activated:'Applied / activated',pending_review:'Pending review',approved:'Approved providers',job_offers:'Jobs offered',job_accepts:'Jobs accepted',jobs_won:'Jobs won'};Object.entries(j.stages||{}).forEach(function(pair){const d=document.createElement('div');d.className='card';d.innerHTML='<b>'+labels[pair[0]]+'</b><div style="font-size:28px;font-weight:800;margin-top:6px">'+pair[1]+'</div>';el.appendChild(d)});const rates=document.createElement('div');rates.className='card';rates.innerHTML='<b>Conversion rates</b><pre>'+JSON.stringify(j.rates||{},null,2)+'</pre>';el.appendChild(rates)}
+async function loadLaunchCell(){const r=await fetch('/api/admin/launch-cell',{headers:headers()});const j=await r.json();const el=document.getElementById('launch_cell');el.innerHTML='';(j.records||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.borderLeft='7px solid '+(x.readiness==='green'?'#238636':x.readiness==='yellow'?'#bf8700':'#cf222e');const title=document.createElement('b');title.textContent=x.service_name+' · '+x.readiness.toUpperCase();const pre=document.createElement('pre');pre.textContent='researched: '+x.researched_providers+'\nemail-ready: '+x.email_ready_providers+'\npilot/active: '+x.pilot_or_active_providers+'\nqueued outreach: '+x.queued_provider_outreach+'\nbuyer prospects: '+x.buyer_prospects+'\nlive markets: '+(x.live_markets||[]).join(', ')+'\nnext: '+x.next_action;d.appendChild(title);d.appendChild(pre);el.appendChild(d)})}
 async function queueLaunchGaps(){const r=await fetch('/api/admin/queue-launch-gaps',{method:'POST',headers:headers()});const j=await r.json();alert('Queued '+(j.queued_count||0)+' launch research gaps.');await loadLaunchCell()}
 async function loadFirstWave(){const r=await fetch('/api/admin/first-wave',{headers:headers()});const j=await r.json();const el=document.getElementById('first_wave');el.innerHTML='';(j.records||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';d.innerHTML='<b>'+x.side.toUpperCase()+' · '+x.business_name+'</b><div>'+x.market+' · '+x.email+'</div><div><strong>'+x.subject+'</strong></div><pre>'+x.body+'</pre>';el.appendChild(d)})}
 async function loadPilotReviews(){const r=await fetch('/api/admin/pilot-reviews',{headers:headers()});const j=await r.json();const el=document.getElementById('pilot_reviews');el.innerHTML='';if(!(j.records||[]).length){el.textContent='No providers are pending review.';return}(j.records||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';const title=document.createElement('b');title.textContent=x.business_name+' · '+x.vendor_id;const pre=document.createElement('pre');pre.textContent=JSON.stringify(x,null,2);const btn=document.createElement('button');btn.textContent='Approve as pilot';btn.onclick=function(){approvePilot(x.vendor_id)};d.appendChild(title);d.appendChild(pre);d.appendChild(btn);el.appendChild(d)})}
@@ -1528,6 +1529,61 @@ async def admin_queue_launch_gaps(x_bmc_admin_key:str|None=Header(default=None))
                 queued.append({"side":"buyer","market":market,"service_key":service_key,"gap":gap})
         await event(conn,"launch_cell","prescott_pv","research_gaps_queued",{"count":len(queued),"gaps":queued},"admin")
     return {"ok":True,"queued_count":len(queued),"gaps":queued}
+
+@app.get("/api/admin/provider-funnel")
+async def admin_provider_funnel(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    async with app.state.pool.acquire() as conn:
+        invited=await conn.fetchval("""select count(distinct entity_id) from outreach
+          where entity_type='vendor' and campaign='vendor_recruitment' and wave=$1""",OUTREACH_WAVE)
+        sent=await conn.fetchval("""select count(distinct entity_id) from outreach
+          where entity_type='vendor' and campaign='vendor_recruitment' and wave=$1 and sent_at is not null""",OUTREACH_WAVE)
+        replied=await conn.fetchval("""select count(distinct entity_id) from outreach
+          where entity_type='vendor' and campaign='vendor_recruitment' and wave=$1 and replied_at is not null""",OUTREACH_WAVE)
+        positive=await conn.fetchval("""select count(distinct entity_id) from outreach
+          where entity_type='vendor' and campaign='vendor_recruitment' and wave=$1
+            and lower(coalesce(reply_type,'')) in ('positive','interested','yes','interest')""",OUTREACH_WAVE)
+        applied=await conn.fetchval("""select count(distinct entity_id) from events
+          where entity_type='vendor' and event_type in ('application_received','pilot_activation_submitted')""")
+        pending=await conn.fetchval("""select count(*) from vendors
+          where status in ('applicant','pilot_pending_review') and vendor_id not like 'test_%'""")
+        approved=await conn.fetchval("""select count(*) from vendors
+          where status in ('pilot','active') and vendor_id not like 'test_%'""")
+        offered=await conn.fetchval("""select count(*) from lead_matches lm
+          join vendors v on v.vendor_id=lm.vendor_id
+          where v.vendor_id not like 'test_%'""")
+        accepted=await conn.fetchval("""select count(*) from lead_matches lm
+          join vendors v on v.vendor_id=lm.vendor_id
+          where v.vendor_id not like 'test_%'
+            and lm.status in ('accepted','contacted','estimate','won')""")
+        won=await conn.fetchval("""select count(*) from lead_matches lm
+          join vendors v on v.vendor_id=lm.vendor_id
+          where v.vendor_id not like 'test_%' and lm.status='won'""")
+    def rate(a,b):
+        return round((float(a or 0)/float(b or 1))*100,1) if int(b or 0)>0 else 0.0
+    return {
+      "ok":True,
+      "wave":OUTREACH_WAVE,
+      "stages":{
+        "invited":int(invited or 0),
+        "sent":int(sent or 0),
+        "replied":int(replied or 0),
+        "positive_replies":int(positive or 0),
+        "applied_or_activated":int(applied or 0),
+        "pending_review":int(pending or 0),
+        "approved":int(approved or 0),
+        "job_offers":int(offered or 0),
+        "job_accepts":int(accepted or 0),
+        "jobs_won":int(won or 0)
+      },
+      "rates":{
+        "reply_rate":rate(replied,sent),
+        "application_rate_from_sent":rate(applied,sent),
+        "approval_rate_from_applications":rate(approved,applied),
+        "job_accept_rate":rate(accepted,offered),
+        "win_rate_from_accepted":rate(won,accepted)
+      }
+    }
 
 @app.get("/api/admin/summary")
 async def admin_summary(x_bmc_admin_key:str|None=Header(default=None)):
