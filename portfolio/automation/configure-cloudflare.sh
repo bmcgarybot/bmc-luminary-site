@@ -58,8 +58,8 @@ PY
 
 chmod 600 "$ENV_FILE"
 
-echo "Starting the webhook proxy and Cloudflare Tunnel..."
-docker compose --env-file "$ENV_FILE" --profile tunnel up -d webhook_proxy cloudflared
+echo "Applying the new public-domain environment and starting the Cloudflare Tunnel..."
+docker compose --env-file "$ENV_FILE" --profile tunnel up -d ops_api n8n webhook_proxy cloudflared
 
 echo
 echo "Container status:"
