@@ -580,7 +580,9 @@ We’ll work through these items from the same request and follow up as the next
 
 Reference: {parent_id}
 BMC Luminary Ventures LLC""")
-    return {"ok":True,"status":"split","lead_id":str(parent_id),"child_requests":len(requested),"message":f"Got it. We received {len(requested)} building needs and will work through them from this request."}
+    return {"ok":True,"status":"split","lead_id":str(parent_id),"child_requests":len(requested),
+      "service_names":service_names if p.get("email") else [await service_display_name(conn,sk) for sk in requested],
+      "message":f"Got it. We received {len(requested)} building needs and will work through them from this request."}
 
 async def handle_lead(conn,p):
     form_type=clean(p.get("form_type")) or "general"
@@ -676,13 +678,22 @@ async def handle_lead(conn,p):
         await conn.execute("""insert into exceptions(type,lead_id,severity,summary,recommended_action)
           values('classification_needed',$1,'normal',$2,$3)""",
           lead_id,f"Request needs classification: {scope[:250]}","Classify service_key, then route")
-        return {"ok":True,"status":"needs_classification","lead_id":str(lead_id),"message":"Request received. BMC will classify it before routing."}
+        return {"ok":True,"status":"needs_classification","lead_id":str(lead_id),
+          "service_key":"unclassified","service_name":None,
+          "message":"We got your request. It needs one more classification step before we can send it to the right place."}
 
     if fulfillment_mode=="provider_match":
         lead=await conn.fetchrow("select * from leads where lead_id=$1",lead_id)
         await offer_next(conn,lead)
         final_status=await conn.fetchval("select status from leads where lead_id=$1",lead_id)
-        return {"ok":True,"status":final_status,"lead_id":str(lead_id),"message":"Request received. BMC has started provider matching."}
+        if final_status=="provider_offered":
+            message=f"We matched this to {display_name}. We’re checking whether a provider can take the job."
+        elif final_status=="exception":
+            message=f"We matched this to {display_name}, but we could not send it to an active provider automatically yet. BMC will review the next option."
+        else:
+            message=f"We matched this to {display_name} and started the next step."
+        return {"ok":True,"status":final_status,"lead_id":str(lead_id),
+          "service_key":service_key,"service_name":display_name,"message":message}
 
     task_type={
       "internal_delivery":"fulfill_internal_product",
@@ -696,7 +707,9 @@ async def handle_lead(conn,p):
       values($1,$2,$3,$4,'open',$5,$6,$7::jsonb) returning task_id""",
       lead_id,order_id,service_key,task_type,"high" if urgency in ["ASAP","Urgent","Same day if possible"] else "normal",summary,json.dumps(p))
     await event(conn,"task",task_id,"created",{"lead_id":str(lead_id),"service_key":service_key,"fulfillment_mode":fulfillment_mode})
-    return {"ok":True,"status":"internal_queue","lead_id":str(lead_id),"task_id":str(task_id),"message":"Request received and queued for BMC fulfillment."}
+    return {"ok":True,"status":"internal_queue","lead_id":str(lead_id),"task_id":str(task_id),
+      "service_key":service_key,"service_name":display_name,
+      "message":f"We matched this to {display_name}. BMC has queued the next step."}
 
 
 async def handle_job_update(conn,p):
