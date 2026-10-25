@@ -52,7 +52,7 @@ insert into services(service_key,display_name,category,monetization,live_front,p
  on conflict(service_key) do update set display_name=excluded.display_name,category=excluded.category,monetization=excluded.monetization,
  live_front=excluded.live_front,priority=excluded.priority,fulfillment_mode=excluded.fulfillment_mode,is_active=true,updated_at=now();
 insert into services(service_key,display_name,category,monetization,live_front,priority,fulfillment_mode,is_active)
- values('hvac_heat','HVAC & Cooling','Home / commercial services','lead / territory','/portfolio/hvac-heat/','B','provider_match',true)
+ values('hvac_heat','Heating & Air Conditioning','Home / commercial services','lead / territory','/portfolio/hvac-heat/','B','provider_match',true)
  on conflict(service_key) do update set display_name=excluded.display_name,category=excluded.category,monetization=excluded.monetization,
  live_front=excluded.live_front,priority=excluded.priority,fulfillment_mode=excluded.fulfillment_mode,is_active=true,updated_at=now();
 insert into services(service_key,display_name,category,monetization,live_front,priority,fulfillment_mode,is_active)
