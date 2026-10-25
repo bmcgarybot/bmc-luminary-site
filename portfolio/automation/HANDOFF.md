@@ -80,7 +80,7 @@ Public URL plan:
 - secure intake/webhooks: `https://hooks.bmcservicenetwork.com`
 - planned primary mailbox: `contact@bmcservicenetwork.com`
 
-The domain was purchased on 2026-10-24 and is now delegated to Cloudflare using `iris.ns.cloudflare.com` and `will.ns.cloudflare.com`. Cloudflare reports the zone active/protected on the Free plan. Deploy the repository `portfolio/` directory as the public web root so service URLs are clean (for example `/tree-service/`, not `/portfolio/tree-service/`). Do not revive the old domain placeholder.
+The domain was purchased on 2026-10-24 and is delegated to Cloudflare using `iris.ns.cloudflare.com` and `will.ns.cloudflare.com`. Cloudflare reports the zone active/protected on the Free plan. The customer site is now deployed through Cloudflare Pages from the repository `portfolio/` directory at `https://bmc-service-network.pages.dev`, keeping service URLs clean (for example `/tree-service/`, not `/portfolio/tree-service/`). The next step is attaching `bmcservicenetwork.com` as the Pages custom domain. Do not revive the old domain placeholder.
 
 ## Production VPS access
 
@@ -346,9 +346,9 @@ The current research worker is first-pass discovery from search-result evidence.
 
 ## Current runtime blockers
 
-1. Cloud VPS deployed and healthy; remaining runtime work is public ingress/integrations.
+1. Cloud VPS deployed and healthy; Cloudflare Pages is deployed; remaining runtime work is custom-domain attachment, hooks tunnel, email, Stripe, and provider activation.
 2. Cloudflare DNS is active for `bmcservicenetwork.com`; the Tunnel helper is built, but the production tunnel is not yet authorized/configured.
-3. `hooks.bmcservicenetwork.com` is not yet published through the tunnel to `http://webhook_proxy:8080`.
+3. Main site is deployed on Cloudflare Pages at `bmc-service-network.pages.dev`; `bmcservicenetwork.com` is not yet attached as the Pages custom domain, and `hooks.bmcservicenetwork.com` is not yet published through the tunnel to `http://webhook_proxy:8080`.
 4. SMTP sender not configured.
 5. Reply/IMAP mailbox not configured.
 6. BMC postal address not configured for outbound.
