@@ -72,6 +72,9 @@ jobs:
       - name: Reject internal language in public copy
         run: python portfolio/automation/validate-public-copy.py
 
+      - name: Validate public form contracts
+        run: python portfolio/automation/validate-form-contracts.py
+
       - name: Validate Compose
         working-directory: portfolio/automation
         run: docker compose --env-file .env.example config >/dev/null
