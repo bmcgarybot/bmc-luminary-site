@@ -33,54 +33,46 @@ Before the current Pages/custom-domain cleanup, the following were already confi
 
 Do not rebuild these from scratch unless a live verification proves they are broken.
 
-## Public website target
+## Public website target — VERIFIED EXISTING HOSTING
 
 Canonical customer-facing site:
 - `https://bmcservicenetwork.com`
 
-Secondary hostname:
+The production static site is already hosted on **Cloudflare Pages**, not GitHub Pages.
+
+Verified Cloudflare DNS:
+- apex `bmcservicenetwork.com`
+- CNAME target `bmc-service-network.pages.dev`
+- proxied through Cloudflare
+
+Earlier handoff text saying to move the apex to GitHub Pages A records was incorrect and has been superseded.
+
+Do **not** replace the existing apex CNAME.
+
+Secondary hostname still needed:
 - `https://www.bmcservicenetwork.com`
-- should resolve and redirect to the canonical apex through GitHub Pages behavior.
 
-Static site source:
-- repo: `bmcgarybot/bmc-luminary-site`
-- published artifact: `portfolio/`
-- Pages workflow: `.github/workflows/bmc-service-network-pages.yml`
-- Pages source: GitHub Actions
-- GitHub custom domain: `bmcservicenetwork.com`
+Correct process for `www`:
+1. open Cloudflare -> Workers & Pages;
+2. select the existing `bmc-service-network` Pages project;
+3. open **Custom domains**;
+4. add `www.bmcservicenetwork.com` there first;
+5. let Cloudflare create/validate the required DNS association;
+6. then configure a 301 redirect from `www` to the canonical apex if desired.
 
-The BMC Pages workflow has already been run successfully with `portfolio/` as the site root.
+Cloudflare warns that manually creating a CNAME to a Pages hostname without first associating the custom domain with the Pages project can result in a 522.
 
-## Cloudflare DNS work still needed for GitHub Pages
-
-Before changing records, inspect the **existing Cloudflare DNS record list** for `bmcservicenetwork.com`.
-
-The intended GitHub Pages DNS target is:
-
-Apex `@` A records:
-- `185.199.108.153`
-- `185.199.109.153`
-- `185.199.110.153`
-- `185.199.111.153`
-
-`www`:
-- CNAME -> `bmcgarybot.github.io`
-
-For GitHub Pages validation/HTTPS troubleshooting, these website records should generally be **DNS only** rather than Cloudflare-proxied unless a deliberate Cloudflare proxy design is chosen and tested.
-
-Do not touch:
-- `hooks` / Cloudflare Tunnel records;
+Existing records to preserve:
+- apex CNAME -> `bmc-service-network.pages.dev`;
+- `hooks` Cloudflare Tunnel;
 - MX records;
 - SPF;
 - DKIM;
-- DMARC;
+- DMARC when added;
 - Private Email verification records;
 - unrelated TXT/CNAME records.
 
-Do not add wildcard DNS.
-
-GitHub reference:
-- https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site
+The temporary GitHub Pages custom-domain experiment is not the production hosting architecture.
 
 ## Hooks hostname
 
