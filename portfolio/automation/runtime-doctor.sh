@@ -75,6 +75,13 @@ else
   exit 1
 fi
 
+PUBLIC_SITE_URL_VALUE="$(env_value PUBLIC_SITE_URL)"
+if [ "$PUBLIC_SITE_URL_VALUE" = "https://bmcservicenetwork.com" ]; then
+  pass "Public site URL is bmcservicenetwork.com"
+else
+  warn "PUBLIC_SITE_URL is '$PUBLIC_SITE_URL_VALUE'; expected https://bmcservicenetwork.com"
+fi
+
 if [ "$(env_value OUTREACH_ENABLED)" = "false" ]; then
   pass "Vendor outreach global switch is OFF"
 else
