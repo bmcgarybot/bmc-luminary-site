@@ -2998,3 +2998,63 @@ After that, perform one small real checkout validation and confirm:
 - Growth Pack fulfillment intake linkage works.
 
 Outreach remains OFF.
+
+
+## 33. STRIPE WEBHOOK SECRET INSTALLED ON VPS — PRODUCTION VERIFIED — 2026-10-25
+
+Owner completed the secure VPS webhook-secret installation using:
+- `configure-stripe-webhook.sh .env`
+
+Verified production results from the VPS after installation:
+
+- Ops API restarted successfully.
+- Runtime doctor: **Core failures: 0 · warnings: 0**.
+- Deployment target: cloud VPS.
+- Service registry: **54 services**.
+- Traditional auto repair active.
+- Vendor research pool: **211**.
+- Buyer research pool: **156**.
+- Research backlog: **839 queued**.
+- Recovered Arizona expansion research cells: **198**.
+- First Wave: **12 providers + 7 buyers**.
+- Vendor outreach global switch: **OFF**.
+- Buyer outreach global switch: **OFF**.
+- Outbound waves restricted to pilot1.
+- Stripe launch gate: **payments_ready = READY**.
+- AI/search gate: **intelligent_search_ai_ready = READY**.
+- `fix my fryer` maps to restaurant equipment repair.
+- `brake repair` maps to traditional auto repair.
+- Ollama `qwen3:1.7b` reachable and loaded.
+- Public ingress verification passed:
+  - root hooks hostname -> 404 as intended;
+  - `/api/intake` -> 405 on GET, proving the route reaches the application gateway;
+  - `/api/stripe-webhook` -> 405 on GET, proving the route reaches the application gateway;
+  - public `/admin` and `/api/admin/preflight` -> 404, confirming private admin remains unexposed.
+- Stripe webhook signing secret is stored only in VPS `.env`, not GitHub.
+
+Current remaining launch gate from runtime doctor:
+- `live_intake_ready = BLOCKED` only because **no verified pilot provider has yet been activated**.
+
+GitHub:
+- authoritative handoff commit before this note: `38b04937be01065438766d32b275a545dd05df2f`
+- BMC Portfolio CI for that commit completed **SUCCESS**.
+
+### Next Stripe validation
+
+Run one deliberate live purchase validation through the lowest-cost product or a purpose-built low-value live test checkout, then verify:
+1. Stripe payment succeeds;
+2. customer returns to `/order-complete/`;
+3. Stripe webhook delivery receives HTTP 2xx;
+4. `payment_events`, `orders`, and `revenue_events` update as expected;
+5. fulfillment/intake linkage behaves correctly.
+
+Do not enable outreach as part of the Stripe validation.
+
+### Launch interpretation
+
+Infrastructure/payment readiness is no longer the main blocker.
+
+The primary operational launch blocker is now:
+- activate at least one real, verified pilot provider.
+
+After provider activation, re-run `runtime-doctor.sh .env` and confirm `live_intake_ready` becomes READY.
