@@ -2214,7 +2214,10 @@ async def admin_agent_status(x_bmc_admin_key:str|None=Header(default=None)):
         "result_limit":RESEARCH_SEARCH_RESULTS,"max_passes":RESEARCH_MAX_PASSES,
         "auto_promote_contact_ready":RESEARCH_AUTO_PROMOTE_CONTACTS},
       "source_native_research":{"enabled":SOURCE_NATIVE_RESEARCH_ENABLED,
-        "adhs_page_size":ADHS_SOURCE_NATIVE_PAGE_SIZE,"market_count":len(SOURCE_NATIVE_MARKETS)},
+        "adhs_page_size":ADHS_SOURCE_NATIVE_PAGE_SIZE,
+        "cms_enabled":CMS_SOURCE_NATIVE_ENABLED,"cms_page_size":CMS_SOURCE_NATIVE_PAGE_SIZE,
+        "source_count":1+(len(CMS_SOURCE_DATASETS) if CMS_SOURCE_NATIVE_ENABLED else 0),
+        "market_count":len(SOURCE_NATIVE_MARKETS)},
       "queues":{
         "open_agent_tasks":int(open_agent_tasks or 0),
         "research_assigned":int(assigned_research or 0),
@@ -2340,7 +2343,8 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
     if not SOURCE_NATIVE_RESEARCH_ENABLED:
         return {"ok":True,"enabled":False,"source":ADHS_SOURCE_KEY,"markets_checked":0,
                 "records_seen":0,"prospects_created":0,"prospects_updated":0,"errors":[]}
-    markets_checked=0
+    successful_markets=set()
+    source_checks=0
     records_seen=0
     prospects_created=0
     prospects_updated=0
@@ -2354,7 +2358,8 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
         cursor=int(state["cursor"] or 0) if state else 0
         try:
             raw=await fetch_adhs_facility_page(market,cursor)
-            markets_checked+=1
+            successful_markets.add(market)
+            source_checks+=1
         except Exception as exc:
             errors.append({"market":market,"error":str(exc)[:300]})
             await conn.execute("""update source_native_state
@@ -2464,10 +2469,114 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
           "next_cursor":next_cursor,"source_run_date":latest_source_date,
           "external_actions_performed":0
         },"research_agent")
-    return {"ok":True,"enabled":True,"source":ADHS_SOURCE_KEY,
-      "markets_checked":markets_checked,"records_seen":records_seen,
-      "prospects_created":prospects_created,"prospects_updated":prospects_updated,
-      "external_actions_performed":0,"errors":errors}
+
+      if CMS_SOURCE_NATIVE_ENABLED:
+        for source in CMS_SOURCE_DATASETS:
+          for market in SOURCE_NATIVE_MARKETS:
+            source_key=source["source_key"]
+            await conn.execute("""insert into source_native_state(source_key,market)
+              values($1,$2) on conflict(source_key,market) do nothing""",source_key,market)
+            state=await conn.fetchrow("""select cursor from source_native_state
+              where source_key=$1 and market=$2""",source_key,market)
+            cursor=int(state["cursor"] or 0) if state else 0
+            try:
+                raw=await fetch_cms_provider_page(source,market,cursor)
+                successful_markets.add(market)
+                source_checks+=1
+            except Exception as exc:
+                errors.append({"source":source_key,"market":market,"error":str(exc)[:300]})
+                await conn.execute("""update source_native_state
+                  set last_run_at=now(),metadata=metadata || $3::jsonb,updated_at=now()
+                  where source_key=$1 and market=$2""",source_key,market,
+                  json.dumps({"last_error":str(exc)[:300],"cursor":cursor}))
+                continue
+            rows=raw.get("results") or []
+            page_seen=0
+            page_upserted=0
+            page_source_dates=[]
+            async with conn.transaction():
+              for row in rows:
+                record=cms_buyer_record(source,row,market)
+                if not record:
+                    continue
+                evidence=record["evidence"]
+                if clean(evidence.get("processing_date")):
+                    page_source_dates.append(clean(evidence.get("processing_date")))
+                identity=record["identity"]
+                name=record["name"]
+                phone=record["phone"]
+                facility_type=record["facility_type"]
+                buyer_id="b_cms_"+hashlib.sha256(
+                  f"{source_key}:{identity}".encode("utf-8")).hexdigest()[:16]
+                record_url=source["dataset_page"]+"?"+urllib.parse.urlencode({"ccn":identity})
+                existing=await conn.fetchrow("""select buyer_id,likely_services,source_data from buyers
+                  where buyer_id=$1
+                     or (nullif($4,'') is not null and market=$3
+                         and lower(business_name)=lower($2) and public_phone=$4)
+                  order by case when buyer_id=$1 then 0 else 1 end limit 1""",
+                  buyer_id,name,market,phone)
+                services=set(CMS_FACILITY_CORE_SERVICES)
+                if existing:
+                    entity_id=existing["buyer_id"]
+                    services.update(x for x in clean(existing["likely_services"]).split("|") if x)
+                    source_data=merge_source_evidence(existing["source_data"],source_key,evidence)
+                    await conn.execute("""update buyers set
+                        public_phone=case when coalesce(public_phone,'')='' then nullif($2,'') else public_phone end,
+                        likely_services=$3,source_data=$4::jsonb,updated_at=now()
+                      where buyer_id=$1""",
+                      entity_id,phone,"|".join(sorted(services)),json.dumps(source_data))
+                    prospects_updated+=1
+                else:
+                    entity_id=buyer_id
+                    source_data=merge_source_evidence({},source_key,evidence)
+                    await conn.execute("""insert into buyers(
+                        buyer_id,business_name,market,buyer_type,public_phone,website,source_url,
+                        likely_services,priority,campaign,status,notes,source_data)
+                      values($1,$2,$3,$4,nullif($5,''),null,$6,$7,'research',
+                        'source_native_research','prospect',$8,$9::jsonb)
+                      on conflict(buyer_id) do nothing""",
+                      entity_id,name,market,"cms_"+source["kind"],phone,record_url,
+                      "|".join(sorted(services)),
+                      f"Unverified institutional buyer prospect from {source['source_name']}. Verify current organization/contact details before outreach.",
+                      json.dumps(source_data))
+                    prospects_created+=1
+                page_seen+=1
+                page_upserted+=1
+              records_seen+=page_seen
+              more=len(rows)>=CMS_SOURCE_NATIVE_PAGE_SIZE
+              next_cursor=cursor+len(rows) if more and len(rows)>0 else 0
+              latest_source_date=max(page_source_dates) if page_source_dates else None
+              await conn.execute("""update source_native_state set
+                  cursor=$3,last_run_at=now(),last_success_at=now(),
+                  last_source_date=coalesce($4,last_source_date),
+                  records_seen=records_seen+$5,records_upserted=records_upserted+$6,
+                  metadata=metadata || $7::jsonb,updated_at=now()
+                where source_key=$1 and market=$2""",
+                source_key,market,next_cursor,latest_source_date,page_seen,page_upserted,
+                json.dumps({"page_size":CMS_SOURCE_NATIVE_PAGE_SIZE,"last_cursor":cursor,
+                            "next_cursor":next_cursor,"last_page_records":len(rows),
+                            "dataset_id":source["dataset_id"],"last_error":None}))
+              for service_key in CMS_FACILITY_CORE_SERVICES:
+                count=await conn.fetchval("""select count(*) from buyers
+                  where market=$1 and $2=any(string_to_array(coalesce(likely_services,''),'|'))
+                    and status<>'suppressed'""",market,service_key)
+                await conn.execute("""update research_backlog
+                  set current_count=$3,target_gap=greatest(0,goal-$3),
+                      status=case when goal<=$3 and status='queued' then 'completed' else status end,
+                      updated_at=now()
+                  where market=$1 and service_key=$2 and side='buyer'""",
+                  market,service_key,int(count or 0))
+            await event(conn,"source_native",f"{source_key}:{market}","source_native_page_processed",{
+              "source":source_key,"market":market,"cursor":cursor,
+              "records_seen":page_seen,"records_upserted":page_upserted,
+              "next_cursor":next_cursor,"source_run_date":latest_source_date,
+              "external_actions_performed":0
+            },"research_agent")
+    return {"ok":True,"enabled":True,"source":"source_native_research",
+      "sources":["adhs_facilities_arcgis"]+[x["source_key"] for x in CMS_SOURCE_DATASETS if CMS_SOURCE_NATIVE_ENABLED],
+      "markets_checked":len(successful_markets),"source_checks":source_checks,
+      "records_seen":records_seen,"prospects_created":prospects_created,
+      "prospects_updated":prospects_updated,"external_actions_performed":0,"errors":errors}
 
 @app.post("/api/process-public-opportunities")
 async def process_public_opportunities(x_bmc_admin_key:str|None=Header(default=None)):
