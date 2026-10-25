@@ -1326,3 +1326,173 @@ Outreach remains OFF:
 - Growth Pack outreach OFF;
 - no automatic procurement bids;
 - no automatic contact to individual public-demand posters.
+
+
+## 24. VERIFIED AUTONOMOUS RESEARCH CHECKPOINT — 2026-10-25
+
+This section supersedes Section 23's open research-source/runtime gap. The autonomy work below is implemented and validated in GitHub CI. **It is still not a claim that the current master is deployed on the VPS.**
+
+### Verified current functional checkpoint
+
+Functional master at this checkpoint:
+- `e0ab9b944d44d82c8a81884bb16b8d48567be1c5`
+- BMC Portfolio CI run `40219370276`: **SUCCESS**
+- full database/API smoke step: **SUCCESS**
+
+### Authoritative research sources are now active runtime inputs
+
+The previously seeded `research_sources` table is no longer decorative data.
+
+Implemented behavior:
+- broad discovery remains active on normal/even research passes;
+- selected authoritative sources rotate into relevant odd passes;
+- authoritative passes are service-aware rather than blindly applied to every category;
+- returned results are constrained to the expected authoritative domain;
+- source key/name/domain are recorded in candidate/task/event evidence.
+
+Current selective source rules include:
+- Arizona Registrar of Contractors sources only for relevant licensed/construction trades;
+- Arizona Office of Pest Management registry only for pest-control research;
+- ADHS regulated-facility sources for relevant buyer/facility research;
+- county food/facility directories for relevant buyer services;
+- entity/verification-only sources are not treated as discovery or credential approval.
+
+Current official public sources were independently checked in this thread and remain available/current, including the AZ ROC active-contractor posting list, Arizona pest-business registry, ADHS facility/GIS data, and county regulated-food/facility directories.
+
+Important safety rule:
+- appearing in a license or government directory does **not** activate a provider;
+- credential-sensitive routing still requires BMC review/approval.
+
+### Research now continues active gaps before opening equivalent fresh gaps
+
+A CI test exposed that the scheduler could finish pass 1 on a gap and then fill the freed slot with a brand-new gap instead of continuing the existing multi-pass item.
+
+Fixed:
+- among equally ranked research work, queued items with `research_pass > 0` are prioritized before untouched gaps;
+- CI proves the freed research slot goes back to the partially researched gap;
+- CI then proves the next pass for the Prescott electrical example uses the relevant Arizona ROC authoritative source.
+
+This makes the ~15-minute research cadence genuinely continuous rather than merely rotating through one-pass searches.
+
+### Research gap accounting now counts real prospects only
+
+Previously, raw search candidates could reduce `target_gap` before they were actually promoted into vendor/buyer prospect records.
+
+Fixed:
+- `target_gap` is based on `goal - current_count`;
+- staged search-result candidates do not count as researched prospects;
+- only actual internal vendor/buyer prospect records close the research target;
+- CI explicitly verifies this invariant.
+
+This keeps the portfolio-wide missing-prospect metric honest.
+
+### Conservative autonomous prospect promotion
+
+High-confidence public research can now remove a clerical approval step while preserving outbound safety.
+
+`RESEARCH_AUTO_PROMOTE_CONTACTS=true` by default.
+
+A newly discovered result may auto-promote to an **unverified internal prospect** only when all conservative conditions pass:
+- it is not an authoritative-registry pass;
+- result rank is within the top 3;
+- the public search snippet exposes an email address;
+- the email domain matches the source website domain/subdomain;
+- the source is not a blocked social/directory marketplace;
+- the URL looks like a simple business page rather than a blog/news/directory/search/category/tag page.
+
+Blocked auto-promotion domains include examples such as Facebook, Nextdoor, LinkedIn, Yelp, Yellow Pages, Angi, Thumbtack, BBB and MapQuest.
+
+Auto-promotion:
+- creates/reuses only `status='prospect'`;
+- attaches relevant service/market;
+- carries public snippet email/phone evidence;
+- updates actual prospect-gap counts;
+- does **not** activate providers;
+- does **not** verify credentials;
+- does **not** create an outreach record;
+- does **not** send email/SMS;
+- does **not** contact any poster or business.
+
+Lower-confidence results remain in the human research-review queue.
+
+### Prospect deduplication
+
+The same company appearing on multiple indexed pages must not inflate coverage counts.
+
+Implemented:
+- promotion reuses an existing vendor/buyer by exact source URL/website **or case-insensitive public email**;
+- CI fixture includes two separate pages for the same mock company with the same public email;
+- both research candidates promote successfully;
+- both point to the **same internal prospect ID**;
+- exactly one vendor prospect exists for that email;
+- no outreach row exists for that prospect.
+
+This was validated in CI run `40219370276`.
+
+### Important commit sequence after Section 23
+
+Key functional commits include:
+- `34e46b5a6b433d23bae6f77d20924886ed25590c` — use authoritative registries in bounded research passes.
+- `d1715ebf3870fc6f3cddca33bea0c04e6ba2a90a` — continue active research gaps before fresh ones.
+- `884749d4c0b9a980e17a1364a7e2db76ac8f5286` — CI proof of continuation + authoritative rotation.
+- `ef6f07063ba575277d6c65653dc6599f1a7c3bdc` — count only real prospects toward research goals.
+- `aae897e47c2cd298aabcd726afdca0df9e39dc9c` — CI proof of honest gap accounting.
+- `fb00187424d11c583b653bf42230bd0680181504` — conservative automatic internal prospect promotion.
+- `650d15a29c8f898249c18b4fe5fac81ee6437d99` — CI proof that auto-promoted prospects remain internal with zero outreach.
+- `a97aee2df5476c7dcaab06cf9ff608b37d7c1bec` — deduplicate promoted research prospects by public email.
+- `de244027a6e5f7a2205568c76ac05f996c049382` — duplicate-business CI fixture.
+- `e0ab9b944d44d82c8a81884bb16b8d48567be1c5` — final dedupe/autonomy assertions; CI `40219370276` green.
+
+### Production state remains intentionally separate
+
+The last independently confirmed VPS deployment is still older than this current master.
+
+Do not claim these autonomy changes are live until the VPS safe deploy is run:
+
+```bash
+cd ~/bmc-luminary-site/portfolio/automation
+git pull --ff-only
+docker compose --env-file .env build ops_api
+bash ./start.sh .env
+bash ./runtime-doctor.sh .env
+```
+
+Then verify:
+- registry = 54 services;
+- `fix my fryer`;
+- traditional auto repair query;
+- provider dashboard;
+- provider requested-service approval;
+- `/api/admin/daily-brief`;
+- public procurement processor;
+- public local-demand processor;
+- research agent status shows bounded passes and safe contact-ready auto-promotion;
+- outreach remains OFF.
+
+### Safety / approval state remains unchanged
+
+Still mandatory:
+- vendor outreach OFF until Brett explicitly approves;
+- buyer outreach OFF until Brett explicitly approves;
+- Growth Pack outreach OFF until Brett explicitly approves;
+- no automatic public-contract bidding;
+- no private Facebook/Nextdoor/group scraping;
+- no automatic contact to individual local-demand posters;
+- no automatic provider activation from research/license-directory evidence.
+
+### Best next autonomy direction
+
+The next meaningful scaling improvement is **source-native ingestion**, not simply increasing generic search volume.
+
+Good candidates:
+- current AZ ROC active-contractor data for provider discovery;
+- regulated food/facility directories for buyer discovery;
+- healthcare/facility registry datasets for institutional buyer discovery.
+
+Any source-native importer should:
+- remain read-only toward external systems;
+- stage/create unverified prospects only;
+- deduplicate against the current prospect database;
+- preserve source/evidence lineage;
+- never interpret registry presence as final credential approval;
+- never create outreach unless Brett separately approves an outbound workflow.
