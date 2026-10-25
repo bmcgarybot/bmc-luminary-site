@@ -2453,3 +2453,193 @@ Still OFF / prohibited unless separately approved:
 6. Retest a real customer request from the live domain.
 7. Review first real provider activation readiness.
 8. Only after Brett explicitly approves, prepare a tiny controlled provider/buyer/Growth Pack outreach batch.
+
+
+## 29. FINAL THREAD TRANSFER — LAUNCH BLOCKERS + DEPLOYMENT — 2026-10-25
+
+This is the final continuation checkpoint for this thread. Read Sections 28–29 first before doing more public-site or launch work.
+
+### Latest verified GitHub checkpoint
+
+Current functional HEAD at this checkpoint:
+- `63f1f911237abf47310f65ba7c6816fb02f1d647`
+
+BMC Portfolio CI:
+- run `40221058846`: **SUCCESS**
+- full database/API smoke: **SUCCESS**
+- search/download readiness: **SUCCESS**
+- form contracts: **SUCCESS**
+- Compose/scripts/public gateway validation: **SUCCESS**
+
+### Additional safe VPS helper
+
+Added:
+- `portfolio/automation/expand-source-native-markets.sh`
+
+Purpose:
+- existing production `.env` may contain the older explicit 12-market `SOURCE_NATIVE_MARKETS` value;
+- that would override the newer code/Compose defaults;
+- the helper unions missing recovered Arizona markets into the existing value;
+- it does not replace/remove custom markets;
+- it does not touch passwords, Stripe, SMTP, Cloudflare or outreach settings;
+- it restores mode 600 on the env file.
+
+`runtime-doctor.sh` now verifies:
+- at least 198 recovered Arizona expansion research cells exist;
+- the source-native market scope includes the recovered expansion, or warns to run the helper.
+
+### Exact VPS refresh block
+
+A VPS update is now required for the current backend/research/intake code.
+
+Run:
+
+```bash
+ssh ubuntu@148.113.151.47
+cd ~/bmc-luminary-site/portfolio/automation
+
+git pull --ff-only
+chmod +x expand-source-native-markets.sh
+bash ./expand-source-native-markets.sh .env
+
+docker compose --env-file .env build ops_api
+bash ./start.sh .env
+bash ./runtime-doctor.sh .env
+```
+
+Then:
+
+```bash
+bash ./verify-public-ingress.sh
+```
+
+Do not turn outreach on.
+
+After deploy, verify:
+- 54 services;
+- recovered Arizona expansion research cells >=198;
+- `fix my fryer` -> restaurant equipment;
+- `brake repair` -> traditional auto repair;
+- provider dashboard;
+- provider requested-service approval;
+- daily brief/source health;
+- procurement monitor;
+- local-demand monitor;
+- source-native ADHS/CMS lanes;
+- `hooks.bmcservicenetwork.com/api/intake` works publicly;
+- all outreach switches remain OFF.
+
+### Current public-site/domain blocker
+
+The owner screenshot showed `www.bmcservicenetwork.com` NXDOMAIN.
+
+More importantly, GitHub Pages deployment logs show the current branch Pages site still deploys the repository root under:
+- `http://mycosmicsoulmap.com/bmc-luminary-site/`
+
+The BMC Service Network site is under `portfolio/`.
+
+Prepared:
+- `.github/workflows/bmc-service-network-pages.yml`
+
+This manual workflow publishes `portfolio/` as the Pages site root.
+
+External GitHub/Namecheap actions still required:
+1. GitHub repo Settings -> Pages -> Source = **GitHub Actions**.
+2. Custom domain = `bmcservicenetwork.com`.
+3. Namecheap website DNS:
+   - four GitHub Pages apex A records;
+   - `www` CNAME -> `bmcgarybot.github.io`;
+   - preserve all email and hooks-related records.
+4. Run manual **BMC Service Network Pages** workflow.
+5. Enable Enforce HTTPS once GitHub validates the domain.
+
+See `DNS_HOSTING.md` for exact records.
+
+### Search Console
+
+Do this only after the real BMC domain works:
+- add Google Search Console Domain property `bmcservicenetwork.com`;
+- verify with Google's TXT DNS record;
+- submit `https://bmcservicenetwork.com/sitemap.xml`;
+- request indexing for priority pages.
+
+The sitemap now includes all 54 registered service fronts and CI prevents future omissions.
+
+### Growth Pack sample
+
+Rebuilt clean XLSX is committed and CI verifies it is a readable Office package.
+
+Retest it from the final custom domain after Pages/DNS is switched.
+
+### Customer request bug
+
+Frontend mail-client fallback is removed.
+
+Underlying intake still must be retested after:
+- current VPS deployment;
+- `hooks.bmcservicenetwork.com` DNS/tunnel verification.
+
+### Stripe status — live account
+
+Account:
+- `acct_1UU9OfQU2BLM8GhL`
+
+Current state checked this thread:
+- charges disabled;
+- payouts disabled;
+- details not submitted;
+- disabled reason = requirements past due.
+
+Current onboarding requirements include:
+- MCC/category;
+- product description;
+- support phone;
+- website;
+- business type;
+- representative identity/DOB/email;
+- statement descriptor;
+- Terms acceptance.
+
+Current live Payment Links:
+- **0**
+
+Do not make a second Stripe account.
+
+After onboarding is approved:
+- create the four existing product Payment Links;
+- update website/billing config;
+- configure/verify the live Stripe webhook.
+
+### Windsor.ai
+
+No BMC repo dependency was found.
+
+Current Windsor documentation says the 30-day trial drops to Forever Free (1 source / 1 account) rather than automatically charging.
+
+Recommendation:
+- do not buy a Windsor plan for launch;
+- keep free only if one analytics connector is useful;
+- reconsider later if multi-source marketing reporting justifies cost.
+
+### Outreach state
+
+Still OFF.
+
+Do not enable:
+- provider outreach;
+- buyer outreach;
+- Growth Pack outreach;
+
+until Brett explicitly approves a small controlled batch after domain, intake, Stripe and provider-readiness checks.
+
+### Next-thread sequence
+
+1. Help Brett perform the GitHub Pages + Namecheap DNS switch.
+2. Have Brett run the VPS refresh block above.
+3. Retest live root + www + HTTPS + hooks.
+4. Retest customer request.
+5. Retest Growth Pack XLSX from production.
+6. Finish Stripe onboarding and then Payment Links/webhook.
+7. Set up Search Console.
+8. Review provider launch readiness.
+9. Only with explicit approval, prepare the first tiny outbound batch.
