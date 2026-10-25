@@ -113,6 +113,8 @@ jobs:
           sed -i 's#^CMS_SOURCE_NATIVE_PAGE_SIZE=.*#CMS_SOURCE_NATIVE_PAGE_SIZE=10#' .env.ci
           sed -i 's#^CMS_HOSPITALS_URL=.*#CMS_HOSPITALS_URL=http://research-mock:8080/cms-hospitals#' .env.ci
           sed -i 's#^CMS_NURSING_HOMES_URL=.*#CMS_NURSING_HOMES_URL=http://research-mock:8080/cms-nursing#' .env.ci
+          sed -i 's#^CMS_HOME_HEALTH_URL=.*#CMS_HOME_HEALTH_URL=http://research-mock:8080/cms-home-health#' .env.ci
+          sed -i 's#^CMS_HOSPICE_URL=.*#CMS_HOSPICE_URL=http://research-mock:8080/cms-hospice#' .env.ci
           docker compose --env-file .env.ci up -d postgres
 
           # Production bootstrap owns schema/seed application. CI must mirror that
@@ -414,7 +416,7 @@ jobs:
           assert data["source_native_research"]["adhs_page_size"] == 10
           assert data["source_native_research"]["cms_enabled"] is True
           assert data["source_native_research"]["cms_page_size"] == 10
-          assert data["source_native_research"]["source_count"] == 3
+          assert data["source_native_research"]["source_count"] == 5
           assert data["source_native_research"]["market_count"] == 1
           assert data["last_run"]["status"] == "completed"
           PY
@@ -428,19 +430,21 @@ jobs:
           assert data["ok"] is True
           assert data["enabled"] is True
           assert data["source"] == "source_native_research"
-          assert data["sources"] == ["adhs_facilities_arcgis","cms_hospitals","cms_nursing_homes"], data
+          assert data["sources"] == ["adhs_facilities_arcgis","cms_hospitals","cms_nursing_homes","cms_home_health","cms_hospice"], data
           assert data["markets_checked"] == 1, data
-          assert data["source_checks"] == 3, data
-          assert data["records_seen"] == 4, data
-          assert data["prospects_created"] == 3, data
+          assert data["source_checks"] == 5, data
+          assert data["records_seen"] == 6, data
+          assert data["prospects_created"] == 5, data
           assert data["prospects_updated"] == 1, data
           assert data["external_actions_performed"] == 0
           assert data["errors"] == [], data
           PY
-          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from buyers where campaign='source_native_research' and status='prospect';")" -eq 3
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from buyers where campaign='source_native_research' and status='prospect';")" -eq 5
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from buyers where buyer_id like 'b_adhs_%' and source_data->'sources' ? 'adhs_facilities_arcgis';")" -eq 2
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from buyers where business_name='CI Prescott Regional Medical Center' and source_data->'sources' ? 'adhs_facilities_arcgis' and source_data->'sources' ? 'cms_hospitals';")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from buyers where buyer_id like 'b_cms_%' and business_name='CI Prescott Skilled Nursing Center' and source_data->'sources' ? 'cms_nursing_homes';")" -eq 1
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from buyers where buyer_id like 'b_cms_%' and business_name='CI Prescott Home Health' and source_data->'sources' ? 'cms_home_health' and likely_services like '%commercial_cleaning%' and likely_services not like '%restaurant_equipment%';")" -eq 1
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from buyers where buyer_id like 'b_cms_%' and business_name='CI Prescott Hospice' and source_data->'sources' ? 'cms_hospice' and source_data->'sources'->'cms_hospice'->>'certification_date'='04/07/2022';")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from buyers where business_name='CI Prescott Regional Medical Center';")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='buyer' and entity_id in (select buyer_id from buyers where campaign='source_native_research');")" -eq 0
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_backlog rb where rb.market='Prescott' and rb.service_key='commercial_cleaning' and rb.side='buyer' and rb.current_count=(select count(*) from buyers b where b.market='Prescott' and 'commercial_cleaning'=any(string_to_array(coalesce(b.likely_services,''),'|')) and b.status<>'suppressed');")" -eq 1
@@ -450,17 +454,19 @@ jobs:
           python - <<'PY'
           import json
           data=json.load(open("/tmp/bmc_source_native_2.json"))
-          assert data["source_checks"] == 3, data
-          assert data["records_seen"] == 4, data
+          assert data["source_checks"] == 5, data
+          assert data["records_seen"] == 6, data
           assert data["prospects_created"] == 0, data
-          assert data["prospects_updated"] == 4, data
+          assert data["prospects_updated"] == 6, data
           assert data["external_actions_performed"] == 0
           assert data["errors"] == [], data
           PY
-          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from buyers where campaign='source_native_research';")" -eq 3
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from buyers where campaign='source_native_research';")" -eq 5
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from source_native_state where source_key='adhs_facilities_arcgis' and market='Prescott' and cursor=0 and records_seen=4 and records_upserted=4;")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from source_native_state where source_key='cms_hospitals' and market='Prescott' and cursor=0 and records_seen=2 and records_upserted=2;")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from source_native_state where source_key='cms_nursing_homes' and market='Prescott' and cursor=0 and records_seen=2 and records_upserted=2;")" -eq 1
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from source_native_state where source_key='cms_home_health' and market='Prescott' and cursor=0 and records_seen=2 and records_upserted=2;")" -eq 1
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from source_native_state where source_key='cms_hospice' and market='Prescott' and cursor=0 and records_seen=2 and records_upserted=2;")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='buyer' and entity_id in (select buyer_id from buyers where campaign='source_native_research');")" -eq 0
 
           # Healthy source state stays out of Needs Brett; a >36h stale state surfaces automatically.
@@ -469,7 +475,7 @@ jobs:
           python - <<'PY'
           import json
           data=json.load(open("/tmp/bmc_source_health_ok.json"))
-          assert data["counts"]["source_native_markets_tracked"] == 3, data
+          assert data["counts"]["source_native_markets_tracked"] == 5, data
           assert data["counts"]["source_native_stale_markets"] == 0, data
           assert data["source_native_issues"] == [], data
           PY
