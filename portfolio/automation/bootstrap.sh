@@ -67,11 +67,33 @@ done
 
 docker compose up -d ops_api n8n webhook_proxy scheduler searxng
 
+if grep -q '^LOCAL_AI_ENABLED=true' .env; then
+  echo "Starting configured local AI..."
+  docker compose --profile local-ai up -d ollama
+  MODEL="$(grep -m1 '^LOCAL_AI_MODEL=' .env | cut -d= -f2-)"
+  ready=0
+  for i in $(seq 1 45); do
+    if curl -fsS http://127.0.0.1:11434/api/tags >/tmp/bmc_ollama_tags.json 2>/dev/null; then
+      ready=1
+      break
+    fi
+    sleep 2
+  done
+  if [ "$ready" -ne 1 ]; then
+    echo "Ollama did not become reachable."
+    exit 1
+  fi
+  if [ -n "$MODEL" ] && ! docker compose --profile local-ai exec -T ollama ollama list | awk 'NR>1 {print $1}' | grep -qx "$MODEL"; then
+    echo "Pulling configured AI model: $MODEL"
+    docker compose --profile local-ai exec -T ollama ollama pull "$MODEL"
+  fi
+fi
+
 echo "BMC core is running privately."
 echo "n8n: http://localhost:5678"
 echo "API health: http://localhost:8000/health"
 echo "Research search: http://localhost:8888 (private/local only)"
-echo "Optional AI: docker compose --profile local-ai up -d ollama"
+echo "Provider login: https://bmcservicenetwork.com/provider-login/"
 echo "Public tunnel: docker compose --profile tunnel up -d cloudflared"
 echo "OUTREACH_ENABLED remains false until explicitly changed."
 echo
