@@ -1,6 +1,6 @@
 # BMC Arizona Service Portfolio — Thread / Machine Handoff
 
-Updated: 2026-10-24
+Updated: 2026-10-25
 
 ## Mission
 Build BMC Luminary Ventures LLC into a managed Arizona local-service marketplace/concierge, not a passive directory.
@@ -63,6 +63,45 @@ Important tabs:
 - Billing
 - Leads
 - Exceptions
+
+## Production VPS access
+
+Production server:
+- Provider/plan: OVHcloud VPS-3 2027, no commitment
+- Datacenter: Beauharnois, Canada East
+- Hostname: `vps-5675821a.vps.ovh.ca`
+- IPv4: `148.113.151.47`
+- OS: Ubuntu 26.04 LTS x86_64
+- Capacity: 6 vCPU / 12 GB RAM / 100 GB NVMe / 2 Gbps unlimited
+- SSH user: `ubuntu`
+
+Normal login from Brett's Mac:
+
+```bash
+ssh ubuntu@148.113.151.47
+cd ~/bmc-luminary-site/portfolio/automation
+```
+
+Private admin/n8n/SearXNG access should use SSH port forwarding from the Mac:
+
+```bash
+ssh -L 8000:127.0.0.1:8000 -L 5678:127.0.0.1:5678 -L 8888:127.0.0.1:8888 ubuntu@148.113.151.47
+```
+
+While that SSH session remains open, use locally:
+- BMC admin: `http://127.0.0.1:8000/admin`
+- n8n: `http://127.0.0.1:5678`
+- SearXNG: `http://127.0.0.1:8888`
+
+Useful server checks from `~/bmc-luminary-site/portfolio/automation`:
+
+```bash
+docker compose ps
+bash runtime-doctor.sh
+./backup.sh
+```
+
+Never put the VPS password, SSH private key, Cloudflare Tunnel token, Stripe secrets, SMTP password, or `.env` contents in the handoff, Google Sheet, GitHub, or chat. The IP/hostname and SSH username are operational identifiers, not secrets.
 
 ## Current portfolio state
 
@@ -212,11 +251,13 @@ Backend already supports Stripe webhook event verification, payment/revenue even
 
 Production target is now a small always-on cloud VPS rather than a home appliance.
 
-Initial class:
-- Ubuntu 24.04 LTS x86_64
-- 4 vCPU
-- 8 GB RAM
-- 75+ GB NVMe
+Deployed production class:
+- Ubuntu 26.04 LTS x86_64
+- OVHcloud VPS-3 2027, Beauharnois
+- 6 vCPU
+- 12 GB RAM
+- 100 GB NVMe
+- 2 Gbps unlimited public bandwidth
 - Docker Engine + Compose
 - PostgreSQL
 - BMC deterministic FastAPI Ops API
@@ -227,11 +268,11 @@ Initial class:
 - private SearXNG research search
 - optional Ollama + Qwen3 1.7B utility model
 
-The current intended commercial target is the OVHcloud VPS-2 class, but the stack is provider-neutral.
+The live production target is the OVHcloud VPS-3 class above. The stack remains provider-neutral.
 
 All application ports bind to 127.0.0.1. Cloudflare Tunnel provides public webhook ingress without publishing n8n, SearXNG, Ollama, Postgres, or the admin interface. Private admin/n8n access should use SSH port forwarding.
 
-The Compose stack now has memory ceilings and log rotation sized for the 8 GB class. The deterministic core runs without an LLM; the resident model is optional and capped so it cannot become the business operating system.
+The Compose stack keeps conservative memory ceilings and log rotation originally sized for the 8 GB class; the deployed 12 GB VPS therefore has additional headroom. The deterministic core runs without an LLM; the resident model is optional and capped so it cannot become the business operating system.
 
 ENVY/Mac/Bonsai remain optional escalation AI workers.
 
@@ -288,8 +329,8 @@ The current research worker is first-pass discovery from search-result evidence.
 ## Current runtime blockers
 
 1. Cloud VPS deployed and healthy; remaining runtime work is public ingress/integrations.
-2. Cloudflare Tunnel not authorized/configured.
-3. `hooks.bmcluminaryventures.com` not routed to the cloud webhook proxy.
+2. Cloudflare Tunnel helper is built, but the tunnel is not yet authorized/configured in the Cloudflare account.
+3. `hooks.bmcluminaryventures.com` is not yet published through the tunnel to `http://webhook_proxy:8080`.
 4. SMTP sender not configured.
 5. Reply/IMAP mailbox not configured.
 6. BMC postal address not configured for outbound.
@@ -300,10 +341,10 @@ The current research worker is first-pass discovery from search-result evidence.
 
 ## Validation state
 
-Current verified code head:
-`756194cf1d430458aa80f12a479419cb365c7e20`
+Most recent fully verified CI baseline:
+`0b69cc61e51099fc2e4ca1968d6075abae62b3e6`
 
-GitHub Actions run `40141528910` completed successfully on 2026-10-24 after the cloud-VPS retarget. It includes the previously verified autonomous operator/research worker and the new 8 GB cloud resource limits, log rotation, startup/backup changes, cloud deployment docs and handoff.
+GitHub Actions run `40147496935` completed successfully on 2026-10-25 after aligning CI database startup with the production bootstrap. It includes the previously verified autonomous operator/research worker and the new 8 GB cloud resource limits, log rotation, startup/backup changes, cloud deployment docs and handoff.
 
 The green CI now proves:
 - Python API syntax
@@ -356,9 +397,8 @@ Do not add random new business ideas before clearing these:
 
 1. Keep both global outreach switches OFF.
 2. Keep the deployed cloud VPS healthy; runtime doctor is green and first checksummed backup is complete.
-3. Configure Cloudflare Tunnel/public webhook ingress, then verify external intake while keeping admin/n8n private via SSH forwarding.
+3. Create the remotely managed Cloudflare Tunnel, run `./configure-cloudflare.sh`, publish `hooks.bmcluminaryventures.com` to `http://webhook_proxy:8080`, then run `./verify-public-ingress.sh`. Keep admin/n8n/SearXNG private via SSH forwarding.
 4. Configure transactional SMTP, monitored reply/IMAP, SPF/DKIM/DMARC, and the real BMC postal address.
-5. Configure the Cloudflare Tunnel and route `hooks.bmcluminaryventures.com`.
 6. Invite only the curated `pilot1` providers using their dedicated activation links. The Prescott tree/landscape cluster already has three publicly credential-complete targets (ZebraScapes, Yavapai Landscaping, Jonny's).
 7. Review activation submissions in the private **Pending pilot reviews** queue, obtain direct COI/license confirmation as applicable, and explicitly approve 3+ providers in that first niche.
 8. Run one synthetic lead end-to-end.
