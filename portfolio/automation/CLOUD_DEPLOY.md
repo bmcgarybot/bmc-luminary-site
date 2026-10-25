@@ -64,7 +64,7 @@ On the live Ubuntu 26.04 VPS (or another fresh compatible Ubuntu VPS):
 ```bash
 git clone https://github.com/bmcgarybot/bmc-luminary-site.git
 cd bmc-luminary-site/portfolio/automation
-chmod +x provision-cloud.sh bootstrap.sh start.sh stop.sh backup.sh runtime-doctor.sh configure-cloudflare.sh verify-public-ingress.sh
+chmod +x provision-cloud.sh bootstrap.sh start.sh stop.sh backup.sh runtime-doctor.sh configure-cloudflare.sh verify-public-ingress.sh verify-backup.sh install-backup-timer.sh
 ./provision-cloud.sh
 ```
 
@@ -170,7 +170,23 @@ Optional environment settings:
 - `BACKUP_RETENTION_DAYS`
 - `INSTANCE_KEY`
 
-Provider snapshots are useful, but a database dump remains the portable recovery artifact. Add an off-host/object-storage copy before the business has meaningful production data.
+Verify the latest dump by restoring it into an isolated temporary database:
+
+```bash
+./verify-backup.sh
+```
+
+The verification checks the SHA-256, performs a real `pg_restore` into a temporary database, validates core row counts, then drops the test database without modifying production.
+
+Install the daily portable-dump timer:
+
+```bash
+./install-backup-timer.sh
+```
+
+The timer runs at approximately 10:15 UTC / 3:15 AM America/Phoenix each day, with a small randomized delay, and performs an immediate test run when installed.
+
+Provider snapshots are useful, but a database dump remains the portable recovery artifact. The live OVH automated backup plus the local portable dump gives two layers; add a true off-host/object-storage copy before the business has meaningful production data.
 
 ## White-label direction
 
