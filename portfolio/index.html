@@ -2,7 +2,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BMC Service Network | Get the Problem Off Your Plate</title>
 <meta name="description" content="Tell BMC what you want solved: find someone for the job, compare options, coordinate recurring maintenance, reduce vendor costs, or find more customers.">
-<link rel="stylesheet" href="assets/core.css?v=clarity-11">
+<link rel="stylesheet" href="assets/core.css?v=clarity-13">
 </head><body class="editorial-site">
 
 <nav class="nav"><div class="wrap nav-in">
@@ -16,11 +16,12 @@
   <h1>What do you need help with?</h1>
   <p class="hero-sub">Need a repair, cleaning, yard work, business service, or help finding quotes? Start here.</p>
 
-  <form class="hero-problem-form" action="request/" method="get">
-    <input name="problem" aria-label="What are you trying to get done?" placeholder="What do you need help with?" required>
-    <button class="btn btn-primary" type="submit">Get help</button>
+  <form class="hero-problem-form" action="services/" method="get" data-home-service-search>
+    <input id="home-service-search" name="q" aria-label="What are you trying to get done?" placeholder="Try “my fryer is broken” or “real estate”" autocomplete="off" required>
+    <button class="btn btn-primary" type="submit">Show my options</button>
   </form>
-  <div class="microcopy">Tell us what you need help with.</div>
+  <div class="microcopy">We’ll show the services that look closest before you fill anything out.</div>
+  <div id="home-finder-results" class="finder-results hero-finder-panel" hidden></div>
 
   <div class="customer-proof">
     <span>Less searching</span>
@@ -46,26 +47,30 @@
   <p>Pick the closest option.</p>
 </div>
 
-<div class="category-tiles">
-  <a class="category-tile" href="request/?goal=fix" style="text-decoration:none">
-    <span class="tile-icon">01</span><strong>I need something fixed or done</strong>
-    <span>Repairs, cleaning, yard work, hauling, towing, and other local services.</span>
+<div class="image-service-grid">
+  <a class="image-service-card" href="services/">
+    <img src="https://images.unsplash.com/photo-1505798577917-a65157d3320a?auto=format&fit=crop&w=900&q=78" alt="Local service professional working on a property" loading="lazy">
+    <div class="image-card-copy"><strong>Find someone for a job</strong><span>Repairs, cleaning, yard work, hauling, towing, restaurant service, and more.</span></div>
   </a>
-  <a class="category-tile" href="quote-sourcing-concierge/" style="text-decoration:none">
-    <span class="tile-icon">02</span><strong>I need a few quotes</strong>
-    <span>Tell us what you need and we’ll help find vendor options.</span>
+  <a class="image-service-card" href="quote-sourcing-concierge/">
+    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=78" alt="Business owner comparing quotes" loading="lazy">
+    <div class="image-card-copy"><strong>Get a few quotes</strong><span>Tell us what you need once and compare vendor options.</span></div>
   </a>
-  <a class="category-tile" href="facility-maintenance/" style="text-decoration:none">
-    <span class="tile-icon">03</span><strong>I need ongoing building help</strong>
-    <span>Regular cleaning, repairs, maintenance, and other building work.</span>
+  <a class="image-service-card" href="facility-maintenance/">
+    <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=78" alt="Commercial building workspace" loading="lazy">
+    <div class="image-card-copy"><strong>Keep a building handled</strong><span>Cleaning, repairs, maintenance, grounds, electrical, HVAC, and more.</span></div>
   </a>
-  <a class="category-tile" href="vendor-savings-audit/" style="text-decoration:none">
-    <span class="tile-icon">04</span><strong>I want to cut vendor costs</strong>
-    <span>Review regular service bills and compare other options.</span>
+  <a class="image-service-card" href="vendor-savings-audit/">
+    <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=78" alt="Business team reviewing costs" loading="lazy">
+    <div class="image-card-copy"><strong>Cut vendor costs</strong><span>Review regular service bills and find the ones worth comparing.</span></div>
   </a>
-  <a class="category-tile" href="growth-packs/" style="text-decoration:none">
-    <span class="tile-icon">05</span><strong>I want more customers</strong>
-    <span>Get a researched list of businesses to contact or learn more about your market.</span>
+  <a class="image-service-card" href="growth-packs/">
+    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=78" alt="Business growth dashboard" loading="lazy">
+    <div class="image-card-copy"><strong>Find more customers</strong><span>Get researched prospects, competitor research, or a new-market plan.</span></div>
+  </a>
+  <a class="image-service-card" href="solutions/">
+    <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=78" alt="Business team planning together" loading="lazy">
+    <div class="image-card-copy"><strong>See everything BMC can help with</strong><span>Browse the main service and business-help paths in one place.</span></div>
   </a>
 </div>
 </div></section>
@@ -129,5 +134,13 @@
 </div></footer>
 
 <div class="mobile-sticky-cta"><a class="btn btn-primary" href="request/">Tell us the problem</a></div>
-<script src="assets/core.js?v=clarity-11"></script>
+<script src="assets/core.js?v=clarity-13"></script>
+<script src="assets/service-finder.js?v=finder-1"></script>
+<script>
+(async function(){
+  const input=document.getElementById('home-service-search');
+  const results=document.getElementById('home-finder-results');
+  try{await BMCServiceFinder.attach(input,results,{limit:3});}catch(e){console.error(e);}
+})();
+</script>
 </body></html>
