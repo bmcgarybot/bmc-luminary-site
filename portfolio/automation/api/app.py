@@ -732,52 +732,70 @@ def pilot_activation_url(row):
     })
     return f"{PILOT_ACTIVATION_URL}?{params}"
 
+def provider_service_label(row):
+    name=clean(row.get("service_name") if hasattr(row,"get") else "")
+    if name:
+        return name
+    raw=clean(row["service_key"])
+    return raw.replace("_"," ").replace(" service","").strip().title() or "local service"
+
 def first_wave_vendor_copy(row,step):
     market=clean(row["market"]) or "your area"
-    service=clean(row["service_key"]) or "local service"
+    service=provider_service_label(row)
     business=clean(row["business_name"])
     activation=pilot_activation_url(row)
     if step==1:
-        subject=f"{market} {service} pilot with BMC"
+        subject=f"{market}: open to a few more {service.lower()} jobs?"
         body=f"""Hi {business},
 
-BMC Luminary Ventures is building a managed local request channel for {service} in {market}. You are in the first provider group we are inviting because your service area and public business profile fit the work we expect to route.
+Are you open to a few more {service.lower()} jobs in {market} if you can see the job details before deciding?
 
-For the pilot, the first qualified request may be offered at no charge where stated in your invitation. There is no subscription and no surprise paid lead fee. Any future pricing is presented separately before it becomes active.
+BMC is launching a local provider pilot. It is free to join.
 
-If you want to be considered, confirm the territory, job types, minimum job size, capacity, and applicable credential information here:
+You tell us:
+- where you work
+- the jobs you want
+- your minimum job size
+- how much work you can take
 
+When a matching request comes in, you can review the job type, area, timing, and customer notes first. If it fits, accept it. If it does not, pass. Passing does not create a charge.
+
+Selected pilot opportunities may be free or reduced while we prove whether BMC is worth paying for. Any later lead or territory price will be shown separately before it applies.
+
+Join the pilot here:
 {activation}
 
-No sales meeting is required.
+No sales call is required.
 
 BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}
 
-If this is not relevant, reply no and we will suppress future outreach."""
+Reply no if you do not want future outreach."""
     elif step==2:
-        subject=f"Re: {market} {service} pilot with BMC"
+        subject=f"Re: more {service.lower()} work in {market}"
         body=f"""Hi {business},
 
-Following up once on the BMC pilot invitation. If additional {service} requests in {market} are relevant, you can confirm the territory and work you want here:
+Just following up once.
 
+If you want more {service.lower()} work in {market}, BMC lets you set the area, job types, minimum job size, and capacity you want. You review a matching request before deciding.
+
+It is free to join the pilot:
 {activation}
-
-There is no subscription and no paid lead term becomes active without your agreement.
 
 BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}
 
 Reply no if you do not want future outreach."""
     else:
-        subject=f"Last note: {market} {service} pilot"
+        subject=f"Closing this out: {market} {service.lower()} pilot"
         body=f"""Hi {business},
 
-Last note on the BMC {service} pilot in {market}. If you want to be considered for qualified local requests, your activation link is here:
+Last note from me.
 
+If you want to be considered for local {service.lower()} requests in {market}, you can join the free BMC pilot here:
 {activation}
 
-If not, no action is needed and we will close this sequence.
+If not, no action is needed and we will close this out.
 
 BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}
@@ -786,48 +804,38 @@ Reply no to suppress future outreach."""
     return subject,body
 
 def vendor_recruitment_copy(row,step):
-    market=row["market"] or "your area"
-    service=row["service_key"] or "local service"
-    business=row["business_name"]
+    market=clean(row["market"]) or "your area"
+    service=provider_service_label(row)
+    business=clean(row["business_name"])
     signal=clean(row["association_signal"])
+    credibility=f" I found your business through {signal}." if signal else ""
     if step==1:
-        if signal:
-            subject=f"Put your local credibility to work in {market}"
-            body=f"""Hi {business},
-
-You have already invested in local credibility through {signal}. BMC Luminary Ventures is building an active request-and-referral channel for {service} in {market}.
-
-The goal is simple: add qualified local work on top of the credibility you already paid to establish, rather than selling you another passive directory listing.
-
-If you are taking new work, tell us the territory, job types, and capacity you want here:
-{PARTNER_URL}
-
-No sales meeting is required. We will confirm any paid lead or territory terms before anything is activated.
-
-BMC Luminary Ventures LLC
-{BUSINESS_POSTAL_ADDRESS}
-
-If this is not relevant, reply no and we will suppress future outreach."""
-        else:
-            subject=f"{market} {service} partner"
-            body=f"""Hi {business},
-
-BMC Luminary Ventures is building a local request-and-referral channel for {service} in {market}.
-
-We are selecting providers by service area and job fit rather than sending every request to a giant list. If you are taking new work, tell us the territory, job types, and capacity you want here:
-{PARTNER_URL}
-
-No sales meeting is required. We will confirm any paid lead or territory terms before anything is activated.
-
-BMC Luminary Ventures LLC
-{BUSINESS_POSTAL_ADDRESS}
-
-If this is not relevant, reply no and we will suppress future outreach."""
-    elif step==2:
-        subject=f"Re: {market} {service} partner"
+        subject=f"{market}: want more {service.lower()} jobs?"
         body=f"""Hi {business},
 
-Following up in case additional {service} work in {market} is relevant. The partner form lets you specify exactly which jobs and territory you want:
+Are you open to more {service.lower()} work in {market}?{credibility}
+
+BMC is building a local provider network around one simple idea: do not make contractors pay just to find out the lead was wrong for them.
+
+Joining is free. You tell us where you work, what jobs you want, your minimum job size, and your capacity. When a request fits, you review the job details first and decide whether to take it or pass.
+
+You can join here:
+{PARTNER_URL}
+
+Selected pilot opportunities may be free or reduced while we prove the channel. Any future paid terms will be shown before they apply.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+Reply no if you do not want future outreach."""
+    elif step==2:
+        subject=f"Re: {service.lower()} work in {market}"
+        body=f"""Hi {business},
+
+Following up once in case a few more {service.lower()} jobs in {market} would help.
+
+The BMC pilot is free to join. Set the jobs and area you want, review matching requests first, then accept or pass.
+
 {PARTNER_URL}
 
 BMC Luminary Ventures LLC
@@ -835,13 +843,15 @@ BMC Luminary Ventures LLC
 
 Reply no if you do not want future outreach."""
     else:
-        subject=f"Last note: {market} {service} requests"
+        subject=f"Last note: {market} {service.lower()} work"
         body=f"""Hi {business},
 
-Last note from me on the BMC {service} partner pool in {market}. If you want to be considered for qualified local requests, the partner form is here:
+Last note from me.
+
+If you want BMC to consider your business for matching {service.lower()} requests in {market}, the free provider form is here:
 {PARTNER_URL}
 
-If not, no action is needed and we will close this sequence.
+If not, no action is needed.
 
 BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}
@@ -863,11 +873,12 @@ async def process_outreach(x_bmc_admin_key:str|None=Header(default=None)):
       if allowance<=0:return {"ok":True,"enabled":True,"sent":0,"message":"Daily outreach limit reached."}
       rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,o.wave,
           v.business_name,v.public_email,v.association_signal,
-          vm.market,vs.service_key
+          vm.market,vs.service_key,svc.display_name as service_name
         from outreach o
         join vendors v on v.vendor_id=o.entity_id
         left join lateral (select market from vendor_markets where vendor_id=v.vendor_id order by market limit 1) vm on true
         left join lateral (select service_key from vendor_services where vendor_id=v.vendor_id order by service_key limit 1) vs on true
+        left join services svc on svc.service_key=vs.service_key
         where o.entity_type='vendor' and o.campaign='vendor_recruitment'
           and o.wave=$2 and o.opt_out=false and v.public_email is not null and v.public_email<>''
           and (
