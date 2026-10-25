@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 
 DB_DSN=os.getenv("DATABASE_URL","postgresql://bmc_automation:change@postgres:5432/bmc_portfolio")
-PUBLIC_SITE_URL=os.getenv("PUBLIC_SITE_URL","https://bmcluminaryventures.com").rstrip("/")
+PUBLIC_SITE_URL=os.getenv("PUBLIC_SITE_URL","https://bmcservicenetwork.com").rstrip("/")
 WEBHOOK_URL=os.getenv("WEBHOOK_URL","").strip()
 CLOUDFLARE_TUNNEL_TOKEN=os.getenv("CLOUDFLARE_TUNNEL_TOKEN","").strip()
 ADMIN_KEY=os.getenv("BMC_ADMIN_KEY","")
@@ -18,7 +18,7 @@ SMTP_HOST=os.getenv("SMTP_HOST","")
 SMTP_PORT=int(os.getenv("SMTP_PORT","587"))
 SMTP_USER=os.getenv("SMTP_USER","")
 SMTP_PASSWORD=os.getenv("SMTP_PASSWORD","")
-SMTP_FROM=os.getenv("SMTP_FROM",SMTP_USER or "contact@bmcluminaryventures.com")
+SMTP_FROM=os.getenv("SMTP_FROM",SMTP_USER or "contact@bmcservicenetwork.com")
 SMTP_STARTTLS=os.getenv("SMTP_STARTTLS","true").lower()=="true"
 SMTP_DRY_RUN=os.getenv("SMTP_DRY_RUN","false").lower()=="true"
 OUTREACH_ENABLED=os.getenv("OUTREACH_ENABLED","false").lower()=="true"
@@ -28,8 +28,8 @@ BUYER_OUTREACH_ENABLED=os.getenv("BUYER_OUTREACH_ENABLED","false").lower()=="tru
 BUYER_OUTREACH_DAILY_LIMIT=int(os.getenv("BUYER_OUTREACH_DAILY_LIMIT","15"))
 BUYER_OUTREACH_WAVE=os.getenv("BUYER_OUTREACH_WAVE","pilot1").strip() or "pilot1"
 BUSINESS_POSTAL_ADDRESS=os.getenv("BUSINESS_POSTAL_ADDRESS","").strip()
-PARTNER_URL=f"{PUBLIC_SITE_URL}/portfolio/vendor-partner/"
-PILOT_ACTIVATION_URL=f"{PUBLIC_SITE_URL}/portfolio/provider-pilot-activate/"
+PARTNER_URL=f"{PUBLIC_SITE_URL}/vendor-partner/"
+PILOT_ACTIVATION_URL=f"{PUBLIC_SITE_URL}/provider-pilot-activate/"
 IMAP_ENABLED=os.getenv("IMAP_ENABLED","false").lower()=="true"
 IMAP_HOST=os.getenv("IMAP_HOST","")
 IMAP_PORT=int(os.getenv("IMAP_PORT","993"))
@@ -52,7 +52,7 @@ RESEARCH_WORKER_BATCH=max(1,min(5,int(os.getenv("RESEARCH_WORKER_BATCH","1"))))
 
 app=FastAPI(title="BMC Portfolio Ops API",version="0.1.0")
 app.add_middleware(CORSMiddleware,allow_origins=[
-    "https://bmcluminaryventures.com","https://www.bmcluminaryventures.com"
+    "https://bmcservicenetwork.com","https://www.bmcservicenetwork.com"
 ],allow_credentials=False,allow_methods=["POST","GET"],allow_headers=["*"])
 
 @app.on_event("startup")
@@ -200,7 +200,7 @@ async def offer_next(conn,lead):
     await conn.execute("""insert into lead_matches(lead_id,vendor_id,rank,status,expires_at,response_token)
       values($1,$2,1,'offered',$3,$4)""",lead["lead_id"],vendor["vendor_id"],expiry,token)
     await conn.execute("update leads set status='provider_offered',updated_at=now() where lead_id=$1",lead["lead_id"])
-    link=f"{PUBLIC_SITE_URL}/portfolio/provider-response/?lead_id={lead['lead_id']}&vendor_id={vendor['vendor_id']}&token={token}"
+    link=f"{PUBLIC_SITE_URL}/provider-response/?lead_id={lead['lead_id']}&vendor_id={vendor['vendor_id']}&token={token}"
     summary=clean(lead.get("scope"))[:1200]
     body=f"""New BMC service request
 
@@ -242,7 +242,7 @@ async def handle_vendor_response(conn,p):
         await conn.execute("update leads set status='provider_accepted',updated_at=now() where lead_id=$1",row["lead_id"])
         await event(conn,"lead",row["lead_id"],"provider_accepted",{"vendor_id":vendor_id},vendor_id)
 
-        job_link=f"{PUBLIC_SITE_URL}/portfolio/provider-job-update/?lead_id={row['lead_id']}&vendor_id={vendor_id}&token={token}"
+        job_link=f"{PUBLIC_SITE_URL}/provider-job-update/?lead_id={row['lead_id']}&vendor_id={vendor_id}&token={token}"
         customer_name=clean(row["customer_name"]) or "Customer"
         customer_business=clean(row["business_name"])
         customer_email=clean(row["email"])
@@ -577,7 +577,7 @@ async def process_followups(x_bmc_admin_key:str|None=Header(default=None)):
           and (lm.last_followup_at is null or lm.last_followup_at < now()-interval '24 hours')
         order by coalesce(lm.last_followup_at,lm.responded_at,lm.offered_at) asc limit 100""")
       for row in rows:
-        link=f"{PUBLIC_SITE_URL}/portfolio/provider-job-update/?lead_id={row['lead_id']}&vendor_id={row['vendor_id']}&token={row['response_token']}"
+        link=f"{PUBLIC_SITE_URL}/provider-job-update/?lead_id={row['lead_id']}&vendor_id={row['vendor_id']}&token={row['response_token']}"
         ok=await send_mail(row["public_email"],f"Update BMC request: {row['service_key']} in {row['market']}",
           f"""Please update the outcome of the BMC request you accepted.
 
@@ -769,12 +769,12 @@ async def process_outreach(x_bmc_admin_key:str|None=Header(default=None)):
 def buyer_landing(row):
     campaign=clean(row["campaign"])
     if campaign in ("institutional_facilities","church_facilities","education_facilities","arts_facilities","property_management","hospitality","multifamily","facilities"):
-        return f"{PUBLIC_SITE_URL}/portfolio/facility-maintenance/"
+        return f"{PUBLIC_SITE_URL}/facility-maintenance/"
     if campaign=="restaurants":
-        return f"{PUBLIC_SITE_URL}/portfolio/restaurant-repair/"
+        return f"{PUBLIC_SITE_URL}/restaurant-repair/"
     if campaign=="automotive":
-        return f"{PUBLIC_SITE_URL}/portfolio/request/?service=vehicle_services"
-    return f"{PUBLIC_SITE_URL}/portfolio/request/"
+        return f"{PUBLIC_SITE_URL}/request/?service=vehicle_services"
+    return f"{PUBLIC_SITE_URL}/request/"
 
 def buyer_outreach_copy(row,step):
     business=row["business_name"]; market=row["market"] or "your area"; btype=clean(row["buyer_type"])
