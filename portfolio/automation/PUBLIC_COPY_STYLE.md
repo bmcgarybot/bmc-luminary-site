@@ -155,3 +155,26 @@ Before merging or deploying new public UI:
 - check that service names sound customer-facing;
 - read the hero copy out loud;
 - if it sounds like a strategy memo, rewrite it.
+
+
+## Do not sell our uncertainty
+
+Public conversion copy must not foreground BMC's age, lack of case studies, limited launch geography, learning stage, or need to prove the model. Those facts can be true without becoming the headline.
+
+Bad public framing:
+- "BMC is new."
+- "We have to prove this works."
+- "We're starting only in Prescott and Prescott Valley."
+- "Help us shape the pilot."
+- "Try our experiment."
+
+Better framing:
+- "$0 to join."
+- "See the request before you decide."
+- "Set the jobs, area, minimum, and capacity that fit your business."
+- "Pass when it is not a fit."
+- "Any paid terms are shown before you agree."
+
+Use campaign/outreach copy to localize the launch when useful. For example, provider recruitment may say "We're opening the network in Prescott," "We're opening in Prescott Valley," or "We're expanding across Northern Arizona" depending on the recipient. The generic website should present BMC as capable of serving the visitor, not as a geography-limited experiment.
+
+Risk reversal should reduce the visitor's risk, not advertise BMC's risk. Necessary legal or expectation-setting language can remain in terms, FAQs, or application consent, but should not dominate the conversion story.
