@@ -103,6 +103,35 @@ async def event(conn,etype,eid,kind,payload=None,actor="system"):
                        etype,str(eid),kind,actor,json.dumps(payload or {}))
 
 
+def portal_token_hash(token):
+    return hashlib.sha256(clean(token).encode("utf-8")).hexdigest()
+
+async def issue_vendor_portal_token(conn,vendor_id,days=30):
+    token=uuid.uuid4().hex+uuid.uuid4().hex
+    token_hash=portal_token_hash(token)
+    expires=datetime.now(timezone.utc)+timedelta(days=days)
+    await conn.execute("""insert into vendor_portal_tokens(vendor_id,token_hash,expires_at)
+      values($1,$2,$3)""",vendor_id,token_hash,expires)
+    await conn.execute("""update vendor_portal_tokens set revoked_at=now()
+      where vendor_id=$1 and token_hash<>$2 and revoked_at is null and expires_at>now()""",vendor_id,token_hash)
+    return token,expires
+
+async def vendor_from_portal_token(conn,token):
+    token=clean(token)
+    if len(token)<40:
+        return None
+    row=await conn.fetchrow("""select v.*,pt.token_id,pt.expires_at
+      from vendor_portal_tokens pt join vendors v on v.vendor_id=pt.vendor_id
+      where pt.token_hash=$1 and pt.revoked_at is null and pt.expires_at>now()
+        and v.status in ('pilot','active','paused')
+      limit 1""",portal_token_hash(token))
+    if row:
+        await conn.execute("update vendor_portal_tokens set last_used_at=now() where token_id=$1",row["token_id"])
+    return row
+
+def provider_dashboard_url(token):
+    return f"{PUBLIC_SITE_URL}/provider-dashboard/?token={urllib.parse.quote(clean(token))}"
+
 
 def classify_with_rules(text):
     t=clean(text).lower()
@@ -747,6 +776,181 @@ async def service_search(request:Request):
           "match":dict(row),
           "related":related
         }
+
+@app.post("/api/provider/request-login")
+async def provider_request_login(request:Request):
+    p=await request.json()
+    email_address=clean(p.get("email")).lower()
+    if not email_address or "@" not in email_address:
+        raise HTTPException(400,"Enter a valid email address")
+    generic={"ok":True,"message":"If that email belongs to an active BMC provider, a login link is on the way."}
+    async with app.state.pool.acquire() as conn:
+        vendor=await conn.fetchrow("""select * from vendors
+          where lower(public_email)=lower($1) and status in ('pilot','active','paused')
+          order by updated_at desc limit 1""",email_address)
+        if not vendor:
+            return generic
+        token,expires=await issue_vendor_portal_token(conn,vendor["vendor_id"])
+        link=provider_dashboard_url(token)
+        body=f"""Hi {vendor['business_name']},
+
+Use this secure link to open your BMC provider dashboard:
+
+{link}
+
+The link expires on {expires.strftime('%B %d, %Y')}. If you did not request this, you can ignore this email.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+"""
+        html_body=workflow_email_html(
+          "Open your BMC provider dashboard",
+          [
+            f"Hi {vendor['business_name']},",
+            "Use the secure button below to open your provider dashboard.",
+            f"This login link expires on {expires.strftime('%B %d, %Y')}.",
+            "If you did not request this, you can ignore this email."
+          ],
+          "Open provider dashboard",
+          link
+        )
+        await send_mail(clean(vendor["public_email"]),"Your BMC provider login link",body,html_body)
+        await event(conn,"vendor",vendor["vendor_id"],"portal_login_requested",{"email":email_address},"provider")
+    return generic
+
+@app.get("/api/provider/dashboard")
+async def provider_dashboard(token:str):
+    async with app.state.pool.acquire() as conn:
+        vendor=await vendor_from_portal_token(conn,token)
+        if not vendor:
+            raise HTTPException(401,"This provider login link is invalid or expired")
+        services=await conn.fetch("""select s.service_key,s.display_name
+          from vendor_services vs join services s on s.service_key=vs.service_key
+          where vs.vendor_id=$1 order by s.display_name""",vendor["vendor_id"])
+        markets=await conn.fetch("""select market from vendor_markets where vendor_id=$1 order by market""",vendor["vendor_id"])
+        opportunities=await conn.fetch("""select lm.match_id,lm.status,lm.offered_at,lm.expires_at,
+            l.lead_id,l.market,l.service_key,s.display_name,l.scope,l.urgency
+          from lead_matches lm join leads l on l.lead_id=lm.lead_id
+          left join services s on s.service_key=l.service_key
+          where lm.vendor_id=$1 and lm.status='offered'
+            and (lm.expires_at is null or lm.expires_at>now())
+          order by lm.offered_at desc limit 25""",vendor["vendor_id"])
+        active=await conn.fetch("""select lm.match_id,lm.status,lm.responded_at,lm.contacted_at,lm.estimate_at,
+            lm.quoted_amount_cents,l.lead_id,l.market,l.service_key,s.display_name,l.scope,l.urgency,
+            l.customer_name,l.business_name,l.email,l.phone,l.preferred_contact
+          from lead_matches lm join leads l on l.lead_id=lm.lead_id
+          left join services s on s.service_key=l.service_key
+          where lm.vendor_id=$1 and lm.status in ('accepted','contacted','estimate')
+          order by coalesce(lm.responded_at,lm.offered_at) desc limit 25""",vendor["vendor_id"])
+        recent=await conn.fetch("""select lm.match_id,lm.status,lm.won_at,lm.lost_at,lm.responded_at,
+            lm.quoted_amount_cents,l.market,s.display_name
+          from lead_matches lm join leads l on l.lead_id=lm.lead_id
+          left join services s on s.service_key=l.service_key
+          where lm.vendor_id=$1 and lm.status in ('won','lost','declined','expired')
+          order by coalesce(lm.won_at,lm.lost_at,lm.responded_at,lm.offered_at) desc limit 20""",vendor["vendor_id"])
+        stats=await conn.fetchrow("""select
+            count(*) filter(where status='won') as won,
+            count(*) filter(where status='lost') as lost,
+            count(*) filter(where status='declined') as declined,
+            count(*) filter(where status in ('accepted','contacted','estimate')) as active
+          from lead_matches where vendor_id=$1""",vendor["vendor_id"])
+        return {
+          "ok":True,
+          "provider":{
+            "vendor_id":vendor["vendor_id"],"business_name":vendor["business_name"],
+            "status":vendor["status"],"public_email":vendor["public_email"],
+            "public_phone":vendor["public_phone"],"website":vendor["website"],
+            "territory_notes":vendor["territory_notes"],"minimum_job":vendor["minimum_job"],
+            "capacity":vendor["capacity"],"after_hours":vendor["after_hours"],
+            "services":[dict(r) for r in services],
+            "markets":[r["market"] for r in markets]
+          },
+          "opportunities":[dict(r) for r in opportunities],
+          "active_jobs":[dict(r) for r in active],
+          "recent":[dict(r) for r in recent],
+          "stats":dict(stats) if stats else {}
+        }
+
+@app.post("/api/provider/respond")
+async def provider_portal_respond(request:Request):
+    p=await request.json()
+    token=clean(p.get("token")); match_id=clean(p.get("match_id")); response=clean(p.get("response")).lower()
+    if response not in ("accept","decline"):
+        raise HTTPException(400,"Choose accept or decline")
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        vendor=await vendor_from_portal_token(conn,token)
+        if not vendor:
+            raise HTTPException(401,"Provider login expired")
+        match=await conn.fetchrow("""select lm.lead_id,lm.response_token
+          from lead_matches lm where lm.match_id=$1::uuid and lm.vendor_id=$2 and lm.status='offered'""",
+          match_id,vendor["vendor_id"])
+        if not match:
+            raise HTTPException(409,"This opportunity is no longer available")
+        result=await handle_vendor_response(conn,{
+          "lead_id":str(match["lead_id"]),"vendor_id":vendor["vendor_id"],
+          "token":match["response_token"],"response":response,"notes":clean(p.get("notes"))
+        })
+        await event(conn,"vendor",vendor["vendor_id"],"portal_opportunity_"+response,{"match_id":match_id},"provider")
+        return result
+
+@app.post("/api/provider/job-update")
+async def provider_portal_job_update(request:Request):
+    p=await request.json()
+    token=clean(p.get("token")); match_id=clean(p.get("match_id"))
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        vendor=await vendor_from_portal_token(conn,token)
+        if not vendor:
+            raise HTTPException(401,"Provider login expired")
+        match=await conn.fetchrow("""select lead_id,response_token from lead_matches
+          where match_id=$1::uuid and vendor_id=$2""",match_id,vendor["vendor_id"])
+        if not match:
+            raise HTTPException(404,"Job not found")
+        result=await handle_job_update(conn,{
+          "lead_id":str(match["lead_id"]),"vendor_id":vendor["vendor_id"],
+          "token":match["response_token"],"job_status":clean(p.get("job_status")),
+          "quoted_amount":clean(p.get("quoted_amount")),"notes":clean(p.get("notes"))
+        })
+        return result
+
+@app.post("/api/provider/settings")
+async def provider_portal_settings(request:Request):
+    p=await request.json()
+    token=clean(p.get("token"))
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        vendor=await vendor_from_portal_token(conn,token)
+        if not vendor:
+            raise HTTPException(401,"Provider login expired")
+        vid=vendor["vendor_id"]
+        services=[clean(x) for x in (p.get("services") or []) if clean(x)][:30]
+        markets=[clean(x)[:100] for x in (p.get("markets") or []) if clean(x)][:20]
+        valid_services=[]
+        if services:
+            rows=await conn.fetch("select service_key from services where service_key=any($1::text[]) and is_active=true",services)
+            valid_services=[r["service_key"] for r in rows]
+        await conn.execute("""update vendors set
+          public_phone=coalesce(nullif($2,''),public_phone),
+          website=coalesce(nullif($3,''),website),
+          territory_notes=$4,minimum_job=$5,capacity=$6,after_hours=$7,updated_at=now()
+          where vendor_id=$1""",
+          vid,clean(p.get("public_phone")),clean(p.get("website")),
+          clean(p.get("territory_notes")),clean(p.get("minimum_job")),
+          clean(p.get("capacity")),clean(p.get("after_hours")))
+        if services:
+            await conn.execute("delete from vendor_services where vendor_id=$1",vid)
+            for sk in valid_services:
+                await conn.execute("insert into vendor_services(vendor_id,service_key) values($1,$2) on conflict do nothing",vid,sk)
+        if markets:
+            await conn.execute("delete from vendor_markets where vendor_id=$1",vid)
+            for market in markets:
+                await conn.execute("insert into vendor_markets(vendor_id,market) values($1,$2) on conflict do nothing",vid,market)
+        await event(conn,"vendor",vid,"portal_settings_updated",{
+          "services":valid_services if services else None,"markets":markets if markets else None,
+          "capacity":clean(p.get("capacity")),"minimum_job":clean(p.get("minimum_job"))
+        },"provider")
+        return {"ok":True,"message":"Provider settings updated."}
 
 @app.get("/health")
 async def health():
