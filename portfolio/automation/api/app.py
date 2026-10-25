@@ -487,15 +487,16 @@ async def handle_facility_lead(conn,p):
     existing=await conn.fetchrow("select lead_id,status from leads where submission_id=$1",submission_id)
     if existing:return {"ok":True,"status":existing["status"],"lead_id":str(existing["lead_id"]),"message":"Facility request already received."}
     scope=clean(p.get("scope")); urgency=clean(p.get("timing")); facility_type=clean(p.get("facility_type"))
+    customer_path=clean(p.get("customer_path")) or "keep_it_handled"
     score=(20 if p.get("email") or p.get("phone") else 0)+(20 if scope else 0)+40+(20 if urgency in ["ASAP","Urgent","Same day if possible"] else 0)
-    parent_id=await conn.fetchval("""insert into leads(submission_id,form_type,market,service_key,service_type,customer_name,business_name,email,phone,scope,urgency,source_page,consent,lead_score,status,raw_payload)
-      values($1,'facility_maintenance',$2,'facility_maintenance',$3,$4,$5,$6,$7,$8,$9,$10,true,$11,'split',$12::jsonb) returning lead_id""",
-      submission_id,market,facility_type,clean(p.get("contact_name")),clean(p.get("business_name")),clean(p.get("email")),clean(p.get("phone")),scope,urgency,clean(p.get("page")),score,json.dumps(p))
+    parent_id=await conn.fetchval("""insert into leads(submission_id,form_type,market,service_key,service_type,customer_path,customer_name,business_name,email,phone,scope,urgency,source_page,consent,lead_score,status,raw_payload)
+      values($1,'facility_maintenance',$2,'facility_maintenance',$3,$4,$5,$6,$7,$8,$9,$10,$11,true,$12,'split',$13::jsonb) returning lead_id""",
+      submission_id,market,facility_type,customer_path,clean(p.get("contact_name")),clean(p.get("business_name")),clean(p.get("email")),clean(p.get("phone")),scope,urgency,clean(p.get("page")),score,json.dumps(p))
     await event(conn,"lead",parent_id,"facility_request_received",{"services":requested,"facility_type":facility_type})
     for sk in requested:
-        child_id=await conn.fetchval("""insert into leads(parent_lead_id,submission_id,form_type,market,service_key,service_type,customer_name,business_name,email,phone,scope,urgency,source_page,consent,lead_score,status,raw_payload)
-          values($1,$2,'facility_child',$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true,$13,'received',$14::jsonb) returning lead_id""",
-          parent_id,f"{submission_id}:{sk}",market,sk,facility_type,clean(p.get("contact_name")),clean(p.get("business_name")),clean(p.get("email")),clean(p.get("phone")),
+        child_id=await conn.fetchval("""insert into leads(parent_lead_id,submission_id,form_type,market,service_key,service_type,customer_path,customer_name,business_name,email,phone,scope,urgency,source_page,consent,lead_score,status,raw_payload)
+          values($1,$2,'facility_child',$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,true,$14,'received',$15::jsonb) returning lead_id""",
+          parent_id,f"{submission_id}:{sk}",market,sk,facility_type,customer_path,clean(p.get("contact_name")),clean(p.get("business_name")),clean(p.get("email")),clean(p.get("phone")),
           f"{facility_type}: {scope}",urgency,clean(p.get("page")),score,json.dumps(p))
         child=await conn.fetchrow("select * from leads where lead_id=$1",child_id)
         await event(conn,"lead",child_id,"facility_child_created",{"parent_lead_id":str(parent_id),"service_key":sk})
@@ -510,6 +511,7 @@ async def handle_lead(conn,p):
     market=clean(p.get("market"))
     scope=clean(p.get("scope") or p.get("problem") or p.get("notes"))
     service_type=clean(p.get("service_type"))
+    customer_path=clean(p.get("customer_path") or p.get("request_goal"))
     service_key=clean(p.get("service_key")) or form_type
     ai_classification=None
 
@@ -536,6 +538,18 @@ async def handle_lead(conn,p):
         else:
             fulfillment_mode=clean(service["fulfillment_mode"]) or "provider_match"
 
+    if not customer_path:
+        if form_type in ("quote_sourcing","equipment_quotes"):
+            customer_path="get_me_options"
+        elif form_type in ("facility_maintenance","restaurant_maintenance"):
+            customer_path="keep_it_handled"
+        elif form_type in ("vendor_savings","waste_audit"):
+            customer_path="help_me_spend_less"
+        elif form_type in ("growth_pack","competitor_intel","market_expansion"):
+            customer_path="help_me_get_more_customers"
+        elif fulfillment_mode=="provider_match":
+            customer_path="fix_or_handle_job"
+
     submission_id=clean(p.get("submission_id")) or str(uuid.uuid4())
     existing=await conn.fetchrow("select lead_id,status from leads where submission_id=$1",submission_id)
     if existing:
@@ -550,13 +564,13 @@ async def handle_lead(conn,p):
     else:
         status="internal_queue"
 
-    lead_id=await conn.fetchval("""insert into leads(submission_id,form_type,market,service_key,service_type,customer_name,business_name,email,phone,preferred_contact,scope,urgency,source_page,consent,lead_score,status,raw_payload)
-      values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,true,$14,$15,$16::jsonb) returning lead_id""",
-      submission_id,form_type,market,service_key,service_type,clean(p.get("contact_name")),clean(p.get("business_name")),
+    lead_id=await conn.fetchval("""insert into leads(submission_id,form_type,market,service_key,service_type,customer_path,customer_name,business_name,email,phone,preferred_contact,scope,urgency,source_page,consent,lead_score,status,raw_payload)
+      values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,true,$15,$16,$17::jsonb) returning lead_id""",
+      submission_id,form_type,market,service_key,service_type,customer_path,clean(p.get("contact_name")),clean(p.get("business_name")),
       clean(p.get("email")),clean(p.get("phone")),clean(p.get("preferred_contact")),scope,urgency,clean(p.get("page")),score,status,json.dumps(p))
 
     await event(conn,"lead",lead_id,"received",{
-      "service_key":service_key,"market":market,"fulfillment_mode":fulfillment_mode,"ai_classification":ai_classification
+      "service_key":service_key,"market":market,"customer_path":customer_path,"fulfillment_mode":fulfillment_mode,"ai_classification":ai_classification
     })
 
     order_id=None
