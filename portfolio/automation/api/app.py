@@ -2391,10 +2391,10 @@ async def admin_daily_brief(x_bmc_admin_key:str|None=Header(default=None)):
         human_task_count=await conn.fetchval("""select count(*) from tasks where owner='bmc_operator'
           and status in ('open','queued','assigned','in_progress')""")
         research_candidate_count=await conn.fetchval("select count(*) from research_candidates where status='discovered'")
-    needs_attention=int(open_exception_count or 0)+int(pilot_review_count or 0)+int(service_review_count or 0)+int(human_task_count or 0)
+    has_attention=any(int(x or 0)>0 for x in (open_exception_count,pilot_review_count,service_review_count,human_task_count))
     return {
       "ok":True,
-      "headline":"Nothing urgent needs you." if needs_attention==0 else f"{needs_attention} operational items need review.",
+      "headline":"Nothing urgent needs you." if not has_attention else "There are operational items to review.",
       "counts":{
         "open_exceptions":int(open_exception_count or 0),
         "provider_approvals":int(pilot_review_count or 0),
@@ -2429,8 +2429,9 @@ async def admin_summary(x_bmc_admin_key:str|None=Header(default=None)):
         outreach=await conn.fetch("select entity_type,status,count(*) n from outreach group by entity_type,status order by entity_type,status")
         exceptions=await conn.fetchval("select count(*) from exceptions where status='open'")
         public_opportunities=await conn.fetchval("select count(*) from public_opportunities where status in ('discovered','actionable')")
+        local_demand_signals=await conn.fetchval("select count(*) from local_demand_signals where status in ('discovered','useful')")
         revenue=await conn.fetchval("select coalesce(sum(amount_cents),0) from revenue_events where status='earned'")
-    return {"leads":{r["status"]:r["n"] for r in leads},"vendors":{r["status"]:r["n"] for r in vendors},"outreach":[dict(r) for r in outreach],"open_exceptions":exceptions,"public_opportunities":int(public_opportunities or 0),"earned_revenue_cents":revenue}
+    return {"leads":{r["status"]:r["n"] for r in leads},"vendors":{r["status"]:r["n"] for r in vendors},"outreach":[dict(r) for r in outreach],"open_exceptions":exceptions,"public_opportunities":int(public_opportunities or 0),"local_demand_signals":int(local_demand_signals or 0),"earned_revenue_cents":revenue}
 
 @app.get("/api/admin/preflight")
 async def admin_preflight(x_bmc_admin_key:str|None=Header(default=None)):
