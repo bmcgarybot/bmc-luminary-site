@@ -1605,3 +1605,151 @@ This section captures owner ideas recovered from Better Whisper dictation histor
 5. Determine whether Windsor.ai can be removed or kept free.
 6. Then continue expanded Arizona research/source coverage and launch automation.
 7. Clearly tell Brett when a VPS pull/rebuild/restart is required.
+
+
+## 25. SOURCE-NATIVE BUYER RESEARCH CHECKPOINT — 2026-10-25
+
+This section continues Section 24. The first source-native importer is implemented and CI-verified. **It is not yet verified on the VPS.**
+
+### Verified functional checkpoint
+
+Functional master:
+- `52c03988d578670c20df3d326337597929d2dce6`
+- BMC Portfolio CI run `40219901387`: **SUCCESS**
+- full database/API smoke: **SUCCESS**
+
+### New source-native research architecture
+
+Added a generic state/cursor layer:
+- `source_native_state`
+- per-source + per-market cursor
+- last run / last success
+- source data clock
+- cumulative records seen/upserted
+- structured metadata
+
+Added structured `source_data jsonb` evidence fields to buyer/vendor records so future native importers can preserve official-source lineage without stuffing everything into notes.
+
+### ADHS licensed-facility buyer importer
+
+New private endpoint:
+- `POST /api/process-source-native-research`
+
+Current first source:
+- Arizona Department of Health Services licensed-facilities ArcGIS FeatureServer
+- source key: `adhs_facilities_arcgis`
+
+Behavior:
+- processes one bounded page per configured BMC market;
+- tracks a separate cursor for each market;
+- defaults to a 100-record page;
+- scheduler runs the source-native pass twice daily;
+- only rows reporting `OPERATION_STATUS=ACTIVE` are staged;
+- source fields such as FACID/license number, facility type, address, county, source run date and phone are retained in structured evidence;
+- source-derived buyer records remain `status='prospect'`;
+- source data is explicitly marked general-reference/verification-required;
+- no provider activation occurs;
+- no outreach rows are created;
+- no external contact occurs.
+
+Default market scope:
+- Prescott
+- Prescott Valley
+- Chino Valley
+- Camp Verde
+- Cottonwood
+- Sedona
+- Flagstaff
+- Winslow
+- Kingman
+- Phoenix
+- Scottsdale
+- Tucson
+
+### Institutional buyer service mapping
+
+ADHS facility prospects currently contribute to buyer coverage for a conservative core facility-service set:
+
+- commercial cleaning
+- floor/carpet care
+- window cleaning
+- HVAC
+- pest control
+- fire safety
+- locksmith/access control
+- backflow/plumbing
+- facility maintenance
+- electrical
+- duct/vent
+- pressure washing
+
+The importer recomputes actual buyer counts for those market/service cells after each page so source-native prospects close research gaps only when real buyer records exist.
+
+### Idempotency and outbound safety are CI-proven
+
+The deterministic CI ArcGIS fixture contains:
+- one active hospital;
+- one active behavioral/residential facility;
+- one inactive facility.
+
+CI proves:
+- exactly 2 active records are accepted;
+- the inactive facility is skipped;
+- exactly 2 internal buyer prospects are created on the first pass;
+- both retain public phone + structured source evidence;
+- zero outreach rows exist for them;
+- a second identical run creates 0 new prospects and updates the same 2;
+- the source-native state row reports the expected cumulative records;
+- buyer research-backlog counts reconcile to the actual buyer table;
+- `external_actions_performed=0`.
+
+### Important source-quality caveat
+
+ADHS documents the facilities service as a public licensing/reference dataset and says the feed is updated monthly, but the currently exposed all-facilities layer has an older underlying data clock (February 2025).
+
+Therefore BMC must treat these records as:
+- institutional buyer discovery evidence;
+- useful address/phone/facility-type research;
+- **not** proof that a facility is presently open;
+- **not** a reason to contact automatically;
+- **not** a credential or operating-status approval.
+
+The importer preserves that caveat in record evidence.
+
+### New configuration
+
+```env
+SOURCE_NATIVE_RESEARCH_ENABLED=true
+SOURCE_NATIVE_MARKETS=Prescott,Prescott Valley,Chino Valley,Camp Verde,Cottonwood,Sedona,Flagstaff,Winslow,Kingman,Phoenix,Scottsdale,Tucson
+ADHS_FACILITIES_URL=https://services1.arcgis.com/mpVYz37anSdrK4d8/ArcGIS/rest/services/All_State_Licensed_Facilities_in_Arizona/FeatureServer/18/query
+ADHS_SOURCE_NATIVE_PAGE_SIZE=100
+```
+
+### Key commits
+
+- `4dbed3fdbba71fc0f66cd1013fe6cf04b82c53e3` — source-native cursor/state table.
+- `39f6ae0402d790a3d560a88f42906c03301d711e` — structured buyer/vendor source evidence.
+- `2210db36594bbe228fbb62f661a2ddcb4588f239` — ADHS source-native importer.
+- `8ab3176b4cb9e18b9f270e26e3b453297736c816` — twice-daily scheduler hook.
+- `c365552dd4da1ac6f5f320836a1de716fb6f9b86` — configurable source-native market scope.
+- `d10be35ab8ad89a9069ee88dcad4328fe22b6da1` — deterministic ADHS CI fixture.
+- `52c03988d578670c20df3d326337597929d2dce6` — end-to-end source-native CI proof; run `40219901387` green.
+
+### Current best next steps
+
+1. Add source-health/staleness visibility to the private owner brief so Brett sees a data-source problem only when it materially needs attention.
+2. Add a more current institutional buyer source where feasible (for example current CMS datasets) so ADHS's older GIS clock is not the only bulk healthcare source.
+3. Add a source-native ROC provider importer only if the current posting-list file can be retrieved reliably without defeating ROC access controls. Do not build around bypassing Cloudflare.
+4. Continue preserving the rule that registry presence creates at most an unverified prospect; it never activates a provider or authorizes outreach.
+
+### Production / safety state
+
+Still unchanged:
+- current master is ahead of the last independently verified VPS deployment;
+- vendor outreach OFF;
+- buyer outreach OFF;
+- Growth Pack outreach OFF;
+- no auto bids;
+- no private social scraping;
+- no automatic contact to individual demand posters;
+- no automatic provider activation.
