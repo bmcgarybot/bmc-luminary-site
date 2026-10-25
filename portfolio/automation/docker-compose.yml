@@ -34,6 +34,7 @@ services:
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       PUBLIC_SITE_URL: ${PUBLIC_SITE_URL}
+      WEBHOOK_URL: ${WEBHOOK_URL}
       BMC_ADMIN_KEY: ${BMC_ADMIN_KEY}
       OFFER_HOURS: ${OFFER_HOURS}
       SMTP_HOST: ${SMTP_HOST}
