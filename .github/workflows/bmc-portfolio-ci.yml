@@ -53,6 +53,9 @@ jobs:
           assert not invalid, f"Invalid form types: {invalid}"
           print(f"Validated {forms} form endpoints")
           PY
+      - name: Validate generated priority storefronts
+        run: python portfolio/automation/generate-storefronts.py --check
+
       - name: Validate Compose
         working-directory: portfolio/automation
         run: docker compose --env-file .env.example config >/dev/null
