@@ -78,6 +78,11 @@ async def send_mail(to,subject,body):
 def clean(v): return str(v or "").strip()
 def slug(v): return re.sub(r"[^a-z0-9]+","-",clean(v).lower()).strip("-")[:40] or "vendor"
 
+async def service_display_name(conn,service_key):
+    row=await conn.fetchrow("select display_name from services where service_key=$1",service_key)
+    if row and clean(row["display_name"]): return clean(row["display_name"])
+    return clean(service_key).replace("_"," ").title() or "Service"
+
 async def event(conn,etype,eid,kind,payload=None,actor="system"):
     await conn.execute("insert into events(entity_type,entity_id,event_type,actor,payload) values($1,$2,$3,$4,$5::jsonb)",
                        etype,str(eid),kind,actor,json.dumps(payload or {}))
@@ -202,10 +207,11 @@ async def offer_next(conn,lead):
     await conn.execute("update leads set status='provider_offered',updated_at=now() where lead_id=$1",lead["lead_id"])
     link=f"{PUBLIC_SITE_URL}/provider-response/?lead_id={lead['lead_id']}&vendor_id={vendor['vendor_id']}&token={token}"
     summary=clean(lead.get("scope"))[:1200]
+    service_name=await service_display_name(conn,lead["service_key"])
     body=f"""New BMC service request
 
 Market: {lead['market']}
-Service: {lead['service_key']}
+Service: {service_name}
 Timing: {clean(lead.get('urgency')) or 'Not specified'}
 Scope: {summary}
 
@@ -214,7 +220,7 @@ Accept or decline securely:
 
 Only accept if this fits your territory and current capacity.
 """
-    delivered=await send_mail(vendor["public_email"],f"New {lead['service_key']} request in {lead['market']}",body)
+    delivered=await send_mail(vendor["public_email"],f"New {service_name} request in {lead['market']}",body)
     if not delivered:
         await conn.execute("update lead_matches set status='delivery_failed',responded_at=now() where lead_id=$1 and vendor_id=$2",lead["lead_id"],vendor["vendor_id"])
         await conn.execute("update leads set status='exception',exception_reason='provider_offer_delivery_failure',updated_at=now() where lead_id=$1",lead["lead_id"])
@@ -235,6 +241,7 @@ async def handle_vendor_response(conn,p):
       where lm.lead_id=$1::uuid and lm.vendor_id=$2 and lm.response_token=$3 and lm.status='offered'""",lead_id,vendor_id,token)
     if not row: raise HTTPException(409,"Offer is invalid, expired, or already answered")
     if response=="accept":
+        service_name=await service_display_name(conn,row["service_key"])
         vendor=await conn.fetchrow("""select vendor_id,business_name,public_email,public_phone,website
           from vendors where vendor_id=$1""",vendor_id)
         if not vendor: raise HTTPException(409,"Provider record is unavailable")
@@ -254,7 +261,7 @@ async def handle_vendor_response(conn,p):
         provider_body=f"""You accepted a BMC service request. The customer's contact details are now released for this request.
 
 Market: {row['market']}
-Service: {row['service_key']}
+Service: {service_name}
 Customer: {customer_name}
 Business / property: {customer_business or 'Not provided'}
 Email: {customer_email or 'Not provided'}
@@ -272,7 +279,7 @@ Customer information is provided only for this service request and should not be
 
 BMC Luminary Ventures LLC
 """
-        await send_mail(vendor["public_email"],f"Customer contact released: {row['service_key']} in {row['market']}",provider_body)
+        await send_mail(vendor["public_email"],f"Customer contact released: {service_name} in {row['market']}",provider_body)
 
         provider_contact=[]
         if clean(vendor["public_phone"]): provider_contact.append(f"Phone: {clean(vendor['public_phone'])}")
@@ -284,7 +291,7 @@ BMC Luminary Ventures LLC
 
 Provider: {vendor['business_name']}
 Market: {row['market']}
-Service: {row['service_key']}
+Service: {service_name}
 
 {contact_block}
 
@@ -293,7 +300,7 @@ The provider is an independent business and will communicate its own pricing, sc
 Reference: {row['lead_id']}
 BMC Luminary Ventures LLC
 """
-            await send_mail(customer_email,f"Provider matched for your {row['service_key']} request",customer_body)
+            await send_mail(customer_email,f"Provider matched for your {service_name} request",customer_body)
 
         await event(conn,"lead",row["lead_id"],"contact_released",{
           "vendor_id":vendor_id,
@@ -468,8 +475,9 @@ async def handle_lead(conn,p):
 
     if p.get("email"):
         workflow_text="provider matching" if fulfillment_mode=="provider_match" else "BMC fulfillment"
+        receipt_service_name=(clean(service["display_name"]) if service else service_key.replace("_"," ").title())
         await send_mail(clean(p.get("email")),"BMC received your request",
-          f"We received your request for {service_key} in {market}. It is now in the {workflow_text} workflow.\n\nReference: {lead_id}\nBMC Luminary Ventures LLC")
+          f"We received your request for {receipt_service_name} in {market}. It is now in the {workflow_text} workflow.\n\nReference: {lead_id}\nBMC Luminary Ventures LLC")
 
     if service_key=="unclassified":
         await conn.execute("""insert into exceptions(type,lead_id,severity,summary,recommended_action)
@@ -582,7 +590,7 @@ async def process_followups(x_bmc_admin_key:str|None=Header(default=None)):
           f"""Please update the outcome of the BMC request you accepted.
 
 Market: {row['market']}
-Service: {row['service_key']}
+Service: {service_name}
 
 Mark contacted, estimate sent, won, or lost:
 {link}
