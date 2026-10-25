@@ -68,6 +68,20 @@ Important tabs:
 - Leads
 - Exceptions
 
+## Customer-facing domain
+
+Permanent public brand: **BMC Service Network**
+Permanent domain: `bmcservicenetwork.com`
+Registrar: Namecheap
+Legal operator: **BMC Luminary Ventures LLC**
+
+Public URL plan:
+- main site: `https://bmcservicenetwork.com`
+- secure intake/webhooks: `https://hooks.bmcservicenetwork.com`
+- planned primary mailbox: `contact@bmcservicenetwork.com`
+
+The domain was purchased on 2026-10-24. It is not yet delegated to Cloudflare. Deploy the repository `portfolio/` directory as the public web root so service URLs are clean (for example `/tree-service/`, not `/portfolio/tree-service/`). Do not revive the old domain placeholder.
+
 ## Production VPS access
 
 Production server:
@@ -334,7 +348,7 @@ The current research worker is first-pass discovery from search-result evidence.
 
 1. Cloud VPS deployed and healthy; remaining runtime work is public ingress/integrations.
 2. Cloudflare Tunnel helper is built, but the tunnel is not yet authorized/configured in the Cloudflare account.
-3. `hooks.bmcluminaryventures.com` is not yet published through the tunnel to `http://webhook_proxy:8080`.
+3. `hooks.bmcservicenetwork.com` is not yet published through the tunnel to `http://webhook_proxy:8080`.
 4. SMTP sender not configured.
 5. Reply/IMAP mailbox not configured.
 6. BMC postal address not configured for outbound.
@@ -401,7 +415,7 @@ Do not add random new business ideas before clearing these:
 
 1. Keep both global outreach switches OFF.
 2. Keep the verified daily portable Postgres backup timer healthy; keep OVH automated backup as the provider-level layer and add a true off-host copy before meaningful customer data accumulates.
-3. Create the remotely managed Cloudflare Tunnel, run `./configure-cloudflare.sh`, publish `hooks.bmcluminaryventures.com` to `http://webhook_proxy:8080`, then run `./verify-public-ingress.sh`. The verifier must prove `/admin` and `/api/admin/preflight` remain 404 publicly. Keep admin/n8n/SearXNG private via SSH forwarding.
+3. Create the remotely managed Cloudflare Tunnel, run `./configure-cloudflare.sh`, publish `hooks.bmcservicenetwork.com` to `http://webhook_proxy:8080`, then run `./verify-public-ingress.sh`. The verifier must prove `/admin` and `/api/admin/preflight` remain 404 publicly. Keep admin/n8n/SearXNG private via SSH forwarding.
 4. Configure transactional SMTP, monitored reply/IMAP, SPF/DKIM/DMARC, and the real BMC postal address.
 6. Invite only the curated `pilot1` providers using their dedicated activation links. The Prescott tree/landscape cluster already has three publicly credential-complete targets (ZebraScapes, Yavapai Landscaping, Jonny's).
 7. Review activation submissions in the private **Pending pilot reviews** queue, obtain direct COI/license confirmation as applicable, and explicitly approve 3+ providers in that first niche.
