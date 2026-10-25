@@ -57,6 +57,12 @@ jobs:
         working-directory: portfolio/automation
         run: docker compose --env-file .env.example config >/dev/null
 
+      - name: Validate operational scripts
+        working-directory: portfolio/automation
+        run: |
+          bash -n provision-cloud.sh bootstrap.sh start.sh stop.sh backup.sh runtime-doctor.sh \
+            configure-cloudflare.sh verify-public-ingress.sh verify-backup.sh install-backup-timer.sh
+
       - name: Boot database and API smoke test
         working-directory: portfolio/automation
         run: |
