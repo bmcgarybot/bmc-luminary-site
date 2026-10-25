@@ -968,9 +968,16 @@ async def provider_portal_settings(request:Request):
         services=[clean(x) for x in (p.get("services") or []) if clean(x)][:30]
         markets=[clean(x)[:100] for x in (p.get("markets") or []) if clean(x)][:20]
         valid_services=[]
+        additions=[]
+        removals=[]
         if services:
             rows=await conn.fetch("select service_key from services where service_key=any($1::text[]) and is_active=true",services)
             valid_services=[r["service_key"] for r in rows]
+            current_rows=await conn.fetch("select service_key from vendor_services where vendor_id=$1",vid)
+            current={r["service_key"] for r in current_rows}
+            requested=set(valid_services)
+            additions=sorted(requested-current)
+            removals=sorted(current-requested)
         await conn.execute("""update vendors set
           public_phone=coalesce(nullif($2,''),public_phone),
           website=coalesce(nullif($3,''),website),
@@ -980,18 +987,29 @@ async def provider_portal_settings(request:Request):
           clean(p.get("territory_notes")),clean(p.get("minimum_job")),
           clean(p.get("capacity")),clean(p.get("after_hours")))
         if services:
-            await conn.execute("delete from vendor_services where vendor_id=$1",vid)
-            for sk in valid_services:
-                await conn.execute("insert into vendor_services(vendor_id,service_key) values($1,$2) on conflict do nothing",vid,sk)
+            for sk in removals:
+                await conn.execute("delete from vendor_services where vendor_id=$1 and service_key=$2",vid,sk)
+            if additions:
+                await conn.execute("""insert into exceptions(type,vendor_id,severity,summary,recommended_action)
+                  values('provider_service_change_review',$1,'normal',$2,$3)""",
+                  vid,f"Provider requested additional services: {vendor['business_name']}",
+                  "Review requested service additions and any credential/license requirements before adding them")
+                await event(conn,"vendor",vid,"portal_service_additions_requested",{"services":additions},"provider")
         if markets:
             await conn.execute("delete from vendor_markets where vendor_id=$1",vid)
             for market in markets:
                 await conn.execute("insert into vendor_markets(vendor_id,market) values($1,$2) on conflict do nothing",vid,market)
         await event(conn,"vendor",vid,"portal_settings_updated",{
-          "services":valid_services if services else None,"markets":markets if markets else None,
+          "requested_services":valid_services if services else None,
+          "removed_services":removals if services else None,
+          "pending_service_additions":additions if services else None,
+          "markets":markets if markets else None,
           "capacity":clean(p.get("capacity")),"minimum_job":clean(p.get("minimum_job"))
         },"provider")
-        return {"ok":True,"message":"Provider settings updated."}
+        message="Provider settings updated."
+        if additions:
+            message+=" New service types are pending BMC review before they can receive jobs."
+        return {"ok":True,"message":message,"pending_service_additions":additions}
 
 @app.get("/health")
 async def health():
