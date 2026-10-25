@@ -3,7 +3,7 @@
 <title>Request Service | BMC Service Network</title>
 <meta name="description" content="Tell BMC what you need help with and where the job is.">
 <meta name="bmc-webhook" content="REPLACE_ME">
-<link rel="stylesheet" href="../assets/core.css?v=clarity-11">
+<link rel="stylesheet" href="../assets/core.css?v=clarity-13">
 </head><body class="editorial-site">
 
 <nav class="nav"><div class="wrap nav-in">
@@ -25,17 +25,26 @@
 </div>
 </div></header>
 
+<section class="editorial-section alt" id="problem-match" hidden><div class="wrap">
+  <div id="request-match-results" class="finder-results"></div>
+  <div class="match-confirmation">
+    <strong>Still not quite right?</strong>
+    <p>Keep going with the general request below. We’ll keep the problem you already typed and use it to work out the right next step.</p>
+    <div class="actions" style="margin-top:14px"><a class="btn btn-primary" href="#request">Continue with my request</a></div>
+  </div>
+</div></section>
+
 <section class="editorial-section alt"><div class="wrap">
 <div class="editorial-intro">
   <div class="editorial-kicker">Different problem?</div>
   <h2>Need something different?</h2>
   <p>We can also help with quotes, ongoing building work, vendor costs, and finding new customers.</p>
 </div>
-<div class="category-tiles">
-  <a class="category-tile" href="../quote-sourcing-concierge/" style="text-decoration:none"><span class="tile-icon">01</span><strong>Get a few quote options</strong><span>Tell us what you need once and we’ll help find options.</span></a>
-  <a class="category-tile" href="../facility-maintenance/" style="text-decoration:none"><span class="tile-icon">02</span><strong>Keep a building maintained</strong><span>For offices, churches, schools, restaurants, and other properties.</span></a>
-  <a class="category-tile" href="../vendor-savings-audit/" style="text-decoration:none"><span class="tile-icon">03</span><strong>See if your vendor costs can be lower</strong><span>Review regular service bills and compare better options.</span></a>
-  <a class="category-tile" href="../growth-packs/" style="text-decoration:none"><span class="tile-icon">04</span><strong>Find more customers</strong><span>Get a researched list of businesses that may be a good fit.</span></a>
+<div class="image-service-grid">
+  <a class="image-service-card" href="../quote-sourcing-concierge/"><img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=78" alt="Business quote comparison" loading="lazy"><div class="image-card-copy"><strong>Get a few quotes</strong><span>One request, then compare vendor options.</span></div></a>
+  <a class="image-service-card" href="../facility-maintenance/"><img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=78" alt="Commercial building" loading="lazy"><div class="image-card-copy"><strong>Keep a building maintained</strong><span>For churches, schools, offices, medical buildings, gyms, and more.</span></div></a>
+  <a class="image-service-card" href="../vendor-savings-audit/"><img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=78" alt="Business costs review" loading="lazy"><div class="image-card-copy"><strong>See if vendor costs can be lower</strong><span>Review regular service bills and find the ones worth comparing.</span></div></a>
+  <a class="image-service-card" href="../growth-packs/"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=78" alt="Business growth dashboard" loading="lazy"><div class="image-card-copy"><strong>Find more customers</strong><span>Research prospects, competitors, or a new market.</span></div></a>
 </div>
 </div></section>
 
@@ -124,9 +133,10 @@
 <footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>BMC Service Network</span></div></footer>
 <div class="mobile-sticky-cta"><a class="btn btn-primary" href="#request">Start request</a></div>
 
-<script src="../assets/core.js?v=clarity-11"></script>
+<script src="../assets/core.js?v=clarity-13"></script>
+<script src="../assets/service-finder.js?v=finder-1"></script>
 <script>
-(function(){
+(async function(){
   const form=document.querySelector('[data-bmc-form]');
   const steps=[...document.querySelectorAll('[data-step]')];
   const progress=[...document.querySelectorAll('[data-progress]')];
@@ -138,6 +148,17 @@
   const goal=params.get('goal');
   if(incoming) scope.value=incoming;
   if(goal && form.elements.request_goal) form.elements.request_goal.value=goal;
+
+  if(incoming){
+    const section=document.getElementById('problem-match');
+    const results=document.getElementById('request-match-results');
+    try{
+      const services=await BMCServiceFinder.load();
+      const matches=BMCServiceFinder.find(services,incoming,4);
+      BMCServiceFinder.render(results,matches,incoming,{fallback:BMCServiceFinder.fallback(services)});
+      section.hidden=false;
+    }catch(e){console.error(e);}
+  }
 
   function showStep(n){
     steps.forEach(s=>s.classList.toggle('is-active',Number(s.dataset.step)===n));
