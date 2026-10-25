@@ -398,3 +398,26 @@ create table if not exists public_opportunities (
 
 create index if not exists idx_public_opportunities_review
 on public_opportunities(status,market,service_key,last_seen_at desc);
+
+create table if not exists local_demand_signals (
+  signal_id uuid primary key default gen_random_uuid(),
+  source_key text not null,
+  source_name text not null,
+  market text not null,
+  service_key text references services(service_key) on delete set null,
+  title text not null,
+  source_url text not null,
+  source_domain text,
+  snippet text,
+  search_query text,
+  status text default 'discovered',
+  first_seen_at timestamptz default now(),
+  last_seen_at timestamptz default now(),
+  evidence jsonb default '{}'::jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now(),
+  unique(source_key,market,source_url)
+);
+
+create index if not exists idx_local_demand_signals_review
+on local_demand_signals(status,market,service_key,last_seen_at desc);
