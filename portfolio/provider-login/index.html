@@ -1,0 +1,68 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Provider Login | BMC Partner Network</title>
+<meta name="description" content="Sign in to your BMC provider dashboard with a secure email link.">
+<link rel="stylesheet" href="../assets/core.css?v=provider-13">
+</head><body class="editorial-site">
+
+<nav class="nav"><div class="wrap nav-in">
+<a class="brand" href="../providers/">BMC Partner Network</a>
+<div class="nav-links"><a href="../providers/">Join the network</a></div>
+</div></nav>
+
+<header class="customer-hero"><div class="wrap editorial-hero-grid">
+<div>
+  <div class="editorial-kicker">Provider login</div>
+  <h1>Open your BMC provider dashboard.</h1>
+  <p class="hero-sub">Enter the email on your provider account. We’ll send a secure sign-in link. No password to remember.</p>
+  <div class="customer-proof"><span>Secure email link</span><span>No password</span><span>Jobs & settings in one place</span></div>
+</div>
+<div class="hero-photo">
+  <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1400&q=80" alt="Service professional working on site" width="1400" height="1000" fetchpriority="high">
+  <div class="hero-photo-card"><small>Provider dashboard</small><strong>See the work. Decide. Update the outcome.</strong><span>Everything BMC needs from you lives in one place.</span></div>
+</div>
+</div></header>
+
+<section class="editorial-section"><div class="wrap form-shell">
+<div class="form-copy">
+  <div class="editorial-kicker">Sign in</div>
+  <h2>Use the email on your provider account.</h2>
+  <p class="section-lead">If the email belongs to an approved BMC provider, a login link will be sent right away.</p>
+</div>
+<form class="request-card" id="provider-login-form">
+  <div class="field"><label>Email</label><input id="provider-email" type="email" autocomplete="email" required placeholder="you@yourbusiness.com"></div>
+  <div class="notice" id="provider-login-notice"></div>
+  <div class="actions"><button class="btn btn-primary" type="submit">Email my login link</button></div>
+</form>
+</div></section>
+
+<footer><div class="wrap footer-in"><span>BMC Partner Network</span><span>© <span data-year></span> BMC Luminary Ventures LLC</span></div></footer>
+<script src="../assets/core.js?v=provider-13"></script>
+<script>
+(function(){
+  const form=document.getElementById('provider-login-form');
+  const notice=document.getElementById('provider-login-notice');
+  form.addEventListener('submit',async function(e){
+    e.preventDefault();
+    const btn=form.querySelector('button');
+    btn.disabled=true;btn.textContent='Sending…';
+    try{
+      const r=await fetch('https://hooks.bmcservicenetwork.com/api/provider/request-login',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email:document.getElementById('provider-email').value.trim()})
+      });
+      const data=await r.json().catch(()=>({}));
+      if(!r.ok)throw new Error(data.detail||'Could not send login link');
+      notice.textContent=data.message||'If that email belongs to an active provider, a login link is on the way.';
+      notice.classList.add('show');
+      form.reset();
+    }catch(err){
+      notice.textContent='We could not send the login link right now. Please try again or contact BMC.';
+      notice.classList.add('show');
+    }finally{
+      btn.disabled=false;btn.textContent='Email my login link';
+    }
+  });
+})();
+</script>
+</body></html>
