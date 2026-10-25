@@ -6,7 +6,7 @@
 
   // BMC_AUDIENCE_SWITCH_V9: persistent customer/provider switch across public pages.
   (function(){
-    const providerSide=/\/(providers|vendor-partner|provider-pilot|provider-pilot-activate|provider-response|provider-job-update)\//.test(location.pathname);
+    const providerSide=/\/(providers|vendor-partner|provider-pilot|provider-pilot-activate|provider-response|provider-job-update|provider-login|provider-dashboard)\//.test(location.pathname);
     const navIn=document.querySelector(".nav .nav-in");
     if(!navIn || navIn.querySelector("[data-audience-switch]")) return;
     const tools=document.createElement("div");
