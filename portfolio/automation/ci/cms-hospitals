@@ -1,0 +1,16 @@
+{
+  "results": [
+    {
+      "facility_id": "030001",
+      "facility_name": "CI Prescott Regional Medical Center",
+      "address": "100 Health Way",
+      "citytown": "PRESCOTT",
+      "state": "AZ",
+      "zip_code": "86301",
+      "countyparish": "YAVAPAI",
+      "telephone_number": "928-555-0201",
+      "hospital_type": "Acute Care Hospitals",
+      "hospital_ownership": "Voluntary non-profit - Private"
+    }
+  ]
+}
