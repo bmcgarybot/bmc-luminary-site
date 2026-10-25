@@ -135,7 +135,7 @@ chmod +x configure-cloudflare.sh verify-public-ingress.sh
 The helper prompts for the token with hidden terminal input, stores it only in the local production `.env`, forces restricted file permissions, and starts the tunnel profile.
 
 In Cloudflare, publish this application route:
-- hostname: `hooks.bmcluminaryventures.com`
+- hostname: `hooks.bmcservicenetwork.com`
 - service: `http://webhook_proxy:8080`
 
 Then verify from the VPS:
