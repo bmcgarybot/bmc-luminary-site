@@ -1,37 +1,33 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Request Service | BMC Service Network</title>
-<meta name="description" content="Tell BMC what you need in plain English. We’ll help route the request to the right local service path.">
+<meta name="description" content="Tell BMC what needs to get done. No service category required.">
 <meta name="bmc-webhook" content="REPLACE_ME">
-<link rel="stylesheet" href="../assets/core.css?v=editorial-5">
+<link rel="stylesheet" href="../assets/core.css?v=clarity-7">
 </head><body class="editorial-site">
 
 <nav class="nav"><div class="wrap nav-in">
 <a class="brand" href="../">BMC Service Network</a>
-<div class="nav-links"><a href="../services/">Browse services</a><a href="../how-it-works/">How it works</a></div>
+<div class="nav-links"><a href="../services/">Browse services</a></div>
 </div></nav>
 
-<header class="editorial-hero"><div class="wrap editorial-hero-grid">
+<header class="customer-hero"><div class="wrap editorial-hero-grid">
 <div>
-  <div class="editorial-kicker">One request is enough</div>
+  <div class="editorial-kicker">Start here</div>
   <h1>Tell us what needs to get done.</h1>
-  <p>You do not need to know the right trade, category, or company. Describe the problem in normal words and BMC will move it toward the right next step.</p>
-  <div class="actions"><a class="btn btn-primary" href="#request">Start my request</a><a class="btn btn-secondary" href="../services/">Browse services instead</a></div>
+  <p class="hero-sub">You do not need to know the trade or service category. Describe the problem, tell us where it is, and give us a way to reach you.</p>
+  <div class="customer-proof"><span>About a minute to start</span><span>No service picker</span><span>Plain English is fine</span></div>
 </div>
-<div class="editorial-visual">
-  <div class="visual-copy">
-    <small>How it feels</small>
-    <strong>One clear request instead of five phone calls.</strong>
-    <span>You describe the problem. We handle the routing behind the scenes.</span>
-  </div>
+
+<div class="hero-photo">
+  <img src="https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&w=1400&q=78" alt="Home improvement tools and work area" width="1400" height="1000" fetchpriority="high">
+  <div class="hero-photo-card"><small>Keep it simple</small><strong>Describe the problem. We’ll sort out the service.</strong></div>
 </div>
 </div></header>
 
-<section class="editorial-section" id="request">
-<div class="request-shell">
+<section class="editorial-section" id="request"><div class="request-shell">
 <form class="request-card" data-bmc-form data-form-type="universal_request" data-subject="BMC service request">
 <input class="hidden" name="website" tabindex="-1" autocomplete="off">
-<input type="hidden" name="service_type" id="requestCategory" value="">
 
 <div class="request-progress" aria-hidden="true">
   <span class="is-active" data-progress="1"></span>
@@ -41,21 +37,12 @@
 
 <div class="request-step is-active" data-step="1">
   <div class="editorial-kicker">Step 1 of 3</div>
-  <h2>What do you need help with?</h2>
-  <p class="lead">Pick the closest area if you know it. If not, choose “I’m not sure” and just describe the problem.</p>
+  <h2>What needs to get done?</h2>
+  <p class="lead">Tell us what is broken, dirty, overgrown, overdue, not working, or simply needs attention.</p>
 
-  <div class="category-tiles" data-category-tiles>
-    <button class="category-tile" type="button" data-category="Home / property"><span class="tile-icon">01</span><strong>Home & property</strong><span>Repairs, electrical, heating & air, trees, landscaping, hauling, cleaning, handyman work.</span></button>
-    <button class="category-tile" type="button" data-category="Business / facility"><span class="tile-icon">02</span><strong>Business & facility</strong><span>Commercial cleaning, building maintenance, schools, churches, theaters, floors, windows, parking.</span></button>
-    <button class="category-tile" type="button" data-category="Restaurant / hospitality"><span class="tile-icon">03</span><strong>Restaurant & hospitality</strong><span>Equipment repair, refrigeration, ice machines, hood cleaning, grease and maintenance.</span></button>
-    <button class="category-tile" type="button" data-category="Vehicle"><span class="tile-icon">04</span><strong>Vehicle</strong><span>Towing, roadside, tires, batteries, mobile mechanic, glass, detailing.</span></button>
-    <button class="category-tile" type="button" data-category="Pet"><span class="tile-icon">05</span><strong>Pet care</strong><span>Dog walking, pet sitting, grooming, pet-waste cleanup.</span></button>
-    <button class="category-tile is-selected" type="button" data-category=""><span class="tile-icon">?</span><strong>I’m not sure</strong><span>That is completely fine. Describe the problem and BMC will sort it out.</span></button>
-  </div>
-
-  <div class="field" style="margin-top:26px">
-    <label for="scope">Describe what is going on</label>
-    <textarea id="scope" name="scope" required placeholder="Example: I have a dead pine leaning toward my garage and I’d like someone to look at removing it this week."></textarea>
+  <div class="field">
+    <label for="scope">Describe the problem or job</label>
+    <textarea id="scope" name="scope" required placeholder="Example: My breaker keeps tripping when I use the microwave, and I’d like an electrician to look at it."></textarea>
   </div>
 
   <div class="request-nav">
@@ -66,11 +53,11 @@
 
 <div class="request-step" data-step="2">
   <div class="editorial-kicker">Step 2 of 3</div>
-  <h2>Where and when?</h2>
-  <p class="lead">That gives us enough context to match the request to the right local path.</p>
+  <h2>Where is the job?</h2>
+  <p class="lead">Location and timing help us move the request in the right direction.</p>
 
   <div class="field">
-    <label for="market">Where do you need help?</label>
+    <label for="market">City / area</label>
     <select id="market" name="market" data-market-select required><option value="">Choose your city / area</option></select>
   </div>
 
@@ -92,12 +79,12 @@
 
 <div class="request-step" data-step="3">
   <div class="editorial-kicker">Step 3 of 3</div>
-  <h2>How should we reach you?</h2>
-  <p class="lead">We only need enough information to follow up on this request.</p>
+  <h2>How can we reach you?</h2>
+  <p class="lead">Just enough information to follow up on this request.</p>
 
   <div class="row">
     <div class="field"><label>Your name</label><input name="contact_name" autocomplete="name" required></div>
-    <div class="field"><label>Business or property <span class="muted">(optional)</span></label><input name="business_name"></div>
+    <div class="field"><label>Business / property <span class="muted">(optional)</span></label><input name="business_name"></div>
   </div>
 
   <div class="row">
@@ -117,23 +104,23 @@
   </div>
 </div>
 </form>
-</div>
-</section>
-
-<section class="editorial-section alt"><div class="wrap">
-<div class="editorial-intro"><div class="editorial-kicker">Not sure this is for you?</div><h2>You can start messy.</h2><p>You do not need a diagnosis, a quote, a contractor name, or the exact service category. BMC is supposed to reduce that friction, not hand it back to you.</p></div>
 </div></section>
 
 <footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>BMC Service Network</span></div></footer>
+<div class="mobile-sticky-cta"><a class="btn btn-primary" href="#request">Start request</a></div>
 
-<script src="../assets/core.js?v=editorial-5"></script>
+<script src="../assets/core.js?v=clarity-7"></script>
 <script>
 (function(){
   const form=document.querySelector('[data-bmc-form]');
   const steps=[...document.querySelectorAll('[data-step]')];
   const progress=[...document.querySelectorAll('[data-progress]')];
-  const category=document.getElementById('requestCategory');
   const summary=document.querySelector('[data-request-summary]');
+  const scope=document.getElementById('scope');
+
+  const params=new URLSearchParams(location.search);
+  const incoming=params.get('problem');
+  if(incoming) scope.value=incoming;
 
   function showStep(n){
     steps.forEach(s=>s.classList.toggle('is-active',Number(s.dataset.step)===n));
@@ -141,26 +128,15 @@
     if(n===3){
       const market=form.elements.market?.value||'your area';
       const timing=form.elements.timing?.value||'your preferred timing';
-      const cat=category.value||'BMC to determine the service';
-      summary.textContent='You’re asking for help in '+market+' · '+timing+' · '+cat+'.';
+      summary.textContent='Request in '+market+' · '+timing+'.';
     }
     document.getElementById('request').scrollIntoView({behavior:'smooth',block:'start'});
   }
 
-  document.querySelectorAll('[data-category]').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      document.querySelectorAll('[data-category]').forEach(b=>b.classList.remove('is-selected'));
-      btn.classList.add('is-selected');
-      category.value=btn.dataset.category||'';
-    });
-  });
-
   document.querySelectorAll('[data-next]').forEach(btn=>{
     btn.addEventListener('click',()=>{
-      const step=Number(btn.closest('[data-step]').dataset.step);
-      const current=steps.find(s=>Number(s.dataset.step)===step);
-      const required=[...current.querySelectorAll('[required]')];
-      const invalid=required.find(el=>!el.checkValidity());
+      const current=btn.closest('[data-step]');
+      const invalid=[...current.querySelectorAll('[required]')].find(el=>!el.checkValidity());
       if(invalid){invalid.reportValidity();return;}
       showStep(Number(btn.dataset.next));
     });
