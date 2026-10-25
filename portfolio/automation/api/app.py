@@ -112,14 +112,14 @@ def classify_with_rules(text):
       ("handyman_repairs",["handyman","drywall","mount tv","mounting","punch list","small repair","door repair","assemble","assembly"]),
       ("residential_cleaning",["house cleaning","house cleaner","maid","housekeeping","deep clean","home cleaning"]),
       ("home_staging",["home staging","stager","staging consultation","vacant staging","listing styling"]),
-      ("realtor_listing_prep",["realtor","listing prep","pre-listing","pre listing","listing ready","listing photos","brokerage"]),
+      ("realtor_listing_prep",["realtor","real estate","realestate","listing prep","pre-listing","pre listing","listing ready","listing photos","brokerage","sell my house","sell my home","home sale"]),
       ("tree_service",["tree removal","tree trimming","dead tree","hazard tree","defensible space","brush clearing","fuel reduction","chipping"]),
       ("landscaping",["landscaping","landscape","yard cleanup","weed removal","irrigation","xeriscape"]),
       ("junk_hauling",["junk removal","haul away","hauling","cleanout","clean out","debris removal","furniture removal","appliance removal"]),
       ("commercial_cleaning",["commercial cleaning","janitorial","office cleaning","church cleaning","school cleaning","theater cleaning","facility cleaning"]),
       ("facility_maintenance",["facility maintenance","school maintenance","church maintenance","theater maintenance","building maintenance"]),
       ("restaurant_repair",["restaurant repair","commercial refrigeration","walk-in cooler","walk in cooler","reach-in cooler","reach in cooler"]),
-      ("restaurant_equipment",["restaurant equipment","commercial oven","commercial fryer","dish machine","dishwasher repair"]),
+      ("restaurant_equipment",["restaurant equipment","commercial oven","oven","fryer","deep fryer","commercial fryer","griddle","charbroiler","steamer","steam table","dish machine","dishwasher repair"]),
       ("ice_machine",["ice machine","ice maker"]),
       ("hood_exhaust",["hood cleaning","exhaust cleaning","kitchen hood"]),
       ("grease_drain",["grease trap","commercial drain","restaurant drain"]),
@@ -699,6 +699,54 @@ async def handle_job_update(conn,p):
         await conn.execute("update leads set status='lost',updated_at=now() where lead_id=$1",row["lead_id"])
     await event(conn,"lead",row["lead_id"],"job_"+status,{"vendor_id":vendor_id,"quoted_amount_cents":cents,"notes":notes},vendor_id)
     return {"ok":True,"status":status,"message":"Job status recorded. Thank you for closing the loop with BMC."}
+
+RELATED_SERVICE_KEYS={
+  "restaurant_equipment":["restaurant_repair","restaurant_maintenance","equipment_quotes"],
+  "restaurant_repair":["restaurant_equipment","ice_machine","restaurant_maintenance"],
+  "realtor_listing_prep":["home_staging","turnover_cleaning","junk_hauling","landscaping"],
+  "facility_maintenance":["commercial_cleaning","handyman_repairs","electrical_service","hvac_heat"],
+  "vendor_savings":["quote_sourcing","waste_audit"],
+  "growth_pack":["competitor_intel","market_expansion"],
+  "electrical_service":["handyman_repairs","facility_maintenance"],
+  "hvac_heat":["handyman_repairs","facility_maintenance"],
+  "vehicle_services":["towing_roadside","mobile_tire_battery","auto_glass"],
+  "pet_sitting":["mobile_pet_grooming","pet_waste"]
+}
+
+@app.post("/api/service-search")
+async def service_search(request:Request):
+    p=await request.json()
+    query=clean(p.get("query") or p.get("problem"))
+    market=clean(p.get("market")) or "Arizona"
+    if len(query)<2:
+        raise HTTPException(400,"Tell us what you need help with")
+    async with app.state.pool.acquire() as conn:
+        classification=classify_with_rules(query)
+        source="rules"
+        if not classification:
+            classification=await classify_with_local_ai(conn,market,query)
+            source="local_ai" if classification else "none"
+        if not classification:
+            return {"ok":True,"query":query,"source":"none","match":None,"related":[]}
+        key=classification["service_key"]
+        row=await conn.fetchrow("""select service_key,display_name,live_front,category,fulfillment_mode
+          from services where service_key=$1 and is_active=true""",key)
+        if not row:
+            return {"ok":True,"query":query,"source":"none","match":None,"related":[]}
+        related=[]
+        for related_key in RELATED_SERVICE_KEYS.get(key,[])[:4]:
+            rr=await conn.fetchrow("""select service_key,display_name,live_front,category,fulfillment_mode
+              from services where service_key=$1 and is_active=true""",related_key)
+            if rr: related.append(dict(rr))
+        return {
+          "ok":True,
+          "query":query,
+          "source":source,
+          "confidence":float(classification.get("confidence") or 0),
+          "reason":clean(classification.get("reason")),
+          "match":dict(row),
+          "related":related
+        }
 
 @app.get("/health")
 async def health():
