@@ -220,6 +220,34 @@ If no catalog item fits reliably, return service_key "unclassified". Do not inve
     return None
 
 
+async def local_ai_status():
+    status={
+      "enabled":LOCAL_AI_ENABLED,
+      "url_configured":bool(LOCAL_AI_URL),
+      "url":LOCAL_AI_URL or None,
+      "model":LOCAL_AI_MODEL,
+      "reachable":False,
+      "model_available":False
+    }
+    if not LOCAL_AI_ENABLED or not LOCAL_AI_URL:
+        return status
+    def call():
+        req=urllib.request.Request(LOCAL_AI_URL+"/api/tags",headers={"Accept":"application/json"})
+        with urllib.request.urlopen(req,timeout=4) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    try:
+        raw=await asyncio.to_thread(call)
+        status["reachable"]=True
+        names=[]
+        for item in raw.get("models") or []:
+            names.append(clean(item.get("name") or item.get("model")))
+        status["available_models"]=names[:20]
+        status["model_available"]=LOCAL_AI_MODEL in names
+    except Exception as exc:
+        status["error"]=str(exc)[:250]
+    return status
+
+
 def build_research_query(side,market,service_name,research_method=""):
     service=clean(service_name).replace('"'," ")
     place=clean(market).replace('"'," ")
@@ -1867,6 +1895,11 @@ async def admin_provider_funnel(x_bmc_admin_key:str|None=Header(default=None)):
       }
     }
 
+@app.get("/api/admin/ai-status")
+async def admin_ai_status(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    return {"ok":True,**(await local_ai_status())}
+
 @app.get("/api/admin/summary")
 async def admin_summary(x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)
@@ -1888,6 +1921,7 @@ async def admin_preflight(x_bmc_admin_key:str|None=Header(default=None)):
     postal_ready=configured(BUSINESS_POSTAL_ADDRESS)
     stripe_ready=configured(STRIPE_WEBHOOK_SECRET)
     tunnel_ready=configured(WEBHOOK_URL)
+    ai_status=await local_ai_status()
     async with app.state.pool.acquire() as conn:
         pilot_vendors=await conn.fetchval("select count(*) from vendors where status in ('pilot','active') and vendor_id not like 'test_%'")
         first_wave_vendors=await conn.fetchval("select count(*) from outreach where entity_type='vendor' and wave='pilot1'")
@@ -1898,7 +1932,8 @@ async def admin_preflight(x_bmc_admin_key:str|None=Header(default=None)):
     outreach_ready=bool(smtp_ready and imap_ready and postal_ready)
     return {
       "ok":True,
-      "gates":{"live_intake_ready":live_intake_ready,"outreach_ready":outreach_ready,"payments_ready":stripe_ready},
+      "gates":{"live_intake_ready":live_intake_ready,"outreach_ready":outreach_ready,"payments_ready":stripe_ready,
+        "intelligent_search_ai_ready":bool(ai_status.get("enabled") and ai_status.get("reachable") and ai_status.get("model_available"))},
       "config":{
         "public_site_url":PUBLIC_SITE_URL,
         "webhook_url":WEBHOOK_URL or None,
@@ -1909,7 +1944,8 @@ async def admin_preflight(x_bmc_admin_key:str|None=Header(default=None)):
         "stripe_webhook_configured":stripe_ready,
         "vendor_outreach_enabled":OUTREACH_ENABLED,
         "buyer_outreach_enabled":BUYER_OUTREACH_ENABLED,
-        "growth_outreach_enabled":GROWTH_OUTREACH_ENABLED
+        "growth_outreach_enabled":GROWTH_OUTREACH_ENABLED,
+        "local_ai":ai_status
       },
       "operations":{
         "pilot_or_active_vendors":int(pilot_vendors or 0),
@@ -1925,7 +1961,8 @@ async def admin_preflight(x_bmc_admin_key:str|None=Header(default=None)):
           ("Activate at least one verified pilot provider",int(pilot_vendors or 0)>=1),
           ("Configure monitored IMAP inbox before outbound prospecting",imap_ready),
           ("Set real BMC postal address before outbound prospecting",postal_ready),
-          ("Configure Stripe webhook after Stripe activation",stripe_ready)
+          ("Configure Stripe webhook after Stripe activation",stripe_ready),
+          ("Start Ollama and load the configured local AI model",not LOCAL_AI_ENABLED or bool(ai_status.get("reachable") and ai_status.get("model_available")))
         ] if not ready
       ]
     }
