@@ -77,6 +77,7 @@ create table if not exists leads (
   market text not null,
   service_key text not null,
   service_type text,
+  customer_path text,
   customer_name text,
   business_name text,
   email text,
@@ -188,6 +189,7 @@ create table if not exists outreach_suppressions (
 );
 
 alter table leads add column if not exists parent_lead_id uuid references leads(lead_id) on delete cascade;
+alter table leads add column if not exists customer_path text;
 
 alter table buyers add column if not exists source_url text;
 alter table buyers add column if not exists likely_services text;
