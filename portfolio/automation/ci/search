@@ -8,16 +8,23 @@
       "score": 1
     },
     {
+      "title": "CI Arizona Service Candidate - Services",
+      "url": "https://example.com/services",
+      "content": "Duplicate page for the same mock business. Public contact: research@example.com, (928) 555-0123.",
+      "engine": "ci-mock",
+      "score": 0.95
+    },
+    {
       "title": "CI Arizona Buyer Candidate",
       "url": "https://example.org/bmc-ci-buyer",
-      "content": "Second mock result keeps public contact evidence but uses a different email domain so it remains human-reviewable. Public contact: ops@other.org, 928-555-0147.",
+      "content": "Mock result with public contact evidence but a different email domain so it remains human-reviewable. Public contact: ops@other.org, 928-555-0147.",
       "engine": "ci-mock",
       "score": 0.9
     },
     {
       "title": "CI Arizona Review Candidate",
       "url": "https://example.net/bmc-ci-review",
-      "content": "Third mock result preserves another manual-review candidate. Public contact: team@other.net, (928) 555-0161.",
+      "content": "Another manual-review candidate. Public contact: team@other.net, (928) 555-0161.",
       "engine": "ci-mock",
       "score": 0.8
     }
