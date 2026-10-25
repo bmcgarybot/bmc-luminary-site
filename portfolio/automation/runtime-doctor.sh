@@ -135,7 +135,7 @@ db_query(){
 }
 
 if service_count="$(db_query 'select count(*) from services;' 2>/dev/null)"; then
-  if [ "${service_count:-0}" -ge 48 ]; then pass "Service registry seeded (${service_count})"; else fail "Service registry has only ${service_count:-0} rows"; fi
+  if [ "${service_count:-0}" -ge 53 ]; then pass "Service registry seeded (${service_count})"; else fail "Service registry has only ${service_count:-0} rows; expected at least 53"; fi
 else
   fail "Postgres query failed"
   service_count=0
