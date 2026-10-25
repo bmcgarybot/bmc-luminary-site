@@ -1496,3 +1496,112 @@ Any source-native importer should:
 - preserve source/evidence lineage;
 - never interpret registry presence as final credential approval;
 - never create outreach unless Brett separately approves an outbound workflow.
+
+
+## 24. RECOVERED OWNER NOTES + LAUNCH BLOCKERS — 2026-10-25
+
+This section captures owner ideas recovered from Better Whisper dictation history plus newly observed launch blockers. Preserve these even if later implementation details change.
+
+### Recovered strategic direction
+
+- Target launch timing discussed: **Monday**, with owner preparing to finish Stripe setup.
+- Initial acquisition mix being considered:
+  - direct email outreach to businesses after explicit approval;
+  - Meta/Facebook advertising;
+  - broader Arizona market coverage rather than treating Prescott alone as the real pilot.
+- Arizona operating/research area should include major markets such as:
+  - Phoenix;
+  - Scottsdale;
+  - Tucson;
+  - Prescott / Prescott Valley;
+  - Flagstaff;
+  - Sedona;
+  - Cottonwood / Camp Verde;
+  - Kingman / Bullhead City;
+  - Winslow;
+  - and other practical Arizona markets where BMC can sell.
+- Smaller-town research should also include places such as:
+  - Dewey / Humboldt;
+  - Mayer;
+  - Cordes Lakes;
+  - Williamson Valley;
+  - Ash Fork;
+  - Seligman;
+  - Skull Valley;
+  - Golden Valley;
+  - Bullhead City.
+- Use county/city/state authoritative public data aggressively for internal research where lawful and practical:
+  - county health/environmental-health food establishment lists;
+  - restaurant/food-service permits and inspections;
+  - medical/behavioral-health and other licensed facility directories;
+  - contractor/licensing registries;
+  - public procurement data;
+  - other authoritative public business/facility registries.
+- The long-term expectation is that the completed research queue should yield a very large Arizona provider and buyer prospect base, potentially thousands of internal prospects.
+- Brand positioning idea to keep available for later:
+  - possible “support Arizona / support local” angle;
+  - do **not** deploy this positioning yet without owner approval;
+  - avoid making the website feel like a small pilot or experiment.
+- Success standard remains commercial, not just technical:
+  - if BMC cannot generate meaningful demand/revenue from a statewide pool after launch/outreach begins, revisit acquisition/offer mechanics rather than assuming more directory volume alone will solve it.
+
+### Launch blockers reported by owner
+
+1. **`www.bmcservicenetwork.com` DNS failure**
+   - Chrome screenshot showed `ERR_NAME_NOT_RESOLVED`.
+   - This must be fixed before launch because many users will type the www hostname.
+   - Root hostname behavior must also be verified separately.
+
+2. **Customer request submission failure**
+   - Owner submitted a customer request through the public website.
+   - The flow reported an email-related error and then redirected/opened the owner's private email URL.
+   - Treat as a serious public-flow bug.
+   - Verify intake success/failure handling, SMTP dependency behavior, and any fallback `mailto:` / private email link in public UI.
+   - Public forms must never expose or redirect to a private personal email address.
+
+3. **Growth Pack sample spreadsheet remains broken**
+   - Downloaded sample still triggers a file-extension/format error.
+   - The downloadable sample must be the correctly formatted deliverable buyers would actually receive.
+   - Verify actual file bytes, extension, MIME/content headers, generated-link target and workbook integrity.
+
+4. **Google Search Console / indexing appears unfinished**
+   - Owner cannot find the site in Google search.
+   - Verify:
+     - Search Console property;
+     - DNS/HTML ownership verification;
+     - sitemap;
+     - robots;
+     - canonical URLs;
+     - indexability;
+     - sitemap submission;
+     - request-indexing steps for priority pages.
+   - Do not assume search visibility is immediate even after setup.
+
+5. **Windsor.ai trial / dependency question**
+   - Owner reports Windsor.ai showing 29 days left.
+   - Determine why it was installed, whether BMC currently depends on it, and whether a paid plan is actually necessary.
+   - Prefer removing/avoiding nonessential recurring SaaS dependencies if the same function is already covered by BMC's own stack or free/native integrations.
+
+### Current autonomy / CI status at time of this note
+
+- Latest fully verified combined autonomy build before this note:
+  - current auto-promotion boundary CI run on `650d15a29c8f898249c18b4fe5fac81ee6437d99` completed successfully.
+- The research engine now includes:
+  - multi-pass gap research;
+  - authoritative-source rotation;
+  - source-domain constraints on authoritative passes;
+  - public snippet contact retention;
+  - conservative internal prospect auto-promotion for strong same-domain public-email matches;
+  - zero automatic outreach from those promotions;
+  - prospect-based gap accounting rather than counting raw search hits as prospects.
+- Outreach remains OFF unless Brett explicitly approves enablement.
+
+### Immediate priority order
+
+1. Fix/verify public DNS for root + www.
+2. Fix public customer request submission and remove any private-email redirect/exposure.
+3. Fix Growth Pack sample workbook/download integrity.
+4. Confirm Google Search Console/indexability setup.
+5. Determine whether Windsor.ai can be removed or kept free.
+6. Then continue expanded Arizona research/source coverage and launch automation.
+7. Clearly tell Brett when a VPS pull/rebuild/restart is required.
