@@ -225,9 +225,9 @@
     },
     {
       "service_key": "hvac_heat",
-      "display_name": "HVAC & Cooling",
+      "display_name": "Heating & Air Conditioning",
       "category": "Home / commercial services",
-      "primary_offer": "Repair / maintenance / replacement",
+      "primary_offer": "Heating, AC, heat pump repair, maintenance and replacement",
       "monetization": "lead / territory",
       "priority": "B",
       "live_front": "/portfolio/hvac-heat/",
