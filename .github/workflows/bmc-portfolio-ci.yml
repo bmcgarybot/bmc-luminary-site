@@ -422,7 +422,38 @@ jobs:
           assert data["last_run"]["status"] == "completed"
           PY
 
-          # Prove source-native ADHS research creates only internal buyer prospects and is idempotent.
+          # Expected source/market lanes exist at API startup, even before the scheduler runs.
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from source_native_state where market='Prescott' and coalesce((metadata->>'expected')::boolean,false)=true;")" -eq 5
+          curl -fsS http://127.0.0.1:8000/api/admin/daily-brief \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_source_never_started_fresh.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_source_never_started_fresh.json"))
+          assert data["counts"]["source_native_markets_tracked"] == 5, data
+          assert data["counts"]["source_native_stale_markets"] == 0, data
+          PY
+
+          # A configured lane that never starts gets a 36-hour grace period, then enters Needs Brett.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            update source_native_state set created_at=now()-interval '2 days',last_run_at=null,last_success_at=null
+            where source_key='cms_hospice' and market='Prescott';"
+          curl -fsS http://127.0.0.1:8000/api/admin/daily-brief \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_source_never_started_stale.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_source_never_started_stale.json"))
+          assert data["needs_brett"] is True, data
+          assert data["counts"]["source_native_stale_markets"] == 1, data
+          assert len(data["source_native_issues"]) == 1, data
+          issue=data["source_native_issues"][0]
+          assert issue["source_key"] == "cms_hospice", issue
+          assert issue["health_reason"] == "never_started", issue
+          PY
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            update source_native_state set created_at=now()
+            where source_key='cms_hospice' and market='Prescott';"
+
+          # Prove source-native healthcare research creates only internal buyer prospects and is idempotent.
           curl -fsS -X POST http://127.0.0.1:8000/api/process-source-native-research \
             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_source_native_1.json
           python - <<'PY'
