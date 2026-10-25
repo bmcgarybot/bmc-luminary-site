@@ -1,21 +1,24 @@
 # BMC Cloud VPS Deployment
 
-Updated: 2026-10-24
+Updated: 2026-10-25
 
 ## Production target
 
 BMC production is now designed for a small always-on Linux VPS rather than a home appliance.
 
-Recommended initial class:
-- Ubuntu 24.04 LTS x86_64
-- 4 vCPU
-- 8 GB RAM
-- 75+ GB NVMe
+Live production class:
+- OVHcloud VPS-3 2027, no commitment
+- Ubuntu 26.04 LTS x86_64
+- 6 vCPU
+- 12 GB RAM
+- 100 GB NVMe
+- 2 Gbps unlimited public bandwidth
+- Beauharnois, Canada East
 - public IPv4/IPv6
-- provider-level snapshot/backup capability
+- provider-level automated backup
 - monthly billing until revenue proves the deployment
 
-The current commercial target is the OVHcloud VPS-2 class, but the stack is provider-neutral and can be moved to another Ubuntu VPS without application changes.
+The stack remains provider-neutral and can be moved to another compatible Ubuntu VPS without application changes.
 
 ## Runtime topology
 
@@ -36,9 +39,9 @@ All application ports in Docker bind to 127.0.0.1. Do not expose Postgres, n8n, 
 
 Only SSH should need a public inbound server port. Cloudflare Tunnel creates outbound connectivity to Cloudflare for the public webhook hostname.
 
-## Resource budget for an 8 GB VPS
+## Resource budget
 
-The Compose file now places memory ceilings on long-running services so one process cannot consume the whole host.
+The Compose file places conservative memory ceilings on long-running services so one process cannot consume the whole host. These ceilings were originally designed for an 8 GB host, so the live 12 GB VPS has useful reserve headroom.
 
 Approximate ceilings:
 - PostgreSQL: 1 GB
@@ -52,16 +55,16 @@ Approximate ceilings:
 
 The normal core does not require Ollama. Start the AI profile only after the deterministic runtime is healthy.
 
-For the 8 GB class, start with `qwen3:1.7b`. A 4B model can be tested later only after observing real memory headroom. The LLM is an assistant for classification/summarization; it is not in the critical path for ordinary intake, routing, provider responses, payments, or templated messages.
+Start conservatively with `qwen3:1.7b`. The live 12 GB host gives us room to test a 3B–4B utility model later only after observing real memory and latency. The LLM is an assistant for classification/summarization; it is not in the critical path for ordinary intake, routing, provider responses, payments, or templated messages.
 
 ## First deployment
 
-On a fresh Ubuntu 24.04 VPS:
+On the live Ubuntu 26.04 VPS (or another fresh compatible Ubuntu VPS):
 
 ```bash
 git clone https://github.com/bmcgarybot/bmc-luminary-site.git
 cd bmc-luminary-site/portfolio/automation
-chmod +x provision-cloud.sh bootstrap.sh start.sh stop.sh backup.sh runtime-doctor.sh
+chmod +x provision-cloud.sh bootstrap.sh start.sh stop.sh backup.sh runtime-doctor.sh configure-cloudflare.sh verify-public-ingress.sh
 ./provision-cloud.sh
 ```
 
@@ -118,16 +121,37 @@ The operator retains the confidence threshold and human-review fallback even whe
 
 ## Public ingress
 
-After the Cloudflare Tunnel has been created and the token placed in `.env`:
+Use a remotely managed Cloudflare Tunnel. In the Cloudflare dashboard create the tunnel, then obtain its tunnel token. Do not paste the token into chat, GitHub, or the Google Sheet.
+
+On the VPS:
 
 ```bash
-docker compose --profile tunnel up -d cloudflared
+cd ~/bmc-luminary-site/portfolio/automation
+git pull --ff-only
+chmod +x configure-cloudflare.sh verify-public-ingress.sh
+./configure-cloudflare.sh
 ```
 
-Route:
-- `hooks.bmcluminaryventures.com` -> `http://webhook_proxy:8080`
+The helper prompts for the token with hidden terminal input, stores it only in the local production `.env`, forces restricted file permissions, and starts the tunnel profile.
 
-The public gateway should expose only the intended intake/webhook routes. Keep `/admin` private.
+In Cloudflare, publish this application route:
+- hostname: `hooks.bmcluminaryventures.com`
+- service: `http://webhook_proxy:8080`
+
+Then verify from the VPS:
+
+```bash
+./verify-public-ingress.sh
+```
+
+The verifier confirms the public hostname reaches the gateway while `/admin` and `/api/admin/preflight` still return 404 through the public path.
+
+The nginx gateway exposes only:
+- `/api/intake`
+- `/api/stripe-webhook`
+- `/webhook/*` for n8n webhooks
+
+Everything else returns 404. BMC admin, the n8n editor, SearXNG, Ollama, PostgreSQL, and direct Ops API access stay private.
 
 ## Backups
 
