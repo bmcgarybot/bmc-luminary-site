@@ -66,6 +66,7 @@ RESEARCH_SEARCH_ENABLED=os.getenv("RESEARCH_SEARCH_ENABLED","true").lower()=="tr
 RESEARCH_SEARCH_URL=os.getenv("RESEARCH_SEARCH_URL","http://searxng:8080/search").strip()
 RESEARCH_SEARCH_RESULTS=max(1,min(20,env_int("RESEARCH_SEARCH_RESULTS",8)))
 RESEARCH_WORKER_BATCH=max(1,min(5,env_int("RESEARCH_WORKER_BATCH",1)))
+RESEARCH_MAX_PASSES=max(1,min(8,env_int("RESEARCH_MAX_PASSES",4)))
 
 BUYER_RESEARCH_HINTS={
     "commercial_cleaning":'"hospital" OR "clinic" OR "dental" OR "therapy" OR "pharmacy" OR "grocery" OR "retail" OR "insurance office" OR "school" OR "church" OR "hotel" OR "apartment" OR "restaurant"',
@@ -375,19 +376,45 @@ async def local_ai_status():
     return status
 
 
-def build_research_query(side,market,service_name,research_method="",service_key=""):
+def build_research_query(side,market,service_name,research_method="",service_key="",research_pass=0):
     service=clean(service_name).replace('"'," ")
     place=clean(market).replace('"'," ")
     method=clean(research_method).upper()
+    p=max(0,int(research_pass or 0))
+    variant=min(p,3)
     if side=="vendor":
         context=MARKET_RESEARCH_CONTEXT.get(place,"") if clean(service_key) in ENVIRONMENT_SENSITIVE_SERVICES else ""
-        return f'"{service}" "{place}" Arizona company service contractor {context}'.strip()
+        variants=(
+          f'"{service}" "{place}" Arizona company service contractor',
+          f'"{service}" "{place}" Arizona repair maintenance provider',
+          f'"{service}" "{place}" Arizona local business services',
+          f'"{service}" "{place}" Arizona commercial residential contractor'
+        )
+        return f'{variants[variant]} {context} -jobs -careers'.strip()
     if "PROCUREMENT" in method or "PUBLIC BID" in method:
-        return f'"{place}" Arizona bid RFP solicitation contract "{service}"'
+        variants=(
+          f'"{place}" Arizona bid RFP solicitation contract "{service}"',
+          f'"{place}" Arizona purchasing procurement RFQ "{service}"',
+          f'"{place}" Arizona vendor bid opportunity "{service}"',
+          f'"{place}" Arizona facilities contract solicitation "{service}"'
+        )
+        return variants[variant]
     if "B2B" in method:
         hints=BUYER_RESEARCH_HINTS.get(clean(service_key),BUYER_RESEARCH_HINTS["facility_maintenance"])
-        return f'"{place}" Arizona ({hints}) "{service}"'
-    return f'"{place}" Arizona business organization "{service}"'
+        variants=(
+          f'"{place}" Arizona ({hints}) "{service}"',
+          f'"{place}" Arizona ({hints}) facilities "{service}"',
+          f'"{place}" Arizona ({hints}) operations "{service}"',
+          f'"{place}" Arizona ({hints}) management "{service}"'
+        )
+        return variants[variant]
+    variants=(
+      f'"{place}" Arizona business organization "{service}"',
+      f'"{place}" Arizona company facilities "{service}"',
+      f'"{place}" Arizona organization operations "{service}"',
+      f'"{place}" Arizona business management "{service}"'
+    )
+    return variants[variant]
 
 def classify_public_opportunity_service(text):
     t=clean(text).lower()
@@ -1931,7 +1958,7 @@ async def process_research(x_bmc_admin_key:str|None=Header(default=None)):
     errors=[]
     async with app.state.pool.acquire() as conn:
       tasks=await conn.fetch("""select t.task_id,t.service_key,t.payload,rb.research_id,rb.market,rb.side,
-             rb.research_method,s.display_name
+             rb.research_method,rb.research_pass,rb.current_count,rb.goal,s.display_name
         from tasks t
         join research_backlog rb on rb.research_id::text=t.payload->>'research_id'
         left join services s on s.service_key=t.service_key
@@ -1939,7 +1966,7 @@ async def process_research(x_bmc_admin_key:str|None=Header(default=None)):
         order by case t.priority when 'critical' then 0 when 'high' then 1 else 2 end,t.created_at
         limit $1""",RESEARCH_WORKER_BATCH)
       for task in tasks:
-        query=build_research_query(task["side"],task["market"],task["display_name"] or task["service_key"],task["research_method"],task["service_key"])
+        query=build_research_query(task["side"],task["market"],task["display_name"] or task["service_key"],task["research_method"],task["service_key"],task["research_pass"])
         try:
             results=await search_research_web(query)
         except Exception as exc:
@@ -1961,17 +1988,29 @@ async def process_research(x_bmc_admin_key:str|None=Header(default=None)):
                   json.dumps({"search_engine":result["engine"],"search_score":result["score"]}))
                 if inserted:
                     staged+=1
-            total=await conn.fetchval("select count(*) from research_candidates where research_id=$1",task["research_id"])
-            new_status="review" if int(total or 0)>0 else "searched_no_results"
+            total=int(await conn.fetchval("select count(*) from research_candidates where research_id=$1",task["research_id"]) or 0)
+            next_pass=int(task["research_pass"] or 0)+1
+            current_count=int(task["current_count"] or 0)
+            goal=int(task["goal"] or 0)
+            remaining=max(0,goal-current_count-total)
+            if remaining<=0:
+                new_status="review" if total>0 else "completed"
+            elif next_pass<RESEARCH_MAX_PASSES:
+                new_status="queued"
+            else:
+                new_status="review" if total>0 else "searched_no_results"
             await conn.execute("""update research_backlog
-              set status=$2,last_attempt_at=now(),candidates_found=$3,updated_at=now()
-              where research_id=$1""",task["research_id"],new_status,int(total or 0))
+              set status=$2,last_attempt_at=now(),candidates_found=$3,research_pass=$4,
+                  target_gap=$5,updated_at=now()
+              where research_id=$1""",task["research_id"],new_status,total,next_pass,remaining)
             await conn.execute("""update tasks set status='completed',updated_at=now(),
               payload=payload || $2::jsonb where task_id=$1""",task["task_id"],
-              json.dumps({"search_query":query,"results_returned":len(results),"staged_candidates":int(total or 0)}))
+              json.dumps({"search_query":query,"research_pass":next_pass,"results_returned":len(results),
+                          "staged_candidates":total,"remaining_gap":remaining,"backlog_status":new_status}))
             await event(conn,"research",task["research_id"],"search_completed",{
-              "task_id":str(task["task_id"]),"query":query,"results_returned":len(results),
-              "staged_candidates":int(total or 0)
+              "task_id":str(task["task_id"]),"query":query,"research_pass":next_pass,
+              "results_returned":len(results),"staged_candidates":total,
+              "remaining_gap":remaining,"backlog_status":new_status
             },"research_agent")
             processed+=1
     return {"ok":True,"enabled":True,"processed":processed,"staged":staged,"errors":errors}
