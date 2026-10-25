@@ -1,0 +1,15 @@
+{
+  "results": [
+    {
+      "state": "AZ",
+      "cms_certification_number_ccn": "037001",
+      "provider_name": "CI Prescott Home Health",
+      "address": "500 Healing Circle",
+      "citytown": "PRESCOTT",
+      "zip_code": "86301",
+      "telephone_number": "928-555-0220",
+      "type_of_ownership": "PROPRIETARY",
+      "certification_date": "03/15/2020"
+    }
+  ]
+}
