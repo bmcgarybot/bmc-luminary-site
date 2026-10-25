@@ -75,6 +75,9 @@ jobs:
       - name: Validate public form contracts
         run: python portfolio/automation/validate-form-contracts.py
 
+      - name: Validate search and download readiness
+        run: python portfolio/automation/validate-search-readiness.py
+
       - name: Validate Compose
         working-directory: portfolio/automation
         run: docker compose --env-file .env.example config >/dev/null
