@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-24",
+  "version": "2026-10-25",
   "products": [
     {
       "product_key": "growth_pack_starter",
@@ -8,8 +8,9 @@
       "amount_cents": 49900,
       "currency": "usd",
       "billing_type": "one_time",
-      "payment_link_url": null,
-      "active": true
+      "payment_link_url": "https://buy.stripe.com/cNi00lfxD8pJdBxa5G1oI00",
+      "active": true,
+      "stripe_payment_link_id": "plink_1UUYdjQU2BLM8GhLWdq2uB1F"
     },
     {
       "product_key": "growth_pack_premium",
@@ -18,8 +19,9 @@
       "amount_cents": 74900,
       "currency": "usd",
       "billing_type": "one_time",
-      "payment_link_url": null,
-      "active": true
+      "payment_link_url": "https://buy.stripe.com/6oUdRb3OV49t5515Pq1oI01",
+      "active": true,
+      "stripe_payment_link_id": "plink_1UUYdvQU2BLM8GhLe3QUR0Yg"
     },
     {
       "product_key": "competitor_intelligence_pack",
@@ -28,8 +30,9 @@
       "amount_cents": 29900,
       "currency": "usd",
       "billing_type": "one_time",
-      "payment_link_url": null,
-      "active": true
+      "payment_link_url": "https://buy.stripe.com/eVq5kFbhn21l0OLfq01oI02",
+      "active": true,
+      "stripe_payment_link_id": "plink_1UUYe2QU2BLM8GhL6xBTBVC8"
     },
     {
       "product_key": "market_expansion_pack",
@@ -38,8 +41,9 @@
       "amount_cents": 69900,
       "currency": "usd",
       "billing_type": "one_time",
-      "payment_link_url": null,
-      "active": true
+      "payment_link_url": "https://buy.stripe.com/fZu6oJ99f21lfJF2De1oI03",
+      "active": true,
+      "stripe_payment_link_id": "plink_1UUYe6QU2BLM8GhLgTbWoNAJ"
     }
   ]
 }
