@@ -124,6 +124,12 @@ ADHS_FACILITY_CORE_SERVICES=(
     "fire_safety","locksmith_access","backflow_plumbing","facility_maintenance",
     "electrical_service","duct_vent","pressure_washing"
 )
+CMS_FACILITY_CORE_SERVICES=(
+    "commercial_cleaning","floor_carpet","window_cleaning","hvac_heat","pest_control",
+    "parking_lot","fire_safety","locksmith_access","backflow_plumbing","facility_maintenance",
+    "electrical_service","duct_vent","pressure_washing","linen_laundry","restaurant_equipment",
+    "ice_machine","landscaping","junk_hauling","waste_audit","coffee_water"
+)
 ADHS_SOURCE_KEY="adhs_facilities_arcgis"
 ADHS_SOURCE_NAME="Arizona Department of Health Services Licensed Facilities"
 ADHS_LAYER_PAGE="https://services1.arcgis.com/mpVYz37anSdrK4d8/ArcGIS/rest/services/All_State_Licensed_Facilities_in_Arizona/FeatureServer/18"
@@ -2382,7 +2388,7 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
             services=adhs_facility_services(attrs)
             buyer_id="b_adhs_"+hashlib.sha256(identity.encode("utf-8")).hexdigest()[:16]
             record_url=adhs_facility_record_url(attrs)
-            source_data={
+            source_evidence={
               "source_key":ADHS_SOURCE_KEY,
               "source_name":ADHS_SOURCE_NAME,
               "source_layer":ADHS_LAYER_PAGE,
@@ -2397,7 +2403,7 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
               "general_reference_only":True,
               "credential_or_operating_status_requires_verification":True
             }
-            existing=await conn.fetchrow("""select buyer_id,likely_services from buyers
+            existing=await conn.fetchrow("""select buyer_id,likely_services,source_data from buyers
               where buyer_id=$1
                  or (nullif($4,'') is not null and market=$3
                      and lower(business_name)=lower($2) and public_phone=$4)
@@ -2407,15 +2413,17 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
                 entity_id=existing["buyer_id"]
                 merged=set(x for x in clean(existing["likely_services"]).split("|") if x)
                 merged.update(services)
+                source_data=merge_source_evidence(existing["source_data"],ADHS_SOURCE_KEY,source_evidence)
                 await conn.execute("""update buyers set
                     public_phone=case when coalesce(public_phone,'')='' then nullif($2,'') else public_phone end,
                     likely_services=$3,
-                    source_data=coalesce(source_data,'{}'::jsonb) || $4::jsonb,
+                    source_data=$4::jsonb,
                     updated_at=now()
                   where buyer_id=$1""",entity_id,phone,"|".join(sorted(merged)),json.dumps(source_data))
                 prospects_updated+=1
             else:
                 entity_id=buyer_id
+                source_data=merge_source_evidence({},ADHS_SOURCE_KEY,source_evidence)
                 await conn.execute("""insert into buyers(
                     buyer_id,business_name,market,buyer_type,public_phone,website,source_url,
                     likely_services,priority,campaign,status,notes,source_data)
