@@ -17,6 +17,7 @@ KEY_PAGES = (
     "services/index.html",
     "request/index.html",
     "how-it-works/index.html",
+    "providers/index.html",
 )
 FORBIDDEN_VISIBLE_PHRASES = (
     "bmc categorizes",
