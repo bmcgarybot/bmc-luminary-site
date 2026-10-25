@@ -990,10 +990,14 @@ async def provider_portal_settings(request:Request):
             for sk in removals:
                 await conn.execute("delete from vendor_services where vendor_id=$1 and service_key=$2",vid,sk)
             if additions:
-                await conn.execute("""insert into exceptions(type,vendor_id,severity,summary,recommended_action)
-                  values('provider_service_change_review',$1,'normal',$2,$3)""",
-                  vid,f"Provider requested additional services: {vendor['business_name']}",
-                  "Review requested service additions and any credential/license requirements before adding them")
+                open_review=await conn.fetchval("""select exception_id from exceptions
+                  where vendor_id=$1 and type='provider_service_change_review' and status='open'
+                  order by created_at desc limit 1""",vid)
+                if not open_review:
+                    await conn.execute("""insert into exceptions(type,vendor_id,severity,summary,recommended_action)
+                      values('provider_service_change_review',$1,'normal',$2,$3)""",
+                      vid,f"Provider requested additional services: {vendor['business_name']}",
+                      "Review requested service additions and any credential/license requirements before adding them")
                 await event(conn,"vendor",vid,"portal_service_additions_requested",{"services":additions},"provider")
         if markets:
             await conn.execute("delete from vendor_markets where vendor_id=$1",vid)
@@ -1010,6 +1014,39 @@ async def provider_portal_settings(request:Request):
         if additions:
             message+=" New service types are pending BMC review before they can receive jobs."
         return {"ok":True,"message":message,"pending_service_additions":additions}
+
+@app.post("/api/provider/availability")
+async def provider_portal_availability(request:Request):
+    p=await request.json()
+    token=clean(p.get("token"))
+    action=clean(p.get("action")).lower()
+    if action not in ("pause","resume"):
+        raise HTTPException(400,"Choose pause or resume")
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        vendor=await vendor_from_portal_token(conn,token)
+        if not vendor:
+            raise HTTPException(401,"Provider login expired")
+        vid=vendor["vendor_id"]
+        current=clean(vendor["status"])
+        if action=="pause":
+            if current=="paused":
+                return {"ok":True,"status":"paused","message":"New BMC opportunities are already paused."}
+            if current not in ("pilot","active"):
+                raise HTTPException(409,"This provider account cannot be paused from its current status")
+            await conn.execute("update vendors set status='paused',updated_at=now() where vendor_id=$1",vid)
+            await event(conn,"vendor",vid,"provider_paused",{"previous_status":current},"provider")
+            return {"ok":True,"status":"paused","message":"New BMC opportunities are paused. Active jobs stay on your dashboard."}
+
+        if current!="paused":
+            return {"ok":True,"status":current,"message":"New BMC opportunities are already enabled."}
+        previous=await conn.fetchval("""select payload->>'previous_status' from events
+          where entity_type='vendor' and entity_id=$1 and event_type='provider_paused'
+          order by occurred_at desc limit 1""",vid)
+        resume_status=previous if previous in ("pilot","active") else "pilot"
+        await conn.execute("update vendors set status=$2,updated_at=now() where vendor_id=$1",vid,resume_status)
+        await event(conn,"vendor",vid,"provider_resumed",{"status":resume_status},"provider")
+        return {"ok":True,"status":resume_status,"message":"New BMC opportunities are turned back on."}
 
 @app.get("/health")
 async def health():
@@ -1425,6 +1462,68 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
 def require_admin(key):
     if not ADMIN_KEY or key!=ADMIN_KEY:
         raise HTTPException(403,"Forbidden")
+
+@app.get("/api/admin/provider-service-reviews")
+async def admin_provider_service_reviews(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    async with app.state.pool.acquire() as conn:
+        rows=await conn.fetch("""select e.exception_id,e.vendor_id,e.created_at,e.summary,
+            v.business_name,v.status,
+            coalesce((select ev.payload->'services' from events ev
+              where ev.entity_type='vendor' and ev.entity_id=e.vendor_id
+                and ev.event_type='portal_service_additions_requested'
+                and ev.occurred_at>=e.created_at
+              order by ev.occurred_at desc limit 1),'[]'::jsonb) requested_services,
+            coalesce((select jsonb_agg(jsonb_build_object('service_key',s.service_key,'display_name',s.display_name) order by s.display_name)
+              from vendor_services vs join services s on s.service_key=vs.service_key
+              where vs.vendor_id=e.vendor_id),'[]'::jsonb) current_services
+          from exceptions e join vendors v on v.vendor_id=e.vendor_id
+          where e.type='provider_service_change_review' and e.status='open'
+          order by e.created_at asc""")
+    return {"ok":True,"count":len(rows),"records":[dict(r) for r in rows]}
+
+@app.post("/api/admin/provider-service-review")
+async def admin_provider_service_review(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    p=await request.json()
+    exception_id=clean(p.get("exception_id"))
+    decision=clean(p.get("decision")).lower()
+    approved=[clean(x) for x in (p.get("approved_services") or []) if clean(x)]
+    if not exception_id or decision not in ("approve","reject"):
+        raise HTTPException(400,"exception_id and approve/reject decision are required")
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        row=await conn.fetchrow("""select e.*,v.business_name from exceptions e
+          join vendors v on v.vendor_id=e.vendor_id
+          where e.exception_id=$1::uuid and e.type='provider_service_change_review'
+            and e.status='open' for update""",exception_id)
+        if not row:
+            raise HTTPException(404,"Open provider service review not found")
+        requested=await conn.fetchval("""select payload->'services' from events
+          where entity_type='vendor' and entity_id=$1 and event_type='portal_service_additions_requested'
+            and occurred_at>= $2
+          order by occurred_at desc limit 1""",row["vendor_id"],row["created_at"])
+        requested=list(requested or [])
+        if decision=="approve":
+            approved=[sk for sk in approved if sk in requested]
+            if not approved:
+                approved=requested
+            valid_rows=await conn.fetch("""select service_key from services
+              where service_key=any($1::text[]) and is_active=true""",approved)
+            valid={r["service_key"] for r in valid_rows}
+            for sk in sorted(valid):
+                await conn.execute("""insert into vendor_services(vendor_id,service_key)
+                  values($1,$2) on conflict do nothing""",row["vendor_id"],sk)
+            resolution="Approved provider service additions: "+", ".join(sorted(valid))
+            await event(conn,"vendor",row["vendor_id"],"provider_service_additions_approved",
+              {"services":sorted(valid),"exception_id":exception_id},"admin")
+        else:
+            resolution="Rejected provider service additions: "+", ".join(requested)
+            await event(conn,"vendor",row["vendor_id"],"provider_service_additions_rejected",
+              {"services":requested,"exception_id":exception_id,"notes":clean(p.get("notes"))},"admin")
+        await conn.execute("""update exceptions set status='resolved',resolved_at=now(),resolution=$2
+          where exception_id=$1::uuid""",exception_id,resolution)
+        return {"ok":True,"decision":decision,"vendor_id":row["vendor_id"],"message":resolution}
 
 @app.get("/admin",response_class=HTMLResponse)
 async def admin_page():
