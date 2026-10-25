@@ -596,6 +596,42 @@ bash ./watchdog-status.sh
 
 ## 15. VPS deploy debt from this thread
 
+### 2026-10-25 funnel rebuild — committed after original handoff
+
+Public/static work:
+- all 53 registered service fronts audited onto the editorial shell;
+- 12 market hubs modernized;
+- plain-language public copy rules added in `PUBLIC_COPY_STYLE.md`;
+- CI now rejects legacy public UI and common internal/meta copy;
+- provider page rebuilt as a guided sales funnel with:
+  - pain-first opening;
+  - visual job imagery;
+  - old-way vs BMC comparison;
+  - phone-style example request;
+  - accept/pass explanation;
+  - risk reversal;
+  - local Prescott/PV reason to try now;
+  - scroll reveal/progress motion;
+  - application CTA;
+- building-maintenance page rebuilt as a guided multi-job funnel for churches, schools, offices, medical, gyms, daycare, theaters, etc.;
+- the building form now sends the specific multi-service fields the API expects.
+
+Backend/ops work committed but **NOT confirmed deployed to VPS**:
+- provider outreach rewritten around bad-lead pain + free pilot risk reversal;
+- provider application confirmation email;
+- provider approval nurture email;
+- provider marketing funnel scorecard:
+  invited → sent → replied → applied → approved → job offered → accepted → won;
+- Prescott/PV launch-cell coverage dashboard + queue-launch-gaps action;
+- Growth Pack outbound lane (separate, gated, OFF by default);
+- `customer_path` persisted on leads;
+- expanded building categories including electrical, handyman, pressure washing, and duct/vent;
+- building buyer outreach rewritten in plain pain-first language;
+- building request confirmation stripped of internal “workflow/routing” language;
+- CI test added proving one building request can split into several child jobs.
+
+Current VPS redeploy must include these newer backend commits too.
+
 Static Cloudflare Pages deploys automatically from GitHub.
 
 Ops API / watchdog changes do NOT magically deploy to the VPS.
