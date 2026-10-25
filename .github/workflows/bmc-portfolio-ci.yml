@@ -84,6 +84,7 @@ jobs:
         run: |
           bash -n provision-cloud.sh bootstrap.sh start.sh stop.sh backup.sh runtime-doctor.sh \
             configure-cloudflare.sh verify-public-ingress.sh verify-backup.sh install-backup-timer.sh
+          sh -n scheduler.sh
 
       - name: Validate public gateway configuration
         working-directory: portfolio/automation
@@ -140,10 +141,12 @@ jobs:
           POSTGRES_CONTAINER="$(docker compose --env-file .env.ci ps -q postgres)"
           BMC_NETWORK="$(docker inspect "$POSTGRES_CONTAINER" --format '{{range $k,$v := .NetworkSettings.Networks}}{{$k}}{{end}}')"
           docker run -d --rm --name research-mock --network "$BMC_NETWORK" -v "$PWD/ci:/srv:ro" python:3.12-alpine python -m http.server 8080 --directory /srv
-          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from services;')" -ge 48
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from services;')" -ge 53
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from vendors;')" -ge 111
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from buyers;')" -ge 140
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_backlog where status='queued';")" -ge 600
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from information_schema.tables where table_name='public_opportunities';")" -eq 1
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from information_schema.tables where table_name='local_demand_signals';")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='vendor' and wave='pilot1';")" -eq 12
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='buyer' and wave='pilot1';")" -eq 7
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='buyer' and campaign='growth_pack_sales' and wave='growth1';")" -ge 1
@@ -201,6 +204,41 @@ jobs:
           data=json.load(open("/tmp/bmc_launch_gaps.json"))
           assert data["ok"] is True
           assert data["queued_count"] >= 0
+          PY
+
+          # Public procurement and indexed local-demand monitors must be read-only and callable.
+          curl -fsS -X POST http://127.0.0.1:8000/api/process-public-opportunities \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_public_opportunities.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_public_opportunities.json"))
+          assert data["ok"] is True
+          assert data["enabled"] is True
+          assert data["sources_checked"] == 12, data
+          assert data["errors"] == [], data
+          PY
+
+          curl -fsS -X POST http://127.0.0.1:8000/api/process-local-demand-signals \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_local_signals.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_local_signals.json"))
+          assert data["ok"] is True
+          assert data["enabled"] is True
+          assert data["searches"] == 24, data
+          assert data["errors"] == [], data
+          PY
+
+          curl -fsS http://127.0.0.1:8000/api/admin/daily-brief \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_daily_brief.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_daily_brief.json"))
+          assert data["ok"] is True
+          for key in ("open_exceptions","provider_approvals","service_change_reviews","human_operator_tasks","public_opportunities","local_demand_signals","research_candidates_waiting"):
+              assert key in data["counts"], (key,data)
+          assert "public_opportunities" in data
+          assert "local_demand_signals" in data
           PY
 
           curl -fsS -X POST http://127.0.0.1:8000/api/process-growth-outreach \
