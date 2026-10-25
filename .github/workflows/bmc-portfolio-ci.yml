@@ -314,6 +314,20 @@ jobs:
           PY
           test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_candidates where status='discovered';") -eq 2
           test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from tasks where owner='research_agent' and status='open';") -eq 4
+          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_backlog where research_pass=1;") -ge 1
+          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_backlog where research_pass=1 and status='queued';") -ge 1
+
+          # A completed research pass with a remaining gap must be eligible for the next bounded pass.
+          curl -fsS -X POST http://127.0.0.1:8000/api/agent-cycle \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_agent_cycle_refill.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_agent_cycle_refill.json"))
+          assert data["ok"] is True
+          assert data["research_tasks_created"] == 1, data
+          assert data["external_actions_performed"] == 0
+          PY
+          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from tasks where owner='research_agent' and status='open';") -eq 5
 
           curl -fsS 'http://127.0.0.1:8000/api/admin/research-candidates?status=discovered&limit=10' \
             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_research_candidates.json
