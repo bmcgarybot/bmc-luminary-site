@@ -1966,3 +1966,147 @@ Current master remains ahead of the last verified VPS deployment.
 Do not treat ADHS/CMS source-native research as live until the VPS safe deploy and production source-native smoke tests are run.
 
 All outbound gates remain OFF.
+
+
+## 28. FIVE-LANE HEALTHCARE + ARIZONA MARKET EXPANSION — 2026-10-25
+
+This section continues Section 27 and captures the combined verified state after home-health/hospice integration plus concurrent Arizona market expansion.
+
+### Verified combined checkpoint
+
+Current verified master at this checkpoint:
+- `64428d5cdbc1b1b13b0b41d49781050d32df1791`
+- BMC Portfolio CI run `40220820415`: **SUCCESS**
+- full database/API smoke: **SUCCESS**
+
+The five-source healthcare changes were also independently green on:
+- `3e52440e26bb3ccdb837c3908b7ef9e76daf0985`
+- BMC Portfolio CI run `40220691445`: **SUCCESS**
+
+This is important because additional Pages/search/market-scope commits landed concurrently after the healthcare build. Both the healthcare feature itself and the later combined master were verified green.
+
+### Five institutional source-native lanes
+
+Per configured source-native market, BMC now monitors:
+
+1. `adhs_facilities_arcgis`
+2. `cms_hospitals` — CMS dataset `xubh-q36u`
+3. `cms_nursing_homes` — CMS dataset `4pq5-n9py`
+4. `cms_home_health` — CMS dataset `6jpm-sxkc`
+5. `cms_hospice` — CMS dataset `yc9t-dgbk`
+
+Home health and hospice use a narrower office/facility service map than hospital/nursing-home sources so those organizations do not artificially count as buyers for kitchen/laundry-heavy facility services.
+
+The hospital/nursing source map remains broader because those facilities are more likely to own or contract for full-building, grounds, laundry and food-equipment work.
+
+### Five-source CI behavior
+
+The deterministic Prescott smoke now models:
+- 2 accepted ADHS facility records;
+- 1 CMS hospital record that describes the same hospital already found by ADHS;
+- 1 CMS nursing-home record;
+- 1 CMS home-health agency;
+- 1 CMS hospice organization.
+
+Expected first-run result:
+- 5 successful source lanes;
+- 6 accepted source records;
+- 5 unique institutional buyer prospects;
+- 1 cross-source update/merge;
+- zero external actions;
+- zero outreach.
+
+The hospital remains one buyer with both ADHS and CMS evidence.
+
+Home-health/hospice records are prospect-only and preserve public organization/contact/source metadata, not clinical or patient information.
+
+### Expanded Arizona research / source-native market scope
+
+Concurrent repo work expanded default source-native coverage to 21 Arizona markets:
+
+- Prescott
+- Prescott Valley
+- Chino Valley
+- Dewey-Humboldt
+- Mayer
+- Cordes Lakes
+- Williamson Valley
+- Ash Fork
+- Seligman
+- Skull Valley
+- Camp Verde
+- Cottonwood
+- Sedona
+- Flagstaff
+- Winslow
+- Kingman
+- Golden Valley
+- Bullhead City
+- Phoenix
+- Scottsdale
+- Tucson
+
+The research backlog also adds smaller/regional Arizona markets with deliberately smaller provider/buyer goals than major metros.
+
+This expansion is research coverage, not an instruction to build thin public SEO pages.
+
+### Source freshness
+
+Official CMS datasets used here are current public Provider Data Catalog sources. In this thread:
+- Home Health Care Agencies `6jpm-sxkc` was identified as a current CMS source with an October 2026 release cycle.
+- Hospice General Information `yc9t-dgbk` had an August 2026 refresh.
+- CMS hospital/nursing feeds are materially fresher than the older ADHS all-facilities layer.
+
+ADHS remains useful as independent facility evidence, but CMS now prevents BMC from relying on ADHS alone for major institutional categories.
+
+### Newly identified reliability gaps
+
+#### 1. Never-started source blind spot
+
+Current source-health logic can alert when a tracked source becomes stale, but if a configured source-native lane never runs even once after deployment, it may not yet have a `source_native_state` row to become stale.
+
+Next fix:
+- initialize expected source/market state automatically;
+- do not alert immediately on fresh deployment;
+- after an appropriate grace period, surface a configured source that has never completed successfully.
+
+#### 2. Smaller-market postal-city aliases
+
+Some newly added BMC markets are CDP/neighborhood/regional names while official facility datasets may store a different USPS/mailing city.
+
+Examples that need careful handling include:
+- Dewey-Humboldt
+- Cordes Lakes
+- Williamson Valley
+
+Do not solve this by blindly mapping a small market to a large nearby city, which would falsely attribute all Prescott/Mayer institutions to the smaller BMC market.
+
+Preferred approach:
+- maintain explicit, conservative source-query aliases only when they preserve geographic meaning;
+- otherwise let broad web research cover the market rather than polluting source-native counts;
+- keep the BMC market label distinct from the source mailing-city value in evidence.
+
+### Concurrent repo activity
+
+During this build, other legitimate commits landed on `master` for:
+- search/download readiness;
+- sitemap/canonical/Growth Pack integrity;
+- Service Network root Pages deployment/DNS documentation;
+- expanded Arizona research-market scope.
+
+Those changes were preserved. No branch reset, force push or destructive merge was used.
+
+### Production state
+
+Still not independently verified on the VPS.
+
+The current code/CI state is ahead of the last confirmed production deployment.
+
+Outbound gates remain unchanged:
+- vendor outreach OFF;
+- buyer outreach OFF;
+- Growth Pack outreach OFF;
+- no automatic bids;
+- no private social scraping;
+- no automatic contact to individual demand posters;
+- no provider activation from research evidence.
