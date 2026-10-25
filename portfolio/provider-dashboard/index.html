@@ -32,6 +32,8 @@
 .portal-check input{width:auto;margin-top:2px}
 .portal-status{display:none;padding:14px;border-radius:14px;margin-top:12px;background:#e8efe8;border:1px solid #cad7ca}
 .portal-status.show{display:block}
+.availability-note{display:inline-block;margin-top:9px;padding:7px 10px;border-radius:999px;background:#e8efe8;color:#405546;font-size:.78rem;font-weight:800}
+.availability-note.paused{background:#eee7df;color:#6b584b}
 @media(max-width:800px){.portal-stats{grid-template-columns:1fr 1fr}.portal-grid,.portal-settings{grid-template-columns:1fr}.portal-top{align-items:flex-start;flex-direction:column}}
 </style>
 </head><body class="editorial-site">
@@ -51,7 +53,7 @@
       <h1 id="provider-name">Your business</h1>
       <div class="portal-sub" id="provider-summary"></div>
     </div>
-    <a class="btn btn-secondary" href="#settings">Update matching settings</a>
+    <div class="actions"><button class="btn btn-secondary" id="availability-button" type="button">Pause new work</button><a class="btn btn-secondary" href="#settings">Update matching settings</a></div>
   </div>
 
   <div class="portal-stats">
@@ -212,7 +214,11 @@
       const p=data.provider;
       loading.hidden=true;app.hidden=false;
       document.getElementById('provider-name').textContent=p.business_name;
-      document.getElementById('provider-summary').textContent=(p.markets||[]).join(', ')+' · '+(p.capacity||'Capacity not set');
+      const summary=document.getElementById('provider-summary');
+      summary.innerHTML=esc((p.markets||[]).join(', ')+' · '+(p.capacity||'Capacity not set'))+'<br><span class="availability-note '+(p.status==='paused'?'paused':'')+'">'+(p.status==='paused'?'New work paused':'New work on')+'</span>';
+      const availabilityButton=document.getElementById('availability-button');
+      availabilityButton.textContent=p.status==='paused'?'Resume new work':'Pause new work';
+      availabilityButton.dataset.action=p.status==='paused'?'resume':'pause';
       document.getElementById('stat-new').textContent=(data.opportunities||[]).length;
       document.getElementById('stat-active').textContent=(data.active_jobs||[]).length;
       document.getElementById('stat-won').textContent=data.stats?.won||0;
@@ -231,6 +237,28 @@
       loading.innerHTML='Your provider login has expired or could not be loaded. <a href="../provider-login/">Email yourself a new login link.</a>';
     }
   }
+
+  document.getElementById('availability-button').addEventListener('click',async function(){
+    const button=this;
+    const action=button.dataset.action||'pause';
+    const question=action==='pause'
+      ? 'Pause new BMC opportunities? Active jobs will stay on your dashboard.'
+      : 'Turn new BMC opportunities back on?';
+    if(!confirm(question))return;
+    button.disabled=true;
+    try{
+      const data=await api('/api/provider/availability',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({token,action})
+      });
+      alert(data.message||'Availability updated.');
+      await loadDashboard();
+    }catch(err){
+      alert(err.message);
+    }finally{
+      button.disabled=false;
+    }
+  });
 
   document.getElementById('provider-settings-form').addEventListener('submit',async function(e){
     e.preventDefault();
