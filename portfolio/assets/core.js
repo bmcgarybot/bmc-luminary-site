@@ -116,6 +116,64 @@
     location.href="mailto:"+encodeURIComponent(to)+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
   }
 
+  function showSubmissionSuccess(form,response){
+    let card=form.querySelector("[data-success-card]");
+    if(!card){
+      card=document.createElement("div");
+      card.className="submission-success";
+      card.dataset.successCard="";
+      const note=form.querySelector("[data-form-notice]");
+      if(note && note.parentNode)note.parentNode.insertBefore(card,note.nextSibling);
+      else form.appendChild(card);
+    }
+    const title=response.service_name
+      ? "We matched this to "+response.service_name+"."
+      : response.status==="split"
+        ? "We broke this into the right building jobs."
+        : "We got your request.";
+    let steps=[];
+    if(response.status==="provider_offered"){
+      steps=[
+        "A matching provider can review the job details.",
+        "If they accept, you’ll get their business contact information and they’ll get the contact details you submitted.",
+        "The provider handles its own price, schedule, warranty, and job terms directly with you."
+      ];
+    }else if(response.status==="exception"){
+      steps=[
+        "BMC understood the service, but an active provider was not available automatically.",
+        "The request is flagged for the next available option instead of disappearing into a dead end."
+      ];
+    }else if(response.status==="internal_queue"){
+      steps=[
+        "BMC has the request and the service it belongs to.",
+        "The next research, quote, sourcing, or review step is now in the internal work queue.",
+        "We’ll use the contact information you provided for the next update."
+      ];
+    }else if(response.status==="split"){
+      const names=Array.isArray(response.service_names)?response.service_names:[];
+      steps=[
+        names.length?("We separated this into: "+names.join(", ")+"."):"We separated the building request into the jobs you selected.",
+        "Each job can now move to the right provider or next step without making you start over.",
+        "You’ll receive updates using the contact information you provided."
+      ];
+    }else if(response.status==="needs_classification"){
+      steps=[
+        "The request is saved.",
+        "It needs one more classification step before it can be sent to the right place.",
+        "You do not need to submit it again."
+      ];
+    }else{
+      steps=[
+        "Your request is saved.",
+        "BMC will use the details you provided to move it to the next step.",
+        "You do not need to submit the same request again."
+      ];
+    }
+    card.innerHTML="<h3>"+title+"</h3><p>"+(response.message||"Your request is in.")+"</p><ol>"+steps.map(x=>"<li>"+x+"</li>").join("")+"</ol>";
+    card.classList.add("show");
+    card.scrollIntoView({behavior:"smooth",block:"center"});
+  }
+
   document.querySelectorAll("form[data-bmc-form]").forEach(function(form){
     form.addEventListener("submit",async function(e){
       e.preventDefault();
@@ -130,7 +188,8 @@
         clearTimeout(timer);
         if(!r.ok)throw new Error("Webhook returned "+r.status);
         const response=await r.json().catch(()=>({}));
-        if(note){note.textContent=response.message||"Received. We’ll route this request and follow up using the contact method you selected.";note.classList.add("show");}
+        if(note){note.textContent=response.message||"We got your request.";note.classList.add("show");}
+        showSubmissionSuccess(form,response);
         form.reset();
       }catch(err){
         console.error(err);
