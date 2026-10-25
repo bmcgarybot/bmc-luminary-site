@@ -202,9 +202,9 @@ jobs:
           data=json.load(open("/tmp/bmc_first_wave.json"))
           assert data["count"] == 19
           provider=next(x for x in data["records"] if x["side"]=="vendor")
-          assert "/portfolio/provider-pilot-activate/?" in provider["activation_url"]
-          assert "/portfolio/provider-pilot-activate/?" in provider["body"]
-          assert "/portfolio/vendor-partner/" not in provider["body"]
+          assert "/provider-pilot-activate/?" in provider["activation_url"]
+          assert "/provider-pilot-activate/?" in provider["body"]
+          assert "/vendor-partner/" not in provider["body"]
           PY
 
           # Prove a First Wave provider can submit against its existing record, stays unroutable,
