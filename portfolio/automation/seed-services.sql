@@ -191,3 +191,28 @@ insert into services(service_key,display_name,category,monetization,live_front,p
  values('facility_maintenance','Institutional Facility Maintenance Concierge','Institutional / facility','subscription / lead / referral','/portfolio/facility-maintenance/','A','facility_split',true)
  on conflict(service_key) do update set display_name=excluded.display_name,category=excluded.category,monetization=excluded.monetization,
  live_front=excluded.live_front,priority=excluded.priority,fulfillment_mode=excluded.fulfillment_mode,is_active=true,updated_at=now();
+
+insert into services(service_key,display_name,category,monetization,live_front,priority,fulfillment_mode,is_active)
+ values('electrical_service','Electrical Repair & Installation','Home / property services','lead / territory','/portfolio/electrical-service/','A','provider_match',true)
+ on conflict(service_key) do update set display_name=excluded.display_name,category=excluded.category,monetization=excluded.monetization,
+ live_front=excluded.live_front,priority=excluded.priority,fulfillment_mode=excluded.fulfillment_mode,is_active=true,updated_at=now();
+
+insert into services(service_key,display_name,category,monetization,live_front,priority,fulfillment_mode,is_active)
+ values('handyman_repairs','Handyman & Small Home Repairs','Home / property services','lead / territory','/portfolio/handyman-repairs/','A','provider_match',true)
+ on conflict(service_key) do update set display_name=excluded.display_name,category=excluded.category,monetization=excluded.monetization,
+ live_front=excluded.live_front,priority=excluded.priority,fulfillment_mode=excluded.fulfillment_mode,is_active=true,updated_at=now();
+
+insert into services(service_key,display_name,category,monetization,live_front,priority,fulfillment_mode,is_active)
+ values('residential_cleaning','House Cleaning & Deep Cleaning','Home services','lead / recurring referral','/portfolio/house-cleaning/','A','provider_match',true)
+ on conflict(service_key) do update set display_name=excluded.display_name,category=excluded.category,monetization=excluded.monetization,
+ live_front=excluded.live_front,priority=excluded.priority,fulfillment_mode=excluded.fulfillment_mode,is_active=true,updated_at=now();
+
+insert into services(service_key,display_name,category,monetization,live_front,priority,fulfillment_mode,is_active)
+ values('home_staging','Home Staging & Listing Styling','Real estate services','lead / project','/portfolio/home-staging/','B','provider_match',true)
+ on conflict(service_key) do update set display_name=excluded.display_name,category=excluded.category,monetization=excluded.monetization,
+ live_front=excluded.live_front,priority=excluded.priority,fulfillment_mode=excluded.fulfillment_mode,is_active=true,updated_at=now();
+
+insert into services(service_key,display_name,category,monetization,live_front,priority,fulfillment_mode,is_active)
+ values('realtor_listing_prep','Realtor Listing Prep Concierge','Real estate services','concierge / referral','/portfolio/realtor-listing-prep/','A','managed_concierge',true)
+ on conflict(service_key) do update set display_name=excluded.display_name,category=excluded.category,monetization=excluded.monetization,
+ live_front=excluded.live_front,priority=excluded.priority,fulfillment_mode=excluded.fulfillment_mode,is_active=true,updated_at=now();
