@@ -1,4 +1,14 @@
 (function(){
+  // BMC_TWO_SIDED_NAV: keep customer and provider experiences separate in public navigation.
+  const path=location.pathname;
+  const providerSide=/\/(providers|vendor-partner|provider-pilot|provider-pilot-activate|provider-response|provider-job-update)\//.test(path);
+  if(!providerSide){
+    document.querySelectorAll('a[href*="vendor-partner"],a[href*="/providers/"]').forEach(function(a){
+      // Customer pages should not mix provider recruiting into the primary experience.
+      if(a.closest('.nav') || a.closest('.actions')) a.remove();
+    });
+  }
+
   const markets=["Prescott","Prescott Valley","Chino Valley","Cottonwood","Camp Verde","Sedona","Flagstaff","Winslow","Kingman","Phoenix","Scottsdale","Tucson"];
   const GLOBAL_WEBHOOK=window.BMC_WEBHOOK_URL||"https://hooks.bmcservicenetwork.com/api/intake";
   const CONTACT_EMAIL="contact@bmcservicenetwork.com";
