@@ -67,6 +67,7 @@ RESEARCH_SEARCH_URL=os.getenv("RESEARCH_SEARCH_URL","http://searxng:8080/search"
 RESEARCH_SEARCH_RESULTS=max(1,min(20,env_int("RESEARCH_SEARCH_RESULTS",8)))
 RESEARCH_WORKER_BATCH=max(1,min(5,env_int("RESEARCH_WORKER_BATCH",1)))
 RESEARCH_MAX_PASSES=max(1,min(8,env_int("RESEARCH_MAX_PASSES",4)))
+RESEARCH_AUTO_PROMOTE_CONTACTS=os.getenv("RESEARCH_AUTO_PROMOTE_CONTACTS","true").lower()=="true"
 
 BUYER_RESEARCH_HINTS={
     "commercial_cleaning":'"hospital" OR "clinic" OR "dental" OR "therapy" OR "pharmacy" OR "grocery" OR "retail" OR "insurance office" OR "school" OR "church" OR "hotel" OR "apartment" OR "restaurant"',
@@ -245,6 +246,32 @@ def json_dict(value):
         except Exception:
             return {}
     return {}
+
+AUTO_PROMOTE_BLOCKED_DOMAINS=(
+    "facebook.com","nextdoor.com","linkedin.com","yelp.com","yellowpages.com",
+    "angi.com","thumbtack.com","bbb.org","mapquest.com"
+)
+AUTO_PROMOTE_BAD_PATH_PARTS={"blog","blogs","news","article","articles","directory","directories","search","category","categories","tag","tags"}
+
+def research_auto_promote_eligible(result,contact,authoritative_source,rank):
+    if not RESEARCH_AUTO_PROMOTE_CONTACTS or authoritative_source or int(rank or 0)>3:
+        return False
+    email=clean((contact or {}).get("public_email")).lower()
+    host=clean((result or {}).get("domain")).lower().removeprefix("www.")
+    if not email or "@" not in email or not host:
+        return False
+    if any(host==d or host.endswith("."+d) for d in AUTO_PROMOTE_BLOCKED_DOMAINS):
+        return False
+    email_domain=email.rsplit("@",1)[-1].removeprefix("www.")
+    if not (host==email_domain or host.endswith("."+email_domain) or email_domain.endswith("."+host)):
+        return False
+    try:
+        parts=[p.lower() for p in urllib.parse.urlparse(clean(result.get("url"))).path.split("/") if p]
+    except Exception:
+        return False
+    if len(parts)>2 or any(p in AUTO_PROMOTE_BAD_PATH_PARTS for p in parts):
+        return False
+    return True
 
 def workflow_email_html(title,body_lines,button_label=None,button_url=None):
     rows="".join(f"<p style='margin:0 0 14px;line-height:1.55'>{html.escape(clean(line)).replace(chr(10),'<br>')}</p>" for line in body_lines if clean(line))
@@ -2026,6 +2053,7 @@ async def process_research(x_bmc_admin_key:str|None=Header(default=None)):
         return {"ok":True,"enabled":False,"processed":0,"staged":0,"errors":[]}
     processed=0
     staged=0
+    auto_promoted=0
     errors=[]
     async with app.state.pool.acquire() as conn:
       tasks=await conn.fetch("""select t.task_id,t.service_key,t.payload,rb.research_id,rb.market,rb.side,
@@ -2060,8 +2088,11 @@ async def process_research(x_bmc_admin_key:str|None=Header(default=None)):
             continue
         async with conn.transaction():
             rank=0
+            task_auto_promoted=0
             for result in results:
                 rank+=1
+                contact=extract_public_contact(f'{result["title"]} {result["snippet"]}')
+                auto_eligible=research_auto_promote_eligible(result,contact,authoritative_source,rank)
                 inserted=await conn.fetchval("""insert into research_candidates(
                     research_id,task_id,side,market,service_key,candidate_name,source_title,
                     source_url,source_domain,snippet,search_query,source_rank,status,evidence)
@@ -2075,10 +2106,19 @@ async def process_research(x_bmc_admin_key:str|None=Header(default=None)):
                     "authoritative_source_key":authoritative_source["source_key"] if authoritative_source else None,
                     "authoritative_source_name":authoritative_source["source_name"] if authoritative_source else None,
                     "authoritative_source_domain":authoritative_source["source_domain"] if authoritative_source else None,
-                    **extract_public_contact(f'{result["title"]} {result["snippet"]}')
+                    "auto_promotion_eligible":auto_eligible,
+                    **contact
                   }))
                 if inserted:
                     staged+=1
+                    if auto_eligible:
+                        candidate_row=await conn.fetchrow(
+                          "select * from research_candidates where candidate_id=$1 for update",inserted)
+                        if candidate_row:
+                            await promote_research_candidate_to_prospect(
+                              conn,candidate_row,"research_agent","direct_domain_public_email")
+                            auto_promoted+=1
+                            task_auto_promoted+=1
             total=int(await conn.fetchval("select count(*) from research_candidates where research_id=$1",task["research_id"]) or 0)
             next_pass=int(task["research_pass"] or 0)+1
             current_count=int(await conn.fetchval(
@@ -2100,15 +2140,18 @@ async def process_research(x_bmc_admin_key:str|None=Header(default=None)):
               json.dumps({"search_query":query,"research_pass":next_pass,"results_returned":len(results),
                           "staged_candidates":total,"remaining_gap":remaining,"backlog_status":new_status,
                           "authoritative_source_key":authoritative_source["source_key"] if authoritative_source else None,
-                          "authoritative_source_name":authoritative_source["source_name"] if authoritative_source else None}))
+                          "authoritative_source_name":authoritative_source["source_name"] if authoritative_source else None,
+                          "auto_promoted":task_auto_promoted}))
             await event(conn,"research",task["research_id"],"search_completed",{
               "task_id":str(task["task_id"]),"query":query,"research_pass":next_pass,
               "results_returned":len(results),"staged_candidates":total,
               "remaining_gap":remaining,"backlog_status":new_status,
-              "authoritative_source_key":authoritative_source["source_key"] if authoritative_source else None
+              "authoritative_source_key":authoritative_source["source_key"] if authoritative_source else None,
+              "auto_promoted":task_auto_promoted
             },"research_agent")
             processed+=1
-    return {"ok":True,"enabled":True,"processed":processed,"staged":staged,"errors":errors}
+    return {"ok":True,"enabled":True,"processed":processed,"staged":staged,
+      "auto_promoted":auto_promoted,"errors":errors}
 
 @app.post("/api/process-public-opportunities")
 async def process_public_opportunities(x_bmc_admin_key:str|None=Header(default=None)):
@@ -2311,6 +2354,80 @@ async def admin_research_candidates(status:str="discovered",limit:int=100,x_bmc_
         })
     return {"ok":True,"count":len(records),"records":records}
 
+async def promote_research_candidate_to_prospect(conn,row,actor="admin",reason="manual"):
+    cid=str(row["candidate_id"])
+    candidate_name=(clean(row["candidate_name"]) or clean(row["source_title"]) or clean(row["source_domain"]) or "Research prospect")[:240]
+    source_url=clean(row["source_url"])
+    evidence=json_dict(row["evidence"])
+    public_email=clean(evidence.get("public_email"))
+    public_phone=clean(evidence.get("public_phone"))
+    if row["side"]=="vendor":
+        existing=await conn.fetchrow("""select vendor_id from vendors
+          where source_url=$1 or website=$1 order by updated_at desc limit 1""",source_url)
+        if existing:
+            entity_id=existing["vendor_id"]
+            await conn.execute("""update vendors set
+                public_email=case when coalesce(public_email,'')='' then nullif($2,'') else public_email end,
+                public_phone=case when coalesce(public_phone,'')='' then nullif($3,'') else public_phone end,
+                updated_at=now()
+              where vendor_id=$1""",entity_id,public_email,public_phone)
+        else:
+            entity_id="v_research_"+cid.replace("-","")[:16]
+            await conn.execute("""insert into vendors(
+                vendor_id,business_name,public_email,public_phone,website,source_url,status,notes)
+              values($1,$2,nullif($3,''),nullif($4,''),$5,$5,'prospect',$6)
+              on conflict(vendor_id) do nothing""",
+              entity_id,candidate_name,public_email,public_phone,source_url,
+              f"Unverified prospect promoted from autonomous research candidate {cid}. Verify identity, credentials, and public contact details before outreach or activation.")
+        if clean(row["service_key"]):
+            await conn.execute("""insert into vendor_services(vendor_id,service_key)
+              values($1,$2) on conflict do nothing""",entity_id,row["service_key"])
+        await conn.execute("""insert into vendor_markets(vendor_id,market)
+          values($1,$2) on conflict do nothing""",entity_id,row["market"])
+        promoted_entity={"entity_type":"vendor","entity_id":entity_id}
+        current_count=await conn.fetchval("""select count(distinct v.vendor_id)
+          from vendors v
+          join vendor_services vs on vs.vendor_id=v.vendor_id
+          join vendor_markets vm on vm.vendor_id=v.vendor_id
+          where vs.service_key=$1 and vm.market=$2 and v.status<>'suppressed'""",
+          row["service_key"],row["market"])
+    else:
+        existing=await conn.fetchrow("""select buyer_id,likely_services from buyers
+          where source_url=$1 or website=$1 order by updated_at desc limit 1""",source_url)
+        if existing:
+            entity_id=existing["buyer_id"]
+            services=[x for x in clean(existing["likely_services"]).split("|") if x]
+            if clean(row["service_key"]) and row["service_key"] not in services:
+                services.append(row["service_key"])
+            await conn.execute("""update buyers set likely_services=$2,
+                public_email=case when coalesce(public_email,'')='' then nullif($3,'') else public_email end,
+                public_phone=case when coalesce(public_phone,'')='' then nullif($4,'') else public_phone end,
+                updated_at=now()
+              where buyer_id=$1""",entity_id,"|".join(services),public_email,public_phone)
+        else:
+            entity_id="b_research_"+cid.replace("-","")[:16]
+            await conn.execute("""insert into buyers(
+                buyer_id,business_name,market,buyer_type,public_email,public_phone,website,source_url,likely_services,
+                priority,campaign,status,notes)
+              values($1,$2,$3,'research',nullif($4,''),nullif($5,''),$6,$6,$7,'research','autonomous_research','prospect',$8)
+              on conflict(buyer_id) do nothing""",
+              entity_id,candidate_name,row["market"],public_email,public_phone,source_url,clean(row["service_key"]),
+              f"Unverified buyer prospect promoted from autonomous research candidate {cid}. Verify organization and public contact path before outreach.")
+        promoted_entity={"entity_type":"buyer","entity_id":entity_id}
+        current_count=await conn.fetchval("""select count(*) from buyers
+          where market=$2 and $1=any(string_to_array(coalesce(likely_services,''),'|'))
+            and status<>'suppressed'""",row["service_key"],row["market"])
+    if row["research_id"]:
+        await conn.execute("""update research_backlog
+          set current_count=$2,target_gap=greatest(0,goal-$2),updated_at=now()
+          where research_id=$1""",row["research_id"],int(current_count or 0))
+    await conn.execute("""update research_candidates set status='promoted',
+        evidence=coalesce(evidence,'{}'::jsonb) || $2::jsonb,updated_at=now()
+      where candidate_id=$1::uuid""",cid,json.dumps({"promotion_reason":reason,"promoted_entity":promoted_entity}))
+    await event(conn,"research_candidate",cid,"status_changed",
+      {"status":"promoted","promoted_entity":promoted_entity,"reason":reason},actor)
+    return promoted_entity
+
 @app.post("/api/admin/research-candidate-status")
 async def admin_research_candidate_status(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)
@@ -2326,78 +2443,12 @@ async def admin_research_candidate_status(request:Request,x_bmc_admin_key:str|No
         if not row:
             raise HTTPException(404,"Research candidate not found")
         if status=="promoted":
-            candidate_name=(clean(row["candidate_name"]) or clean(row["source_title"]) or clean(row["source_domain"]) or "Research prospect")[:240]
-            source_url=clean(row["source_url"])
-            if row["side"]=="vendor":
-                existing=await conn.fetchrow("""select vendor_id from vendors
-                  where source_url=$1 or website=$1 order by updated_at desc limit 1""",source_url)
-                evidence=json_dict(row["evidence"])
-                public_email=clean(evidence.get("public_email"))
-                public_phone=clean(evidence.get("public_phone"))
-                if existing:
-                    entity_id=existing["vendor_id"]
-                    await conn.execute("""update vendors set
-                        public_email=case when coalesce(public_email,'')='' then nullif($2,'') else public_email end,
-                        public_phone=case when coalesce(public_phone,'')='' then nullif($3,'') else public_phone end,
-                        updated_at=now()
-                      where vendor_id=$1""",entity_id,public_email,public_phone)
-                else:
-                    entity_id="v_research_"+cid.replace("-","")[:16]
-                    await conn.execute("""insert into vendors(
-                        vendor_id,business_name,public_email,public_phone,website,source_url,status,notes)
-                      values($1,$2,nullif($3,''),nullif($4,''),$5,$5,'prospect',$6)
-                      on conflict(vendor_id) do nothing""",
-                      entity_id,candidate_name,public_email,public_phone,source_url,
-                      f"Unverified prospect promoted from autonomous research candidate {cid}. Verify identity, credentials, and public contact details before outreach or activation.")
-                if clean(row["service_key"]):
-                    await conn.execute("""insert into vendor_services(vendor_id,service_key)
-                      values($1,$2) on conflict do nothing""",entity_id,row["service_key"])
-                await conn.execute("""insert into vendor_markets(vendor_id,market)
-                  values($1,$2) on conflict do nothing""",entity_id,row["market"])
-                promoted_entity={"entity_type":"vendor","entity_id":entity_id}
-                current_count=await conn.fetchval("""select count(distinct v.vendor_id)
-                  from vendors v
-                  join vendor_services vs on vs.vendor_id=v.vendor_id
-                  join vendor_markets vm on vm.vendor_id=v.vendor_id
-                  where vs.service_key=$1 and vm.market=$2 and v.status<>'suppressed'""",
-                  row["service_key"],row["market"])
-            else:
-                existing=await conn.fetchrow("""select buyer_id,likely_services from buyers
-                  where source_url=$1 or website=$1 order by updated_at desc limit 1""",source_url)
-                evidence=json_dict(row["evidence"])
-                public_email=clean(evidence.get("public_email"))
-                public_phone=clean(evidence.get("public_phone"))
-                if existing:
-                    entity_id=existing["buyer_id"]
-                    services=[x for x in clean(existing["likely_services"]).split("|") if x]
-                    if clean(row["service_key"]) and row["service_key"] not in services:
-                        services.append(row["service_key"])
-                    await conn.execute("""update buyers set likely_services=$2,
-                        public_email=case when coalesce(public_email,'')='' then nullif($3,'') else public_email end,
-                        public_phone=case when coalesce(public_phone,'')='' then nullif($4,'') else public_phone end,
-                        updated_at=now()
-                      where buyer_id=$1""",entity_id,"|".join(services),public_email,public_phone)
-                else:
-                    entity_id="b_research_"+cid.replace("-","")[:16]
-                    await conn.execute("""insert into buyers(
-                        buyer_id,business_name,market,buyer_type,public_email,public_phone,website,source_url,likely_services,
-                        priority,campaign,status,notes)
-                      values($1,$2,$3,'research',nullif($4,''),nullif($5,''),$6,$6,$7,'research','autonomous_research','prospect',$8)
-                      on conflict(buyer_id) do nothing""",
-                      entity_id,candidate_name,row["market"],public_email,public_phone,source_url,clean(row["service_key"]),
-                      f"Unverified buyer prospect promoted from autonomous research candidate {cid}. Verify organization and public contact path before outreach.")
-                promoted_entity={"entity_type":"buyer","entity_id":entity_id}
-                current_count=await conn.fetchval("""select count(*) from buyers
-                  where market=$2 and $1=any(string_to_array(coalesce(likely_services,''),'|'))
-                    and status<>'suppressed'""",row["service_key"],row["market"])
-            if row["research_id"]:
-                await conn.execute("""update research_backlog
-                  set current_count=$2,target_gap=greatest(0,goal-$2),updated_at=now()
-                  where research_id=$1""",row["research_id"],int(current_count or 0))
-        await conn.execute("""update research_candidates set status=$2,updated_at=now()
-          where candidate_id=$1::uuid""",cid,status)
-        await event(conn,"research_candidate",cid,"status_changed",
-          {"status":status,"promoted_entity":promoted_entity},"admin")
+            promoted_entity=await promote_research_candidate_to_prospect(conn,row,"admin","manual")
+        else:
+            await conn.execute("""update research_candidates set status=$2,updated_at=now()
+              where candidate_id=$1::uuid""",cid,status)
+            await event(conn,"research_candidate",cid,"status_changed",
+              {"status":status,"promoted_entity":None},"admin")
     return {"ok":True,"candidate_id":cid,"status":status,"promoted_entity":promoted_entity}
 
 LAUNCH_CELL_MARKETS=("Prescott","Prescott Valley")
