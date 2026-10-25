@@ -28,6 +28,8 @@ while true; do
       -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
     curl -fsS -X POST http://ops_api:8000/api/process-buyer-outreach \
       -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
+    curl -fsS -X POST http://ops_api:8000/api/process-growth-outreach \
+      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
   fi
 
   i=$((i+1))
