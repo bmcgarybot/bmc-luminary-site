@@ -1,11 +1,355 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BMC Arizona Service Directory</title><meta name="description" content="Browse BMC Luminary Ventures' managed Arizona service businesses and request help through one shared operating system."><link rel="stylesheet" href="../assets/core.css"></head><body>
-<nav class="nav"><div class="wrap nav-in"><a class="brand" href="../">BMC Service Portfolio</a><div class="nav-links"><a href="../request/">One-request concierge</a><a href="../vendor-partner/">Provider network</a></div></div></nav>
-<header class="hero"><div class="wrap"><div class="eyebrow">48 managed service businesses</div><h1>Browse the portfolio or let BMC route the request for you.</h1><p>Each front uses the same underlying intake, provider, follow-up, and operations system. Newer services remain in validation mode until provider coverage and market-specific content are strong enough for full search indexing.</p><div class="actions"><a class="btn btn-primary" href="../request/">Tell BMC what you need</a></div></div></header>
-<section class="section"><div class="wrap"><div class="field" style="max-width:520px"><label>Filter services</label><input id="filter" placeholder="tree, restaurant, towing, cleaning, pet, HVAC..."></div><div id="services" class="grid"></div></div></section>
-<footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>Arizona managed-service portfolio</span></div></footer>
-<script src="../assets/core.js"></script><script>
-let all=[];const box=document.getElementById('services'),input=document.getElementById('filter');
-function render(){const q=input.value.toLowerCase().trim();box.innerHTML='';all.filter(s=>!q||[s.display_name,s.category,s.primary_offer].join(' ').toLowerCase().includes(q)).forEach(s=>{const a=document.createElement('a');a.className='card';a.style.textDecoration='none';a.href='../../'+s.live_front.replace(/^\/portfolio\//,'');a.innerHTML='<h3>'+s.display_name+'</h3><p>'+s.primary_offer+'</p><p class="muted" style="margin-top:8px">'+s.category+' · '+s.monetization+'</p>';box.appendChild(a)});}
-fetch('../data/services.json').then(r=>r.json()).then(d=>{all=d.services.sort((a,b)=>a.display_name.localeCompare(b.display_name));render()});input.addEventListener('input',render);
-</script></body></html>
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BMC Family of Service Businesses | Find the Right Arizona Service</title>
+<meta name="description" content="Explore the BMC Service Network family of specialized Arizona service businesses across property, facilities, restaurants, vehicles, pets, and business services.">
+<link rel="stylesheet" href="../assets/core.css">
+</head><body>
+<nav class="nav"><div class="wrap nav-in"><a class="brand" href="../">BMC Service Network</a><div class="nav-links"><a href="../">Home</a><a href="../request/">Request service</a><a href="./">Our businesses</a><a href="../vendor-partner/">For providers</a></div></div></nav>
+
+<header class="hero"><div class="wrap">
+<div class="eyebrow">The BMC family</div>
+<h1>Find the specialized business that fits what you need.</h1>
+<p>BMC Service Network is the umbrella. Under it are focused service ventures built around specific jobs, industries, and customer needs. Search by what is broken, dirty, overgrown, overdue, or simply needs to get done.</p>
+<div class="actions"><a class="btn btn-primary" href="#find">Find a service</a><a class="btn btn-secondary" href="../request/">Not sure? Tell BMC the problem</a></div>
+</div></header>
+
+<section class="section" id="find"><div class="wrap">
+<div class="finder-panel">
+  <div>
+    <span class="kicker">Find your niche</span>
+    <h2>What do you need help with?</h2>
+    <p class="section-lead">Try “ice machine,” “tree removal,” “dog walking,” “parking lot,” “church cleaning,” “windshield,” or any plain-English description.</p>
+  </div>
+  <div class="field finder-field"><label for="venture-search">Search all 48 BMC businesses</label><input id="venture-search" autocomplete="off" placeholder="Start typing what you need…"></div>
+  <div class="family-jumps">
+    <a href="#family-0">Home, Property &amp; Land</a><a href="#family-1">Commercial &amp; Facility Services</a><a href="#family-2">Restaurant &amp; Hospitality</a><a href="#family-3">Vehicle &amp; Mobile Services</a><a href="#family-4">Pet Services</a><a href="#family-5">Business Growth &amp; Procurement</a><a href="#family-6">Specialty &amp; Seasonal</a>
+  </div>
+  <p id="search-count" class="search-count">48 businesses shown</p>
+</div>
+
+<div id="venture-families">
+<section class="venture-family" data-family="Home, Property &amp; Land">
+  <div class="family-head">
+    <div><span class="kicker">Property</span><h2>Home, Property &amp; Land</h2><p>Property work, cleanup, outdoor services, rentals, rural needs, and home-service specialties.</p></div>
+    <span class="family-count">10 ventures</span>
+  </div>
+  <div class="venture-grid">
+    <a class="venture-card" data-venture data-search="epoxy &amp; concrete floor service property / commercial coatings, concrete repair and polishing home, property &amp; land" href="../epoxy-concrete-flooring/">
+      <div class="venture-name">Epoxy &amp; Concrete Floor Service</div>
+      <div class="venture-offer">Coatings, concrete repair and polishing</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="garage door repair &amp; service property services repair, opener, spring and overhead door home, property &amp; land" href="../garage-door-service/">
+      <div class="venture-name">Garage Door Repair &amp; Service</div>
+      <div class="venture-offer">Repair, opener, spring and overhead door</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="hvac &amp; cooling home / commercial services repair / maintenance / replacement home, property &amp; land" href="../hvac-heat/">
+      <div class="venture-name">HVAC &amp; Cooling</div>
+      <div class="venture-offer">Repair / maintenance / replacement</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="junk removal &amp; hauling property / hauling cleanouts and hauling home, property &amp; land" href="../junk-hauling/">
+      <div class="venture-name">Junk Removal &amp; Hauling</div>
+      <div class="venture-offer">Cleanouts and hauling</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="landscaping &amp; property cleanup property / land recurring and one-time landscape home, property &amp; land" href="../landscaping/">
+      <div class="venture-name">Landscaping &amp; Property Cleanup</div>
+      <div class="venture-offer">Recurring and one-time landscape</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="move-out &amp; turnover cleaning property services apartment, rental, estate and str turns home, property &amp; land" href="../moveout-turnover-cleaning/">
+      <div class="venture-name">Move-Out &amp; Turnover Cleaning</div>
+      <div class="venture-offer">Apartment, rental, estate and STR turns</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="pool &amp; desert property property / desert pool / irrigation / exterior home, property &amp; land" href="../pool-desert-property/">
+      <div class="venture-name">Pool &amp; Desert Property</div>
+      <div class="venture-offer">Pool / irrigation / exterior</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="septic / earthwork / water rural property septic, grading, water, wells home, property &amp; land" href="../septic-earthwork-water/">
+      <div class="venture-name">Septic / Earthwork / Water</div>
+      <div class="venture-offer">Septic, grading, water, wells</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="str &amp; rental property care property management turnovers and vendor coordination home, property &amp; land" href="../str-property-care/">
+      <div class="venture-name">STR &amp; Rental Property Care</div>
+      <div class="venture-offer">Turnovers and vendor coordination</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="tree &amp; defensible space property / land tree, hazard, fuel reduction home, property &amp; land" href="../tree-service/">
+      <div class="venture-name">Tree &amp; Defensible Space</div>
+      <div class="venture-offer">Tree, hazard, fuel reduction</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+  </div>
+</section><section class="venture-family" data-family="Commercial &amp; Facility Services">
+  <div class="family-head">
+    <div><span class="kicker">Facilities</span><h2>Commercial &amp; Facility Services</h2><p>Recurring maintenance, cleaning, compliance, exterior care, and institutional facility support.</p></div>
+    <span class="family-count">13 ventures</span>
+  </div>
+  <div class="venture-grid">
+    <a class="venture-card" data-venture data-search="backflow &amp; commercial plumbing compliance facility compliance backflow, plumbing and compliance service commercial &amp; facility services" href="../backflow-plumbing-compliance/">
+      <div class="venture-name">Backflow &amp; Commercial Plumbing Compliance</div>
+      <div class="venture-offer">Backflow, plumbing and compliance service</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="commercial cleaning match facility services recurring/project cleaning commercial &amp; facility services" href="../commercial-cleaning/">
+      <div class="venture-name">Commercial Cleaning</div>
+      <div class="venture-offer">Recurring/project cleaning</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="commercial duct &amp; dryer vent service facility maintenance duct, dryer and exhaust vent service commercial &amp; facility services" href="../duct-vent-cleaning/">
+      <div class="venture-name">Commercial Duct &amp; Dryer Vent Service</div>
+      <div class="venture-offer">Duct, dryer and exhaust vent service</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="commercial floor &amp; carpet care facility services carpet, tile, strip/wax and floor care commercial &amp; facility services" href="../floor-carpet-care/">
+      <div class="venture-name">Commercial Floor &amp; Carpet Care</div>
+      <div class="venture-offer">Carpet, tile, strip/wax and floor care</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="commercial locksmith &amp; access control security / access lock, rekey, hardware and access-control requests commercial &amp; facility services" href="../locksmith-access-control/">
+      <div class="venture-name">Commercial Locksmith &amp; Access Control</div>
+      <div class="venture-offer">Lock, rekey, hardware and access-control requests</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="commercial pest control facility services commercial recurring pest prevention commercial &amp; facility services" href="../commercial-pest-control/">
+      <div class="venture-name">Commercial Pest Control</div>
+      <div class="venture-offer">Commercial recurring pest prevention</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="commercial pressure washing facility services exterior, sidewalks, dumpster pads commercial &amp; facility services" href="../pressure-washing/">
+      <div class="venture-name">Commercial Pressure Washing</div>
+      <div class="venture-offer">Exterior, sidewalks, dumpster pads</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="commercial sign &amp; lighting repair facility exterior sign, exterior and parking-lot lighting commercial &amp; facility services" href="../sign-lighting-repair/">
+      <div class="venture-name">Commercial Sign &amp; Lighting Repair</div>
+      <div class="venture-offer">Sign, exterior and parking-lot lighting</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="commercial window cleaning facility services commercial windows and recurring routes commercial &amp; facility services" href="../commercial-window-cleaning/">
+      <div class="venture-name">Commercial Window Cleaning</div>
+      <div class="venture-offer">Commercial windows and recurring routes</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="fire extinguisher &amp; suppression service compliance coordination inspection and qualified service coordination commercial &amp; facility services" href="../fire-safety-service/">
+      <div class="venture-name">Fire Extinguisher &amp; Suppression Service</div>
+      <div class="venture-offer">Inspection and qualified service coordination</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="institutional facility maintenance concierge institutional / facility multi-service facility cleaning and maintenance coordination commercial &amp; facility services" href="../facility-maintenance/">
+      <div class="venture-name">Institutional Facility Maintenance Concierge</div>
+      <div class="venture-offer">Multi-service facility cleaning and maintenance coordination</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="office coffee &amp; water service b2b recurring supply coffee, water and break-room services commercial &amp; facility services" href="../office-coffee-water/">
+      <div class="venture-name">Office Coffee &amp; Water Service</div>
+      <div class="venture-offer">Coffee, water and break-room services</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="parking lot sweeping, striping &amp; maintenance commercial property sweeping, striping and lot maintenance commercial &amp; facility services" href="../parking-lot-services/">
+      <div class="venture-name">Parking Lot Sweeping, Striping &amp; Maintenance</div>
+      <div class="venture-offer">Sweeping, striping and lot maintenance</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+  </div>
+</section><section class="venture-family" data-family="Restaurant &amp; Hospitality">
+  <div class="family-head">
+    <div><span class="kicker">Food Service</span><h2>Restaurant &amp; Hospitality</h2><p>Repair, cleaning, compliance, equipment, sourcing, and maintenance built around food-service operations.</p></div>
+    <span class="family-count">9 ventures</span>
+  </div>
+  <div class="venture-grid">
+    <a class="venture-card" data-venture data-search="commercial equipment quote concierge procurement multi-vendor equipment sourcing restaurant &amp; hospitality" href="../equipment-quote-concierge/">
+      <div class="venture-name">Commercial Equipment Quote Concierge</div>
+      <div class="venture-offer">Multi-vendor equipment sourcing</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="commercial ice machine service restaurant / hospitality repair, sanitation, maintenance, replacement restaurant &amp; hospitality" href="../ice-machine-service/">
+      <div class="venture-name">Commercial Ice Machine Service</div>
+      <div class="venture-offer">Repair, sanitation, maintenance, replacement</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="commercial linen &amp; laundry sourcing hospitality / restaurant linen, uniform, towel and mat sourcing restaurant &amp; hospitality" href="../linen-laundry-sourcing/">
+      <div class="venture-name">Commercial Linen &amp; Laundry Sourcing</div>
+      <div class="venture-offer">Linen, uniform, towel and mat sourcing</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="grease trap &amp; drain service restaurant / facility grease trap, drains, preventive route restaurant &amp; hospitality" href="../grease-drain-service/">
+      <div class="venture-name">Grease Trap &amp; Drain Service</div>
+      <div class="venture-offer">Grease trap, drains, preventive route</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="kitchen hood &amp; exhaust cleaning restaurant / compliance hood, duct, fan and exhaust cleaning restaurant &amp; hospitality" href="../hood-exhaust-cleaning/">
+      <div class="venture-name">Kitchen Hood &amp; Exhaust Cleaning</div>
+      <div class="venture-offer">Hood, duct, fan and exhaust cleaning</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="restaurant equipment repair restaurant / hospitality cooking, dish, prep and holding equipment repair restaurant &amp; hospitality" href="../restaurant-equipment-repair/">
+      <div class="venture-name">Restaurant Equipment Repair</div>
+      <div class="venture-offer">Cooking, dish, prep and holding equipment repair</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="restaurant maintenance concierge restaurant / operations maintenance calendar and vendor coordination restaurant &amp; hospitality" href="../restaurant-maintenance-concierge/">
+      <div class="venture-name">Restaurant Maintenance Concierge</div>
+      <div class="venture-offer">Maintenance calendar and vendor coordination</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="restaurant repair match restaurant / hospitality urgent repair matching restaurant &amp; hospitality" href="../restaurant-repair/">
+      <div class="venture-name">Restaurant Repair</div>
+      <div class="venture-offer">Urgent repair matching</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="used restaurant equipment brokerage restaurant / equipment buy, sell, source and liquidation restaurant &amp; hospitality" href="../used-restaurant-equipment/">
+      <div class="venture-name">Used Restaurant Equipment Brokerage</div>
+      <div class="venture-offer">Buy, sell, source and liquidation</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+  </div>
+</section><section class="venture-family" data-family="Vehicle &amp; Mobile Services">
+  <div class="family-head">
+    <div><span class="kicker">Vehicles</span><h2>Vehicle &amp; Mobile Services</h2><p>Roadside, repair, glass, detailing, tires, batteries, and fleet services that come to the customer.</p></div>
+    <span class="family-count">6 ventures</span>
+  </div>
+  <div class="venture-grid">
+    <a class="venture-card" data-venture data-search="mobile detailing &amp; fleet appearance vehicle services detailing, ceramic and fleet appearance vehicle &amp; mobile services" href="../mobile-detailing/">
+      <div class="venture-name">Mobile Detailing &amp; Fleet Appearance</div>
+      <div class="venture-offer">Detailing, ceramic and fleet appearance</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="mobile fleet washing fleet services recurring fleet exterior cleaning vehicle &amp; mobile services" href="../fleet-washing/">
+      <div class="venture-name">Mobile Fleet Washing</div>
+      <div class="venture-offer">Recurring fleet exterior cleaning</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="mobile tire &amp; battery service vehicle services mobile tire, battery and fleet service vehicle &amp; mobile services" href="../mobile-tire-battery/">
+      <div class="venture-name">Mobile Tire &amp; Battery Service</div>
+      <div class="venture-offer">Mobile tire, battery and fleet service</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="towing &amp; roadside vehicle tow / roadside matching vehicle &amp; mobile services" href="../towing-roadside/">
+      <div class="venture-name">Towing &amp; Roadside</div>
+      <div class="venture-offer">Tow / roadside matching</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="vehicle service match vehicle mobile mechanic, tire, fleet, detail vehicle &amp; mobile services" href="../vehicle-services/">
+      <div class="venture-name">Vehicle Service</div>
+      <div class="venture-offer">Mobile mechanic, tire, fleet, detail</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="windshield &amp; mobile auto glass vehicle services windshield, chip and glass service vehicle &amp; mobile services" href="../windshield-auto-glass/">
+      <div class="venture-name">Windshield &amp; Mobile Auto Glass</div>
+      <div class="venture-offer">Windshield, chip and glass service</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+  </div>
+</section><section class="venture-family" data-family="Pet Services">
+  <div class="family-head">
+    <div><span class="kicker">Pets</span><h2>Pet Services</h2><p>Recurring and on-demand pet care, cleanup, walking, sitting, and mobile grooming.</p></div>
+    <span class="family-count">3 ventures</span>
+  </div>
+  <div class="venture-grid">
+    <a class="venture-card" data-venture data-search="mobile pet grooming match pet services mobile grooming and recurring service pet services" href="../mobile-pet-grooming/">
+      <div class="venture-name">Mobile Pet Grooming</div>
+      <div class="venture-offer">Mobile grooming and recurring service</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="pet sitting &amp; dog walking match pet services walking, drop-ins and recurring care pet services" href="../pet-sitting-dog-walking/">
+      <div class="venture-name">Pet Sitting &amp; Dog Walking</div>
+      <div class="venture-offer">Walking, drop-ins and recurring care</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="pet waste cleanup pet / route service recurring pet-waste service pet services" href="../pet-waste/">
+      <div class="venture-name">Pet Waste Cleanup</div>
+      <div class="venture-offer">Recurring pet-waste service</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+  </div>
+</section><section class="venture-family" data-family="Business Growth &amp; Procurement">
+  <div class="family-head">
+    <div><span class="kicker">Business</span><h2>Business Growth &amp; Procurement</h2><p>BMC-delivered research, sourcing, cost-reduction, and growth products for businesses.</p></div>
+    <span class="family-count">6 ventures</span>
+  </div>
+  <div class="venture-grid">
+    <a class="venture-card" data-venture data-search="b2b growth packs business growth 100-prospect research package business growth &amp; procurement" href="../growth-packs/">
+      <div class="venture-name">B2B Growth Packs</div>
+      <div class="venture-offer">100-prospect research package</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="b2b quote sourcing concierge procurement managed multi-vendor quote sourcing business growth &amp; procurement" href="../quote-sourcing-concierge/">
+      <div class="venture-name">B2B Quote Sourcing Concierge</div>
+      <div class="venture-offer">Managed multi-vendor quote sourcing</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="commercial waste &amp; recycling audit b2b cost reduction waste service audit and vendor sourcing business growth &amp; procurement" href="../waste-recycling-audit/">
+      <div class="venture-name">Commercial Waste &amp; Recycling Audit</div>
+      <div class="venture-offer">Waste service audit and vendor sourcing</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="local competitor intelligence pack business growth competitor and market intelligence report business growth &amp; procurement" href="../competitor-intelligence/">
+      <div class="venture-name">Local Competitor Intelligence Pack</div>
+      <div class="venture-offer">Competitor and market intelligence report</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="local market expansion pack business growth market feasibility and target research business growth &amp; procurement" href="../market-expansion-pack/">
+      <div class="venture-name">Local Market Expansion Pack</div>
+      <div class="venture-offer">Market feasibility and target research</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+<a class="venture-card" data-venture data-search="vendor savings audit b2b cost reduction vendor rebid and consolidation audit business growth &amp; procurement" href="../vendor-savings-audit/">
+      <div class="venture-name">Vendor Savings Audit</div>
+      <div class="venture-offer">Vendor rebid and consolidation audit</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+  </div>
+</section><section class="venture-family" data-family="Specialty &amp; Seasonal">
+  <div class="family-head">
+    <div><span class="kicker">Seasonal</span><h2>Specialty &amp; Seasonal</h2><p>Seasonal and environment-specific services that matter in particular Arizona markets.</p></div>
+    <span class="family-count">1 ventures</span>
+  </div>
+  <div class="venture-grid">
+    <a class="venture-card" data-venture data-search="private snow service seasonal property private snow removal specialty &amp; seasonal" href="../snow-service/">
+      <div class="venture-name">Private Snow Service</div>
+      <div class="venture-offer">Private snow removal</div>
+      <div class="venture-link">Open this business <span aria-hidden="true">→</span></div>
+    </a>
+  </div>
+</section>
+</div>
+<div id="no-results" class="empty-state" hidden><h2>We did not find an exact match.</h2><p>That does not mean BMC cannot help. Send us the problem in your own words and we will route it.</p><a class="btn btn-primary" href="../request/">Tell BMC what you need</a></div>
+</div></section>
+
+<footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>One network · 48 specialized ventures</span></div></footer>
+<script src="../assets/core.js?v=site-family-1"></script>
+<script>
+const search=document.getElementById('venture-search');
+const cards=[...document.querySelectorAll('[data-venture]')];
+const families=[...document.querySelectorAll('.venture-family')];
+const count=document.getElementById('search-count');
+const empty=document.getElementById('no-results');
+
+families.forEach((f,i)=>f.id='family-'+i);
+
+function filterVentures(){
+  const q=search.value.trim().toLowerCase();
+  let visible=0;
+  cards.forEach(card=>{
+    const show=!q||card.dataset.search.includes(q);
+    card.hidden=!show;
+    if(show) visible++;
+  });
+  families.forEach(f=>{
+    const any=[...f.querySelectorAll('[data-venture]')].some(c=>!c.hidden);
+    f.hidden=!any;
+  });
+  count.textContent=visible+' business'+(visible===1?'':'es')+' shown';
+  empty.hidden=visible!==0;
+}
+search.addEventListener('input',filterVentures);
+const q=new URLSearchParams(location.search).get('q');
+if(q){search.value=q;filterVentures();setTimeout(()=>search.focus(),50);}
+</script>
+</body></html>
