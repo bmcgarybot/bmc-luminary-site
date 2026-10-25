@@ -12,7 +12,9 @@ env_value(){
   grep -m1 "^$1=" "$ENV_FILE" 2>/dev/null | cut -d= -f2-
 }
 
-docker compose --env-file "$ENV_FILE" up -d postgres ops_api n8n webhook_proxy scheduler searxng
+docker compose --env-file "$ENV_FILE" up -d postgres
+bash ./migrate.sh "$ENV_FILE"
+docker compose --env-file "$ENV_FILE" up -d ops_api n8n webhook_proxy scheduler searxng
 
 if [ "$(env_value LOCAL_AI_ENABLED)" = "true" ]; then
   echo "LOCAL_AI_ENABLED=true; starting Ollama..."
