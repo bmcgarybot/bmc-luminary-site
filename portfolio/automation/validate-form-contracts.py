@@ -32,6 +32,10 @@ def main()->int:
                 failures.append(f"{path.relative_to(ROOT)} [facility_maintenance] has no need_* service choices")
             if form_type not in ("vendor_response","job_update","vendor_pilot_activation","vendor_partner") and "scope" not in names:
                 failures.append(f"{path.relative_to(ROOT)} [{form_type}] missing scope/details field")
+    core=(ROOT / "assets/core.js").read_text(errors="ignore")
+    if "mailto:" in core or "location.href=\"mailto:" in core:
+        failures.append("assets/core.js: public form failures must not redirect customers into mailto")
+
     if failures:
         print("Form contract validation failed:")
         for item in failures:
