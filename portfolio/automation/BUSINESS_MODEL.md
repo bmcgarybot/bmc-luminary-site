@@ -199,20 +199,35 @@ Portfolio operator:
 
 ## Public-site strategy
 
+The root BMC Service Network site is a **fallback/rescue hub**, not the primary destination for most acquisition.
+
+Campaign rule:
+- buyer outreach and ads deep-link to the exact service/problem landing page promised in the message;
+- provider recruitment deep-links to the provider offer/activation flow;
+- approved providers use Provider Login / Provider Dashboard;
+- research-product outreach deep-links to the exact paid offer;
+- the root site and intelligent search catch broad, organic, referral, or unclear-intent traffic.
+
 The customer should not be taught BMC's internal architecture.
+
+Public intelligent search uses two layers:
+1. fast browser-side aliases/synonyms so common searches work even if backend AI is unavailable;
+2. the VPS service-search API, which uses deterministic rules first and local AI second.
+
+A search must show the user the likely service choices before asking for full contact details.
 
 Customer pages should answer:
 - Can you help with my problem?
+- What does BMC think I need?
 - Do you serve my area?
 - What happens after I submit?
 - What do I do next?
 
-Provider pages should answer:
-- What kinds of work can I receive?
-- Where?
-- What will it cost?
-- Can I pass?
-- How do I get paid / contact the customer?
+Provider experience is a separate product:
+- prospects see the provider acquisition offer;
+- approved providers receive magic-link access to a self-service dashboard;
+- the dashboard shows new opportunities, accept/pass, active jobs, outcome updates, and matching settings;
+- routine provider actions should not require Brett.
 
 These are two ends of the same machine and should feel like separate products while sharing one backend.
 
