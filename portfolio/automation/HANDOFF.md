@@ -2872,3 +2872,46 @@ Before asking Brett to repeat infrastructure setup, first check:
 4. existing DNS/provider ownership.
 
 Do not infer “not configured” from one UI screen when the handoff already records a verified setup.
+
+
+## 31. STATIC HOSTING CORRECTION — CLOUDFLARE PAGES IS PRODUCTION — 2026-10-25
+
+Live Cloudflare DNS inspection finally confirmed the original static hosting architecture:
+
+- production apex `bmcservicenetwork.com` is a proxied CNAME to:
+  - `bmc-service-network.pages.dev`
+- `hooks.bmcservicenetwork.com` remains the existing Cloudflare Tunnel;
+- Namecheap Private Email MX records remain present;
+- SPF remains present;
+- DKIM remains present.
+
+Therefore the production BMC website is already on **Cloudflare Pages**.
+
+The GitHub Pages custom-domain work performed in this thread was unnecessary and must not replace the Cloudflare Pages apex.
+
+### Correct www repair
+
+Do not manually change the existing apex CNAME.
+
+For `www.bmcservicenetwork.com`:
+1. open Cloudflare -> Workers & Pages;
+2. open the existing `bmc-service-network` Pages project;
+3. open Custom domains;
+4. add `www.bmcservicenetwork.com` through the Pages custom-domain flow;
+5. only after it is active, create/verify a 301 redirect from `www` to `https://bmcservicenetwork.com` if desired.
+
+Cloudflare documentation warns that manually creating a Pages CNAME without associating the hostname in the Pages project can produce a 522.
+
+### GitHub Pages
+
+`bmc-luminary-site` was temporarily switched to GitHub Actions Pages and given the BMC custom domain during troubleshooting. That is not the intended production architecture.
+
+Do not point Cloudflare DNS at GitHub Pages.
+
+After Cloudflare Pages custom-domain state is reconfirmed, remove the BMC custom-domain claim from GitHub Pages so only Cloudflare Pages owns the production hostname.
+
+### Email improvement still outstanding
+
+Cloudflare currently recommends adding DMARC for `@bmcservicenetwork.com`.
+
+Do this only after the website hostname repair, preserving the existing MX/SPF/DKIM records.
