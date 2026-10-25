@@ -277,11 +277,11 @@
     },
     "realtor_listing_prep": {
       "slug": "realtor-listing-prep",
-      "name": "Realtor Listing Prep",
-      "title": "Realtor Listing Prep Concierge | Prescott Area",
+      "name": "Get a Home Ready to Sell",
+      "title": "Get a Home Ready to Sell | Prescott Area",
       "desc": "Coordinate cleaning, staging, handyman work, hauling, and exterior prep before a property is listed.",
-      "headline": "Need the property market-ready without coordinating five different vendors?",
-      "sub": "Give us the punch list and target date. Cleaning, staging, repairs, hauling, and exterior prep can all start from one request.",
+      "headline": "Need the home ready for photos, showings, or listing day?",
+      "sub": "Tell us what still needs to be done and when the home needs to be ready.",
       "image": "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&w=1400&q=78",
       "alt": "Residential property prepared for listing presentation",
       "proof": [
@@ -306,11 +306,11 @@
     },
     "facility_maintenance": {
       "slug": "facility-maintenance",
-      "name": "Facility Maintenance Concierge",
-      "title": "Facility Maintenance Concierge | BMC Service Network",
+      "name": "Building Maintenance Help",
+      "title": "Building Maintenance Help | BMC Service Network",
       "desc": "Coordinate multi-service facility cleaning and maintenance needs through one BMC request.",
-      "headline": "One building problem should not become six vendor searches.",
-      "sub": "For schools, churches, theaters, offices, care facilities, gyms, daycare, and other properties that need recurring or project-based maintenance help.",
+      "headline": "Need help keeping a building maintained?",
+      "sub": "For churches, schools, offices, medical buildings, gyms, daycares, theaters, and other properties.",
       "image": "https://images.unsplash.com/photo-1505798577917-a65157d3320a?auto=format&fit=crop&w=1400&q=80",
       "alt": "Service professional working on a facility maintenance project",
       "proof": [
