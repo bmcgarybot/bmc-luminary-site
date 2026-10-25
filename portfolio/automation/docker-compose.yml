@@ -82,6 +82,8 @@ services:
       CMS_SOURCE_NATIVE_PAGE_SIZE: ${CMS_SOURCE_NATIVE_PAGE_SIZE:-100}
       CMS_HOSPITALS_URL: ${CMS_HOSPITALS_URL:-https://data.cms.gov/provider-data/api/1/datastore/query/xubh-q36u/0}
       CMS_NURSING_HOMES_URL: ${CMS_NURSING_HOMES_URL:-https://data.cms.gov/provider-data/api/1/datastore/query/4pq5-n9py/0}
+      CMS_HOME_HEALTH_URL: ${CMS_HOME_HEALTH_URL:-https://data.cms.gov/provider-data/api/1/datastore/query/6jpm-sxkc/0}
+      CMS_HOSPICE_URL: ${CMS_HOSPICE_URL:-https://data.cms.gov/provider-data/api/1/datastore/query/yc9t-dgbk/0}
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
     ports:
       - "127.0.0.1:8000:8000"
