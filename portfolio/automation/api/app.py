@@ -132,6 +132,41 @@ PUBLIC_OPPORTUNITY_SOURCES=(
      "query":'site:sam.gov/opportunities Arizona (janitorial OR cleaning OR landscaping OR locksmith OR HVAC OR plumbing OR facility OR parking OR pest OR electrical OR laundry)'}
 )
 
+LOCAL_SIGNAL_MARKETS=("Prescott","Prescott Valley","Chino Valley","Camp Verde","Cottonwood","Sedona","Flagstaff","Winslow","Kingman","Phoenix","Scottsdale","Tucson")
+LOCAL_SIGNAL_SOURCES=(
+    {"key":"nextdoor_public","name":"Publicly indexed Nextdoor","domain":"nextdoor.com"},
+    {"key":"facebook_public","name":"Publicly indexed Facebook","domain":"facebook.com"}
+)
+LOCAL_SIGNAL_SERVICE_TERMS='"plumber" OR "electrician" OR "locksmith" OR "HVAC" OR "heating" OR "air conditioning" OR "tree service" OR "landscaping" OR "junk removal" OR "handyman" OR "house cleaning" OR "garage door" OR "pest control" OR "towing"'
+LOCAL_SIGNAL_INTENT_TERMS='"looking for" OR "recommend" OR "recommendation" OR "need a" OR "need an" OR "anyone know" OR "seeking" OR "looking to hire"'
+
+def build_local_signal_query(market,domain):
+    return f'site:{domain} "{clean(market)}" Arizona ({LOCAL_SIGNAL_INTENT_TERMS}) ({LOCAL_SIGNAL_SERVICE_TERMS})'
+
+def classify_local_signal_service(text):
+    t=clean(text).lower()
+    intent=("looking for","recommend","recommendation","need a ","need an ","anyone know","seeking","looking to hire","who can")
+    if not any(x in t for x in intent):
+        return None
+    rules=(
+      (("locksmith","rekey","locked out","lock out","access control"),"locksmith_access"),
+      (("electrician","electrical","breaker","outlet","panel"),"electrical_service"),
+      (("plumber","plumbing","water leak","pipe leak","backflow"),"backflow_plumbing"),
+      (("hvac","air conditioning","a/c","ac repair","heating","furnace"),"hvac_heat"),
+      (("tree service","tree removal","tree trimming","arborist","brush clearing"),"tree_service"),
+      (("landscap","yard cleanup","yard work"),"landscaping"),
+      (("junk removal","haul away","hauling","dump run"),"junk_hauling"),
+      (("handyman","handy man","small repairs"),"handyman_repairs"),
+      (("house cleaning","home cleaning","cleaner","maid service"),"residential_cleaning"),
+      (("garage door","garage opener"),"garage_door"),
+      (("pest control","exterminator","termites","rodent"),"pest_control"),
+      (("tow truck","towing","roadside assistance"),"towing_roadside")
+    )
+    for needles,key in rules:
+        if any(n in t for n in needles):
+            return key
+    return None
+
 app=FastAPI(title="BMC Portfolio Ops API",version="0.1.0")
 app.add_middleware(CORSMiddleware,allow_origins=[
     "https://bmcservicenetwork.com","https://www.bmcservicenetwork.com"
@@ -1961,6 +1996,87 @@ async def process_public_opportunities(x_bmc_admin_key:str|None=Header(default=N
     return {"ok":True,"enabled":True,"sources_checked":sources_checked,
       "new_opportunities":new_opportunities,"errors":errors}
 
+@app.post("/api/process-local-demand-signals")
+async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    if not RESEARCH_SEARCH_ENABLED:
+        return {"ok":True,"enabled":False,"searches":0,"new_signals":0,"errors":[]}
+    searches=0
+    new_signals=0
+    errors=[]
+    async with app.state.pool.acquire() as conn:
+      for market in LOCAL_SIGNAL_MARKETS:
+        for source in LOCAL_SIGNAL_SOURCES:
+          query=build_local_signal_query(market,source["domain"])
+          try:
+              results=await search_research_web(query)
+              searches+=1
+          except Exception as exc:
+              errors.append({"market":market,"source":source["key"],"error":str(exc)[:300]})
+              continue
+          for result in results:
+              if not public_source_host_allowed(result["domain"],source["domain"]):
+                  continue
+              combined=f'{result["title"]} {result["snippet"]}'
+              service_key=classify_local_signal_service(combined)
+              if not service_key:
+                  continue
+              sid=await conn.fetchval("""insert into local_demand_signals(
+                  source_key,source_name,market,service_key,title,source_url,source_domain,snippet,search_query,status,evidence)
+                values($1,$2,$3,$4,$5,$6,$7,$8,$9,'discovered',$10::jsonb)
+                on conflict(source_key,market,source_url) do nothing
+                returning signal_id""",
+                source["key"],source["name"],market,service_key,result["title"],result["url"],
+                result["domain"],result["snippet"],query,
+                json.dumps({"search_engine":result["engine"],"search_score":result["score"],
+                            "public_index_only":True,"automatic_contact_allowed":False}))
+              if sid:
+                  new_signals+=1
+                  await event(conn,"local_demand_signal",sid,"discovered",{
+                    "source":source["key"],"market":market,"service_key":service_key,
+                    "source_url":result["url"],"automatic_contact_allowed":False
+                  },"research_agent")
+              else:
+                  await conn.execute("""update local_demand_signals
+                    set last_seen_at=now(),title=$4,snippet=$5,service_key=coalesce(service_key,$6),
+                        search_query=$7,updated_at=now()
+                    where source_key=$1 and market=$2 and source_url=$3""",
+                    source["key"],market,result["url"],result["title"],result["snippet"],service_key,query)
+    return {"ok":True,"enabled":True,"searches":searches,"new_signals":new_signals,"errors":errors}
+
+@app.get("/api/admin/local-demand-signals")
+async def admin_local_demand_signals(status:str="discovered",limit:int=100,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    safe_limit=max(1,min(250,limit))
+    async with app.state.pool.acquire() as conn:
+        rows=await conn.fetch("""select ds.*,s.display_name
+          from local_demand_signals ds left join services s on s.service_key=ds.service_key
+          where ($1='' or ds.status=$1)
+          order by ds.last_seen_at desc limit $2""",clean(status),safe_limit)
+    return {"ok":True,"count":len(rows),"records":[{
+      "signal_id":str(r["signal_id"]),"source_key":r["source_key"],"source_name":r["source_name"],
+      "market":r["market"],"service_key":r["service_key"],"service_name":r["display_name"],
+      "title":r["title"],"source_url":r["source_url"],"source_domain":r["source_domain"],
+      "snippet":r["snippet"],"status":r["status"],"first_seen_at":r["first_seen_at"],
+      "last_seen_at":r["last_seen_at"],"evidence":r["evidence"]
+    } for r in rows]}
+
+@app.post("/api/admin/local-demand-signal-status")
+async def admin_local_demand_signal_status(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    p=await request.json()
+    sid=clean(p.get("signal_id"))
+    status=clean(p.get("status")).lower()
+    if status not in ("discovered","reviewed","ignored","useful","expired"):
+        raise HTTPException(400,"Invalid local demand signal status")
+    async with app.state.pool.acquire() as conn:
+        row=await conn.fetchrow("""update local_demand_signals set status=$2,updated_at=now()
+          where signal_id=$1::uuid returning signal_id""",sid,status)
+        if not row:
+            raise HTTPException(404,"Local demand signal not found")
+        await event(conn,"local_demand_signal",sid,"status_changed",{"status":status},"admin")
+    return {"ok":True,"signal_id":sid,"status":status}
+
 @app.get("/api/admin/public-opportunities")
 async def admin_public_opportunities(status:str="discovered",limit:int=100,x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)
@@ -2256,6 +2372,11 @@ async def admin_daily_brief(x_bmc_admin_key:str|None=Header(default=None)):
           from public_opportunities po left join services s on s.service_key=po.service_key
           where po.status in ('discovered','actionable')
           order by case po.status when 'actionable' then 0 else 1 end,po.last_seen_at desc limit 10""")
+        local_signals=await conn.fetch("""select ds.signal_id,ds.source_name,ds.market,ds.title,ds.source_url,
+                 ds.status,ds.last_seen_at,s.display_name
+          from local_demand_signals ds left join services s on s.service_key=ds.service_key
+          where ds.status in ('discovered','useful')
+          order by case ds.status when 'useful' then 0 else 1 end,ds.last_seen_at desc limit 10""")
         human_tasks=await conn.fetch("""select task_id,task_type,priority,summary,due_at,created_at
           from tasks where owner='bmc_operator' and status in ('open','queued','assigned','in_progress')
           order by case priority when 'critical' then 0 when 'high' then 1 else 2 end,
@@ -2264,6 +2385,7 @@ async def admin_daily_brief(x_bmc_admin_key:str|None=Header(default=None)):
         pilot_review_count=await conn.fetchval("select count(*) from vendors where status='pilot_pending_review'")
         service_review_count=await conn.fetchval("select count(*) from exceptions where type='provider_service_change_review' and status='open'")
         opportunity_count=await conn.fetchval("select count(*) from public_opportunities where status in ('discovered','actionable')")
+        local_signal_count=await conn.fetchval("select count(*) from local_demand_signals where status in ('discovered','useful')")
         human_task_count=await conn.fetchval("""select count(*) from tasks where owner='bmc_operator'
           and status in ('open','queued','assigned','in_progress')""")
         research_candidate_count=await conn.fetchval("select count(*) from research_candidates where status='discovered'")
@@ -2277,6 +2399,7 @@ async def admin_daily_brief(x_bmc_admin_key:str|None=Header(default=None)):
         "service_change_reviews":int(service_review_count or 0),
         "human_operator_tasks":int(human_task_count or 0),
         "public_opportunities":int(opportunity_count or 0),
+        "local_demand_signals":int(local_signal_count or 0),
         "research_candidates_waiting":int(research_candidate_count or 0)
       },
       "exceptions":[dict(r) for r in exceptions],
@@ -2287,6 +2410,11 @@ async def admin_daily_brief(x_bmc_admin_key:str|None=Header(default=None)):
         "service_name":r["display_name"],"title":r["title"],"source_url":r["source_url"],
         "status":r["status"],"last_seen_at":r["last_seen_at"]
       } for r in opportunities],
+      "local_demand_signals":[{
+        "signal_id":str(r["signal_id"]),"source_name":r["source_name"],"market":r["market"],
+        "service_name":r["display_name"],"title":r["title"],"source_url":r["source_url"],
+        "status":r["status"],"last_seen_at":r["last_seen_at"]
+      } for r in local_signals],
       "operator_tasks":[dict(r) for r in human_tasks]
     }
 
