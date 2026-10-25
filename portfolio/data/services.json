@@ -173,6 +173,23 @@
       "fulfillment_mode": "provider_match"
     },
     {
+      "service_key": "auto_repair_shop",
+      "display_name": "Auto Repair Shop",
+      "category": "Vehicle services",
+      "primary_offer": "Brakes, check-engine lights, maintenance, diagnostics, suspension, exhaust, and general auto repair.",
+      "monetization": "lead / booked job",
+      "priority": "A",
+      "live_front": "/portfolio/auto-repair-shop/",
+      "notes": "Traditional shop-based auto repair; separate from mobile mechanic service",
+      "intake_status": "built",
+      "automation_status": "backend_ready_not_connected",
+      "seo_status": "index_candidate",
+      "vendor_goal": 12,
+      "buyer_goal": 8,
+      "launch_gate": "needs_live_webhook_and_coverage",
+      "fulfillment_mode": "provider_match"
+    },
+    {
       "service_key": "pet_waste",
       "display_name": "Pet Waste Cleanup",
       "category": "Pet / route service",
