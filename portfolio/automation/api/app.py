@@ -179,6 +179,31 @@ CMS_SOURCE_DATASETS=(
     }
 )
 
+def expected_source_native_keys():
+    keys=[ADHS_SOURCE_KEY]
+    if CMS_SOURCE_NATIVE_ENABLED:
+        keys.extend(source["source_key"] for source in CMS_SOURCE_DATASETS)
+    return tuple(keys)
+
+async def initialize_source_native_state(pool):
+    expected_keys=expected_source_native_keys()
+    async with pool.acquire() as conn:
+      async with conn.transaction():
+        await conn.execute("""update source_native_state
+          set metadata=jsonb_set(coalesce(metadata,'{}'::jsonb),'{expected}','false'::jsonb,true),
+              updated_at=now()
+          where coalesce((metadata->>'expected')::boolean,false)=true""")
+        for source_key in expected_keys:
+          for market in SOURCE_NATIVE_MARKETS:
+            await conn.execute("""insert into source_native_state(source_key,market,metadata)
+              values($1,$2,$3::jsonb)
+              on conflict(source_key,market) do update set
+                metadata=jsonb_set(coalesce(source_native_state.metadata,'{}'::jsonb),
+                  '{expected}','true'::jsonb,true),
+                updated_at=now()""",
+              source_key,market,json.dumps({"expected":True}))
+
+
 ROC_RESEARCH_SERVICES={
     "electrical_service","hvac_heat","backflow_plumbing","landscaping",
     "pool_desert_property","garage_door","epoxy_flooring","sign_lighting","fire_safety"
@@ -277,6 +302,7 @@ app.add_middleware(CORSMiddleware,allow_origins=[
 @app.on_event("startup")
 async def startup():
     app.state.pool=await asyncpg.create_pool(DB_DSN,min_size=1,max_size=5)
+    await initialize_source_native_state(app.state.pool)
 
 @app.on_event("shutdown")
 async def shutdown():
@@ -3170,16 +3196,25 @@ async def admin_daily_brief(x_bmc_admin_key:str|None=Header(default=None)):
           and status in ('open','queued','assigned','in_progress')""")
         research_candidate_count=await conn.fetchval("select count(*) from research_candidates where status='discovered'")
         source_native_tracked_count=await conn.fetchval("""select count(*) from source_native_state
-          where last_run_at is not null""")
+          where coalesce((metadata->>'expected')::boolean,false)=true""")
         source_native_stale_count=await conn.fetchval("""select count(*) from source_native_state
-          where last_run_at is not null
-            and (last_success_at is null or last_success_at < now()-interval '36 hours')""")
+          where coalesce((metadata->>'expected')::boolean,false)=true
+            and (
+              (last_success_at is null and created_at < now()-interval '36 hours')
+              or last_success_at < now()-interval '36 hours'
+            )""")
         source_native_issues=await conn.fetch("""select source_key,market,last_run_at,last_success_at,
-                 last_source_date,metadata->>'last_error' last_error
+                 last_source_date,metadata->>'last_error' last_error,
+                 case when last_run_at is null then 'never_started'
+                      when last_success_at is null then 'never_succeeded'
+                      else 'stale' end health_reason
           from source_native_state
-          where last_run_at is not null
-            and (last_success_at is null or last_success_at < now()-interval '36 hours')
-          order by coalesce(last_success_at,'epoch'::timestamptz),market
+          where coalesce((metadata->>'expected')::boolean,false)=true
+            and (
+              (last_success_at is null and created_at < now()-interval '36 hours')
+              or last_success_at < now()-interval '36 hours'
+            )
+          order by coalesce(last_success_at,'epoch'::timestamptz),created_at,market
           limit 5""")
     has_attention=any(int(x or 0)>0 for x in (
       open_exception_count,pilot_review_count,service_review_count,human_task_count,
