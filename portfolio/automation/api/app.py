@@ -1992,35 +1992,41 @@ async def admin_approve_pilot(request:Request,x_bmc_admin_key:str|None=Header(de
               "notes":clean(p.get("notes"))
             },"admin")
         if clean(vendor["public_email"]):
+            portal_token,portal_expires=await issue_vendor_portal_token(conn,vid)
+            portal_link=provider_dashboard_url(portal_token)
             body=f"""Hi {vendor['business_name']},
 
 You’re approved for the BMC provider pilot.
 
-Here is what to expect:
-- BMC will only offer requests that match the service and market information on your profile.
-- You will see the job details before deciding.
-- You can accept or pass.
-- Passing does not create a charge.
-- Joining the pilot itself is free.
+Your provider dashboard is ready:
+{portal_link}
 
-If a future lead or territory has a price, the terms will be shown before they apply.
+From the dashboard you can:
+- review new opportunities;
+- accept or pass;
+- see customer details after you accept;
+- update estimates and job outcomes;
+- change your service area, minimum job, and capacity.
+
+Joining the pilot itself is free. If a future lead or territory has a price, the terms will be shown before they apply.
+
+This secure dashboard link expires on {portal_expires.strftime('%B %d, %Y')}. You can request a new one anytime from the provider login page.
 
 BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}
 """
             html_body=workflow_email_html(
-              "You’re approved for the BMC provider pilot",
+              "You’re approved. Your BMC dashboard is ready.",
               [
                 "Your provider profile is approved for the pilot.",
-                "BMC will use your service and market settings when matching requests.",
-                "You will see the job details before deciding. Accept the jobs that fit and pass on the ones that do not.",
-                "Passing does not create a charge. Joining the pilot itself is free.",
-                "If a future lead or territory has a price, the terms will be shown before they apply."
+                "Use the dashboard to review new opportunities, accept or pass, update jobs, and change the settings BMC uses for matching.",
+                "Joining the pilot itself is free. If a future lead or territory has a price, the terms will be shown before they apply.",
+                f"This secure login link expires on {portal_expires.strftime('%B %d, %Y')}."
               ],
-              "Review how the pilot works",
-              f"{PUBLIC_SITE_URL}/providers/#example"
+              "Open provider dashboard",
+              portal_link
             )
-            await send_mail(clean(vendor["public_email"]),"You’re approved for the BMC provider pilot",body,html_body)
+            await send_mail(clean(vendor["public_email"]),"Your BMC provider dashboard is ready",body,html_body)
     return {"ok":True,"vendor_id":vid,"status":"pilot","message":"Provider approved for the pilot. Approval email sent when an email address is available."}
 
 @app.post("/api/admin/vendor-status")
