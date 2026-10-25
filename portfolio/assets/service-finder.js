@@ -25,6 +25,7 @@
     commercial_cleaning:"https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=78",
     towing_roadside:"https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=78",
     vehicle_services:"https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=900&q=78",
+    auto_repair_shop:"https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=900&q=78",
     auto_glass:"https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=900&q=78",
     pet_sitting:"https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=900&q=78",
     mobile_pet_grooming:"https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=900&q=78",
@@ -65,7 +66,8 @@
     competitor_intel:"competitor competitors competition market competitors what competitors are doing",
     market_expansion:"expand expansion new market new city open new location market research",
     towing_roadside:"tow towing roadside jump start lockout stranded car",
-    vehicle_services:"mechanic car repair vehicle repair mobile mechanic fleet repair",
+    vehicle_services:"mobile mechanic mechanic comes to me mobile car repair on site mechanic roadside mechanic fleet mobile repair",
+    auto_repair_shop:"mechanic auto repair auto shop repair shop car repair brake brakes check engine diagnostics oil change tune up maintenance transmission suspension steering alignment exhaust alternator starter engine repair radiator overheating",
     auto_glass:"windshield auto glass cracked windshield chip windshield",
     mobile_tire_battery:"flat tire tire battery dead battery mobile tire",
     mobile_detailing:"car detail detailing vehicle detail ceramic",
@@ -82,7 +84,9 @@
     {phrases:["quotes","quote","bids","bid","compare vendors","find vendors"],keys:["quote_sourcing","equipment_quotes","vendor_savings"],label:"Quotes & vendor options"},
     {phrases:["vendor cost","vendor costs","overpaying","lower bills","save money","rebid","consolidate vendors"],keys:["vendor_savings","waste_audit","quote_sourcing"],label:"Cut business costs"},
     {phrases:["more customers","find customers","leads","prospects","prospect list"],keys:["growth_pack","competitor_intel","market_expansion"],label:"Grow the business"},
-    {phrases:["restaurant","kitchen"],keys:["restaurant_repair","restaurant_equipment","ice_machine","restaurant_maintenance"],label:"Restaurant help"}
+    {phrases:["restaurant","kitchen"],keys:["restaurant_repair","restaurant_equipment","ice_machine","restaurant_maintenance"],label:"Restaurant help"},
+    {phrases:["brake","brakes","check engine","auto shop","repair shop","oil change","transmission","alignment","alternator","starter","car repair"],keys:["auto_repair_shop","vehicle_services","mobile_tire_battery","towing_roadside"],label:"Auto repair"},
+    {phrases:["mobile mechanic","mechanic comes to me","mobile car repair","on site mechanic"],keys:["vehicle_services","mobile_tire_battery","towing_roadside"],label:"Mobile vehicle help"}
   ];
 
   let cache=null;
@@ -162,7 +166,7 @@
         if(normalize(s.display_name).includes(t))score+=5;
       });
       if(q.includes("broken")||q.includes("not working")||q.includes("won t work")||q.includes("wont work")){
-        if(["restaurant_equipment","restaurant_repair","electrical_service","hvac_heat","garage_door","vehicle_services","ice_machine"].includes(s.service_key))score+=5;
+        if(["restaurant_equipment","restaurant_repair","electrical_service","hvac_heat","garage_door","vehicle_services","auto_repair_shop","ice_machine"].includes(s.service_key))score+=5;
       }
       return {service:s,score,reason:intentLabel||s.primary_offer};
     }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score||String(a.service.display_name).localeCompare(String(b.service.display_name)));
