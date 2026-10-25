@@ -9,12 +9,12 @@ while true; do
   if [ $((i % 3)) -eq 0 ]; then
     curl -fsS -X POST http://ops_api:8000/api/agent-cycle \
       -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
+    curl -fsS -X POST http://ops_api:8000/api/process-research \
+      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
   fi
 
   if [ $((i % 12)) -eq 0 ]; then
     curl -fsS -X POST http://ops_api:8000/api/process-followups \
-      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
-    curl -fsS -X POST http://ops_api:8000/api/process-research \
       -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
   fi
 
