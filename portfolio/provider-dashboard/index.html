@@ -1,0 +1,260 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Provider Dashboard | BMC Partner Network</title>
+<meta name="description" content="Review BMC opportunities, update jobs, and manage provider settings.">
+<link rel="stylesheet" href="../assets/core.css?v=provider-13">
+<style>
+.portal-shell{max-width:1180px;margin:auto;padding:34px 22px 90px}
+.portal-top{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-bottom:28px}
+.portal-top h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.3rem,4vw,4rem);margin:0;line-height:1}
+.portal-sub{color:#687176;margin-top:8px}
+.portal-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:22px 0 32px}
+.portal-stat{background:#fffdf8;border:1px solid #ddd5ca;border-radius:20px;padding:18px}
+.portal-stat strong{font-size:1.8rem;display:block}
+.portal-stat span{color:#6d7478;font-size:.82rem}
+.portal-section{margin:34px 0}
+.portal-section h2{font-family:Georgia,"Times New Roman",serif;font-size:2rem;font-weight:500;margin-bottom:14px}
+.portal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.portal-card{background:#fffdf8;border:1px solid #ddd5ca;border-radius:22px;padding:20px;box-shadow:0 12px 34px rgba(28,33,37,.05)}
+.portal-card h3{margin:0 0 8px;font-size:1.15rem}
+.portal-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:14px 0}
+.portal-meta div{background:#f3eee7;border-radius:12px;padding:10px;font-size:.82rem}
+.portal-meta span{display:block;color:#777f82;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.portal-card p{color:#5f696e;line-height:1.5}
+.portal-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.portal-actions button{border:0;border-radius:12px;padding:10px 14px;font:inherit;font-weight:800;cursor:pointer}
+.portal-actions .accept{background:#1c252b;color:white}.portal-actions .pass{background:#ece6df;color:#4d555a}
+.portal-actions .update{background:#e7e1ef;color:#5a5268}
+.portal-empty{padding:24px;border:1px dashed #cfc5b8;border-radius:18px;color:#6f777a;background:#faf7f1}
+.portal-settings{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.portal-checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:360px;overflow:auto;padding-right:6px}
+.portal-check{display:flex;gap:8px;align-items:flex-start;background:#f6f2eb;border:1px solid #e0d9cf;border-radius:12px;padding:9px;font-size:.86rem}
+.portal-check input{width:auto;margin-top:2px}
+.portal-status{display:none;padding:14px;border-radius:14px;margin-top:12px;background:#e8efe8;border:1px solid #cad7ca}
+.portal-status.show{display:block}
+@media(max-width:800px){.portal-stats{grid-template-columns:1fr 1fr}.portal-grid,.portal-settings{grid-template-columns:1fr}.portal-top{align-items:flex-start;flex-direction:column}}
+</style>
+</head><body class="editorial-site">
+
+<nav class="nav"><div class="wrap nav-in">
+<a class="brand" href="../providers/">BMC Partner Network</a>
+<div class="nav-links"><a href="../providers/">Provider home</a><a href="../provider-login/" id="logout-link">Sign out</a></div>
+</div></nav>
+
+<main class="portal-shell">
+<div id="portal-loading" class="portal-empty">Loading your provider dashboard…</div>
+
+<div id="portal-app" hidden>
+  <div class="portal-top">
+    <div>
+      <div class="editorial-kicker">Provider dashboard</div>
+      <h1 id="provider-name">Your business</h1>
+      <div class="portal-sub" id="provider-summary"></div>
+    </div>
+    <a class="btn btn-secondary" href="#settings">Update matching settings</a>
+  </div>
+
+  <div class="portal-stats">
+    <div class="portal-stat"><strong id="stat-new">0</strong><span>New opportunities</span></div>
+    <div class="portal-stat"><strong id="stat-active">0</strong><span>Active jobs</span></div>
+    <div class="portal-stat"><strong id="stat-won">0</strong><span>Jobs won</span></div>
+    <div class="portal-stat"><strong id="stat-declined">0</strong><span>Jobs passed</span></div>
+  </div>
+
+  <section class="portal-section">
+    <h2>New opportunities</h2>
+    <div id="opportunities" class="portal-grid"></div>
+  </section>
+
+  <section class="portal-section">
+    <h2>Active jobs</h2>
+    <div id="active-jobs" class="portal-grid"></div>
+  </section>
+
+  <section class="portal-section">
+    <h2>Recent activity</h2>
+    <div id="recent-jobs" class="portal-grid"></div>
+  </section>
+
+  <section class="portal-section" id="settings">
+    <h2>Matching settings</h2>
+    <p class="portal-sub">These settings control the kind of work BMC should send you.</p>
+    <form class="request-card" id="provider-settings-form">
+      <div class="row">
+        <div class="field"><label>Phone</label><input id="setting-phone" name="public_phone"></div>
+        <div class="field"><label>Website</label><input id="setting-website" name="website"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Minimum job</label><input id="setting-minimum" name="minimum_job" placeholder="Example: $250 minimum"></div>
+        <div class="field"><label>Capacity</label><input id="setting-capacity" name="capacity" placeholder="Example: 3 jobs per week"></div>
+      </div>
+      <div class="field"><label>Territory notes</label><textarea id="setting-territory" name="territory_notes" placeholder="Example: Prescott, Prescott Valley, Chino Valley. No jobs more than 30 miles out."></textarea></div>
+      <div class="field"><label>After-hours / timing notes</label><textarea id="setting-after-hours" name="after_hours" placeholder="Example: Weekdays only, emergency calls okay until 8 PM."></textarea></div>
+
+      <div class="portal-settings">
+        <div>
+          <h3>Markets</h3>
+          <div id="market-checks" class="portal-checks"></div>
+        </div>
+        <div>
+          <h3>Services</h3>
+          <div id="service-checks" class="portal-checks"></div>
+        </div>
+      </div>
+
+      <div id="settings-status" class="portal-status"></div>
+      <div class="actions"><button class="btn btn-primary" type="submit">Save settings</button></div>
+    </form>
+  </section>
+</div>
+</main>
+
+<footer><div class="wrap footer-in"><span>BMC Partner Network</span><span>© <span data-year></span> BMC Luminary Ventures LLC</span></div></footer>
+<script src="../assets/core.js?v=provider-13"></script>
+<script>
+(async function(){
+  const API='https://hooks.bmcservicenetwork.com';
+  const markets=['Prescott','Prescott Valley','Chino Valley','Cottonwood','Camp Verde','Sedona','Flagstaff','Winslow','Kingman','Phoenix','Scottsdale','Tucson','Other Arizona'];
+  const q=new URLSearchParams(location.search);
+  const incoming=q.get('token');
+  if(incoming){
+    sessionStorage.setItem('bmc_provider_token',incoming);
+    history.replaceState({},'',location.pathname);
+  }
+  const token=sessionStorage.getItem('bmc_provider_token')||'';
+  const loading=document.getElementById('portal-loading');
+  const app=document.getElementById('portal-app');
+  document.getElementById('logout-link').addEventListener('click',()=>sessionStorage.removeItem('bmc_provider_token'));
+
+  if(!token){
+    loading.innerHTML='Your login link is missing or expired. <a href="../provider-login/">Email yourself a new login link.</a>';
+    return;
+  }
+
+  function esc(v){const d=document.createElement('div');d.textContent=v==null?'':String(v);return d.innerHTML;}
+  function money(c){if(c==null)return '—';return '$'+(Number(c)/100).toLocaleString(undefined,{maximumFractionDigits:0});}
+  function empty(el,text){el.innerHTML='<div class="portal-empty">'+esc(text)+'</div>';}
+
+  async function api(path,options){
+    const r=await fetch(API+path,options);
+    const data=await r.json().catch(()=>({}));
+    if(!r.ok)throw new Error(data.detail||data.message||'Request failed');
+    return data;
+  }
+
+  function renderOpportunity(x){
+    return '<div class="portal-card"><h3>'+esc(x.display_name||x.service_key)+'</h3><p>'+esc(x.scope||'No extra details provided.')+'</p>'
+      +'<div class="portal-meta"><div><span>Area</span>'+esc(x.market)+'</div><div><span>Timing</span>'+esc(x.urgency||'Not specified')+'</div></div>'
+      +'<div class="portal-actions"><button class="accept" data-accept="'+esc(x.match_id)+'">Accept</button><button class="pass" data-pass="'+esc(x.match_id)+'">Pass</button></div></div>';
+  }
+
+  function renderActive(x){
+    const contact=[x.customer_name,x.business_name].filter(Boolean).join(' · ');
+    return '<div class="portal-card"><h3>'+esc(x.display_name||x.service_key)+'</h3><p>'+esc(x.scope||'')+'</p>'
+      +'<div class="portal-meta"><div><span>Customer</span>'+esc(contact||'Customer')+'</div><div><span>Area</span>'+esc(x.market)+'</div>'
+      +'<div><span>Email</span>'+esc(x.email||'Not provided')+'</div><div><span>Phone</span>'+esc(x.phone||'Not provided')+'</div></div>'
+      +'<div class="portal-actions"><button class="update" data-job="'+esc(x.match_id)+'" data-status="contacted">Contacted</button>'
+      +'<button class="update" data-job="'+esc(x.match_id)+'" data-status="estimate">Estimate sent</button>'
+      +'<button class="accept" data-job="'+esc(x.match_id)+'" data-status="won">Won</button>'
+      +'<button class="pass" data-job="'+esc(x.match_id)+'" data-status="lost">Lost</button></div></div>';
+  }
+
+  function renderRecent(x){
+    return '<div class="portal-card"><h3>'+esc(x.display_name||'Service')+'</h3>'
+      +'<div class="portal-meta"><div><span>Status</span>'+esc(x.status)+'</div><div><span>Area</span>'+esc(x.market)+'</div>'
+      +'<div><span>Quote</span>'+money(x.quoted_amount_cents)+'</div></div></div>';
+  }
+
+  async function actOpportunity(matchId,response){
+    let notes='';
+    if(response==='decline')notes=prompt('Optional: why are you passing on this job?')||'';
+    await api('/api/provider/respond',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,match_id:matchId,response,notes})});
+    await loadDashboard();
+  }
+
+  async function updateJob(matchId,status){
+    let quoted_amount='',notes='';
+    if(status==='estimate'||status==='won')quoted_amount=prompt('Quoted / job amount (optional):')||'';
+    if(status==='lost')notes=prompt('Why was the job lost? (optional)')||'';
+    await api('/api/provider/job-update',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,match_id:matchId,job_status:status,quoted_amount,notes})});
+    await loadDashboard();
+  }
+
+  function bindActions(){
+    document.querySelectorAll('[data-accept]').forEach(b=>b.onclick=()=>actOpportunity(b.dataset.accept,'accept'));
+    document.querySelectorAll('[data-pass]').forEach(b=>b.onclick=()=>actOpportunity(b.dataset.pass,'decline'));
+    document.querySelectorAll('[data-job]').forEach(b=>b.onclick=()=>updateJob(b.dataset.job,b.dataset.status));
+  }
+
+  async function buildSettings(provider){
+    document.getElementById('setting-phone').value=provider.public_phone||'';
+    document.getElementById('setting-website').value=provider.website||'';
+    document.getElementById('setting-minimum').value=provider.minimum_job||'';
+    document.getElementById('setting-capacity').value=provider.capacity||'';
+    document.getElementById('setting-territory').value=provider.territory_notes||'';
+    document.getElementById('setting-after-hours').value=provider.after_hours||'';
+
+    const selectedMarkets=new Set(provider.markets||[]);
+    document.getElementById('market-checks').innerHTML=markets.map(m=>'<label class="portal-check"><input type="checkbox" value="'+esc(m)+'" '+(selectedMarkets.has(m)?'checked':'')+'><span>'+esc(m)+'</span></label>').join('');
+
+    try{
+      const data=await fetch('/data/services.json').then(r=>r.json());
+      const selectedServices=new Set((provider.services||[]).map(x=>x.service_key));
+      document.getElementById('service-checks').innerHTML=(data.services||[]).map(s=>'<label class="portal-check"><input type="checkbox" value="'+esc(s.service_key)+'" '+(selectedServices.has(s.service_key)?'checked':'')+'><span>'+esc(s.display_name)+'</span></label>').join('');
+    }catch(e){
+      document.getElementById('service-checks').innerHTML='<div class="portal-empty">Service list could not load.</div>';
+    }
+  }
+
+  async function loadDashboard(){
+    try{
+      const data=await api('/api/provider/dashboard?token='+encodeURIComponent(token));
+      const p=data.provider;
+      loading.hidden=true;app.hidden=false;
+      document.getElementById('provider-name').textContent=p.business_name;
+      document.getElementById('provider-summary').textContent=(p.markets||[]).join(', ')+' · '+(p.capacity||'Capacity not set');
+      document.getElementById('stat-new').textContent=(data.opportunities||[]).length;
+      document.getElementById('stat-active').textContent=(data.active_jobs||[]).length;
+      document.getElementById('stat-won').textContent=data.stats?.won||0;
+      document.getElementById('stat-declined').textContent=data.stats?.declined||0;
+
+      const opp=document.getElementById('opportunities');
+      const active=document.getElementById('active-jobs');
+      const recent=document.getElementById('recent-jobs');
+      data.opportunities?.length?opp.innerHTML=data.opportunities.map(renderOpportunity).join(''):empty(opp,'No new opportunities right now.');
+      data.active_jobs?.length?active.innerHTML=data.active_jobs.map(renderActive).join(''):empty(active,'No active BMC jobs right now.');
+      data.recent?.length?recent.innerHTML=data.recent.map(renderRecent).join(''):empty(recent,'No completed BMC jobs yet.');
+      bindActions();
+      await buildSettings(p);
+    }catch(err){
+      app.hidden=true;loading.hidden=false;
+      loading.innerHTML='Your provider login has expired or could not be loaded. <a href="../provider-login/">Email yourself a new login link.</a>';
+    }
+  }
+
+  document.getElementById('provider-settings-form').addEventListener('submit',async function(e){
+    e.preventDefault();
+    const serviceChecks=[...document.querySelectorAll('#service-checks input:checked')].map(x=>x.value);
+    const marketChecks=[...document.querySelectorAll('#market-checks input:checked')].map(x=>x.value);
+    const status=document.getElementById('settings-status');
+    try{
+      const data=await api('/api/provider/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+        token,services:serviceChecks,markets:marketChecks,
+        public_phone:document.getElementById('setting-phone').value.trim(),
+        website:document.getElementById('setting-website').value.trim(),
+        minimum_job:document.getElementById('setting-minimum').value.trim(),
+        capacity:document.getElementById('setting-capacity').value.trim(),
+        territory_notes:document.getElementById('setting-territory').value.trim(),
+        after_hours:document.getElementById('setting-after-hours').value.trim()
+      })});
+      status.textContent=data.message||'Settings saved.';status.classList.add('show');
+      await loadDashboard();
+    }catch(err){
+      status.textContent=err.message;status.classList.add('show');
+    }
+  });
+
+  await loadDashboard();
+})();
+</script>
+</body></html>
