@@ -219,6 +219,17 @@ def extract_public_contact(text):
       "public_phone":clean(phone_match.group(0)) if phone_match else None
     }
 
+def json_dict(value):
+    if isinstance(value,dict):
+        return value
+    if isinstance(value,str):
+        try:
+            parsed=json.loads(value)
+            return parsed if isinstance(parsed,dict) else {}
+        except Exception:
+            return {}
+    return {}
+
 def workflow_email_html(title,body_lines,button_label=None,button_url=None):
     rows="".join(f"<p style='margin:0 0 14px;line-height:1.55'>{html.escape(clean(line)).replace(chr(10),'<br>')}</p>" for line in body_lines if clean(line))
     button=""
@@ -2248,7 +2259,7 @@ async def admin_research_candidate_status(request:Request,x_bmc_admin_key:str|No
             if row["side"]=="vendor":
                 existing=await conn.fetchrow("""select vendor_id from vendors
                   where source_url=$1 or website=$1 order by updated_at desc limit 1""",source_url)
-                evidence=row["evidence"] if isinstance(row["evidence"],dict) else {}
+                evidence=json_dict(row["evidence"])
                 public_email=clean(evidence.get("public_email"))
                 public_phone=clean(evidence.get("public_phone"))
                 if existing:
@@ -2281,7 +2292,7 @@ async def admin_research_candidate_status(request:Request,x_bmc_admin_key:str|No
             else:
                 existing=await conn.fetchrow("""select buyer_id,likely_services from buyers
                   where source_url=$1 or website=$1 order by updated_at desc limit 1""",source_url)
-                evidence=row["evidence"] if isinstance(row["evidence"],dict) else {}
+                evidence=json_dict(row["evidence"])
                 public_email=clean(evidence.get("public_email"))
                 public_phone=clean(evidence.get("public_phone"))
                 if existing:
