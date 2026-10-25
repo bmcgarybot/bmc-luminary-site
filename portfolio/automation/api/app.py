@@ -28,7 +28,7 @@ BUYER_OUTREACH_ENABLED=os.getenv("BUYER_OUTREACH_ENABLED","false").lower()=="tru
 BUYER_OUTREACH_DAILY_LIMIT=int(os.getenv("BUYER_OUTREACH_DAILY_LIMIT","15"))
 BUYER_OUTREACH_WAVE=os.getenv("BUYER_OUTREACH_WAVE","pilot1").strip() or "pilot1"
 BUSINESS_POSTAL_ADDRESS=os.getenv("BUSINESS_POSTAL_ADDRESS","").strip()
-PARTNER_URL=f"{PUBLIC_SITE_URL}/vendor-partner/"
+PARTNER_URL=f"{PUBLIC_SITE_URL}/providers/"
 PILOT_ACTIVATION_URL=f"{PUBLIC_SITE_URL}/provider-pilot-activate/"
 IMAP_ENABLED=os.getenv("IMAP_ENABLED","false").lower()=="true"
 IMAP_HOST=os.getenv("IMAP_HOST","")
