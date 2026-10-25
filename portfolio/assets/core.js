@@ -1,6 +1,6 @@
 (function(){
   const markets=["Prescott","Prescott Valley","Chino Valley","Cottonwood","Camp Verde","Sedona","Flagstaff","Winslow","Kingman","Phoenix","Scottsdale","Tucson"];
-  const GLOBAL_WEBHOOK=window.BMC_WEBHOOK_URL||"https://hooks.bmcluminaryventures.com/api/intake";
+  const GLOBAL_WEBHOOK=window.BMC_WEBHOOK_URL||"https://hooks.bmcservicenetwork.com/api/intake";\n  const CONTACT_EMAIL="contact@bmcservicenetwork.com";
 
   document.querySelectorAll("[data-market-select]").forEach(function(sel){
     if(sel.options.length>1)return;
@@ -11,7 +11,7 @@
   document.querySelectorAll(".footer-in").forEach(function(el){
     if(el.querySelector("[data-bmc-legal-links]"))return;
     const span=document.createElement("span");span.dataset.bmcLegalLinks="true";
-    span.innerHTML='<a href="/portfolio/how-it-works/">How it works</a> · <a href="/portfolio/privacy/">Privacy</a> · <a href="/portfolio/terms/">Terms</a>';
+    span.innerHTML='<a href="/how-it-works/">How it works</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a>';
     el.appendChild(span);
   });
 
@@ -21,8 +21,8 @@
   if(!document.querySelector('script[data-bmc-org-schema]')){
     const schema=document.createElement("script");schema.type="application/ld+json";schema.dataset.bmcOrgSchema="true";
     schema.textContent=JSON.stringify({
-      "@context":"https://schema.org","@type":"Organization","name":"BMC Luminary Ventures LLC",
-      "url":"https://bmcluminaryventures.com/","areaServed":{"@type":"State","name":"Arizona"},
+      "@context":"https://schema.org","@type":"Organization","name":"BMC Luminary Ventures LLC","alternateName":"BMC Service Network",
+      "url":"https://bmcservicenetwork.com/","areaServed":{"@type":"State","name":"Arizona"},
       "description":"Arizona managed local-service matching, sourcing, and business services."
     });
     document.head.appendChild(schema);
@@ -41,7 +41,7 @@
   }
 
   function mailFallback(form,data){
-    const to=form.dataset.email||"contact@bmcluminaryventures.com";
+    const to=CONTACT_EMAIL;
     const subject=form.dataset.subject||("BMC website inquiry: "+(data.form_type||"general"));
     const body=Object.entries(data).map(([k,v])=>k.replaceAll("_"," ")+": "+v).join("\n");
     location.href="mailto:"+encodeURIComponent(to)+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
