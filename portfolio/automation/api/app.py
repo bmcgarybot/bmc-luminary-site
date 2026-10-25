@@ -27,6 +27,9 @@ OUTREACH_WAVE=os.getenv("OUTREACH_WAVE","pilot1").strip() or "pilot1"
 BUYER_OUTREACH_ENABLED=os.getenv("BUYER_OUTREACH_ENABLED","false").lower()=="true"
 BUYER_OUTREACH_DAILY_LIMIT=int(os.getenv("BUYER_OUTREACH_DAILY_LIMIT","15"))
 BUYER_OUTREACH_WAVE=os.getenv("BUYER_OUTREACH_WAVE","pilot1").strip() or "pilot1"
+GROWTH_OUTREACH_ENABLED=os.getenv("GROWTH_OUTREACH_ENABLED","false").lower()=="true"
+GROWTH_OUTREACH_DAILY_LIMIT=int(os.getenv("GROWTH_OUTREACH_DAILY_LIMIT","10"))
+GROWTH_OUTREACH_WAVE=os.getenv("GROWTH_OUTREACH_WAVE","growth1").strip() or "growth1"
 BUSINESS_POSTAL_ADDRESS=os.getenv("BUSINESS_POSTAL_ADDRESS","").strip()
 PARTNER_URL=f"{PUBLIC_SITE_URL}/providers/"
 PILOT_ACTIVATION_URL=f"{PUBLIC_SITE_URL}/provider-pilot-activate/"
@@ -899,12 +902,50 @@ def buyer_landing(row):
         return f"{PUBLIC_SITE_URL}/restaurant-repair/"
     if campaign=="automotive":
         return f"{PUBLIC_SITE_URL}/request/?service=vehicle_services"
+    if campaign=="growth_pack_sales":
+        return f"{PUBLIC_SITE_URL}/growth-packs/"
     return f"{PUBLIC_SITE_URL}/request/"
 
 def buyer_outreach_copy(row,step):
     business=row["business_name"]; market=row["market"] or "your area"; btype=clean(row["buyer_type"])
     landing=buyer_landing(row)
     likely=clean(row["likely_services"]).replace("|",", ")
+    campaign=clean(row["campaign"])
+    if campaign=="growth_pack_sales":
+        sample=f"{PUBLIC_SITE_URL}/growth-packs/sample/"
+        if step==1:
+            subject=f"100 researched local prospects for {business}"
+            body=f"""Hi {business},
+
+I’m reaching out because BMC is testing a simple prospect-research product for local service businesses.
+
+The $499 Local Growth Pack includes 100 researched prospects in the market you want to sell into, with public business contact paths, fit/priority notes, and an outreach angle for each prospect. The $749 Premium version adds deeper competitor analysis and a more developed outreach plan.
+
+You can see the offer and a sample deliverable here:
+{landing}
+Sample:
+{sample}
+
+There is no retainer and no sales call required.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+Reply no if you do not want future outreach."""
+        else:
+            subject=f"Re: local prospect research for {business}"
+            body=f"""Hi {business},
+
+Following up once on the BMC Local Growth Pack. If prospect research is taking time away from selling or fulfillment, the pack is designed to hand you a prioritized list you can work immediately.
+
+Offer + sample:
+{landing}
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+Reply no if you do not want future outreach."""
+        return subject,body
     public_note=""
     if "school" in btype or "government" in btype:
         public_note=" We understand formal procurement or approved-vendor rules may apply."
@@ -973,6 +1014,44 @@ async def process_buyer_outreach(x_bmc_admin_key:str|None=Header(default=None)):
         await event(conn,"buyer",row["entity_id"],"outreach_sent",{"campaign":row["campaign"],"step":step,"email":row["public_email"]})
         sent+=1
     return {"ok":True,"enabled":True,"sent":sent,"daily_limit":BUYER_OUTREACH_DAILY_LIMIT}
+
+
+@app.post("/api/process-growth-outreach")
+async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None)):
+    if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY: raise HTTPException(403,"Forbidden")
+    if not GROWTH_OUTREACH_ENABLED:
+        return {"ok":True,"enabled":False,"sent":0,"message":"Growth Pack outreach is disabled."}
+    if not BUSINESS_POSTAL_ADDRESS or "CHANGE_ME" in BUSINESS_POSTAL_ADDRESS:
+        raise HTTPException(409,"BUSINESS_POSTAL_ADDRESS must be configured before Growth Pack outreach can send.")
+    sent=0
+    async with app.state.pool.acquire() as conn:
+      already=await conn.fetchval("""select count(*) from outreach
+        where entity_type='buyer' and campaign='growth_pack_sales'
+          and sent_at>=date_trunc('day',now())""")
+      allowance=max(0,GROWTH_OUTREACH_DAILY_LIMIT-int(already or 0))
+      if allowance<=0:
+        return {"ok":True,"enabled":True,"sent":0,"message":"Growth Pack daily outreach limit reached."}
+      rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,
+          b.business_name,b.public_email,b.market,b.buyer_type,b.campaign,b.likely_services
+        from outreach o join buyers b on b.buyer_id=o.entity_id
+        where o.entity_type='buyer' and o.campaign='growth_pack_sales' and o.wave=$2 and o.opt_out=false
+          and b.public_email is not null and b.public_email<>''
+          and (o.status='queued' or (o.status='sent' and o.next_followup_at<=now() and o.sequence_step<2))
+          and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(b.public_email))
+        order by case when b.priority='A' then 0 else 1 end,coalesce(o.next_followup_at,o.created_at) asc
+        limit $1""",allowance,GROWTH_OUTREACH_WAVE)
+      for row in rows:
+        step=1 if row["status"]=="queued" else 2
+        subject,body=buyer_outreach_copy(row,step)
+        ok=await send_mail(row["public_email"],subject,body)
+        if not ok: continue
+        status="completed" if step>=2 else "sent"
+        next_at=datetime.now(timezone.utc)+timedelta(days=5)
+        await conn.execute("""update outreach set sequence_step=$2,status=$3,subject=$4,body=$5,sent_at=now(),
+          next_followup_at=$6 where outreach_id=$1""",row["outreach_id"],step,status,subject,body,next_at)
+        await event(conn,"buyer",row["entity_id"],"outreach_sent",{"campaign":"growth_pack_sales","step":step,"email":row["public_email"]})
+        sent+=1
+    return {"ok":True,"enabled":True,"sent":sent,"daily_limit":GROWTH_OUTREACH_DAILY_LIMIT}
 
 
 def require_admin(key):
@@ -1451,7 +1530,8 @@ async def admin_preflight(x_bmc_admin_key:str|None=Header(default=None)):
         "postal_address_configured":postal_ready,
         "stripe_webhook_configured":stripe_ready,
         "vendor_outreach_enabled":OUTREACH_ENABLED,
-        "buyer_outreach_enabled":BUYER_OUTREACH_ENABLED
+        "buyer_outreach_enabled":BUYER_OUTREACH_ENABLED,
+        "growth_outreach_enabled":GROWTH_OUTREACH_ENABLED
       },
       "operations":{
         "pilot_or_active_vendors":int(pilot_vendors or 0),
