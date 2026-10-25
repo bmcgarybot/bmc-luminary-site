@@ -265,6 +265,7 @@ jobs:
           assert data.get("lead_id")
           PY
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from leads where submission_id='ci-smoke-lead';")" -eq 1
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select customer_path from leads where submission_id='ci-smoke-lead';")" = "fix_or_handle_job"
 
           # Prove a real provider match can be accepted and releases the contact handoff event.
           docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "update vendors set status='pilot' where vendor_id='v_prescott_tree_morgan';"
@@ -301,6 +302,7 @@ jobs:
           cat /tmp/bmc_growth.json
           export GROWTH_LEAD_ID="$(python -c 'import json; print(json.load(open("/tmp/bmc_growth.json"))["lead_id"])')"
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from leads where lead_id='$GROWTH_LEAD_ID'::uuid;")" = "internal_queue"
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select customer_path from leads where lead_id='$GROWTH_LEAD_ID'::uuid;")" = "help_me_get_more_customers"
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from tasks where lead_id='$GROWTH_LEAD_ID'::uuid and task_type='fulfill_internal_product';")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from lead_matches where lead_id='$GROWTH_LEAD_ID'::uuid;")" -eq 0
 
