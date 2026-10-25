@@ -1775,7 +1775,7 @@ async function loadFirstWave(){const r=await fetch('/api/admin/first-wave',{head
 async function loadServiceReviews(){const r=await fetch('/api/admin/provider-service-reviews',{headers:headers()});const j=await r.json();const el=document.getElementById('service_reviews');el.innerHTML='';if(!(j.records||[]).length){el.textContent='No provider service changes are waiting for review.';return}(j.records||[]).forEach(function(x){let requested=x.requested_services||[];if(typeof requested==='string'){try{requested=JSON.parse(requested)}catch(e){requested=[]}}const d=document.createElement('div');d.className='card';d.style.margin='10px 0';const title=document.createElement('b');title.textContent=x.business_name+' · '+x.vendor_id;const p=document.createElement('p');p.textContent='Requested services: '+requested.join(', ');const approve=document.createElement('button');approve.textContent='Approve requested services';approve.onclick=function(){reviewServiceChange(x.exception_id,'approve',requested)};const reject=document.createElement('button');reject.textContent='Reject';reject.onclick=function(){reviewServiceChange(x.exception_id,'reject',[])};d.appendChild(title);d.appendChild(p);d.appendChild(approve);d.appendChild(reject);el.appendChild(d)})}
 async function reviewServiceChange(id,decision,services){const promptText=decision==='approve'?'Approve these service additions after checking credentials where needed?':'Reject these requested service additions?';if(!confirm(promptText))return;const r=await fetch('/api/admin/provider-service-review',{method:'POST',headers:headers(),body:JSON.stringify({exception_id:id,decision:decision,approved_services:services})});const j=await r.json();alert(j.message||JSON.stringify(j));await loadServiceReviews();await loadLaunchCell()}
 async function loadPilotReviews(){const r=await fetch('/api/admin/pilot-reviews',{headers:headers()});const j=await r.json();const el=document.getElementById('pilot_reviews');el.innerHTML='';if(!(j.records||[]).length){el.textContent='No providers are pending review.';return}(j.records||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';const title=document.createElement('b');title.textContent=x.business_name+' · '+x.vendor_id;const pre=document.createElement('pre');pre.textContent=JSON.stringify(x,null,2);const btn=document.createElement('button');btn.textContent='Approve as pilot';btn.onclick=function(){approvePilot(x.vendor_id)};d.appendChild(title);d.appendChild(pre);d.appendChild(btn);el.appendChild(d)})}
-async function loadResearchCandidates(){const r=await fetch('/api/admin/research-candidates?status=discovered&limit=100',{headers:headers()});const j=await r.json();const el=document.getElementById('research_candidates');el.innerHTML='';if(!(j.records||[]).length){el.textContent='No staged research candidates.';return}(j.records||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';const title=document.createElement('b');title.textContent=(x.candidate_name||x.source_title||x.source_domain)+' · '+x.market+' · '+x.service_name;const a=document.createElement('a');a.href=x.source_url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.source_url;const pre=document.createElement('pre');pre.textContent=x.snippet||'';const review=document.createElement('button');review.textContent='Mark reviewed';review.onclick=function(){setResearchCandidateStatus(x.candidate_id,'reviewed')};const reject=document.createElement('button');reject.textContent='Reject';reject.onclick=function(){setResearchCandidateStatus(x.candidate_id,'rejected')};d.appendChild(title);d.appendChild(document.createElement('br'));d.appendChild(a);d.appendChild(pre);d.appendChild(review);d.appendChild(reject);el.appendChild(d)})}
+async function loadResearchCandidates(){const r=await fetch('/api/admin/research-candidates?status=discovered&limit=100',{headers:headers()});const j=await r.json();const el=document.getElementById('research_candidates');el.innerHTML='';if(!(j.records||[]).length){el.textContent='No staged research candidates.';return}(j.records||[]).forEach(function(x){const d=document.createElement('div');d.className='card';d.style.margin='10px 0';const title=document.createElement('b');title.textContent=(x.candidate_name||x.source_title||x.source_domain)+' · '+x.market+' · '+x.service_name;const a=document.createElement('a');a.href=x.source_url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=x.source_url;const pre=document.createElement('pre');pre.textContent=x.snippet||'';const promote=document.createElement('button');promote.textContent='Add as prospect';promote.onclick=function(){setResearchCandidateStatus(x.candidate_id,'promoted')};const review=document.createElement('button');review.textContent='Mark reviewed';review.onclick=function(){setResearchCandidateStatus(x.candidate_id,'reviewed')};const reject=document.createElement('button');reject.textContent='Reject';reject.onclick=function(){setResearchCandidateStatus(x.candidate_id,'rejected')};d.appendChild(title);d.appendChild(document.createElement('br'));d.appendChild(a);d.appendChild(pre);d.appendChild(promote);d.appendChild(review);d.appendChild(reject);el.appendChild(d)})}
 async function setResearchCandidateStatus(id,status){const r=await fetch('/api/admin/research-candidate-status',{method:'POST',headers:headers(),body:JSON.stringify({candidate_id:id,status:status})});const j=await r.json();if(!j.ok)alert(JSON.stringify(j));await loadResearchCandidates()}
 async function approvePilot(id){if(!confirm('Approve '+id+' for live pilot routing after credential/insurance review?'))return;const body={vendor_id:id,confirm_credentials:true};const r=await fetch('/api/admin/approve-pilot',{method:'POST',headers:headers(),body:JSON.stringify(body)});const j=await r.json();alert(j.message||JSON.stringify(j));await loadPilotReviews();await loadSummary()}
 async function vendorUpdate(){const body={vendor_id:document.getElementById('vendor_id').value,status:document.getElementById('vendor_status').value,services:document.getElementById('vendor_services').value.split(',').map(function(x){return x.trim()}).filter(Boolean),markets:document.getElementById('vendor_markets').value.split(',').map(function(x){return x.trim()}).filter(Boolean)};const r=await fetch('/api/admin/vendor-status',{method:'POST',headers:headers(),body:JSON.stringify(body)});document.getElementById('vendor_result').textContent=JSON.stringify(await r.json(),null,2)}
@@ -2224,14 +2224,72 @@ async def admin_research_candidate_status(request:Request,x_bmc_admin_key:str|No
     status=clean(p.get("status")).lower()
     if status not in ("discovered","reviewed","rejected","promoted"):
         raise HTTPException(400,"Invalid research candidate status")
+    promoted_entity=None
     async with app.state.pool.acquire() as conn:
       async with conn.transaction():
-        row=await conn.fetchrow("""update research_candidates set status=$2,updated_at=now()
-          where candidate_id=$1::uuid returning *""",cid,status)
+        row=await conn.fetchrow("""select * from research_candidates where candidate_id=$1::uuid for update""",cid)
         if not row:
             raise HTTPException(404,"Research candidate not found")
-        await event(conn,"research_candidate",cid,"status_changed",{"status":status},"admin")
-    return {"ok":True,"candidate_id":cid,"status":status}
+        if status=="promoted":
+            candidate_name=(clean(row["candidate_name"]) or clean(row["source_title"]) or clean(row["source_domain"]) or "Research prospect")[:240]
+            source_url=clean(row["source_url"])
+            if row["side"]=="vendor":
+                existing=await conn.fetchrow("""select vendor_id from vendors
+                  where source_url=$1 or website=$1 order by updated_at desc limit 1""",source_url)
+                if existing:
+                    entity_id=existing["vendor_id"]
+                else:
+                    entity_id="v_research_"+cid.replace("-","")[:16]
+                    await conn.execute("""insert into vendors(
+                        vendor_id,business_name,website,source_url,status,notes)
+                      values($1,$2,$3,$3,'prospect',$4)
+                      on conflict(vendor_id) do nothing""",
+                      entity_id,candidate_name,source_url,
+                      f"Unverified prospect promoted from autonomous research candidate {cid}. Verify identity, credentials, and public contact details before outreach or activation.")
+                if clean(row["service_key"]):
+                    await conn.execute("""insert into vendor_services(vendor_id,service_key)
+                      values($1,$2) on conflict do nothing""",entity_id,row["service_key"])
+                await conn.execute("""insert into vendor_markets(vendor_id,market)
+                  values($1,$2) on conflict do nothing""",entity_id,row["market"])
+                promoted_entity={"entity_type":"vendor","entity_id":entity_id}
+                current_count=await conn.fetchval("""select count(distinct v.vendor_id)
+                  from vendors v
+                  join vendor_services vs on vs.vendor_id=v.vendor_id
+                  join vendor_markets vm on vm.vendor_id=v.vendor_id
+                  where vs.service_key=$1 and vm.market=$2 and v.status<>'suppressed'""",
+                  row["service_key"],row["market"])
+            else:
+                existing=await conn.fetchrow("""select buyer_id,likely_services from buyers
+                  where source_url=$1 or website=$1 order by updated_at desc limit 1""",source_url)
+                if existing:
+                    entity_id=existing["buyer_id"]
+                    services=[x for x in clean(existing["likely_services"]).split("|") if x]
+                    if clean(row["service_key"]) and row["service_key"] not in services:
+                        services.append(row["service_key"])
+                        await conn.execute("""update buyers set likely_services=$2,updated_at=now()
+                          where buyer_id=$1""",entity_id,"|".join(services))
+                else:
+                    entity_id="b_research_"+cid.replace("-","")[:16]
+                    await conn.execute("""insert into buyers(
+                        buyer_id,business_name,market,buyer_type,website,source_url,likely_services,
+                        priority,campaign,status,notes)
+                      values($1,$2,$3,'research',$4,$4,$5,'research','autonomous_research','prospect',$6)
+                      on conflict(buyer_id) do nothing""",
+                      entity_id,candidate_name,row["market"],source_url,clean(row["service_key"]),
+                      f"Unverified buyer prospect promoted from autonomous research candidate {cid}. Verify organization and public contact path before outreach.")
+                promoted_entity={"entity_type":"buyer","entity_id":entity_id}
+                current_count=await conn.fetchval("""select count(*) from buyers
+                  where market=$2 and $1=any(string_to_array(coalesce(likely_services,''),'|'))
+                    and status<>'suppressed'""",row["service_key"],row["market"])
+            if row["research_id"]:
+                await conn.execute("""update research_backlog
+                  set current_count=$2,target_gap=greatest(0,goal-$2),updated_at=now()
+                  where research_id=$1""",row["research_id"],int(current_count or 0))
+        await conn.execute("""update research_candidates set status=$2,updated_at=now()
+          where candidate_id=$1::uuid""",cid,status)
+        await event(conn,"research_candidate",cid,"status_changed",
+          {"status":status,"promoted_entity":promoted_entity},"admin")
+    return {"ok":True,"candidate_id":cid,"status":status,"promoted_entity":promoted_entity}
 
 LAUNCH_CELL_MARKETS=("Prescott","Prescott Valley")
 LAUNCH_CELL_SERVICES=(
