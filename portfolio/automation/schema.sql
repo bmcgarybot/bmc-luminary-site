@@ -208,6 +208,8 @@ alter table buyers add column if not exists source_url text;
 alter table buyers add column if not exists likely_services text;
 alter table buyers add column if not exists priority text;
 alter table buyers add column if not exists campaign text;
+alter table buyers add column if not exists source_data jsonb default '{}'::jsonb;
+alter table vendors add column if not exists source_data jsonb default '{}'::jsonb;
 
 alter table vendors add column if not exists territory_notes text;
 alter table vendors add column if not exists minimum_job text;
