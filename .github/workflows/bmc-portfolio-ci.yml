@@ -87,7 +87,7 @@ jobs:
         run: |
           bash -n provision-cloud.sh bootstrap.sh start.sh stop.sh backup.sh runtime-doctor.sh \
             configure-cloudflare.sh verify-public-ingress.sh verify-backup.sh install-backup-timer.sh \
-            expand-source-native-markets.sh
+            expand-source-native-markets.sh configure-stripe-webhook.sh
           sh -n scheduler.sh
 
       - name: Validate public gateway configuration
