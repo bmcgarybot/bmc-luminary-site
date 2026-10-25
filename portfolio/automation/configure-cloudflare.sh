@@ -3,7 +3,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 ENV_FILE="${ENV_FILE:-.env}"
-PUBLIC_HOST="${PUBLIC_HOOKS_HOST:-hooks.bmcluminaryventures.com}"
+PUBLIC_HOST="${PUBLIC_HOOKS_HOST:-hooks.bmcservicenetwork.com}"
 
 if [ ! -f "$ENV_FILE" ]; then
   echo "Missing $ENV_FILE. Run ./bootstrap.sh first."
