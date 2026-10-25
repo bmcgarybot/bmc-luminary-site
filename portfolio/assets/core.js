@@ -109,13 +109,6 @@
     return data;
   }
 
-  function mailFallback(form,data){
-    const to=CONTACT_EMAIL;
-    const subject=form.dataset.subject||("BMC website inquiry: "+(data.form_type||"general"));
-    const body=Object.entries(data).map(([k,v])=>k.replaceAll("_"," ")+": "+v).join("\n");
-    location.href="mailto:"+encodeURIComponent(to)+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
-  }
-
   function showSubmissionSuccess(form,response){
     let card=form.querySelector("[data-success-card]");
     if(!card){
@@ -193,8 +186,11 @@
         form.reset();
       }catch(err){
         console.error(err);
-        if(note){note.textContent="Automated intake is not reachable yet. Your email app will open with the request details so nothing is lost.";note.classList.add("show");}
-        mailFallback(form,data);
+        try{sessionStorage.setItem("bmc_pending_submission",JSON.stringify(data));}catch(_){}
+        if(note){
+          note.textContent="We couldn't send this request automatically. Your entries are still here. Please try again in a moment. If it keeps failing, use the contact link in the site footer.";
+          note.classList.add("show");
+        }
       }finally{
         if(button){button.disabled=false;button.textContent=button.dataset.label||"Submit request";}
       }
