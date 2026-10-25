@@ -1,306 +1,132 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Find Local Help | BMC Service Network</title>
-<meta name="description" content="Tell BMC what you need help with. Search for a service or describe the problem in your own words.">
-<link rel="stylesheet" href="../assets/core.css?v=clarity-12">
+<meta name="description" content="Search BMC services by the job or problem you need help with.">
+<link rel="stylesheet" href="../assets/core.css?v=clarity-13">
 </head><body class="editorial-site">
 
 <nav class="nav"><div class="wrap nav-in">
 <a class="brand" href="../">BMC Service Network</a>
-<div class="nav-links"><a href="../request/">Get help</a><a href="../how-it-works/">How it works</a></div>
+<div class="nav-links"><a href="#browse">Browse</a><a href="../solutions/">Ways BMC can help</a></div>
 </div></nav>
 
 <header class="service-explore-hero"><div class="wrap">
-<div class="editorial-kicker">Find local help</div>
+<div class="editorial-kicker">Find the right help</div>
 <h1>What do you need help with?</h1>
-<p style="max-width:650px;color:#626d72;font-size:1.08rem">Search for a service or tell us what you need.</p>
+<p style="max-width:680px;color:#626d72;font-size:1.08rem">Describe the job or problem. We’ll show the closest matches.</p>
 
 <div class="service-explore-search">
-  <input id="venture-search" autocomplete="off" placeholder="What do you need help with?">
-  <a class="btn btn-primary" href="../request/">Tell us what’s wrong</a>
+  <input id="venture-search" autocomplete="off" placeholder="Try “my fryer is broken,” “real estate,” or “tree removal”">
+  <a class="btn btn-primary" id="tell-more-link" href="../request/">Tell us more</a>
 </div>
-<p id="search-count" class="search-count">Loading services…</p>
+<p id="search-count" class="search-count">Search by job, problem, or service.</p>
+<div id="service-search-results" class="finder-results" hidden></div>
 </div></header>
 
-<section class="editorial-section alt"><div class="wrap">
+<section class="editorial-section alt" id="browse"><div class="wrap">
 <div class="editorial-intro">
-  <div class="editorial-kicker">Popular near Prescott & Prescott Valley</div>
-  <h2>A few common jobs.</h2>
-  <p>Pick one to get started. If your job is different, search above.</p>
+  <div class="editorial-kicker">Browse by type</div>
+  <h2>Not sure what to search?</h2>
+  <p>Pick the area that looks closest.</p>
 </div>
 
-<div class="category-tiles">
-  <a class="category-tile" href="../electrical-service/" style="text-decoration:none"><span class="tile-icon">01</span><strong>Electrician</strong><span>Outlets, breakers, panels, lights, wiring, and EV chargers.</span></a>
-  <a class="category-tile" href="../hvac-heat/" style="text-decoration:none"><span class="tile-icon">02</span><strong>Heating & air</strong><span>No heat, no cooling, tune-ups, heat pumps, and replacement.</span></a>
-  <a class="category-tile" href="../handyman-repairs/" style="text-decoration:none"><span class="tile-icon">03</span><strong>Handyman</strong><span>Small repairs, drywall, doors, mounting, fixtures, and punch lists.</span></a>
-  <a class="category-tile" href="../house-cleaning/" style="text-decoration:none"><span class="tile-icon">04</span><strong>House cleaning</strong><span>Regular cleaning, deep cleaning, and move-in or move-out cleaning.</span></a>
-  <a class="category-tile" href="../tree-service/" style="text-decoration:none"><span class="tile-icon">05</span><strong>Tree service</strong><span>Removal, trimming, dead trees, brush clearing, and defensible space.</span></a>
-  <a class="category-tile" href="../realtor-listing-prep/" style="text-decoration:none"><span class="tile-icon">06</span><strong>Get a home ready to sell</strong><span>Cleaning, repairs, junk removal, staging, and yard cleanup.</span></a>
+<div class="image-service-grid">
+  <a class="image-service-card" href="#home-yard"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=78" alt="Home and property" loading="lazy"><div class="image-card-copy"><strong>Home & property</strong><span>Repairs, cleaning, trees, yard work, junk, listing prep, and more.</span></div></a>
+  <a class="image-service-card" href="#business-building"><img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=78" alt="Commercial building" loading="lazy"><div class="image-card-copy"><strong>Business & buildings</strong><span>Cleaning, repairs, pest control, windows, floors, parking lots, and maintenance.</span></div></a>
+  <a class="image-service-card" href="#restaurant"><img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=900&q=78" alt="Restaurant kitchen" loading="lazy"><div class="image-card-copy"><strong>Restaurant services</strong><span>Equipment repair, ice machines, hoods, drains, maintenance, and equipment sourcing.</span></div></a>
+  <a class="image-service-card" href="#vehicle"><img src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=900&q=78" alt="Vehicle service" loading="lazy"><div class="image-card-copy"><strong>Car & vehicle</strong><span>Towing, mobile repair, tires, batteries, glass, detailing, and fleets.</span></div></a>
+  <a class="image-service-card" href="#pet"><img src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=900&q=78" alt="Dog" loading="lazy"><div class="image-card-copy"><strong>Pet care</strong><span>Dog walking, pet sitting, grooming, and pet waste cleanup.</span></div></a>
+  <a class="image-service-card" href="#business-help"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=78" alt="Business research and growth" loading="lazy"><div class="image-card-copy"><strong>Business help</strong><span>Quotes, vendor costs, prospect lists, competitors, and market research.</span></div></a>
 </div>
 </div></section>
 
 <section class="editorial-section"><div class="wrap">
 <div class="editorial-intro">
   <div class="editorial-kicker">All services</div>
-  <h2>Browse by category.</h2>
-  <p>Or use the search above.</p>
+  <h2>Browse the full list.</h2>
+  <p id="service-total">Loading services…</p>
 </div>
 
-<div class="family-jumps" id="family-jumps"></div>
 <div id="venture-families"></div>
-
-<div id="no-results" class="empty-state" hidden>
-  <h2>We couldn’t find that.</h2>
-  <p>Tell us what’s going on. We’ll help figure out who you need.</p>
-  <a class="btn btn-primary" href="../request/">Tell us the problem</a>
-</div>
 </div></section>
 
 <footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>BMC Service Network</span></div></footer>
-<script src="../assets/core.js?v=clarity-12"></script>
+<div class="mobile-sticky-cta"><a class="btn btn-primary" href="../request/">Tell us what you need</a></div>
+
+<script src="../assets/core.js?v=clarity-13"></script>
+<script src="../assets/service-finder.js?v=finder-1"></script>
 <script>
-const familyOrder=[
-  'Home & Yard',
-  'Business & Building',
-  'Restaurant Services',
-  'Car & Vehicle',
-  'Pet Care',
-  'Business Help',
-  'Other Services'
-];
+(async function(){
+  const input=document.getElementById('venture-search');
+  const results=document.getElementById('service-search-results');
+  const count=document.getElementById('search-count');
+  const tellMore=document.getElementById('tell-more-link');
+  const root=document.getElementById('venture-families');
+  const total=document.getElementById('service-total');
+  const params=new URLSearchParams(location.search);
+  const incoming=params.get('q')||'';
 
-const familyDescriptions={
-  'Home & Yard':'Repairs, cleaning, yard work, junk removal, and help getting a home ready to sell.',
-  'Business & Building':'Cleaning, repairs, maintenance, pest control, windows, parking lots, and more.',
-  'Restaurant Services':'Repairs, cleaning, grease traps, ice machines, equipment, and regular maintenance.',
-  'Car & Vehicle':'Towing, tires, batteries, glass, detailing, mobile repair, and fleet washing.',
-  'Pet Care':'Dog walking, pet sitting, mobile grooming, and pet waste cleanup.',
-  'Business Help':'Find customers, compare vendors, cut costs, and research new markets.',
-  'Other Services':'Seasonal and local services that do not fit one of the groups above.'
-};
+  const familyOrder=['Home & Property','Business & Buildings','Restaurant Services','Car & Vehicle','Pet Care','Business Help','Other'];
+  const familyIds={'Home & Property':'home-yard','Business & Buildings':'business-building','Restaurant Services':'restaurant','Car & Vehicle':'vehicle','Pet Care':'pet','Business Help':'business-help','Other':'other'};
+  const familyDescriptions={
+    'Home & Property':'Repairs, cleaning, outdoor work, rentals, and getting a property ready.',
+    'Business & Buildings':'Cleaning, repair, maintenance, safety, exterior, and recurring building work.',
+    'Restaurant Services':'Kitchen equipment, repair, cleaning, drains, maintenance, and sourcing.',
+    'Car & Vehicle':'Roadside, repair, glass, tires, batteries, detailing, and fleet work.',
+    'Pet Care':'Walking, sitting, grooming, and cleanup.',
+    'Business Help':'Quotes, cost reviews, research, prospects, competitors, and expansion.',
+    'Other':'Additional local services.'
+  };
 
-const simpleNames={
-  electrical_service:'Electrician',
-  epoxy_flooring:'Epoxy & concrete floors',
-  garage_door:'Garage door repair',
-  handyman_repairs:'Handyman',
-  hvac_heat:'Heating & air',
-  home_staging:'Home staging',
-  residential_cleaning:'House cleaning',
-  junk_hauling:'Junk removal',
-  landscaping:'Landscaping & yard cleanup',
-  turnover_cleaning:'Move-out cleaning',
-  pool_desert_property:'Pool & outdoor property care',
-  snow_service:'Snow removal',
-  realtor_listing_prep:'Get a home ready to sell',
-  rural_property:'Septic, grading & wells',
-  str_property_care:'Rental property care',
-  tree_service:'Tree service & brush clearing',
+  function familyFor(k){
+    if(['electrical_service','epoxy_flooring','garage_door','handyman_repairs','hvac_heat','home_staging','residential_cleaning','junk_hauling','landscaping','turnover_cleaning','pool_desert_property','snow_service','realtor_listing_prep','rural_property','str_property_care','tree_service'].includes(k))return 'Home & Property';
+    if(['backflow_plumbing','commercial_cleaning','duct_vent','floor_carpet','locksmith_access','pest_control','pressure_washing','sign_lighting','window_cleaning','fire_safety','facility_maintenance','coffee_water','parking_lot'].includes(k))return 'Business & Buildings';
+    if(['equipment_quotes','ice_machine','linen_laundry','grease_drain','hood_exhaust','restaurant_equipment','restaurant_maintenance','restaurant_repair','used_equipment'].includes(k))return 'Restaurant Services';
+    if(['mobile_detailing','fleet_washing','mobile_tire_battery','towing_roadside','vehicle_services','auto_glass'].includes(k))return 'Car & Vehicle';
+    if(['mobile_pet_grooming','pet_sitting','pet_waste'].includes(k))return 'Pet Care';
+    if(['growth_pack','quote_sourcing','waste_audit','competitor_intel','market_expansion','vendor_savings'].includes(k))return 'Business Help';
+    return 'Other';
+  }
 
-  backflow_plumbing:'Backflow & commercial plumbing',
-  commercial_cleaning:'Commercial cleaning',
-  duct_vent:'Duct & dryer vent cleaning',
-  floor_carpet:'Floor & carpet cleaning',
-  locksmith_access:'Locks & access control',
-  pest_control:'Commercial pest control',
-  pressure_washing:'Pressure washing',
-  sign_lighting:'Sign & lighting repair',
-  window_cleaning:'Window cleaning',
-  fire_safety:'Fire safety service',
-  facility_maintenance:'Building maintenance help',
-  coffee_water:'Office coffee & water',
-  parking_lot:'Parking lot cleaning & striping',
+  function esc(v){const d=document.createElement('div');d.textContent=v||'';return d.innerHTML;}
 
-  equipment_quotes:'Get equipment quotes',
-  ice_machine:'Ice machine repair',
-  linen_laundry:'Linen & laundry service',
-  grease_drain:'Grease trap & drain cleaning',
-  hood_exhaust:'Hood cleaning',
-  restaurant_equipment:'Restaurant equipment repair',
-  restaurant_maintenance:'Restaurant maintenance help',
-  restaurant_repair:'Urgent restaurant repair',
-  used_equipment:'Buy or sell used restaurant equipment',
+  try{
+    const services=await BMCServiceFinder.load();
+    total.textContent=services.length+' services available.';
+    const groups={};familyOrder.forEach(f=>groups[f]=[]);
+    services.forEach(s=>groups[familyFor(s.service_key)].push(s));
 
-  mobile_detailing:'Mobile detailing',
-  fleet_washing:'Fleet washing',
-  mobile_tire_battery:'Mobile tire & battery',
-  towing_roadside:'Towing & roadside help',
-  vehicle_services:'Mobile mechanic & vehicle service',
-  auto_glass:'Windshield & auto glass',
-
-  mobile_pet_grooming:'Mobile pet grooming',
-  pet_sitting:'Pet sitting & dog walking',
-  pet_waste:'Pet waste cleanup',
-
-  growth_pack:'Find new customers',
-  quote_sourcing:'Get business quotes',
-  waste_audit:'Cut waste & recycling costs',
-  competitor_intel:'Check local competitors',
-  market_expansion:'Research a new market',
-  vendor_savings:'Cut vendor costs'
-};
-
-const simpleOffers={
-  electrical_service:'Fix electrical problems, add outlets, work on panels, lights, wiring, and EV chargers.',
-  epoxy_flooring:'Coat, repair, or polish garage, shop, and concrete floors.',
-  garage_door:'Fix doors, springs, openers, tracks, and overhead doors.',
-  handyman_repairs:'Get small repairs and odd jobs done around the home.',
-  hvac_heat:'Fix heating or cooling problems, get a tune-up, or replace a system.',
-  home_staging:'Get an occupied or empty home ready for photos and showings.',
-  residential_cleaning:'Regular cleaning, deep cleaning, and one-time cleaning.',
-  junk_hauling:'Remove junk, furniture, debris, and cleanout piles.',
-  landscaping:'Yard cleanup, trimming, regular yard care, and overgrowth.',
-  turnover_cleaning:'Clean a home or rental between tenants, guests, or owners.',
-  pool_desert_property:'Help with pools, irrigation, and outdoor property care.',
-  snow_service:'Snow removal for homes and private property.',
-  realtor_listing_prep:'Cleaning, repairs, hauling, staging, and yard work before a home goes on the market.',
-  rural_property:'Septic, grading, wells, water, and dirt work.',
-  str_property_care:'Turnovers, repairs, and vendor help for rentals and short-term rentals.',
-  tree_service:'Tree removal, trimming, dead trees, brush clearing, and defensible space.',
-
-  backflow_plumbing:'Backflow testing, plumbing work, and required service for businesses.',
-  commercial_cleaning:'Regular or one-time cleaning for offices, shops, churches, schools, and other buildings.',
-  duct_vent:'Clean ducts, dryer vents, and exhaust vents.',
-  floor_carpet:'Carpet cleaning, tile cleaning, floor care, stripping, and waxing.',
-  locksmith_access:'Locks, rekeys, door hardware, and access control.',
-  pest_control:'Regular pest control for businesses and buildings.',
-  pressure_washing:'Wash sidewalks, walls, dumpster pads, and other outdoor areas.',
-  sign_lighting:'Fix signs, outdoor lights, and parking lot lights.',
-  window_cleaning:'Window cleaning for offices, stores, and other buildings.',
-  fire_safety:'Help with fire extinguishers and fire suppression service.',
-  facility_maintenance:'One place to ask for cleaning, repairs, and other building work.',
-  coffee_water:'Coffee, drinking water, machines, and break-room service.',
-  parking_lot:'Sweeping, striping, and parking lot upkeep.',
-
-  equipment_quotes:'Get prices from more than one equipment seller.',
-  ice_machine:'Repair, clean, maintain, or replace a commercial ice machine.',
-  linen_laundry:'Find linen, towel, mat, uniform, and laundry service.',
-  grease_drain:'Grease trap cleaning, drain service, and regular upkeep.',
-  hood_exhaust:'Clean kitchen hoods, ducts, fans, and exhaust systems.',
-  restaurant_equipment:'Repair cooking, dish, prep, and holding equipment.',
-  restaurant_maintenance:'Keep track of repairs and regular restaurant maintenance.',
-  restaurant_repair:'Get help with an urgent restaurant repair.',
-  used_equipment:'Find, buy, sell, or clear out used restaurant equipment.',
-
-  mobile_detailing:'Car and fleet detailing at your location.',
-  fleet_washing:'Regular washing for work trucks, vans, and fleets.',
-  mobile_tire_battery:'Tire and battery help at your location.',
-  towing_roadside:'Towing, jump starts, lockouts, and roadside help.',
-  vehicle_services:'Mobile mechanic and other vehicle help.',
-  auto_glass:'Windshield repair, replacement, and other auto glass work.',
-
-  mobile_pet_grooming:'Pet grooming that comes to you.',
-  pet_sitting:'Dog walks, pet sitting, and drop-in visits.',
-  pet_waste:'Regular or one-time pet waste cleanup.',
-
-  growth_pack:'Get a list of 100 businesses that may be a good fit for what you sell.',
-  quote_sourcing:'Tell us what your business needs and we’ll help find vendor options.',
-  waste_audit:'See if your trash or recycling service is costing more than it should.',
-  competitor_intel:'See who you compete with and what they are doing in your market.',
-  market_expansion:'Check a new city or market before you spend money expanding there.',
-  vendor_savings:'See which regular vendor bills may be worth rebidding or changing.'
-};
-
-const aliases={
-  electrical_service:'electrician electrical wiring outlet breaker panel ceiling fan generator ev charger',
-  hvac_heat:'heating air conditioning ac a/c furnace heat pump hvac mini split cooling',
-  handyman_repairs:'handyman handy man small repair punch list drywall mounting fixture door faucet',
-  residential_cleaning:'house cleaner house cleaning maid housekeeping deep clean residential cleaning',
-  home_staging:'staging home stager listing styling furniture decor real estate',
-  realtor_listing_prep:'realtor broker listing prep seller real estate make ready pre listing',
-  commercial_cleaning:'janitorial office cleaning church cleaning school cleaning theater cleaning facility cleaning',
-  facility_maintenance:'church school theater daycare senior living gym community center building maintenance',
-  tree_service:'tree removal tree trimming dead tree defensible space brush fire mitigation',
-  junk_hauling:'junk removal hauling cleanout debris',
-  pet_sitting:'dog walking dog walker pet sitter',
-  mobile_pet_grooming:'dog grooming pet groomer',
-  restaurant_repair:'restaurant repair refrigeration commercial kitchen',
-  auto_glass:'windshield windshield replacement auto glass',
-  growth_pack:'leads prospects sales customers marketing list',
-  quote_sourcing:'quotes bids vendors compare prices sourcing',
-  vendor_savings:'save money vendors bills rebid costs'
-};
-
-function familyFor(s){
-  const k=s.service_key,c=(s.category||'').toLowerCase();
-  if(['electrical_service','handyman_repairs','residential_cleaning','home_staging','realtor_listing_prep','tree_service','junk_hauling','landscaping','rural_property','pool_desert_property','str_property_care','hvac_heat','epoxy_flooring','turnover_cleaning','garage_door'].includes(k)) return 'Home & Yard';
-  if(['commercial_cleaning','window_cleaning','pressure_washing','pest_control','floor_carpet','fire_safety','backflow_plumbing','sign_lighting','locksmith_access','duct_vent','coffee_water','parking_lot','facility_maintenance'].includes(k)) return 'Business & Building';
-  if(['restaurant_repair','ice_machine','hood_exhaust','grease_drain','restaurant_equipment','used_equipment','equipment_quotes','restaurant_maintenance','linen_laundry'].includes(k)) return 'Restaurant Services';
-  if(['towing_roadside','vehicle_services','fleet_washing','mobile_tire_battery','mobile_detailing','auto_glass'].includes(k)) return 'Car & Vehicle';
-  if(['pet_waste','pet_sitting','mobile_pet_grooming'].includes(k)) return 'Pet Care';
-  if(['growth_pack','vendor_savings','waste_audit','competitor_intel','market_expansion','quote_sourcing'].includes(k)) return 'Business Help';
-  if(c.includes('restaurant')||c.includes('hospitality')) return 'Restaurant Services';
-  if(c.includes('vehicle')||c.includes('fleet')) return 'Car & Vehicle';
-  if(c.includes('pet')) return 'Pet Care';
-  if(c.includes('business')||c.includes('procurement')||c.includes('cost reduction')) return 'Business Help';
-  if(c.includes('commercial')||c.includes('facility')||c.includes('compliance')||c.includes('security')) return 'Business & Building';
-  if(c.includes('property')||c.includes('home')||c.includes('real estate')||c.includes('rural')) return 'Home & Yard';
-  return 'Other Services';
-}
-
-const root=document.getElementById('venture-families');
-const search=document.getElementById('venture-search');
-const count=document.getElementById('search-count');
-const empty=document.getElementById('no-results');
-const jumps=document.getElementById('family-jumps');
-let all=[];
-
-function serviceHref(s){return '../'+s.live_front.replace(/^\/portfolio\//,'');}
-function esc(v){const d=document.createElement('div');d.textContent=v||'';return d.innerHTML;}
-
-function build(){
-  root.innerHTML='';jumps.innerHTML='';
-  const groups={};familyOrder.forEach(f=>groups[f]=[]);
-  all.forEach(s=>groups[familyFor(s)].push(s));
-
-  familyOrder.forEach((fam,index)=>{
-    if(!groups[fam].length)return;
-    groups[fam].sort((a,b)=>(simpleNames[a.service_key]||a.display_name).localeCompare(simpleNames[b.service_key]||b.display_name));
-
-    const jump=document.createElement('a');
-    jump.href='#family-'+index;
-    jump.textContent=fam;
-    jumps.appendChild(jump);
-
-    const section=document.createElement('section');
-    section.className='venture-family';
-    section.id='family-'+index;
-    section.innerHTML='<div class="family-head"><div><h2>'+esc(fam)+'</h2><p>'+esc(familyDescriptions[fam])+'</p></div><span class="family-count">'+groups[fam].length+' services</span></div><div class="venture-grid"></div>';
-
-    const grid=section.querySelector('.venture-grid');
-    groups[fam].forEach(s=>{
-      const name=simpleNames[s.service_key]||s.display_name||'Service';
-      const offer=simpleOffers[s.service_key]||s.primary_offer||'';
-      const a=document.createElement('a');
-      a.className='venture-card';
-      a.href=serviceHref(s);
-      a.dataset.venture='1';
-      a.dataset.search=[name,s.display_name,s.category,offer,s.primary_offer,fam,aliases[s.service_key]||''].join(' ').toLowerCase();
-      a.innerHTML='<div class="venture-name">'+esc(name)+'</div><div class="venture-offer">'+esc(offer)+'</div><div class="venture-link">Get help →</div>';
-      grid.appendChild(a);
+    familyOrder.forEach(fam=>{
+      if(!groups[fam].length)return;
+      groups[fam].sort((a,b)=>a.display_name.localeCompare(b.display_name));
+      const section=document.createElement('section');
+      section.className='venture-family';
+      section.id=familyIds[fam];
+      section.innerHTML='<div class="family-head"><div><h2>'+esc(fam)+'</h2><p>'+esc(familyDescriptions[fam])+'</p></div><span class="family-count">'+groups[fam].length+' services</span></div><div class="venture-grid"></div>';
+      const grid=section.querySelector('.venture-grid');
+      groups[fam].forEach(s=>{
+        const a=document.createElement('a');
+        a.className='venture-card';
+        a.href=BMCServiceFinder.publicHref(s);
+        a.innerHTML='<div class="venture-name">'+esc(s.display_name)+'</div><div class="venture-offer">'+esc(s.primary_offer||'')+'</div><div class="venture-link">See this service →</div>';
+        grid.appendChild(a);
+      });
+      root.appendChild(section);
     });
-    root.appendChild(section);
-  });
-  filter();
-}
 
-function filter(){
-  const q=search.value.trim().toLowerCase();
-  const cards=[...document.querySelectorAll('[data-venture]')];
-  let visible=0;
-  cards.forEach(card=>{const show=!q||card.dataset.search.includes(q);card.hidden=!show;if(show)visible++;});
-  [...document.querySelectorAll('.venture-family')].forEach(f=>{f.hidden=![...f.querySelectorAll('[data-venture]')].some(c=>!c.hidden);});
-  count.textContent=q ? (visible+' result'+(visible===1?'':'s')) : (all.length+' services');
-  empty.hidden=visible!==0;
-}
-
-fetch('../data/services.json').then(r=>r.json()).then(d=>{
-  all=d.services||[];
-  build();
-  const q=new URLSearchParams(location.search).get('q');
-  if(q){search.value=q;filter();}
-}).catch(()=>{count.textContent='We could not load the service list. Tell us what you need and we’ll help from there.';});
-
-search.addEventListener('input',filter);
+    await BMCServiceFinder.attach(input,results,{
+      limit:6,
+      initialQuery:incoming,
+      onResults:function(matches,q){
+        if(!q){count.textContent='Search by job, problem, or service.';tellMore.href='../request/';return;}
+        count.textContent=matches.length?(matches.length+' likely option'+(matches.length===1?'':'s')+' found.'):'No exact match yet. We’ll still give you a way forward.';
+        tellMore.href='../request/?problem='+encodeURIComponent(q);
+      }
+    });
+  }catch(e){
+    console.error(e);
+    count.textContent='The service list did not load. You can still tell us what you need.';
+  }
+})();
 </script>
-<div class="mobile-sticky-cta"><a class="btn btn-primary" href="../request/">Get help</a></div></body></html>
+</body></html>
