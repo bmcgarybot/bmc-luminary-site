@@ -39,9 +39,10 @@ while true; do
       -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
   fi
 
-  # Source-native authoritative buyer discovery: twice daily.
-  if [ $((i % 144)) -eq 0 ]; then
-    curl -fsS -X POST http://ops_api:8000/api/process-source-native-research \
+  # Bounded source-native authoritative buyer discovery: hourly, staggered from the main hourly work.
+  # The API rotates the oldest source/market lanes so the full Arizona footprint refreshes without one giant request.
+  if [ $((i % 12)) -eq 6 ]; then
+    curl --max-time 360 -fsS -X POST http://ops_api:8000/api/process-source-native-research \
       -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
   fi
 
