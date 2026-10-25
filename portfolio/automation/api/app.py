@@ -460,7 +460,36 @@ async def handle_vendor_application(conn,p):
     await conn.execute("insert into exceptions(type,vendor_id,severity,summary,recommended_action) values('vendor_application_review',$1,'normal',$2,$3)",
                        vid,f"Review vendor application: {business}","Verify services, territory, licensing/insurance where applicable")
     await event(conn,"vendor",vid,"application_received",p)
-    return {"ok":True,"status":"application_received","vendor_id":vid,"message":"Application received. BMC will review the service and territory details."}
+    applicant_email=clean(p.get("email"))
+    if applicant_email:
+        body=f"""Hi {clean(p.get("contact_name")) or business},
+
+We received your BMC provider application for {market}.
+
+What happens next:
+1. We review the jobs and area you want.
+2. We check license or insurance details when the trade requires it.
+3. If the pilot is a fit, we confirm your provider status and you can start receiving matching requests.
+
+When a request comes in, you see the job details first. You can accept it or pass. Joining the pilot is free, and any future paid lead or territory terms will be shown before they apply.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+"""
+        html_body=workflow_email_html(
+          "We got your BMC provider application",
+          [
+            f"We received your application for {market}.",
+            "Next, we review the jobs and area you want and check license or insurance details when the trade requires it.",
+            "If the pilot is a fit, we confirm your provider status and you can start receiving matching requests.",
+            "When a request comes in, you see the job details first. You can accept it or pass.",
+            "Joining the pilot is free. Any future paid lead or territory terms will be shown before they apply."
+          ],
+          "Review the provider pilot terms",
+          f"{PUBLIC_SITE_URL}/provider-pilot/"
+        )
+        await send_mail(applicant_email,"We got your BMC provider application",body,html_body)
+    return {"ok":True,"status":"application_received","vendor_id":vid,"message":"Application received. We’ll review the work and area you selected, then contact you if the pilot is a fit."}
 
 
 
@@ -1637,7 +1666,37 @@ async def admin_approve_pilot(request:Request,x_bmc_admin_key:str|None=Header(de
               "credentials_review_confirmed":True,
               "notes":clean(p.get("notes"))
             },"admin")
-    return {"ok":True,"vendor_id":vid,"status":"pilot","message":"Provider approved for pilot routing."}
+        if clean(vendor["public_email"]):
+            body=f"""Hi {vendor['business_name']},
+
+You’re approved for the BMC provider pilot.
+
+Here is what to expect:
+- BMC will only offer requests that match the service and market information on your profile.
+- You will see the job details before deciding.
+- You can accept or pass.
+- Passing does not create a charge.
+- Joining the pilot itself is free.
+
+If a future lead or territory has a price, the terms will be shown before they apply.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+"""
+            html_body=workflow_email_html(
+              "You’re approved for the BMC provider pilot",
+              [
+                "Your provider profile is approved for the pilot.",
+                "BMC will use your service and market settings when matching requests.",
+                "You will see the job details before deciding. Accept the jobs that fit and pass on the ones that do not.",
+                "Passing does not create a charge. Joining the pilot itself is free.",
+                "If a future lead or territory has a price, the terms will be shown before they apply."
+              ],
+              "Review how the pilot works",
+              f"{PUBLIC_SITE_URL}/providers/#example"
+            )
+            await send_mail(clean(vendor["public_email"]),"You’re approved for the BMC provider pilot",body,html_body)
+    return {"ok":True,"vendor_id":vid,"status":"pilot","message":"Provider approved for the pilot. Approval email sent when an email address is available."}
 
 @app.post("/api/admin/vendor-status")
 async def admin_vendor_status(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
@@ -1661,6 +1720,19 @@ async def admin_vendor_status(request:Request,x_bmc_admin_key:str|None=Header(de
                 for m in markets:
                     await conn.execute("insert into vendor_markets(vendor_id,market) values($1,$2) on conflict do nothing",vid,clean(m))
             await event(conn,"vendor",vid,"status_updated",{"status":status,"services":services,"markets":markets},"admin")
+            if status=="pilot":
+                vendor=await conn.fetchrow("select business_name,public_email from vendors where vendor_id=$1",vid)
+                if vendor and clean(vendor["public_email"]):
+                    body=f"""Hi {vendor['business_name']},
+
+Your BMC provider profile is approved for the pilot.
+
+You will see matching job details before deciding whether to accept or pass. Joining the pilot is free, and passing does not create a charge. Any future paid terms will be shown before they apply.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+"""
+                    await send_mail(clean(vendor["public_email"]),"You’re approved for the BMC provider pilot",body)
     return {"ok":True,"vendor_id":vid,"status":status}
 
 @app.post("/api/admin/classify-lead")
