@@ -1,0 +1,50 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BMC Partner Network | Local Service Providers</title>
+<meta name="description" content="Join the provider side of BMC Service Network. Choose the work, cities, job sizes, and capacity that fit your business.">
+<meta name="bmc-webhook" content="REPLACE_ME">
+<link rel="stylesheet" href="../assets/core.css">
+</head><body>
+<nav class="nav"><div class="wrap nav-in"><a class="brand" href="./">BMC Partner Network</a><div class="nav-links"><a href="#how">How it works</a><a href="#apply">Apply</a><a href="../provider-pilot/">Pilot terms</a></div></div></nav>
+
+<header class="hero"><div class="wrap">
+<div class="eyebrow">For service businesses</div>
+<h1>Choose the work you want. Pass on the work you don’t.</h1>
+<p>BMC’s provider side is separate from the customer experience. Tell us what you do, where you work, your minimum job size, and your current capacity. When a matching request comes in, you can accept it or pass.</p>
+<div class="actions"><a class="btn btn-primary" href="#apply">Apply to the network</a><a class="btn btn-secondary" href="#how">See how requests work</a></div>
+</div></header>
+
+<section class="section" id="how"><div class="wrap">
+<span class="kicker">Provider side</span><h2>A simple request flow, not a giant lead blast.</h2>
+<div class="steps">
+<div class="card step"><h3>Set your fit</h3><p>Tell BMC your services, cities, minimum jobs, credentials where applicable, and how much new work you can handle.</p></div>
+<div class="card step"><h3>Receive a matching request</h3><p>You see the job type, area, timing, and scope before customer contact details are released.</p></div>
+<div class="card step"><h3>Accept or pass</h3><p>Accept when it fits. Pass when it doesn’t. If you accept, BMC sends the customer details and asks for a simple outcome update later.</p></div>
+</div></div></section>
+
+<section class="section" id="apply"><div class="wrap form-shell">
+<div class="form-copy">
+<span class="kicker">Join the network</span>
+<h2>What work should BMC send you?</h2>
+<p class="section-lead">You are not signing up for every category or every city. Be specific about the work you actually want.</p>
+</div>
+
+<form class="form" data-bmc-form data-form-type="vendor_partner" data-subject="BMC provider application">
+<input class="hidden" name="website" tabindex="-1" autocomplete="off">
+<div class="row"><div class="field"><label>Business name</label><input name="business_name" required></div><div class="field"><label>Website <span class="muted">(optional)</span></label><input name="business_url"></div></div>
+<div class="row"><div class="field"><label>Your name</label><input name="contact_name" required></div><div class="field"><label>Email</label><input type="email" name="email" required></div></div>
+<div class="row"><div class="field"><label>Phone</label><input type="tel" name="phone"></div><div class="field"><label>Primary city / market</label><select name="market" data-market-select required><option value="">Choose your main market</option></select></div></div>
+<div class="field"><label>Other cities or areas you serve</label><textarea name="territory" placeholder="Example: Prescott, Prescott Valley, Chino Valley"></textarea></div>
+<div class="field"><label>What services do you want requests for?</label><textarea name="services" required placeholder="Example: handyman punch lists, residential cleaning, tree removal, landscaping, restaurant refrigeration, mobile tire service"></textarea></div>
+<div class="row"><div class="field"><label>Smallest job you usually want</label><input name="minimum_job" placeholder="Example: $250 minimum or no minimum"></div><div class="field"><label>How much new work can you take?</label><input name="capacity" placeholder="Example: 5 jobs per week"></div></div>
+<div class="field"><label>License / insurance information <span class="muted">(if applicable)</span></label><textarea name="credentials" placeholder="License number, insurance notes, certifications, or anything BMC should verify"></textarea></div>
+<p class="muted">Before pilot routing, review the <a href="../provider-pilot/" target="_blank" rel="noopener">BMC Provider Pilot Terms</a>.</p>
+<label class="check"><input type="checkbox" name="pilot_terms" value="accepted" required><span>I reviewed the pilot terms and understand that any future paid lead, subscription, territory, or referral pricing must be separately presented and accepted before it applies.</span></label>
+<div class="notice" data-form-notice></div>
+<div class="actions"><button class="btn btn-primary" type="submit" data-label="Submit my application">Submit my application</button></div>
+</form>
+</div></section>
+
+<footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>Provider side of BMC Service Network</span></div></footer>
+<script src="../assets/core.js?v=provider-network-1"></script>
+</body></html>
