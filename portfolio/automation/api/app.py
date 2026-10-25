@@ -77,6 +77,7 @@ CMS_HOSPITALS_URL=os.getenv("CMS_HOSPITALS_URL","https://data.cms.gov/provider-d
 CMS_NURSING_HOMES_URL=os.getenv("CMS_NURSING_HOMES_URL","https://data.cms.gov/provider-data/api/1/datastore/query/4pq5-n9py/0").strip()
 CMS_HOME_HEALTH_URL=os.getenv("CMS_HOME_HEALTH_URL","https://data.cms.gov/provider-data/api/1/datastore/query/6jpm-sxkc/0").strip()
 CMS_HOSPICE_URL=os.getenv("CMS_HOSPICE_URL","https://data.cms.gov/provider-data/api/1/datastore/query/yc9t-dgbk/0").strip()
+SOURCE_NATIVE_CHECK_BATCH=max(1,min(50,env_int("SOURCE_NATIVE_CHECK_BATCH",10)))
 
 BUYER_RESEARCH_HINTS={
     "commercial_cleaning":'"hospital" OR "clinic" OR "dental" OR "therapy" OR "pharmacy" OR "grocery" OR "retail" OR "insurance office" OR "school" OR "church" OR "hotel" OR "apartment" OR "restaurant"',
@@ -2293,6 +2294,7 @@ async def admin_agent_status(x_bmc_admin_key:str|None=Header(default=None)):
       "source_native_research":{"enabled":SOURCE_NATIVE_RESEARCH_ENABLED,
         "adhs_page_size":ADHS_SOURCE_NATIVE_PAGE_SIZE,
         "cms_enabled":CMS_SOURCE_NATIVE_ENABLED,"cms_page_size":CMS_SOURCE_NATIVE_PAGE_SIZE,
+        "lane_batch_limit":SOURCE_NATIVE_CHECK_BATCH,
         "source_count":1+(len(CMS_SOURCE_DATASETS) if CMS_SOURCE_NATIVE_ENABLED else 0),
         "market_count":len(SOURCE_NATIVE_MARKETS)},
       "queues":{
@@ -2427,7 +2429,19 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
     prospects_updated=0
     errors=[]
     async with app.state.pool.acquire() as conn:
+      expected_total=int(await conn.fetchval("""select count(*) from source_native_state
+        where coalesce((metadata->>'expected')::boolean,false)=true""") or 0)
+      lane_rows=await conn.fetch("""select source_key,market from source_native_state
+        where coalesce((metadata->>'expected')::boolean,false)=true
+        order by case when last_run_at is null then 0 else 1 end,
+                 last_run_at nulls first,
+                 case when cursor>0 then 0 else 1 end,
+                 source_key,market
+        limit $1""",SOURCE_NATIVE_CHECK_BATCH)
+      selected_lanes={(clean(row["source_key"]),clean(row["market"])) for row in lane_rows}
       for market in SOURCE_NATIVE_MARKETS:
+        if (ADHS_SOURCE_KEY,market) not in selected_lanes:
+            continue
         await conn.execute("""insert into source_native_state(source_key,market)
           values($1,$2) on conflict(source_key,market) do nothing""",ADHS_SOURCE_KEY,market)
         state=await conn.fetchrow("""select cursor from source_native_state
@@ -2551,6 +2565,8 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
         for source in CMS_SOURCE_DATASETS:
           for market in SOURCE_NATIVE_MARKETS:
             source_key=source["source_key"]
+            if (source_key,market) not in selected_lanes:
+                continue
             await conn.execute("""insert into source_native_state(source_key,market)
               values($1,$2) on conflict(source_key,market) do nothing""",source_key,market)
             state=await conn.fetchrow("""select cursor from source_native_state
@@ -2652,6 +2668,9 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
     return {"ok":True,"enabled":True,"source":"source_native_research",
       "sources":["adhs_facilities_arcgis"]+[x["source_key"] for x in CMS_SOURCE_DATASETS if CMS_SOURCE_NATIVE_ENABLED],
       "markets_checked":len(successful_markets),"source_checks":source_checks,
+      "lanes_selected":len(selected_lanes),
+      "lanes_remaining":max(0,expected_total-len(selected_lanes)),
+      "lane_batch_limit":SOURCE_NATIVE_CHECK_BATCH,
       "records_seen":records_seen,"prospects_created":prospects_created,
       "prospects_updated":prospects_updated,"external_actions_performed":0,"errors":errors}
 
