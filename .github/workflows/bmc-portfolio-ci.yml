@@ -56,6 +56,9 @@ jobs:
       - name: Validate generated priority storefronts
         run: python portfolio/automation/generate-storefronts.py --check
 
+      - name: Reject legacy public UI
+        run: python portfolio/automation/validate-public-ui.py
+
       - name: Validate Compose
         working-directory: portfolio/automation
         run: docker compose --env-file .env.example config >/dev/null
