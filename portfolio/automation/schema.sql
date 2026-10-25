@@ -347,6 +347,29 @@ create table if not exists research_backlog (
 create index if not exists idx_research_backlog_queue
 on research_backlog(status,market_priority,research_priority,market,service_key,side);
 
+alter table research_backlog
+  add column if not exists research_pass integer default 0;
+
+create table if not exists research_sources (
+  source_key text primary key,
+  source_name text not null,
+  side text not null check (side in ('vendor','buyer','both')),
+  source_type text not null,
+  market text,
+  county text,
+  source_domain text,
+  source_url text not null,
+  query_hint text,
+  priority text default 'MEDIUM',
+  is_active boolean default true,
+  notes text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create index if not exists idx_research_sources_active
+on research_sources(is_active,side,market,county,priority);
+
 -- Normalize legacy research queue status casing so older databases remain compatible.
 update research_backlog set status=lower(status)
 where status is not null and status<>lower(status);
