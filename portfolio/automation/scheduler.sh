@@ -24,6 +24,8 @@ while true; do
   fi
 
   if [ $((i % 24)) -eq 0 ]; then
+    curl -fsS -X POST http://ops_api:8000/api/process-public-opportunities \
+      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
     curl -fsS -X POST http://ops_api:8000/api/process-outreach \
       -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
     curl -fsS -X POST http://ops_api:8000/api/process-buyer-outreach \
