@@ -10,8 +10,7 @@
     "handyman_repairs",
     "electrical_service",
     "commercial_cleaning",
-    "realtor_listing_prep",
-    "facility_maintenance"
+    "realtor_listing_prep"
   ],
   "overrides": {
     "hvac_heat": {
