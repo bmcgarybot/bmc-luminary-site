@@ -318,6 +318,7 @@ jobs:
           test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from tasks where owner='research_agent' and status='open';") -eq 4
           test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_backlog where research_pass=1;") -ge 1
           test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_backlog where research_pass=1 and status='queued';") -ge 1
+          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_backlog where research_pass=1 and target_gap=greatest(0,goal-current_count);") -ge 1
 
           # A completed research pass with a remaining gap must be eligible for the next bounded pass.
           curl -fsS -X POST http://127.0.0.1:8000/api/agent-cycle \
