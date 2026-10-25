@@ -1165,7 +1165,7 @@ async def admin_preflight(x_bmc_admin_key:str|None=Header(default=None)):
     imap_ready=IMAP_ENABLED and configured(IMAP_HOST) and configured(IMAP_USER) and configured(IMAP_PASSWORD)
     postal_ready=configured(BUSINESS_POSTAL_ADDRESS)
     stripe_ready=configured(STRIPE_WEBHOOK_SECRET)
-    tunnel_ready=configured(CLOUDFLARE_TUNNEL_TOKEN) and configured(WEBHOOK_URL)
+    tunnel_ready=configured(WEBHOOK_URL)
     async with app.state.pool.acquire() as conn:
         pilot_vendors=await conn.fetchval("select count(*) from vendors where status in ('pilot','active')")
         first_wave_vendors=await conn.fetchval("select count(*) from outreach where entity_type='vendor' and wave='pilot1'")
@@ -1197,7 +1197,7 @@ async def admin_preflight(x_bmc_admin_key:str|None=Header(default=None)):
       },
       "next_required":[
         item for item,ready in [
-          ("Configure Cloudflare Tunnel / WEBHOOK_URL",tunnel_ready),
+          ("Configure public webhook URL",tunnel_ready),
           ("Configure transactional SMTP",smtp_ready),
           ("Activate at least one verified pilot provider",int(pilot_vendors or 0)>=1),
           ("Configure monitored IMAP inbox before outbound prospecting",imap_ready),
