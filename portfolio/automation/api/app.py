@@ -831,6 +831,11 @@ async def provider_request_login(request:Request):
           order by updated_at desc limit 1""",email_address)
         if not vendor:
             return generic
+        recent_requests=await conn.fetchval("""select count(*) from events
+          where entity_type='vendor' and entity_id=$1 and event_type='portal_login_requested'
+            and occurred_at>now()-interval '10 minutes'""",vendor["vendor_id"])
+        if int(recent_requests or 0)>=3:
+            return generic
         token,expires=await issue_vendor_portal_token(conn,vendor["vendor_id"])
         link=provider_dashboard_url(token)
         body=f"""Hi {vendor['business_name']},
