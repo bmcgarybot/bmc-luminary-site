@@ -75,6 +75,7 @@ services:
       RESEARCH_MAX_PASSES: ${RESEARCH_MAX_PASSES:-4}
       RESEARCH_AUTO_PROMOTE_CONTACTS: ${RESEARCH_AUTO_PROMOTE_CONTACTS:-true}
       SOURCE_NATIVE_RESEARCH_ENABLED: ${SOURCE_NATIVE_RESEARCH_ENABLED:-true}
+      SOURCE_NATIVE_CHECK_BATCH: ${SOURCE_NATIVE_CHECK_BATCH:-10}
       SOURCE_NATIVE_MARKETS: ${SOURCE_NATIVE_MARKETS:-Prescott,Prescott Valley,Chino Valley,Dewey-Humboldt,Mayer,Cordes Lakes,Williamson Valley,Ash Fork,Seligman,Skull Valley,Camp Verde,Cottonwood,Sedona,Flagstaff,Winslow,Kingman,Golden Valley,Bullhead City,Phoenix,Scottsdale,Tucson}
       ADHS_FACILITIES_URL: ${ADHS_FACILITIES_URL:-https://services1.arcgis.com/mpVYz37anSdrK4d8/ArcGIS/rest/services/All_State_Licensed_Facilities_in_Arizona/FeatureServer/18/query}
       ADHS_SOURCE_NATIVE_PAGE_SIZE: ${ADHS_SOURCE_NATIVE_PAGE_SIZE:-100}
