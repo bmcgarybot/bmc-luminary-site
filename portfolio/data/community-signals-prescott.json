@@ -1,0 +1,110 @@
+{
+  "version": "2026-10-24",
+  "geography": [
+    "Prescott",
+    "Prescott Valley",
+    "Dewey-Humboldt",
+    "Chino Valley"
+  ],
+  "purpose": "Community recommendation signals for provider research. Not provider approval or credential verification.",
+  "sources": [
+    "Nextdoor public business/recommendation pages",
+    "local business listings"
+  ],
+  "categories": {
+    "electrical": [
+      {
+        "business": "Clear Electric LLC",
+        "market": "Prescott",
+        "signal": "Neighbor recommendation activity; licensed/bonded/insured claim on public Nextdoor page",
+        "source": "https://nextdoor.com/pages/clear-electric-llc-prescott-az/"
+      },
+      {
+        "business": "Jameson Electric LLC",
+        "market": "Prescott Valley",
+        "signal": "Repeated neighbor recommendations for residential electrical work",
+        "source": "https://nextdoor.com/pages/jameson-electric-prescott-valley-az/"
+      },
+      {
+        "business": "Cobb-AZ Electric",
+        "market": "Prescott / Prescott Valley",
+        "signal": "Repeated recommendation threads for reasonable local electrician",
+        "source": "https://nextdoor.com/pages/cobb-az-electric-prescott-az/"
+      },
+      {
+        "business": "Assurance Electrical Services",
+        "market": "Prescott Valley",
+        "signal": "Local electrical contractor candidate; credential verification still required",
+        "source": "https://nextdoor.com/"
+      }
+    ],
+    "hvac": [
+      {
+        "business": "Northern Arizona Heating & Air LLC",
+        "market": "Prescott Valley",
+        "signal": "Repeated local recommendation activity for repair and replacement",
+        "source": "https://nextdoor.com/pages/northern-arizona-heating-and-air-prescott-valley-az/"
+      },
+      {
+        "business": "Phillips Heating & Cooling Inc",
+        "market": "Prescott",
+        "signal": "Repeated recommendation activity for honest/reliable HVAC service",
+        "source": "https://nextdoor.com/pages/phillips-heating-cooling-inc/"
+      },
+      {
+        "business": "Moyer's Heating & Cooling Inc",
+        "market": "Prescott Valley",
+        "signal": "Strong local recommendation activity and long-time local positioning",
+        "source": "https://nextdoor.com/pages/moyers-heating-cooling-prescott-valley-az/"
+      }
+    ],
+    "handyman": [
+      {
+        "business": "Handyman Lamb",
+        "market": "Prescott",
+        "signal": "Repeated strong neighbor recommendations for small repairs and home maintenance",
+        "source": "https://nextdoor.com/pages/handyman-lamb-phoenix-az/"
+      },
+      {
+        "business": "High Desert Mobile Mechanic & Handyman Services",
+        "market": "Prescott",
+        "signal": "Neighbor recommendation for broad handyman tasks",
+        "source": "https://nextdoor.com/pages/high-desert-mobile-mechanic-handyman-services/"
+      }
+    ],
+    "residential_cleaning": [
+      {
+        "business": "Hernandez Housekeeping",
+        "market": "Prescott Valley",
+        "signal": "Multiple recent local requests/recommendations for recurring house cleaning",
+        "source": "https://nextdoor.com/pages/hernandez-housekeeping-prescott-valley-az/"
+      },
+      {
+        "business": "StarFire Home And Office Cleaning LLC",
+        "market": "Prescott Valley",
+        "signal": "Local recommendation activity for residential and move-out cleaning",
+        "source": "https://nextdoor.com/pages/starfire-home-and-office-cleaning-llc-prescott-valley-az/"
+      },
+      {
+        "business": "Mtn.Breeze Cleaners",
+        "market": "Prescott Valley",
+        "signal": "Recommendation activity including STR/as-needed cleaning",
+        "source": "https://nextdoor.com/pages/mtnbreeze-cleaners-prescott-valley-az/"
+      }
+    ],
+    "home_staging": [
+      {
+        "business": "All Spruced Staging",
+        "market": "Prescott / Prescott Valley",
+        "signal": "Local staging business candidate with strong public review footprint",
+        "source": "local business listing"
+      },
+      {
+        "business": "CadyBrooke Staging & Design",
+        "market": "Prescott area",
+        "signal": "Prescott-area staging candidate serving Yavapai County",
+        "source": "local business listing"
+      }
+    ]
+  }
+}
