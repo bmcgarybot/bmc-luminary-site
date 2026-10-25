@@ -376,9 +376,9 @@ jobs:
           docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c \
             "delete from vendor_portal_tokens where vendor_id='v_prescott_zebrascapes';
              insert into vendor_portal_tokens(vendor_id,token_hash,expires_at)
-             values('v_prescott_zebrascapes',encode(digest('ci-provider-token','sha256'),'hex'),now()+interval '1 day');"
+             values('v_prescott_zebrascapes',encode(digest('ci-provider-token-000000000000000000000000000000000000000000000000','sha256'),'hex'),now()+interval '1 day');"
 
-          curl -fsS 'http://127.0.0.1:8000/api/provider/dashboard?token=ci-provider-token' >/tmp/bmc_provider_dashboard.json
+          curl -fsS 'http://127.0.0.1:8000/api/provider/dashboard?token=ci-provider-token-000000000000000000000000000000000000000000000000' >/tmp/bmc_provider_dashboard.json
           python - <<'PY'
           import json
           data=json.load(open("/tmp/bmc_provider_dashboard.json"))
@@ -391,7 +391,7 @@ jobs:
 
           curl -fsS -X POST http://127.0.0.1:8000/api/provider/settings \
             -H 'Content-Type: application/json' \
-            -d '{"token":"ci-provider-token","capacity":"4 new jobs per week","minimum_job":"750","territory_notes":"Prescott, Prescott Valley","markets":["Prescott","Prescott Valley"],"services":["landscaping","tree_service","electrical_service"]}' \
+            -d '{"token":"ci-provider-token-000000000000000000000000000000000000000000000000","capacity":"4 new jobs per week","minimum_job":"750","territory_notes":"Prescott, Prescott Valley","markets":["Prescott","Prescott Valley"],"services":["landscaping","tree_service","electrical_service"]}' \
             >/tmp/bmc_provider_settings.json
           python - <<'PY'
           import json
@@ -418,16 +418,16 @@ jobs:
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from exceptions where vendor_id='v_prescott_zebrascapes' and type='provider_service_change_review' and status='open';")" -eq 0
 
           curl -fsS -X POST http://127.0.0.1:8000/api/provider/availability \
-            -H 'Content-Type: application/json' -d '{"token":"ci-provider-token","action":"pause"}' >/tmp/bmc_provider_pause.json
+            -H 'Content-Type: application/json' -d '{"token":"ci-provider-token-000000000000000000000000000000000000000000000000","action":"pause"}' >/tmp/bmc_provider_pause.json
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from vendors where vendor_id='v_prescott_zebrascapes';")" = "paused"
-          curl -fsS 'http://127.0.0.1:8000/api/provider/dashboard?token=ci-provider-token' >/tmp/bmc_provider_paused_dashboard.json
+          curl -fsS 'http://127.0.0.1:8000/api/provider/dashboard?token=ci-provider-token-000000000000000000000000000000000000000000000000' >/tmp/bmc_provider_paused_dashboard.json
           python - <<'PY'
           import json
           data=json.load(open("/tmp/bmc_provider_paused_dashboard.json"))
           assert data["provider"]["status"] == "paused"
           PY
           curl -fsS -X POST http://127.0.0.1:8000/api/provider/availability \
-            -H 'Content-Type: application/json' -d '{"token":"ci-provider-token","action":"resume"}' >/tmp/bmc_provider_resume.json
+            -H 'Content-Type: application/json' -d '{"token":"ci-provider-token-000000000000000000000000000000000000000000000000","action":"resume"}' >/tmp/bmc_provider_resume.json
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from vendors where vendor_id='v_prescott_zebrascapes';")" = "pilot"
 
           curl -fsS -X POST http://127.0.0.1:8000/api/intake             -H 'Content-Type: application/json'             -d '{"submission_id":"ci-smoke-lead","form_type":"tree_service","market":"Prescott","scope":"CI smoke test: tree removal request","timing":"Within 7 days","consent":"yes"}'             >/tmp/bmc_intake.json
