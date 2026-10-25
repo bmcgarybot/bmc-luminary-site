@@ -1,5 +1,6 @@
 (function(){
   const DATA_URL="/data/services.json";
+  const BACKEND_SEARCH_URL="https://hooks.bmcservicenetwork.com/api/service-search";
   const DEFAULT_IMAGE="https://images.unsplash.com/photo-1505798577917-a65157d3320a?auto=format&fit=crop&w=900&q=78";
 
   const images={
@@ -102,6 +103,42 @@
     return cache;
   }
 
+  async function remoteSearch(services,query){
+    const q=String(query||"").trim();
+    if(q.length<3)return null;
+    try{
+      const controller=new AbortController();
+      const timer=setTimeout(()=>controller.abort(),2200);
+      const r=await fetch(BACKEND_SEARCH_URL,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({query:q}),
+        signal:controller.signal
+      });
+      clearTimeout(timer);
+      if(!r.ok)return null;
+      const data=await r.json();
+      if(!data||!data.match)return null;
+      const keys=[data.match.service_key].concat((data.related||[]).map(x=>x.service_key));
+      const results=[];
+      keys.forEach((key,i)=>{
+        const s=services.find(x=>x.service_key===key);
+        if(s && !results.some(x=>x.service.service_key===key)){
+          results.push({
+            service:s,
+            score:i===0?120:70-(i*5),
+            reason:i===0?(data.source==="local_ai"?"AI match":"Best match"):"Related option",
+            remoteSource:data.source
+          });
+        }
+      });
+      return {results,data};
+    }catch(e){
+      return null;
+    }
+  }
+
+
   function find(services,query,limit){
     const q=normalize(query);
     if(!q)return [];
@@ -173,18 +210,35 @@
     const services=await load();
     const opts=options||{};
     const fallbackResults=fallback(services);
-    let timer=null;
-    function run(){
+    let timer=null,runId=0;
+
+    async function run(){
+      const current=++runId;
       const q=input.value.trim();
-      const results=find(services,q,opts.limit||5);
-      render(container,results,q,{fallback:fallbackResults});
-      if(opts.onResults)opts.onResults(results,q);
+      const local=find(services,q,opts.limit||5);
+      render(container,local,q,{fallback:fallbackResults});
+      if(opts.onResults)opts.onResults(local,q,{source:"local"});
+
+      if(q.length<3)return;
+      const remote=await remoteSearch(services,q);
+      if(current!==runId || !remote || !remote.results.length)return;
+
+      const merged=[];
+      const seen=new Set();
+      remote.results.concat(local).forEach(item=>{
+        const key=item.service.service_key;
+        if(!seen.has(key)){seen.add(key);merged.push(item);}
+      });
+      const finalResults=merged.slice(0,opts.limit||5);
+      render(container,finalResults,q,{fallback:fallbackResults});
+      if(opts.onResults)opts.onResults(finalResults,q,{source:remote.data.source,remote:remote.data});
     }
-    input.addEventListener("input",()=>{clearTimeout(timer);timer=setTimeout(run,90);});
+
+    input.addEventListener("input",()=>{clearTimeout(timer);timer=setTimeout(run,160);});
     input.addEventListener("focus",()=>{if(input.value.trim())run();});
     if(opts.initialQuery){input.value=opts.initialQuery;run();}
-    return {services,run,find:q=>find(services,q,opts.limit||5)};
+    return {services,run,find:q=>find(services,q,opts.limit||5),remoteSearch:q=>remoteSearch(services,q)};
   }
 
-  window.BMCServiceFinder={load,find,fallback,render,attach,imageFor,publicHref};
+  window.BMCServiceFinder={load,find,fallback,render,attach,imageFor,publicHref,remoteSearch};
 })();
