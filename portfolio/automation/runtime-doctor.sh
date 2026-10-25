@@ -135,11 +135,14 @@ db_query(){
 }
 
 if service_count="$(db_query 'select count(*) from services;' 2>/dev/null)"; then
-  if [ "${service_count:-0}" -ge 53 ]; then pass "Service registry seeded (${service_count})"; else fail "Service registry has only ${service_count:-0} rows; expected at least 53"; fi
+  if [ "${service_count:-0}" -ge 54 ]; then pass "Service registry seeded (${service_count})"; else fail "Service registry has only ${service_count:-0} rows; expected at least 54"; fi
 else
   fail "Postgres query failed"
   service_count=0
 fi
+
+auto_repair_count="$(db_query "select count(*) from services where service_key='auto_repair_shop' and is_active=true;" 2>/dev/null || echo 0)"
+[ "${auto_repair_count:-0}" -eq 1 ] && pass "Traditional auto repair service is active" || fail "Traditional auto repair service is missing or duplicated"
 
 vendor_count="$(db_query 'select count(*) from vendors;' 2>/dev/null || echo 0)"
 buyer_count="$(db_query 'select count(*) from buyers;' 2>/dev/null || echo 0)"
@@ -237,6 +240,21 @@ PY
       fi
     else
       fail "Public service-search API is not responding locally"
+    fi
+
+    if curl -fsS -X POST http://127.0.0.1:8000/api/service-search       -H 'Content-Type: application/json'       -d '{"query":"brake repair"}' >/tmp/bmc_runtime_auto_repair.json 2>/dev/null; then
+      if python3 - <<'PY'
+import json
+d=json.load(open("/tmp/bmc_runtime_auto_repair.json"))
+raise SystemExit(0 if (d.get("match") or {}).get("service_key")=="auto_repair_shop" else 1)
+PY
+      then
+        pass "Intelligent service search maps 'brake repair' to traditional auto repair"
+      else
+        fail "Service search did not map 'brake repair' to auto_repair_shop"
+      fi
+    else
+      fail "Traditional auto repair service-search smoke test did not respond"
     fi
   fi
 fi
