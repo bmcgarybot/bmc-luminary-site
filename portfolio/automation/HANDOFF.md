@@ -444,3 +444,13 @@ The goal is one shared operating system supporting 48 focused businesses. Every 
 When continuing in another conversation, tell ChatGPT:
 
 > Continue the BMC Arizona Service Portfolio build from `portfolio/automation/HANDOFF.md` in `bmcgarybot/bmc-luminary-site` and the Google Sheet `BMC Arizona Service Portfolio - Master Operations`. Do not touch QNS. Verify current CI and Dashboard first, then continue the Critical next sequence without re-planning the whole business.
+
+
+## Current launch blockers
+
+Runtime doctor is healthy with 0 core failures. Public site and Cloudflare Tunnel ingress are complete and verified. Remaining launch actions:
+- Configure transactional SMTP.
+- Activate at least one verified pilot provider.
+- Configure monitored IMAP inbox before outbound prospecting.
+- Set the real BMC postal address before outbound prospecting.
+- Configure the Stripe webhook after Stripe activation.
