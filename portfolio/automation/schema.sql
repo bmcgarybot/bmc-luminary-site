@@ -122,6 +122,19 @@ create table if not exists lead_matches (
 create index if not exists idx_lead_matches_offer_expiry
 on lead_matches (status, expires_at);
 
+create table if not exists vendor_portal_tokens (
+  token_id uuid primary key default gen_random_uuid(),
+  vendor_id text not null references vendors(vendor_id) on delete cascade,
+  token_hash text not null unique,
+  expires_at timestamptz not null,
+  last_used_at timestamptz,
+  revoked_at timestamptz,
+  created_at timestamptz default now()
+);
+
+create index if not exists idx_vendor_portal_tokens_vendor
+on vendor_portal_tokens(vendor_id,expires_at desc);
+
 create table if not exists outreach (
   outreach_id uuid primary key default gen_random_uuid(),
   entity_type text not null,
