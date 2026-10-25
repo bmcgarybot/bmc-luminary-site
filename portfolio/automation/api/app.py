@@ -68,6 +68,9 @@ RESEARCH_SEARCH_RESULTS=max(1,min(20,env_int("RESEARCH_SEARCH_RESULTS",8)))
 RESEARCH_WORKER_BATCH=max(1,min(5,env_int("RESEARCH_WORKER_BATCH",1)))
 RESEARCH_MAX_PASSES=max(1,min(8,env_int("RESEARCH_MAX_PASSES",4)))
 RESEARCH_AUTO_PROMOTE_CONTACTS=os.getenv("RESEARCH_AUTO_PROMOTE_CONTACTS","true").lower()=="true"
+SOURCE_NATIVE_RESEARCH_ENABLED=os.getenv("SOURCE_NATIVE_RESEARCH_ENABLED","true").lower()=="true"
+ADHS_FACILITIES_URL=os.getenv("ADHS_FACILITIES_URL","https://services1.arcgis.com/mpVYz37anSdrK4d8/ArcGIS/rest/services/All_State_Licensed_Facilities_in_Arizona/FeatureServer/18/query").strip()
+ADHS_SOURCE_NATIVE_PAGE_SIZE=max(10,min(500,env_int("ADHS_SOURCE_NATIVE_PAGE_SIZE",100)))
 
 BUYER_RESEARCH_HINTS={
     "commercial_cleaning":'"hospital" OR "clinic" OR "dental" OR "therapy" OR "pharmacy" OR "grocery" OR "retail" OR "insurance office" OR "school" OR "church" OR "hotel" OR "apartment" OR "restaurant"',
@@ -106,6 +109,16 @@ MARKET_RESEARCH_CONTEXT={
     "Tucson":'"extreme heat" OR "pool" OR "cooling" OR "pest" OR "desert landscape"'
 }
 ENVIRONMENT_SENSITIVE_SERVICES={"tree_service","landscaping","rural_property","snow_service","pool_desert_property","hvac_heat","pest_control","towing_roadside"}
+
+SOURCE_NATIVE_MARKETS=("Prescott","Prescott Valley","Chino Valley","Camp Verde","Cottonwood","Sedona","Flagstaff","Winslow","Kingman","Phoenix","Scottsdale","Tucson")
+ADHS_FACILITY_CORE_SERVICES=(
+    "commercial_cleaning","floor_carpet","window_cleaning","hvac_heat","pest_control",
+    "fire_safety","locksmith_access","backflow_plumbing","facility_maintenance",
+    "electrical_service","duct_vent","pressure_washing"
+)
+ADHS_SOURCE_KEY="adhs_facilities_arcgis"
+ADHS_SOURCE_NAME="Arizona Department of Health Services Licensed Facilities"
+ADHS_LAYER_PAGE="https://services1.arcgis.com/mpVYz37anSdrK4d8/ArcGIS/rest/services/All_State_Licensed_Facilities_in_Arizona/FeatureServer/18"
 
 ROC_RESEARCH_SERVICES={
     "electrical_service","hvac_heat","backflow_plumbing","landscaping",
@@ -589,6 +602,60 @@ async def search_research_web(query):
             "score":item.get("score")
         })
     return out
+
+async def fetch_json_url(url,params=None,timeout=30,max_bytes=8_000_000):
+    target=url
+    if params:
+        encoded=urllib.parse.urlencode(params)
+        target=url+("&" if "?" in url else "?")+encoded
+    def call():
+        req=urllib.request.Request(target,headers={
+            "User-Agent":"BMC-Luminary-Research/1.0",
+            "Accept":"application/json"
+        })
+        with urllib.request.urlopen(req,timeout=timeout) as resp:
+            return json.loads(resp.read(max_bytes).decode("utf-8","replace"))
+    return await asyncio.to_thread(call)
+
+def arcgis_date(value):
+    if isinstance(value,(int,float)) and value>0:
+        try:
+            return datetime.fromtimestamp(value/1000,tz=timezone.utc).date().isoformat()
+        except Exception:
+            pass
+    return clean(value) or None
+
+def adhs_facility_services(attrs):
+    return list(ADHS_FACILITY_CORE_SERVICES)
+
+def adhs_facility_record_url(attrs):
+    facid=clean(attrs.get("FACID"))
+    license_number=clean(attrs.get("LICENSE_NUMBER"))
+    if facid:
+        where="FACID='"+facid.replace("'","''")+"'"
+    elif license_number:
+        where="LICENSE_NUMBER='"+license_number.replace("'","''")+"'"
+    else:
+        where="OBJECTID="+str(int(attrs.get("OBJECTID") or 0))
+    return ADHS_FACILITIES_URL+"?"+urllib.parse.urlencode({
+      "where":where,"outFields":"*","returnGeometry":"false","f":"json"
+    })
+
+async def fetch_adhs_facility_page(market,cursor):
+    place=clean(market).upper().replace("'","''")
+    where=f"OPERATION_STATUS='ACTIVE' AND (UPPER(N_CITY)='{place}' OR UPPER(CITY)='{place}')"
+    raw=await fetch_json_url(ADHS_FACILITIES_URL,{
+      "where":where,
+      "outFields":"OBJECTID,RUN_DATE,FACID,FACILITY_NAME,LICENSE_NUMBER,Telephone,TYPE,SUBTYPE,Category,ADDRESS,CITY,ZIP,COUNTY,OPERATION_STATUS,N_ADDRESS,N_CITY,N_COUNTY,N_FULLADDR,N_ZIP",
+      "returnGeometry":"false",
+      "orderByFields":"OBJECTID",
+      "resultOffset":max(0,int(cursor or 0)),
+      "resultRecordCount":ADHS_SOURCE_NATIVE_PAGE_SIZE,
+      "f":"json"
+    })
+    if raw.get("error"):
+        raise RuntimeError("ADHS ArcGIS error: "+clean(raw["error"])[:400])
+    return raw
 
 async def next_vendor(conn,lead_id,market,service_key):
     return await conn.fetchrow("""
@@ -2036,6 +2103,8 @@ async def admin_agent_status(x_bmc_admin_key:str|None=Header(default=None)):
       "research_search":{"enabled":RESEARCH_SEARCH_ENABLED,"worker_batch":RESEARCH_WORKER_BATCH,
         "result_limit":RESEARCH_SEARCH_RESULTS,"max_passes":RESEARCH_MAX_PASSES,
         "auto_promote_contact_ready":RESEARCH_AUTO_PROMOTE_CONTACTS},
+      "source_native_research":{"enabled":SOURCE_NATIVE_RESEARCH_ENABLED,
+        "adhs_page_size":ADHS_SOURCE_NATIVE_PAGE_SIZE,"market_count":len(SOURCE_NATIVE_MARKETS)},
       "queues":{
         "open_agent_tasks":int(open_agent_tasks or 0),
         "research_assigned":int(assigned_research or 0),
@@ -2154,6 +2223,139 @@ async def process_research(x_bmc_admin_key:str|None=Header(default=None)):
             processed+=1
     return {"ok":True,"enabled":True,"processed":processed,"staged":staged,
       "auto_promoted":auto_promoted,"errors":errors}
+
+@app.post("/api/process-source-native-research")
+async def process_source_native_research(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    if not SOURCE_NATIVE_RESEARCH_ENABLED:
+        return {"ok":True,"enabled":False,"source":ADHS_SOURCE_KEY,"markets_checked":0,
+                "records_seen":0,"prospects_created":0,"prospects_updated":0,"errors":[]}
+    markets_checked=0
+    records_seen=0
+    prospects_created=0
+    prospects_updated=0
+    errors=[]
+    async with app.state.pool.acquire() as conn:
+      for market in SOURCE_NATIVE_MARKETS:
+        await conn.execute("""insert into source_native_state(source_key,market)
+          values($1,$2) on conflict(source_key,market) do nothing""",ADHS_SOURCE_KEY,market)
+        state=await conn.fetchrow("""select cursor from source_native_state
+          where source_key=$1 and market=$2""",ADHS_SOURCE_KEY,market)
+        cursor=int(state["cursor"] or 0) if state else 0
+        try:
+            raw=await fetch_adhs_facility_page(market,cursor)
+            markets_checked+=1
+        except Exception as exc:
+            errors.append({"market":market,"error":str(exc)[:300]})
+            await conn.execute("""update source_native_state
+              set last_run_at=now(),metadata=metadata || $3::jsonb,updated_at=now()
+              where source_key=$1 and market=$2""",ADHS_SOURCE_KEY,market,
+              json.dumps({"last_error":str(exc)[:300],"cursor":cursor}))
+            continue
+        features=raw.get("features") or []
+        page_seen=0
+        page_upserted=0
+        page_source_dates=[]
+        async with conn.transaction():
+          for feature in features:
+            attrs=(feature or {}).get("attributes") or {}
+            if clean(attrs.get("OPERATION_STATUS")).upper()!="ACTIVE":
+                continue
+            name=clean(attrs.get("FACILITY_NAME"))
+            if not name:
+                continue
+            identity=clean(attrs.get("LICENSE_NUMBER")) or clean(attrs.get("FACID")) or clean(attrs.get("OBJECTID"))
+            if not identity:
+                continue
+            phone=clean(attrs.get("Telephone"))
+            facility_type=clean(attrs.get("TYPE") or attrs.get("SUBTYPE") or attrs.get("Category")) or "Licensed Facility"
+            address=clean(attrs.get("N_FULLADDR") or attrs.get("ADDRESS"))
+            city=clean(attrs.get("N_CITY") or attrs.get("CITY")) or market
+            county=clean(attrs.get("N_COUNTY") or attrs.get("COUNTY"))
+            source_date=arcgis_date(attrs.get("RUN_DATE"))
+            if source_date:
+                page_source_dates.append(source_date)
+            services=adhs_facility_services(attrs)
+            buyer_id="b_adhs_"+hashlib.sha256(identity.encode("utf-8")).hexdigest()[:16]
+            record_url=adhs_facility_record_url(attrs)
+            source_data={
+              "source_key":ADHS_SOURCE_KEY,
+              "source_name":ADHS_SOURCE_NAME,
+              "source_layer":ADHS_LAYER_PAGE,
+              "facility_id":clean(attrs.get("FACID")) or None,
+              "license_number":clean(attrs.get("LICENSE_NUMBER")) or None,
+              "facility_type":facility_type,
+              "operation_status":clean(attrs.get("OPERATION_STATUS")),
+              "address":address or None,
+              "city":city or None,
+              "county":county or None,
+              "source_run_date":source_date,
+              "general_reference_only":True,
+              "credential_or_operating_status_requires_verification":True
+            }
+            existing=await conn.fetchrow("""select buyer_id,likely_services from buyers
+              where buyer_id=$1
+                 or (nullif($4,'') is not null and market=$3
+                     and lower(business_name)=lower($2) and public_phone=$4)
+              order by case when buyer_id=$1 then 0 else 1 end limit 1""",
+              buyer_id,name,market,phone)
+            if existing:
+                entity_id=existing["buyer_id"]
+                merged=set(x for x in clean(existing["likely_services"]).split("|") if x)
+                merged.update(services)
+                await conn.execute("""update buyers set
+                    public_phone=case when coalesce(public_phone,'')='' then nullif($2,'') else public_phone end,
+                    likely_services=$3,
+                    source_data=coalesce(source_data,'{}'::jsonb) || $4::jsonb,
+                    updated_at=now()
+                  where buyer_id=$1""",entity_id,phone,"|".join(sorted(merged)),json.dumps(source_data))
+                prospects_updated+=1
+            else:
+                entity_id=buyer_id
+                await conn.execute("""insert into buyers(
+                    buyer_id,business_name,market,buyer_type,public_phone,website,source_url,
+                    likely_services,priority,campaign,status,notes,source_data)
+                  values($1,$2,$3,$4,nullif($5,''),null,$6,$7,'research','source_native_research','prospect',$8,$9::jsonb)
+                  on conflict(buyer_id) do nothing""",
+                  entity_id,name,market,"adhs_"+slug(facility_type),phone,record_url,
+                  "|".join(sorted(set(services))),
+                  f"Unverified institutional buyer prospect from the ADHS licensed-facilities GIS feed. Source reports {facility_type} / {clean(attrs.get('OPERATION_STATUS')) or 'unknown status'}. Verify current organization/contact details before outreach.",
+                  json.dumps(source_data))
+                prospects_created+=1
+            page_seen+=1
+            page_upserted+=1
+          records_seen+=page_seen
+          more=bool(raw.get("exceededTransferLimit")) or len(features)>=ADHS_SOURCE_NATIVE_PAGE_SIZE
+          next_cursor=cursor+len(features) if more and len(features)>0 else 0
+          latest_source_date=max(page_source_dates) if page_source_dates else None
+          await conn.execute("""update source_native_state set
+              cursor=$3,last_run_at=now(),last_success_at=now(),
+              last_source_date=coalesce($4,last_source_date),
+              records_seen=records_seen+$5,records_upserted=records_upserted+$6,
+              metadata=metadata || $7::jsonb,updated_at=now()
+            where source_key=$1 and market=$2""",
+            ADHS_SOURCE_KEY,market,next_cursor,latest_source_date,page_seen,page_upserted,
+            json.dumps({"page_size":ADHS_SOURCE_NATIVE_PAGE_SIZE,"last_cursor":cursor,
+                        "next_cursor":next_cursor,"last_page_records":len(features)}))
+          for service_key in ADHS_FACILITY_CORE_SERVICES:
+            count=await conn.fetchval("""select count(*) from buyers
+              where market=$1 and $2=any(string_to_array(coalesce(likely_services,''),'|'))
+                and status<>'suppressed'""",market,service_key)
+            await conn.execute("""update research_backlog
+              set current_count=$3,target_gap=greatest(0,goal-$3),
+                  status=case when goal<=$3 and status='queued' then 'completed' else status end,
+                  updated_at=now()
+              where market=$1 and service_key=$2 and side='buyer'""",
+              market,service_key,int(count or 0))
+        await event(conn,"source_native",f"{ADHS_SOURCE_KEY}:{market}","source_native_page_processed",{
+          "market":market,"cursor":cursor,"records_seen":page_seen,"records_upserted":page_upserted,
+          "next_cursor":next_cursor,"source_run_date":latest_source_date,
+          "external_actions_performed":0
+        },"research_agent")
+    return {"ok":True,"enabled":True,"source":ADHS_SOURCE_KEY,
+      "markets_checked":markets_checked,"records_seen":records_seen,
+      "prospects_created":prospects_created,"prospects_updated":prospects_updated,
+      "external_actions_performed":0,"errors":errors}
 
 @app.post("/api/process-public-opportunities")
 async def process_public_opportunities(x_bmc_admin_key:str|None=Header(default=None)):
