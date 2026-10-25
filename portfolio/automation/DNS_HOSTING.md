@@ -2,100 +2,101 @@
 
 Updated: 2026-10-25
 
-## Current verified problem
+## Authoritative DNS — IMPORTANT
 
-The permanent customer-facing domain is:
+**Cloudflare is the authoritative DNS provider for `bmcservicenetwork.com`.**
 
-`https://bmcservicenetwork.com`
+The domain is registered at Namecheap, but its nameservers are delegated to Cloudflare:
+- `iris.ns.cloudflare.com`
+- `will.ns.cloudflare.com`
 
-The intended automation ingress is:
+Therefore:
 
-`https://hooks.bmcservicenetwork.com`
+- **Do not manage BMC website DNS records in Namecheap Advanced DNS.**
+- **Do not change the Namecheap nameservers back to BasicDNS.**
+- Namecheap remains the registrar and Private Email vendor.
+- All active DNS records for the BMC domain must be reviewed/changed in **Cloudflare -> DNS -> Records**.
+- Preserve the existing Cloudflare records that support Namecheap Private Email, the Cloudflare Tunnel, and any verification records.
 
-Owner testing on 2026-10-25 showed:
-- `www.bmcservicenetwork.com` -> `ERR_NAME_NOT_RESOLVED`;
-- a public customer request could not reach automated intake and fell into the now-removed email-client fallback.
+This supersedes any older handoff text that says to add the GitHub Pages A/CNAME records in Namecheap.
 
-GitHub Pages logs also proved that the current automatic branch Pages build is publishing the **repository root** and its successful deployment environment is still:
+## Existing infrastructure already configured
 
-`http://mycosmicsoulmap.com/bmc-luminary-site/`
+Before the current Pages/custom-domain cleanup, the following were already configured and verified:
 
-That is not the intended BMC Service Network production URL.
+- `contact@bmcservicenetwork.com` via Namecheap Private Email;
+- SMTP + IMAP verified;
+- SPF/DKIM configured;
+- Cloudflare Tunnel configured on the VPS;
+- `hooks.bmcservicenetwork.com` published through Cloudflare Tunnel to the restricted webhook gateway;
+- public ingress verifier confirmed intended webhook routes were reachable while private admin routes remained blocked.
 
-The BMC Service Network static site itself lives under `portfolio/`.
+Do not rebuild these from scratch unless a live verification proves they are broken.
 
-Therefore, do **not** fix only the `www` record and call the domain launch complete.
+## Public website target
 
-## Correct public-site architecture
+Canonical customer-facing site:
+- `https://bmcservicenetwork.com`
 
-The clean target is:
+Secondary hostname:
+- `https://www.bmcservicenetwork.com`
+- should resolve and redirect to the canonical apex through GitHub Pages behavior.
 
-- GitHub Pages publishes **`portfolio/` as the site root**;
-- repository Pages custom domain is **`bmcservicenetwork.com`**;
-- apex `bmcservicenetwork.com` resolves to GitHub Pages;
-- `www.bmcservicenetwork.com` resolves to GitHub Pages and redirects to the canonical apex;
-- `hooks.bmcservicenetwork.com` remains a separate Cloudflare Tunnel hostname for the restricted intake/webhook gateway;
-- email MX/TXT/SPF/DKIM/DMARC records are preserved.
+Static site source:
+- repo: `bmcgarybot/bmc-luminary-site`
+- published artifact: `portfolio/`
+- Pages workflow: `.github/workflows/bmc-service-network-pages.yml`
+- Pages source: GitHub Actions
+- GitHub custom domain: `bmcservicenetwork.com`
 
-A manual-only workflow is prepared at:
+The BMC Pages workflow has already been run successfully with `portfolio/` as the site root.
 
-`.github/workflows/bmc-service-network-pages.yml`
+## Cloudflare DNS work still needed for GitHub Pages
 
-It uploads `./portfolio` as the Pages artifact so the Service Network homepage becomes `/`, not `/portfolio/`.
+Before changing records, inspect the **existing Cloudflare DNS record list** for `bmcservicenetwork.com`.
 
-Do not run that workflow until GitHub Pages is switched from branch publishing to **GitHub Actions**.
+The intended GitHub Pages DNS target is:
 
-## GitHub Pages switch
+Apex `@` A records:
+- `185.199.108.153`
+- `185.199.109.153`
+- `185.199.110.153`
+- `185.199.111.153`
 
-In GitHub:
+`www`:
+- CNAME -> `bmcgarybot.github.io`
 
-1. Open `bmcgarybot/bmc-luminary-site`.
-2. Open **Settings -> Pages**.
-3. Under **Build and deployment / Source**, switch to **GitHub Actions**.
-4. Set **Custom domain** to:
-   `bmcservicenetwork.com`
-5. Save.
-6. After DNS is configured, enable **Enforce HTTPS** when GitHub makes the option available.
-7. Run the **BMC Service Network Pages** workflow once from Actions.
+For GitHub Pages validation/HTTPS troubleshooting, these website records should generally be **DNS only** rather than Cloudflare-proxied unless a deliberate Cloudflare proxy design is chosen and tested.
 
-After the first verified custom deployment, the workflow can be changed from manual-only to automatic deploy-on-master.
-
-## Namecheap DNS target
-
-Preserve all existing mail records.
-
-For the apex, use the GitHub Pages A records:
-
-- `A @ -> 185.199.108.153`
-- `A @ -> 185.199.109.153`
-- `A @ -> 185.199.110.153`
-- `A @ -> 185.199.111.153`
-
-For `www`:
-
-- `CNAME www -> bmcgarybot.github.io`
-
-Do not point `www` at `bmcservicenetwork.com`; GitHub specifically recommends pointing the CNAME directly at the account's `<user>.github.io` default Pages domain.
+Do not touch:
+- `hooks` / Cloudflare Tunnel records;
+- MX records;
+- SPF;
+- DKIM;
+- DMARC;
+- Private Email verification records;
+- unrelated TXT/CNAME records.
 
 Do not add wildcard DNS.
 
-The GitHub documentation for this setup is:
+GitHub reference:
 - https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site
 
 ## Hooks hostname
 
-`hooks.bmcservicenetwork.com` is **not** the static website.
+`hooks.bmcservicenetwork.com` is not the static website.
 
-It must continue to route only to the Cloudflare Tunnel / webhook gateway.
+It must continue to route only through the existing Cloudflare Tunnel to:
+- `http://webhook_proxy:8080`
 
-The public gateway exposes only:
+The public gateway exposes only approved intake/webhook routes such as:
 - `/api/intake`
 - `/api/stripe-webhook`
-- approved n8n `/webhook/*` routes
+- approved n8n `/webhook/*`
 
 Private admin, Postgres, n8n editor, SearXNG, Ollama and direct Ops API routes stay private.
 
-After DNS + VPS deployment:
+Verify from the VPS with:
 
 ```bash
 cd ~/bmc-luminary-site/portfolio/automation
@@ -105,50 +106,34 @@ bash ./verify-public-ingress.sh
 ## Search launch
 
 Do not submit Search Console until:
-- apex domain resolves;
+- apex domain resolves to the BMC Pages site;
 - `www` resolves and redirects correctly;
 - HTTPS works;
 - `/robots.txt` returns 200;
 - `/sitemap.xml` returns 200;
 - `/services/` and `/request/` return 200;
-- priority market/service pages return 200;
-- customer intake can reach `hooks.bmcservicenetwork.com/api/intake`.
+- priority service/market pages return 200;
+- customer intake reaches the existing hooks gateway successfully.
 
 Then:
-1. Add a **Domain property** in Google Search Console for `bmcservicenetwork.com`.
-2. Complete Google's DNS TXT verification.
+1. Add a Google Search Console **Domain property** for `bmcservicenetwork.com`.
+2. Add Google's TXT verification record in **Cloudflare DNS**, not Namecheap DNS.
 3. Submit `https://bmcservicenetwork.com/sitemap.xml`.
-4. Inspect/request indexing for the homepage, services, request page, Growth Packs, major market pages and priority service fronts.
-
-Google indexing is not instant and is not guaranteed merely because a sitemap is submitted.
+4. Request indexing for priority pages.
 
 ## Canonical policy
 
-The public JS now writes canonical URLs using the non-www origin:
+Canonical origin:
+- `https://bmcservicenetwork.com`
 
-`https://bmcservicenetwork.com`
+The sitemap and public canonical tags use the non-www origin.
 
-The sitemap also uses only that origin.
+## Registrar / email warning
 
-Once DNS is correct, `www` should be treated as a redirect/accessibility variant, not a second canonical site.
+Namecheap is still important:
+- domain registration;
+- Private Email subscription.
 
-## What requires a VPS update
+But with Cloudflare nameservers active, DNS changes happen in Cloudflare.
 
-Static Pages/domain work and the rebuilt Growth Pack sample do **not** require the VPS.
-
-The customer intake backend and current automation/research changes **do** require a VPS pull/rebuild because GitHub master is ahead of the last independently verified production deployment.
-
-Use the safe deploy block from the authoritative handoff, then verify public ingress.
-
-## Do not disturb email
-
-Namecheap Private Email is part of production.
-
-Before editing DNS:
-- preserve MX;
-- preserve SPF;
-- preserve DKIM;
-- preserve DMARC if present;
-- preserve any mail verification TXT/CNAME records.
-
-Only remove/replace records that actually conflict with the apex website or `www` website record.
+Do not change nameservers merely to make Namecheap Advanced DNS editable.
