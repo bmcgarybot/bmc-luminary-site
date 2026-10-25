@@ -13,6 +13,21 @@
   const GLOBAL_WEBHOOK=window.BMC_WEBHOOK_URL||"https://hooks.bmcservicenetwork.com/api/intake";
   const CONTACT_EMAIL="contact@bmcservicenetwork.com";
 
+  // BMC_AUDIENCE_SWITCH_V9: persistent customer/provider switch across public pages.
+  (function(){
+    const providerSide=/\/(providers|vendor-partner|provider-pilot|provider-pilot-activate|provider-response|provider-job-update)\//.test(location.pathname);
+    const navIn=document.querySelector(".nav .nav-in");
+    if(!navIn || navIn.querySelector("[data-audience-switch]")) return;
+    const tools=document.createElement("div");
+    tools.className="nav-tools";
+    tools.dataset.audienceSwitch="true";
+    tools.innerHTML='<div class="audience-switch" aria-label="Choose site area">'
+      +'<a href="/services/" class="'+(providerSide?'':'is-active')+'">I need service</a>'
+      +'<a href="/providers/" class="'+(providerSide?'is-active':'')+'">I provide services</a>'
+      +'</div>';
+    navIn.appendChild(tools);
+  })();
+
   // BMC_SCROLL_MOTION_V7: lightweight progressive motion for the editorial customer experience.
   const reduceMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if(document.body.classList.contains("editorial-site")&&!reduceMotion){
