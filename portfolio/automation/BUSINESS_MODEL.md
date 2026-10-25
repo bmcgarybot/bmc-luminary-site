@@ -1,0 +1,222 @@
+# BMC Service Network — Revenue & Acquisition Model
+
+Updated: 2026-10-25
+
+## Core idea
+
+BMC is not a passive directory and it is not primarily "53 websites waiting for Google traffic."
+
+BMC Luminary Ventures LLC owns one shared operating system that supports:
+- customer acquisition;
+- provider acquisition;
+- structured service intake;
+- classification and routing;
+- provider accept/decline;
+- contact release;
+- job/outcome tracking;
+- lead monetization;
+- recurring concierge/service relationships;
+- productized B2B research and prospecting products.
+
+Customer-facing niche brands/pages are storefronts. The long-term asset is the verified provider network, buyer relationships, routing history, conversion history, and reusable automation.
+
+## Two ends of the machine
+
+### Demand side
+BMC finds customers and buyers through:
+- controlled B2B email outreach;
+- self-serve landing pages;
+- local/SEO pages after a niche has support;
+- referral partners;
+- selective direct mail;
+- social/community/referral traffic;
+- paid search only after manual fulfillment and monetization work.
+
+For local B2B categories, BMC should not sit around waiting for search traffic. It should proactively research and contact likely buyers such as restaurants, property managers, schools, churches, theaters, offices, medical facilities, daycare centers, gyms, apartment operators, and other organizations relevant to a service.
+
+### Supply side
+BMC researches and recruits service providers by service + territory + capacity.
+
+Early policy:
+- free to join the provider network;
+- no surprise subscription;
+- first qualified leads can be free or low-cost to prove lead quality;
+- after proof, monetize accepted leads, booked jobs where appropriate, referral/marketing fees where permitted, or exclusive territory arrangements;
+- every paid term must be explicitly presented and accepted before it applies.
+
+A provider is not launch-ready merely because BMC found the business online. Credentials/insurance/license review and explicit pilot acceptance are required where applicable.
+
+## Revenue engines
+
+### 1. BMC Growth / Prospecting Packs
+Original plan:
+- $499 for 100 qualified prospects;
+- $749 premium package with competitor snapshot + outreach plan;
+- after three paid orders, test a $149-$249/month refresh product.
+
+Current Stripe products also include:
+- Local Competitor Intelligence Pack — $299;
+- Local Market Expansion Pack — $699.
+
+These are useful because BMC can sell them before the routed-service marketplace has large traffic.
+
+### 2. Service Match / qualified lead routing
+Customer submits a real service need.
+BMC qualifies and routes it.
+Provider sees the opportunity before customer contact details are released.
+Provider accepts or declines.
+If accepted, both sides get contact details and BMC tracks the outcome.
+
+Original monetization options:
+- accepted lead fee;
+- booked-job fee;
+- referral/marketing fee where permitted;
+- exclusive monthly territory subscription.
+
+Original modeling used examples of:
+- $75 accepted leads;
+- $100 accepted leads;
+- $1,000/month exclusive territories.
+
+Those were revenue-model examples, not a requirement that every niche use identical pricing.
+
+### 3. Maintenance / facility concierge
+Original restaurant pilot:
+- reminders;
+- recurring vendor coordination;
+- service dates/certificates;
+- one-click approvals;
+- preferred-vendor routing.
+
+Original early pricing concept:
+- $49-$149/month after the service proves obvious administrative value;
+- partner revenue can be layered on top.
+
+The same model can later serve schools, churches, theaters, offices, gyms, daycare, medical offices, and similar facilities.
+
+### 4. Quote/procurement concierge
+Businesses/property managers submit a purchase/service need.
+BMC sources multiple viable quotes.
+Potential monetization:
+- buyer service fee;
+- supplier referral/marketing fee where permitted;
+- flat sourcing fee.
+
+### 5. Brokerage / savings / recurring partner products
+Examples from the original opportunity catalog:
+- used restaurant equipment brokerage;
+- vendor-switch savings audit;
+- commercial linen/vendor sourcing;
+- waste/recycling audit;
+- recurring route/service relationships.
+
+## The $8,333/month memory
+
+The original plan does not define an $8,333 "bulk lead package."
+
+$8.3K/month is best understood as roughly the monthly run rate needed for a six-figure annual business.
+
+The plan intentionally expected a MIX of revenue streams rather than one product carrying the entire target.
+
+An illustrative BMC month can combine:
+- Growth/Prospecting Packs;
+- accepted lead fees;
+- one or more territory subscriptions;
+- recurring refresh products;
+- concierge accounts;
+- procurement/referral revenue.
+
+Do not present any illustrative mix as guaranteed revenue.
+
+## Original first-$5K models
+
+The plan modeled:
+- 7 × $749 Growth Packs = $5,243;
+- 4 × $749 packs + 20 × $100 accepted leads = $4,996;
+- 3 × $749 packs + 2 × $1,000 monthly territories + 15 × $75 leads = $5,372;
+- 4 × $499 packs + 10 × $100 leads + 10 × $99 concierge months + setup fees = $5,000+.
+
+This is the clearest statement of the intended multi-engine model.
+
+## Acquisition priority
+
+Early customer acquisition is OUTREACH-LED, not SEO-dependent.
+
+The sites need to convert, but the early engine should actively create conversations:
+1. build targeted buyer lists;
+2. research/score them;
+3. send small compliant personalized batches;
+4. classify replies;
+5. route interested buyers into the correct BMC intake;
+6. follow up automatically where appropriate;
+7. track outcomes and suppress opt-outs.
+
+Provider acquisition runs in parallel:
+1. research providers;
+2. prioritize community-recommended / established local companies;
+3. invite them to join free;
+4. verify service area/capability/credentials;
+5. record capacity and minimum job preferences;
+6. send qualified opportunities;
+7. score acceptance, response, and close history.
+
+## Automation target
+
+### $0-$1K revenue
+AI assists research, scoring, copy, and documents. Human reviews consequential output.
+
+### $1K-$5K
+n8n acts as workflow operator:
+- creates/moves records;
+- sends routine messages;
+- runs follow-up;
+- creates delivery packages;
+- surfaces exceptions.
+
+### $5K-$15K
+Exception-based operations:
+- intake/routing/reminders largely automated;
+- Brett handles unusual cases, QA, disputes, provider approvals, and decisions.
+
+### $15K+
+Portfolio operator:
+- separate queues/agents by business;
+- add compute only if throughput creates a revenue bottleneck.
+
+## Public-site strategy
+
+The customer should not be taught BMC's internal architecture.
+
+Customer pages should answer:
+- Can you help with my problem?
+- Do you serve my area?
+- What happens after I submit?
+- What do I do next?
+
+Provider pages should answer:
+- What kinds of work can I receive?
+- Where?
+- What will it cost?
+- Can I pass?
+- How do I get paid / contact the customer?
+
+These are two ends of the same machine and should feel like separate products while sharing one backend.
+
+## Launch rule
+
+Do not wait for all service fronts to be equally polished.
+
+A niche is minimum-live when:
+- buyer/problem/monetization are defined;
+- coverage is defined;
+- landing page is understandable;
+- intake works end-to-end;
+- provider path exists if needed;
+- monetization path is testable;
+- analytics exists;
+- initial provider/buyer/prospect list exists;
+- at least one acquisition channel is active;
+- automation records the event and creates the next action;
+- failures surface as exceptions.
+
+Then move on and optimize from real evidence.
