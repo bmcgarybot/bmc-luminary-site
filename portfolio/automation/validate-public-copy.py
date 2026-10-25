@@ -32,6 +32,10 @@ FORBIDDEN_VISIBLE_PHRASES = (
     "commercial equipment quote concierge",
     "local competitor intelligence pack",
     "local market expansion pack",
+    "start with the problem, not the paperwork",
+    "start with the need, not the vendor search",
+    "no perfect category or diagnosis required",
+    "what can start here",
 )
 
 
