@@ -313,6 +313,7 @@ jobs:
           assert data["errors"] == []
           PY
           test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_candidates where status='discovered';") -eq 2
+          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_candidates where status='discovered' and coalesce(evidence->>'public_email','')<>'' and coalesce(evidence->>'public_phone','')<>'';") -eq 2
           test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from tasks where owner='research_agent' and status='open';") -eq 4
           test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_backlog where research_pass=1;") -ge 1
           test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_backlog where research_pass=1 and status='queued';") -ge 1
@@ -354,7 +355,8 @@ jobs:
             --data-binary @/tmp/bmc_candidate_promote.json >/tmp/bmc_candidate_promote_result.json
           export PROMOTED_ENTITY_ID="$(python -c 'import json; d=json.load(open("/tmp/bmc_candidate_promote_result.json")); assert d["ok"] is True; assert d["status"]=="promoted"; assert d["promoted_entity"]; print(d["promoted_entity"]["entity_id"])')"
           test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_candidates where status='promoted';") -eq 1
-          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from (select vendor_id as id,status from vendors union all select buyer_id as id,status from buyers) p where id='$PROMOTED_ENTITY_ID' and status='prospect';") -eq 1
+          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from (select vendor_id as id,status,public_email,public_phone from vendors union all select buyer_id as id,status,public_email,public_phone from buyers) p where id='$PROMOTED_ENTITY_ID' and status='prospect';") -eq 1
+          test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from (select vendor_id as id,public_email,public_phone from vendors union all select buyer_id as id,public_email,public_phone from buyers) p where id='$PROMOTED_ENTITY_ID' and coalesce(public_email,'')<>'' and coalesce(public_phone,'')<>'';") -eq 1
           test $(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_id='$PROMOTED_ENTITY_ID';") -eq 0
 
           curl -fsS http://127.0.0.1:8000/api/admin/agent-status \
