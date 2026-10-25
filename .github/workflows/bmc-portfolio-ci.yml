@@ -109,7 +109,7 @@ jobs:
           done
           test "$ready" -ge 3
 
-          for file in schema.sql seed-services.sql seed-vendors.sql seed-buyers.sql seed-outreach.sql seed-buyer-outreach.sql seed-first-wave.sql seed-products.sql seed-research.sql; do
+          for file in schema.sql seed-services.sql seed-vendors.sql seed-buyers.sql seed-outreach.sql seed-buyer-outreach.sql seed-growth-pack-sales.sql seed-first-wave.sql seed-products.sql seed-research.sql; do
             docker compose --env-file .env.ci exec -T postgres psql -v ON_ERROR_STOP=1 -U bmc_automation -d bmc_portfolio < "$file"
           done
 
@@ -130,10 +130,40 @@ jobs:
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_backlog where status='queued';")" -ge 600
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='vendor' and wave='pilot1';")" -eq 12
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='buyer' and wave='pilot1';")" -eq 7
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='buyer' and campaign='growth_pack_sales' and wave='growth1';")" -ge 1
           bash runtime-doctor.sh .env.ci
 
           # Prove First Wave provider copy uses the dedicated existing-vendor activation path.
           export BMC_ADMIN_KEY="$(grep '^BMC_ADMIN_KEY=' .env.ci | cut -d= -f2-)"
+
+          curl -fsS http://127.0.0.1:8000/api/admin/launch-cell \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_launch_cell.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_launch_cell.json"))
+          assert data["ok"] is True
+          assert len(data["records"]) == 10
+          assert data["green"] + data["yellow"] + data["red"] == 10
+          PY
+
+          curl -fsS -X POST http://127.0.0.1:8000/api/admin/queue-launch-gaps \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_launch_gaps.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_launch_gaps.json"))
+          assert data["ok"] is True
+          assert data["queued_count"] >= 0
+          PY
+
+          curl -fsS -X POST http://127.0.0.1:8000/api/process-growth-outreach \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_growth_outreach_disabled.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_growth_outreach_disabled.json"))
+          assert data["ok"] is True
+          assert data["enabled"] is False
+          assert data["sent"] == 0
+          PY
 
           # Prove the bounded operator performs internal work while external actions remain impossible.
           curl -fsS -X POST http://127.0.0.1:8000/api/agent-cycle \
