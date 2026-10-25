@@ -1,0 +1,18 @@
+{
+  "results": [
+    {
+      "cms_certification_number_ccn": "035001",
+      "provider_name": "CI Prescott Skilled Nursing Center",
+      "provider_address": "400 Recovery Drive",
+      "citytown": "PRESCOTT",
+      "state": "AZ",
+      "zip_code": "86301",
+      "telephone_number": "928-555-0210",
+      "countyparish": "YAVAPAI",
+      "ownership_type": "For profit - Corporation",
+      "provider_type": "Medicare and Medicaid",
+      "legal_business_name": "CI Prescott Skilled Nursing Center LLC",
+      "processing_date": "2026-10-08"
+    }
+  ]
+}
