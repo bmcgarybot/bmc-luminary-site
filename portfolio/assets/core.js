@@ -1,6 +1,7 @@
 (function(){
   const markets=["Prescott","Prescott Valley","Chino Valley","Cottonwood","Camp Verde","Sedona","Flagstaff","Winslow","Kingman","Phoenix","Scottsdale","Tucson"];
-  const GLOBAL_WEBHOOK=window.BMC_WEBHOOK_URL||"https://hooks.bmcservicenetwork.com/api/intake";\n  const CONTACT_EMAIL="contact@bmcservicenetwork.com";
+  const GLOBAL_WEBHOOK=window.BMC_WEBHOOK_URL||"https://hooks.bmcservicenetwork.com/api/intake";
+  const CONTACT_EMAIL="contact@bmcservicenetwork.com";
 
   document.querySelectorAll("[data-market-select]").forEach(function(sel){
     if(sel.options.length>1)return;
@@ -35,7 +36,9 @@
     data.submission_id=(crypto.randomUUID?crypto.randomUUID():("sub_"+Date.now()+"_"+Math.random().toString(36).slice(2)));
     data.page=location.href;data.path=location.pathname;data.referrer=document.referrer||"";
     const q=new URLSearchParams(location.search);
-    ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(k=>{if(q.get(k))data[k]=q.get(k)});\n    if(q.get("session_id"))data.stripe_session_id=q.get("session_id");\n    if(q.get("offer"))data.offer_key=q.get("offer");
+    ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(k=>{if(q.get(k))data[k]=q.get(k)});
+    if(q.get("session_id"))data.stripe_session_id=q.get("session_id");
+    if(q.get("offer"))data.offer_key=q.get("offer");
     data.submitted_at=new Date().toISOString();
     return data;
   }
