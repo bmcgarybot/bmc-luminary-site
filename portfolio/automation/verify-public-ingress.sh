@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PUBLIC_HOST="${PUBLIC_HOOKS_HOST:-hooks.bmcluminaryventures.com}"
+PUBLIC_HOST="${PUBLIC_HOOKS_HOST:-hooks.bmcservicenetwork.com}"
 BASE="https://$PUBLIC_HOST"
 
 status() {
