@@ -99,15 +99,26 @@ else
   fail "Docker Compose configuration does not validate"
 fi
 
-if curl -fsS http://127.0.0.1:8000/health >/tmp/bmc_runtime_health.json 2>/dev/null; then
-  if python3 - <<'PY'
+api_health_ok=0
+for i in $(seq 1 30); do
+  if curl -fsS http://127.0.0.1:8000/health >/tmp/bmc_runtime_health.json 2>/dev/null; then
+    if python3 - <<'PY'
 import json
 d=json.load(open("/tmp/bmc_runtime_health.json"))
 raise SystemExit(0 if d.get("ok") is True else 1)
 PY
-  then pass "Ops API health endpoint is OK"; else fail "Ops API health response is not OK"; fi
+    then
+      api_health_ok=1
+      break
+    fi
+  fi
+  sleep 1
+done
+
+if [ "$api_health_ok" -eq 1 ]; then
+  pass "Ops API health endpoint is OK"
 else
-  fail "Ops API is not reachable at 127.0.0.1:8000"
+  fail "Ops API is not healthy at 127.0.0.1:8000 after 30 seconds"
 fi
 
 DBUSER="$(env_value POSTGRES_USER)"
