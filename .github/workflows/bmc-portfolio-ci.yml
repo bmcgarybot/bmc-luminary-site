@@ -353,15 +353,44 @@ jobs:
 
           curl -fsS -X POST http://127.0.0.1:8000/api/provider/settings \
             -H 'Content-Type: application/json' \
-            -d '{"token":"ci-provider-token","capacity":"4 new jobs per week","minimum_job":"750","territory_notes":"Prescott, Prescott Valley","markets":["Prescott","Prescott Valley"],"services":["landscaping","tree_service"]}' \
+            -d '{"token":"ci-provider-token","capacity":"4 new jobs per week","minimum_job":"750","territory_notes":"Prescott, Prescott Valley","markets":["Prescott","Prescott Valley"],"services":["landscaping","tree_service","electrical_service"]}' \
             >/tmp/bmc_provider_settings.json
           python - <<'PY'
           import json
           data=json.load(open("/tmp/bmc_provider_settings.json"))
           assert data["ok"] is True
+          assert "electrical_service" in data["pending_service_additions"]
           PY
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select capacity from vendors where vendor_id='v_prescott_zebrascapes';")" = "4 new jobs per week"
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from vendor_markets where vendor_id='v_prescott_zebrascapes';")" -eq 2
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from vendor_services where vendor_id='v_prescott_zebrascapes' and service_key='electrical_service';")" -eq 0
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from exceptions where vendor_id='v_prescott_zebrascapes' and type='provider_service_change_review' and status='open';")" -eq 1
+
+          curl -fsS http://127.0.0.1:8000/api/admin/provider-service-reviews \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_service_reviews.json
+          export SERVICE_REVIEW_ID="$(python -c 'import json; d=json.load(open("/tmp/bmc_service_reviews.json")); print(next(x["exception_id"] for x in d["records"] if x["vendor_id"]=="v_prescott_zebrascapes"))')"
+          python - <<'PY' >/tmp/bmc_service_review_approve.json
+          import json,os
+          print(json.dumps({"exception_id":os.environ["SERVICE_REVIEW_ID"],"decision":"approve","approved_services":["electrical_service"]}))
+          PY
+          curl -fsS -X POST http://127.0.0.1:8000/api/admin/provider-service-review \
+            -H 'Content-Type: application/json' -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" \
+            --data-binary @/tmp/bmc_service_review_approve.json >/tmp/bmc_service_review_result.json
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from vendor_services where vendor_id='v_prescott_zebrascapes' and service_key='electrical_service';")" -eq 1
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from exceptions where vendor_id='v_prescott_zebrascapes' and type='provider_service_change_review' and status='open';")" -eq 0
+
+          curl -fsS -X POST http://127.0.0.1:8000/api/provider/availability \
+            -H 'Content-Type: application/json' -d '{"token":"ci-provider-token","action":"pause"}' >/tmp/bmc_provider_pause.json
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from vendors where vendor_id='v_prescott_zebrascapes';")" = "paused"
+          curl -fsS 'http://127.0.0.1:8000/api/provider/dashboard?token=ci-provider-token' >/tmp/bmc_provider_paused_dashboard.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_provider_paused_dashboard.json"))
+          assert data["provider"]["status"] == "paused"
+          PY
+          curl -fsS -X POST http://127.0.0.1:8000/api/provider/availability \
+            -H 'Content-Type: application/json' -d '{"token":"ci-provider-token","action":"resume"}' >/tmp/bmc_provider_resume.json
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from vendors where vendor_id='v_prescott_zebrascapes';")" = "pilot"
 
           curl -fsS -X POST http://127.0.0.1:8000/api/intake             -H 'Content-Type: application/json'             -d '{"submission_id":"ci-smoke-lead","form_type":"tree_service","market":"Prescott","scope":"CI smoke test: tree removal request","timing":"Within 7 days","consent":"yes"}'             >/tmp/bmc_intake.json
           cat /tmp/bmc_intake.json
