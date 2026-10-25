@@ -172,3 +172,54 @@ footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-s
   .workflow-page .nav-in{min-height:58px;justify-content:center}
   .workflow-page .brand{font-size:1rem}
 }
+
+
+/* BMC family / venture finder */
+.family-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.family-card{
+  display:block;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;
+  text-decoration:none;box-shadow:var(--shadow);transition:transform .12s ease,border-color .12s ease;
+}
+.family-card:hover{transform:translateY(-2px);border-color:#aebdca}
+.family-card .family-label{font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;color:#7a5b12;font-weight:850;margin-bottom:8px}
+.family-card h3{margin:0 0 7px;color:var(--navy);font-size:1.15rem}
+.family-card p{margin:0;color:var(--muted);font-size:.94rem}
+.family-card .family-open{display:block;margin-top:16px;color:#315f8b;font-size:.9rem;font-weight:800}
+
+.finder-panel{
+  background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;
+  box-shadow:var(--shadow);margin-bottom:34px;
+}
+.finder-field{max-width:720px}
+.finder-field input{font-size:1.05rem}
+.family-jumps{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 0}
+.family-jumps a{
+  text-decoration:none;border:1px solid #cfd9e3;background:#f8fafc;color:#3b526a;
+  padding:8px 11px;border-radius:999px;font-size:.84rem;font-weight:750;
+}
+.family-jumps a:hover{background:#eef3f7}
+.search-count{color:var(--muted);font-size:.88rem;margin:14px 0 0}
+.venture-family{padding:30px 0;border-top:1px solid var(--line)}
+.venture-family:first-child{border-top:0}
+.family-head{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:18px}
+.family-head h2{margin:5px 0 6px;color:var(--navy);font-size:1.75rem;letter-spacing:-.025em}
+.family-head p{margin:0;color:var(--muted);max-width:720px}
+.family-count{white-space:nowrap;color:#6b7b8e;background:#edf2f6;padding:6px 10px;border-radius:999px;font-size:.8rem;font-weight:800}
+.venture-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.venture-card{
+  display:flex;flex-direction:column;min-height:154px;background:#fff;border:1px solid var(--line);
+  border-radius:14px;padding:18px;text-decoration:none;transition:transform .12s ease,border-color .12s ease,box-shadow .12s ease;
+}
+.venture-card:hover{transform:translateY(-2px);border-color:#aebdca;box-shadow:0 12px 28px rgba(18,38,63,.08)}
+.venture-name{font-weight:850;color:var(--navy);font-size:1rem;line-height:1.25}
+.venture-offer{color:var(--muted);font-size:.9rem;margin-top:7px;line-height:1.4}
+.venture-link{margin-top:auto;padding-top:15px;color:#315f8b;font-size:.86rem;font-weight:800}
+.empty-state{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px;text-align:center}
+.empty-state h2{color:var(--navy);margin-top:0}
+
+@media(max-width:850px){
+  .family-grid,.venture-grid{grid-template-columns:1fr}
+  .family-head{align-items:flex-start;flex-direction:column}
+  .family-count{white-space:normal}
+  .venture-card{min-height:auto}
+}
