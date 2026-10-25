@@ -45,7 +45,7 @@ As of October 25, 2026:
 1. **Public webhook ingress**
    - create/authorize the Cloudflare Tunnel
    - run `configure-cloudflare.sh`
-   - publish `hooks.bmcluminaryventures.com` to `http://webhook_proxy:8080`
+   - publish `hooks.bmcservicenetwork.com` to `http://webhook_proxy:8080`
    - run `verify-public-ingress.sh`
 
 2. **Stripe account activation**
@@ -168,7 +168,7 @@ chmod +x configure-cloudflare.sh verify-public-ingress.sh
 ./configure-cloudflare.sh
 ```
 
-Publish `hooks.bmcluminaryventures.com` to `http://webhook_proxy:8080` in Cloudflare, then:
+Publish `hooks.bmcservicenetwork.com` to `http://webhook_proxy:8080` in Cloudflare, then:
 
 ```bash
 ./verify-public-ingress.sh
@@ -191,7 +191,7 @@ After Stripe activation:
 1. create Payment Links for the four live products;
 2. update the Billing sheet;
 3. update `portfolio/data/billing.json`;
-4. create `https://hooks.bmcluminaryventures.com/api/stripe-webhook`;
+4. create `https://hooks.bmcservicenetwork.com/api/stripe-webhook`;
 5. store signing secret;
 6. run a small real/test-order validation.
 
