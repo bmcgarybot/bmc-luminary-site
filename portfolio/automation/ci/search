@@ -3,14 +3,14 @@
     {
       "title": "CI Arizona Service Candidate",
       "url": "https://example.com/bmc-ci-candidate",
-      "content": "Mock public business result used only to verify autonomous research staging.",
+      "content": "Mock public business result used only to verify autonomous research staging. Public contact: research@example.com, (928) 555-0123.",
       "engine": "ci-mock",
-      "score": 1.0
+      "score": 1
     },
     {
       "title": "CI Arizona Buyer Candidate",
       "url": "https://example.org/bmc-ci-buyer",
-      "content": "Second mock result used to verify deduplicated evidence staging.",
+      "content": "Second mock result used to verify deduplicated evidence staging. Public contact: ops@example.org, 928-555-0147.",
       "engine": "ci-mock",
       "score": 0.9
     }
