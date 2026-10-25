@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>BMC Synthetic End-to-End Test</title>
+<meta name="description" content="Private synthetic production-flow test for BMC Service Network.">
+<link rel="stylesheet" href="../assets/core.css">
+</head>
+<body>
+<nav class="nav"><div class="wrap nav-in"><a class="brand" href="../">BMC Service Network</a></div></nav>
+
+<header class="hero"><div class="wrap">
+<div class="eyebrow">Synthetic production test</div>
+<h1>Run a fake customer request through the real BMC workflow.</h1>
+<p>This page is intentionally excluded from search engines. It sends through the live Cloudflare intake path, but uses an isolated synthetic market so no real contractor can receive the request.</p>
+</div></header>
+
+<section class="section"><div class="wrap form-shell">
+<div class="form-copy">
+<span class="kicker">Fake customer</span>
+<h2>Submit the test request.</h2>
+<p class="section-lead">The synthetic provider and synthetic customer both use the BMC test mailbox. After submission, check the mailbox for the customer receipt and provider offer.</p>
+</div>
+
+<form class="form" data-bmc-form data-form-type="tree_service" data-subject="BMC synthetic E2E request">
+<input class="hidden" name="website" tabindex="-1" autocomplete="off">
+<input type="hidden" name="market" value="__BMC_SYNTHETIC_TEST__">
+<input type="hidden" name="service_key" value="tree_service">
+<input type="hidden" name="consent" value="yes">
+
+<div class="field"><label>Fake customer name</label><input name="contact_name" value="BMC Synthetic Customer" required></div>
+<div class="field"><label>Fake property / business</label><input name="business_name" value="BMC Test Property"></div>
+<div class="field"><label>Test inbox</label><input name="email" type="email" value="contact@bmcservicenetwork.com" required></div>
+<div class="field"><label>Fake phone</label><input name="phone" value="9285550100"></div>
+<div class="field"><label>Preferred contact</label><select name="preferred_contact"><option>Email</option><option>Phone</option></select></div>
+<div class="field"><label>Timing</label><select name="timing"><option>Within 7 days</option><option>ASAP</option></select></div>
+<div class="field"><label>Scope</label><textarea name="scope" required>SYNTHETIC TEST ONLY: dead pine leaning toward a detached garage. No real service is requested.</textarea></div>
+
+<div class="notice" data-form-notice></div>
+<div class="actions"><button class="btn btn-primary" type="submit" data-label="Submit synthetic request">Submit synthetic request</button></div>
+</form>
+</div></section>
+
+<footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>TEST ONLY · no real provider routing</span></div></footer>
+<script src="../assets/core.js"></script>
+</body>
+</html>
