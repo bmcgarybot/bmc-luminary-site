@@ -225,7 +225,7 @@ jobs:
           data=json.load(open("/tmp/bmc_public_opportunities.json"))
           assert data["ok"] is True
           assert data["enabled"] is True
-          assert data["sources_checked"] == 12, data
+          assert data["sources_checked"] == 17, data
           assert data["errors"] == [], data
           PY
 
@@ -246,8 +246,15 @@ jobs:
           import json
           data=json.load(open("/tmp/bmc_daily_brief.json"))
           assert data["ok"] is True
-          for key in ("open_exceptions","provider_approvals","service_change_reviews","human_operator_tasks","public_opportunities","local_demand_signals","research_candidates_waiting"):
+          for key in ("open_exceptions","provider_approvals","service_change_reviews","human_operator_tasks","public_opportunities","public_opportunities_actionable","public_opportunities_discovered","local_demand_signals","local_demand_signals_useful","local_demand_signals_discovered","research_candidates_waiting"):
               assert key in data["counts"], (key,data)
+          assert isinstance(data["needs_brett"], bool), data
+          assert isinstance(data["review_ready"], bool), data
+          assert data["headline"] in (
+              "There are decisions or exceptions that need you.",
+              "New research is ready for a quick review.",
+              "Nothing urgent needs you."
+          ), data
           assert "public_opportunities" in data
           assert "local_demand_signals" in data
           PY
