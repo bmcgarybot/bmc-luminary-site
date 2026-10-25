@@ -3,7 +3,7 @@
 <title>Request Service | BMC Service Network</title>
 <meta name="description" content="Tell BMC what needs to get done. No service category required.">
 <meta name="bmc-webhook" content="REPLACE_ME">
-<link rel="stylesheet" href="../assets/core.css?v=clarity-7">
+<link rel="stylesheet" href="../assets/core.css?v=clarity-11">
 </head><body class="editorial-site">
 
 <nav class="nav"><div class="wrap nav-in">
@@ -13,9 +13,9 @@
 
 <header class="customer-hero"><div class="wrap editorial-hero-grid">
 <div>
-  <div class="editorial-kicker">Start here</div>
+  <div class="editorial-kicker">Local service help</div>
   <h1>Tell us what needs to get done.</h1>
-  <p class="hero-sub">You do not need to know the trade or service category. Describe the problem, tell us where it is, and give us a way to reach you.</p>
+  <p class="hero-sub">This path is for a specific job or problem: something broken, dirty, overgrown, overdue, unsafe, or simply needing attention. You do not need to know the trade first.</p>
   <div class="customer-proof"><span>About a minute to start</span><span>No service picker</span><span>Plain English is fine</span></div>
 </div>
 
@@ -25,9 +25,24 @@
 </div>
 </div></header>
 
+<section class="editorial-section alt"><div class="wrap">
+<div class="editorial-intro">
+  <div class="editorial-kicker">Different problem?</div>
+  <h2>Use the path that removes the most work from your plate.</h2>
+  <p>If you need more than a single service match, BMC has a different workflow for it.</p>
+</div>
+<div class="category-tiles">
+  <a class="category-tile" href="../quote-sourcing-concierge/" style="text-decoration:none"><span class="tile-icon">01</span><strong>Find and compare options</strong><span>Use one scope to start sourcing viable vendors or quotes.</span></a>
+  <a class="category-tile" href="../facility-maintenance/" style="text-decoration:none"><span class="tile-icon">02</span><strong>Coordinate recurring maintenance</strong><span>For facilities, businesses, and multi-service maintenance needs.</span></a>
+  <a class="category-tile" href="../vendor-savings-audit/" style="text-decoration:none"><span class="tile-icon">03</span><strong>Review recurring vendor costs</strong><span>Find categories worth rebidding, consolidating, or renegotiating.</span></a>
+  <a class="category-tile" href="../growth-packs/" style="text-decoration:none"><span class="tile-icon">04</span><strong>Find more customers</strong><span>Research likely prospects, competitors, and expansion markets.</span></a>
+</div>
+</div></section>
+
 <section class="editorial-section" id="request"><div class="request-shell">
 <form class="request-card" data-bmc-form data-form-type="universal_request" data-subject="BMC service request">
 <input class="hidden" name="website" tabindex="-1" autocomplete="off">
+<input type="hidden" name="request_goal" value="fix_or_handle_job">
 
 <div class="request-progress" aria-hidden="true">
   <span class="is-active" data-progress="1"></span>
@@ -109,7 +124,7 @@
 <footer><div class="wrap footer-in"><span>© <span data-year></span> BMC Luminary Ventures LLC</span><span>BMC Service Network</span></div></footer>
 <div class="mobile-sticky-cta"><a class="btn btn-primary" href="#request">Start request</a></div>
 
-<script src="../assets/core.js?v=clarity-7"></script>
+<script src="../assets/core.js?v=clarity-11"></script>
 <script>
 (function(){
   const form=document.querySelector('[data-bmc-form]');
@@ -120,7 +135,9 @@
 
   const params=new URLSearchParams(location.search);
   const incoming=params.get('problem');
+  const goal=params.get('goal');
   if(incoming) scope.value=incoming;
+  if(goal && form.elements.request_goal) form.elements.request_goal.value=goal;
 
   function showStep(n){
     steps.forEach(s=>s.classList.toggle('is-active',Number(s.dataset.step)===n));
