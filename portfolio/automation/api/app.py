@@ -1167,7 +1167,7 @@ async def admin_preflight(x_bmc_admin_key:str|None=Header(default=None)):
     stripe_ready=configured(STRIPE_WEBHOOK_SECRET)
     tunnel_ready=configured(WEBHOOK_URL)
     async with app.state.pool.acquire() as conn:
-        pilot_vendors=await conn.fetchval("select count(*) from vendors where status in ('pilot','active')")
+        pilot_vendors=await conn.fetchval("select count(*) from vendors where status in ('pilot','active') and vendor_id not like 'test_%'")
         first_wave_vendors=await conn.fetchval("select count(*) from outreach where entity_type='vendor' and wave='pilot1'")
         first_wave_buyers=await conn.fetchval("select count(*) from outreach where entity_type='buyer' and wave='pilot1'")
         research_queued=await conn.fetchval("select count(*) from research_backlog where status='queued'")
