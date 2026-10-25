@@ -101,6 +101,51 @@ async def event(conn,etype,eid,kind,payload=None,actor="system"):
 
 
 
+def classify_with_rules(text):
+    t=clean(text).lower()
+    rules=[
+      ("electrical_service",["electrician","electrical","breaker","outlet","wiring","panel","ev charger","240v","220v"]),
+      ("hvac_heat",["heating","air conditioning","air conditioner","a/c"," ac ","furnace","heat pump","mini split","hvac","no heat","no cool"]),
+      ("handyman_repairs",["handyman","drywall","mount tv","mounting","punch list","small repair","door repair","assemble","assembly"]),
+      ("residential_cleaning",["house cleaning","house cleaner","maid","housekeeping","deep clean","home cleaning"]),
+      ("home_staging",["home staging","stager","staging consultation","vacant staging","listing styling"]),
+      ("realtor_listing_prep",["realtor","listing prep","pre-listing","pre listing","listing ready","listing photos","brokerage"]),
+      ("tree_service",["tree removal","tree trimming","dead tree","hazard tree","defensible space","brush clearing","fuel reduction","chipping"]),
+      ("landscaping",["landscaping","landscape","yard cleanup","weed removal","irrigation","xeriscape"]),
+      ("junk_hauling",["junk removal","haul away","hauling","cleanout","clean out","debris removal","furniture removal","appliance removal"]),
+      ("commercial_cleaning",["commercial cleaning","janitorial","office cleaning","church cleaning","school cleaning","theater cleaning","facility cleaning"]),
+      ("facility_maintenance",["facility maintenance","school maintenance","church maintenance","theater maintenance","building maintenance"]),
+      ("restaurant_repair",["restaurant repair","commercial refrigeration","walk-in cooler","walk in cooler","reach-in cooler","reach in cooler"]),
+      ("restaurant_equipment",["restaurant equipment","commercial oven","commercial fryer","dish machine","dishwasher repair"]),
+      ("ice_machine",["ice machine","ice maker"]),
+      ("hood_exhaust",["hood cleaning","exhaust cleaning","kitchen hood"]),
+      ("grease_drain",["grease trap","commercial drain","restaurant drain"]),
+      ("towing_roadside",["tow truck","towing","roadside","lockout","jump start"]),
+      ("mobile_tire_battery",["mobile tire","flat tire","battery replacement","car battery"]),
+      ("auto_glass",["windshield","auto glass"]),
+      ("vehicle_services",["mobile mechanic","car repair","vehicle repair","fleet repair"]),
+      ("pet_waste",["pet waste","dog poop","pooper scooper"]),
+      ("pet_sitting",["dog walking","dog walker","pet sitting","pet sitter"]),
+      ("mobile_pet_grooming",["pet grooming","dog grooming","mobile groomer"]),
+      ("garage_door",["garage door"]),
+      ("pest_control",["pest control","exterminator","termites","rodent"]),
+      ("pressure_washing",["pressure washing","power washing"]),
+      ("window_cleaning",["window cleaning","window washer"]),
+      ("floor_carpet",["carpet cleaning","floor cleaning","strip and wax","floor care"]),
+      ("parking_lot",["parking lot","striping","parking lot sweeping"]),
+      ("locksmith_access",["locksmith","rekey","access control"]),
+      ("fire_safety",["fire extinguisher","fire suppression"]),
+      ("backflow_plumbing",["backflow","commercial plumbing"]),
+      ("rural_property",["septic","excavation","grading","water hauling","well pump","well service"]),
+      ("pool_desert_property",["pool service","pool repair","pool cleaning","spa repair"]),
+      ("str_property_care",["short term rental","short-term rental","airbnb","vrbo","rental turnover"]),
+      ("snow_service",["snow removal","snow plow","plowing"])
+    ]
+    for key,terms in rules:
+        if any(term in t for term in terms):
+            return {"service_key":key,"confidence":0.86,"reason":"plain-language rule match"}
+    return None
+
 async def classify_with_local_ai(conn,market,scope):
     if not LOCAL_AI_ENABLED or not LOCAL_AI_URL or not scope:
         return None
@@ -471,7 +516,9 @@ async def handle_lead(conn,p):
     if form_type=="universal_request" and not clean(p.get("service_key")):
         service_key="unclassified"
         ai_text=(scope+"\nRequest type: "+service_type).strip()
-        ai_classification=await classify_with_local_ai(conn,market,ai_text)
+        ai_classification=classify_with_rules(ai_text)
+        if not ai_classification:
+            ai_classification=await classify_with_local_ai(conn,market,ai_text)
         if ai_classification:
             service_key=ai_classification["service_key"]
 
