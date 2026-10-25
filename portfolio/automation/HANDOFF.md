@@ -2110,3 +2110,346 @@ Outbound gates remain unchanged:
 - no private social scraping;
 - no automatic contact to individual demand posters;
 - no provider activation from research evidence.
+
+
+## 28. LAUNCH READINESS + ARIZONA EXPANSION CHECKPOINT — 2026-10-25
+
+This section captures the owner-reported launch blockers, recovered Better Whisper dictation, and implementation work completed after Sections 24–27. Treat this as the latest continuation point for the public-site/domain/research-launch work.
+
+### Verified functional checkpoint
+
+Current master at this checkpoint:
+- `64428d5cdbc1b1b13b0b41d49781050d32df1791`
+- BMC Portfolio CI run `40220820415`: **SUCCESS**
+- automatic Pages build run `40220819815`: **SUCCESS**
+
+Important: successful GitHub CI/Pages does **not** mean the BMC custom domain or current VPS runtime is fully launched.
+
+### Recovered owner direction preserved
+
+Recovered from Better Whisper history:
+- target is to be capable of launching Monday if practical;
+- acquisition should be outreach-led initially, with controlled business email plus potential Meta/Facebook ads;
+- Arizona research should not be treated as a Prescott-only experiment;
+- Phoenix, Scottsdale, Tucson and other major markets should be serious revenue markets;
+- county health/environmental-health lists, licensed-facility directories and other authoritative public datasets should be exploited for internal research;
+- small/regional markets explicitly requested:
+  - Dewey-Humboldt
+  - Mayer
+  - Cordes Lakes
+  - Williamson Valley
+  - Ash Fork
+  - Seligman
+  - Skull Valley
+  - Golden Valley
+  - Bullhead City
+- completed research should create a very large provider/buyer prospect base, not a small token directory;
+- possible future “support Arizona / support local” positioning is preserved but **not approved for deployment**.
+
+### Customer request failure fixed in frontend
+
+Owner reported that a public customer request failed, showed an email-related problem, then opened/redirected into email.
+
+Root cause found:
+- `portfolio/assets/core.js` deliberately used a `mailto:` fallback whenever `https://hooks.bmcservicenetwork.com/api/intake` was unreachable.
+
+Fixed:
+- public form failures stay on-page;
+- customer-entered fields remain in place;
+- payload is also preserved in `sessionStorage` best-effort;
+- UI tells the customer to retry and use the footer contact path only if the problem persists;
+- public form code no longer redirects into an email client;
+- CI/form validation now rejects reintroduction of the `mailto:` fallback.
+
+This removes the bad customer experience, but the underlying public intake hostname still must be made reachable through DNS/tunnel + current VPS deployment.
+
+### Growth Pack sample workbook rebuilt
+
+Owner reported the website sample workbook still produced a file-extension/format error.
+
+The sample was rebuilt from scratch as a clean Excel workbook and committed to:
+- `portfolio/growth-packs/sample/sample-growth-pack.xlsx`
+
+The rebuilt workbook includes:
+- formatted prospect table;
+- filters;
+- frozen headers;
+- priority styling;
+- public contact fields;
+- likely-need / fit / outreach-angle fields;
+- Read Me sheet;
+- fictional sample data.
+
+CI now opens the XLSX as a ZIP-based Office package and verifies required workbook/package parts, so a corrupt/fake-extension file cannot silently ship again.
+
+Rebuilt workbook commit:
+- `6e11f42a66c22a0f0954bfe825d55b86ff541dc4`
+
+### Search / sitemap readiness fixed
+
+Before this checkpoint, 9 registered live service fronts were absent from `sitemap.xml`.
+
+Added:
+- Auto Repair Shop
+- Electrical Service
+- Facility Maintenance
+- Handyman Repairs
+- Home Staging
+- Hood Exhaust Cleaning
+- House Cleaning
+- Ice Machine Service
+- Realtor Listing Prep
+
+New CI validator:
+- `portfolio/automation/validate-search-readiness.py`
+
+It now checks:
+- every registered live service front is in the sitemap;
+- sitemap uses the canonical BMC origin;
+- robots.txt advertises the sitemap;
+- canonical JS is pinned to the non-www BMC domain;
+- Growth Pack XLSX is a readable Office package.
+
+Canonical policy:
+- `https://bmcservicenetwork.com` is canonical;
+- `www` should be a redirect/access variant, not a second SEO identity.
+
+### Major GitHub Pages / DNS discovery
+
+Owner screenshot proved:
+- `www.bmcservicenetwork.com` -> `ERR_NAME_NOT_RESOLVED`.
+
+GitHub Pages logs then revealed the larger issue:
+
+The current automatic branch Pages deployment publishes the repository root and reports its environment URL as:
+- `http://mycosmicsoulmap.com/bmc-luminary-site/`
+
+The BMC Service Network itself lives under:
+- `portfolio/`
+
+Therefore simply adding a `www` CNAME to the current configuration is not enough to produce the intended clean BMC domain/site architecture.
+
+Prepared manual-only workflow:
+- `.github/workflows/bmc-service-network-pages.yml`
+
+It publishes:
+- `./portfolio`
+
+as the actual Pages artifact root.
+
+Do **not** run it until the repository Pages source is switched from branch publishing to **GitHub Actions**.
+
+Correct target:
+- GitHub Settings -> Pages -> Source = GitHub Actions;
+- custom domain = `bmcservicenetwork.com`;
+- Namecheap apex A records:
+  - `185.199.108.153`
+  - `185.199.109.153`
+  - `185.199.110.153`
+  - `185.199.111.153`
+- Namecheap `www` CNAME:
+  - `bmcgarybot.github.io`
+- preserve MX/SPF/DKIM/DMARC/email records;
+- keep `hooks.bmcservicenetwork.com` separate for Cloudflare Tunnel;
+- enable Enforce HTTPS after GitHub validates DNS.
+
+See updated:
+- `portfolio/automation/DNS_HOSTING.md`
+
+Important:
+- do not point `www` to the apex;
+- do not add wildcard DNS;
+- GitHub recommends pointing `www` directly to `<user>.github.io`.
+
+### Google Search Console state
+
+The repo already has:
+- `robots.txt`;
+- `sitemap.xml`.
+
+But:
+- public search for the BMC domain returned no meaningful indexed result;
+- no completed Search Console ownership state is evidenced in the repo;
+- the domain/hosting architecture must be fixed before sitemap submission is treated as launch-complete.
+
+After DNS/Pages works:
+1. create Google Search Console **Domain property** for `bmcservicenetwork.com`;
+2. add Google's DNS TXT verification record;
+3. submit `https://bmcservicenetwork.com/sitemap.xml`;
+4. request indexing for homepage, services, request, Growth Packs, major markets and priority service fronts.
+
+Do not promise immediate Google visibility; indexing can take time and is not guaranteed merely by sitemap submission.
+
+### Windsor.ai decision
+
+Owner asked whether the 29-day trial countdown means BMC must pay.
+
+Current Windsor.ai documentation says:
+- the initial 30-day expanded trial drops to a Forever Free plan;
+- Forever Free supports 1 data source + 1 account;
+- no credit card is required and there is no automatic bill merely because the trial ends.
+
+Repository search found **no BMC runtime dependency on Windsor.ai**.
+
+Current recommendation:
+- **do not pay for Windsor.ai for launch**;
+- use it only if its one free connected analytics source is useful;
+- reconsider paid Windsor only if BMC later needs multi-source marketing aggregation badly enough to justify another recurring SaaS cost.
+
+### Live Stripe account checked
+
+Live Stripe account:
+- `acct_1UU9OfQU2BLM8GhL`
+- name: BMC Luminary Ventures LLC
+
+Current live state checked through Stripe:
+- `charges_enabled=false`
+- `payouts_enabled=false`
+- `details_submitted=false`
+- disabled reason: `requirements.past_due`
+
+Currently due includes:
+- business profile MCC/category;
+- product description;
+- support phone;
+- website;
+- business type;
+- representative identity/email/DOB;
+- statement descriptor;
+- Terms acceptance.
+
+Therefore Stripe onboarding remains a real launch blocker.
+
+Do not create another Stripe account; finish the existing BMC account.
+
+### Arizona market expansion is now implemented
+
+Public intake market vocabulary expanded to include:
+- Dewey-Humboldt
+- Mayer
+- Cordes Lakes
+- Williamson Valley
+- Ash Fork
+- Seligman
+- Skull Valley
+- Golden Valley
+- Bullhead City
+
+No thin SEO market pages were created for these places.
+
+Instead, research coverage was expanded in `seed-research-scale.sql`.
+
+New research cells:
+- 9 regional markets;
+- 12 provider categories per market;
+- 10 buyer categories per market;
+- **198 additional market/service/side research cells**.
+
+Examples of provider categories:
+- tree service
+- landscaping
+- rural property
+- junk hauling
+- handyman
+- residential cleaning
+- towing
+- traditional auto repair
+- HVAC
+- electrical
+- garage door
+- pest control
+
+Examples of buyer categories:
+- commercial cleaning
+- facility maintenance
+- HVAC
+- electrical
+- locksmith/access control
+- landscaping
+- tree service
+- pest control
+- parking lot
+- restaurant equipment
+
+Target depth is market-sized:
+- Bullhead City is weighted higher;
+- very small markets have deliberately smaller targets.
+
+The added cells create roughly **1,400+ additional prospect target slots** across these markets.
+
+Source-native ADHS/CMS default market scope was also expanded to these places so official healthcare/facility datasets can contribute when matching records exist.
+
+All expansion CI is green.
+
+### What now requires Brett / external account action
+
+#### 1. GitHub Pages + Namecheap DNS
+This is not a VPS task.
+
+Brett must:
+- switch repo Pages source to GitHub Actions;
+- set custom domain `bmcservicenetwork.com`;
+- add/verify Namecheap website DNS records while preserving email records;
+- run the prepared manual BMC Service Network Pages workflow;
+- enable HTTPS once available.
+
+#### 2. Google Search Console
+After domain works:
+- create/verify Domain property;
+- add Google TXT verification in Namecheap;
+- submit sitemap;
+- request priority indexing.
+
+#### 3. Stripe
+Finish the existing live account onboarding.
+
+### What now requires VPS deployment
+
+GitHub master is materially ahead of the last independently verified VPS runtime.
+
+After public-site/DNS work or when ready to refresh production backend, run:
+
+```bash
+cd ~/bmc-luminary-site/portfolio/automation
+git pull --ff-only
+docker compose --env-file .env build ops_api
+bash ./start.sh .env
+bash ./runtime-doctor.sh .env
+```
+
+Important existing production `.env` may still contain the older `SOURCE_NATIVE_MARKETS` value. After pulling, ensure it includes the expanded market list or remove that explicit value so the current default can take effect.
+
+Then verify:
+- 54 services;
+- `fix my fryer`;
+- `brake repair`;
+- provider dashboard;
+- provider requested-service approval;
+- daily brief;
+- procurement processor;
+- local-demand processor;
+- source-native research;
+- public ingress to `hooks.bmcservicenetwork.com/api/intake`;
+- outreach switches remain OFF.
+
+### Safety remains unchanged
+
+Still OFF / prohibited unless separately approved:
+- vendor outreach;
+- buyer outreach;
+- Growth Pack outreach;
+- automatic procurement bid submission;
+- private Facebook/Nextdoor/group scraping;
+- automatic contact to individual demand posters;
+- automatic provider activation from registry/research evidence.
+
+### Recommended continuation order
+
+1. Fix Pages source + root/www DNS.
+2. Deploy current master to VPS and verify hooks/customer intake.
+3. Finish Stripe onboarding.
+4. Set up Search Console after the domain is real.
+5. Retest the Growth Pack sample from the live domain.
+6. Retest a real customer request from the live domain.
+7. Review first real provider activation readiness.
+8. Only after Brett explicitly approves, prepare a tiny controlled provider/buyer/Growth Pack outreach batch.
