@@ -139,6 +139,16 @@ jobs:
           # Prove First Wave provider copy uses the dedicated existing-vendor activation path.
           export BMC_ADMIN_KEY="$(grep '^BMC_ADMIN_KEY=' .env.ci | cut -d= -f2-)"
 
+          curl -fsS http://127.0.0.1:8000/api/admin/provider-funnel \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_provider_funnel.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_provider_funnel.json"))
+          assert data["ok"] is True
+          assert "stages" in data and "rates" in data
+          assert "approved" in data["stages"]
+          PY
+
           curl -fsS http://127.0.0.1:8000/api/admin/launch-cell \
             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_launch_cell.json
           python - <<'PY'
