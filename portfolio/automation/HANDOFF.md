@@ -1191,3 +1191,49 @@ During long build sessions:
 ### Copy/paste starter for the next conversation
 
 > Continue the BMC Service Network build from section 21 of `portfolio/automation/HANDOFF.md` plus `BUSINESS_MODEL.md`. This is BMC Luminary Ventures LLC / BMC Service Network, not Quantum Neuroshift. Current GitHub master was `b9831d5` with green BMC CI when the prior thread ended. Production was last confirmed healthy on the earlier 53-service deploy, so treat newer procurement/local-demand/research/daily-brief/auto-repair changes as pending VPS deployment unless independently verified. First deploy current master safely, run runtime doctor, and verify the registry reaches 54 services. Then continue toward the autonomous operating target: 24/7 research and opportunity discovery, with Brett doing only 2–3 short exception/approval checks per day. Do not turn on vendor, buyer or Growth Pack outreach without my explicit approval. Preserve the recovered ideas in section 21, especially public procurement, medical/retail/professional buyers, terrain-aware research, locksmith depth, public local-demand signals, and localized outreach rather than localizing the generic website.
+
+
+## 22. CONTINUATION CHECKPOINT — 2026-10-25
+
+This section records work completed immediately after Section 21. Section 21 remains the strategic source of truth except where this checkpoint updates current implementation status.
+
+### Repository / CI updates
+
+Master advanced beyond the prior handoff commit `da19c9a` with two safety-focused commits:
+
+- `a72b2cce57866d658a1c51b608688f032f6e9025` — tightened CI to require the current 54-service registry, explicitly require active `auto_repair_shop`, add a traditional auto-repair service-search regression, and make the fresh CI database bootstrap include `seed-research-sources.sql` plus `seed-research-scale.sql` so CI mirrors the production migration path.
+- `54515cc78b546bd2b07de3f5752313d3d71fe4e4` — tightened `runtime-doctor.sh` to require at least 54 services, explicitly verify active traditional auto repair, and smoke-test that `brake repair` maps to `auto_repair_shop`.
+
+BMC Portfolio CI run `40217684688` reached a completed successful `validate` job with every validation/smoke-test step passing, including the database/API smoke test. GitHub's parent workflow status was still catching up when this checkpoint was written.
+
+### Google Sheet sync
+
+The live operations workbook Dashboard was stale at 53 services.
+
+Updated:
+- Dashboard registered-service KPI: **53 → 54**
+- note now says the 54 fronts are in current GitHub master and that VPS deployment/production-registry verification is still pending.
+
+This deliberately avoids claiming the newer master is already running in production.
+
+### Production deployment remains unverified from this environment
+
+The current ChatGPT tool environment has GitHub and Google Drive access but no direct SSH/shell session to the private VPS. The public Cloudflare gateway also intentionally exposes only intake/webhook routes, not private admin/runtime endpoints.
+
+Therefore:
+- do **not** mark the current 54-service backend as deployed from this checkpoint alone;
+- do **not** claim the private daily brief, procurement processor, local-demand processor, or provider service-change approval have been production-smoke-tested yet;
+- use the safe deploy block from Section 21 on the VPS, then run `runtime-doctor.sh`;
+- after deployment, verify the production registry is 54 and run the Section 21 production smoke tests.
+
+### Safety state
+
+Unchanged:
+- vendor outreach OFF;
+- buyer outreach OFF;
+- Growth Pack outreach OFF;
+- no automatic public-contract bidding;
+- no private social-group scraping;
+- no automatic contact to individual local-demand posters.
+
+Public/read-only research and opportunity discovery may continue internally.
