@@ -473,3 +473,10 @@ Runtime doctor is healthy with 0 core failures. Public site and Cloudflare Tunne
 - IMAP authentication and INBOX access verified successfully against `mail.privateemail.com:993` over SSL.
 - VPS `.env` updated through `configure-email.sh`; ops API recreated with live mail settings.
 - Runtime doctor now reports no SMTP or IMAP warnings. Remaining launch actions are provider activation, business postal address, and Stripe webhook/activation.
+
+
+### Outreach compliance gate cleared (2026-10-24)
+- A valid BMC business postal address is configured in the private production `.env`.
+- The exact address is intentionally not stored in GitHub or shared operations records.
+- Runtime doctor now reports `outreach_ready: READY`.
+- Remaining launch blockers: activate at least one verified pilot provider; configure Stripe webhook after Stripe activation.
