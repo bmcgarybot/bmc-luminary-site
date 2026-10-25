@@ -83,6 +83,9 @@
     const data={};
     new FormData(form).forEach(function(v,k){if(k!=="website")data[k]=String(v).trim();});
     data.form_type=form.dataset.formType||"general";
+    data.customer_path=form.dataset.customerPath||data.customer_path||(
+      document.body.classList.contains("service-page")?"fix_or_handle_job":""
+    );
     data.submission_id=(crypto.randomUUID?crypto.randomUUID():("sub_"+Date.now()+"_"+Math.random().toString(36).slice(2)));
     data.page=location.href;data.path=location.pathname;data.referrer=document.referrer||"";
     const q=new URLSearchParams(location.search);
