@@ -1983,8 +1983,14 @@ async def process_public_opportunities(x_bmc_admin_key:str|None=Header(default=N
         return {"ok":True,"enabled":False,"sources_checked":0,"new_opportunities":0,"errors":[]}
     sources_checked=0
     new_opportunities=0
+    expired_opportunities=0
     errors=[]
     async with app.state.pool.acquire() as conn:
+      expired_opportunities=int(await conn.fetchval("""with expired as (
+          update public_opportunities set status='expired',updated_at=now()
+          where status='discovered' and last_seen_at < now()-interval '30 days'
+          returning 1
+        ) select count(*) from expired""") or 0)
       for source in PUBLIC_OPPORTUNITY_SOURCES:
         try:
             results=await search_research_web(source["query"])
@@ -2020,7 +2026,7 @@ async def process_public_opportunities(x_bmc_admin_key:str|None=Header(default=N
                   where source_key=$1 and source_url=$2""",
                   source["key"],result["url"],result["title"],result["snippet"],service_key,source["query"])
     return {"ok":True,"enabled":True,"sources_checked":sources_checked,
-      "new_opportunities":new_opportunities,"errors":errors}
+      "new_opportunities":new_opportunities,"expired_opportunities":expired_opportunities,"errors":errors}
 
 @app.post("/api/process-local-demand-signals")
 async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=None)):
@@ -2029,8 +2035,14 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
         return {"ok":True,"enabled":False,"searches":0,"new_signals":0,"errors":[]}
     searches=0
     new_signals=0
+    expired_signals=0
     errors=[]
     async with app.state.pool.acquire() as conn:
+      expired_signals=int(await conn.fetchval("""with expired as (
+          update local_demand_signals set status='expired',updated_at=now()
+          where status='discovered' and last_seen_at < now()-interval '14 days'
+          returning 1
+        ) select count(*) from expired""") or 0)
       for market in LOCAL_SIGNAL_MARKETS:
         for source in LOCAL_SIGNAL_SOURCES:
           query=build_local_signal_query(market,source["domain"])
@@ -2068,7 +2080,8 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
                         search_query=$7,updated_at=now()
                     where source_key=$1 and market=$2 and source_url=$3""",
                     source["key"],market,result["url"],result["title"],result["snippet"],service_key,query)
-    return {"ok":True,"enabled":True,"searches":searches,"new_signals":new_signals,"errors":errors}
+    return {"ok":True,"enabled":True,"searches":searches,"new_signals":new_signals,
+      "expired_signals":expired_signals,"errors":errors}
 
 @app.get("/api/admin/local-demand-signals")
 async def admin_local_demand_signals(status:str="discovered",limit:int=100,x_bmc_admin_key:str|None=Header(default=None)):
