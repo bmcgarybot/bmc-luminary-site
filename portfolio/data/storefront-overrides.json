@@ -302,7 +302,11 @@
           "Staging & presentation",
           "Occupied or vacant staging support, photo-day preparation, and final presentation work."
         ]
-      ]
+      ],
+      "common_heading": "What still needs to be done?",
+      "common_text": "Cleaning, small repairs, junk removal, staging, and yard work can all start here.",
+      "start_heading": "Send the punch list.",
+      "start_text": "Add the address and target date."
     },
     "facility_maintenance": {
       "slug": "facility-maintenance",
@@ -332,7 +336,11 @@
           "Larger cleanups, maintenance projects, multiple scopes, and situations that need more than one trade."
         ]
       ],
-      "noindex": true
+      "noindex": true,
+      "common_heading": "What does the building need?",
+      "common_text": "Here are a few common examples.",
+      "start_heading": "Tell us what needs attention.",
+      "start_text": "Add the location and when you need it done."
     }
   }
 }
