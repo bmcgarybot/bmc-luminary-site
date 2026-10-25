@@ -81,7 +81,7 @@ def clean(v): return str(v or "").strip()
 def slug(v): return re.sub(r"[^a-z0-9]+","-",clean(v).lower()).strip("-")[:40] or "vendor"
 
 def workflow_email_html(title,body_lines,button_label=None,button_url=None):
-    rows="".join(f"<p style='margin:0 0 14px;line-height:1.55'>{html.escape(clean(line))}</p>" for line in body_lines if clean(line))
+    rows="".join(f"<p style='margin:0 0 14px;line-height:1.55'>{html.escape(clean(line)).replace(chr(10),'<br>')}</p>" for line in body_lines if clean(line))
     button=""
     fallback=""
     if button_label and button_url:
@@ -282,7 +282,7 @@ async def handle_vendor_response(conn,p):
         scope=clean(row["scope"])
         urgency=clean(row["urgency"])
 
-        provider_body=f"""You accepted a BMC service request. The customer's contact details are now released for this request.
+        provider_body=f"""You accepted this BMC request. Here are the customer details you need to follow up.
 
 Market: {row['market']}
 Service: {service_name}
@@ -304,7 +304,7 @@ Customer information is provided only for this service request and should not be
 BMC Luminary Ventures LLC
 """
         provider_html=workflow_email_html(
-          f"Customer contact released: {service_name}",
+          f"Customer details for your {service_name} request",
           [
             f"Market: {row['market']}",
             f"Customer: {customer_name}",
@@ -319,7 +319,7 @@ BMC Luminary Ventures LLC
           "Update job status",
           job_link
         )
-        await send_mail(vendor["public_email"],f"Customer contact released: {service_name} in {row['market']}",provider_body,provider_html)
+        await send_mail(vendor["public_email"],f"Customer details: {service_name} in {row['market']}",provider_body,provider_html)
 
         provider_contact=[]
         if clean(vendor["public_phone"]): provider_contact.append(f"Phone: {clean(vendor['public_phone'])}")
@@ -327,7 +327,7 @@ BMC Luminary Ventures LLC
         if clean(vendor["website"]): provider_contact.append(f"Website: {clean(vendor['website'])}")
         contact_block="\n".join(provider_contact) or "The provider will contact you using the details in your request."
         if customer_email:
-            customer_body=f"""A participating provider accepted your BMC service request.
+            customer_body=f"""A provider accepted your BMC service request. Here is who will be following up with you.
 
 Provider: {vendor['business_name']}
 Market: {row['market']}
@@ -347,7 +347,7 @@ BMC Luminary Ventures LLC
                 f"Market: {row['market']}",
                 f"Service: {service_name}",
                 contact_block,
-                "The provider is an independent business and will communicate its own pricing, scope, scheduling, warranties, and job terms directly with you.",
+                "This provider is an independent business. They will give you their own pricing, scheduling, warranty, and job terms directly.",
                 f"Reference: {row['lead_id']}"
               ]
             )
@@ -525,12 +525,12 @@ async def handle_lead(conn,p):
             await event(conn,"order",order_id,"intake_linked",{"lead_id":str(lead_id),"submission_id":submission_id})
 
     if p.get("email"):
-        workflow_text="provider matching" if fulfillment_mode=="provider_match" else "BMC fulfillment"
+        workflow_text="We’re looking for the right participating provider now." if fulfillment_mode=="provider_match" else "BMC is reviewing the request and will move it to the right next step."
         receipt_service_name=(clean(service["display_name"]) if service else service_key.replace("_"," ").title())
-        receipt_body=f"We received your request for {receipt_service_name} in {market}. It is now in the {workflow_text} workflow.\n\nReference: {lead_id}\nBMC Luminary Ventures LLC"
+        receipt_body=f"We received your request for {receipt_service_name} in {market}.\n\n{workflow_text}\n\nReference: {lead_id}\nBMC Luminary Ventures LLC"
         receipt_html=workflow_email_html("BMC received your request",[
           f"We received your request for {receipt_service_name} in {market}.",
-          f"It is now in the {workflow_text} workflow.",
+          workflow_text,
           f"Reference: {lead_id}"
         ])
         await send_mail(clean(p.get("email")),"BMC received your request",receipt_body,receipt_html)
