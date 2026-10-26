@@ -11,7 +11,7 @@ insert into market_inventory_candidates(
   'murphysdispatch@outlook.com','(928) 853-5202',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct site lists Ash Fork location and 24/7 towing/roadside."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -33,7 +33,7 @@ insert into market_inventory_candidates(
   null,'(928) 221-9110',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct site says based in Ash Fork and serves I-40/Route 66 corridor."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -55,7 +55,7 @@ insert into market_inventory_candidates(
   null,'(928) 476-0107',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct site explicitly lists Ash Fork in service area; not a licensed contractor and works under handyman exemption."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -77,7 +77,7 @@ insert into market_inventory_candidates(
   'airexxhvac@yahoo.com','(928) 565-6440',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct Ash Fork HVAC service page; ROC 350424 stated."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -99,7 +99,7 @@ insert into market_inventory_candidates(
   null,null,false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Discovery source says Arizona ROC #327703 and registered in Ash Fork; verify against ROC before promotion."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -121,7 +121,7 @@ insert into market_inventory_candidates(
   'gospeloffaithchurchaz@gmail.com','(928) 715-6985',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct church site lists Ash Fork address and contacts."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -143,7 +143,7 @@ insert into market_inventory_candidates(
   null,null,true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct service-area page explicitly lists Mayer."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -165,7 +165,7 @@ insert into market_inventory_candidates(
   null,'(928) 239-3640',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct service-area page explicitly lists Mayer; AZ ROC #349772 stated."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -187,7 +187,7 @@ insert into market_inventory_candidates(
   null,null,false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Discovery directory lists Manor Plumbing Co in Mayer; direct/ROC verification still needed."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -209,7 +209,7 @@ insert into market_inventory_candidates(
   null,null,false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Discovery directory lists Cordes Clinic at 20172 E Stagecoach Trl, Mayer."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -231,7 +231,7 @@ insert into market_inventory_candidates(
   null,'(928) 642-1000',false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Discovery listing identifies district in Mayer; replace with direct district page during audit."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -253,7 +253,7 @@ insert into market_inventory_candidates(
   null,'(928) 632-9533',false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Discovery listing identifies church in Mayer."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -275,7 +275,7 @@ insert into market_inventory_candidates(
   null,null,false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Discovery directory lists Creekside Lodge & Cabins in Mayer."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -297,7 +297,7 @@ insert into market_inventory_candidates(
   'cordeshardware@gmail.com','(928) 547-1784',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct site is located in Cordes Lakes/Mayer and explicitly offers locksmith service calls."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -319,7 +319,7 @@ insert into market_inventory_candidates(
   null,'(928) 239-3640',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct service-area page explicitly includes Cordes Lakes."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -341,7 +341,7 @@ insert into market_inventory_candidates(
   null,null,true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct service-area page explicitly lists Cordes Lakes."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -363,7 +363,7 @@ insert into market_inventory_candidates(
   null,null,false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Discovery source identifies Holly''s Market as a local Cordes Lakes grocery option."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -385,7 +385,7 @@ insert into market_inventory_candidates(
   null,null,false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Discovery source identifies El Gordo in Cordes Lakes."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -407,7 +407,7 @@ insert into market_inventory_candidates(
   null,null,false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Discovery source identifies local community center; direct public source still needed."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -429,7 +429,7 @@ insert into market_inventory_candidates(
   null,'(928) 300-1221',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct Prescott-area page explicitly lists Williamson Valley."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -451,7 +451,7 @@ insert into market_inventory_candidates(
   null,'(928) 300-1221',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct page states plumbing/HVAC/electrical service across Prescott area including Williamson Valley."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -473,7 +473,7 @@ insert into market_inventory_candidates(
   null,'(928) 300-1221',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct page explicitly includes Williamson Valley and electrical service."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -495,7 +495,7 @@ insert into market_inventory_candidates(
   null,null,true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct service-area page explicitly lists Williamson Valley."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -517,7 +517,7 @@ insert into market_inventory_candidates(
   null,'(928) 422-3528',false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Seligman Chamber lists 24/7 towing, oil/tire service and roadside help."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -539,7 +539,7 @@ insert into market_inventory_candidates(
   'airexxhvac@yahoo.com','(928) 565-6440',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct HVAC site lists Seligman among service areas."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -561,7 +561,7 @@ insert into market_inventory_candidates(
   'roadkillcafeseligmanaz@yahoo.com','(928) 422-3554',false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Current Seligman Chamber dining listing."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -583,7 +583,7 @@ insert into market_inventory_candidates(
   null,'(928) 422-3549',false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Current Chamber page says store sells groceries, hardware and other supplies."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -605,7 +605,7 @@ insert into market_inventory_candidates(
   null,null,false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Current Chamber resource page identifies Seligman Unified School District."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -627,7 +627,7 @@ insert into market_inventory_candidates(
   null,'(928) 422-3420',false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Current Chamber resource page lists local church and phone."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -649,7 +649,7 @@ insert into market_inventory_candidates(
   null,'800-700-5054',false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Current Chamber lodging page identifies Canyon Lodge."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -671,7 +671,7 @@ insert into market_inventory_candidates(
   null,null,true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct service-area page explicitly lists Skull Valley."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -693,7 +693,7 @@ insert into market_inventory_candidates(
   null,'(928) 228-5770',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct site lists Skull Valley, but currently states work is under Arizona handyman exemption and new licensed work is pending; discovery only for regulated plumbing."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -715,7 +715,7 @@ insert into market_inventory_candidates(
   null,'(928) 633-2100',false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Discovery directory lists Stubbs Electric in Skull Valley; direct/ROC verification needed."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -737,7 +737,7 @@ insert into market_inventory_candidates(
   'claire@theforgeskullvalley.com',null,true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct cafe/farm-store site lists Skull Valley address."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -759,7 +759,7 @@ insert into market_inventory_candidates(
   'admin@skullvalleyschool.org','(928) 442-3322',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Official school district site with Skull Valley address and contacts."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -781,7 +781,7 @@ insert into market_inventory_candidates(
   'welcome@skullvalleybiblechurch.org','(928) 464-3172',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct church site lists Skull Valley address and contacts."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -803,7 +803,7 @@ insert into market_inventory_candidates(
   null,null,true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct Dewey-Humboldt service page for HVAC/plumbing/electrical."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -825,7 +825,7 @@ insert into market_inventory_candidates(
   null,null,true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct Dewey-Humboldt service page explicitly offers plumbing."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -847,7 +847,7 @@ insert into market_inventory_candidates(
   null,null,true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct Dewey-Humboldt service page explicitly offers electrical."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -869,7 +869,7 @@ insert into market_inventory_candidates(
   null,'(928) 239-3640',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct service-area page explicitly lists Dewey and Humboldt."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -891,7 +891,7 @@ insert into market_inventory_candidates(
   'hvactech428@gmail.com','(928) 642-6117',false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"Public Nextdoor business page in Dewey; explicitly says not a licensed contractor."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -913,7 +913,7 @@ insert into market_inventory_candidates(
   null,null,true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Official town site; valid public-facility buyer target."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -935,7 +935,7 @@ insert into market_inventory_candidates(
   null,'(928) 450-5534',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct service-area page explicitly lists Golden Valley."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -957,7 +957,7 @@ insert into market_inventory_candidates(
   null,'(928) 361-9902',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct Golden Valley HVAC/plumbing/electrical service page; ROC numbers published."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -979,7 +979,7 @@ insert into market_inventory_candidates(
   null,'(928) 263-2789',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct site says Golden Valley, Arizona; ROC #353736 and bonded/insured stated."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -1001,7 +1001,7 @@ insert into market_inventory_candidates(
   null,'(928) 303-5037',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct site says service area includes Golden Valley; ROC #356277 stated."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -1023,7 +1023,7 @@ insert into market_inventory_candidates(
   'airexxhvac@yahoo.com','(928) 565-6440',true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct Golden Valley HVAC page; ROC 350424 stated."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -1045,7 +1045,7 @@ insert into market_inventory_candidates(
   null,null,true,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"direct_market_evidence","verification_status":"corroborated_direct_source","note":"Direct company page lists Golden Valley in Arizona service area."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
@@ -1067,7 +1067,7 @@ insert into market_inventory_candidates(
   null,'(928) 565-7252',false,'discovered',7,
   '{"bootstrap_source":"assistant_web_research_2026_10_26_batch_01","researched_at":"2026-10-26T21:14:00Z","source_quality":"discovery_only","verification_status":"needs_followup_verification","note":"BBB discovery profile places company in Golden Valley and describes HVAC/commercial refrigeration."}'::jsonb
 )
-on conflict(side,market,category_key,source_url) do update set
+on conflict(side,market,category_key,source_url,business_name) do update set
   business_name=excluded.business_name,
   source_domain=excluded.source_domain,
   snippet=excluded.snippet,
