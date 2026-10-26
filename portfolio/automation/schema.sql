@@ -571,6 +571,15 @@ on market_inventory_progress(status,side,market,category_key);
 create index if not exists idx_market_inventory_candidates_lane
 on market_inventory_candidates(side,market,category_key,official_site,status);
 
+
+
+
+alter table market_inventory_candidates add column if not exists first_seen_at timestamptz default now();
+alter table market_inventory_candidates add column if not exists last_seen_at timestamptz default now();
+alter table market_inventory_candidates add column if not exists closed_at timestamptz;
+alter table market_inventory_candidates add column if not exists closure_reason text;
+alter table market_inventory_candidates add column if not exists last_closure_checked_at timestamptz;
+
 create or replace view market_inventory_business_rollup as
 select
   market,
@@ -591,13 +600,6 @@ where status='discovered'
   and coalesce(business_name,'')<>''
 group by market,side,lower(regexp_replace(coalesce(business_name,''),'[^a-z0-9]+','','g'));
 
-
-
-alter table market_inventory_candidates add column if not exists first_seen_at timestamptz default now();
-alter table market_inventory_candidates add column if not exists last_seen_at timestamptz default now();
-alter table market_inventory_candidates add column if not exists closed_at timestamptz;
-alter table market_inventory_candidates add column if not exists closure_reason text;
-alter table market_inventory_candidates add column if not exists last_closure_checked_at timestamptz;
 
 alter table market_inventory_progress add column if not exists scan_cycles integer default 0;
 alter table market_inventory_progress add column if not exists last_full_scan_at timestamptz;
