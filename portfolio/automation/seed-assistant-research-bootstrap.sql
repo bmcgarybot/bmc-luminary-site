@@ -7874,3 +7874,2195 @@ update market_inventory_progress p set official_candidates=(
  select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
  and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ),updated_at=now() where p.market='Prescott';
+
+
+-- Assistant-led Phoenix hospitality/retail census batch 01 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','AC Element Phoenix North Norterra',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(602) 837-2510',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','AC Hotel Phoenix Downtown',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(602) 258-1771',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','Arizona Grand Resort & Spa',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(602) 438-9000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','Courtyard & Residence Inn by Marriott Downtown Phoenix',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(602) 603-2000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','Denu Hotel & Spa',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(888) 211-2282',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','DoubleTree by Hilton Phoenix Midtown',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(602) 279-9811',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','Hilton Phoenix Tapatio Cliffs Resort',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(602) 866-7500',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','Holiday Inn Express & Suites Phoenix Downtown-State Capitol',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(602) 675-2894',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','Home2 Suites by Hilton Phoenix Downtown',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(602) 603-1111',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','Hyatt Place Phoenix/Downtown',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(602) 388-4888',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','Hyatt Regency Phoenix',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(602) 252-1234',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','JW Marriott Phoenix Desert Ridge Resort & Spa',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(480) 293-5000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','Moxy Phoenix Downtown',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(623) 291-1200',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','Placemakr Downtown Phoenix',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(623) 745-4202',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','Sheraton Phoenix Downtown',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(602) 262-2500',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','Staybridge Suites Phoenix-Biltmore',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(602) 224-0012',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','Arizona Biltmore, LXR Hotels & Resorts',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(602) 955-6600',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','The Westin Phoenix Downtown',
+ 'https://business.phoenixchamber.com/list/category/hotels-motels-and-resorts-56','business.phoenixchamber.com','Current Greater Phoenix Chamber hotel/resort listing with Phoenix address.','assistant census research: Phoenix hotels motels lodging',0,
+ null,'(602) 429-3500',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hotel/resort listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Aventura Catering',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 534-8607',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','B&B Market',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 440-3185',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Backyard Desert Ridge',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(480) 585-5900',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Bagel Brands DBA Einstein Bros Bagels - 32nd St',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(606) 362-0201',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Barrel & Bushel',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 523-3222',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Black Rifle Coffee Company - Indian School',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(210) 891-0385',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Compass Arizona Grill & Lounge at Hyatt Regency Phoenix',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 440-3166',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Denny''s - Deer Valley',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Dog Haus Biergarten Downtown Phoenix',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(480) 910-5430',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Fabulous Food',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 267-1818',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Fairytale Brownies, Inc.',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(800) 531-5209',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Frank & Albert''s Restaurant at the Arizona Biltmore',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 955-6600',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','McDonald''s - Bell Rd',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 993-3413',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','McDonald''s - E Bell Rd',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 993-3151',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','McDonald''s - Deer Valley Rd',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(623) 581-1879',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','McDonald''s - Sky Harbor Terminal 4',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 273-2642',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','MERITAGE - An Urban Tavern at JW Marriott Desert Ridge',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(480) 293-5000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Mi Patio',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 277-4831',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Mountain Mike''s Pizza - 99th Ave',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 533-0125',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Network Bar & Grill at Hyatt Regency Phoenix',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 440-3198',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Nothing Bundt Cakes - Baseline',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(915) 309-6922',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Ocean Prime Phoenix',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(480) 347-1313',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Panda Express - Glendale Ave',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 848-2979',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Pedal Haus Brewery Phoenix',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(623) 213-8229',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Pete''s Fish & Chips - 44th St',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 840-0630',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','The Old Spaghetti Factory - Phoenix',
+ 'https://business.phoenixchamber.com/list/ql/restaurants-food-beverages-22','business.phoenixchamber.com','Current Greater Phoenix Chamber food/beverage listing with Phoenix address.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 257-0380',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber food/beverage listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Ocotillo Restaurant',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 687-9080',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Restaurant Progress',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 441-0553',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Welcome Diner',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 495-1111',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Richardson''s Restaurant',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 265-5886',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Rokerij',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 287-8900',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Rusconi''s American Kitchen',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence.','assistant census research: Phoenix restaurants',0,
+ null,'(480) 483-0009',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','TexAZ Grill',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 248-7827',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Phoenix City Grille',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 266-3001',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','First & Last',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence.','assistant census research: Phoenix restaurants',0,
+ null,'(602) 975-8297',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Pizzeria Bianco - Heritage Square',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence.','assistant census research: Phoenix restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Arizona Wilderness Brewing Co. - Downtown',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence.','assistant census research: Phoenix restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Huss Brewing Co. - Uptown',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence.','assistant census research: Phoenix restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','restaurants','restaurants','Little Rituals',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence.','assistant census research: Phoenix restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dining/business listing from Visit Phoenix or current local-business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','Arizona Exposition & State Fair',
+ 'https://business.phoenixchamber.com/list/category/entertainment-10072','business.phoenixchamber.com','Current Greater Phoenix Chamber entertainment/venue listing with Phoenix address.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,'(602) 252-6771',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber entertainment/venue listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','Ballet Arizona',
+ 'https://business.phoenixchamber.com/list/category/entertainment-10072','business.phoenixchamber.com','Current Greater Phoenix Chamber entertainment/venue listing with Phoenix address.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,'(602) 381-0184',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber entertainment/venue listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','Desert Ridge Marketplace',
+ 'https://business.phoenixchamber.com/list/category/entertainment-10072','business.phoenixchamber.com','Current Greater Phoenix Chamber entertainment/venue listing with Phoenix address.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,'(480) 513-7586',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber entertainment/venue listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','Live Nation - Arizona Financial Theatre / The Van Buren / Talking Stick Resort Amphitheatre',
+ 'https://business.phoenixchamber.com/list/category/entertainment-10072','business.phoenixchamber.com','Current Greater Phoenix Chamber entertainment/venue listing with Phoenix address.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,'(602) 379-8257',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber entertainment/venue listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','Live Nation Premium Seating - Phoenix',
+ 'https://business.phoenixchamber.com/list/category/entertainment-10072','business.phoenixchamber.com','Current Greater Phoenix Chamber entertainment/venue listing with Phoenix address.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,'(623) 518-1775',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber entertainment/venue listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','Onstage Entertainment Group',
+ 'https://business.phoenixchamber.com/list/category/entertainment-10072','business.phoenixchamber.com','Current Greater Phoenix Chamber entertainment/venue listing with Phoenix address.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,'(480) 681-0444',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber entertainment/venue listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','The Escape Game Phoenix',
+ 'https://business.phoenixchamber.com/list/category/entertainment-10072','business.phoenixchamber.com','Current Greater Phoenix Chamber entertainment/venue listing with Phoenix address.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,'(623) 745-1862',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber entertainment/venue listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','S''edav Va''aki Museum',
+ 'https://www.visitphoenix.com/things-to-do/arts-culture/museums/','visitphoenix.com','Current Visit Phoenix museum/cultural attraction with Phoenix address.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,'(602) 495-0901',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Visit Phoenix museum/cultural attraction with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','Arizona Science Center',
+ 'https://www.visitphoenix.com/things-to-do/arts-culture/museums/','visitphoenix.com','Current Visit Phoenix museum/cultural attraction with Phoenix address.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,'(602) 716-2000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Visit Phoenix museum/cultural attraction with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','Children''s Museum of Phoenix',
+ 'https://www.visitphoenix.com/things-to-do/arts-culture/museums/','visitphoenix.com','Current Visit Phoenix museum/cultural attraction with Phoenix address.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,'(602) 253-0501',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Visit Phoenix museum/cultural attraction with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','FOUND:RE Contemporary',
+ 'https://www.visitphoenix.com/things-to-do/arts-culture/museums/','visitphoenix.com','Current Visit Phoenix museum/cultural attraction with Phoenix address.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Visit Phoenix museum/cultural attraction with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','Hall of Flame Museum of Firefighting',
+ 'https://www.visitphoenix.com/things-to-do/arts-culture/museums/','visitphoenix.com','Current Visit Phoenix museum/cultural attraction with Phoenix address.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,'(602) 275-3473',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Visit Phoenix museum/cultural attraction with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','Heard Museum',
+ 'https://www.visitphoenix.com/things-to-do/arts-culture/museums/','visitphoenix.com','Current Visit Phoenix museum/cultural attraction with Phoenix address.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,'(602) 252-8840',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Visit Phoenix museum/cultural attraction with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','Musical Instrument Museum',
+ 'https://www.visitphoenix.com/things-to-do/arts-culture/museums/','visitphoenix.com','Current Visit Phoenix museum/cultural attraction with Phoenix address.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,'(480) 478-6000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Visit Phoenix museum/cultural attraction with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','Penske Racing Museum',
+ 'https://www.visitphoenix.com/things-to-do/arts-culture/museums/','visitphoenix.com','Current Visit Phoenix museum/cultural attraction with Phoenix address.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,'(480) 538-4444',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Visit Phoenix museum/cultural attraction with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','Phoenix Art Museum',
+ 'https://www.visitphoenix.com/things-to-do/arts-culture/museums/','visitphoenix.com','Current Visit Phoenix museum/cultural attraction with Phoenix address.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,'(602) 257-1880',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Visit Phoenix museum/cultural attraction with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','Footprint Center',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Major current Downtown Phoenix event/sports/convention facility.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Major current Downtown Phoenix event/sports/convention facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','Chase Field',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Major current Downtown Phoenix event/sports/convention facility.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Major current Downtown Phoenix event/sports/convention facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','Phoenix Convention Center',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Major current Downtown Phoenix event/sports/convention facility.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,'(602) 262-6225',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Major current Downtown Phoenix event/sports/convention facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','theaters_entertainment','theaters cinemas entertainment venues','810 Billiards & Bowling - CityScape',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Major current Downtown Phoenix event/sports/convention facility.','assistant census research: Phoenix theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Major current Downtown Phoenix event/sports/convention facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Amazon - W Mohave St',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 353-5961',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','The UPS Store #5340 - N 19th Ave',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 864-3646',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Boot Barn - W Peoria Ave',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 878-5590',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Border States Electric Supply - E Washington St',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 244-0331',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Corporate Interior Systems, Inc.',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 304-0100',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Desert Ridge Marketplace',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(480) 513-7586',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Elontec, LLC',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 759-5500',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Fairytale Brownies, Inc. Retail/Production',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(800) 531-5209',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Goodwill Retail Operations Center',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 322-7058',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Macerich - N Tatum Blvd',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 953-6200',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','MetroMerch Phx',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(323) 825-9815',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Phoenix Pawn and Gold',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 272-3449',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Q.Contrary',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 301-6987',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Quantum Qarat',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(480) 221-5194',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Schmitt Jewelers',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 840-1144',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','The Salvation Army Family Store - Greenway',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 256-4501',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Goodwill - 16th St & Indian School',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 279-5870',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Goodwill - 19th Ave & Baseline',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 276-0488',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Goodwill - 19th Ave & Bell',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 564-2829',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Goodwill - 19th Ave & Camelback',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 864-0810',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Goodwill - 32nd St & Cactus',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 493-4705',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Goodwill - 32nd St & Greenway',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 482-0182',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Goodwill - 32nd St & Thomas',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 808-0821',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Goodwill - 35th Ave & Greenway',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 942-1432',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Goodwill - 35th Ave & Peoria',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 698-1925',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Goodwill - 40th St & Thunderbird',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 569-9004',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Goodwill - 43rd Ave & Bethany Home',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 973-8530',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Goodwill - 75th Ave',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(623) 846-4900',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Goodwill - 7th St & Dunlap',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 944-1214',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Goodwill - Cave Creek & Cactus',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 331-9527',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Goodwill - Chandler Blvd & 32nd St',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(480) 704-0645',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','North Phoenix Pawn',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 780-7594',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Phoenix Title Loans - N 19th Ave',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 357-1141',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','SMILE Biscotti',
+ 'https://business.phoenixchamber.com/list/ql/shopping-specialty-retail-23','business.phoenixchamber.com','Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,'(602) 758-7292',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber shopping/specialty retail listing with Phoenix facility address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','The Newton PHX',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Visit Phoenix shopping/dining destination or retailer.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Visit Phoenix shopping/dining destination or retailer."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Uptown Plaza',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Visit Phoenix shopping/dining destination or retailer.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Visit Phoenix shopping/dining destination or retailer."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','The Colony',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Visit Phoenix shopping/dining destination or retailer.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Visit Phoenix shopping/dining destination or retailer."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','retail','retail stores shopping stores','Phoenix General',
+ 'https://www.visitphoenix.com/greater-phoenix/phoenix/','visitphoenix.com','Current Visit Phoenix shopping/dining destination or retailer.','assistant census research: Phoenix retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_hospitality_retail_01","researched_at":"2026-10-27T02:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Visit Phoenix shopping/dining destination or retailer."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p set official_candidates=(
+ select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
+ and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+),updated_at=now() where p.market='Phoenix';
