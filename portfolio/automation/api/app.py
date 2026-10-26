@@ -298,7 +298,7 @@ LOCAL_SIGNAL_GROUPS=(
      "terms":'"restaurant equipment" OR "ice machine" OR "hood cleaning" OR "grease trap" OR "fire extinguisher" OR "parking lot" OR "sign repair" OR "access control"'}
 )
 LOCAL_SIGNAL_INTENT_TERMS='"looking for" OR "recommend" OR "recommendation" OR "need a" OR "need an" OR "anyone know" OR "seeking" OR "looking to hire" OR "who can"'
-LOCAL_DEMAND_QUERY_STRATEGY_VERSION=5
+LOCAL_DEMAND_QUERY_STRATEGY_VERSION=6
 
 MARKET_INVENTORY_MARKETS=LOCAL_SIGNAL_MARKETS
 BUYER_INVENTORY_CATEGORIES=(
@@ -334,7 +334,7 @@ BUYER_INVENTORY_TARGETS={
 }
 INVENTORY_MAJOR_MARKETS={"Phoenix","Scottsdale","Tucson"}
 INVENTORY_REGIONAL_MARKETS={"Prescott","Prescott Valley","Flagstaff","Kingman","Bullhead City","Cottonwood","Sedona"}
-INVENTORY_QUERY_STRATEGY_VERSION=4
+INVENTORY_QUERY_STRATEGY_VERSION=5
 
 INVENTORY_BLOCKED_DOMAINS={
     "facebook.com","nextdoor.com","linkedin.com","yelp.com","yellowpages.com","angi.com",
@@ -369,6 +369,25 @@ def inventory_query(side,market,category_label,variant):
         )
     return variants[v]
 
+def result_matches_market(result,market):
+    # Normalize punctuation in titles, snippets and URLs so hyphenated URL slugs
+    # can still prove a market while requiring the complete market token phrase.
+    haystack=" ".join([
+        clean((result or {}).get("title")),
+        clean((result or {}).get("snippet")),
+        clean((result or {}).get("url"))
+    ]).lower()
+    normalized=" ".join(re.findall(r"[a-z0-9]+",haystack))
+    place=" ".join(re.findall(r"[a-z0-9]+",clean(market).lower()))
+    if not normalized or not place:
+        return False
+    padded=f" {normalized} "
+    # Prescott and Prescott Valley are separate BMC markets. A Prescott-only
+    # lane must not accept evidence whose only location is Prescott Valley.
+    if place=="prescott":
+        return bool(re.search(r"(?<![a-z0-9])prescott(?!\s+valley\b)",normalized))
+    return f" {place} " in padded
+
 def inventory_result_relevant(result,market,category_label):
     # Search backends can occasionally return unrelated or poisoned results.
     # Require evidence that the result actually belongs to the requested lane.
@@ -377,20 +396,14 @@ def inventory_result_relevant(result,market,category_label):
         clean((result or {}).get("snippet")),
         clean((result or {}).get("url"))
     ]).lower()
-    place=clean(market).lower()
     label=clean(category_label).lower()
-    if not haystack or not place or not label:
+    if not haystack or not clean(market) or not label:
         return False
-    place_words=[w for w in re.findall(r"[a-z0-9]+",place) if len(w)>2]
     generic={"service","services","repair","repairs","company","companies","contractor","contractors",
              "local","business","businesses","and","the","for","near","arizona","az"}
     label_words=[w for w in re.findall(r"[a-z0-9]+",label)
                  if len(w)>2 and w not in generic]
-    # State-only evidence is not enough for a local lane. A Prescott lane
-    # must mention Prescott; a Bullhead City lane must contain both meaningful
-    # place words. This blocks relevant-service results from the wrong AZ city.
-    market_match=(place in haystack or
-                  (place_words and all(w in haystack for w in place_words)))
+    market_match=result_matches_market(result,market)
     subject_match=any(w in haystack for w in label_words) if label_words else label in haystack
     if "repair" in label:
         action_match=any(x in haystack for x in ("repair","service","maintenance","fix","technician"))
@@ -417,19 +430,8 @@ def build_local_signal_query(market,domain,terms,variant=0):
     return f'site:{clean(domain)} {place} Arizona "{term}" "{intent}"'
 
 def local_signal_result_relevant(result,market):
-    # Search engines can return a valid social-domain result from the wrong city.
-    # Never assign the lane market unless the returned title/snippet/URL itself
-    # contains the requested market evidence.
-    haystack=" ".join([
-        clean((result or {}).get("title")),
-        clean((result or {}).get("snippet")),
-        clean((result or {}).get("url"))
-    ]).lower()
-    place=clean(market).lower()
-    if not haystack or not place:
-        return False
-    place_words=[w for w in re.findall(r"[a-z0-9]+",place) if len(w)>2]
-    return bool(place in haystack or (place_words and all(w in haystack for w in place_words)))
+    # Indexed social results must independently prove the requested market.
+    return result_matches_market(result,market)
 
 def classify_local_signal_service(text):
     t=clean(text).lower()
@@ -3430,7 +3432,7 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
                   source_domain=excluded.source_domain,
                   snippet=excluded.snippet,
                   search_query=excluded.search_query,
-                  status=case when local_demand_signals.status='superseded_pre_v5'
+                  status=case when local_demand_signals.status like 'superseded_pre_v%'
                               then 'discovered' else local_demand_signals.status end,
                   query_strategy_version=excluded.query_strategy_version,
                   last_seen_at=now(),
@@ -3445,7 +3447,7 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
                             "group_key":lane["group_key"],"page":page,
                             "query_strategy_version":LOCAL_DEMAND_QUERY_STRATEGY_VERSION,
                             "market_relevance_verified":True}))
-              activated=(existing is None or clean(existing["status"])=="superseded_pre_v5")
+              activated=(existing is None or clean(existing["status"]).startswith("superseded_pre_v"))
               if sid and activated:
                   new_signals+=1
                   lane_new+=1
