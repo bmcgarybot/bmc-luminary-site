@@ -1165,3 +1165,3525 @@ update market_inventory_progress p set official_candidates=(
  select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
  and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ),updated_at=now() where p.market='Skull Valley';
+
+
+-- Assistant-led Prescott buyer/facility census batch 01 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Augie’s',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','b. simple',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','The Barley Hound',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','The Burke at Hotel St. Michael',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Casa Sanchez Restaurant',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','The Century Lounge',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Cocky’s Chicken & Brew',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Cowboy Kitchen',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','El Gato Azul',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','FARM Provisions',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','The Final Score',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Founding Fathers Collective',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Granite Mountain Distillery',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Jersey Lilly Saloon',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','La Planchada',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','LazyG Brewhouse',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Milo’s',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Modern Agave',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Murphy’s Restaurant',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Outlaw Donuts',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','The Palace Restaurant and Saloon',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Park Plaza Liquor & Deli',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Prescott Junction',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Prescott Public House',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','The Raven Cafe',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Red, White & Brew',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Superstition Meadery',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Wild Iris Coffeehouse',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Zeke’s Eatin’ Place',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Camp Grounds Tea and Coffee',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Merchant Coffee',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Method Coffee',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','The Porch',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Thumb Butte Coffee Company',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Torme',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Two Mamas Pizza',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Papa''s Italian Restaurant',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','restaurants','restaurants','Vino',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott business listing; verified open by current local directory.','assistant census research: Prescott restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott business listing; verified open by current local directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','hotels_motels','hotels motels lodging','Forest Villas Hotel',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott lodging facility from current local/Chamber business sources.','assistant census research: Prescott hotels motels lodging',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott lodging facility from current local/Chamber business sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','hotels_motels','hotels motels lodging','Hassayampa Inn & Conference Center',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott lodging facility from current local/Chamber business sources.','assistant census research: Prescott hotels motels lodging',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott lodging facility from current local/Chamber business sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','hotels_motels','hotels motels lodging','Hotel St. Michael',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott lodging facility from current local/Chamber business sources.','assistant census research: Prescott hotels motels lodging',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott lodging facility from current local/Chamber business sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','hotels_motels','hotels motels lodging','Hotel Vendome',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott lodging facility from current local/Chamber business sources.','assistant census research: Prescott hotels motels lodging',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott lodging facility from current local/Chamber business sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','hotels_motels','hotels motels lodging','The Motor Lodge',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott lodging facility from current local/Chamber business sources.','assistant census research: Prescott hotels motels lodging',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott lodging facility from current local/Chamber business sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','hotels_motels','hotels motels lodging','Prescott Pines Inn',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott lodging facility from current local/Chamber business sources.','assistant census research: Prescott hotels motels lodging',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott lodging facility from current local/Chamber business sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','hotels_motels','hotels motels lodging','Prescott Resort and Conference Center',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott lodging facility from current local/Chamber business sources.','assistant census research: Prescott hotels motels lodging',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott lodging facility from current local/Chamber business sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','hotels_motels','hotels motels lodging','Air Village',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott lodging facility from current local/Chamber business sources.','assistant census research: Prescott hotels motels lodging',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott lodging facility from current local/Chamber business sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','hotels_motels','hotels motels lodging','Apple Creek Cottages',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott lodging facility from current local/Chamber business sources.','assistant census research: Prescott hotels motels lodging',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott lodging facility from current local/Chamber business sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','hotels_motels','hotels motels lodging','SpringHill Suites by Marriott Prescott',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott lodging facility from current local/Chamber business sources.','assistant census research: Prescott hotels motels lodging',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott lodging facility from current local/Chamber business sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','hotels_motels','hotels motels lodging','Hilton Garden Inn Prescott Downtown',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott lodging facility from current local/Chamber business sources.','assistant census research: Prescott hotels motels lodging',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott lodging facility from current local/Chamber business sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','hotels_motels','hotels motels lodging','Motel 6 Prescott, LLC',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott lodging facility from current local/Chamber business sources.','assistant census research: Prescott hotels motels lodging',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott lodging facility from current local/Chamber business sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Bashford Courts',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Black Arrow Jewelry & Art',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Clothes Hound Clothing Company',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Cortez Street Emporium',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Cowboy Corner',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Drawn West',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Fancy That!',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Fite and Sons Mercantile & Ice Cream',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','French Hen Boutique',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Gray Dog Music',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Heirloom Market',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','The Hike Shack',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','John’s Box of Bricks',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','K4 Gourmet Beef',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Modern Day Forager Mercantile',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Ogg’s Hogan',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Peregrine Book Company',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Pine Ridge Marketplace',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Pralines of Prescott',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Puttin’ On The Hats',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','The Spice & Tea Exchange of Prescott',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Toyful',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Arizona Field Optics',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Jay''s Bird Barn',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Jay''s Hallmark Gold Crown Store',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Legacy Jewelry',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Purple Clover',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Olsen''s Grain',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','Edison Market',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','retail','retail stores shopping stores','NAPA Auto Parts - Prescott',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott retail/shopping business from locally checked or Chamber sources.','assistant census research: Prescott retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott retail/shopping business from locally checked or Chamber sources."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','Art Hive',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','Arts Prescott Cooperative Gallery',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','Elks Theatre & Performing Arts Center',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','The Hazeltine',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','Heritage Park Zoological Sanctuary',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','Highlands Center for Natural History',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','Ian Russell Gallery of Fine Art',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','Jim & Linda Lee Performing Arts Center',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','Mountain Artists Guild',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','Museum of Indigenous People',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','Phippen Museum of Western Art & Heritage',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','Sharlot Hall Museum',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','‘Tis Art Center & Gallery',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','Van Gogh’s Ear',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','Get Air Prescott',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','Antelope Hills Golf Courses',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','United Escapes of America',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','Prescott Food Tour',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','theaters_entertainment','theaters cinemas entertainment venues','The Fairweather Social Club',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott arts, attraction, entertainment or recreation facility.','assistant census research: Prescott theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott arts, attraction, entertainment or recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','gyms_fitness','gyms fitness centers recreation centers','James Family Prescott YMCA',
+ 'https://www.prescott.org/arts-culture-and-family-fun.html','prescott.org','Current Prescott Chamber feature for large YMCA health, aquatics, gymnastics and recreation facility.','assistant census research: Prescott gyms fitness centers recreation centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Chamber feature for large YMCA health, aquatics, gymnastics and recreation facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','gyms_fitness','gyms fitness centers recreation centers','Center for Physical Excellence',
+ 'https://web.prescott.org/directory/results/directions.aspx?listingid=164','web.prescott.org','Current Prescott Chamber health/fitness facility at 3117 Stillwater Dr.','assistant census research: Prescott gyms fitness centers recreation centers',0,
+ null,'(928) 442-0005',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Chamber health/fitness facility at 3117 Stillwater Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','gyms_fitness','gyms fitness centers recreation centers','Get-Fit Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current 24-hour gym at Pine Ridge Marketplace.','assistant census research: Prescott gyms fitness centers recreation centers',0,
+ null,'(928) 276-9069',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current 24-hour gym at Pine Ridge Marketplace."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','gyms_fitness','gyms fitness centers recreation centers','A Valley of Vitality',
+ 'https://www.prescott.org/participating-businesses1.html','prescott.org','Current Prescott Chamber wellness studio.','assistant census research: Prescott gyms fitness centers recreation centers',0,
+ null,'(928) 442-6026',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Chamber wellness studio."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','schools','schools charter schools private schools','BASIS Prescott',
+ 'https://www.prescott.org/private-charter-schools.html','prescott.org','Current Prescott Chamber private/charter school listing.','assistant census research: Prescott schools charter schools private schools',0,
+ null,'(928) 277-0334',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Chamber private/charter school listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','schools','schools charter schools private schools','La Tierra Community School',
+ 'https://www.prescott.org/private-charter-schools.html','prescott.org','Current Prescott Chamber private/charter school listing.','assistant census research: Prescott schools charter schools private schools',0,
+ null,'(928) 445-5100',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Chamber private/charter school listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','schools','schools charter schools private schools','Mountain Oak Charter School',
+ 'https://www.prescott.org/private-charter-schools.html','prescott.org','Current Prescott Chamber private/charter school listing.','assistant census research: Prescott schools charter schools private schools',0,
+ null,'(928) 541-7700',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Chamber private/charter school listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','schools','schools charter schools private schools','Primavera School',
+ 'https://www.prescott.org/private-charter-schools.html','prescott.org','Current Prescott Chamber private/charter school listing.','assistant census research: Prescott schools charter schools private schools',0,
+ null,'(928) 445-5382',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Chamber private/charter school listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','schools','schools charter schools private schools','Trinity Christian School',
+ 'https://www.prescott.org/private-charter-schools.html','prescott.org','Current Prescott Chamber private/charter school listing.','assistant census research: Prescott schools charter schools private schools',0,
+ null,'(928) 445-6306',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Chamber private/charter school listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','schools','schools charter schools private schools','Northpoint Expeditionary Learning Academy',
+ 'https://www.prescott.org/private-charter-schools.html','prescott.org','Current Prescott Chamber private/charter school listing.','assistant census research: Prescott schools charter schools private schools',0,
+ null,'(928) 717-3272',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Chamber private/charter school listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','schools','schools charter schools private schools','Sacred Heart Catholic School',
+ 'https://www.prescott.org/private-charter-schools.html','prescott.org','Current Prescott Chamber private/charter school listing.','assistant census research: Prescott schools charter schools private schools',0,
+ null,'(928) 445-2621',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Chamber private/charter school listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','schools','schools charter schools private schools','Willow Creek Charter School',
+ 'https://www.prescott.org/private-charter-schools.html','prescott.org','Current Prescott Chamber private/charter school listing.','assistant census research: Prescott schools charter schools private schools',0,
+ null,'(928) 776-1212',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Chamber private/charter school listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','schools','schools charter schools private schools','Prescott Adventist Christian School',
+ 'https://www.prescott.org/private-charter-schools.html','prescott.org','Current Prescott Chamber private/charter school listing.','assistant census research: Prescott schools charter schools private schools',0,
+ null,'(928) 224-8022',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Chamber private/charter school listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','schools','schools charter schools private schools','Tri-City College Prep High School',
+ 'https://www.prescott.org/private-charter-schools.html','prescott.org','Current Prescott Chamber private/charter school listing.','assistant census research: Prescott schools charter schools private schools',0,
+ null,'(928) 777-0403',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Chamber private/charter school listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','schools','schools charter schools private schools','Prescott Unified School District',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott public-school district/facility operator.','assistant census research: Prescott schools charter schools private schools',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott public-school district/facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','schools','schools charter schools private schools','Yavapai College',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Major Prescott college campus and facility operator.','assistant census research: Prescott schools charter schools private schools',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Major Prescott college campus and facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','schools','schools charter schools private schools','Embry-Riddle Aeronautical University - Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Major Prescott university campus/facility operator.','assistant census research: Prescott schools charter schools private schools',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Major Prescott university campus/facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','dental','dentists dental offices orthodontists','Prescott Dental Arts',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott dental practice confirmed by current local business data.','assistant census research: Prescott dentists dental offices orthodontists',0,
+ null,'(928) 445-8980',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott dental practice confirmed by current local business data."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','dental','dentists dental offices orthodontists','Pro Solutions Dental Group',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott dental practice confirmed by current local business data.','assistant census research: Prescott dentists dental offices orthodontists',0,
+ null,'(928) 776-1208',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott dental practice confirmed by current local business data."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','dental','dentists dental offices orthodontists','Hooper Family Dental',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott dental practice confirmed by current local business data.','assistant census research: Prescott dentists dental offices orthodontists',0,
+ null,'(928) 778-2421',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott dental practice confirmed by current local business data."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','dental','dentists dental offices orthodontists','Hicks Dental Group',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott dental practice confirmed by current local business data.','assistant census research: Prescott dentists dental offices orthodontists',0,
+ null,'(928) 445-6030',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott dental practice confirmed by current local business data."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','dental','dentists dental offices orthodontists','Prescott Smile Care',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott dental practice confirmed by current local business data.','assistant census research: Prescott dentists dental offices orthodontists',0,
+ null,'(928) 445-8503',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott dental practice confirmed by current local business data."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','dental','dentists dental offices orthodontists','Hanis Dental Cosmetic & Implant Dentistry of Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott dental practice confirmed by current local business data.','assistant census research: Prescott dentists dental offices orthodontists',0,
+ null,'(928) 628-7442',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott dental practice confirmed by current local business data."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','dental','dentists dental offices orthodontists','Mangum Dental',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott dental practice confirmed by current local business data.','assistant census research: Prescott dentists dental offices orthodontists',0,
+ null,'(928) 778-4110',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott dental practice confirmed by current local business data."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','dental','dentists dental offices orthodontists','Joseph A. Savoini D.M.D., P.C.',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott dental practice confirmed by current local business data.','assistant census research: Prescott dentists dental offices orthodontists',0,
+ null,'(928) 297-3040',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott dental practice confirmed by current local business data."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','dental','dentists dental offices orthodontists','Keep Smiling Family Dentistry',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott dental practice confirmed by current local business data.','assistant census research: Prescott dentists dental offices orthodontists',0,
+ null,'(928) 445-4950',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott dental practice confirmed by current local business data."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','dental','dentists dental offices orthodontists','Horizon Dental Group Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott dental practice confirmed by current local business data.','assistant census research: Prescott dentists dental offices orthodontists',0,
+ null,'(928) 641-4000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott dental practice confirmed by current local business data."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','medical_centers','hospitals medical centers clinics','Skin Perfection Medical Spa',
+ 'https://www.prescott.org/participating-businesses1.html','prescott.org','Current Prescott Chamber health/medical-services business.','assistant census research: Prescott hospitals medical centers clinics',0,
+ null,'(928) 541-0003',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Chamber health/medical-services business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','medical_centers','hospitals medical centers clinics','New Life CPR',
+ 'https://www.prescott.org/participating-businesses1.html','prescott.org','Current Prescott Chamber health/medical-services business.','assistant census research: Prescott hospitals medical centers clinics',0,
+ null,'(928) 445-5024',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Chamber health/medical-services business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','medical_centers','hospitals medical centers clinics','Yavapai Regional Medical Center - Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Major Prescott hospital/medical facility.','assistant census research: Prescott hospitals medical centers clinics',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Major Prescott hospital/medical facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','medical_centers','hospitals medical centers clinics','Veterans Affairs Medical Center - Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Major Prescott federal medical facility.','assistant census research: Prescott hospitals medical centers clinics',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Major Prescott federal medical facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','therapy_behavioral','therapy counseling behavioral health clinics','West Yavapai Guidance Clinic / Polara Health',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Prescott behavioral-health facility/operator.','assistant census research: Prescott therapy counseling behavioral health clinics',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott behavioral-health facility/operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','senior_daycare','senior living assisted living daycare childcare','Good Samaritan Society - Prescott Village',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Prescott senior-living/care facility.','assistant census research: Prescott senior living assisted living daycare childcare',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott senior-living/care facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','senior_daycare','senior living assisted living daycare childcare','Las Fuentes Resort Village',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Prescott senior-living facility.','assistant census research: Prescott senior living assisted living daycare childcare',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott senior-living facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','senior_daycare','senior living assisted living daycare childcare','Granite Gate Senior Living',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Prescott senior-living facility.','assistant census research: Prescott senior living assisted living daycare childcare',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott senior-living facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','general_business','other local businesses','Prescott Animal Hospital',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott veterinary/animal-care facility.','assistant census research: Prescott other local businesses',0,
+ null,'(928) 445-2190',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott veterinary/animal-care facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','general_business','other local businesses','Granite Mountain Veterinary Hospital',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott veterinary/animal-care facility.','assistant census research: Prescott other local businesses',0,
+ null,'(928) 771-1340',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott veterinary/animal-care facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','general_business','other local businesses','Harmony Veterinary Care',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott veterinary/animal-care facility.','assistant census research: Prescott other local businesses',0,
+ null,'(928) 285-1527',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott veterinary/animal-care facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','general_business','other local businesses','VCA Thumb Butte Animal Hospital',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott veterinary/animal-care facility.','assistant census research: Prescott other local businesses',0,
+ null,'(928) 445-2331',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott veterinary/animal-care facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','general_business','other local businesses','Urgent Pet Prescott',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott veterinary/animal-care facility.','assistant census research: Prescott other local businesses',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott veterinary/animal-care facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','general_business','other local businesses','Yavapai Humane Society Pet Adoption Center',
+ 'https://www.prescottinsider.com/local-business-directory/prescott/','prescottinsider.com','Current Prescott veterinary/animal-care facility.','assistant census research: Prescott other local businesses',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott veterinary/animal-care facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','insurance_professional','insurance agents professional offices','Lucas Flood Agency',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott insurance, finance or professional-office candidate.','assistant census research: Prescott insurance agents professional offices',0,
+ null,'(928) 800-5630',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott insurance, finance or professional-office candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','insurance_professional','insurance agents professional offices','Eric Strobel - State Farm Insurance Agent',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott insurance, finance or professional-office candidate.','assistant census research: Prescott insurance agents professional offices',0,
+ null,'(928) 778-0560',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott insurance, finance or professional-office candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','insurance_professional','insurance agents professional offices','Tracy Murr - State Farm Insurance Agent',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott insurance, finance or professional-office candidate.','assistant census research: Prescott insurance agents professional offices',0,
+ null,'(928) 445-8500',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott insurance, finance or professional-office candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','insurance_professional','insurance agents professional offices','Moll Insurance Agency Inc.',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott insurance, finance or professional-office candidate.','assistant census research: Prescott insurance agents professional offices',0,
+ null,'(928) 443-0493',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott insurance, finance or professional-office candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','insurance_professional','insurance agents professional offices','Primerica - Guy J. Battaglia',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott insurance, finance or professional-office candidate.','assistant census research: Prescott insurance agents professional offices',0,
+ null,'(909) 851-4108',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott insurance, finance or professional-office candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','insurance_professional','insurance agents professional offices','Yavapai Title Agency',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott insurance, finance or professional-office candidate.','assistant census research: Prescott insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott insurance, finance or professional-office candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','insurance_professional','insurance agents professional offices','OneAZ Credit Union - Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott insurance, finance or professional-office candidate.','assistant census research: Prescott insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott insurance, finance or professional-office candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','insurance_professional','insurance agents professional offices','National Bank of Arizona - Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott insurance, finance or professional-office candidate.','assistant census research: Prescott insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott insurance, finance or professional-office candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','insurance_professional','insurance agents professional offices','Foothills Bank - Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott insurance, finance or professional-office candidate.','assistant census research: Prescott insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott insurance, finance or professional-office candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','insurance_professional','insurance agents professional offices','Prescott Financial Services',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott insurance, finance or professional-office candidate.','assistant census research: Prescott insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott insurance, finance or professional-office candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','property_management','property management companies apartment communities','Rent Right / Home Right Real Estate Solutions',
+ 'https://web.prescott.org/directory/results/directions.aspx?listingid=1741','web.prescott.org','Current Prescott property-management, real-estate or apartment-community candidate.','assistant census research: Prescott property management companies apartment communities',0,
+ null,'(928) 771-0308',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott property-management, real-estate or apartment-community candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','property_management','property management companies apartment communities','Peak Property Solutions',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott property-management, real-estate or apartment-community candidate.','assistant census research: Prescott property management companies apartment communities',0,
+ null,'(928) 251-0353',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott property-management, real-estate or apartment-community candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','property_management','property management companies apartment communities','Pierce Property Management',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott property-management, real-estate or apartment-community candidate.','assistant census research: Prescott property management companies apartment communities',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott property-management, real-estate or apartment-community candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','property_management','property management companies apartment communities','BloomTree Realty',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott property-management, real-estate or apartment-community candidate.','assistant census research: Prescott property management companies apartment communities',0,
+ null,'(928) 443-8800',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott property-management, real-estate or apartment-community candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','property_management','property management companies apartment communities','Journey Real Estate Investments & Management',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott property-management, real-estate or apartment-community candidate.','assistant census research: Prescott property management companies apartment communities',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott property-management, real-estate or apartment-community candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','property_management','property management companies apartment communities','United Metro Properties',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott property-management, real-estate or apartment-community candidate.','assistant census research: Prescott property management companies apartment communities',0,
+ null,'(928) 445-4159',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott property-management, real-estate or apartment-community candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','property_management','property management companies apartment communities','Bear Creek Real Estate & Property Management',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott property-management, real-estate or apartment-community candidate.','assistant census research: Prescott property management companies apartment communities',0,
+ null,'(928) 420-8333',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott property-management, real-estate or apartment-community candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','property_management','property management companies apartment communities','Real Property Management Northern Arizona',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott property-management, real-estate or apartment-community candidate.','assistant census research: Prescott property management companies apartment communities',0,
+ null,'(928) 771-0308',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott property-management, real-estate or apartment-community candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','property_management','property management companies apartment communities','Willow Ridge Apartments',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott property-management, real-estate or apartment-community candidate.','assistant census research: Prescott property management companies apartment communities',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott property-management, real-estate or apartment-community candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','property_management','property management companies apartment communities','Prescott Lakes Senior Apartments',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott property-management, real-estate or apartment-community candidate.','assistant census research: Prescott property management companies apartment communities',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott property-management, real-estate or apartment-community candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','auto_dealers','auto dealers car dealerships','Prescott Honda',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott automotive dealership/service facility.','assistant census research: Prescott auto dealers car dealerships',0,
+ null,'(928) 432-7993',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott automotive dealership/service facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','auto_dealers','auto dealers car dealerships','Findlay Toyota Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott automotive dealership/service facility.','assistant census research: Prescott auto dealers car dealerships',0,
+ null,'(928) 443-8300',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott automotive dealership/service facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','auto_dealers','auto dealers car dealerships','Findlay Subaru Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott automotive dealership/service facility.','assistant census research: Prescott auto dealers car dealerships',0,
+ null,'(928) 771-6984',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott automotive dealership/service facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','auto_dealers','auto dealers car dealerships','Galpin Ford of Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott automotive dealership/service facility.','assistant census research: Prescott auto dealers car dealerships',0,
+ null,'(928) 445-3673',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott automotive dealership/service facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','auto_dealers','auto dealers car dealerships','Casa Chevrolet of Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott automotive dealership/service facility.','assistant census research: Prescott auto dealers car dealerships',0,
+ null,'(928) 277-0237',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott automotive dealership/service facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','auto_dealers','auto dealers car dealerships','Beal''s Auto Body',
+ 'https://www.prescott.org/participating-businesses1.html','prescott.org','Current Prescott automotive dealership/service facility.','assistant census research: Prescott auto dealers car dealerships',0,
+ null,'(928) 445-2295',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott automotive dealership/service facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','warehouses_industrial','warehouses industrial businesses distribution centers','STORAGExperts at Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Prescott storage, aviation, manufacturing or production facility candidate.','assistant census research: Prescott warehouses industrial businesses distribution centers',0,
+ null,'(928) 778-5657',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott storage, aviation, manufacturing or production facility candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','warehouses_industrial','warehouses industrial businesses distribution centers','Granite Dells Storage & RV',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Prescott storage, aviation, manufacturing or production facility candidate.','assistant census research: Prescott warehouses industrial businesses distribution centers',0,
+ null,'(928) 800-8200',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott storage, aviation, manufacturing or production facility candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','warehouses_industrial','warehouses industrial businesses distribution centers','Prescott Airport Industrial Park',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Prescott storage, aviation, manufacturing or production facility candidate.','assistant census research: Prescott warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott storage, aviation, manufacturing or production facility candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','warehouses_industrial','warehouses industrial businesses distribution centers','Leighnor Aircraft',
+ 'https://www.prescott.org/participating-businesses.html','prescott.org','Prescott storage, aviation, manufacturing or production facility candidate.','assistant census research: Prescott warehouses industrial businesses distribution centers',0,
+ null,'(928) 499-3080',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott storage, aviation, manufacturing or production facility candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','warehouses_industrial','warehouses industrial businesses distribution centers','Wathen Custom Woodcrafts',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Prescott storage, aviation, manufacturing or production facility candidate.','assistant census research: Prescott warehouses industrial businesses distribution centers',0,
+ null,'(928) 585-9345',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott storage, aviation, manufacturing or production facility candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','warehouses_industrial','warehouses industrial businesses distribution centers','Wren House Brewing - Prescott Production Site',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Prescott storage, aviation, manufacturing or production facility candidate.','assistant census research: Prescott warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott storage, aviation, manufacturing or production facility candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','public_facilities','government public facilities municipal buildings','City of Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Prescott public/government or civic facility operator.','assistant census research: Prescott government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott public/government or civic facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','public_facilities','government public facilities municipal buildings','Yavapai County Administration',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Prescott public/government or civic facility operator.','assistant census research: Prescott government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott public/government or civic facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','public_facilities','government public facilities municipal buildings','Prescott Public Library',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Prescott public/government or civic facility operator.','assistant census research: Prescott government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott public/government or civic facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','public_facilities','government public facilities municipal buildings','Prescott Regional Airport',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Prescott public/government or civic facility operator.','assistant census research: Prescott government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott public/government or civic facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','public_facilities','government public facilities municipal buildings','Prescott Fire Department',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Prescott public/government or civic facility operator.','assistant census research: Prescott government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott public/government or civic facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','public_facilities','government public facilities municipal buildings','Prescott Police Department',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Prescott public/government or civic facility operator.','assistant census research: Prescott government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott public/government or civic facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','public_facilities','government public facilities municipal buildings','Prescott Chamber of Commerce',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Prescott public/government or civic facility operator.','assistant census research: Prescott government public facilities municipal buildings',0,
+ null,'(928) 445-2000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott public/government or civic facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','churches','churches worship centers','Sacred Heart Roman Catholic Parish',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott church/religious facility.','assistant census research: Prescott churches worship centers',0,
+ null,'(928) 445-3141',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott church/religious facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','churches','churches worship centers','Heights Church - Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott church/religious facility.','assistant census research: Prescott churches worship centers',0,
+ null,'(928) 445-1421',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott church/religious facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','churches','churches worship centers','Prescott Potter''s House Church',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott church/religious facility.','assistant census research: Prescott churches worship centers',0,
+ null,'(928) 533-6185',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott church/religious facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','churches','churches worship centers','Prescott United Methodist Church',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott church/religious facility.','assistant census research: Prescott churches worship centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott church/religious facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','churches','churches worship centers','Trinity Presbyterian Church',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott church/religious facility.','assistant census research: Prescott churches worship centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott church/religious facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','churches','churches worship centers','First Congregational Church of Prescott',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott church/religious facility.','assistant census research: Prescott churches worship centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_buyers_01","researched_at":"2026-10-27T01:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott church/religious facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p set official_candidates=(
+ select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
+ and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+),updated_at=now() where p.market='Prescott';
