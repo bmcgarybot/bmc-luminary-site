@@ -6,6 +6,7 @@ ENV_FILE="${1:-.env}"
 MAX_ROUNDS="${2:-1000}"
 SLEEP_SECONDS="${3:-1}"
 SOURCE_NATIVE_MAX_ROUNDS="${SOURCE_NATIVE_MAX_ROUNDS:-250}"
+SKIP_SOURCE_NATIVE_DRAIN="${SKIP_SOURCE_NATIVE_DRAIN:-false}"
 
 if [ ! -f "$ENV_FILE" ]; then
   echo "Missing $ENV_FILE"
@@ -108,10 +109,13 @@ docker compose --env-file "$ENV_FILE" build ops_api
 restart_api_gateway
 
 echo
-echo "Phase 1: complete one source-native Arizona sweep"
-native_stall=0
-previous_marker=""
-for round in $(seq 1 "$SOURCE_NATIVE_MAX_ROUNDS"); do
+if [ "$SKIP_SOURCE_NATIVE_DRAIN" = "true" ]; then
+  echo "Phase 1: source-native sweep skipped by SKIP_SOURCE_NATIVE_DRAIN=true"
+else
+  echo "Phase 1: complete one source-native Arizona sweep"
+  native_stall=0
+  previous_marker=""
+  for round in $(seq 1 "$SOURCE_NATIVE_MAX_ROUNDS"); do
   pending="$(dbq "select count(*) from source_native_state where coalesce((metadata->>'expected')::boolean,false)=true and (last_run_at is null or coalesce(cursor,0)>0 or coalesce(metadata->>'last_error','')<>'');")"
   if [ "$pending" -eq 0 ]; then
     echo "Source-native sweep complete."
@@ -129,9 +133,10 @@ for round in $(seq 1 "$SOURCE_NATIVE_MAX_ROUNDS"); do
     echo "Source-native sweep stopped after 8 rounds without record/cursor progress."
     break
   fi
-  previous_marker="$marker"
-  sleep "$SLEEP_SECONDS"
-done
+    previous_marker="$marker"
+    sleep "$SLEEP_SECONDS"
+  done
+fi
 
 echo
 echo "Phase 2: drain queued/assigned public-web research"
