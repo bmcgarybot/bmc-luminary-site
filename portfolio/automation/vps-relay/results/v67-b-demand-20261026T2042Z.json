@@ -1,0 +1,27 @@
+{
+  "action": "local_demand_step",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-26T20:41:49.254188+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "e56ff338269517e25bfac0bdff9057329c526e23",
+  "git_commit_before": "e56ff338269517e25bfac0bdff9057329c526e23",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "f0fbb75f742ab9b255a8777a026fad4148632834",
+  "request_id": "v67-b-demand-20261026T2042Z",
+  "request_sha256": "272a049f96f2224c595b1216253a6c63cfd0a2d475867aa58e3aa8bb816ff4a9",
+  "started_at": "2026-10-26T20:41:36.232659+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"iterations\": 1,\n  \"responses\": [\n    {\n      \"ok\": true,\n      \"enabled\": true,\n      \"searches\": 15,\n      \"new_signals\": 0,\n      \"expired_signals\": 0,\n      \"lanes_processed\": 15,\n      \"lane_results\": [\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Ash Fork\",\n          \"group\": \"cleaning_property\",\n          \"page\": 1,\n          \"results_seen\": 0,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Ash Fork\",\n          \"group\": \"home_property\",\n          \"page\": 1,\n          \"results_seen\": 0,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Ash Fork\",\n          \"group\": \"outdoor_land\",\n          \"page\": 1,\n          \"results_seen\": 0,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Ash Fork\",\n          \"group\": \"restaurant_facility\",\n          \"page\": 1,\n          \"results_seen\": 0,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Ash Fork\",\n          \"group\": \"vehicle\",\n          \"page\": 1,\n          \"results_seen\": 0,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Bullhead City\",\n          \"group\": \"cleaning_property\",\n          \"page\": 1,\n          \"results_seen\": 0,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Bullhead City\",\n          \"group\": \"home_property\",\n          \"page\": 1,\n          \"results_seen\": 0,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Bullhead City\",\n          \"group\": \"outdoor_land\",\n          \"page\": 1,\n          \"results_seen\": 0,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Bullhead City\",\n          \"group\": \"restaurant_facility\",\n          \"page\": 1,\n          \"results_seen\": 0,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Bullhead City\",\n          \"group\": \"vehicle\",\n          \"page\": 1,\n          \"results_seen\": 0,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Camp Verde\",\n          \"group\": \"cleaning_property\",\n          \"page\": 1,\n          \"results_seen\": 0,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Camp Verde\",\n          \"group\": \"home_property\",\n          \"page\": 1,\n          \"results_seen\": 0,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Camp Verde\",\n          \"group\": \"outdoor_land\",\n          \"page\": 1,\n          \"results_seen\": 0,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Camp Verde\",\n          \"group\": \"restaurant_facility\",\n          \"page\": 1,\n          \"results_seen\": 0,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Camp Verde\",\n          \"group\": \"vehicle\",\n          \"page\": 1,\n          \"results_seen\": 0,\n          \"new_signals\": 0\n        }\n      ],\n      \"errors\": []\n    }\n  ]\n}",
+  "version": 1
+}
