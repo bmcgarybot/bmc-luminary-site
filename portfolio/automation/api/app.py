@@ -385,7 +385,7 @@ def result_matches_market(result,market):
     # Prescott and Prescott Valley are separate BMC markets. A Prescott-only
     # lane must not accept evidence whose only location is Prescott Valley.
     if place=="prescott":
-        return bool(re.search(r"(?<![a-z0-9])prescott(?!\s+valley\b)",normalized))
+        return bool(re.search(r"\bprescott\b(?!\s+valley\b)",normalized))
     return f" {place} " in padded
 
 def inventory_result_relevant(result,market,category_label):
