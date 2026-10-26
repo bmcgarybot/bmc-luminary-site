@@ -9014,3 +9014,545 @@ update market_inventory_progress p set official_candidates=(
  select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
  and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ),updated_at=now() where p.market='Scottsdale';
+
+
+-- Assistant-led Scottsdale vendor batch 01 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','electrical_service','Electrician','Unique Electrical Contractors, Inc.',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Electrician.','assistant vendor census: Scottsdale Electrician',0,
+ null,'(480) 840-1050',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Electrician."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','backflow_plumbing','Backflow & Commercial Plumbing','Dominick Plumbing',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Backflow & Commercial Plumbing.','assistant vendor census: Scottsdale Backflow & Commercial Plumbing',0,
+ null,'(480) 779-7350',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Backflow & Commercial Plumbing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','window_cleaning','Window Cleaning','Magna View Window Solutions',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Window Cleaning.','assistant vendor census: Scottsdale Window Cleaning',0,
+ null,'(480) 232-0737',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Window Cleaning."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','Lindberg Fine Homes, Inc.',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(480) 374-4962',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','Abeer Interiors',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(480) 848-9791',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','Toscani Interior Services LLC',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(480) 885-8500',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','window_cleaning','Window Cleaning','Pella Windows & Doors',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Window Cleaning.','assistant vendor census: Scottsdale Window Cleaning',0,
+ null,'(480) 504-1776',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Window Cleaning."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','NVIRIQ Inc',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(480) 999-6091',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','Bee Organized Scottsdale',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(480) 840-7067',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','electrical_service','Electrician','Mister Sparky Electrician Scottsdale',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Electrician.','assistant vendor census: Scottsdale Electrician',0,
+ null,'(480) 591-0888',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Electrician."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','Kitchens by Good Guys',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(480) 696-3524',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','ArDan Construction',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(480) 608-4944',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','TraVek Remodeling & Roofing',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(623) 274-2914',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','McDowell Mountain Builders',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(480) 845-9621',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','Constructed Matter',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(480) 628-4458',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','window_cleaning','Window Cleaning','Gatsby Glass of Scottsdale',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Window Cleaning.','assistant vendor census: Scottsdale Window Cleaning',0,
+ null,'(480) 780-1000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Window Cleaning."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','ModaScapes Interior Design',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(480) 422-1855',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','Four Peaks Building Group',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(480) 440-8772',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','Camelot Homes',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(602) 885-6673',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','Suzanne Rugg Interior Design, LLC',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(480) 768-7142',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','Pro-Tech Products',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(480) 945-7303',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','backflow_plumbing','Backflow & Commercial Plumbing','Zest Plumbing & Drain',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Backflow & Commercial Plumbing.','assistant vendor census: Scottsdale Backflow & Commercial Plumbing',0,
+ null,'(480) 618-1750',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Backflow & Commercial Plumbing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','CEMEX',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(602) 416-2600',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','Contract Furnishings Mart',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(480) 805-9960',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','Infinity Builders - Scottsdale Remodeling & Construction',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(480) 757-0767',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','Hunt''s Kitchen & Design',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(480) 650-4402',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','Ames Construction Inc.',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(602) 431-2111',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','facility_maintenance','Building Maintenance Help','Paragon Contracting, LLC',
+ 'https://business.scottsdalechamber.com/members/ql/construction-equipment-contractors-7','business.scottsdalechamber.com','Current Scottsdale Chamber construction/service listing for Building Maintenance Help.','assistant vendor census: Scottsdale Building Maintenance Help',0,
+ null,'(928) 414-7353',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_vendor_batch_01","researched_at":"2026-10-26T23:58:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber construction/service listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Scottsdale';
