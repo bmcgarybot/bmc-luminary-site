@@ -7831,3 +7831,1419 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Kingman';
+
+
+-- Assistant-led Kingman census batch 05 (2026-10-26)
+-- Manually enumerated Kingman buyer-side directory candidates.
+-- Discovery inventory only; preserve closed status and never promote/send.
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','property_management','property management companies apartment communities','Arizona Living Rentals & Property Management',
+ 'https://www.mohavelocal.com/l/kingman-az/property-management','mohavelocal.com','Current Kingman property-management directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman property management companies apartment communities',0,
+ null,'(928) 453-3500',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman property-management directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','property_management','property management companies apartment communities','At Your Service Home Watchers LLC',
+ 'https://www.mohavelocal.com/l/kingman-az/property-management','mohavelocal.com','Current Kingman property-management directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman property management companies apartment communities',0,
+ null,'(928) 754-8305',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman property-management directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','property_management','property management companies apartment communities','L&K Equities Inc',
+ 'https://www.mohavelocal.com/l/kingman-az/property-management','mohavelocal.com','Current Kingman property-management directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman property management companies apartment communities',0,
+ null,'(928) 279-8288',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman property-management directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','property_management','property management companies apartment communities','Realty Executives',
+ 'https://www.mohavelocal.com/l/kingman-az/property-management','mohavelocal.com','Current Kingman property-management directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman property management companies apartment communities',0,
+ null,'(928) 753-1500',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman property-management directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','property_management','property management companies apartment communities','Santoko Bahatti',
+ 'https://www.mohavelocal.com/l/kingman-az/property-management','mohavelocal.com','Current Kingman property-management directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman property management companies apartment communities',0,
+ null,'(928) 753-6935',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman property-management directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','property_management','property management companies apartment communities','Turn-Key Property Management',
+ 'https://www.mohavelocal.com/l/kingman-az/property-management','mohavelocal.com','Current Kingman property-management directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman property management companies apartment communities',0,
+ null,'(928) 377-1982',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman property-management directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','senior_daycare','senior living assisted living daycare childcare','Desert Willow Headstart',
+ 'https://www.mohavelocal.com/l/kingman-az/childcare-childcare-centers','mohavelocal.com','Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion.','assistant bootstrap research: Kingman senior living assisted living daycare childcare',0,
+ null,'(928) 681-3630',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','senior_daycare','senior living assisted living daycare childcare','Grace Neal Daycare',
+ 'https://www.mohavelocal.com/l/kingman-az/childcare-childcare-centers','mohavelocal.com','Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion.','assistant bootstrap research: Kingman senior living assisted living daycare childcare',0,
+ null,'(928) 692-8830',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','senior_daycare','senior living assisted living daycare childcare','Grace Neal Preschool Of St John''s',
+ 'https://www.mohavelocal.com/l/kingman-az/childcare-childcare-centers','mohavelocal.com','Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion.','assistant bootstrap research: Kingman senior living assisted living daycare childcare',0,
+ null,'(928) 692-8830',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','senior_daycare','senior living assisted living daycare childcare','Little Bricks School House',
+ 'https://www.mohavelocal.com/l/kingman-az/childcare-childcare-centers','mohavelocal.com','Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion.','assistant bootstrap research: Kingman senior living assisted living daycare childcare',0,
+ null,'(928) 753-5439',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','senior_daycare','senior living assisted living daycare childcare','Little Eagle Preschool & Child Care Center',
+ 'https://www.mohavelocal.com/l/kingman-az/childcare-childcare-centers','mohavelocal.com','Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion.','assistant bootstrap research: Kingman senior living assisted living daycare childcare',0,
+ null,'(928) 757-7888',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','senior_daycare','senior living assisted living daycare childcare','Little Knights & Ladies Child Development Center',
+ 'https://www.mohavelocal.com/l/kingman-az/childcare-childcare-centers','mohavelocal.com','Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion.','assistant bootstrap research: Kingman senior living assisted living daycare childcare',0,
+ null,'(928) 529-5287',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','senior_daycare','senior living assisted living daycare childcare','Little Minnows Learning Center',
+ 'https://www.mohavelocal.com/l/kingman-az/childcare-childcare-centers','mohavelocal.com','Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion.','assistant bootstrap research: Kingman senior living assisted living daycare childcare',0,
+ null,'(928) 757-3141',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','senior_daycare','senior living assisted living daycare childcare','Ms Annie''s Daycare And Preschool',
+ 'https://www.mohavelocal.com/l/kingman-az/childcare-childcare-centers','mohavelocal.com','Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion.','assistant bootstrap research: Kingman senior living assisted living daycare childcare',0,
+ null,'(928) 753-1416',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','senior_daycare','senior living assisted living daycare childcare','The Ginger Bread House',
+ 'https://www.mohavelocal.com/l/kingman-az/childcare-childcare-centers','mohavelocal.com','Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion.','assistant bootstrap research: Kingman senior living assisted living daycare childcare',0,
+ null,'(928) 757-7977',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','senior_daycare','senior living assisted living daycare childcare','The Lily Pad Day Care Center',
+ 'https://www.mohavelocal.com/l/kingman-az/childcare-childcare-centers','mohavelocal.com','Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion.','assistant bootstrap research: Kingman senior living assisted living daycare childcare',0,
+ null,'(928) 718-4482',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman childcare/daycare directory candidate; direct/state-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','A 24 Hr Storage',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 757-1323',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','ABC Self Storage',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 757-3030',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','AZ Sunshine Storage LLC',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 692-6030',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','AZ Sunshine Storage Rentals',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 692-6047',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','American Mini Storage',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 757-0320',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Daze Transfer & Storage Inc',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 757-3155',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Golden Valley Mini Storage',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 753-2025',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Guardall Self Storage',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 692-1300',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Hualapai Kwik Stop & Storage',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 753-3380',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Kingman Dry Storage',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 753-2649',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Kingman Marine',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 757-2212',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Kingman Mini Storage',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 753-2570',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Kokopelli Storage',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 565-7507',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Record Storage & Retrieval Service',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 753-4550',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Shooting Star Mini Max',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 757-7733',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Sunridge Storage',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 542-7107',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','U Haul Storage',
+ 'https://www.mohavelocal.com/l/kingman-az/storage-services','mohavelocal.com','Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 692-6222',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman storage/warehouse facility directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','grocery','grocery stores supermarkets markets','Bashas'' Market',
+ 'https://www.mohavelocal.com/l/kingman-az/grocers','mohavelocal.com','Current Kingman grocery/convenience-market directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman grocery stores supermarkets markets',0,
+ null,'(928) 757-7161',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman grocery/convenience-market directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','grocery','grocery stores supermarkets markets','Circle K - 2104 Kingman Ave',
+ 'https://www.mohavelocal.com/l/kingman-az/grocers','mohavelocal.com','Current Kingman grocery/convenience-market directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman grocery stores supermarkets markets',0,
+ null,'(928) 453-8762',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman grocery/convenience-market directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','grocery','grocery stores supermarkets markets','Herbs And More Discount Health Foods',
+ 'https://www.mohavelocal.com/l/kingman-az/grocers','mohavelocal.com','Current Kingman grocery/convenience-market directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman grocery stores supermarkets markets',0,
+ null,'(928) 692-0988',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman grocery/convenience-market directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','gyms_fitness','gyms fitness centers recreation centers','Firehouse Fitness & Nutrition',
+ 'https://www.mohavelocal.com/l/az/fitness-centers','mohavelocal.com','Current Mohave County fitness directory places this facility in Kingman; direct verification remains required before promotion.','assistant bootstrap research: Kingman gyms fitness centers recreation centers',0,
+ null,'(928) 303-4115',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Mohave County fitness directory places this facility in Kingman; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','gyms_fitness','gyms fitness centers recreation centers','Fitness For 10',
+ 'https://www.mohavelocal.com/l/az/fitness-centers','mohavelocal.com','Current Mohave County fitness directory places this facility in Kingman; direct verification remains required before promotion.','assistant bootstrap research: Kingman gyms fitness centers recreation centers',0,
+ null,'(928) 377-3615',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Mohave County fitness directory places this facility in Kingman; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Doctor Drive Now',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 681-2277',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Freedom Auto Sales',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 757-1123',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Kingman Auto Plaza Inc',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 757-5325',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Kingman Honda',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 681-4041',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Martin Swanty Chrysler Jeep Dodge',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 202-4131',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Martin Swanty Hyundai',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 692-3232',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Poorboyz Auto Sales',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 681-3664',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Tim''s Auto Sales',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 681-8467',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','TrailersPlus Kingman',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(877) 850-7587',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Wiley Auto Group',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(800) 824-2205',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Approved Auto and Loans',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 757-2886',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Spendless Auto Sales',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 757-3838',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Andy Devine Auto Sales',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 753-1700',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Rides N Rods Auto Sales',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 718-1113',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Poor Boyz Auto Sales - N Bank St',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 757-5704',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Old 66 Classics & More',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 718-6464',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Vintage Performance & Custom',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 753-5008',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Auto Mart',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Poor Boys Used Cars',
+ 'https://kingman-az.findstorenearme.us/car-dealer/','kingman-az.findstorenearme.us','Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman car-dealer directory candidate; direct/dealer-license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','retail','retail stores shopping stores','Beall''s Outlet Store #544',
+ 'https://www.mohavelocal.com/l/kingman-az/department-stores','mohavelocal.com','Kingman retail/department-store directory candidate; direct current-operation verification remains required before promotion.','assistant bootstrap research: Kingman retail stores shopping stores',0,
+ null,'(928) 757-2900',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman retail/department-store directory candidate; direct current-operation verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','retail','retail stores shopping stores','Import Corner',
+ 'https://www.mohavelocal.com/l/kingman-az/department-stores','mohavelocal.com','Kingman retail/department-store directory candidate; direct current-operation verification remains required before promotion.','assistant bootstrap research: Kingman retail stores shopping stores',0,
+ null,'(928) 352-2089',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman retail/department-store directory candidate; direct current-operation verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','retail','retail stores shopping stores','Kingman Liquidation',
+ 'https://www.mohavelocal.com/l/kingman-az/department-stores','mohavelocal.com','Kingman retail/department-store directory candidate; direct current-operation verification remains required before promotion.','assistant bootstrap research: Kingman retail stores shopping stores',0,
+ null,'(928) 529-5006',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman retail/department-store directory candidate; direct current-operation verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','retail','retail stores shopping stores','Ross Dress For Less',
+ 'https://www.mohavelocal.com/l/kingman-az/department-stores','mohavelocal.com','Kingman retail/department-store directory candidate; direct current-operation verification remains required before promotion.','assistant bootstrap research: Kingman retail stores shopping stores',0,
+ null,'(928) 757-7656',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_05","researched_at":"2026-10-26T22:48:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman retail/department-store directory candidate; direct current-operation verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Kingman';
