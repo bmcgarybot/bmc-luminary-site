@@ -19,6 +19,25 @@ jobs:
           python-version: "3.12"
       - name: Validate API syntax
         run: python -m py_compile portfolio/automation/api/app.py
+      - name: Validate VPS GitOps relay
+        working-directory: portfolio/automation
+        run: |
+          python3 -m py_compile vps-gitops-relay.py
+          python3 - <<'PY'
+          import runpy
+          ns=runpy.run_path("vps-gitops-relay.py",run_name="bmc_relay_ci")
+          expected={
+              "proof_readout","launch_audit","runtime_doctor","deploy_update",
+              "market_inventory_step","local_demand_step",
+              "public_opportunities_step","source_native_step"
+          }
+          assert ns["ALLOWED_ACTIONS"] == expected, ns["ALLOWED_ACTIONS"]
+          assert all("shell" not in x for x in ns["ALLOWED_ACTIONS"])
+          assert ns["RELAY_BRANCH"] == "vps-relay"
+          PY
+          grep -q 'allow_external_actions' vps-gitops-relay.py
+          ! grep -q 'shell=True' vps-gitops-relay.py
+
       - name: Validate service registry and fronts
         run: |
           python - <<'PY'
@@ -88,7 +107,7 @@ jobs:
           bash -n provision-cloud.sh bootstrap.sh start.sh stop.sh backup.sh runtime-doctor.sh deploy-update.sh \
             configure-cloudflare.sh verify-public-ingress.sh verify-backup.sh install-backup-timer.sh \
             expand-source-native-markets.sh configure-stripe-webhook.sh drain-research-backlog.sh launch-readiness.sh \
-            stage-outreach-wave.sh
+            stage-outreach-wave.sh install-vps-gitops-relay.sh
           sh -n scheduler.sh
 
       - name: Validate public gateway configuration
