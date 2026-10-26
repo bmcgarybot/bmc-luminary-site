@@ -358,24 +358,49 @@ def inventory_target(market,side,category_key):
     return (40,20,10)[tier]
 
 def inventory_query(side,market,category_label,variant):
-    # Keep search syntax deliberately plain. Exact-quoting long category labels
-    # such as "hospitals medical centers clinics" suppresses obvious local results.
+    # Open-ended inventory uses multiple ordinary-search formulations, including
+    # directory/chamber discovery. Directory results are retained as discovery
+    # evidence and graded separately from direct/official evidence.
     place=clean(market).replace('"'," ")
     label=clean(category_label).replace('"'," ")
-    v=int(variant or 0)%3
     if side=="buyer":
         variants=(
           f'{label} {place} Arizona',
           f'{place} AZ {label}',
-          f'{label} near {place} AZ'
+          f'{label} near {place} AZ',
+          f'{place} Arizona businesses {label}',
+          f'site:yellowpages.com {place} AZ {label}',
+          f'site:yelp.com {place} AZ {label}',
+          f'{place} Arizona chamber {label}',
+          f'{place} Arizona business directory {label}'
         )
     else:
         variants=(
           f'{label} {place} Arizona',
           f'{label} near {place} AZ',
-          f'{place} AZ {label} service repair contractor'
+          f'{place} AZ {label} service repair contractor',
+          f'{place} Arizona {label} company contractor',
+          f'site:yellowpages.com {place} AZ {label}',
+          f'site:yelp.com {place} AZ {label}',
+          f'{place} Arizona chamber {label}',
+          f'{place} Arizona business directory {label}'
         )
-    return variants[v]
+    return variants[int(variant or 0)%len(variants)]
+
+def inventory_result_closed(result):
+    text=" ".join([
+        clean((result or {}).get("title")),
+        clean((result or {}).get("snippet"))
+    ]).lower()
+    phrases=(
+      "permanently closed","closed permanently","business is closed",
+      "has permanently closed","has closed","no longer in business",
+      "out of business","ceased operations","closed for good"
+    )
+    for phrase in phrases:
+        if phrase in text:
+            return phrase
+    return None
 
 def result_matches_market(result,market):
     # Normalize punctuation in titles, snippets and URLs so hyphenated URL slugs
@@ -3228,7 +3253,6 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
             ) as market_rank
           from market_inventory_progress p
           where p.side='vendor'
-            and p.status not in ('scan_complete_target_met','scan_complete_under_target')
         )
         select * from ranked
         where market_rank=1
@@ -3250,7 +3274,6 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
             ) as market_rank
           from market_inventory_progress p
           where p.side='buyer'
-            and p.status not in ('scan_complete_target_met','scan_complete_under_target')
         )
         select * from ranked
         where market_rank=1
@@ -3280,14 +3303,17 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
             for result in relevant_results:
                 contact=extract_public_contact(f'{result["title"]} {result["snippet"]}')
                 market_evidence=result_matches_market(result,lane["market"])
-                official=bool(inventory_official_site(result) and market_evidence)
+                closure_reason=inventory_result_closed(result)
+                official=bool(inventory_official_site(result) and market_evidence and not closure_reason)
+                candidate_status="closed" if closure_reason else "discovered"
                 cid=await conn.fetchval("""insert into market_inventory_candidates(
                     side,market,category_key,category_label,business_name,source_url,source_domain,
                     snippet,search_query,page_no,public_email,public_phone,official_site,
-                    source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence)
+                    source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence,
+                    first_seen_at,last_seen_at,closed_at,closure_reason)
                   values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,nullif($11,''),nullif($12,''),$13,
                          $14,$15,case when $13 then now() else null end,
-                         'discovered',$16,$17::jsonb)
+                         $16,$17,$18::jsonb,now(),now(),case when $16='closed' then now() else null end,$19)
                   on conflict(side,market,category_key,source_url,business_name) do update set
                     business_name=excluded.business_name,
                     source_domain=excluded.source_domain,
@@ -3300,22 +3326,27 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
                     source_tier=excluded.source_tier,
                     verification_status=excluded.verification_status,
                     last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
-                    status='discovered',
+                    status=excluded.status,
                     query_strategy_version=excluded.query_strategy_version,
                     evidence=market_inventory_candidates.evidence || excluded.evidence,
+                    last_seen_at=now(),
+                    closed_at=excluded.closed_at,
+                    closure_reason=excluded.closure_reason,
                     updated_at=now()
                   returning candidate_id""",
                   lane["side"],lane["market"],lane["category_key"],lane["category_label"],
                   result["title"][:240],result["url"],result["domain"],result["snippet"],query,page,
                   clean(contact.get("public_email")),clean(contact.get("public_phone")),official,
                   "direct" if official else "search",
-                  "direct_evidence" if official else "discovery",
-                  INVENTORY_QUERY_STRATEGY_VERSION,
+                  "direct_evidence" if official else ("closed_evidence" if closure_reason else "discovery"),
+                  candidate_status,INVENTORY_QUERY_STRATEGY_VERSION,
                   json.dumps({"search_engine":result["engine"],"search_score":result["score"],
                               "query_variant":variant,"page":page,
                               "query_strategy_version":INVENTORY_QUERY_STRATEGY_VERSION,
                               "market_evidence":market_evidence,
-                              "market_evidence_mode":"result_text" if market_evidence else "market_specific_query_context"}))
+                              "market_evidence_mode":"result_text" if market_evidence else "market_specific_query_context",
+                              "closure_evidence":closure_reason}),
+                  closure_reason)
                 if cid:
                     inserted+=1
                     if official:
@@ -3331,9 +3362,11 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
                 and status='discovered' and query_strategy_version=$4""",
               lane["side"],lane["market"],lane["category_key"],INVENTORY_QUERY_STRATEGY_VERSION) or 0)
 
-            final_scan=(variant>=2 and page>=4)
+            final_scan=(variant>=7 and page>=4)
             if final_scan:
-                status="scan_complete_target_met" if candidate_count>=int(lane["target"] or 0) else "scan_complete_under_target"
+                # Inventory is never terminally complete. A full pass advances the
+                # monitoring cycle and immediately resets the cursor for future refresh.
+                status="monitoring"
                 next_page=1
                 next_variant=0
             else:
@@ -3352,17 +3385,20 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
                   next_page=$6,
                   query_variant=$7,
                   no_progress_passes=case when $8=0 then no_progress_passes+1 else 0 end,
-                  status=$9,last_run_at=now(),notes=null,updated_at=now()
+                  status=$9,
+                  scan_cycles=scan_cycles+case when $10 then 1 else 0 end,
+                  last_full_scan_at=case when $10 then now() else last_full_scan_at end,
+                  last_run_at=now(),notes=null,updated_at=now()
               where side=$1 and market=$2 and category_key=$3""",
               lane["side"],lane["market"],lane["category_key"],len(relevant_results),official_count,
-              next_page,next_variant,inserted,status)
+              next_page,next_variant,inserted,status,final_scan)
             lane_results.append({
               "side":lane["side"],"market":lane["market"],"category_key":lane["category_key"],
               "category_label":lane["category_label"],"page":page,"query_variant":variant,
               "results_returned":len(results),"relevant_results":len(relevant_results),
               "candidates":candidate_count,
-              "official_candidates":official_count,"target":int(lane["target"] or 0),
-              "status":status
+              "official_candidates":official_count,"depth_goal":int(lane["target"] or 0),
+              "status":status,"full_cycle_completed":final_scan
             })
     return {"ok":True,"enabled":True,"lanes_processed":len(lane_results),
             "new_candidates":total_new,"lane_results":lane_results,"errors":errors}
