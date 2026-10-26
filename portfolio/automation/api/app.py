@@ -3283,10 +3283,11 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
                 official=bool(inventory_official_site(result) and market_evidence)
                 cid=await conn.fetchval("""insert into market_inventory_candidates(
                     side,market,category_key,category_label,business_name,source_url,source_domain,
-                    snippet,search_query,page_no,public_email,public_phone,official_site,status,
-                    query_strategy_version,evidence)
+                    snippet,search_query,page_no,public_email,public_phone,official_site,
+                    source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence)
                   values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,nullif($11,''),nullif($12,''),$13,
-                         'discovered',$14,$15::jsonb)
+                         $14,$15,case when $13 then now() else null end,
+                         'discovered',$16,$17::jsonb)
                   on conflict(side,market,category_key,source_url,business_name) do update set
                     business_name=excluded.business_name,
                     source_domain=excluded.source_domain,
@@ -3296,6 +3297,9 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
                     public_email=coalesce(market_inventory_candidates.public_email,excluded.public_email),
                     public_phone=coalesce(market_inventory_candidates.public_phone,excluded.public_phone),
                     official_site=excluded.official_site,
+                    source_tier=excluded.source_tier,
+                    verification_status=excluded.verification_status,
+                    last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
                     status='discovered',
                     query_strategy_version=excluded.query_strategy_version,
                     evidence=market_inventory_candidates.evidence || excluded.evidence,
@@ -3304,6 +3308,8 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
                   lane["side"],lane["market"],lane["category_key"],lane["category_label"],
                   result["title"][:240],result["url"],result["domain"],result["snippet"],query,page,
                   clean(contact.get("public_email")),clean(contact.get("public_phone")),official,
+                  "direct" if official else "search",
+                  "direct_evidence" if official else "discovery",
                   INVENTORY_QUERY_STRATEGY_VERSION,
                   json.dumps({"search_engine":result["engine"],"search_score":result["score"],
                               "query_variant":variant,"page":page,
