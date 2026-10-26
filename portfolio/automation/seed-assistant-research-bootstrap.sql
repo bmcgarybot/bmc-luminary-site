@@ -13013,3 +13013,1488 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Bullhead City';
+
+
+-- Assistant-led Bullhead City census batch 02 (2026-10-26)
+-- Manually enumerated Bullhead City trade vendor candidates.
+-- Discovery inventory only; preserve closed status and never promote/stage/send.
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','A & C Plumbing Concepts Inc',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/plumbers','mohavelocal.com','Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 788-2222',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','A Superior Plumbing Company Inc',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/plumbers','mohavelocal.com','Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 542-2386',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','ADH Plumbing Inc',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/plumbers','mohavelocal.com','Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 758-4752',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','Acme Leak Detection Inc',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/plumbers','mohavelocal.com','Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 605-7872',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','Action One Plumbing',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/plumbers','mohavelocal.com','Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 788-1895',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','Benjamin Franklin Plumbing',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/plumbers','mohavelocal.com','Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 263-8595',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','Brehm Plumbing Co',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/plumbers','mohavelocal.com','Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 768-9400',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','Daniell''s Septic Portable Toilets Drain Inc',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/plumbers','mohavelocal.com','Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 754-3483',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','Diehard Plumbing',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/plumbers','mohavelocal.com','Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 243-3605',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','GMP Plumbing',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/plumbers','mohavelocal.com','Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 542-4684',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','Gonzo''s Plumbing Service & Repair',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/plumbers','mohavelocal.com','Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 727-1966',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','Indian Time Plumbing',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/plumbers','mohavelocal.com','Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 758-9043',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','Scott Plumbing',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/plumbers','mohavelocal.com','Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 763-7803',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','Straight Forward Plumbing',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/plumbers','mohavelocal.com','Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 754-1119',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','USA Plumbing and Septic LLC',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/plumbers','mohavelocal.com','Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 793-7797',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','Weaver''s Plumbing & Repair Service',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/plumbers','mohavelocal.com','Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 763-7876',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City plumbing-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','electrical_service','Electrician','McKenzie Electric',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/electrician','mohavelocal.com','Current Bullhead City electrician-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Electrician',0,
+ null,'(928) 303-5907',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City electrician-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','electrical_service','Electrician','J Davidson Electric Inc',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/electrician','mohavelocal.com','Current Bullhead City electrician-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Electrician',0,
+ null,'(928) 763-1902',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City electrician-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','electrical_service','Electrician','Reed Electric',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/electrician','mohavelocal.com','Current Bullhead City electrician-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Electrician',0,
+ null,'(928) 758-5159',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City electrician-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','electrical_service','Electrician','Sunquest Solar Inc',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/electrician','mohavelocal.com','Current Bullhead City electrician-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Electrician',0,
+ null,'(928) 758-7779',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City electrician-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','locksmith_access','Locks & Access Control','Ace Lock And Key Service',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/locksmiths','mohavelocal.com','Current Bullhead City locksmith-directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City Locks & Access Control',0,
+ null,'(928) 219-5940',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City locksmith-directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','locksmith_access','Locks & Access Control','A & D Lock & Key',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/locksmiths','mohavelocal.com','Current Bullhead City locksmith-directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City Locks & Access Control',0,
+ null,'(928) 704-6345',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City locksmith-directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','locksmith_access','Locks & Access Control','Advanced Lock & Safe',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/locksmiths','mohavelocal.com','Current Bullhead City locksmith-directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City Locks & Access Control',0,
+ null,'(928) 768-5397',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City locksmith-directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','locksmith_access','Locks & Access Control','Bullhead Lock & Safe',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/locksmiths','mohavelocal.com','Current Bullhead City locksmith-directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City Locks & Access Control',0,
+ null,'(928) 704-4141',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City locksmith-directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','locksmith_access','Locks & Access Control','Busy Bee Lock And Key',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/locksmiths','mohavelocal.com','Current Bullhead City locksmith-directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City Locks & Access Control',0,
+ null,'(928) 444-2001',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City locksmith-directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','locksmith_access','Locks & Access Control','Sterling Steele Locksmith',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/locksmiths','mohavelocal.com','Current Bullhead City locksmith-directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City Locks & Access Control',0,
+ null,'(928) 444-5401',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City locksmith-directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','locksmith_access','Locks & Access Control','Wagco Security-Locksmiths',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/locksmiths','mohavelocal.com','Current Bullhead City locksmith-directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City Locks & Access Control',0,
+ null,'(928) 758-7009',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City locksmith-directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','pest_control','Pest Control','Beavers Exterminating',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/pest-control-services','mohavelocal.com','Current Bullhead City pest-control directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Pest Control',0,
+ null,'(928) 763-7378',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City pest-control directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','pest_control','Pest Control','Bug Emergency Pest Control',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/pest-control-services','mohavelocal.com','Current Bullhead City pest-control directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Pest Control',0,
+ null,'(888) 444-2849',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City pest-control directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','pest_control','Pest Control','Colorado River Pest Control',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/pest-control-services','mohavelocal.com','Current Bullhead City pest-control directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Pest Control',0,
+ null,'(928) 754-6716',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City pest-control directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','pest_control','Pest Control','Mercenary Exterminating Company LLC',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/pest-control-services','mohavelocal.com','Current Bullhead City pest-control directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Pest Control',0,
+ null,'(928) 288-2284',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City pest-control directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','pest_control','Pest Control','Precise Pest Control LLC',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/pest-control-services','mohavelocal.com','Current Bullhead City pest-control directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Pest Control',0,
+ null,'(928) 899-9968',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City pest-control directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','pest_control','Pest Control','Western Exterminator Company',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/pest-control-services','mohavelocal.com','Current Bullhead City pest-control directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Pest Control',0,
+ null,'(702) 298-4420',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City pest-control directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','hvac_heat','Heating & Air','Pitzer''s One Hour Air Conditioning & Heating',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/air-conditioning-contractors','mohavelocal.com','Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Heating & Air',0,
+ null,'(928) 255-0820',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','hvac_heat','Heating & Air','All Season Heating & Air Conditioning Inc',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/air-conditioning-contractors','mohavelocal.com','Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Heating & Air',0,
+ null,'(928) 754-4278',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','hvac_heat','Heating & Air','Certified Air',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/air-conditioning-contractors','mohavelocal.com','Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Heating & Air',0,
+ null,'(928) 754-2472',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','hvac_heat','Heating & Air','Jimco Air Conditioning Heating & Refrigeration',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/air-conditioning-contractors','mohavelocal.com','Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Heating & Air',0,
+ null,'(928) 704-9542',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','hvac_heat','Heating & Air','John''s Appliance Service',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/air-conditioning-contractors','mohavelocal.com','Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Heating & Air',0,
+ null,'(928) 530-5605',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','hvac_heat','Heating & Air','Quality First Air Conditioning & Heating Service',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/air-conditioning-contractors','mohavelocal.com','Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Heating & Air',0,
+ null,'(928) 754-6488',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','hvac_heat','Heating & Air','Reinke Heating & Air Conditioning Inc',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/air-conditioning-contractors','mohavelocal.com','Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Heating & Air',0,
+ null,'(928) 768-8500',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','hvac_heat','Heating & Air','Reliant Air Services LLC',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/air-conditioning-contractors','mohavelocal.com','Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Heating & Air',0,
+ null,'(928) 266-2727',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','hvac_heat','Heating & Air','Schweigert James C',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/air-conditioning-contractors','mohavelocal.com','Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Heating & Air',0,
+ null,'(928) 754-2942',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','hvac_heat','Heating & Air','Silverado Air Conditioning LLC',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/air-conditioning-contractors','mohavelocal.com','Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Heating & Air',0,
+ null,'(928) 768-2052',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','hvac_heat','Heating & Air','Sunny AC And Electric',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/air-conditioning-contractors','mohavelocal.com','Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Bullhead City Heating & Air',0,
+ null,'(928) 763-8935',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City HVAC-directory candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','landscaping','Landscaping & Yard Cleanup','Acuate Landscaping & Yard Maintenance LLC',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/landscapers','mohavelocal.com','Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Landscaping & Yard Cleanup',0,
+ null,'(928) 542-9016',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','landscaping','Landscaping & Yard Cleanup','Dem Duke Boyz - At It Again Landscape-N-Home Repairs',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/landscapers','mohavelocal.com','Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Landscaping & Yard Cleanup',0,
+ null,'(928) 605-0221',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','landscaping','Landscaping & Yard Cleanup','Global Landscaping I-Turs',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/landscapers','mohavelocal.com','Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Landscaping & Yard Cleanup',0,
+ null,'(928) 763-9603',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','landscaping','Landscaping & Yard Cleanup','Gonzales Landscape And Design',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/landscapers','mohavelocal.com','Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Landscaping & Yard Cleanup',0,
+ null,'(928) 763-9667',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','landscaping','Landscaping & Yard Cleanup','Gonzalez Landscape & Design',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/landscapers','mohavelocal.com','Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Landscaping & Yard Cleanup',0,
+ null,'(702) 420-9533',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','landscaping','Landscaping & Yard Cleanup','Jim''s Landscaping & Yard Maintenance',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/landscapers','mohavelocal.com','Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Landscaping & Yard Cleanup',0,
+ null,'(928) 758-5934',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','landscaping','Landscaping & Yard Cleanup','M & M Home Maintenance & Landscaping LLC',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/landscapers','mohavelocal.com','Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Landscaping & Yard Cleanup',0,
+ null,'(928) 444-3022',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','landscaping','Landscaping & Yard Cleanup','Private Oasis Landscaping',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/landscapers','mohavelocal.com','Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Landscaping & Yard Cleanup',0,
+ null,'(928) 758-4437',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','landscaping','Landscaping & Yard Cleanup','Tri State Turf',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/landscapers','mohavelocal.com','Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Landscaping & Yard Cleanup',0,
+ null,'(928) 201-9514',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','landscaping','Landscaping & Yard Cleanup','U & L Landscaping & Maintenance LLC',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/landscapers','mohavelocal.com','Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Landscaping & Yard Cleanup',0,
+ null,'(928) 758-7748',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','landscaping','Landscaping & Yard Cleanup','Yard Bird',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/landscapers','mohavelocal.com','Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Landscaping & Yard Cleanup',0,
+ null,'(928) 758-7755',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','landscaping','Landscaping & Yard Cleanup','Yardsmith LLC',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/landscapers','mohavelocal.com','Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Bullhead City Landscaping & Yard Cleanup',0,
+ null,'(928) 201-2886',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City landscaping-directory candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','tree_service','Tree Service & Brush Clearing','Trim-A-Tree Experts',
+ 'https://www.mohavelocal.com/l/az/tree-service','mohavelocal.com','Current Mohave County tree-service directory evidence places this provider in Bullhead City; direct verification remains required.','assistant bootstrap research: Bullhead City Tree Service & Brush Clearing',0,
+ null,'(928) 763-4442',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Mohave County tree-service directory evidence places this provider in Bullhead City; direct verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','tree_service','Tree Service & Brush Clearing','M & M Home Maintenance & Landscaping LLC',
+ 'https://www.mohavelocal.com/l/az/tree-service','mohavelocal.com','Current Mohave County tree-service directory evidence places this provider in Bullhead City; direct verification remains required.','assistant bootstrap research: Bullhead City Tree Service & Brush Clearing',0,
+ null,'(928) 444-3022',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Mohave County tree-service directory evidence places this provider in Bullhead City; direct verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','commercial_cleaning','Commercial Cleaning','Sun Maintenance',
+ 'https://www.mohavelocal.com/biz/3473/sun-maintenance','mohavelocal.com','Current Mohave Local profile lists Bullhead City janitor service at 1225 Hancock Rd.','assistant bootstrap research: Bullhead City Commercial Cleaning',0,
+ null,'(928) 444-8113',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Mohave Local profile lists Bullhead City janitor service at 1225 Hancock Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','commercial_cleaning','Commercial Cleaning','C & C Cleaning',
+ 'https://www.mohavelocal.com/biz/2865/c-c-cleaning','mohavelocal.com','Current Mohave Local profile lists Bullhead City janitor service at 1584 Pettibone Dr.','assistant bootstrap research: Bullhead City Commercial Cleaning',0,
+ null,'(928) 763-1513',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Mohave Local profile lists Bullhead City janitor service at 1584 Pettibone Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','towing_roadside','Towing & Roadside Help','A & G Towing',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-towing','mohavelocal.com','Current Bullhead City towing-directory candidate; direct/FMCSA verification remains required before promotion.','assistant bootstrap research: Bullhead City Towing & Roadside Help',0,
+ null,'(928) 754-4311',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City towing-directory candidate; direct/FMCSA verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','towing_roadside','Towing & Roadside Help','All About Auto Service & Towing Mobile RV',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-towing','mohavelocal.com','Current Bullhead City towing-directory candidate; direct/FMCSA verification remains required before promotion.','assistant bootstrap research: Bullhead City Towing & Roadside Help',0,
+ null,'(928) 754-7869',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City towing-directory candidate; direct/FMCSA verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','garage_door','Garage Door Repair','A & N Garage Doors Inc',
+ 'https://www.mohavelocal.com/biz/1362/a-n-garage-doors-inc','mohavelocal.com','Current Bullhead City garage-door provider profile lists AZ residential and commercial license numbers.','assistant bootstrap research: Bullhead City Garage Door Repair',0,
+ null,'(928) 763-5141',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City garage-door provider profile lists AZ residential and commercial license numbers."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','garage_door','Garage Door Repair','Coast Garage Doors & Openers',
+ 'https://www.mohavelocal.com/biz/1364/coast-garage-doors-openers','mohavelocal.com','Current Bullhead City garage-door provider profile at 4310 Hwy 95 #D; direct current-operation verification remains required.','assistant bootstrap research: Bullhead City Garage Door Repair',0,
+ null,'(928) 758-4203',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_02","researched_at":"2026-10-26T23:03:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City garage-door provider profile at 4310 Hwy 95 #D; direct current-operation verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Bullhead City';
