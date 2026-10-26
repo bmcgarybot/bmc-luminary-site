@@ -79,6 +79,21 @@ FEEDS=(
 PHONE_RE=re.compile(r"(?<!\d)(?:\+?1[\s.\-]?)?(?:\(\d{3}\)|\d{3})[\s.\-]\d{3}[\s.\-]\d{4}(?!\d)")
 COMPANY_HREF_RE=re.compile(r"^/[a-z0-9][a-z0-9\-]*-\d+/?$",re.I)
 
+
+def normalize_company_href(href:str):
+    raw=str(href or "").strip()
+    if not raw:
+        return None
+    parsed=urllib.parse.urlparse(raw)
+    if parsed.scheme or parsed.netloc:
+        host=(parsed.hostname or "").lower().removeprefix("www.")
+        if host!="whereorg.com":
+            return None
+        path=parsed.path or ""
+    else:
+        path=raw.split("?",1)[0].split("#",1)[0]
+    return path if COMPANY_HREF_RE.match(path) else None
+
 def parse_listing(page_html:str,market:str):
     # Simpler event parser that keeps each qualifying company href with the
     # following visible text until the next qualifying company.
@@ -101,10 +116,10 @@ def parse_listing(page_html:str,market:str):
         def handle_endtag(self,tag):
             if self.stop:return
             if tag.lower()=="a" and self.a_href is not None:
-                href=str(self.a_href or "").strip()
+                href=normalize_company_href(self.a_href)
                 name=" ".join(self.a_text).strip()
                 self.a_href=None; self.a_text=[]
-                if COMPANY_HREF_RE.match(href) and name and len(name)<=240:
+                if href and name and len(name)<=240:
                     self.flush()
                     self.current={"name":name,"href":href,"tail":[]}
         def flush(self):
@@ -268,7 +283,7 @@ def main():
 
     records=[]
     stats={"markets":len(markets),"feeds_attempted":0,"feeds_ok":0,"feeds_failed":0,
-           "raw_companies":0,"classified":0,"by_market":{},"errors":[]}
+           "raw_companies":0,"classified":0,"by_market":{},"errors":[],"empty_feeds":[]}
     seen=set()
 
     for market,slug in markets:
@@ -280,6 +295,12 @@ def main():
             try:
                 page=fetch(url)
                 rows=parse_listing(page,market)[:max(1,args.max_per_feed)]
+                if not rows and len(stats["empty_feeds"])<30:
+                    stats["empty_feeds"].append({
+                      "market":market,"feed":feed_key,"url":url,"html_chars":len(page),
+                      "href_tokens":page.lower().count("href="),
+                      "whereorg_tokens":page.lower().count("whereorg")
+                    })
                 stats["feeds_ok"]+=1
                 mstat["feeds"]+=1
                 stats["raw_companies"]+=len(rows); mstat["raw"]+=len(rows)
