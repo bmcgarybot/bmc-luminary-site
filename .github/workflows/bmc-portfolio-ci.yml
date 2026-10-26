@@ -111,6 +111,23 @@ jobs:
         working-directory: portfolio/automation
         run: docker compose --env-file .env.example config >/dev/null
 
+      - name: Validate outbound safety invariants
+        working-directory: portfolio/automation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          api = Path("api/app.py").read_text()
+          start = api.index('@app.post("/api/process-followups")')
+          end = api.index('def pilot_activation_url', start)
+          block = api[start:end]
+          assert "if not OUTREACH_ENABLED" in block
+          assert '"sent":0' in block
+          deploy = Path("deploy-update.sh").read_text()
+          assert 'up -d --force-recreate scheduler' in deploy
+          scheduler = Path("scheduler.sh").read_text()
+          assert '[scheduler] POST $endpoint' in scheduler
+          PY
+
       - name: Validate operational scripts
         working-directory: portfolio/automation
         run: |
