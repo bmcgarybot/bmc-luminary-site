@@ -85,7 +85,7 @@ jobs:
       - name: Validate operational scripts
         working-directory: portfolio/automation
         run: |
-          bash -n provision-cloud.sh bootstrap.sh start.sh stop.sh backup.sh runtime-doctor.sh \
+          bash -n provision-cloud.sh bootstrap.sh start.sh stop.sh backup.sh runtime-doctor.sh deploy-update.sh \
             configure-cloudflare.sh verify-public-ingress.sh verify-backup.sh install-backup-timer.sh \
             expand-source-native-markets.sh configure-stripe-webhook.sh drain-research-backlog.sh
           sh -n scheduler.sh
