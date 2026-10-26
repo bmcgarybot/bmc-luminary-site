@@ -14498,3 +14498,394 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Bullhead City';
+
+
+-- Assistant-led Bullhead City census batch 03 (2026-10-26)
+-- Direct-site and license-backed Bullhead City vendor verification layer.
+-- Inventory evidence only; preserve closed status and never promote/stage/send.
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','towing_roadside','Towing & Roadside Help','A&G Towing & Storage Inc.',
+ 'https://agtowinginc.com/','agtowinginc.com','Official company site lists Bullhead City office at 1135 Interstate Place and 24/7 towing/roadside services.','assistant verification research: Bullhead City Towing & Roadside Help',0,
+ 'info@agtowinginc.com','(928) 763-0023',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_03","researched_at":"2026-10-26T23:10:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official company site lists Bullhead City office at 1135 Interstate Place and 24/7 towing/roadside services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=excluded.last_verified_at,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','locksmith_access','Locks & Access Control','A&G Towing & Storage Inc.',
+ 'https://agtowinginc.com/','agtowinginc.com','Official company site explicitly offers locksmith/vehicle lockout service from Bullhead City.','assistant verification research: Bullhead City Locks & Access Control',0,
+ 'info@agtowinginc.com','(928) 763-0023',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_03","researched_at":"2026-10-26T23:10:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official company site explicitly offers locksmith/vehicle lockout service from Bullhead City."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=excluded.last_verified_at,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','hvac_heat','Heating & Air','Reliant Air Services LLC',
+ 'https://www.reliantairservices.com/','reliantairservices.com','Official company site serves Bullhead City, lists HVAC/refrigeration/maintenance and ROC 330596.','assistant verification research: Bullhead City Heating & Air',0,
+ null,'(928) 266-2727',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_03","researched_at":"2026-10-26T23:10:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official company site serves Bullhead City, lists HVAC/refrigeration/maintenance and ROC 330596."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=excluded.last_verified_at,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','locksmith_access','Locks & Access Control','Ace Lock and Key Service',
+ 'https://acelockandkeyservice.com/','acelockandkeyservice.com','Official company site identifies mobile locksmith service in Bullhead City and surrounding river communities.','assistant verification research: Bullhead City Locks & Access Control',0,
+ null,'(928) 219-5940',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_03","researched_at":"2026-10-26T23:10:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official company site identifies mobile locksmith service in Bullhead City and surrounding river communities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=excluded.last_verified_at,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','USA Plumbing and Septic LLC',
+ 'https://usaplumbingseptic.com/','usaplumbingseptic.com','Official Bullhead City site lists residential/commercial plumbing, emergency service, drain/sewer/gas/water-line work and AZ license 345045.','assistant verification research: Bullhead City Backflow & Commercial Plumbing',0,
+ 'admin@usaplumbingseptic.com','(928) 793-7797',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_03","researched_at":"2026-10-26T23:10:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Bullhead City site lists residential/commercial plumbing, emergency service, drain/sewer/gas/water-line work and AZ license 345045."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=excluded.last_verified_at,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','hvac_heat','Heating & Air','Air Control Home Services',
+ 'https://www.aircontrolaz.com/','aircontrolaz.com','Official site lists Bullhead City office at 1355 Ramar Rd #8 and HVAC service throughout Mohave County.','assistant verification research: Bullhead City Heating & Air',0,
+ null,'(928) 361-9902',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_03","researched_at":"2026-10-26T23:10:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site lists Bullhead City office at 1355 Ramar Rd #8 and HVAC service throughout Mohave County."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=excluded.last_verified_at,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','Air Control Home Services',
+ 'https://www.aircontrolaz.com/','aircontrolaz.com','Official site lists Bullhead City office and plumbing services including backflow prevention, drains, water heaters and sewer lines.','assistant verification research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 361-9902',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_03","researched_at":"2026-10-26T23:10:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site lists Bullhead City office and plumbing services including backflow prevention, drains, water heaters and sewer lines."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=excluded.last_verified_at,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','electrical_service','Electrician','Air Control Home Services',
+ 'https://www.aircontrolaz.com/','aircontrolaz.com','Official site lists Bullhead City office and electrical service throughout Mohave County.','assistant verification research: Bullhead City Electrician',0,
+ null,'(928) 361-9902',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_03","researched_at":"2026-10-26T23:10:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site lists Bullhead City office and electrical service throughout Mohave County."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=excluded.last_verified_at,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','backflow_plumbing','Backflow & Commercial Plumbing','Acme Leak Detection Inc.',
+ 'https://acmeleakdetection.com/','acmeleakdetection.com','Official site says it proudly serves Bullhead City with full-service licensed plumbing, leak detection, sewer, water heater and gas-line work; ROC 337699.','assistant verification research: Bullhead City Backflow & Commercial Plumbing',0,
+ null,'(928) 605-7872',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_03","researched_at":"2026-10-26T23:10:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site says it proudly serves Bullhead City with full-service licensed plumbing, leak detection, sewer, water heater and gas-line work; ROC 337699."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=excluded.last_verified_at,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','hvac_heat','Heating & Air','Tri-State A/C Hero',
+ 'https://tristateachero.com/','tristateachero.com','Official company site lists 24-hour emergency A/C and heating service for the Tri-State area and Bullhead City base.','assistant verification research: Bullhead City Heating & Air',0,
+ null,'(928) 444-4395',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_03","researched_at":"2026-10-26T23:10:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official company site lists 24-hour emergency A/C and heating service for the Tri-State area and Bullhead City base."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=excluded.last_verified_at,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','hvac_heat','Heating & Air','Air Time',
+ 'https://airtime-homerepairs.com/','airtime-homerepairs.com','Official company site explicitly provides residential and commercial HVAC repair, replacement and maintenance throughout Bullhead City.','assistant verification research: Bullhead City Heating & Air',0,
+ null,'(928) 299-3741',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_03","researched_at":"2026-10-26T23:10:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official company site explicitly provides residential and commercial HVAC repair, replacement and maintenance throughout Bullhead City."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=excluded.last_verified_at,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','electrical_service','Electrician','ADJ Electric LLC',
+ 'https://adjelectricllc.com/contact','adjelectricllc.com','Official Bullhead City company site lists residential/commercial electrical services across Mohave County and ROC 354430.','assistant verification research: Bullhead City Electrician',0,
+ 'adjelectricllc@gmail.com','(928) 450-1685',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_03","researched_at":"2026-10-26T23:10:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Bullhead City company site lists residential/commercial electrical services across Mohave County and ROC 354430."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=excluded.last_verified_at,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','pest_control','Pest Control','Precise Pest Control LLC',
+ 'https://precisepestcontrolbhc.com/','precisepestcontrolbhc.com','Current local company profile links this Bullhead City pest/weed management business to its dedicated website; family-owned with 10+ years experience.','assistant verification research: Bullhead City Pest Control',0,
+ null,'(928) 899-9968',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_03","researched_at":"2026-10-26T23:10:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Current local company profile links this Bullhead City pest/weed management business to its dedicated website; family-owned with 10+ years experience."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=excluded.last_verified_at,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Bullhead City','hvac_heat','Heating & Air','A&S Heating & Air LLC',
+ 'https://homversa.com/biz/a-and-s-heating-and-air-llc','homversa.com','License-verified discovery source shows active Arizona ROC 335450 in Bullhead City, verified active in 2026.','assistant verification research: Bullhead City Heating & Air',0,
+ null,'(928) 542-2841',false,
+ 'secondary','license_verified_discovery',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_03","researched_at":"2026-10-26T23:10:00Z","source_quality":"licensed_discovery","verification_status":"license_verified_discovery","note":"License-verified discovery source shows active Arizona ROC 335450 in Bullhead City, verified active in 2026."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=excluded.last_verified_at,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Bullhead City';
