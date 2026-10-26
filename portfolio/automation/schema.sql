@@ -559,6 +559,7 @@ alter table market_inventory_candidates add column if not exists first_seen_at t
 alter table market_inventory_candidates add column if not exists last_seen_at timestamptz default now();
 alter table market_inventory_candidates add column if not exists closed_at timestamptz;
 alter table market_inventory_candidates add column if not exists closure_reason text;
+alter table market_inventory_candidates add column if not exists last_closure_checked_at timestamptz;
 
 alter table market_inventory_progress add column if not exists scan_cycles integer default 0;
 alter table market_inventory_progress add column if not exists last_full_scan_at timestamptz;
