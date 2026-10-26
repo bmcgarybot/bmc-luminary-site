@@ -1,0 +1,27 @@
+{
+  "action": "assistant_licensed_bootstrap_import",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-26T22:20:20.423493+00:00",
+  "exit_code": 3,
+  "git_branch_before": "master",
+  "git_commit_after": "6548ddb55a6cf3fc3f7a07b3cce78738e772d011",
+  "git_commit_before": "6548ddb55a6cf3fc3f7a07b3cce78738e772d011",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "d1df0edf9a0da7da602f0d9eaef2055bc4d1ee63",
+  "request_id": "licensed-bootstrap-all-markets-20261026T2218Z",
+  "request_sha256": "a7f2a301b15e5dc99514439ccc4d9b2f23b5150f99492b2ceb08a36b824c8250",
+  "started_at": "2026-10-26T22:19:19.531904+00:00",
+  "status": "failed",
+  "stderr": "ERROR:  duplicate key value violates unique constraint \"market_inventory_candidates_side_market_category_key_source_key\"\nDETAIL:  Key (side, market, category_key, source_url)=(vendor, Ash Fork, electrical_service, https://homversa.com/az/ash-fork/electricians) already exists.\n\n",
+  "stdout": "{\n  \"markets\": 21,\n  \"trade_pages\": 153,\n  \"records\": 1280,\n  \"errors\": [\n    {\n      \"market\": \"Skull Valley\",\n      \"stage\": \"root\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    },\n    {\n      \"market\": \"Williamson Valley\",\n      \"stage\": \"root\",\n      \"error\": \"HTTP Error 404: Not Found\"\n    }\n  ],\n  \"by_market\": {\n    \"Ash Fork\": {\n      \"trades\": 2,\n      \"records\": 8,\n      \"claimed\": 8\n    },\n    \"Bullhead City\": {\n      \"trades\": 12,\n      \"records\": 86,\n      \"claimed\": 171\n    },\n    \"Camp Verde\": {\n      \"trades\": 10,\n      \"records\": 67,\n      \"claimed\": 93\n    },\n    \"Chino Valley\": {\n      \"trades\": 11,\n      \"records\": 83,\n      \"claimed\": 163\n    },\n    \"Cordes Lakes\": {\n      \"trades\": 0,\n      \"records\": 0,\n      \"claimed\": 0\n    },\n    \"Cottonwood\": {\n      \"trades\": 10,\n      \"records\": 81,\n      \"claimed\": 169\n    },\n    \"Dewey-Humboldt\": {\n      \"trades\": 1,\n      \"records\": 3,\n      \"claimed\": 3\n    },\n    \"Flagstaff\": {\n      \"trades\": 12,\n      \"records\": 111,\n      \"claimed\": 457\n    },\n    \"Golden Valley\": {\n      \"trades\": 3,\n      \"records\": 23,\n      \"claimed\": 27\n    },\n    \"Kingman\": {\n      \"trades\": 13,\n      \"records\": 109,\n      \"claimed\": 317\n    },\n    \"Mayer\": {\n      \"trades\": 3,\n      \"records\": 16,\n      \"claimed\": 23\n    },\n    \"Phoenix\": {\n      \"trades\": 13,\n      \"records\": 130,\n      \"claimed\": 4612\n    },\n    \"Prescott\": {\n      \"trades\": 13,\n      \"records\": 113,\n      \"claimed\": 496\n    },\n    \"Prescott Valley\": {\n      \"trades\": 12,\n      \"records\": 120,\n      \"claimed\": 430\n    },\n    \"Scottsdale\": {\n      \"trades\": 13,\n      \"records\": 128,\n      \"claimed\": 779\n    },\n    \"Sedona\": {\n      \"trades\": 8,\n      \"records\": 54,\n      \"claimed\": 111\n    },\n    \"Seligman\": {\n      \"trades\": 1,\n      \"records\": 3,\n      \"claimed\": 3\n    },\n    \"Skull Valley\": {\n      \"trades\": 0,\n      \"records\": 0,\n      \"claimed\": 0\n    },\n    \"Tucson\": {\n      \"trades\": 13,\n      \"records\": 130,\n      \"claimed\": 2150\n    },\n    \"Williamson Valley\": {\n      \"trades\": 0,\n      \"records\": 0,\n      \"claimed\": 0\n    },\n    \"Winslow\": {\n      \"trades\": 3,\n      \"records\": 15,\n      \"claimed\": 15\n    }\n  },\n  \"records_deduped\": 1280\n}\nBEGIN\n\n",
+  "version": 1
+}
