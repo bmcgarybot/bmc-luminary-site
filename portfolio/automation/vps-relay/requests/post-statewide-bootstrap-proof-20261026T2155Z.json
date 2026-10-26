@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "post-statewide-bootstrap-proof-20261026T2155Z",
+  "action": "proof_readout",
+  "allow_external_actions": false,
+  "created_at": "2026-10-26T21:55:00Z",
+  "expires_at": "2026-10-27T21:55:00Z",
+  "args": {}
+}
