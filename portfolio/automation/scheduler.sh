@@ -34,7 +34,9 @@ while true; do
       -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
   fi
 
-  if [ $((i % 72)) -eq 0 ]; then
+  # Publicly indexed local-demand scan: every 30 minutes. The API processes
+  # a bounded rotating batch of market x source x service-group lanes.
+  if [ $((i % 6)) -eq 0 ]; then
     curl -fsS -X POST http://ops_api:8000/api/process-local-demand-signals \
       -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
   fi
