@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "request_id": "exact-a-inventory-step-20261026T2037Z",
+  "action": "market_inventory_step",
+  "allow_external_actions": false,
+  "created_at": "2026-10-26T20:37:00Z",
+  "expires_at": "2026-10-27T20:37:00Z",
+  "args": {
+    "iterations": 1,
+    "pause_seconds": 0
+  }
+}
