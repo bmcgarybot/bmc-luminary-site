@@ -333,9 +333,13 @@ BUYER_INVENTORY_TARGETS={
 }
 INVENTORY_MAJOR_MARKETS={"Phoenix","Scottsdale","Tucson"}
 INVENTORY_REGIONAL_MARKETS={"Prescott","Prescott Valley","Flagstaff","Kingman","Bullhead City","Cottonwood","Sedona"}
+INVENTORY_QUERY_STRATEGY_VERSION=4
+
 INVENTORY_BLOCKED_DOMAINS={
     "facebook.com","nextdoor.com","linkedin.com","yelp.com","yellowpages.com","angi.com",
-    "thumbtack.com","bbb.org","mapquest.com","tripadvisor.com","doordash.com","grubhub.com"
+    "thumbtack.com","bbb.org","mapquest.com","tripadvisor.com","doordash.com","grubhub.com",
+    "superpages.com","allbiz.com","restaurantji.com","manta.com","chamberofcommerce.com",
+    "birdeye.com","foursquare.com","opentable.com","restaurantguru.com"
 }
 
 def inventory_target(market,side,category_key):
@@ -386,7 +390,12 @@ def inventory_result_relevant(result,market,category_label):
     # place words. This blocks relevant-service results from the wrong AZ city.
     market_match=(place in haystack or
                   (place_words and all(w in haystack for w in place_words)))
-    category_match=any(w in haystack for w in label_words) if label_words else label in haystack
+    subject_match=any(w in haystack for w in label_words) if label_words else label in haystack
+    if "repair" in label:
+        action_match=any(x in haystack for x in ("repair","service","maintenance","fix","technician"))
+        category_match=bool(subject_match and action_match)
+    else:
+        category_match=bool(subject_match)
     return bool(market_match and category_match)
 
 def inventory_official_site(domain):
@@ -3165,9 +3174,10 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
                 official=inventory_official_site(result["domain"])
                 cid=await conn.fetchval("""insert into market_inventory_candidates(
                     side,market,category_key,category_label,business_name,source_url,source_domain,
-                    snippet,search_query,page_no,public_email,public_phone,official_site,status,evidence)
+                    snippet,search_query,page_no,public_email,public_phone,official_site,status,
+                    query_strategy_version,evidence)
                   values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,nullif($11,''),nullif($12,''),$13,
-                         'discovered',$14::jsonb)
+                         'discovered',$14,$15::jsonb)
                   on conflict(side,market,category_key,source_url) do update set
                     business_name=excluded.business_name,
                     source_domain=excluded.source_domain,
@@ -3176,15 +3186,19 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
                     page_no=excluded.page_no,
                     public_email=coalesce(market_inventory_candidates.public_email,excluded.public_email),
                     public_phone=coalesce(market_inventory_candidates.public_phone,excluded.public_phone),
-                    official_site=market_inventory_candidates.official_site or excluded.official_site,
+                    official_site=excluded.official_site,
+                    status='discovered',
+                    query_strategy_version=excluded.query_strategy_version,
                     evidence=market_inventory_candidates.evidence || excluded.evidence,
                     updated_at=now()
                   returning candidate_id""",
                   lane["side"],lane["market"],lane["category_key"],lane["category_label"],
                   result["title"][:240],result["url"],result["domain"],result["snippet"],query,page,
                   clean(contact.get("public_email")),clean(contact.get("public_phone")),official,
+                  INVENTORY_QUERY_STRATEGY_VERSION,
                   json.dumps({"search_engine":result["engine"],"search_score":result["score"],
-                              "query_variant":variant,"page":page}))
+                              "query_variant":variant,"page":page,
+                              "query_strategy_version":INVENTORY_QUERY_STRATEGY_VERSION}))
                 if cid:
                     inserted+=1
                     if official:
@@ -3192,11 +3206,13 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
             total_new+=inserted
 
             candidate_count=int(await conn.fetchval("""select count(*) from market_inventory_candidates
-              where side=$1 and market=$2 and category_key=$3""",
-              lane["side"],lane["market"],lane["category_key"]) or 0)
+              where side=$1 and market=$2 and category_key=$3
+                and status='discovered' and query_strategy_version=$4""",
+              lane["side"],lane["market"],lane["category_key"],INVENTORY_QUERY_STRATEGY_VERSION) or 0)
             official_count=int(await conn.fetchval("""select count(*) from market_inventory_candidates
-              where side=$1 and market=$2 and category_key=$3 and official_site=true""",
-              lane["side"],lane["market"],lane["category_key"]) or 0)
+              where side=$1 and market=$2 and category_key=$3 and official_site=true
+                and status='discovered' and query_strategy_version=$4""",
+              lane["side"],lane["market"],lane["category_key"],INVENTORY_QUERY_STRATEGY_VERSION) or 0)
 
             final_scan=(variant>=2 and page>=4)
             if final_scan:
@@ -3246,7 +3262,8 @@ async def admin_market_inventory_coverage(x_bmc_admin_key:str|None=Header(defaul
           coalesce(sum(raw_results),0) raw_results,
           coalesce(sum(official_candidates),0) official_candidates
           from market_inventory_progress""")
-        candidates=int(await conn.fetchval("select count(*) from market_inventory_candidates") or 0)
+        candidates=int(await conn.fetchval("""select count(*) from market_inventory_candidates
+          where status='discovered' and query_strategy_version=$1""",INVENTORY_QUERY_STRATEGY_VERSION) or 0)
         by_market=await conn.fetch("""select market,side,count(*) lanes,
           count(*) filter (where pages_scanned>0) touched,
           count(*) filter (where status='scan_complete_target_met') target_met,
