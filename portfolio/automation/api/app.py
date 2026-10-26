@@ -2572,6 +2572,7 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
         return {"ok":True,"enabled":False,"source":ADHS_SOURCE_KEY,"markets_checked":0,
                 "records_seen":0,"prospects_created":0,"prospects_updated":0,"errors":[]}
     successful_markets=set()
+    successful_lanes=[]
     source_checks=0
     records_seen=0
     prospects_created=0
@@ -2599,6 +2600,7 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
         try:
             raw=await fetch_adhs_facility_page(market,cursor)
             successful_markets.add(market)
+            successful_lanes.append({"source":ADHS_SOURCE_KEY,"market":market})
             source_checks+=1
         except Exception as exc:
             errors.append({"market":market,"error":str(exc)[:300]})
@@ -2726,6 +2728,11 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
                 # Explicit non-CMS overrides (CI/mocks) retain the legacy query path.
                 raw=await fetch_cms_provider_page(source,market,cursor)
                 successful_markets.add(market)
+                successful_lanes.append({
+                    "source":source_key,
+                    "market":market,
+                    "bulk":bool(raw.get("_bmc_bulk"))
+                })
                 source_checks+=1
             except Exception as exc:
                 errors.append({"source":source_key,"market":market,"error":str(exc)[:300]})
@@ -2822,6 +2829,7 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
     return {"ok":True,"enabled":True,"source":"source_native_research",
       "sources":["adhs_facilities_arcgis"]+[x["source_key"] for x in CMS_SOURCE_DATASETS if CMS_SOURCE_NATIVE_ENABLED],
       "markets_checked":len(successful_markets),"source_checks":source_checks,
+      "successful_lanes":successful_lanes,
       "lanes_selected":len(selected_lanes),
       "lanes_remaining":max(0,expected_total-len(selected_lanes)),
       "lane_batch_limit":SOURCE_NATIVE_CHECK_BATCH,
