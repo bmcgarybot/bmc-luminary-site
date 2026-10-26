@@ -56,6 +56,7 @@ MUTATING_INTERNAL_ACTIONS = {
     "source_native_step",
     "assistant_bootstrap_import",
     "assistant_licensed_bootstrap_import",
+    "inventory_closure_step",
     "research_refresh_install",
     "scheduler_start",
     "scheduler_stop",
@@ -588,11 +589,15 @@ def execute(req: dict) -> dict:
         stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
 
     elif action == "research_refresh_install":
-        cp = run(["bash", "./install-research-refresh-timers.sh", ENV_FILE], timeout=300)
+        cp = run(["docker", "compose", "--env-file", ENV_FILE, "up", "-d", "--build", "research_refresher"], timeout=900)
         stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
 
     elif action == "research_refresh_status":
-        cp = run(["bash", "./research-refresh-status.sh"], timeout=60)
+        cp = run(["bash", "./research-refresh-status.sh", ENV_FILE], timeout=60)
+        stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
+
+    elif action == "inventory_closure_step":
+        cp = post_api("/api/process-inventory-closure-audit", timeout=300)
         stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
 
     elif action == "scheduler_start":
