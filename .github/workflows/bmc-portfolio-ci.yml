@@ -94,6 +94,16 @@ jobs:
       - name: Validate public form contracts
         run: python portfolio/automation/validate-form-contracts.py
 
+      - name: Validate services SEO crawlability
+        working-directory: portfolio
+        run: |
+          grep -q '<meta name="robots" content="index,follow">' services/index.html
+          grep -q '<link rel="canonical" href="https://bmcservicenetwork.com/services/">' services/index.html
+          test "$(grep -o 'class="venture-card"' services/index.html | wc -l)" -ge 54
+          grep -q 'href="/commercial-cleaning/"' services/index.html
+          grep -q 'href="/tree-service/"' services/index.html
+          grep -q 'href="/auto-repair-shop/"' services/index.html
+
       - name: Validate search and download readiness
         run: python portfolio/automation/validate-search-readiness.py
 
