@@ -39,6 +39,11 @@ fi
 git -C "$ROOT" fetch origin "$BRANCH" --quiet
 LOCAL_SHA="$(git -C "$ROOT" rev-parse HEAD)"
 REMOTE_SHA="$(git -C "$ROOT" rev-parse "origin/$BRANCH")"
+
+SCHEDULER_WAS_RUNNING=false
+if docker compose --env-file "$ENV_FILE" ps --status running --services 2>/dev/null | grep -qx scheduler; then
+  SCHEDULER_WAS_RUNNING=true
+fi
 if [ "$LOCAL_SHA" != "$REMOTE_SHA" ]; then
   echo "Production checkout is not at origin/$BRANCH."
   echo "Run: git -C \"$ROOT\" pull --ff-only"
@@ -72,8 +77,13 @@ echo
 echo "Ensuring supporting services are up..."
 docker compose --env-file "$ENV_FILE" up -d n8n searxng
 # scheduler.sh is bind-mounted but the shell reads it only at container start.
-# Force recreation so every deployed scheduler change becomes active immediately.
-docker compose --env-file "$ENV_FILE" up -d --force-recreate scheduler
+# Recreate it only when it was running before this deployment. An intentionally
+# stopped scheduler must stay stopped for safe maintenance/debugging.
+if [ "$SCHEDULER_WAS_RUNNING" = "true" ]; then
+  docker compose --env-file "$ENV_FILE" up -d --force-recreate scheduler
+else
+  echo "Scheduler was stopped before deployment; leaving it stopped."
+fi
 
 echo
 echo "Refreshing the private webhook gateway after the API restart..."
