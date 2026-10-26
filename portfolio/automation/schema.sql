@@ -750,4 +750,63 @@ where coalesce(query_strategy_version,5)<6;
 
 alter table local_demand_scan_state alter column query_strategy_version set default 6;
 
+-- Inventory v6 rejects obvious directory/listicle pages from "official" coverage.
+-- Local-demand v7 rejects job postings and provider self-promotion so only
+-- genuine public request intent counts toward demand coverage.
+update market_inventory_candidates
+set status='superseded_pre_v6',
+    evidence=evidence || jsonb_build_object(
+      'superseded_reason','pre_v6_official_site_quality_filter',
+      'superseded_at',now()
+    ),
+    updated_at=now()
+where promoted_entity_id is null
+  and query_strategy_version<6
+  and status='discovered';
+
+alter table market_inventory_candidates alter column query_strategy_version set default 6;
+
+update market_inventory_progress
+set pages_scanned=0,
+    raw_results=0,
+    official_candidates=0,
+    next_page=1,
+    query_variant=0,
+    no_progress_passes=0,
+    status='not_started',
+    last_run_at=null,
+    notes='Reset for inventory query strategy v6 direct-site quality baseline',
+    query_strategy_version=6,
+    updated_at=now()
+where coalesce(query_strategy_version,5)<6;
+
+alter table market_inventory_progress alter column query_strategy_version set default 6;
+
+update local_demand_signals
+set status='superseded_pre_v7',
+    evidence=evidence || jsonb_build_object(
+      'superseded_reason','pre_v7_job_or_provider_ad_filter',
+      'superseded_at',now()
+    ),
+    updated_at=now()
+where query_strategy_version<7
+  and status='discovered';
+
+alter table local_demand_signals alter column query_strategy_version set default 7;
+
+update local_demand_scan_state
+set next_page=1,
+    scans=0,
+    results_seen=0,
+    signals_found=0,
+    no_progress_scans=0,
+    last_run_at=null,
+    last_error=null,
+    query_strategy_version=7,
+    updated_at=now()
+where coalesce(query_strategy_version,6)<7;
+
+alter table local_demand_scan_state alter column query_strategy_version set default 7;
+
+
 
