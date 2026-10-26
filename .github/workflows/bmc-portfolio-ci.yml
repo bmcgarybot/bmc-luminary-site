@@ -132,6 +132,7 @@ jobs:
           assert "verification_status text not null default 'discovery'" in schema
           assert "create table if not exists research_refresh_state" in schema
           assert "last_closure_checked_at" in schema
+          assert "create or replace view market_inventory_business_rollup" in schema
           api=Path("api/app.py").read_text()
           assert '"direct_evidence" if official else ("closed_evidence" if closure_reason else "discovery")' in api
           proof=Path("production-proof-readout.sh").read_text()
@@ -266,6 +267,8 @@ jobs:
           assert ns["inventory_result_matches_business"](closed_hit,"CRRS Restaurant Equipment Repair") is True
           assert ns["inventory_result_matches_business"](closed_hit,"Subway") is False
           assert '@app.post("/api/process-inventory-closure-audit")' in api
+          assert '@app.get("/api/admin/inventory-businesses")' in api
+          assert '@app.get("/api/admin/inventory-business-evidence")' in api
           assert "last_closure_checked_at" in api
           assert "superpages.com" in api and "allbiz.com" in api and "restaurantji.com" in api
           assert "INVENTORY_QUERY_STRATEGY_VERSION=7" in api
