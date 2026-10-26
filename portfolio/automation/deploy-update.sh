@@ -75,7 +75,10 @@ docker compose --env-file "$ENV_FILE" up -d --force-recreate ops_api
 
 echo
 echo "Ensuring supporting services are up..."
-docker compose --env-file "$ENV_FILE" up -d n8n searxng
+docker compose --env-file "$ENV_FILE" up -d n8n
+# SearXNG reads settings.yml at process start. Recreate it so research-engine
+# changes are guaranteed to become active on every tested deployment.
+docker compose --env-file "$ENV_FILE" up -d --force-recreate searxng
 # scheduler.sh is bind-mounted but the shell reads it only at container start.
 # Recreate it only when it was running before this deployment. An intentionally
 # stopped scheduler must stay stopped for safe maintenance/debugging.
