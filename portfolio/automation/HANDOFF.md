@@ -3818,3 +3818,115 @@ Remaining launch gate:
 CMS source-native 403s remain a separate source-access issue, but they did not block Phase 2 from draining the full queued research backlog.
 
 Outreach remains OFF.
+
+
+## 46. POST-DRAIN PUBLIC SITE + SEO CLEANUP — 2026-10-25
+
+While the production research drain completed, a parallel GitHub-only public-site cleanup was completed without touching the live research worker.
+
+### Research state entering this cleanup
+
+Production drain completed:
+- queued research: 0;
+- assigned research: 0;
+- vendors: 211;
+- buyers: 2537;
+- staged candidates: 205;
+- completed backlog rows: 56;
+- review rows: 22;
+- searched_no_results: 771;
+- core runtime failures: 0.
+
+### Public wording cleanup
+
+Older public service pages were cleaned further to remove remaining internal/system-style language.
+
+Removed/replaced examples:
+- `No directory hunting` -> `One place to start`;
+- `We’ll move the request toward the right next step.` -> `We’ll help you get it moving.`;
+- How It Works headline now uses normal customer language rather than narrating internal routing;
+- homepage wording simplified from “move toward” language to “find the right service, quote, or next step.”
+
+The public UI validator now rejects:
+- `REPLACE_ME`;
+- `No directory hunting`;
+- `We’ll move the request toward the right next step.`;
+- previously banned routing/fulfillment/internal phrases.
+
+### Live intake endpoint cleanup
+
+Public pages that still contained:
+`<meta name="bmc-webhook" content="REPLACE_ME">`
+
+were changed to the real live intake endpoint:
+`https://hooks.bmcservicenetwork.com/api/intake`.
+
+The storefront generator was also changed to emit the live intake endpoint, so regenerated pages do not reintroduce the placeholder.
+
+### Statewide storefront alignment
+
+Core generated storefront titles/descriptions were aligned to the statewide network:
+- old title suffix: `| Prescott Area`;
+- current title suffix: `| Arizona`;
+- descriptions now say service is available `in Arizona` instead of implying Prescott-only coverage.
+
+The storefront generator/config and committed pages are in sync.
+
+### SEO / indexing consistency
+
+A sitemap/noindex contradiction was found and fixed.
+
+Several real public service/research pages were included in the sitemap but also carried:
+`<meta name="robots" content="noindex,follow">`
+
+Those public offer pages are now indexable, including:
+- garage door service;
+- office coffee/water;
+- facility maintenance;
+- market expansion;
+- waste/recycling audit;
+- linen/laundry sourcing;
+- competitor research;
+- quote sourcing;
+- equipment quotes;
+- move-out/turnover cleaning;
+- used restaurant equipment;
+- restaurant maintenance.
+
+The old `/vendor-partner/` redirect stub remains noindex and was removed from the sitemap.
+The sitemap now points to the real public `/providers/` page instead.
+
+Private/status/workflow pages remain noindex, including:
+- provider pilot activation/response/update flows;
+- payment/order status pages;
+- synthetic test page;
+- sample output page.
+
+### Search-readiness regression guard
+
+`validate-search-readiness.py` now verifies that every sitemap URL:
+- resolves to an existing local page;
+- is not marked `noindex`.
+
+This prevents future sitemap/indexing contradictions.
+
+### CI state
+
+At commit `61106777c70360f19c17a7891b62594e9ce7a4f9`, the latest workflow passed all static/pre-smoke gates:
+- API syntax;
+- service registry/fronts;
+- generated storefront sync;
+- legacy public UI guard;
+- internal-language public copy guard;
+- public form contracts;
+- search/download readiness;
+- Docker Compose validation;
+- operational script validation;
+- public gateway configuration.
+
+The database/API smoke-test stage was still running when this handoff section was written.
+
+Remaining launch gate is still:
+- activate at least one verified pilot provider.
+
+Outreach remains OFF.
