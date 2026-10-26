@@ -17,6 +17,9 @@ FORBIDDEN_PUBLIC_PHRASES = (
     "Payment confirmation is recorded server-side",
     "vendor routing",
     "lead-routing tests",
+    "No directory hunting",
+    "We’ll move the request toward the right next step.",
+    "REPLACE_ME",
 )
 MARKET_SLUGS = (
     "prescott", "prescott-valley", "chino-valley", "cottonwood",
