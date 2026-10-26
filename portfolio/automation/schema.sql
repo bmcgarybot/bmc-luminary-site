@@ -541,6 +541,14 @@ create index if not exists idx_market_inventory_candidates_lane
 on market_inventory_candidates(side,market,category_key,official_site,status);
 
 
+alter table market_inventory_candidates add column if not exists first_seen_at timestamptz default now();
+alter table market_inventory_candidates add column if not exists last_seen_at timestamptz default now();
+alter table market_inventory_candidates add column if not exists closed_at timestamptz;
+alter table market_inventory_candidates add column if not exists closure_reason text;
+
+alter table market_inventory_progress add column if not exists scan_cycles integer default 0;
+alter table market_inventory_progress add column if not exists last_full_scan_at timestamptz;
+
 alter table market_inventory_progress add column if not exists next_page integer default 1;
 alter table market_inventory_progress add column if not exists query_variant integer default 0;
 alter table market_inventory_progress add column if not exists no_progress_passes integer default 0;
