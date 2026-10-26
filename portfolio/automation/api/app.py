@@ -381,9 +381,11 @@ def inventory_result_relevant(result,market,category_label):
              "local","business","businesses","and","the","for","near","arizona","az"}
     label_words=[w for w in re.findall(r"[a-z0-9]+",label)
                  if len(w)>2 and w not in generic]
+    # State-only evidence is not enough for a local lane. A Prescott lane
+    # must mention Prescott; a Bullhead City lane must contain both meaningful
+    # place words. This blocks relevant-service results from the wrong AZ city.
     market_match=(place in haystack or
-                  (place_words and all(w in haystack for w in place_words)) or
-                  " arizona" in haystack or "/az/" in haystack or "-az" in haystack)
+                  (place_words and all(w in haystack for w in place_words)))
     category_match=any(w in haystack for w in label_words) if label_words else label in haystack
     return bool(market_match and category_match)
 
