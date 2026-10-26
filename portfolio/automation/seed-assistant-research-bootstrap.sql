@@ -4661,3 +4661,506 @@ update market_inventory_progress p set official_candidates=(
  select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
  and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ),updated_at=now() where p.market='Scottsdale';
+
+
+-- Assistant-led Tucson vendor census batch 02 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','facility_maintenance','Building Maintenance Help','Sundt Construction, Inc.',
+ 'https://business.tucsonchamber.org/list/Search/construction-equipment-contractors-346731?cid=347667','business.tucsonchamber.org','Current Chamber of Southern Arizona contractor listing for Building Maintenance Help.','assistant vendor census: Tucson Building Maintenance Help',0,
+ null,'(520) 750-4605',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona contractor listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','landscaping','Landscaping & Yard Cleanup','AAA Landscape',
+ 'https://business.tucsonchamber.org/list/Search/construction-equipment-contractors-346731?cid=347667','business.tucsonchamber.org','Current Chamber of Southern Arizona contractor listing for Landscaping & Yard Cleanup.','assistant vendor census: Tucson Landscaping & Yard Cleanup',0,
+ null,'(520) 696-3223',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona contractor listing for Landscaping & Yard Cleanup."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','hvac_heat','Heating & Air','ACS Air Conditioning Services',
+ 'https://business.tucsonchamber.org/list/Search/construction-equipment-contractors-346731?cid=347667','business.tucsonchamber.org','Current Chamber of Southern Arizona contractor listing for Heating & Air.','assistant vendor census: Tucson Heating & Air',0,
+ null,'(520) 696-1800',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona contractor listing for Heating & Air."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','backflow_plumbing','Backflow & Commercial Plumbing','Apperson Plumbing Service',
+ 'https://business.tucsonchamber.org/list/Search/construction-equipment-contractors-346731?cid=347667','business.tucsonchamber.org','Current Chamber of Southern Arizona contractor listing for Backflow & Commercial Plumbing.','assistant vendor census: Tucson Backflow & Commercial Plumbing',0,
+ null,'(520) 623-8441',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona contractor listing for Backflow & Commercial Plumbing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','hvac_heat','Heating & Air','B & J Refrigeration, Inc.',
+ 'https://business.tucsonchamber.org/list/Search/construction-equipment-contractors-346731?cid=347667','business.tucsonchamber.org','Current Chamber of Southern Arizona contractor listing for Heating & Air.','assistant vendor census: Tucson Heating & Air',0,
+ null,'(520) 326-9672',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona contractor listing for Heating & Air."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','restaurant_equipment','Restaurant Equipment Repair','B & J Refrigeration, Inc.',
+ 'https://business.tucsonchamber.org/list/Search/construction-equipment-contractors-346731?cid=347667','business.tucsonchamber.org','Current Chamber of Southern Arizona contractor listing for Restaurant Equipment Repair.','assistant vendor census: Tucson Restaurant Equipment Repair',0,
+ null,'(520) 326-9672',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona contractor listing for Restaurant Equipment Repair."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','facility_maintenance','Building Maintenance Help','Building Excellence, LLC',
+ 'https://business.tucsonchamber.org/list/Search/construction-equipment-contractors-346731?cid=347667','business.tucsonchamber.org','Current Chamber of Southern Arizona contractor listing for Building Maintenance Help.','assistant vendor census: Tucson Building Maintenance Help',0,
+ null,'(520) 219-6993',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona contractor listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','facility_maintenance','Building Maintenance Help','DPR Construction',
+ 'https://business.tucsonchamber.org/list/Search/construction-equipment-contractors-346731?cid=347666','business.tucsonchamber.org','Current Chamber of Southern Arizona construction listing for Building Maintenance Help.','assistant vendor census: Tucson Building Maintenance Help',0,
+ null,'(520) 355-8247',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona construction listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','hvac_heat','Heating & Air','Done Rite Services - HVAC, Plumbing, & Electrical',
+ 'https://business.tucsonchamber.org/list/Search/construction-equipment-contractors-346731?cid=347666','business.tucsonchamber.org','Current Chamber of Southern Arizona construction listing for Heating & Air.','assistant vendor census: Tucson Heating & Air',0,
+ null,'(520) 369-3966',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona construction listing for Heating & Air."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','backflow_plumbing','Backflow & Commercial Plumbing','Done Rite Services - HVAC, Plumbing, & Electrical',
+ 'https://business.tucsonchamber.org/list/Search/construction-equipment-contractors-346731?cid=347666','business.tucsonchamber.org','Current Chamber of Southern Arizona construction listing for Backflow & Commercial Plumbing.','assistant vendor census: Tucson Backflow & Commercial Plumbing',0,
+ null,'(520) 369-3966',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona construction listing for Backflow & Commercial Plumbing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','electrical_service','Electrician','Done Rite Services - HVAC, Plumbing, & Electrical',
+ 'https://business.tucsonchamber.org/list/Search/construction-equipment-contractors-346731?cid=347666','business.tucsonchamber.org','Current Chamber of Southern Arizona construction listing for Electrician.','assistant vendor census: Tucson Electrician',0,
+ null,'(520) 369-3966',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona construction listing for Electrician."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','facility_maintenance','Building Maintenance Help','Hallmark Roofing',
+ 'https://business.tucsonchamber.org/list/Search/construction-equipment-contractors-346731?cid=347666','business.tucsonchamber.org','Current Chamber of Southern Arizona construction listing for Building Maintenance Help.','assistant vendor census: Tucson Building Maintenance Help',0,
+ null,'(520) 502-2662',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona construction listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','facility_maintenance','Building Maintenance Help','Maly & Associates',
+ 'https://business.tucsonchamber.org/list/Search/construction-equipment-contractors-346731?cid=347666','business.tucsonchamber.org','Current Chamber of Southern Arizona construction listing for Building Maintenance Help.','assistant vendor census: Tucson Building Maintenance Help',0,
+ null,'(520) 299-0856',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona construction listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','facility_maintenance','Building Maintenance Help','Smyth Industries',
+ 'https://business.tucsonchamber.org/list/Search/construction-equipment-contractors-346731?cid=347666','business.tucsonchamber.org','Current Chamber of Southern Arizona construction listing for Building Maintenance Help.','assistant vendor census: Tucson Building Maintenance Help',0,
+ null,'(520) 750-8719',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona construction listing for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','facility_maintenance','Building Maintenance Help','Chasse Building Team',
+ 'https://business.tucsonchamber.org/list/Details/chasse-building-team-1957828','business.tucsonchamber.org','Current Chamber listing identifies Tucson construction contractor.','assistant vendor census: Tucson Building Maintenance Help',0,
+ null,'(520) 833-4120',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber listing identifies Tucson construction contractor."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','hvac_heat','Heating & Air','Hamstra Heating & Cooling, Inc.',
+ 'https://business.tucsonchamber.org/list/Details/hamstra-heating-cooling-inc-1958642?rendermode=print','business.tucsonchamber.org','Current Chamber listing states Tucson residential/commercial HVAC repair and installation since 1983.','assistant vendor census: Tucson Heating & Air',0,
+ null,'(520) 629-9833',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber listing states Tucson residential/commercial HVAC repair and installation since 1983."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','hvac_heat','Heating & Air','Signature Heating, Cooling, Plumbing and Solar',
+ 'https://business.tucsonchamber.org/list/FindStartsWith?term=S','business.tucsonchamber.org','Current Chamber listing for Tucson heating, cooling, plumbing and solar contractor.','assistant vendor census: Tucson Heating & Air',0,
+ null,'(520) 201-6211',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber listing for Tucson heating, cooling, plumbing and solar contractor."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','backflow_plumbing','Backflow & Commercial Plumbing','Signature Heating, Cooling, Plumbing and Solar',
+ 'https://business.tucsonchamber.org/list/FindStartsWith?term=S','business.tucsonchamber.org','Current Chamber listing explicitly includes plumbing services.','assistant vendor census: Tucson Backflow & Commercial Plumbing',0,
+ null,'(520) 201-6211',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber listing explicitly includes plumbing services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','backflow_plumbing','Backflow & Commercial Plumbing','Silverado Rooter & Plumbing',
+ 'https://business.tucsonchamber.org/list/FindStartsWith?term=S','business.tucsonchamber.org','Current Chamber listing for Tucson rooter and plumbing contractor.','assistant vendor census: Tucson Backflow & Commercial Plumbing',0,
+ null,'(520) 273-7088',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber listing for Tucson rooter and plumbing contractor."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','fire_safety','Fire Safety & Extinguisher Service','Central Alarm, Inc.',
+ 'https://business.tucsonchamber.org/list/Details/central-alarm-inc-1957765','business.tucsonchamber.org','Current Chamber security/fire-industry listing in Tucson.','assistant vendor census: Tucson Fire Safety & Extinguisher Service',0,
+ null,'(520) 882-8142',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber security/fire-industry listing in Tucson."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','locksmith_access','Locks & Access Control','Central Alarm, Inc.',
+ 'https://business.tucsonchamber.org/list/Details/central-alarm-inc-1957765','business.tucsonchamber.org','Current Chamber security systems provider; access/security candidate.','assistant vendor census: Tucson Locks & Access Control',0,
+ null,'(520) 882-8142',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber security systems provider; access/security candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','fire_safety','Fire Safety & Extinguisher Service','Winsupply of Tucson Fire Protection and Fabrication',
+ 'https://business.tucsonchamber.org/list/Search/business-professional-services-346733?cid=346416','business.tucsonchamber.org','Current Chamber fire-protection/fabrication listing.','assistant vendor census: Tucson Fire Safety & Extinguisher Service',0,
+ null,'(520) 210-8562',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber fire-protection/fabrication listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','pest_control','Pest Control','Arizona Pest Control Co.',
+ 'https://business.tucsonchamber.org/list/Search/business-professional-services-346733?cid=346469','business.tucsonchamber.org','Current Chamber pest-control listing; family-owned Tucson service since 1947.','assistant vendor census: Tucson Pest Control',0,
+ null,'(520) 886-7378',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber pest-control listing; family-owned Tucson service since 1947."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','pest_control','Pest Control','Tucson Maintenance, LLC',
+ 'https://business.tucsonchamber.org/list/Search/business-professional-services-346733?cid=346469','business.tucsonchamber.org','Current Chamber pest-control listing.','assistant vendor census: Tucson Pest Control',0,
+ null,'(520) 429-6935',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber pest-control listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','rural_property','Septic, Grading & Wells','Busy D Pumping',
+ 'https://business.tucsonchamber.org/list/findstartswith','business.tucsonchamber.org','Current Chamber listing for Tucson septic tank cleaning.','assistant vendor census: Tucson Septic, Grading & Wells',0,
+ null,'(520) 751-7765',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber listing for Tucson septic tank cleaning."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','facility_maintenance','Building Maintenance Help','West Coast Roofing, LLC',
+ 'https://business.tucsonchamber.org/list/findstartswith','business.tucsonchamber.org','Current Chamber roofing contractor listing.','assistant vendor census: Tucson Building Maintenance Help',0,
+ null,'(520) 849-7242',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber roofing contractor listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','landscaping','Landscaping & Yard Cleanup','Harlow Gardens',
+ 'https://business.tucsonchamber.org/list/FindStartsWith?term=H','business.tucsonchamber.org','Current Chamber landscape services/equipment/supplies listing.','assistant vendor census: Tucson Landscaping & Yard Cleanup',0,
+ null,'(520) 298-3303',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber landscape services/equipment/supplies listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','facility_maintenance','Building Maintenance Help','WLB Group, The',
+ 'https://business.tucsonchamber.org/list/Search/business-professional-services-346733','business.tucsonchamber.org','Current Chamber engineering and landscape architecture office supporting facility/property projects.','assistant vendor census: Tucson Building Maintenance Help',0,
+ null,'(520) 881-7480',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber engineering and landscape architecture office supporting facility/property projects."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','facility_maintenance','Building Maintenance Help','CEMEX - Tucson',
+ 'https://business.tucsonchamber.org/list/findstartswith','business.tucsonchamber.org','Current Tucson concrete/aggregate supplier and construction-support business.','assistant vendor census: Tucson Building Maintenance Help',0,
+ null,'(520) 572-5775',false,'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_vendors_02","researched_at":"2026-10-27T00:09:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson concrete/aggregate supplier and construction-support business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Tucson';
