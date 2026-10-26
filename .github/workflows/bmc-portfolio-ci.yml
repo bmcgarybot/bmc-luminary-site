@@ -132,6 +132,10 @@ jobs:
           assert "Candidate evidence tiers:" in proof
           relay=Path("vps-gitops-relay.py").read_text()
           assert '"assistant_bootstrap_import"' in relay
+          importer=Path("assistant-directory-bootstrap.py").read_text()
+          assert "source_tier=excluded.source_tier" in importer
+          assert "verification_status=excluded.verification_status" in importer
+          assert "class ListingParser" not in importer
           PY
 
       - name: Validate research query quality
