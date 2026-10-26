@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "request_id": "bootstrap-pilot-kcv-parserfix-20261026T2147Z",
+  "action": "assistant_bootstrap_import",
+  "allow_external_actions": false,
+  "created_at": "2026-10-26T21:47:00Z",
+  "expires_at": "2026-10-27T21:47:00Z",
+  "args": {
+    "markets": "Kingman,Chino Valley,Camp Verde",
+    "max_per_feed": 100,
+    "delay": 0.2
+  }
+}
