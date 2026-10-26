@@ -4943,3 +4943,229 @@ Correct next production sequence after the latest GitHub CI is green:
 9. Buyer service outreach should not outrun provider capacity.
 
 The operational goal is a launch-ready autonomous system, not merely a technically healthy runtime.
+
+
+## 54. CONTROLLED RESEARCH-LEAD LAUNCH PATH — 2026-10-25
+
+This section extends Section 53 after Brett clarified that BMC should **not send even the first provider invitation until the broader launch system and researched-lead path are genuinely ready**.
+
+No vendor, buyer, or Growth Pack outreach was enabled.
+No message was sent.
+No provider was activated.
+
+### Final verified code checkpoint
+
+Combined launch-control master:
+- `467438bb8e4a0f02e63c638803b037bb6f0a7a21`
+
+BMC Portfolio CI:
+- run `40275996324`: **SUCCESS**
+- full database/API smoke: **SUCCESS**
+- launch-readiness audit executed against the disposable CI database in report mode: **SUCCESS**
+
+The prior combined functional run:
+- `7b65658509b11bad9e8e3cd3c0b57700e47d4e71`
+- run `40275824274`: **SUCCESS**
+- Cloudflare Pages deployment for that functional tree: **SUCCESS**
+
+### Research deploy regression is fixed
+
+As documented in Section 53, normal migration had reopened 56 terminal research rows after production had previously reached zero queued.
+
+The fix prevents `seed-research-scale.sql` from changing terminal research rows back to `queued` during future deploys.
+
+CI explicitly proves terminal:
+- completed;
+- review;
+- searched_no_results;
+
+rows remain terminal after the scale seed reruns.
+
+The **already reopened 56 production rows still need to finish one final time**. After that, future normal deploys must preserve the drained state.
+
+For this repair, do not re-enter the separate CMS/source-native 403 work.
+
+`drain-research-backlog.sh` now supports:
+`SKIP_SOURCE_NATIVE_DRAIN=true`
+
+so the repair can process only the public-web research queue.
+
+### "Outreach ready" is no longer treated as "prospect pool ready"
+
+The existing admin preflight `outreach_ready` gate mainly proves outbound infrastructure:
+- SMTP;
+- reply/IMAP monitoring;
+- business postal address.
+
+It does not prove the 211 vendor / 2,537 buyer records are all contactable or suitable for outreach.
+
+New:
+- `portfolio/automation/launch-readiness.sh`
+
+This read-only production audit reports:
+- research queued / assigned / open research tasks;
+- vendor and buyer prospect totals;
+- email-ready / phone-ready / website-ready counts;
+- records with no stored contact/source path;
+- records actually eligible for a new wave;
+- suppressions;
+- duplicate email groups;
+- malformed emails;
+- existing outreach grouped by side/campaign/wave/status;
+- verified pilot/active provider count;
+- SMTP/IMAP/postal/Stripe/payment-link readiness;
+- public Providers/sitemap/provider-activation pages;
+- constrained webhook ingress.
+
+The audit distinguishes:
+- provider recruitment staging readiness;
+- buyer service-outreach readiness.
+
+Buyer service outreach is expected to remain blocked before verified provider coverage exists.
+
+### Safe researched-prospect wave staging
+
+New:
+- `portfolio/automation/stage-outreach-wave.sh`
+
+It creates a deliberate bridge between research and outbound instead of treating every database prospect as immediately sendable.
+
+Safety:
+- preview-only by default;
+- requires a named wave;
+- bounded to 1–100 records;
+- may filter by market + service/campaign;
+- provider selection requires `prospect`;
+- buyer selection requires `new` or `prospect`;
+- public email required;
+- suppressions honored;
+- normalized-email dedupe;
+- already-staged entities excluded;
+- refuses to operate if any outbound switch is enabled;
+- `--apply` only creates queued outreach rows;
+- it **never sends email**.
+
+CI proves:
+1. preview creates zero outreach rows;
+2. explicit `--apply` creates exactly one synthetic queued row;
+3. `sent_at` remains null;
+4. the staged provider row retains the exact target market + service used to select it.
+
+### Exact staged provider targeting is now persisted
+
+New outreach columns:
+- `target_market`
+- `target_service_key`
+
+Reason:
+A multi-market/multi-service provider may have many profile rows. A wave selected for Prescott + commercial cleaning must not later send copy about a different first-listed service/market.
+
+The provider sender now prefers the staged target values and only falls back to profile values for legacy/First Wave rows.
+
+### Every researched provider now uses the controlled activation/review path
+
+Previously:
+- the special `pilot1` First Wave used the vendor-specific secure activation URL;
+- generic future researched-provider recruitment used the generic Providers page.
+
+That split is removed.
+
+All provider recruitment copy now uses:
+- the vendor-specific `/provider-pilot-activate/?...` link;
+- provider preference/capacity submission;
+- `pilot_pending_review`;
+- explicit BMC verification/approval;
+- only then pilot/active routing.
+
+There is no separate looser onboarding path for researched providers.
+
+### Private exact-copy wave preview
+
+New private admin endpoint:
+- `GET /api/admin/outreach-wave-preview?side=vendor|buyer&wave=<wave>&limit=<n>`
+
+It requires the BMC admin key and returns:
+- exact recipient;
+- market;
+- service/campaign;
+- sequence step;
+- exact subject;
+- exact message body.
+
+It sends nothing.
+
+CI proves the synthetic researched-provider preview:
+- reports sending disabled;
+- keeps exact staged market/service;
+- contains the vendor-specific activation URL and vendor ID.
+
+This is the required review surface before a real named wave is ever enabled.
+
+### Buyer outreach cannot outrun provider coverage
+
+The buyer sender now requires a real provider match before selecting a buyer message for sending.
+
+Required match:
+- provider status `pilot` or `active`;
+- non-test provider;
+- same market as buyer;
+- at least one provider service intersects the buyer's likely service set.
+
+Therefore an enabled buyer switch alone is no longer sufficient to market a service BMC cannot currently fulfill in that market.
+
+Buyer acquisition should follow verified provider coverage, not race ahead of it.
+
+### Legacy bootstrap outreach seeds hardened
+
+The old bootstrap-only vendor/buyer queue seeds now:
+- restrict to appropriate prospect states;
+- require public email;
+- honor suppression;
+- use explicit `backlog` wave;
+- do not send.
+
+Normal migrations do not rerun those broad bootstrap outreach seeds.
+
+Real launch waves should use `stage-outreach-wave.sh`, not blind bootstrap seeding.
+
+### Existing-prospect enrichment remains conditional on live audit
+
+Current research can capture email/phone visible in public search evidence and conservatively auto-promote direct-domain contact-ready discoveries.
+
+However, BMC does **not yet have a dedicated second-pass contact-enrichment worker for every existing vendor/buyer record that lacks email**.
+
+Do not guess whether that is a launch blocker.
+
+First run the production launch audit and inspect:
+- current vendor email-ready count;
+- current buyer email-ready count;
+- phone/site/source coverage;
+- eligible new-wave counts.
+
+If the contactable pool is too shallow for launch, the next engineering step is a dedicated existing-prospect public-contact enrichment pass. If the email-ready pool is already sufficiently deep for controlled launch, enrichment can continue in parallel rather than blocking all provider recruitment.
+
+### Correct next production sequence
+
+Production currently ran the older `1b8606f...` build when the 56-row regression was observed.
+
+After this checkpoint:
+
+1. Safely deploy current master with `deploy-update.sh`.
+2. Keep all outbound switches OFF.
+3. Repair only the reopened public-web queue:
+   `SKIP_SOURCE_NATIVE_DRAIN=true bash ./drain-research-backlog.sh .env 1000 2`
+4. Require queued=0, assigned=0, open research tasks=0.
+5. Run:
+   `./launch-readiness.sh .env report`
+6. Review actual contactability and outreach staging counts.
+7. If contactability is weak, build/run dedicated existing-prospect enrichment before launch.
+8. Do not stage a real wave until the audit is reviewed.
+9. When staging eventually begins:
+   - preview target selection first;
+   - apply only a small named provider wave;
+   - preview exact email copy privately;
+   - keep sending OFF until Brett explicitly approves.
+10. Establish verified provider coverage before buyer service outreach.
+11. Buyer sender now enforces that coverage in code as a backstop.
+
+The target is not merely "server healthy." The target is a measurable, controlled, launch-ready research-to-outreach system.
