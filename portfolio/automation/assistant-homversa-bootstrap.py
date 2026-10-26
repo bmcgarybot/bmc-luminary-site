@@ -13,6 +13,7 @@ It never promotes providers, stages outreach, or sends messages.
 from __future__ import annotations
 
 import argparse
+import os
 from html.parser import HTMLParser
 import json
 from pathlib import Path
@@ -178,12 +179,31 @@ def parse_trade_page(page_html,market,trade):
     }
 
 def env_values(path):
-    out={}
-    for raw in Path(path).read_text(errors="replace").splitlines():
-        line=raw.strip()
-        if not line or line.startswith("#") or "=" not in line: continue
-        k,v=line.split("=",1); out[k.strip()]=v.strip().strip('"').strip("'")
+    out=dict(os.environ)
+    p=Path(path)
+    if p.exists() and p.is_file():
+        for raw in p.read_text(errors="replace").splitlines():
+            line=raw.strip()
+            if not line or line.startswith("#") or "=" not in line: continue
+            k,v=line.split("=",1); out[k.strip()]=v.strip().strip('"').strip("'")
     return out
+
+def run_psql(payload,env,env_file):
+    database_url=(env.get("DATABASE_URL") or "").strip()
+    if database_url:
+        return subprocess.run(
+          ["psql",database_url,"-v","ON_ERROR_STOP=1"],
+          input=payload,text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE
+        )
+    dbuser=env.get("POSTGRES_USER","")
+    dbname=env.get("POSTGRES_DB","")
+    if not dbuser or not dbname:
+        raise SystemExit("DATABASE_URL or POSTGRES_USER/POSTGRES_DB must be configured")
+    return subprocess.run(
+      ["docker","compose","--env-file",env_file,"exec","-T","postgres",
+       "psql","-v","ON_ERROR_STOP=1","-U",dbuser,"-d",dbname],
+      input=payload,text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE
+    )
 
 def esc(v):
     return str(v or "").replace("'","''")
@@ -246,10 +266,6 @@ def main():
         return
 
     env=env_values(args.env_file)
-    dbuser=env.get("POSTGRES_USER","")
-    dbname=env.get("POSTGRES_DB","")
-    if not dbuser or not dbname:
-        raise SystemExit("POSTGRES_USER/POSTGRES_DB missing from env")
 
     sql=["begin;"]
     for r in records:
@@ -289,11 +305,7 @@ on conflict(side,market,category_key,source_url,business_name) do update set
  evidence=market_inventory_candidates.evidence || excluded.evidence,
  updated_at=now();""")
     sql.append("commit;")
-    cp=subprocess.run(
-      ["docker","compose","--env-file",args.env_file,"exec","-T","postgres",
-       "psql","-v","ON_ERROR_STOP=1","-U",dbuser,"-d",dbname],
-      input="\n".join(sql),text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE
-    )
+    cp=run_psql("\n".join(sql),env,args.env_file)
     if cp.returncode!=0:
         print(cp.stdout)
         print(cp.stderr,file=sys.stderr)
