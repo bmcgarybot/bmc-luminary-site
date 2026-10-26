@@ -5136,3 +5136,1358 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Chino Valley';
+
+
+-- Assistant-led Chino Valley census batch 02 (2026-10-26)
+-- Broad Chino Valley vendor/trade census researched manually from current local sources.
+-- Discovery inventory only; preserve closed status and never promote/stage/send.
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','backflow_plumbing','Backflow & Commercial Plumbing','Alphabet Plumbing & Rooter Inc',
+ 'https://www.yellowpages.com/chino-valley-az/plumbers','yellowpages.com','Current Chino Valley plumbing discovery candidate. 182 S Chino Dr.','assistant bootstrap research: Chino Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 778-3772',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley plumbing discovery candidate. 182 S Chino Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','backflow_plumbing','Backflow & Commercial Plumbing','Big Sky Plumbing Inc',
+ 'https://www.yellowpages.com/chino-valley-az/plumbers','yellowpages.com','Current Chino Valley plumbing discovery candidate. 747 W Livernois Way.','assistant bootstrap research: Chino Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 636-7370',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley plumbing discovery candidate. 747 W Livernois Way."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','backflow_plumbing','Backflow & Commercial Plumbing','WIHN Services Plumbing',
+ 'https://www.yellowpages.com/chino-valley-az/plumbers','yellowpages.com','Current Chino Valley plumbing discovery candidate. 1420 S Table Mountain Rd.','assistant bootstrap research: Chino Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 636-5405',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley plumbing discovery candidate. 1420 S Table Mountain Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','backflow_plumbing','Backflow & Commercial Plumbing','Pump Works LLC',
+ 'https://www.yellowpages.com/chino-valley-az/plumbers','yellowpages.com','Current Chino Valley plumbing discovery candidate. 1646 S Yellow Brick Rd; well/pump/plumbing.','assistant bootstrap research: Chino Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 308-4472',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley plumbing discovery candidate. 1646 S Yellow Brick Rd; well/pump/plumbing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','backflow_plumbing','Backflow & Commercial Plumbing','Affordable Plumbing Solutions',
+ 'https://www.yellowpages.com/chino-valley-az/plumbers','yellowpages.com','Current Chino Valley plumbing discovery candidate. 989 Tiffany Way.','assistant bootstrap research: Chino Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 925-6541',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley plumbing discovery candidate. 989 Tiffany Way."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','backflow_plumbing','Backflow & Commercial Plumbing','Mountain Top Plumbing',
+ 'https://www.yellowpages.com/chino-valley-az/plumbers','yellowpages.com','Current Chino Valley plumbing discovery candidate. 977 Heather Ln.','assistant bootstrap research: Chino Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 830-3875',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley plumbing discovery candidate. 977 Heather Ln."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','backflow_plumbing','Backflow & Commercial Plumbing','Tri-City Plumbing Contractors',
+ 'https://www.yellowpages.com/chino-valley-az/plumbers','yellowpages.com','Current Chino Valley plumbing discovery candidate. 847 S State Route 89.','assistant bootstrap research: Chino Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 636-0114',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley plumbing discovery candidate. 847 S State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','backflow_plumbing','Backflow & Commercial Plumbing','Chino Valley Plumbing',
+ 'https://www.yellowpages.com/chino-valley-az/plumbers','yellowpages.com','Current Chino Valley plumbing discovery candidate. 2439 N Road 1 E.','assistant bootstrap research: Chino Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 636-2517',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley plumbing discovery candidate. 2439 N Road 1 E."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','backflow_plumbing','Backflow & Commercial Plumbing','Quick Plumbing & Draining',
+ 'https://www.yellowpages.com/chino-valley-az/plumbers','yellowpages.com','Current Chino Valley plumbing discovery candidate. 1296 Prairie Grass Rd.','assistant bootstrap research: Chino Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 848-8297',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley plumbing discovery candidate. 1296 Prairie Grass Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','backflow_plumbing','Backflow & Commercial Plumbing','Smart Plumbing',
+ 'https://www.yellowpages.com/chino-valley-az/plumbers','yellowpages.com','Current Chino Valley plumbing discovery candidate. 1264 S State Route 89.','assistant bootstrap research: Chino Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 227-2091',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley plumbing discovery candidate. 1264 S State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','backflow_plumbing','Backflow & Commercial Plumbing','Smart Plumbing & Drain Cleaning',
+ 'https://www.yellowpages.com/chino-valley-az/plumbers','yellowpages.com','Current Chino Valley plumbing discovery candidate. 1962 S State Route 89.','assistant bootstrap research: Chino Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 227-2091',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley plumbing discovery candidate. 1962 S State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','backflow_plumbing','Backflow & Commercial Plumbing','Acme Plumbing',
+ 'https://www.yellowpages.com/chino-valley-az/plumbers','yellowpages.com','Current Chino Valley plumbing discovery candidate. 876 E Road 3 N.','assistant bootstrap research: Chino Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 636-2143',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley plumbing discovery candidate. 876 E Road 3 N."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','backflow_plumbing','Backflow & Commercial Plumbing','Diamondback Rooter Service',
+ 'https://www.yellowpages.com/chino-valley-az/plumbers','yellowpages.com','Current Chino Valley plumbing discovery candidate. 876 E Rd 3 N.','assistant bootstrap research: Chino Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 458-8260',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley plumbing discovery candidate. 876 E Rd 3 N."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','backflow_plumbing','Backflow & Commercial Plumbing','NAZ Plumbing LLC',
+ 'https://www.yellowpages.com/chino-valley-az/plumbers','yellowpages.com','Current Chino Valley plumbing discovery candidate. Chino Valley-based plumbing company.','assistant bootstrap research: Chino Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 316-6686',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley plumbing discovery candidate. Chino Valley-based plumbing company."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','backflow_plumbing','Backflow & Commercial Plumbing','Drain Monkey Plumbing LLC',
+ 'https://www.yellowpages.com/chino-valley-az/plumbers','yellowpages.com','Current Chino Valley plumbing discovery candidate. 3220 N Cottontail Dr.','assistant bootstrap research: Chino Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 899-0118',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley plumbing discovery candidate. 3220 N Cottontail Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','electrical_service','Electrician','Elan Electric Inc',
+ 'https://business.chinovalley.org/members/ql/construction-equipment-contractors-7','business.chinovalley.org','Current Chino Valley electrical discovery candidate. 3699 AZ-89.','assistant bootstrap research: Chino Valley Electrician',0,
+ null,'(928) 925-7937',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley electrical discovery candidate. 3699 AZ-89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','electrical_service','Electrician','Wired Electric',
+ 'https://business.chinovalley.org/members/ql/construction-equipment-contractors-7','business.chinovalley.org','Current Chino Valley electrical discovery candidate. 586 Allerton Way.','assistant bootstrap research: Chino Valley Electrician',0,
+ null,'(928) 925-4464',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley electrical discovery candidate. 586 Allerton Way."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','electrical_service','Electrician','Copper Cross Electrical',
+ 'https://business.chinovalley.org/members/ql/construction-equipment-contractors-7','business.chinovalley.org','Current Chino Valley electrical discovery candidate. 1244 E Red Cinder Rd.','assistant bootstrap research: Chino Valley Electrician',0,
+ null,'(928) 379-2875',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley electrical discovery candidate. 1244 E Red Cinder Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','electrical_service','Electrician','Luke''s Electrical Service',
+ 'https://business.chinovalley.org/members/ql/construction-equipment-contractors-7','business.chinovalley.org','Current Chino Valley electrical discovery candidate. Chino Valley-based local electrician.','assistant bootstrap research: Chino Valley Electrician',0,
+ null,'(928) 713-9563',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley electrical discovery candidate. Chino Valley-based local electrician."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','hvac_heat','Heating & Air','Chino Heating & Cooling Inc',
+ 'https://business.chinovalley.org/members/category/heating-air-conditioning-77','business.chinovalley.org','Current Chino Valley HVAC discovery candidate. 550 N Highway 89.','assistant bootstrap research: Chino Valley Heating & Air',0,
+ null,'(928) 636-2955',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley HVAC discovery candidate. 550 N Highway 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','hvac_heat','Heating & Air','Balanced Heating and Air Conditioning',
+ 'https://business.chinovalley.org/members/category/heating-air-conditioning-77','business.chinovalley.org','Current Chino Valley HVAC discovery candidate. 555 W Rd 3 North Suite D.','assistant bootstrap research: Chino Valley Heating & Air',0,
+ null,'(928) 460-5153',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley HVAC discovery candidate. 555 W Rd 3 North Suite D."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','hvac_heat','Heating & Air','Hometown Heating & Cooling',
+ 'https://business.chinovalley.org/members/category/heating-air-conditioning-77','business.chinovalley.org','Current Chino Valley HVAC discovery candidate. 2520 N Aztec Pl.','assistant bootstrap research: Chino Valley Heating & Air',0,
+ null,'(928) 636-4305',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley HVAC discovery candidate. 2520 N Aztec Pl."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','hvac_heat','Heating & Air','TDK Comfort Systems Inc',
+ 'https://business.chinovalley.org/members/category/heating-air-conditioning-77','business.chinovalley.org','Current Chino Valley HVAC discovery candidate. 1940 State Rte 89.','assistant bootstrap research: Chino Valley Heating & Air',0,
+ null,'(928) 636-0846',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley HVAC discovery candidate. 1940 State Rte 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','landscaping','Landscaping & Yard Cleanup','Prescott Roots Landscaping',
+ 'https://www.yellowpages.com/chino-valley-az/landscaping-lawn-services','yellowpages.com','Current Chino Valley landscaping discovery candidate. Chino Valley.','assistant bootstrap research: Chino Valley Landscaping & Yard Cleanup',0,
+ null,'(928) 642-3623',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley landscaping discovery candidate. Chino Valley."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','landscaping','Landscaping & Yard Cleanup','Arizona Weed Warriors',
+ 'https://www.yellowpages.com/chino-valley-az/landscaping-lawn-services','yellowpages.com','Current Chino Valley landscaping discovery candidate. 1025 N Moon Shadow Rd.','assistant bootstrap research: Chino Valley Landscaping & Yard Cleanup',0,
+ null,'(406) 262-4579',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley landscaping discovery candidate. 1025 N Moon Shadow Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','landscaping','Landscaping & Yard Cleanup','Manzanita Landscaping',
+ 'https://www.yellowpages.com/chino-valley-az/landscaping-lawn-services','yellowpages.com','Current Chino Valley landscaping discovery candidate. 2531 N Highway 89.','assistant bootstrap research: Chino Valley Landscaping & Yard Cleanup',0,
+ null,'(928) 848-8025',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley landscaping discovery candidate. 2531 N Highway 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','landscaping','Landscaping & Yard Cleanup','Dirt Visions Inc',
+ 'https://www.yellowpages.com/chino-valley-az/landscaping-lawn-services','yellowpages.com','Current Chino Valley landscaping discovery candidate. Chino Valley.','assistant bootstrap research: Chino Valley Landscaping & Yard Cleanup',0,
+ null,'(928) 356-2270',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley landscaping discovery candidate. Chino Valley."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','landscaping','Landscaping & Yard Cleanup','C&M''s Landscaping',
+ 'https://www.yellowpages.com/chino-valley-az/landscaping-lawn-services','yellowpages.com','Current Chino Valley landscaping discovery candidate. 2745 N Arizona Trail.','assistant bootstrap research: Chino Valley Landscaping & Yard Cleanup',0,
+ null,'(928) 963-4705',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley landscaping discovery candidate. 2745 N Arizona Trail."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','landscaping','Landscaping & Yard Cleanup','G&G Landscape',
+ 'https://www.yellowpages.com/chino-valley-az/landscaping-lawn-services','yellowpages.com','Current Chino Valley landscaping discovery candidate. 245 N Reed Rd.','assistant bootstrap research: Chino Valley Landscaping & Yard Cleanup',0,
+ null,'(928) 713-8616',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley landscaping discovery candidate. 245 N Reed Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','landscaping','Landscaping & Yard Cleanup','Quality Home & Property & Landscape Service Inc',
+ 'https://www.yellowpages.com/chino-valley-az/landscaping-lawn-services','yellowpages.com','Current Chino Valley landscaping discovery candidate. 851 Tiffany Pl.','assistant bootstrap research: Chino Valley Landscaping & Yard Cleanup',0,
+ null,'(928) 636-5521',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley landscaping discovery candidate. 851 Tiffany Pl."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','landscaping','Landscaping & Yard Cleanup','Concepts to Reality Landscaping',
+ 'https://www.yellowpages.com/chino-valley-az/landscaping-lawn-services','yellowpages.com','Current Chino Valley landscaping discovery candidate. 1875 N Sunrise Cir.','assistant bootstrap research: Chino Valley Landscaping & Yard Cleanup',0,
+ null,'(928) 350-8712',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley landscaping discovery candidate. 1875 N Sunrise Cir."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','landscaping','Landscaping & Yard Cleanup','Elevate Landscaping LLC',
+ 'https://www.yellowpages.com/chino-valley-az/landscaping-lawn-services','yellowpages.com','Current Chino Valley landscaping discovery candidate. Chino Valley-based.','assistant bootstrap research: Chino Valley Landscaping & Yard Cleanup',0,
+ null,'(928) 910-1342',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley landscaping discovery candidate. Chino Valley-based."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','landscaping','Landscaping & Yard Cleanup','Unique Landscape and Design',
+ 'https://www.yellowpages.com/chino-valley-az/landscaping-lawn-services','yellowpages.com','Current Chino Valley landscaping discovery candidate. 847 State Rte 89.','assistant bootstrap research: Chino Valley Landscaping & Yard Cleanup',0,
+ null,'(928) 499-4221',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley landscaping discovery candidate. 847 State Rte 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','landscaping','Landscaping & Yard Cleanup','Circle L Landscape & Maintenance Inc',
+ 'https://www.yellowpages.com/chino-valley-az/landscaping-lawn-services','yellowpages.com','Current Chino Valley landscaping discovery candidate. 1741 E Rd 1 S.','assistant bootstrap research: Chino Valley Landscaping & Yard Cleanup',0,
+ null,'(928) 636-4781',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley landscaping discovery candidate. 1741 E Rd 1 S."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','landscaping','Landscaping & Yard Cleanup','Gambel''s Yard Maintenance',
+ 'https://www.yellowpages.com/chino-valley-az/landscaping-lawn-services','yellowpages.com','Current Chino Valley landscaping discovery candidate. AZ-89, Chino Valley.','assistant bootstrap research: Chino Valley Landscaping & Yard Cleanup',0,
+ null,'(928) 379-2397',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley landscaping discovery candidate. AZ-89, Chino Valley."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','rural_property','Rural Property Help','Pump Works LLC',
+ 'https://www.yellowpages.com/chino-valley-az/plumbers','yellowpages.com','Chino Valley well/pump contractor at 1646 S Yellow Brick Rd; relevant to rural property water systems.','assistant bootstrap research: Chino Valley Rural Property Help',0,
+ null,'(928) 308-4472',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Chino Valley well/pump contractor at 1646 S Yellow Brick Rd; relevant to rural property water systems."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','rural_property','Rural Property Help','Turner & Son Pump & Windmill',
+ 'https://business.chinovalley.org/list/searchalpha/t','business.chinovalley.org','Current Chamber member at 3471 N Highway 89; pump/windmill services relevant to rural properties.','assistant bootstrap research: Chino Valley Rural Property Help',0,
+ null,'(928) 636-2771',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber member at 3471 N Highway 89; pump/windmill services relevant to rural properties."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','rural_property','Rural Property Help','Dirt Visions Inc',
+ 'https://business.chinovalley.org/list/category/landscaping-88','business.chinovalley.org','Chino Valley excavation/landscaping company; relevant to grading and rural-property site work.','assistant bootstrap research: Chino Valley Rural Property Help',0,
+ null,'(928) 356-2270',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Chino Valley excavation/landscaping company; relevant to grading and rural-property site work."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','tree_service','Tree Service & Brush Clearing','Manzanita Landscaping Inc',
+ 'https://www.yellowpages.com/chino-valley-az/tree-service','yellowpages.com','Current Chino Valley tree-service discovery candidate. 2584 N State Route 89.','assistant bootstrap research: Chino Valley Tree Service & Brush Clearing',0,
+ null,'(928) 237-9772',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley tree-service discovery candidate. 2584 N State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','tree_service','Tree Service & Brush Clearing','Creative Yard Works',
+ 'https://www.yellowpages.com/chino-valley-az/tree-service','yellowpages.com','Current Chino Valley tree-service discovery candidate. 948 W Center St.','assistant bootstrap research: Chino Valley Tree Service & Brush Clearing',0,
+ null,'(928) 420-0240',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley tree-service discovery candidate. 948 W Center St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','tree_service','Tree Service & Brush Clearing','Tischler Tree Service',
+ 'https://www.yellowpages.com/chino-valley-az/tree-service','yellowpages.com','Current Chino Valley tree-service discovery candidate. 1809 Streben Ct.','assistant bootstrap research: Chino Valley Tree Service & Brush Clearing',0,
+ null,'(928) 925-1113',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley tree-service discovery candidate. 1809 Streben Ct."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','tree_service','Tree Service & Brush Clearing','Quality Home & Property & Landscape Service Inc',
+ 'https://www.yellowpages.com/chino-valley-az/tree-service','yellowpages.com','Current Chino Valley tree-service discovery candidate. 851 Tiffany Pl.','assistant bootstrap research: Chino Valley Tree Service & Brush Clearing',0,
+ null,'(928) 636-5521',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley tree-service discovery candidate. 851 Tiffany Pl."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','tree_service','Tree Service & Brush Clearing','Chaparral Tree Service',
+ 'https://www.yellowpages.com/chino-valley-az/tree-service','yellowpages.com','Current Chino Valley tree-service discovery candidate. 451 Telephone Rd.','assistant bootstrap research: Chino Valley Tree Service & Brush Clearing',0,
+ null,'(928) 899-0875',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley tree-service discovery candidate. 451 Telephone Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','pest_control','Pest Control','Chino Exterminating',
+ 'https://www.chamberofcommerce.com/business-directory/arizona/chino-valley/','chamberofcommerce.com','Current Chino Valley-based pest/wildlife-control company; local directory lists commercial pest programs.','assistant bootstrap research: Chino Valley Pest Control',0,
+ null,'(928) 636-7378',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley-based pest/wildlife-control company; local directory lists commercial pest programs."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','garage_door','Garage Door Repair','Chino Valley Garage Door Installation',
+ 'https://www.yellowpages.com/chino-valley-az/mip/chino-valley-garage-door-installation-574930657','yellowpages.com','Current garage-door installation/repair listing at 1020 N State Route 89, Chino Valley.','assistant bootstrap research: Chino Valley Garage Door Repair',0,
+ null,'(928) 237-5695',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current garage-door installation/repair listing at 1020 N State Route 89, Chino Valley."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','locksmith_access','Locks & Access Control','Commercial Lock And Door Service',
+ 'https://www.yellowpages.com/chino-valley-az/locks-locksmiths','yellowpages.com','Current Chino Valley locksmith/access candidate. 2607 W Neighbor View.','assistant bootstrap research: Chino Valley Locks & Access Control',0,
+ null,'(928) 800-1918',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley locksmith/access candidate. 2607 W Neighbor View."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','locksmith_access','Locks & Access Control','Master Locksmith',
+ 'https://www.yellowpages.com/chino-valley-az/locks-locksmiths','yellowpages.com','Current Chino Valley locksmith/access candidate. 1031 N State Route 89.','assistant bootstrap research: Chino Valley Locks & Access Control',0,
+ null,'(928) 237-5545',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley locksmith/access candidate. 1031 N State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','locksmith_access','Locks & Access Control','Loc-Pro''s',
+ 'https://www.yellowpages.com/chino-valley-az/locks-locksmiths','yellowpages.com','Current Chino Valley locksmith/access candidate. 1235 El Valle Dr; 24/7 locksmith.','assistant bootstrap research: Chino Valley Locks & Access Control',0,
+ null,'(928) 231-2524',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley locksmith/access candidate. 1235 El Valle Dr; 24/7 locksmith."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','locksmith_access','Locks & Access Control','Rampart Mobile Lock Service Of Chino Valley',
+ 'https://www.yellowpages.com/chino-valley-az/locks-locksmiths','yellowpages.com','Current Chino Valley locksmith/access candidate. 1492 N State Route 89 #B.','assistant bootstrap research: Chino Valley Locks & Access Control',0,
+ null,'(928) 266-3447',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley locksmith/access candidate. 1492 N State Route 89 #B."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','towing_roadside','Towing & Roadside Help','Custom Towing',
+ 'https://www.yellowpages.com/chino-valley-az/custom-towing','yellowpages.com','Current Chino Valley towing/roadside discovery candidate. 1222 S State Route 89; 24/7 towing, roadside and lockout services.','assistant bootstrap research: Chino Valley Towing & Roadside Help',0,
+ null,'(928) 771-8697',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley towing/roadside discovery candidate. 1222 S State Route 89; 24/7 towing, roadside and lockout services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','towing_roadside','Towing & Roadside Help','Custom Recovery',
+ 'https://www.yellowpages.com/chino-valley-az/custom-towing','yellowpages.com','Current Chino Valley towing/roadside discovery candidate. 1222 S State Route 89.','assistant bootstrap research: Chino Valley Towing & Roadside Help',0,
+ null,'(928) 636-2636',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley towing/roadside discovery candidate. 1222 S State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','towing_roadside','Towing & Roadside Help','Tri-City Towing and Equipment Transport',
+ 'https://www.yellowpages.com/chino-valley-az/custom-towing','yellowpages.com','Current Chino Valley towing/roadside discovery candidate. 2803 State Rte 89; 24/7 towing/recovery/equipment transport.','assistant bootstrap research: Chino Valley Towing & Roadside Help',0,
+ null,'(928) 772-8644',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley towing/roadside discovery candidate. 2803 State Rte 89; 24/7 towing/recovery/equipment transport."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','commercial_cleaning','Commercial Cleaning','Proclivity for Cleanliness LLC',
+ 'https://business.chinovalley.org/list/category/home-improvement-174?o=','business.chinovalley.org','Current Chamber local home/business cleaning candidate at 958 W Road 1 N, Chino Valley.','assistant bootstrap research: Chino Valley Commercial Cleaning',0,
+ null,'(417) 332-7072',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber local home/business cleaning candidate at 958 W Road 1 N, Chino Valley."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','linen_laundry','Linen & Laundry Service','Western Laundry & Dry Cleaning',
+ 'https://westerndrycleaners.com/commercial-services/','westerndrycleaners.com','Official commercial-service page lists Chino Valley location at 382 W Butterfield Rd and commercial linen/hospitality/restaurant programs.','assistant bootstrap research: Chino Valley Linen & Laundry Service',0,
+ null,'(928) 636-7667',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Official commercial-service page lists Chino Valley location at 382 W Butterfield Rd and commercial linen/hospitality/restaurant programs."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','junk_hauling','Junk Hauling','Copper State Junk Removal & Hauling',
+ 'https://business.chinovalley.org/list/ql/business-professional-services-5','business.chinovalley.org','Current Chamber member at 1264 S Highway 89 Suite B, Chino Valley.','assistant bootstrap research: Chino Valley Junk Hauling',0,
+ null,'(928) 224-9381',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber member at 1264 S Highway 89 Suite B, Chino Valley."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','facility_maintenance','Building Maintenance Help','KBO Contracting LLC',
+ 'https://business.chinovalley.org/members/ql/construction-equipment-contractors-7','business.chinovalley.org','Current Chino Valley contractor/facility-service candidate. PO Box 199.','assistant bootstrap research: Chino Valley Building Maintenance Help',0,
+ null,'(928) 458-3475',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley contractor/facility-service candidate. PO Box 199."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','facility_maintenance','Building Maintenance Help','Circle C Construction',
+ 'https://business.chinovalley.org/members/ql/construction-equipment-contractors-7','business.chinovalley.org','Current Chino Valley contractor/facility-service candidate. 1190 W Road 1 North.','assistant bootstrap research: Chino Valley Building Maintenance Help',0,
+ null,'(928) 636-4660',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley contractor/facility-service candidate. 1190 W Road 1 North."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','facility_maintenance','Building Maintenance Help','Heritage Roofing',
+ 'https://business.chinovalley.org/members/ql/construction-equipment-contractors-7','business.chinovalley.org','Current Chino Valley contractor/facility-service candidate. 1620 Hwy 89 Unit 3.','assistant bootstrap research: Chino Valley Building Maintenance Help',0,
+ null,'(928) 910-2765',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley contractor/facility-service candidate. 1620 Hwy 89 Unit 3."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','facility_maintenance','Building Maintenance Help','D R Building Services LLC',
+ 'https://business.chinovalley.org/members/ql/construction-equipment-contractors-7','business.chinovalley.org','Current Chino Valley contractor/facility-service candidate. Chino Valley-based general/masonry/repair contractor.','assistant bootstrap research: Chino Valley Building Maintenance Help',0,
+ null,'(928) 713-9738',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley contractor/facility-service candidate. Chino Valley-based general/masonry/repair contractor."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','facility_maintenance','Building Maintenance Help','Precision Custom Homes & Remodeling',
+ 'https://business.chinovalley.org/members/ql/construction-equipment-contractors-7','business.chinovalley.org','Current Chino Valley contractor/facility-service candidate. 2350 Yavapai St.','assistant bootstrap research: Chino Valley Building Maintenance Help',0,
+ null,'(928) 583-0228',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley contractor/facility-service candidate. 2350 Yavapai St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','parking_lot','Parking Lot & Striping','Turco Asphalt Maintenance',
+ 'https://business.chinovalley.org/list/searchalpha/t','business.chinovalley.org','Current Chamber member based in Chino Valley; asphalt maintenance candidate for parking lots and commercial surfaces.','assistant bootstrap research: Chino Valley Parking Lot & Striping',0,
+ null,'(928) 899-0256',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_02","researched_at":"2026-10-26T23:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber member based in Chino Valley; asphalt maintenance candidate for parking lots and commercial surfaces."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Chino Valley';
