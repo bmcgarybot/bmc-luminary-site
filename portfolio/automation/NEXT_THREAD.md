@@ -66,6 +66,21 @@ Current latest commit at this handoff update:
 
 A CI-gated deploy request was submitted through the VPS relay, but its success was **not yet confirmed at the moment of this handoff update**. Verify the relay result and production SHA before assuming these changes are live.
 
+### Bootstrap implementation checkpoint — 2026-10-26
+
+The assistant-led plan is no longer conceptual. The repo now contains:
+- a first hand-researched rural seed batch;
+- a statewide public-directory bootstrap importer;
+- a curated 21-market source registry;
+- business+source deduplication instead of source-only deduplication;
+- explicit source-tier and verification-status fields;
+- an allowlisted `assistant_bootstrap_import` VPS relay action;
+- CI checks for the importer and evidence semantics.
+
+Read HANDOFF Section 56 for exact details.
+
+Do not use the older stale bootstrap deploy request. Verify latest master/CI and deploy the final current SHA before importing.
+
 ### Immediate next research task
 
 Before returning to launch work:
