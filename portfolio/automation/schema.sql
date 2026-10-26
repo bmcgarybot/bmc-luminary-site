@@ -518,22 +518,12 @@ create table if not exists market_inventory_candidates (
 -- Deduplicate the business/source pair, not the source URL alone.
 alter table market_inventory_candidates
   drop constraint if exists market_inventory_candidates_side_market_category_key_source_url_key;
+alter table market_inventory_candidates
+  drop constraint if exists market_inventory_candidates_side_market_category_key_source_url;
 create unique index if not exists uq_market_inventory_candidate_business_source
 on market_inventory_candidates(side,market,category_key,source_url,business_name);
 
-do $
-declare legacy record;
-begin
-  for legacy in
-    select conname
-    from pg_constraint
-    where conrelid='market_inventory_candidates'::regclass
-      and contype='u'
-      and pg_get_constraintdef(oid)='UNIQUE (side, market, category_key, source_url)'
-  loop
-    execute format('alter table market_inventory_candidates drop constraint %I',legacy.conname);
-  end loop;
-end $;
+
 
 alter table market_inventory_candidates add column if not exists source_tier text not null default 'discovery';
 alter table market_inventory_candidates add column if not exists verification_status text not null default 'discovery';
