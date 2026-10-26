@@ -3528,3 +3528,21 @@ Relevant implementation commit:
 - `a3641e0426b7e1f3695b4b32db3ae59bc306c383`
 
 Do not rerun the drain until this bulk-loader change and its Compose/env documentation pass CI.
+
+
+## 42. RESEARCH DRAIN DEPLOYMENT IMAGE REBUILD — 2026-10-25
+
+Before the next production drain rerun, one more deployment issue was identified and fixed.
+
+Problem:
+- drain-research-backlog.sh recreated ops_api but did not rebuild the image.
+- after pulling a changed api/app.py, Docker could therefore recreate the container from the previous image and silently keep old CMS behavior.
+
+Fix:
+- the drain now builds the ops_api image once before the initial API/gateway restart.
+- cleanup restarts do not rebuild again.
+
+Commit:
+- b49214052e3ebed38df1f5309bfa8e643481f3fe
+
+Next production rerun should use the normal drain command after git pull; no separate build command is required.
