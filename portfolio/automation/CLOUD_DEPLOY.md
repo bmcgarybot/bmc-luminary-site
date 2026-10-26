@@ -79,6 +79,33 @@ cd bmc-luminary-site/portfolio/automation
 
 Bootstrap creates local secrets when `.env` does not exist, starts the private core, reapplies safe schema/seeds, and runs the runtime doctor.
 
+## Updating an existing production VPS
+
+Do not use only `git pull && ./start.sh` for application-code changes. `ops_api` is built into a Docker image, so pulling source without rebuilding can leave the old API running.
+
+Use the production update helper:
+
+```bash
+cd ~/bmc-luminary-site
+git pull --ff-only
+cd portfolio/automation
+chmod +x deploy-update.sh
+./deploy-update.sh .env
+```
+
+The helper is intentionally non-destructive:
+- refuses to run when tracked files have local changes;
+- refuses a detached HEAD;
+- verifies the checkout matches its remote branch;
+- preserves the existing `.env` and outreach switches;
+- rebuilds only the current Ops API image;
+- applies additive migrations through `migrate.sh`;
+- recreates the API and webhook gateway;
+- keeps the database and persistent Docker volumes intact;
+- finishes with `runtime-doctor.sh`.
+
+If the script reports that the checkout is behind the remote branch, run `git pull --ff-only` and rerun it. Never use a hard reset as a deployment shortcut.
+
 ## Host security
 
 Before launch:
