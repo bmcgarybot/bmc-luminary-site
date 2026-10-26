@@ -512,8 +512,9 @@ on conflict(side,market,category_key,source_url,business_name) do update set
  source_tier=excluded.source_tier,
  verification_status=excluded.verification_status,
  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
- status='discovered',
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
  query_strategy_version=excluded.query_strategy_version,
+ last_seen_at=now(),
  evidence=market_inventory_candidates.evidence || excluded.evidence,
  updated_at=now();""")
     sql.append("commit;")
