@@ -1,0 +1,16 @@
+{
+  "action": "deploy_update",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-26T21:31:50.564370+00:00",
+  "error": "Refusing deploy: matching BMC Portfolio CI run exists but is not successful",
+  "exit_code": null,
+  "git_commit_after": "5073d84f08af01fe45db73aa8b193b1b16af6f4c",
+  "git_commit_before": "5073d84f08af01fe45db73aa8b193b1b16af6f4c",
+  "host": "vps-5675821a",
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_id": "deploy-assistant-bootstrap-v1-20261026T2135Z",
+  "started_at": "2026-10-26T21:31:50.564347+00:00",
+  "status": "rejected",
+  "version": 1
+}
