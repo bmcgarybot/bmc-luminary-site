@@ -54,6 +54,7 @@ MUTATING_INTERNAL_ACTIONS = {
     "public_opportunities_step",
     "source_native_step",
     "assistant_bootstrap_import",
+    "assistant_licensed_bootstrap_import",
     "scheduler_start",
     "scheduler_stop",
 }
@@ -470,6 +471,16 @@ def execute(req: dict) -> dict:
         cmd = ["python3", "./assistant-directory-bootstrap.py", ENV_FILE,
                "--max-per-feed", str(max_per_feed),
                "--max-pages-per-market", str(max_pages_per_market),
+               "--delay", str(delay)]
+        if markets:
+            cmd += ["--markets", markets]
+        cp = run(cmd, timeout=1200)
+        stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
+
+    elif action == "assistant_licensed_bootstrap_import":
+        markets = str(args.get("markets") or "").strip()
+        delay = max(0.05, min(2.0, float(args.get("delay", 0.35))))
+        cmd = ["python3", "./assistant-homversa-bootstrap.py", ENV_FILE,
                "--delay", str(delay)]
         if markets:
             cmd += ["--markets", markets]
