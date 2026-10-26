@@ -72,11 +72,21 @@ if [ "$(dbq "select count(*) from information_schema.tables where table_name='ma
    union all select 'errors|'||count(*) from market_inventory_progress where status='error'
    union all select 'target_met|'||count(*) from market_inventory_progress where status='scan_complete_target_met'
    union all select 'under_target|'||count(*) from market_inventory_progress where status='scan_complete_under_target'
-   union all select 'candidate_rows_active_v4|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=4
-   union all select 'official_candidate_rows_active_v4|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=4 and official_site=true
-   union all select 'superseded_candidate_rows|'||count(*) from market_inventory_candidates where status='superseded_pre_v4'
-   union all select 'candidate_email_ready_active_v4|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=4 and coalesce(public_email,'')<>''
-   union all select 'candidate_phone_ready_active_v4|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=4 and coalesce(public_phone,'')<>'';"
+   union all select 'candidate_rows_active_v5|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=5
+   union all select 'official_candidate_rows_active_v5|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=5 and official_site=true
+   union all select 'superseded_candidate_rows|'||count(*) from market_inventory_candidates where status like 'superseded_pre_v%'
+   union all select 'candidate_email_ready_active_v5|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=5 and coalesce(public_email,'')<>''
+   union all select 'candidate_phone_ready_active_v5|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=5 and coalesce(public_phone,'')<>'';"
+
+  echo
+  echo "Recent active inventory sample:"
+  dbq "select side||'|'||market||'|'||category_key||
+      '|official='||coalesce(official_site,false)::text||'|'||
+      left(regexp_replace(coalesce(business_name,''),'[[:space:]]+',' ','g'),120)||'|'||source_url
+    from market_inventory_candidates
+    where status='discovered' and query_strategy_version=5
+    order by updated_at desc
+    limit 25;" || true
 
   echo
   echo "Inventory coverage by market and side:"
@@ -130,15 +140,24 @@ else
 fi
 
 section "8. CURRENT DEMAND SIGNALS"
-dbq "select 'demand_signal_rows_active_v5|'||count(*) from local_demand_signals
- where status in ('discovered','useful') and query_strategy_version=5
+dbq "select 'demand_signal_rows_active_v6|'||count(*) from local_demand_signals
+ where status in ('discovered','useful') and query_strategy_version=6
  union all select 'superseded_demand_signal_rows|'||count(*) from local_demand_signals
- where status='superseded_pre_v5';" || true
+ where status like 'superseded_pre_v%';" || true
 dbq "select source_key||'|'||market||'|'||status||'|'||count(*)
  from local_demand_signals
- where query_strategy_version=5 and status in ('discovered','useful')
+ where query_strategy_version=6 and status in ('discovered','useful')
  group by source_key,market,status
  order by source_key,market,status;" || true
+
+echo
+echo "Active demand sample:"
+dbq "select source_key||'|'||market||'|'||coalesce(service_key,'')||'|'||
+    left(regexp_replace(coalesce(title,''),'[[:space:]]+',' ','g'),140)||'|'||source_url
+  from local_demand_signals
+  where query_strategy_version=6 and status in ('discovered','useful')
+  order by last_seen_at desc
+  limit 20;" || true
 
 section "9. PUBLIC PROCUREMENT / CONTRACT OPPORTUNITIES"
 dbq "select source_key||'|'||source_name||'|'||coalesce(market,'')||'|'||status||'|'||count(*)
