@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "deploy-query-v2-20261026T1854Z",
+  "action": "deploy_update",
+  "allow_external_actions": false,
+  "created_at": "2026-10-26T18:54:00Z",
+  "expires_at": "2026-10-27T18:54:00Z",
+  "required_ci_sha": "324afe79d1452a7630a3281b13058601c3a87a77",
+  "args": {}
+}
