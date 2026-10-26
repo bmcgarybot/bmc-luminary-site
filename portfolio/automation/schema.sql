@@ -466,3 +466,53 @@ create table if not exists local_demand_signals (
 
 create index if not exists idx_local_demand_signals_review
 on local_demand_signals(status,market,service_key,last_seen_at desc);
+
+
+-- Deep market inventory is separate from the legacy service-gap research queue.
+-- A drained worker queue never implies these coverage lanes are complete.
+create table if not exists market_inventory_progress (
+  side text not null check (side in ('vendor','buyer')),
+  market text not null,
+  category_key text not null,
+  category_label text not null,
+  target integer not null default 0,
+  pages_scanned integer not null default 0,
+  raw_results integer not null default 0,
+  official_candidates integer not null default 0,
+  promoted_records integer not null default 0,
+  status text not null default 'not_started',
+  last_run_at timestamptz,
+  notes text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now(),
+  primary key(side,market,category_key)
+);
+
+create table if not exists market_inventory_candidates (
+  candidate_id uuid primary key default gen_random_uuid(),
+  side text not null check (side in ('vendor','buyer')),
+  market text not null,
+  category_key text not null,
+  category_label text not null,
+  business_name text,
+  source_url text not null,
+  source_domain text,
+  snippet text,
+  search_query text,
+  page_no integer,
+  public_email text,
+  public_phone text,
+  official_site boolean default false,
+  promoted_entity_id text,
+  status text default 'discovered',
+  evidence jsonb default '{}'::jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now(),
+  unique(side,market,category_key,source_url)
+);
+
+create index if not exists idx_market_inventory_progress_status
+on market_inventory_progress(status,side,market,category_key);
+
+create index if not exists idx_market_inventory_candidates_lane
+on market_inventory_candidates(side,market,category_key,official_site,status);
