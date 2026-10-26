@@ -21,15 +21,11 @@ set goal = greatest(goal,
   end,
   updated_at=now();
 
+-- Deployment/migration refreshes may raise goals and recalculate gaps, but must never
+-- resurrect terminal research rows. Multi-pass retries are owned by the research
+-- worker while a row is active; a future deploy must preserve completed/review/no-result state.
 update research_backlog
 set target_gap=greatest(0,goal-current_count),
-    status=case
-      when coalesce(candidates_found,0) < goal
-       and coalesce(research_pass,0) < 4
-       and status in ('review','searched_no_results','completed')
-      then 'queued'
-      else status
-    end,
     updated_at=now();
 
 
