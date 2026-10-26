@@ -90,9 +90,9 @@ restart_api_gateway
 echo
 echo "Phase 1: complete one source-native Arizona sweep"
 native_stall=0
-previous_pending=-1
+previous_marker=""
 for round in $(seq 1 "$SOURCE_NATIVE_MAX_ROUNDS"); do
-  pending="$(dbq "select count(*) from source_native_state where coalesce((metadata->>'expected')::boolean,false)=true and (last_run_at is null or coalesce(cursor,0)>0);")"
+  pending="$(dbq "select count(*) from source_native_state where coalesce((metadata->>'expected')::boolean,false)=true and (last_run_at is null or coalesce(cursor,0)>0 or coalesce(metadata->>'last_error','')<>'');")"
   if [ "$pending" -eq 0 ]; then
     echo "Source-native sweep complete."
     break
@@ -100,15 +100,16 @@ for round in $(seq 1 "$SOURCE_NATIVE_MAX_ROUNDS"); do
 
   result="$(curl --max-time 360 -fsS -X POST http://127.0.0.1:8000/api/process-source-native-research     -H "X-BMC-Admin-Key: $ADMIN_KEY")"
   summary="$(printf '%s' "$result" | python3 -c 'import json,sys; d=json.load(sys.stdin); print("checks=%s seen=%s created=%s updated=%s errors=%s" % (d.get("source_checks",d.get("markets_checked",0)),d.get("records_seen",0),d.get("prospects_created",0),d.get("prospects_updated",0),len(d.get("errors",[]))))')"
-  now_pending="$(dbq "select count(*) from source_native_state where coalesce((metadata->>'expected')::boolean,false)=true and (last_run_at is null or coalesce(cursor,0)>0);")"
+  now_pending="$(dbq "select count(*) from source_native_state where coalesce((metadata->>'expected')::boolean,false)=true and (last_run_at is null or coalesce(cursor,0)>0 or coalesce(metadata->>'last_error','')<>'');")"
+  marker="$(dbq "select coalesce(sum(records_seen),0)||'|'||coalesce(sum(records_upserted),0)||'|'||coalesce(sum(cursor),0) from source_native_state where coalesce((metadata->>'expected')::boolean,false)=true;")"
   echo "  source round $round: pending_lanes=$now_pending · $summary"
 
-  if [ "$now_pending" = "$previous_pending" ]; then native_stall=$((native_stall+1)); else native_stall=0; fi
+  if [ "$marker" = "$previous_marker" ]; then native_stall=$((native_stall+1)); else native_stall=0; fi
   if [ "$native_stall" -ge 8 ]; then
-    echo "Source-native sweep stopped after 8 rounds without lane-count movement."
+    echo "Source-native sweep stopped after 8 rounds without record/cursor progress."
     break
   fi
-  previous_pending="$now_pending"
+  previous_marker="$marker"
   sleep "$SLEEP_SECONDS"
 done
 
