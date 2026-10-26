@@ -114,6 +114,12 @@ else
   fail "Docker Compose configuration does not validate"
 fi
 
+if docker compose --env-file "$ENV_FILE" ps --status running --services 2>/dev/null | grep -qx research_refresher; then
+  pass "Continuous bulk research refresher is running"
+else
+  warn "Continuous bulk research refresher is not running"
+fi
+
 if docker compose --env-file "$ENV_FILE" --profile tunnel ps --status running --services 2>/dev/null | grep -qx cloudflared; then
   cloudflared_version="$(docker compose --env-file "$ENV_FILE" --profile tunnel exec -T cloudflared cloudflared --version 2>/dev/null | sed -n 's/.*version \([0-9][0-9.]*\).*/\1/p' | head -1)"
   if python3 - "$cloudflared_version" <<'PY'
@@ -172,6 +178,14 @@ fi
 
 auto_repair_count="$(db_query "select count(*) from services where service_key='auto_repair_shop' and is_active=true;" 2>/dev/null || echo 0)"
 [ "${auto_repair_count:-0}" -eq 1 ] && pass "Traditional auto repair service is active" || fail "Traditional auto repair service is missing or duplicated"
+
+refresh_state_exists="$(db_query "select count(*) from information_schema.tables where table_name='research_refresh_state';" 2>/dev/null || echo 0)"
+if [ "${refresh_state_exists:-0}" -eq 1 ]; then
+  refresh_rows="$(db_query "select count(*) from research_refresh_state;" 2>/dev/null || echo 0)"
+  pass "Research refresh state is available (${refresh_rows:-0} source rows)"
+else
+  warn "Research refresh state table is not deployed"
+fi
 
 vendor_count="$(db_query 'select count(*) from vendors;' 2>/dev/null || echo 0)"
 buyer_count="$(db_query 'select count(*) from buyers;' 2>/dev/null || echo 0)"
