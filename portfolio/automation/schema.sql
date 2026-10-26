@@ -522,6 +522,24 @@ alter table market_inventory_progress add column if not exists next_page integer
 alter table market_inventory_progress add column if not exists query_variant integer default 0;
 alter table market_inventory_progress add column if not exists no_progress_passes integer default 0;
 
+-- Query strategy v2 uses simple human-style searches instead of over-restrictive
+-- quoted phrases. Reset old scan counters once so v1 passes are not counted as
+-- valid coverage; keep discovered candidates intact.
+alter table market_inventory_progress add column if not exists query_strategy_version integer default 1;
+update market_inventory_progress
+set pages_scanned=0,
+    raw_results=0,
+    next_page=1,
+    query_variant=0,
+    no_progress_passes=0,
+    status='not_started',
+    last_run_at=null,
+    notes='Reset for query strategy v2',
+    query_strategy_version=2,
+    updated_at=now()
+where coalesce(query_strategy_version,1)<2;
+alter table market_inventory_progress alter column query_strategy_version set default 2;
+
 create table if not exists local_demand_scan_state (
   source_key text not null,
   source_name text not null,
@@ -540,6 +558,20 @@ create table if not exists local_demand_scan_state (
   updated_at timestamptz default now(),
   primary key(source_key,market,group_key)
 );
+
+alter table local_demand_scan_state add column if not exists query_strategy_version integer default 1;
+update local_demand_scan_state
+set next_page=1,
+    scans=0,
+    results_seen=0,
+    signals_found=0,
+    no_progress_scans=0,
+    last_run_at=null,
+    last_error=null,
+    query_strategy_version=2,
+    updated_at=now()
+where coalesce(query_strategy_version,1)<2;
+alter table local_demand_scan_state alter column query_strategy_version set default 2;
 
 create index if not exists idx_local_demand_scan_state_run
 on local_demand_scan_state(last_run_at nulls first,source_key,market,group_key);
