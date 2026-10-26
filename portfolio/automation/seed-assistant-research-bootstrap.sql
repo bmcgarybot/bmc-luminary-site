@@ -6043,3 +6043,2974 @@ update market_inventory_progress p set official_candidates=(
  select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
  and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ),updated_at=now() where p.market='Phoenix';
+
+
+-- Assistant-led Scottsdale buyer/facility census batch 01 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','Hilton Scottsdale Resort & Villas',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 948-7750',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','Talking Stick Resort',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 850-7777',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','Aloft Scottsdale',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 253-3700',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','The Scottsdale Resort & Spa',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 991-9000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','Senna House Scottsdale - Curio Collection by Hilton',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 946-5500',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','SureStay Plus North Scottsdale',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 483-0042',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','SpringHill Suites Phoenix Scottsdale',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 716-1600',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','Scottsdale Park Suites',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 949-8637',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','The REMI, Autograph Collection',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 770-4415',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','Holiday Inn and Suites Scottsdale North - Airpark',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 922-6500',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','AC Hotel Scottsdale Old Town',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 422-5601',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','Sonesta Select Scottsdale at Mayo Clinic Campus',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 860-4000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','Scottsdale Camelback Resort',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 947-3300',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','Staybridge Suites Scottsdale Talking Stick',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 291-5175',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','Caesars Republic Scottsdale',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 903-4747',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','Home2 Suites and Tru by Hilton Scottsdale Salt River',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 291-7000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','Fairmont Scottsdale Princess',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 585-4848',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','Hotel Valley Ho',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 376-2600',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','Embassy Suites by Hilton Scottsdale Resort',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 949-1414',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','DoubleTree Resort by Hilton Hotel Paradise Valley - Scottsdale',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 947-5400',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','The McCormick Scottsdale',
+ 'https://business.scottsdalechamber.com/list/QL/lodging-travel-15.htm','business.scottsdalechamber.com','Current Scottsdale Chamber lodging/resort facility with Scottsdale address.','assistant census research: Scottsdale hotels motels lodging',0,
+ null,'(480) 948-5050',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber lodging/resort facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Fogo de Chão',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 235-5963',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Din Tai Fung',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(626) 330-8890',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','The Herb Box',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 998-8355',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Nothing Bundt Cakes - North Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 502-8900',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Ling & Louie''s Restaurants',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(602) 321-0147',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Sexy Roman',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(602) 609-7002',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Cold Beers & Cheeseburgers on Shea',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 758-4994',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Wildflower Bread Company - Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 612-0606',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','MilkShake Factory - Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(540) 529-5985',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Rush Bowls Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 207-7613',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Lou Malnati''s Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Chick-fil-A at Raintree Dr. & 101',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'480-922-4540',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Jing Scottsdale Corp',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(602) 699-8888',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Telefèric Barcelona',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(657) 366-4103',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Desert Sky Meat Shop',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 219-2794',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Pinard Wine Bar',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(623) 401-9463',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Élephante',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 576-8168',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Cooper''s Hawk Winery & Restaurant',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(623) 473-9463',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Cold Beers & Cheeseburgers - Old Town',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 941-2747',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Cold Beers & Cheeseburgers - North Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 912-7219',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Handlebar J Restaurant & Saloon',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 948-0110',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Paul Martin''s American Grill',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'480-991-9342',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Rudy''s Country Store & Bar-B-Q',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(602) 613-5105',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Farm & Craft',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 568-8980',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Texas Roadhouse - Via de Ventura',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(602) 338-9016',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Jamie''s Bottle Shop',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 550-8027',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','The Breakfast Joynt',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 443-5324',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Riot House',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 935-5910',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Hand Cut Chophouse',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 947-3763',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Sugar Bowl Ice Cream Parlor & Restaurant',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 946-0051',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Velvet Taco - Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(623) 257-4145',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','restaurants','restaurants','Maggiano''s Little Italy - Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/restaurants-food-beverages-22','business.scottsdalechamber.com','Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address.','assistant census research: Scottsdale restaurants',0,
+ null,'(480) 333-4100',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber restaurant/food-service facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','Integrity Pain and Wellness',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 325-9600',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','The Doctors of Physical Therapy',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 482-0651',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','Audiology of Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 447-9900',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','Encompass Health Rehabilitation Hospital of Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 551-5400',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','Scottsdale Recovery Center, LLC',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(602) 346-9142',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','BelleSante by Kristine Romine, MD',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 878-0087',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','The Meadows Outpatient Center',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 231-0260',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','Vita Sana Medical Center',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 579-5290',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','NextCare Urgent Care - Scottsdale Road',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(888) 381-4858',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','Aspendale Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 397-1421',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','GlobalMed',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 922-0044',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','Thermosurgery Technologies, Inc.',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 330-5840',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','Hobgood Facial Plastic Surgery',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 214-9955',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','Joliet Aesthetics MedSpa',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 896-3754',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','Castle Biosciences, Inc.',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'866-788-9007',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','AZIV Medics',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(623) 521-5034',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','Allergy, Asthma & Immunology Associates Ltd.',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 949-7377',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','Clearwater Senior Living at Pinnacle Peak',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'480-485-4000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','Eargo Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(615) 804-9238',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','Elevate Health and Aesthetics',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 300-6344',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','Complete Wellness Chiropractic',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale Chamber health-care/medical facility with Scottsdale address.','assistant census research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 520-7000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber health-care/medical facility with Scottsdale address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','dental','dentists dental offices orthodontists','Southtown Dental Care - Matthew E. Nelson, DDS',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale dental practice.','assistant census research: Scottsdale dentists dental offices orthodontists',0,
+ null,'(480) 947-3004',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale dental practice."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','dental','dentists dental offices orthodontists','Marbella Dental Studio',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale dental practice.','assistant census research: Scottsdale dentists dental offices orthodontists',0,
+ null,'(602) 996-1660',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale dental practice."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','dental','dentists dental offices orthodontists','Douglas Family Dentistry',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale dental practice.','assistant census research: Scottsdale dentists dental offices orthodontists',0,
+ null,'(480) 948-3680',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale dental practice."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','dental','dentists dental offices orthodontists','Arcadia Pediatric Dental',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale dental practice.','assistant census research: Scottsdale dentists dental offices orthodontists',0,
+ null,'(480) 207-5070',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale dental practice."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','therapy_behavioral','therapy counseling behavioral health clinics','Scottsdale Recovery Center, LLC',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale behavioral-health/therapy facility.','assistant census research: Scottsdale therapy counseling behavioral health clinics',0,
+ null,'(602) 346-9142',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale behavioral-health/therapy facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','therapy_behavioral','therapy counseling behavioral health clinics','The Meadows Outpatient Center',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale behavioral-health/therapy facility.','assistant census research: Scottsdale therapy counseling behavioral health clinics',0,
+ null,'(480) 231-0260',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale behavioral-health/therapy facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','therapy_behavioral','therapy counseling behavioral health clinics','Be Well Therapy Collective',
+ 'https://business.scottsdalechamber.com/list/ql/health-care-11','business.scottsdalechamber.com','Current Scottsdale behavioral-health/therapy facility.','assistant census research: Scottsdale therapy counseling behavioral health clinics',0,
+ null,'(267) 225-3549',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale behavioral-health/therapy facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','senior_daycare','senior living assisted living daycare childcare','Aspendale Scottsdale',
+ 'https://business.scottsdalechamber.com/list/category/retirement-communities-1304','business.scottsdalechamber.com','Current Scottsdale Chamber senior-living/retirement facility.','assistant census research: Scottsdale senior living assisted living daycare childcare',0,
+ null,'(480) 397-1421',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber senior-living/retirement facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','senior_daycare','senior living assisted living daycare childcare','Revel Scottsdale',
+ 'https://business.scottsdalechamber.com/list/category/retirement-communities-1304','business.scottsdalechamber.com','Current Scottsdale Chamber senior-living/retirement facility.','assistant census research: Scottsdale senior living assisted living daycare childcare',0,
+ null,'(480) 608-2808',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber senior-living/retirement facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','senior_daycare','senior living assisted living daycare childcare','Pueblo Norte Senior Living',
+ 'https://business.scottsdalechamber.com/list/category/retirement-communities-1304','business.scottsdalechamber.com','Current Scottsdale Chamber senior-living/retirement facility.','assistant census research: Scottsdale senior living assisted living daycare childcare',0,
+ null,'(480) 948-3990',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber senior-living/retirement facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','senior_daycare','senior living assisted living daycare childcare','Andara Senior Living',
+ 'https://business.scottsdalechamber.com/list/category/retirement-communities-1304','business.scottsdalechamber.com','Current Scottsdale Chamber senior-living/retirement facility.','assistant census research: Scottsdale senior living assisted living daycare childcare',0,
+ null,'(480) 451-1800',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber senior-living/retirement facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','senior_daycare','senior living assisted living daycare childcare','New Visions Assisted Living LLC',
+ 'https://business.scottsdalechamber.com/list/category/retirement-communities-1304','business.scottsdalechamber.com','Current Scottsdale Chamber senior-living/retirement facility.','assistant census research: Scottsdale senior living assisted living daycare childcare',0,
+ null,'(480) 764-3616',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber senior-living/retirement facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','senior_daycare','senior living assisted living daycare childcare','Mosaic Gardens at Scottsdale',
+ 'https://business.scottsdalechamber.com/list/category/retirement-communities-1304','business.scottsdalechamber.com','Current Scottsdale Chamber senior-living/retirement facility.','assistant census research: Scottsdale senior living assisted living daycare childcare',0,
+ null,'(480) 901-0695',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber senior-living/retirement facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','senior_daycare','senior living assisted living daycare childcare','Revel McDowell Mountain',
+ 'https://business.scottsdalechamber.com/list/category/retirement-communities-1304','business.scottsdalechamber.com','Current Scottsdale Chamber senior-living/retirement facility.','assistant census research: Scottsdale senior living assisted living daycare childcare',0,
+ null,'(480) 573-0335',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber senior-living/retirement facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','senior_daycare','senior living assisted living daycare childcare','Acoya Scottsdale at Troon',
+ 'https://business.scottsdalechamber.com/list/category/retirement-communities-1304','business.scottsdalechamber.com','Current Scottsdale Chamber senior-living/retirement facility.','assistant census research: Scottsdale senior living assisted living daycare childcare',0,
+ null,'(480) 699-1444',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber senior-living/retirement facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','senior_daycare','senior living assisted living daycare childcare','Westminster Village',
+ 'https://business.scottsdalechamber.com/list/category/retirement-communities-1304','business.scottsdalechamber.com','Current Scottsdale Chamber senior-living/retirement facility.','assistant census research: Scottsdale senior living assisted living daycare childcare',0,
+ null,'(480) 451-2000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale Chamber senior-living/retirement facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','Abdo',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,'(480) 864-5579',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','Academy Bank - North Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,'(480) 291-0622',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','Alerus',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,'(480) 905-2400',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','Arouet Capital',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,'(480) 795-7950',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','Bankers Trust North Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,'(480) 417-4907',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','Beacon Pointe Advisors',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,'(480) 428-5528',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','BOK Financial Mortgage - Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,'(480) 459-2838',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','Buckman Insurance Group',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,'(480) 900-6486',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','Core 4 Wealth Management of Raymond James',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','First Fidelity Bank - Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','FirstBank - Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','Southwest Heritage Bank - Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','Stearns Bank - Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','Vanguard - Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','Nationwide - Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','CIGNA Healthcare of Arizona - Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','Wells Fargo Advisors - Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','Desert Financial Credit Union - Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','Howard Wealth Advisors',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','insurance_professional','insurance agents professional offices','Suzi Glover - State Farm Insurance',
+ 'https://business.scottsdalechamber.com/list/ql/finance-insurance-10?o=alpha','business.scottsdalechamber.com','Current Scottsdale finance/insurance/professional office.','assistant census research: Scottsdale insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale finance/insurance/professional office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','property_management','property management companies apartment communities','Grayhawk Development',
+ 'https://business.scottsdalechamber.com/list/ql/real-estate-moving-storage-20','business.scottsdalechamber.com','Current Scottsdale real-estate/property/apartment facility.','assistant census research: Scottsdale property management companies apartment communities',0,
+ null,'(480) 998-2661',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale real-estate/property/apartment facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','property_management','property management companies apartment communities','DMB Associates, Inc.',
+ 'https://business.scottsdalechamber.com/list/ql/real-estate-moving-storage-20','business.scottsdalechamber.com','Current Scottsdale real-estate/property/apartment facility.','assistant census research: Scottsdale property management companies apartment communities',0,
+ null,'(480) 367-7000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale real-estate/property/apartment facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','property_management','property management companies apartment communities','LevRose CML Real Estate/TCN Worldwide',
+ 'https://business.scottsdalechamber.com/list/ql/real-estate-moving-storage-20','business.scottsdalechamber.com','Current Scottsdale real-estate/property/apartment facility.','assistant census research: Scottsdale property management companies apartment communities',0,
+ null,'(480) 947-0600',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale real-estate/property/apartment facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','property_management','property management companies apartment communities','AZ Luxe Listings',
+ 'https://business.scottsdalechamber.com/list/ql/real-estate-moving-storage-20','business.scottsdalechamber.com','Current Scottsdale real-estate/property/apartment facility.','assistant census research: Scottsdale property management companies apartment communities',0,
+ null,'(480) 686-0193',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale real-estate/property/apartment facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','property_management','property management companies apartment communities','Global Mobility Solutions',
+ 'https://business.scottsdalechamber.com/list/ql/real-estate-moving-storage-20','business.scottsdalechamber.com','Current Scottsdale real-estate/property/apartment facility.','assistant census research: Scottsdale property management companies apartment communities',0,
+ null,'(480) 922-0700',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale real-estate/property/apartment facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','property_management','property management companies apartment communities','Frieder Group',
+ 'https://business.scottsdalechamber.com/list/ql/real-estate-moving-storage-20','business.scottsdalechamber.com','Current Scottsdale real-estate/property/apartment facility.','assistant census research: Scottsdale property management companies apartment communities',0,
+ null,'(602) 885-2566',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale real-estate/property/apartment facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','property_management','property management companies apartment communities','Selling Sonoran Group at Compass',
+ 'https://business.scottsdalechamber.com/list/ql/real-estate-moving-storage-20','business.scottsdalechamber.com','Current Scottsdale real-estate/property/apartment facility.','assistant census research: Scottsdale property management companies apartment communities',0,
+ null,'(702) 686-4252',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale real-estate/property/apartment facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','property_management','property management companies apartment communities','U-Haul Moving & Storage of Pinnacle Peak',
+ 'https://business.scottsdalechamber.com/list/ql/real-estate-moving-storage-20','business.scottsdalechamber.com','Current Scottsdale real-estate/property/apartment facility.','assistant census research: Scottsdale property management companies apartment communities',0,
+ null,'(480) 360-4830',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale real-estate/property/apartment facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','property_management','property management companies apartment communities','Whitestone REIT',
+ 'https://business.scottsdalechamber.com/list/ql/real-estate-moving-storage-20','business.scottsdalechamber.com','Current Scottsdale real-estate/property/apartment facility.','assistant census research: Scottsdale property management companies apartment communities',0,
+ null,'(480) 937-1900',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale real-estate/property/apartment facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','property_management','property management companies apartment communities','Desert Sky Properties Inc.',
+ 'https://business.scottsdalechamber.com/list/ql/real-estate-moving-storage-20','business.scottsdalechamber.com','Current Scottsdale real-estate/property/apartment facility.','assistant census research: Scottsdale property management companies apartment communities',0,
+ null,'(480) 991-2268',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale real-estate/property/apartment facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','property_management','property management companies apartment communities','Modera Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/real-estate-moving-storage-20','business.scottsdalechamber.com','Current Scottsdale real-estate/property/apartment facility.','assistant census research: Scottsdale property management companies apartment communities',0,
+ null,'(602) 669-2883',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale real-estate/property/apartment facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','property_management','property management companies apartment communities','Overture North Scottsdale',
+ 'https://business.scottsdalechamber.com/list/ql/real-estate-moving-storage-20','business.scottsdalechamber.com','Current Scottsdale real-estate/property/apartment facility.','assistant census research: Scottsdale property management companies apartment communities',0,
+ null,'(480) 682-5555',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale real-estate/property/apartment facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','property_management','property management companies apartment communities','The Monroe',
+ 'https://business.scottsdalechamber.com/list/ql/real-estate-moving-storage-20','business.scottsdalechamber.com','Current Scottsdale real-estate/property/apartment facility.','assistant census research: Scottsdale property management companies apartment communities',0,
+ null,'(480) 805-4400',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale real-estate/property/apartment facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','ASM',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies ASM as part of a primary industry/employment cluster in Scottsdale (Corporate headquarters / semiconductor).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies ASM as part of a primary industry/employment cluster in Scottsdale (Corporate headquarters / semiconductor)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','Axon',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies Axon as part of a primary industry/employment cluster in Scottsdale (Corporate headquarters / technology manufacturing).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies Axon as part of a primary industry/employment cluster in Scottsdale (Corporate headquarters / technology manufacturing)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','Choice Hotels International',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies Choice Hotels International as part of a primary industry/employment cluster in Scottsdale (Corporate headquarters / hospitality).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies Choice Hotels International as part of a primary industry/employment cluster in Scottsdale (Corporate headquarters / hospitality)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','Vanguard',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies Vanguard as part of a primary industry/employment cluster in Scottsdale (Finance headquarters).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies Vanguard as part of a primary industry/employment cluster in Scottsdale (Finance headquarters)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','Nationwide',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies Nationwide as part of a primary industry/employment cluster in Scottsdale (Insurance headquarters).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies Nationwide as part of a primary industry/employment cluster in Scottsdale (Insurance headquarters)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','CVS/Aetna',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies CVS/Aetna as part of a primary industry/employment cluster in Scottsdale (Health/insurance operations).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies CVS/Aetna as part of a primary industry/employment cluster in Scottsdale (Health/insurance operations)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','HonorHealth',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies HonorHealth as part of a primary industry/employment cluster in Scottsdale (Healthcare system).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies HonorHealth as part of a primary industry/employment cluster in Scottsdale (Healthcare system)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','Mayo Clinic',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies Mayo Clinic as part of a primary industry/employment cluster in Scottsdale (Healthcare system).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies Mayo Clinic as part of a primary industry/employment cluster in Scottsdale (Healthcare system)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','LifeStance Health',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies LifeStance Health as part of a primary industry/employment cluster in Scottsdale (Healthcare services).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies LifeStance Health as part of a primary industry/employment cluster in Scottsdale (Healthcare services)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','Anuncia',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies Anuncia as part of a primary industry/employment cluster in Scottsdale (Medical technology).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies Anuncia as part of a primary industry/employment cluster in Scottsdale (Medical technology)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','Blue Yonder',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies Blue Yonder as part of a primary industry/employment cluster in Scottsdale (Software/technology).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies Blue Yonder as part of a primary industry/employment cluster in Scottsdale (Software/technology)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','Acronis',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies Acronis as part of a primary industry/employment cluster in Scottsdale (Software/technology).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies Acronis as part of a primary industry/employment cluster in Scottsdale (Software/technology)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','Mindbody',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies Mindbody as part of a primary industry/employment cluster in Scottsdale (Software/technology).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies Mindbody as part of a primary industry/employment cluster in Scottsdale (Software/technology)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','Ring',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies Ring as part of a primary industry/employment cluster in Scottsdale (Technology).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies Ring as part of a primary industry/employment cluster in Scottsdale (Technology)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','Zocdoc',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies Zocdoc as part of a primary industry/employment cluster in Scottsdale (Technology).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies Zocdoc as part of a primary industry/employment cluster in Scottsdale (Technology)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','Parchment',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies Parchment as part of a primary industry/employment cluster in Scottsdale (Education technology).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies Parchment as part of a primary industry/employment cluster in Scottsdale (Education technology)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','Allen Lund Company',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies Allen Lund Company as part of a primary industry/employment cluster in Scottsdale (Logistics management).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies Allen Lund Company as part of a primary industry/employment cluster in Scottsdale (Logistics management)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','Traffic Tech',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies Traffic Tech as part of a primary industry/employment cluster in Scottsdale (Logistics management).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies Traffic Tech as part of a primary industry/employment cluster in Scottsdale (Logistics management)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','APL Logistics',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies APL Logistics as part of a primary industry/employment cluster in Scottsdale (Logistics management).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies APL Logistics as part of a primary industry/employment cluster in Scottsdale (Logistics management)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','BlueGrace Logistics',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies BlueGrace Logistics as part of a primary industry/employment cluster in Scottsdale (Logistics management).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies BlueGrace Logistics as part of a primary industry/employment cluster in Scottsdale (Logistics management)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','StandardAero',
+ 'https://www.choosescottsdale.com/economic-ecosystem/primary-industries','choosescottsdale.com','Scottsdale Economic Development identifies StandardAero as part of a primary industry/employment cluster in Scottsdale (Aviation/industrial).','assistant census research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Scottsdale Economic Development identifies StandardAero as part of a primary industry/employment cluster in Scottsdale (Aviation/industrial)."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','public_facilities','government public facilities municipal buildings','City of Scottsdale',
+ 'https://www.scottsdaleaz.gov/','scottsdaleaz.gov','Current Scottsdale public/civic/education facility or facility operator.','assistant census research: Scottsdale government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale public/civic/education facility or facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','public_facilities','government public facilities municipal buildings','Scottsdale Civic Center',
+ 'https://www.scottsdaleaz.gov/','scottsdaleaz.gov','Current Scottsdale public/civic/education facility or facility operator.','assistant census research: Scottsdale government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale public/civic/education facility or facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','public_facilities','government public facilities municipal buildings','Scottsdale Airport',
+ 'https://www.scottsdaleaz.gov/','scottsdaleaz.gov','Current Scottsdale public/civic/education facility or facility operator.','assistant census research: Scottsdale government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale public/civic/education facility or facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','public_facilities','government public facilities municipal buildings','Scottsdale Public Library - Civic Center',
+ 'https://www.scottsdaleaz.gov/','scottsdaleaz.gov','Current Scottsdale public/civic/education facility or facility operator.','assistant census research: Scottsdale government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale public/civic/education facility or facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','public_facilities','government public facilities municipal buildings','Scottsdale Public Library - Appaloosa',
+ 'https://www.scottsdaleaz.gov/','scottsdaleaz.gov','Current Scottsdale public/civic/education facility or facility operator.','assistant census research: Scottsdale government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale public/civic/education facility or facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','public_facilities','government public facilities municipal buildings','Scottsdale Public Library - Arabian',
+ 'https://www.scottsdaleaz.gov/','scottsdaleaz.gov','Current Scottsdale public/civic/education facility or facility operator.','assistant census research: Scottsdale government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale public/civic/education facility or facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','public_facilities','government public facilities municipal buildings','Scottsdale Public Library - Mustang',
+ 'https://www.scottsdaleaz.gov/','scottsdaleaz.gov','Current Scottsdale public/civic/education facility or facility operator.','assistant census research: Scottsdale government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale public/civic/education facility or facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','public_facilities','government public facilities municipal buildings','Scottsdale Police Department Headquarters',
+ 'https://www.scottsdaleaz.gov/','scottsdaleaz.gov','Current Scottsdale public/civic/education facility or facility operator.','assistant census research: Scottsdale government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale public/civic/education facility or facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','public_facilities','government public facilities municipal buildings','Scottsdale Fire Department Headquarters',
+ 'https://www.scottsdaleaz.gov/','scottsdaleaz.gov','Current Scottsdale public/civic/education facility or facility operator.','assistant census research: Scottsdale government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale public/civic/education facility or facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','public_facilities','government public facilities municipal buildings','Scottsdale Community College',
+ 'https://www.scottsdaleaz.gov/','scottsdaleaz.gov','Current Scottsdale public/civic/education facility or facility operator.','assistant census research: Scottsdale government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Scottsdale public/civic/education facility or facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','schools','schools charter schools private schools','Scottsdale Unified School District #48',
+ 'https://www.susd.org/','susd.org','Current public school district and multi-campus facility operator in Scottsdale.','assistant census research: Scottsdale schools charter schools private schools',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current public school district and multi-campus facility operator in Scottsdale."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','schools','schools charter schools private schools','Arizona State University - SkySong Innovation Center',
+ 'https://www.choosescottsdale.com/economic-ecosystem/employment-centers','choosescottsdale.com','Current 1.2-million-square-foot mixed-use ASU/innovation employment campus in Scottsdale.','assistant census research: Scottsdale schools charter schools private schools',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_buyers_01","researched_at":"2026-10-27T01:26:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current 1.2-million-square-foot mixed-use ASU/innovation employment campus in Scottsdale."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p set official_candidates=(
+ select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
+ and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+),updated_at=now() where p.market='Scottsdale';
