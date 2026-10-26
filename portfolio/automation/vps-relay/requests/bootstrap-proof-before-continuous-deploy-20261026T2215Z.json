@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bootstrap-proof-before-continuous-deploy-20261026T2215Z",
+  "action": "proof_readout",
+  "allow_external_actions": false,
+  "created_at": "2026-10-26T22:15:00Z",
+  "expires_at": "2026-10-27T22:15:00Z",
+  "args": {}
+}
