@@ -161,6 +161,26 @@ jobs:
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from vendors;')" -ge 111
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc 'select count(*) from buyers;')" -ge 140
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from research_backlog where status='queued';")" -ge 600
+
+          # Regression: routine scale/migration reruns must never resurrect terminal research.
+          docker compose --env-file .env.ci exec -T postgres psql -v ON_ERROR_STOP=1 -U bmc_automation -d bmc_portfolio -c "
+            insert into research_backlog(
+              market,service_key,side,market_priority,target_gap,current_count,goal,
+              research_priority,research_method,status,research_pass,candidates_found,notes
+            ) values
+              ('CI Migration Terminal Completed','commercial_cleaning','vendor','TIER2',10,0,10,'MEDIUM','ci','completed',1,0,'CI terminal-state migration guard'),
+              ('CI Migration Terminal Review','commercial_cleaning','vendor','TIER2',10,0,10,'MEDIUM','ci','review',1,0,'CI terminal-state migration guard'),
+              ('CI Migration Terminal NoResult','commercial_cleaning','vendor','TIER2',10,0,10,'MEDIUM','ci','searched_no_results',1,0,'CI terminal-state migration guard');"
+          docker compose --env-file .env.ci exec -T postgres psql -v ON_ERROR_STOP=1 -U bmc_automation -d bmc_portfolio < seed-research-scale.sql
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "
+            select count(*) from research_backlog
+            where (market,status) in (
+              ('CI Migration Terminal Completed','completed'),
+              ('CI Migration Terminal Review','review'),
+              ('CI Migration Terminal NoResult','searched_no_results')
+            );")" -eq 3
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            delete from research_backlog where market like 'CI Migration Terminal %';"
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from information_schema.tables where table_name='public_opportunities';")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from information_schema.tables where table_name='local_demand_signals';")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from information_schema.tables where table_name='source_native_state';")" -eq 1
