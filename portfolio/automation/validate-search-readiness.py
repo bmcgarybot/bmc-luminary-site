@@ -15,6 +15,17 @@ def main()->int:
     services=json.loads((ROOT/"data/services.json").read_text())["services"]
     sitemap=(ROOT/"sitemap.xml").read_text()
     sitemap_urls=set(re.findall(r"<loc>(https://bmcservicenetwork\.com[^<]+)</loc>",sitemap))
+    required_public_pages={
+        DOMAIN+"/",
+        DOMAIN+"/services/",
+        DOMAIN+"/providers/",
+        DOMAIN+"/request/",
+        DOMAIN+"/how-it-works/",
+    }
+    for required in sorted(required_public_pages):
+        if required not in sitemap_urls:
+            failures.append(f"sitemap missing required public page: {required}")
+
     for svc in services:
         front=str(svc.get("live_front") or "")
         if not front:
