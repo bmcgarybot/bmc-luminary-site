@@ -3429,3 +3429,42 @@ Temporarily using RESEARCH_WORKER_BATCH=5.
 ```
 
 Outreach remains OFF.
+
+
+## 40. CMS API PACING + BACKOFF HARDENING — 2026-10-25
+
+During the first real source-native drain, production output showed:
+
+- round 1: 10 checks, 369 records seen, 350 created, 19 updated, 0 errors;
+- round 2: 10 checks, 520 records seen, 504 created, 16 updated, 0 errors;
+- round 3: 1 successful check, 19 records seen, 17 created, 2 updated, 9 errors;
+- round 4: 0 successful checks, 0 records seen, 10 errors.
+
+This strongly indicated public-source throttling/transient failures after two heavy rounds.
+
+Official CMS Provider Data API guidance indicates high-volume API use should be paced, HTTP 429 should reduce request volume, and HTTP 5xx should use incremental randomized backoff.
+
+Fixes committed:
+
+- `api/app.py`
+  - retries HTTP 429 and 5xx;
+  - retries transient URL/timeout/OS failures;
+  - uses incremental randomized backoff;
+  - respects `Retry-After` when supplied;
+  - paces CMS requests even when healthy.
+
+- `drain-research-backlog.sh`
+  - prints up to the first three source/market error details each source-native round;
+  - temporarily reduces `SOURCE_NATIVE_CHECK_BATCH` to 4 during the drain;
+  - restores the prior `SOURCE_NATIVE_CHECK_BATCH` and `RESEARCH_WORKER_BATCH` on exit/interruption;
+  - keeps outreach OFF.
+
+Relevant commits:
+- `b54ef2a1f9fa3a9da77dd5b3b6917de1d2418413` — initial retry/backoff support.
+- `c50886bd8e6bfd98ba7923a3379abe6d55f4b8a1` — source error details in drain output.
+- `82ba75a4bc02b5463d1d6454f83b1fec83401210` — CMS pacing + randomized backoff.
+- `a63bd2045f2ca5d0dfea5fd67a112b219545cbfa` — lower source-native drain batch to 4 and restore safely.
+
+Owner stopped the older aggressive drain with Ctrl+C after repeated source errors. This was the correct action. The cleanup trap is expected to restore the prior research/source-native batch values.
+
+Before rerunning, pull the paced/backoff fixes.
