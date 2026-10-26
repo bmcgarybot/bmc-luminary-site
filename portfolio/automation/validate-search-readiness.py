@@ -31,6 +31,15 @@ def main()->int:
         rel=url[len(DOMAIN):].strip("/")
         page=ROOT/"index.html" if not rel else ROOT/rel/"index.html"
         if not page.exists():
+            failures.append(f"sitemap URL has no matching page: {url}")
+            continue
+        text=page.read_text(errors="ignore")
+        if re.search(r'<meta\s+name="robots"\s+content="[^"]*noindex',text,re.I):
+            failures.append(f"sitemap URL is marked noindex: {url}")
+            continue
+        rel=url[len(DOMAIN):].strip("/")
+        page=ROOT/"index.html" if not rel else ROOT/rel/"index.html"
+        if not page.exists():
             failures.append(f"sitemap URL has no public page: {url}")
             continue
         text=page.read_text(errors="ignore")
