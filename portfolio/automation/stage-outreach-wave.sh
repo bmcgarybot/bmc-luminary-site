@@ -35,7 +35,6 @@ EOF
 [ "$SIDE" = "vendor" ] || [ "$SIDE" = "buyer" ] || { usage; exit 2; }
 [[ "$WAVE" =~ ^[A-Za-z0-9_-]+$ ]] || { echo "Wave must contain only letters, numbers, _ or -."; exit 2; }
 [[ "$LIMIT" =~ ^[0-9]+$ ]] && [ "$LIMIT" -ge 1 ] && [ "$LIMIT" -le 100 ] || { echo "Limit must be 1-100."; exit 2; }
-[[ "$MARKET" =~ ^[A-Za-z0-9[:space:].,'-]*$ ]] || { echo "Unsupported market characters."; exit 2; }
 [[ "$FILTER" =~ ^[A-Za-z0-9_-]*$ ]] || { echo "Filter must be a service/campaign token."; exit 2; }
 [ "$MODE" = "preview" ] || [ "$MODE" = "--apply" ] || { echo "Mode must be preview or --apply."; exit 2; }
 
