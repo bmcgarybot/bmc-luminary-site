@@ -507,9 +507,16 @@ create table if not exists market_inventory_candidates (
   status text default 'discovered',
   evidence jsonb default '{}'::jsonb,
   created_at timestamptz default now(),
-  updated_at timestamptz default now(),
-  unique(side,market,category_key,source_url)
+  updated_at timestamptz default now()
 );
+
+-- Discovery sources such as chambers, registries and directory category pages can
+-- legitimately support multiple distinct businesses from the same source URL.
+-- Deduplicate the business/source pair, not the source URL alone.
+alter table market_inventory_candidates
+  drop constraint if exists market_inventory_candidates_side_market_category_key_source_url_key;
+create unique index if not exists uq_market_inventory_candidate_business_source
+on market_inventory_candidates(side,market,category_key,source_url,business_name);
 
 create index if not exists idx_market_inventory_progress_status
 on market_inventory_progress(status,side,market,category_key);
