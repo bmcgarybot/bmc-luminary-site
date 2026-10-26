@@ -3752,3 +3752,69 @@ The latest statewide SEO commit passed:
 Full container smoke test was still completing when this handoff entry was written.
 
 Do not alter genuinely local research records or market-specific examples merely because they mention Prescott; this change applies to generic service-level public SEO, not historical/source data.
+
+
+## 45. RESEARCH BACKLOG FULLY DRAINED — 2026-10-25
+
+The production research drain completed successfully.
+
+Final Phase 2 result:
+- research queue: 0 queued;
+- research assigned: 0;
+- open agent tasks: 0;
+- research round 617 processed the final 2 tasks;
+- queue declared drained.
+
+Final backlog states:
+- completed: 56;
+- review: 22;
+- searched_no_results: 771.
+
+Final prospect totals:
+- vendors: 211;
+- buyers: 2537;
+- staged research candidates: 205.
+
+Runtime doctor after drain:
+- deployment target: cloud-vps PASS;
+- memory/storage/swap PASS;
+- Docker/Compose PASS;
+- .env PASS;
+- public site URL PASS;
+- vendor outreach OFF;
+- buyer outreach OFF;
+- waves restricted to pilot1;
+- Compose validates;
+- Ops API healthy;
+- 54 services seeded;
+- traditional auto repair active;
+- vendor research pool 211;
+- buyer research pool 2537;
+- First Wave provider cohort exactly 12;
+- First Wave buyer cohort exactly 7;
+- recovered Arizona expansion cells 198;
+- private admin preflight reachable;
+- outreach_ready: READY;
+- payments_ready: READY;
+- intelligent_search_ai_ready: READY;
+- live_intake_ready: BLOCKED only because no verified pilot provider is active;
+- local AI reachable and qwen3:1.7b loaded;
+- fryer and brake-repair search regressions PASS;
+- private research search reachable.
+
+Runtime doctor summary:
+- core failures: 0;
+- warnings: 1.
+
+The sole warning is:
+- research backlog has no queued rows.
+
+Interpretation:
+- this warning is expected after a successful full drain and should not be treated as a production failure.
+
+Remaining launch gate:
+- activate at least one verified pilot provider.
+
+CMS source-native 403s remain a separate source-access issue, but they did not block Phase 2 from draining the full queued research backlog.
+
+Outreach remains OFF.
