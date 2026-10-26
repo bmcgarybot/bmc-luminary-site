@@ -1856,7 +1856,7 @@ def first_wave_vendor_copy(row,step):
 
 Are you open to a few more {service.lower()} jobs in {market} if you can see the job details before deciding?
 
-BMC is launching a local provider pilot. It is free to join.
+BMC Service Network is opening a small provider pilot in Arizona. There is no fee to join.
 
 You tell us:
 - where you work
@@ -1864,9 +1864,9 @@ You tell us:
 - your minimum job size
 - how much work you can take
 
-When a matching request comes in, you can review the job type, area, timing, and customer notes first. If it fits, accept it. If it does not, pass. Passing does not create a charge.
+When a matching customer request comes in, you can review the job type, area, timing, and customer notes before deciding. If it fits, accept it. If it does not, pass. Passing does not create a charge.
 
-Selected pilot opportunities may be free or reduced while we prove whether BMC is worth paying for. Any later lead or territory price will be shown separately before it applies.
+During the pilot, some opportunities may be free or discounted. If BMC introduces paid leads or territory options later, the price and terms will be shown before you choose to participate.
 
 Join the pilot here:
 {activation}
@@ -1883,9 +1883,9 @@ Reply no if you do not want future outreach."""
 
 Just following up once.
 
-If you want more {service.lower()} work in {market}, BMC lets you set the area, job types, minimum job size, and capacity you want. You review a matching request before deciding.
+If you want more {service.lower()} work in {market}, BMC lets you set the area, job types, minimum job size, and capacity you want. You see the customer request before deciding whether it fits.
 
-It is free to join the pilot:
+There is no fee to join the pilot:
 {activation}
 
 BMC Luminary Ventures LLC
