@@ -3705,3 +3705,50 @@ Later endpoint-only page edits were still progressing through CI when this hando
 GitHub code-search indexing can lag behind direct file writes, so old `REPLACE_ME` search hits may remain visible briefly after the files are updated. Use direct file contents and CI status as the source of truth.
 
 The VPS research drain should continue uninterrupted; do not pull these static-site changes solely to affect the currently running Phase 2 worker.
+
+
+## 46. STATEWIDE SERVICE SEO CLEANUP — 2026-10-25
+
+A second parallel static-site pass corrected geographic SEO that still reflected the original Prescott-only launch concept.
+
+Problem:
+- the 10 generator-managed service storefronts still used titles such as:
+  - `HVAC Repair & Service | Prescott Area`
+  - `Commercial Cleaning | Prescott Area`
+  - `Tree Service & Defensible Space | Prescott Area`
+- several descriptions also said `in the Prescott area`.
+- this conflicted with the current statewide Arizona network architecture.
+
+Fix:
+- generator-managed service-level titles now use `| Arizona`;
+- service-level descriptions now say `in Arizona` where applicable;
+- dedicated market pages remain responsible for city-specific local SEO.
+
+Updated managed storefronts:
+- HVAC;
+- landscaping;
+- home staging;
+- junk hauling;
+- tree/defensible space;
+- house cleaning;
+- handyman;
+- electrical;
+- commercial cleaning;
+- realtor listing prep.
+
+Source-of-truth:
+- `portfolio/data/storefront-overrides.json` updated;
+- all 10 generated storefront files updated to remain generator-synchronized.
+
+The latest statewide SEO commit passed:
+- generated storefront validation;
+- public UI validation;
+- public-copy validation;
+- form contracts;
+- search/download readiness;
+- Compose validation;
+- operational script syntax checks.
+
+Full container smoke test was still completing when this handoff entry was written.
+
+Do not alter genuinely local research records or market-specific examples merely because they mention Prescott; this change applies to generic service-level public SEO, not historical/source data.
