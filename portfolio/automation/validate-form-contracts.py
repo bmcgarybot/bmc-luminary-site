@@ -7,11 +7,15 @@ ROOT=Path(__file__).resolve().parents[1]
 FORM_RE=re.compile(r'<form\b[^>]*data-bmc-form[^>]*data-form-type="([^"]+)"[^>]*>([\s\S]*?)</form>',re.I)
 NAME_RE=re.compile(r'\bname="([^"]+)"',re.I)
 
+REQUIRED={
+  "vendor_pilot_activation":{"contact_name","email","market","territory","services","capacity","pilot_terms"},
+}
+
 SPECIAL={
   "universal_request":{"scope","market","consent"},
   "facility_maintenance":{"scope","market","consent"},
   "vendor_partner":{"business_name","market","pilot_terms"},
-  "vendor_pilot_activation":{"vendor_id","pilot_terms"},
+  "vendor_pilot_activation":{"vendor_id","market","territory","services","capacity","pilot_terms"},
   "vendor_response":{"lead_id","vendor_id","token","response"},
   "job_update":{"lead_id","vendor_id","token","job_status"},
 }
@@ -28,6 +32,14 @@ def main()->int:
             missing=sorted(required-names)
             if missing:
                 failures.append(f"{path.relative_to(ROOT)} [{form_type}] missing {', '.join(missing)}")
+            required_names=set()
+            for tag in CONTROL_RE.findall(body):
+                name=NAME_RE.search(tag)
+                if name and re.search(r"\\brequired(?:\\s|=|>)",tag,re.I):
+                    required_names.add(name.group(1))
+            missing_required=sorted(REQUIRED.get(form_type,set())-required_names)
+            if missing_required:
+                failures.append(f"{path.relative_to(ROOT)} [{form_type}] fields must be required: {', '.join(missing_required)}")
             if form_type=="facility_maintenance" and not any(n.startswith("need_") for n in names):
                 failures.append(f"{path.relative_to(ROOT)} [facility_maintenance] has no need_* service choices")
             if form_type not in ("vendor_response","job_update","vendor_pilot_activation","vendor_partner") and "scope" not in names:
