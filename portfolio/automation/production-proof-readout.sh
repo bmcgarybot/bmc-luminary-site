@@ -72,11 +72,11 @@ if [ "$(dbq "select count(*) from information_schema.tables where table_name='ma
    union all select 'errors|'||count(*) from market_inventory_progress where status='error'
    union all select 'target_met|'||count(*) from market_inventory_progress where status='scan_complete_target_met'
    union all select 'under_target|'||count(*) from market_inventory_progress where status='scan_complete_under_target'
-   union all select 'candidate_rows_active_v6|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=6
-   union all select 'official_candidate_rows_active_v6|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=6 and official_site=true
+   union all select 'candidate_rows_active_v7|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=7
+   union all select 'official_candidate_rows_active_v7|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=7 and official_site=true
    union all select 'superseded_candidate_rows|'||count(*) from market_inventory_candidates where status like 'superseded_pre_v%'
-   union all select 'candidate_email_ready_active_v6|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=6 and coalesce(public_email,'')<>''
-   union all select 'candidate_phone_ready_active_v6|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=6 and coalesce(public_phone,'')<>'';"
+   union all select 'candidate_email_ready_active_v7|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=7 and coalesce(public_email,'')<>''
+   union all select 'candidate_phone_ready_active_v7|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=7 and coalesce(public_phone,'')<>'';"
 
   echo
   echo "Recent active inventory sample:"
@@ -84,7 +84,7 @@ if [ "$(dbq "select count(*) from information_schema.tables where table_name='ma
       '|official='||coalesce(official_site,false)::text||'|'||
       left(regexp_replace(coalesce(business_name,''),'[[:space:]]+',' ','g'),120)||'|'||source_url
     from market_inventory_candidates
-    where status='discovered' and query_strategy_version=6
+    where status='discovered' and query_strategy_version=7
     order by updated_at desc
     limit 25;" || true
 
