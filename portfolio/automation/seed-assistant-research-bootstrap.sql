@@ -4846,3 +4846,333 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Camp Verde';
+
+
+-- Assistant-led verified Camp Verde batch 02 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Camp Verde','hvac_heat','Heating & Air','Goettl''s High Desert Mechanical',
+ 'https://goettlshdm.com/camp-verde-az/','goettlshdm.com','Direct Camp Verde service page; Camp Verde location at 4650 Old Highway 279 and active ROC licenses published.','assistant verified research: Camp Verde Heating & Air',0,
+ null,'(928) 567-2200',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_camp_verde_verified_02","researched_at":"2026-10-26T23:31:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Camp Verde service page; Camp Verde location at 4650 Old Highway 279 and active ROC licenses published."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Camp Verde','backflow_plumbing','Backflow & Commercial Plumbing','Goettl''s High Desert Mechanical',
+ 'https://goettlshdm.com/camp-verde-az/','goettlshdm.com','Direct Camp Verde page explicitly offers plumbing and drain service; company publishes ROC plumbing license 307525.','assistant verified research: Camp Verde Backflow & Commercial Plumbing',0,
+ null,'(928) 567-2200',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_camp_verde_verified_02","researched_at":"2026-10-26T23:31:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Camp Verde page explicitly offers plumbing and drain service; company publishes ROC plumbing license 307525."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Camp Verde','hvac_heat','Heating & Air','Verde Sol-Air Services',
+ 'https://www.verdesolair.com/','verdesolair.com','Direct business site reached from a current Camp Verde verified listing; Camp Verde HVAC company.','assistant verified research: Camp Verde Heating & Air',0,
+ null,'(928) 567-5315',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_camp_verde_verified_02","researched_at":"2026-10-26T23:31:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct business site reached from a current Camp Verde verified listing; Camp Verde HVAC company."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Camp Verde','hvac_heat','Heating & Air','Aire Serv of North Central Arizona',
+ 'https://www.aireserv.com/north-central-arizona/geo/camp-verde/','aireserv.com','Direct Camp Verde HVAC service page; current license-backed listing identifies Camp Verde location and ROC 297131.','assistant verified research: Camp Verde Heating & Air',0,
+ null,'(888) 224-0848',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_camp_verde_verified_02","researched_at":"2026-10-26T23:31:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Camp Verde HVAC service page; current license-backed listing identifies Camp Verde location and ROC 297131."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Camp Verde','landscaping','Landscaping & Yard Cleanup','Bob''s Tree and Landscaping',
+ 'https://bobstreeandlandscaping.com/','bobstreeandlandscaping.com','Direct company site; current verified listing identifies Camp Verde service and active ROC 200344.','assistant verified research: Camp Verde Landscaping & Yard Cleanup',0,
+ null,'(928) 567-6744',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_camp_verde_verified_02","researched_at":"2026-10-26T23:31:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct company site; current verified listing identifies Camp Verde service and active ROC 200344."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Camp Verde','landscaping','Landscaping & Yard Cleanup','Mario and Mario Landscaping',
+ 'https://marioandmariolandscaping.net/','marioandmariolandscaping.net','Direct company site; current verified listing includes Camp Verde and active ROC 165704.','assistant verified research: Camp Verde Landscaping & Yard Cleanup',0,
+ null,'(928) 282-3118',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_camp_verde_verified_02","researched_at":"2026-10-26T23:31:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct company site; current verified listing includes Camp Verde and active ROC 165704."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Camp Verde','landscaping','Landscaping & Yard Cleanup','S & J Landscaping and Maintenance LLC',
+ 'https://landscapercottonwood.com/','landscapercottonwood.com','Direct company site; current verified listing explicitly includes Camp Verde service area.','assistant verified research: Camp Verde Landscaping & Yard Cleanup',0,
+ null,'(928) 218-4012',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_camp_verde_verified_02","researched_at":"2026-10-26T23:31:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct company site; current verified listing explicitly includes Camp Verde service area."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Camp Verde','facility_maintenance','Building Maintenance Help','Tierra Verde Builders',
+ 'https://www.tierraverdebuilders.com/','tierraverdebuilders.com','Direct site lists Camp Verde head office, commercial construction, tenant improvements, and ROC licenses 261021/327240.','assistant verified research: Camp Verde Building Maintenance Help',0,
+ 'info@tierraverdebuilders.com','(928) 567-2477',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_camp_verde_verified_02","researched_at":"2026-10-26T23:31:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site lists Camp Verde head office, commercial construction, tenant improvements, and ROC licenses 261021/327240."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Camp Verde','facility_maintenance','Building Maintenance Help','Triple X Construction Inc',
+ 'https://triplexconstructionaz.com/','triplexconstructionaz.com','Direct site identifies full-service licensed general contractor serving Camp Verde; direct contact page lists Camp Verde mailing address.','assistant verified research: Camp Verde Building Maintenance Help',0,
+ null,'(928) 567-5180',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_camp_verde_verified_02","researched_at":"2026-10-26T23:31:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site identifies full-service licensed general contractor serving Camp Verde; direct contact page lists Camp Verde mailing address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Camp Verde','general_business','other local businesses','Anasazi Animal Clinic',
+ 'https://anasazianimalclinic.com/','anasazianimalclinic.com','Direct veterinary practice site states it serves Camp Verde and surrounding areas.','assistant verified research: Camp Verde other local businesses',0,
+ null,'(928) 567-3807',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_camp_verde_verified_02","researched_at":"2026-10-26T23:31:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct veterinary practice site states it serves Camp Verde and surrounding areas."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Camp Verde','hotels_motels','hotels motels lodging','Cliff Castle Casino Hotel',
+ 'https://www.cliffcastlecasinohotel.com/','cliffcastlecasinohotel.com','Direct hotel/casino site lists 555 Middle Verde Road, Camp Verde and lodging, meetings, weddings, dining and entertainment.','assistant verified research: Camp Verde hotels motels lodging',0,
+ 'guestservices@cliffcastlecasino.net','1-800-381-7568',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_camp_verde_verified_02","researched_at":"2026-10-26T23:31:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct hotel/casino site lists 555 Middle Verde Road, Camp Verde and lodging, meetings, weddings, dining and entertainment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Camp Verde','general_business','other local businesses','Jones Ford Verde Valley',
+ 'https://www.jonesfordverdevalley.com/','jonesfordverdevalley.com','Direct dealership site reached from current Camp Verde verified listing; dealership sells and services vehicles in Camp Verde.','assistant verified research: Camp Verde other local businesses',0,
+ null,'(928) 634-3673',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_camp_verde_verified_02","researched_at":"2026-10-26T23:31:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct dealership site reached from current Camp Verde verified listing; dealership sells and services vehicles in Camp Verde."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Camp Verde','general_business','other local businesses','Express Automotive',
+ 'https://expressautomotivecottonwood.com/','expressautomotivecottonwood.com','Direct automotive business site reached from current Camp Verde verified listing; shop location is 673 S 1st St, Camp Verde.','assistant verified research: Camp Verde other local businesses',0,
+ null,'(928) 862-2572',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_camp_verde_verified_02","researched_at":"2026-10-26T23:31:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct automotive business site reached from current Camp Verde verified listing; shop location is 673 S 1st St, Camp Verde."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Camp Verde','schools','schools charter schools private schools','American Heritage Academy - Camp Verde',
+ 'https://www.americanheritageacademy.org/','americanheritageacademy.org','Direct school site corroborated by current Camp Verde verified school listing at 132 W General Crook Trail.','assistant verified research: Camp Verde schools charter schools private schools',0,
+ null,'(928) 567-0462',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_camp_verde_verified_02","researched_at":"2026-10-26T23:31:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct school site corroborated by current Camp Verde verified school listing at 132 W General Crook Trail."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Camp Verde','churches','churches worship centers','Camp Verde Baptist Church',
+ 'https://www.campverdebaptist.com/','campverdebaptist.com','Direct church site linked by the Camp Verde church directory; location at 299 E Hollamon St.','assistant verified research: Camp Verde churches worship centers',0,
+ null,'(928) 567-3324',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_camp_verde_verified_02","researched_at":"2026-10-26T23:31:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct church site linked by the Camp Verde church directory; location at 299 E Hollamon St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Camp Verde','public_facilities','government public facilities municipal buildings','Town of Camp Verde',
+ 'https://www.campverde.az.gov/','campverde.az.gov','Official municipal site for Town of Camp Verde facilities and departments.','assistant verified research: Camp Verde government public facilities municipal buildings',0,
+ null,null,true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_camp_verde_verified_02","researched_at":"2026-10-26T23:31:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official municipal site for Town of Camp Verde facilities and departments."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Camp Verde';
