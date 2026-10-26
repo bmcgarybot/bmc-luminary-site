@@ -10507,3 +10507,298 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Sedona';
+
+
+-- Assistant-led verified Sedona batch 02 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Sedona','hvac_heat','Heating & Air','ACE Cooling, Heating, Plumbing and Electrical',
+ 'https://acehomeaz.com/areas-served/sedona/','acehomeaz.com','Direct Sedona service page explicitly offers cooling/heating services in Sedona.','assistant verified research: Sedona Heating & Air',0,
+ null,'(928) 224-1764',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_sedona_verified_02","researched_at":"2026-10-26T23:50:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Sedona service page explicitly offers cooling/heating services in Sedona."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Sedona','backflow_plumbing','Backflow & Commercial Plumbing','ACE Cooling, Heating, Plumbing and Electrical',
+ 'https://acehomeaz.com/areas-served/sedona/','acehomeaz.com','Direct Sedona service page explicitly offers plumbing and drain services.','assistant verified research: Sedona Backflow & Commercial Plumbing',0,
+ null,'(928) 224-1764',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_sedona_verified_02","researched_at":"2026-10-26T23:50:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Sedona service page explicitly offers plumbing and drain services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Sedona','electrical_service','Electrician','ACE Cooling, Heating, Plumbing and Electrical',
+ 'https://acehomeaz.com/areas-served/sedona/','acehomeaz.com','Direct Sedona service page explicitly offers electrical service.','assistant verified research: Sedona Electrician',0,
+ null,'(928) 224-1764',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_sedona_verified_02","researched_at":"2026-10-26T23:50:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Sedona service page explicitly offers electrical service."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Sedona','landscaping','Landscaping & Yard Cleanup','DesertScape Sedona',
+ 'https://www.desertscapesedona.com/','desertscapesedona.com','Direct site states licensed/insured Sedona landscape contractor with commercial landscape construction and maintenance for resorts, plazas and medical centers.','assistant verified research: Sedona Landscaping & Yard Cleanup',0,
+ null,'(928) 282-2194',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_sedona_verified_02","researched_at":"2026-10-26T23:50:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site states licensed/insured Sedona landscape contractor with commercial landscape construction and maintenance for resorts, plazas and medical centers."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Sedona','window_cleaning','Window Cleaning','TLC Window Cleaning and Pressure Washing',
+ 'https://windowcleaningtlc.com/','windowcleaningtlc.com','Direct site says it has served Sedona and greater Cottonwood for over 10 years and offers professional window cleaning.','assistant verified research: Sedona Window Cleaning',0,
+ 'windowcleaningtlc@gmail.com','(928) 300-0799',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_sedona_verified_02","researched_at":"2026-10-26T23:50:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site says it has served Sedona and greater Cottonwood for over 10 years and offers professional window cleaning."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Sedona','pressure_washing','Pressure Washing','TLC Window Cleaning and Pressure Washing',
+ 'https://windowcleaningtlc.com/pressure-washing/','windowcleaningtlc.com','Direct site explicitly offers pressure washing for commercial and vacation-rental properties in Sedona area.','assistant verified research: Sedona Pressure Washing',0,
+ 'windowcleaningtlc@gmail.com','(928) 300-0799',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_sedona_verified_02","researched_at":"2026-10-26T23:50:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site explicitly offers pressure washing for commercial and vacation-rental properties in Sedona area."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Sedona','hotels_motels','hotels motels lodging','Enchantment',
+ 'https://www.enchantmentresort.com/','enchantmentresort.com','Direct Sedona resort site; large Boynton Canyon resort with lodging, dining, recreation and spa operations.','assistant verified research: Sedona hotels motels lodging',0,
+ null,'(928) 282-2900',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_sedona_verified_02","researched_at":"2026-10-26T23:50:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Sedona resort site; large Boynton Canyon resort with lodging, dining, recreation and spa operations."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Sedona','hotels_motels','hotels motels lodging','Arabella Hotel Sedona',
+ 'https://www.arabellahotelsedona.com/','arabellahotelsedona.com','Direct hotel site lists 725 Highway 179, Sedona and active lodging/food/amenity operations.','assistant verified research: Sedona hotels motels lodging',0,
+ null,'(928) 282-7151',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_sedona_verified_02","researched_at":"2026-10-26T23:50:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct hotel site lists 725 Highway 179, Sedona and active lodging/food/amenity operations."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Sedona','hotels_motels','hotels motels lodging','L''Auberge de Sedona',
+ 'https://www.lauberge.com/','lauberge.com','Direct luxury resort site lists 301 L''Auberge Lane, Sedona with lodging, dining, spa and meeting facilities.','assistant verified research: Sedona hotels motels lodging',0,
+ 'info@lauberge.com','(855) 905-5745',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_sedona_verified_02","researched_at":"2026-10-26T23:50:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct luxury resort site lists 301 L''Auberge Lane, Sedona with lodging, dining, spa and meeting facilities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Sedona','hotels_motels','hotels motels lodging','Hilton Sedona Resort at Bell Rock',
+ 'https://www.hilton.com/en/hotels/sdxsehh-hilton-sedona-resort-at-bell-rock/','hilton.com','Official Hilton property page lists 90 Ridge Trail Drive, Sedona and active resort operations.','assistant verified research: Sedona hotels motels lodging',0,
+ null,'(928) 284-4040',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_sedona_verified_02","researched_at":"2026-10-26T23:50:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Hilton property page lists 90 Ridge Trail Drive, Sedona and active resort operations."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Sedona','theaters_entertainment','theaters cinemas entertainment venues','Pink Jeep Tours',
+ 'https://www.pinkadventuretours.com/tours/sedona-tours','pinkadventuretours.com','Direct operator site confirms extensive tour operation departing Sedona; Chamber lists 204 N State Route 89A.','assistant verified research: Sedona theaters cinemas entertainment venues',0,
+ 'info@pinkjeep.com','(928) 282-5000',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_sedona_verified_02","researched_at":"2026-10-26T23:50:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct operator site confirms extensive tour operation departing Sedona; Chamber lists 204 N State Route 89A."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Sedona','schools','schools charter schools private schools','Sedona-Oak Creek Unified School District',
+ 'https://www.sedonak12.org/','sedonak12.org','Official district site lists Sedona district facilities at 995 Upper Red Rock Loop Rd and PK-12 operations.','assistant verified research: Sedona schools charter schools private schools',0,
+ null,'(928) 204-6700',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_sedona_verified_02","researched_at":"2026-10-26T23:50:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official district site lists Sedona district facilities at 995 Upper Red Rock Loop Rd and PK-12 operations."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Sedona','medical_centers','hospitals medical centers clinics','Northern Arizona Healthcare - Sedona',
+ 'https://www.nahealth.com/primary-care/','nahealth.com','Official NAH site lists Sedona clinic at 3700 W State Route 89A, Suite B; imaging and cancer services also operate at the location.','assistant verified research: Sedona hospitals medical centers clinics',0,
+ null,'(928) 204-4944',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_sedona_verified_02","researched_at":"2026-10-26T23:50:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official NAH site lists Sedona clinic at 3700 W State Route 89A, Suite B; imaging and cancer services also operate at the location."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Sedona','public_facilities','government public facilities municipal buildings','City of Sedona',
+ 'https://www.sedonaaz.gov/','sedonaaz.gov','Official municipal site; city maintenance responsibilities include buildings, grounds, parking lots, parks, roadways, lighting and other facilities.','assistant verified research: Sedona government public facilities municipal buildings',0,
+ null,null,true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_sedona_verified_02","researched_at":"2026-10-26T23:50:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official municipal site; city maintenance responsibilities include buildings, grounds, parking lots, parks, roadways, lighting and other facilities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Sedona','gyms_fitness','gyms fitness centers recreation centers','Mii amo',
+ 'https://miiamo.com/','miiamo.com','Direct wellness resort/spa site lists 525 Boynton Canyon Road, Sedona with spa, fitness, dining and guest facilities.','assistant verified research: Sedona gyms fitness centers recreation centers',0,
+ null,'(844) 993-9518',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_sedona_verified_02","researched_at":"2026-10-26T23:50:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct wellness resort/spa site lists 525 Boynton Canyon Road, Sedona with spa, fitness, dining and guest facilities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Sedona';
