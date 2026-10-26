@@ -16,7 +16,7 @@ It never:
 Usage:
   python3 assistant-directory-bootstrap.py .env
   python3 assistant-directory-bootstrap.py .env --markets "Kingman,Winslow"
-  python3 assistant-directory-bootstrap.py .env --max-per-feed 100 --delay 0.4
+  python3 assistant-directory-bootstrap.py .env --max-per-feed 250 --max-pages-per-market 120 --delay 0.25
 """
 from __future__ import annotations
 
@@ -74,6 +74,16 @@ FEEDS=(
   ("electrical","vendor","electrical_service","Electrician"),
   ("consumer-services","dynamic","consumer_services","consumer services"),
   ("environmental-services","dynamic","environmental_services","environmental services"),
+  ("travel-and-leisure","dynamic","travel_leisure","travel leisure"),
+  ("real-estate","dynamic","real_estate","real estate"),
+  ("professional-services","dynamic","professional_services","professional services"),
+  ("non-profit-organizations","dynamic","nonprofit","non profit organizations"),
+  ("food","dynamic","food","food businesses"),
+  ("pharmaceuticals","dynamic","pharmaceuticals","pharmaceutical businesses"),
+  ("industrial-machinery","dynamic","industrial_machinery","industrial machinery"),
+  ("manufacturing","dynamic","manufacturing","manufacturing businesses"),
+  ("transportation-services","dynamic","transportation_services","transportation services"),
+  ("storage","dynamic","storage","storage businesses"),
 )
 
 PHONE_RE=re.compile(r"(?<!\d)(?:\+?1[\s.\-]?)?(?:\(\d{3}\)|\d{3})[\s.\-]\d{3}[\s.\-]\d{4}(?!\d)")
@@ -93,6 +103,36 @@ def normalize_company_href(href:str):
     else:
         path=raw.split("?",1)[0].split("#",1)[0]
     return path if COMPANY_HREF_RE.match(path) else None
+
+def category_href(href:str,slug:str):
+    raw=str(href or "").strip()
+    if not raw:
+        return None
+    parsed=urllib.parse.urlparse(raw)
+    if parsed.scheme or parsed.netloc:
+        host=(parsed.hostname or "").lower().removeprefix("www.")
+        if host!="whereorg.com":
+            return None
+        path=parsed.path or ""
+    else:
+        path=raw.split("?",1)[0].split("#",1)[0]
+    m=re.match(r"^/businesses/([a-z0-9][a-z0-9\-]*)-in-"+re.escape(slug)+r"-az/?$",path,re.I)
+    if not m:
+        return None
+    return urllib.parse.urljoin(BASE,path),m.group(1).lower()
+
+def discover_category_pages(page_html:str,slug:str):
+    class C(HTMLParser):
+        def __init__(self):
+            super().__init__(convert_charrefs=True); self.rows=[]
+        def handle_starttag(self,tag,attrs):
+            if tag.lower()!="a":
+                return
+            href=dict(attrs).get("href")
+            parsed=category_href(href,slug)
+            if parsed and parsed not in self.rows:
+                self.rows.append(parsed)
+    p=C(); p.feed(page_html); p.close(); return p.rows
 
 def parse_listing(page_html:str,market:str):
     # Simpler event parser that keeps each qualifying company href with the
@@ -146,6 +186,62 @@ def parse_listing(page_html:str,market:str):
 
 def classify(feed_key:str,name:str):
     n=name.lower()
+    k=feed_key.lower()
+
+    # Subcategory pages discovered recursively often carry more precise intent
+    # than the original broad feed. Use the page slug first, then business name.
+    if any(x in k for x in ("hotel","motel","lodging","bed-and-breakfast","rv-parks","campground")):
+        return ("buyer","hotels_motels","hotels motels lodging")
+    if any(x in k for x in ("physical-fitness","fitness","gym","recreation-club","golf-courses","bowling")):
+        return ("buyer","gyms_fitness","gyms fitness centers recreation centers")
+    if any(x in k for x in ("motion-picture","theater","performing-arts","amusement","museum","entertainment")):
+        return ("buyer","theaters_entertainment","theaters cinemas entertainment venues")
+    if any(x in k for x in ("pharmaceutical","drug-store","pharmacy")):
+        return ("buyer","pharmacies","pharmacies drug stores")
+    if any(x in k for x in ("food-stores","grocery","supermarket")):
+        return ("buyer","grocery","grocery stores supermarkets markets")
+    if any(x in k for x in ("auto-dealer","automobile-dealer","car-dealer")):
+        return ("buyer","auto_dealers","auto dealers car dealerships")
+    if any(x in k for x in ("real-estate","apartment","housing")):
+        return ("buyer","property_management","property management companies apartment communities")
+    if any(x in k for x in ("manufactur","industrial-machinery","warehouse","wholesale-trade","fabrication")):
+        return ("buyer","warehouses_industrial","warehouses industrial businesses distribution centers")
+    if any(x in k for x in ("membership-organizations","religious","church")):
+        if any(x in n for x in ("church","ministry","ministries","temple","synagogue","mosque","worship","chapel","fellowship","parish","diocese")):
+            return ("buyer","churches","churches worship centers")
+        return ("buyer","general_business","other local businesses")
+    if any(x in k for x in ("day-care","child-care","social-services")):
+        return ("buyer","senior_daycare","senior living assisted living daycare childcare")
+    if any(x in k for x in ("insurance","financial","legal","professional-services","accounting","engineering")):
+        return ("buyer","insurance_professional","insurance agents professional offices")
+    if any(x in k for x in ("restaurant","eating-and-drinking")):
+        return ("buyer","restaurants","restaurants")
+    if any(x in k for x in ("school","educational")):
+        return ("buyer","schools","schools charter schools private schools")
+    if any(x in k for x in ("health","medical","clinic","hospital")):
+        if any(x in n for x in ("dental","dentist","orthodont","periodont","endodont")):
+            return ("buyer","dental","dentists dental offices orthodontists")
+        if any(x in n for x in ("therapy","therapist","counsel","behavior","mental","psych","recovery","rehab")):
+            return ("buyer","therapy_behavioral","therapy counseling behavioral health clinics")
+        if any(x in n for x in ("assisted","senior","nursing","hospice","home health","adult care","retirement")):
+            return ("buyer","senior_daycare","senior living assisted living daycare childcare")
+        return ("buyer","medical_centers","hospitals medical centers clinics")
+    if any(x in k for x in ("plumb","septic","drain")):
+        return ("vendor","backflow_plumbing","Backflow & Commercial Plumbing")
+    if any(x in k for x in ("airconditioning","air-conditioning","refrigeration","heating")):
+        return ("vendor","hvac_heat","Heating & Air")
+    if "electrical" in k or "electrician" in k:
+        return ("vendor","electrical_service","Electrician")
+    if any(x in k for x in ("landscap","lawn","garden")):
+        return ("vendor","landscaping","Landscaping & Yard Cleanup")
+    if any(x in k for x in ("tree-service","forestry")):
+        return ("vendor","tree_service","Tree Service & Brush Clearing")
+    if any(x in k for x in ("carpet","upholstery-clean")):
+        return ("vendor","floor_carpet","Floor & Carpet Cleaning")
+    if any(x in k for x in ("laundry","linen","dryclean")):
+        return ("vendor","linen_laundry","Linen & Laundry Service")
+    if any(x in k for x in ("automotive-repair","auto-repair","towing")):
+        return ("vendor","auto_repair_shop","Auto Repair Shop")
 
     if feed_key=="restaurants-and-bars":
         return ("buyer","restaurants","restaurants")
@@ -244,8 +340,12 @@ def classify(feed_key:str,name:str):
             return ("vendor","junk_hauling","Junk Removal")
         if any(x in n for x in ("septic","drain")):
             return ("vendor","grease_drain","Grease Trap & Drain Cleaning")
-        return None
-    return None
+        return ("buyer","general_business","other local businesses")
+
+    # Any legitimate public local business that does not map cleanly to a more
+    # specific BMC lane is still a potential BMC buyer. Keep it rather than
+    # throwing it away.
+    return ("buyer","general_business","other local businesses")
 
 def env_values(path:Path):
     out={}
@@ -270,8 +370,9 @@ def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("env_file",nargs="?",default=".env")
     ap.add_argument("--markets",default="")
-    ap.add_argument("--max-per-feed",type=int,default=100)
-    ap.add_argument("--delay",type=float,default=0.4)
+    ap.add_argument("--max-per-feed",type=int,default=250)
+    ap.add_argument("--max-pages-per-market",type=int,default=120)
+    ap.add_argument("--delay",type=float,default=0.25)
     ap.add_argument("--dry-run",action="store_true")
     args=ap.parse_args()
 
@@ -287,13 +388,35 @@ def main():
     seen=set()
 
     for market,slug in markets:
-        mstat={"feeds":0,"raw":0,"classified":0}
+        mstat={"feeds":0,"raw":0,"classified":0,"pages_discovered":0}
         stats["by_market"][market]=mstat
+        queue=[]
+        queued=set()
+
+        def enqueue(url,feed_key):
+            if not url or url in queued:
+                return
+            queued.add(url); queue.append((url,feed_key))
+
+        # Start with curated broad feeds, then discover subcategory pages from
+        # both the market root and every successfully fetched category page.
         for feed_key,_,_,_ in FEEDS:
-            url=f"{BASE}/businesses/{feed_key}-in-{slug}-az"
+            enqueue(f"{BASE}/businesses/{feed_key}-in-{slug}-az",feed_key)
+        try:
+            root=fetch(f"{BASE}/{slug}-az")
+            for u,k in discover_category_pages(root,slug):
+                enqueue(u,k)
+        except Exception as exc:
+            stats["errors"].append({"market":market,"feed":"market_root","error":str(exc)[:220]})
+
+        pages=0
+        while queue and pages<max(1,args.max_pages_per_market):
+            url,feed_key=queue.pop(0); pages+=1
             stats["feeds_attempted"]+=1
             try:
                 page=fetch(url)
+                for u,k in discover_category_pages(page,slug):
+                    enqueue(u,k)
                 rows=parse_listing(page,market)[:max(1,args.max_per_feed)]
                 if not rows and len(stats["empty_feeds"])<30:
                     stats["empty_feeds"].append({
@@ -305,9 +428,7 @@ def main():
                 mstat["feeds"]+=1
                 stats["raw_companies"]+=len(rows); mstat["raw"]+=len(rows)
                 for row in rows:
-                    c=classify(feed_key,row["business_name"])
-                    if not c:continue
-                    side,category_key,category_label=c
+                    side,category_key,category_label=classify(feed_key,row["business_name"])
                     source_url=urllib.parse.urljoin(BASE,row["href"])
                     key=(side,market,category_key,source_url,row["business_name"].lower())
                     if key in seen:continue
@@ -324,6 +445,7 @@ def main():
                 stats["feeds_failed"]+=1
                 stats["errors"].append({"market":market,"feed":feed_key,"error":str(exc)[:220]})
             if args.delay>0:time.sleep(args.delay)
+        mstat["pages_discovered"]=len(queued)
 
     print(json.dumps(stats,indent=2))
     if args.dry_run:
