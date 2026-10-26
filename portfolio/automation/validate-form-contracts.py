@@ -6,6 +6,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 FORM_RE=re.compile(r'<form\b[^>]*data-bmc-form[^>]*data-form-type="([^"]+)"[^>]*>([\s\S]*?)</form>',re.I)
 NAME_RE=re.compile(r'\bname="([^"]+)"',re.I)
+CONTROL_RE=re.compile(r'<(?:input|select|textarea)\b[^>]*>',re.I)
 
 REQUIRED={
   "vendor_pilot_activation":{"contact_name","email","market","territory","services","capacity","pilot_terms"},
@@ -35,7 +36,7 @@ def main()->int:
             required_names=set()
             for tag in CONTROL_RE.findall(body):
                 name=NAME_RE.search(tag)
-                if name and re.search(r"\\brequired(?:\\s|=|>)",tag,re.I):
+                if name and re.search(r"\brequired(?:\s|=|>)",tag,re.I):
                     required_names.add(name.group(1))
             missing_required=sorted(REQUIRED.get(form_type,set())-required_names)
             if missing_required:
