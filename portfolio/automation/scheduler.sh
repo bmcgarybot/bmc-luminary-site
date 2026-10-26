@@ -1,58 +1,49 @@
 #!/bin/sh
 set -u
 
+post(){
+  endpoint="$1"
+  timeout="${2:-120}"
+  echo "[scheduler] POST $endpoint"
+  curl --retry 4 --retry-all-errors --retry-delay 2 --max-time "$timeout" -fsS -X POST "http://ops_api:8000$endpoint" \
+    -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || echo "[scheduler] ERROR endpoint=$endpoint"
+  echo
+}
+
 i=0
 while true; do
-  curl -fsS -X POST http://ops_api:8000/api/process-expired \
-    -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
+  post /api/process-expired
 
   if [ $((i % 3)) -eq 0 ]; then
-    curl -fsS -X POST http://ops_api:8000/api/agent-cycle \
-      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
-    curl -fsS -X POST http://ops_api:8000/api/process-research \
-      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
+    post /api/agent-cycle
+    post /api/process-research 240
   fi
 
-  # Deep market inventory is deliberately separate from the legacy gap queue.
-  # Every 10 minutes it advances a bounded set of buyer-category and provider-service lanes.
   if [ $((i % 2)) -eq 0 ]; then
-    curl --max-time 240 -fsS -X POST http://ops_api:8000/api/process-market-inventory \
-      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
+    post /api/process-market-inventory 240
   fi
 
   if [ $((i % 12)) -eq 0 ]; then
-    curl -fsS -X POST http://ops_api:8000/api/process-followups \
-      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
+    post /api/process-followups
   fi
 
   if [ $((i % 2)) -eq 0 ]; then
-    curl -fsS -X POST http://ops_api:8000/api/process-replies \
-      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
+    post /api/process-replies
   fi
 
   if [ $((i % 24)) -eq 0 ]; then
-    curl -fsS -X POST http://ops_api:8000/api/process-public-opportunities \
-      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
-    curl -fsS -X POST http://ops_api:8000/api/process-outreach \
-      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
-    curl -fsS -X POST http://ops_api:8000/api/process-buyer-outreach \
-      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
-    curl -fsS -X POST http://ops_api:8000/api/process-growth-outreach \
-      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
+    post /api/process-public-opportunities 240
+    post /api/process-outreach
+    post /api/process-buyer-outreach
+    post /api/process-growth-outreach
   fi
 
-  # Publicly indexed local-demand scan: every 30 minutes. The API processes
-  # a bounded rotating batch of market x source x service-group lanes.
   if [ $((i % 6)) -eq 0 ]; then
-    curl -fsS -X POST http://ops_api:8000/api/process-local-demand-signals \
-      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
+    post /api/process-local-demand-signals 240
   fi
 
-  # Bounded source-native authoritative buyer discovery: hourly, staggered from the main hourly work.
-  # The API rotates the oldest source/market lanes so the full Arizona footprint refreshes without one giant request.
   if [ $((i % 12)) -eq 6 ]; then
-    curl --max-time 360 -fsS -X POST http://ops_api:8000/api/process-source-native-research \
-      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
+    post /api/process-source-native-research 360
   fi
 
   i=$((i+1))
