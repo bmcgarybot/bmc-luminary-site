@@ -3468,3 +3468,63 @@ Relevant commits:
 Owner stopped the older aggressive drain with Ctrl+C after repeated source errors. This was the correct action. The cleanup trap is expected to restore the prior research/source-native batch values.
 
 Before rerunning, pull the paced/backoff fixes.
+
+
+## 41. CMS BULK CSV SOURCE-NATIVE RESEARCH — 2026-10-25
+
+The second production drain was stopped with Ctrl+C after repeated CMS HTTP 403 responses. This was correct; 403 is not a normal transient retry condition.
+
+Official CMS Provider Data documentation was checked.
+
+Key findings:
+- the Provider Data Catalog exposes stable dataset metadata at:
+  `/provider-data/api/1/metastore/schemas/dataset/items/{datasetId}`;
+- the metadata response includes the current CSV in `distribution[].data.downloadURL`;
+- CMS documentation recommends using full dataset downloads for high-volume retrieval instead of many API queries;
+- dataset IDs remain stable while distribution/download resource IDs can change across data refreshes.
+
+Production architecture changed accordingly.
+
+### New CMS source-native behavior
+
+For the four configured CMS datasets:
+- hospitals (`xubh-q36u`);
+- nursing homes (`4pq5-n9py`);
+- home health (`6jpm-sxkc`);
+- hospice (`yc9t-dgbk`);
+
+the worker now:
+
+1. requests the stable per-dataset metadata endpoint;
+2. discovers the current CSV `downloadURL`;
+3. downloads the full official CSV once;
+4. parses and normalizes CSV column names;
+5. keeps only Arizona records in memory;
+6. indexes those records by city;
+7. serves all configured Arizona market lanes locally from the cached dataset;
+8. reuses the cached bulk file for 6 hours by default.
+
+This removes the prior pattern of repeated CMS per-city datastore API requests.
+
+The legacy per-city query function remains available only when:
+- `CMS_BULK_DOWNLOAD_ENABLED=false`; or
+- the configured CMS source URL points to a non-CMS host, such as the CI research mock.
+
+This preserves deterministic CI coverage without making production depend on the throttled query pattern.
+
+New optional settings:
+- `CMS_BULK_DOWNLOAD_ENABLED=true`
+- `CMS_METADATA_BASE=https://data.cms.gov/provider-data/api/1/metastore/schemas/dataset/items`
+- `CMS_BULK_CACHE_TTL_SECONDS=21600`
+
+Bulk CSV/header normalization includes aliases needed by existing parsers:
+- `City/Town` -> `citytown`
+- `County/Parish` -> `countyparish`
+- common CMS human-readable CSV headers are normalized to the existing API-style keys.
+
+Successful records from the earlier interrupted runs remain in Postgres; stopping the drain did not roll them back.
+
+Relevant implementation commit:
+- `a3641e0426b7e1f3695b4b32db3ae59bc306c383`
+
+Do not rerun the drain until this bulk-loader change and its Compose/env documentation pass CI.
