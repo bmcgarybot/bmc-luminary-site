@@ -31,7 +31,7 @@ def render(key: str, p: dict) -> str:
     return f'''<!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(p["title"])}</title><meta name="description" content="{esc(p["desc"])}">{robots}
-<meta name="bmc-webhook" content="REPLACE_ME"><link rel="stylesheet" href="../assets/core.css?v=clarity-10">
+<meta name="bmc-webhook" content="https://hooks.bmcservicenetwork.com/api/intake"><link rel="stylesheet" href="../assets/core.css?v=clarity-10">
 </head><body class="editorial-site service-page">
 <nav class="nav"><div class="wrap nav-in"><a class="brand" href="../services/">{esc(p["name"])}</a><div class="nav-links"><a href="#request">Get help</a><a href="../services/">Other services</a></div></div></nav>
 
