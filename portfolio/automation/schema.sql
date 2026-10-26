@@ -549,6 +549,16 @@ alter table market_inventory_candidates add column if not exists closure_reason 
 alter table market_inventory_progress add column if not exists scan_cycles integer default 0;
 alter table market_inventory_progress add column if not exists last_full_scan_at timestamptz;
 
+-- Inventory is open-ended. Legacy terminal states are converted back into active
+-- monitoring so every lane can continue refreshing forever.
+update market_inventory_progress
+set status=case when coalesce(scan_cycles,0)>0 then 'monitoring' else 'not_started' end,
+    next_page=coalesce(next_page,1),
+    query_variant=coalesce(query_variant,0),
+    notes=case when status like 'scan_complete_%' then 'Converted from terminal inventory state to continuous monitoring' else notes end,
+    updated_at=now()
+where status like 'scan_complete_%';
+
 alter table market_inventory_progress add column if not exists next_page integer default 1;
 alter table market_inventory_progress add column if not exists query_variant integer default 0;
 alter table market_inventory_progress add column if not exists no_progress_passes integer default 0;
