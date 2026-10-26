@@ -1287,3 +1287,3580 @@ where exists (
   where c.side=p.side and c.market=p.market and c.category_key=p.category_key
     and c.evidence->>'bootstrap_source'='assistant_web_research_2026_10_26_batch_01'
 );
+
+
+-- Assistant-led Kingman business census batch 02 (2026-10-26)
+-- Manually researched by the assistant from current Kingman directory/government sources.
+-- Discovery/direct-evidence inventory only; never promotes or stages/sends outreach.
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','restaurants','restaurants','Arby''s',
+  'https://www.mohavelocal.com/l/kingman-az/restaurants','mohavelocal.com','Kingman restaurant listing at 3265 E Andy Devine Ave.','assistant bootstrap research: Kingman restaurants',0,
+  null,'(928) 757-5204',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman restaurant listing at 3265 E Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','restaurants','restaurants','Bangkok Thai Cuisine',
+  'https://www.mohavelocal.com/l/kingman-az/restaurants','mohavelocal.com','Kingman restaurant listing at 208 W Andy Devine Ave.','assistant bootstrap research: Kingman restaurants',0,
+  null,'(928) 753-1170',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman restaurant listing at 208 W Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','restaurants','restaurants','Bank Street Grinders',
+  'https://www.mohavelocal.com/l/kingman-az/restaurants','mohavelocal.com','Kingman restaurant listing at 4395 N Bank St.','assistant bootstrap research: Kingman restaurants',0,
+  null,'(928) 692-7667',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman restaurant listing at 4395 N Bank St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','restaurants','restaurants','Beale Street Brews Coffee And Roasting Co',
+  'https://www.mohavelocal.com/l/kingman-az/restaurants','mohavelocal.com','Kingman coffee/restaurant listing at 418 E Beale St.','assistant bootstrap research: Kingman restaurants',0,
+  null,'(928) 753-4004',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman coffee/restaurant listing at 418 E Beale St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','restaurants','restaurants','Burger King',
+  'https://www.mohavelocal.com/l/kingman-az/restaurants','mohavelocal.com','Kingman restaurant listing at 3250 E Andy Devine Ave.','assistant bootstrap research: Kingman restaurants',0,
+  null,'(928) 453-1777',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman restaurant listing at 3250 E Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','restaurants','restaurants','Calico''s Restaurant',
+  'https://www.mohavelocal.com/l/kingman-az/restaurants','mohavelocal.com','Kingman restaurant listing at 418 W Beale St.','assistant bootstrap research: Kingman restaurants',0,
+  null,'(928) 753-5005',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman restaurant listing at 418 W Beale St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','restaurants','restaurants','Canyon 66 Restaurant & Lounge',
+  'https://www.mohavelocal.com/l/kingman-az/restaurants','mohavelocal.com','Kingman restaurant/lounge listing at 3100 E Andy Devine Ave.','assistant bootstrap research: Kingman restaurants',0,
+  null,'(928) 529-5010',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman restaurant/lounge listing at 3100 E Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','restaurants','restaurants','Carl''s Jr Restaurant',
+  'https://www.mohavelocal.com/l/kingman-az/restaurants','mohavelocal.com','Kingman restaurant listing at 3440 Stockton Hill Rd.','assistant bootstrap research: Kingman restaurants',0,
+  null,'(928) 680-7717',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman restaurant listing at 3440 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','restaurants','restaurants','Chef''s Table Of Kingman',
+  'https://www.mohavelocal.com/l/kingman-az/restaurants','mohavelocal.com','Kingman restaurant listing at 511 E Beale St.','assistant bootstrap research: Kingman restaurants',0,
+  null,'(928) 718-2227',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman restaurant listing at 511 E Beale St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','restaurants','restaurants','Chili''s Grill & Bar',
+  'https://www.mohavelocal.com/l/kingman-az/restaurants','mohavelocal.com','Kingman restaurant listing at 3840 Stockton Hill Rd.','assistant bootstrap research: Kingman restaurants',0,
+  null,'(928) 681-3444',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman restaurant listing at 3840 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','restaurants','restaurants','Chipotle Mexican Grill',
+  'https://www.mohavelocal.com/l/kingman-az/restaurants','mohavelocal.com','Kingman restaurant listing at 3455 Stockton Hill Rd.','assistant bootstrap research: Kingman restaurants',0,
+  null,'(928) 680-0540',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman restaurant listing at 3455 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','restaurants','restaurants','Cracker Barrel Old Country Store',
+  'https://www.mohavelocal.com/l/kingman-az/restaurants','mohavelocal.com','Kingman restaurant listing at 3520 Stockton Hill Rd.','assistant bootstrap research: Kingman restaurants',0,
+  null,'(928) 757-9000',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman restaurant listing at 3520 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','restaurants','restaurants','Dambar & Steak House',
+  'https://www.mohavelocal.com/l/kingman-az/restaurants','mohavelocal.com','Kingman restaurant listing at 1960 E Andy Devine Ave.','assistant bootstrap research: Kingman restaurants',0,
+  null,'(928) 753-3523',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman restaurant listing at 1960 E Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','restaurants','restaurants','Del Taco',
+  'https://www.mohavelocal.com/l/kingman-az/restaurants','mohavelocal.com','Kingman restaurant listing at 3390 Stockton Hill Rd.','assistant bootstrap research: Kingman restaurants',0,
+  null,'(928) 681-3412',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman restaurant listing at 3390 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','restaurants','restaurants','El Palacio',
+  'https://www.mohavelocal.com/l/kingman-az/restaurants','mohavelocal.com','Kingman restaurant listing at 401 E Andy Devine Ave.','assistant bootstrap research: Kingman restaurants',0,
+  null,'(928) 718-0018',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman restaurant listing at 401 E Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','restaurants','restaurants','El Paraiso Tacos & Burgers',
+  'https://www.mohavelocal.com/l/kingman-az/restaurants','mohavelocal.com','Kingman restaurant listing at 720 Eastern St.','assistant bootstrap research: Kingman restaurants',0,
+  null,'(928) 529-5005',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman restaurant listing at 720 Eastern St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','hotels_motels','hotels motels lodging','Arcadia Lodge',
+  'https://www.mohavelocal.com/l/kingman-az/hotels-motels','mohavelocal.com','Kingman lodging listing at 909 Andy Devine Ave.','assistant bootstrap research: Kingman hotels motels lodging',0,
+  null,'(928) 753-6200',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman lodging listing at 909 Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','hotels_motels','hotels motels lodging','Arizona Inn',
+  'https://www.mohavelocal.com/l/kingman-az/hotels-motels','mohavelocal.com','Kingman lodging listing at 411 W Beale St.','assistant bootstrap research: Kingman hotels motels lodging',0,
+  null,'(928) 753-5521',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman lodging listing at 411 W Beale St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','hotels_motels','hotels motels lodging','Beale Hotel',
+  'https://www.mohavelocal.com/l/kingman-az/hotels-motels','mohavelocal.com','Kingman lodging listing at 325 E Andy Devine Ave.','assistant bootstrap research: Kingman hotels motels lodging',0,
+  null,'(928) 753-2297',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman lodging listing at 325 E Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','hotels_motels','hotels motels lodging','Best Western',
+  'https://www.mohavelocal.com/l/kingman-az/hotels-motels','mohavelocal.com','Discovery listing places this Best Western at 2930 E Andy Devine Ave; direct verification needed.','assistant bootstrap research: Kingman hotels motels lodging',0,
+  null,'(760) 326-4552',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Discovery listing places this Best Western at 2930 E Andy Devine Ave; direct verification needed."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','hotels_motels','hotels motels lodging','Best Western A Wayfarer''s Inn',
+  'https://www.mohavelocal.com/l/kingman-az/hotels-motels','mohavelocal.com','Kingman lodging listing at 2815 E Andy Devine Ave.','assistant bootstrap research: Kingman hotels motels lodging',0,
+  null,'(928) 753-6271',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman lodging listing at 2815 E Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','hotels_motels','hotels motels lodging','Brunswick Hotel',
+  'https://www.mohavelocal.com/l/kingman-az/hotels-motels','mohavelocal.com','Discovery listing places Brunswick Hotel at 315 E Andy Devine Ave; current-operation verification needed.','assistant bootstrap research: Kingman hotels motels lodging',0,
+  null,'(928) 718-1800',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Discovery listing places Brunswick Hotel at 315 E Andy Devine Ave; current-operation verification needed."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','hotels_motels','hotels motels lodging','Comfort Inn',
+  'https://www.mohavelocal.com/l/kingman-az/hotels-motels','mohavelocal.com','Kingman lodging listing at 3129 E Andy Devine Ave.','assistant bootstrap research: Kingman hotels motels lodging',0,
+  null,'(928) 718-1717',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman lodging listing at 3129 E Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','hotels_motels','hotels motels lodging','Days Inn East',
+  'https://www.mohavelocal.com/l/kingman-az/hotels-motels','mohavelocal.com','Kingman lodging listing at 3381 E Andy Devine Ave.','assistant bootstrap research: Kingman hotels motels lodging',0,
+  null,'(928) 757-7337',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman lodging listing at 3381 E Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','hotels_motels','hotels motels lodging','Days Inn West',
+  'https://www.mohavelocal.com/l/kingman-az/hotels-motels','mohavelocal.com','Kingman lodging listing at 3023 E Andy Devine Ave.','assistant bootstrap research: Kingman hotels motels lodging',0,
+  null,'(928) 753-7500',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman lodging listing at 3023 E Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','hotels_motels','hotels motels lodging','EconoLodge',
+  'https://www.mohavelocal.com/l/kingman-az/hotels-motels','mohavelocal.com','Kingman lodging listing at 3421 E Andy Devine Ave.','assistant bootstrap research: Kingman hotels motels lodging',0,
+  null,'(928) 757-7878',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman lodging listing at 3421 E Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','hotels_motels','hotels motels lodging','Economy Inn',
+  'https://www.mohavelocal.com/l/kingman-az/hotels-motels','mohavelocal.com','Kingman lodging listing at 1250 W Beale St.','assistant bootstrap research: Kingman hotels motels lodging',0,
+  null,'(928) 753-6171',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman lodging listing at 1250 W Beale St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','churches','churches worship centers','Abundant Life FWC',
+  'https://www.mohavelocal.com/l/kingman-az/churches-religious-organizations','mohavelocal.com','Kingman church/religious organization listing.','assistant bootstrap research: Kingman churches worship centers',0,
+  null,'(928) 263-6117',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman church/religious organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','churches','churches worship centers','Calvary Baptist Church',
+  'https://www.mohavelocal.com/l/kingman-az/churches-religious-organizations','mohavelocal.com','Kingman church listing at 3575 Shaeffer Ave.','assistant bootstrap research: Kingman churches worship centers',0,
+  null,'(928) 757-2976',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman church listing at 3575 Shaeffer Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','churches','churches worship centers','Calvary Chapel Kingman',
+  'https://www.mohavelocal.com/l/kingman-az/churches-religious-organizations','mohavelocal.com','Kingman church listing at 526 Stowell Ave.','assistant bootstrap research: Kingman churches worship centers',0,
+  null,'(928) 753-3730',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman church listing at 526 Stowell Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','churches','churches worship centers','Canyon Community Church',
+  'https://www.mohavelocal.com/l/kingman-az/churches-religious-organizations','mohavelocal.com','Kingman church listing at 4145 N Bank St.','assistant bootstrap research: Kingman churches worship centers',0,
+  null,'(928) 681-4673',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman church listing at 4145 N Bank St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','churches','churches worship centers','Cedar Hills Community Church',
+  'https://www.mohavelocal.com/l/kingman-az/churches-religious-organizations','mohavelocal.com','Kingman church listing at 9188 E Dally Dr.','assistant bootstrap research: Kingman churches worship centers',0,
+  null,'(928) 757-1618',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman church listing at 9188 E Dally Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','churches','churches worship centers','Champion Church Kingman',
+  'https://www.mohavelocal.com/l/kingman-az/churches-religious-organizations','mohavelocal.com','Kingman church listing on Stockton Hill Rd.','assistant bootstrap research: Kingman churches worship centers',0,
+  null,'(928) 303-4810',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman church listing on Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','churches','churches worship centers','Child Evangelism Fellowship',
+  'https://www.mohavelocal.com/l/kingman-az/churches-religious-organizations','mohavelocal.com','Kingman-based religious nonprofit listing; useful facility/organization buyer lead.','assistant bootstrap research: Kingman churches worship centers',0,
+  null,'(928) 692-8352',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman-based religious nonprofit listing; useful facility/organization buyer lead."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','insurance_professional','insurance agents professional offices','Insurance Professionals Of Arizona',
+  'https://www.mohavelocal.com/l/kingman-az/insurance-agents-brokers','mohavelocal.com','Mohave County insurance-professional listing; direct office verification needed.','assistant bootstrap research: Kingman insurance agents professional offices',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County insurance-professional listing; direct office verification needed."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','insurance_professional','insurance agents professional offices','A1 Professional Services',
+  'https://www.mohavelocal.com/l/kingman-az/insurance-agents-brokers','mohavelocal.com','Kingman insurance/professional office listing at 4305 Stockton Hill Rd #F.','assistant bootstrap research: Kingman insurance agents professional offices',0,
+  null,'(928) 692-9411',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman insurance/professional office listing at 4305 Stockton Hill Rd #F."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','insurance_professional','insurance agents professional offices','AHCCCS Health Insurance',
+  'https://www.mohavelocal.com/l/kingman-az/insurance-agents-brokers','mohavelocal.com','Kingman health-insurance office listing.','assistant bootstrap research: Kingman insurance agents professional offices',0,
+  null,'(928) 453-5100',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman health-insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','insurance_professional','insurance agents professional offices','Aflac',
+  'https://www.mohavelocal.com/l/kingman-az/insurance-agents-brokers','mohavelocal.com','Kingman insurance office listing at 1711 N Stockton Hill Rd.','assistant bootstrap research: Kingman insurance agents professional offices',0,
+  null,'(928) 377-9879',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman insurance office listing at 1711 N Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','insurance_professional','insurance agents professional offices','Allstate Insurance Companies',
+  'https://www.mohavelocal.com/l/kingman-az/insurance-agents-brokers','mohavelocal.com','Kingman insurance office listing at 2901 Stockton Hill Rd.','assistant bootstrap research: Kingman insurance agents professional offices',0,
+  null,'(928) 753-5223',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman insurance office listing at 2901 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','insurance_professional','insurance agents professional offices','American Family Insurance',
+  'https://www.mohavelocal.com/l/kingman-az/insurance-agents-brokers','mohavelocal.com','Kingman insurance office listing at 1465 Northern Ave.','assistant bootstrap research: Kingman insurance agents professional offices',0,
+  null,'(928) 704-2575',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman insurance office listing at 1465 Northern Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','insurance_professional','insurance agents professional offices','American National',
+  'https://www.mohavelocal.com/l/kingman-az/insurance-agents-brokers','mohavelocal.com','Kingman insurance office listing at 620 E Beale St #4.','assistant bootstrap research: Kingman insurance agents professional offices',0,
+  null,'(928) 718-0248',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman insurance office listing at 620 E Beale St #4."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','insurance_professional','insurance agents professional offices','American National Insurance',
+  'https://www.mohavelocal.com/l/kingman-az/insurance-agents-brokers','mohavelocal.com','Kingman insurance office listing at 2001 Stockton Hill Rd #A.','assistant bootstrap research: Kingman insurance agents professional offices',0,
+  null,'(928) 718-0248',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman insurance office listing at 2001 Stockton Hill Rd #A."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','insurance_professional','insurance agents professional offices','Can-Tell Enterprises',
+  'https://www.mohavelocal.com/l/kingman-az/insurance-agents-brokers','mohavelocal.com','Kingman insurance/professional office listing at 701 N Stockton Hill Rd #M.','assistant bootstrap research: Kingman insurance agents professional offices',0,
+  null,'(928) 718-1525',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman insurance/professional office listing at 701 N Stockton Hill Rd #M."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','insurance_professional','insurance agents professional offices','Chicago Title Company',
+  'https://www.mohavelocal.com/l/kingman-az/insurance-agents-brokers','mohavelocal.com','Kingman title/insurance professional listing.','assistant bootstrap research: Kingman insurance agents professional offices',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman title/insurance professional listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'vendor','Kingman','facility_maintenance','Building Maintenance Help','Canyon State Enterprises LLC',
+  'https://www.mohavelocal.com/l/kingman-az/contractors-general','mohavelocal.com','Kingman contractor listing; roofing/masonry/stucco and broader construction capability.','assistant bootstrap research: Kingman Building Maintenance Help',0,
+  null,'(928) 757-9003',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman contractor listing; roofing/masonry/stucco and broader construction capability."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'vendor','Kingman','facility_maintenance','Building Maintenance Help','Alston Quality Homes LLC',
+  'https://www.mohavelocal.com/l/kingman-az/contractors-general','mohavelocal.com','Kingman general contractor listing at 3405 E Northern Ave.','assistant bootstrap research: Kingman Building Maintenance Help',0,
+  null,'(928) 757-5224',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman general contractor listing at 3405 E Northern Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'vendor','Kingman','facility_maintenance','Building Maintenance Help','Angle Homes Inc',
+  'https://www.mohavelocal.com/l/kingman-az/contractors-general','mohavelocal.com','Kingman home builder/general contractor listing at 2231 Hualapai Mountain Rd #A.','assistant bootstrap research: Kingman Building Maintenance Help',0,
+  null,'(928) 718-1550',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman home builder/general contractor listing at 2231 Hualapai Mountain Rd #A."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'vendor','Kingman','facility_maintenance','Building Maintenance Help','Betnor Inc',
+  'https://www.mohavelocal.com/l/kingman-az/contractors-general','mohavelocal.com','Kingman general contractor listing at 4105 N Bank St.','assistant bootstrap research: Kingman Building Maintenance Help',0,
+  null,'(928) 757-1001',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman general contractor listing at 4105 N Bank St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'vendor','Kingman','facility_maintenance','Building Maintenance Help','Big Red Construction Inc',
+  'https://www.mohavelocal.com/l/kingman-az/contractors-general','mohavelocal.com','Kingman general contractor listing.','assistant bootstrap research: Kingman Building Maintenance Help',0,
+  null,'(928) 753-0875',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman general contractor listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'vendor','Kingman','facility_maintenance','Building Maintenance Help','Build Em Right By Dad Inc',
+  'https://www.mohavelocal.com/l/kingman-az/contractors-general','mohavelocal.com','General contractor serving Mohave County/Kingman area.','assistant bootstrap research: Kingman Building Maintenance Help',0,
+  null,'(928) 692-3715',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"General contractor serving Mohave County/Kingman area."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'vendor','Kingman','facility_maintenance','Building Maintenance Help','Cobalt Construction',
+  'https://www.mohavelocal.com/l/kingman-az/contractors-general','mohavelocal.com','General contractor serving Mohave County/Kingman area.','assistant bootstrap research: Kingman Building Maintenance Help',0,
+  null,'(928) 704-9574',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"General contractor serving Mohave County/Kingman area."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'vendor','Kingman','electrical_service','Electrician','CDB Electric LLC',
+  'https://www.mohavelocal.com/l/kingman-az/contractors-general','mohavelocal.com','Mohave County electrical contractor listing describes residential, commercial and industrial troubleshooting.','assistant bootstrap research: Kingman Electrician',0,
+  null,'(928) 279-6555',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County electrical contractor listing describes residential, commercial and industrial troubleshooting."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','A Art''s Auto Repair & Handyman LLC',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman auto-repair business at 2701 Lillie Ave.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 753-7077',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman auto-repair business at 2701 Lillie Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','A Team Automotive Mobile Mechanic',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman mobile auto-repair business at 1309 Jackson St.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 605-2076',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman mobile auto-repair business at 1309 Jackson St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','A-1 Mobile Auto Repair',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman auto-repair business listing.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 692-9239',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman auto-repair business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','AAction Automotive Center',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman auto-repair business at 3987 Stockton Hill Rd.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 757-1313',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman auto-repair business at 3987 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Advanced Transmission',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman transmission/auto-repair business at 3518 N Benton St.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 757-4691',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman transmission/auto-repair business at 3518 N Benton St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','All American Tire',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman tire and auto-repair business at 1182 W Beale St.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 718-1122',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman tire and auto-repair business at 1182 W Beale St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Aune''s Bob Car Care Co',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman auto-repair business at 1150 W Beale St.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 753-9300',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman auto-repair business at 1150 W Beale St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','B & B Auto & Diesel Repair Inc',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman auto/diesel repair business at 4270 N Stockton Hill Rd.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 692-3168',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman auto/diesel repair business at 4270 N Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Ben''s Mobile Auto Repair',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman mobile auto-repair business listed at 4882 Stockton Hill Rd.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(702) 443-6909',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman mobile auto-repair business listed at 4882 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Best Tire Pros Of Kingman',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman tire/auto-repair business at 1210 W Beale St.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 753-0336',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman tire/auto-repair business at 1210 W Beale St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Certified Auto Repair',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman auto-repair business at 4355 N Bank St #E.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 681-2227',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman auto-repair business at 4355 N Bank St #E."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Cobb''s Transmission & Auto Center',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman transmission/auto-repair business at 3137 E Andy Devine Ave.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 753-2204',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman transmission/auto-repair business at 3137 E Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','D & S Auto Repair',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman auto-repair business at 941 E Andy Devine Ave.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 753-6939',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman auto-repair business at 941 E Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Dr Of Autos',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman auto-repair business at 3191 E Neal Ave.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 757-7403',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman auto-repair business at 3191 E Neal Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','England Equipment Co LLC',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman equipment/auto-repair business at 3001 Eastern St.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 718-1255',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman equipment/auto-repair business at 3001 Eastern St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','George''s Garage',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman auto-repair business at 1401 E Andy Devine Ave.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 753-4133',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman auto-repair business at 1401 E Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Holden''s Auto & Truck',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman auto/truck repair business at 2405 Airway Ave.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 757-7756',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman auto/truck repair business at 2405 Airway Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Joe''s Auto - RV - Truck Service Center',
+  'https://www.mohavelocal.com/l/kingman-az/auto-repair','mohavelocal.com','Kingman auto/RV/truck service business at 9350 Shipping Ln.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 681-5823',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman auto/RV/truck service business at 9350 Shipping Ln."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','dental','dentists dental offices orthodontists','Abdelnour Joe W DDS MS',
+  'https://www.mohavelocal.com/l/kingman-az/dentists','mohavelocal.com','Kingman dental/oral-surgery office at 1848 Hope Ave.','assistant bootstrap research: Kingman dentists dental offices orthodontists',0,
+  null,'(928) 753-2126',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman dental/oral-surgery office at 1848 Hope Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','dental','dentists dental offices orthodontists','Absolute Smiles Dentistry',
+  'https://www.mohavelocal.com/l/kingman-az/dentists','mohavelocal.com','Kingman dental office at 2215 Hualapai Mountain Rd.','assistant bootstrap research: Kingman dentists dental offices orthodontists',0,
+  null,'(928) 718-0002',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman dental office at 2215 Hualapai Mountain Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','dental','dentists dental offices orthodontists','Anderson Robert DDS',
+  'https://www.mohavelocal.com/l/kingman-az/dentists','mohavelocal.com','Kingman dental office at 3775 Stockton Hill Rd #C.','assistant bootstrap research: Kingman dentists dental offices orthodontists',0,
+  null,'(928) 692-9315',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman dental office at 3775 Stockton Hill Rd #C."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','dental','dentists dental offices orthodontists','Bradley Kelly DMD',
+  'https://www.mohavelocal.com/l/kingman-az/dentists','mohavelocal.com','Kingman dental practice at 1848 Hope Ave.','assistant bootstrap research: Kingman dentists dental offices orthodontists',0,
+  null,'(928) 753-5200',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman dental practice at 1848 Hope Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','dental','dentists dental offices orthodontists','Bullen Carl B DDS MS',
+  'https://www.mohavelocal.com/l/kingman-az/dentists','mohavelocal.com','Kingman dental office at 1143 Riata Valley Rd.','assistant bootstrap research: Kingman dentists dental offices orthodontists',0,
+  null,'(928) 757-8700',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman dental office at 1143 Riata Valley Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','dental','dentists dental offices orthodontists','Carlson Bryan K DMD',
+  'https://www.mohavelocal.com/l/kingman-az/dentists','mohavelocal.com','Kingman dental office at 988 Sycamore Ave.','assistant bootstrap research: Kingman dentists dental offices orthodontists',0,
+  null,'(928) 757-3223',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman dental office at 988 Sycamore Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','dental','dentists dental offices orthodontists','Clark E Melstrom DDS',
+  'https://www.mohavelocal.com/l/kingman-az/dentists','mohavelocal.com','Kingman dental office at 4601 Stockton Hill Rd.','assistant bootstrap research: Kingman dentists dental offices orthodontists',0,
+  null,'(928) 757-3225',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman dental office at 4601 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','dental','dentists dental offices orthodontists','Cobb Regina E DDS',
+  'https://www.mohavelocal.com/l/kingman-az/dentists','mohavelocal.com','Kingman dental office at 1111 Riata Valley Rd #350.','assistant bootstrap research: Kingman dentists dental offices orthodontists',0,
+  null,'(928) 757-9190',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman dental office at 1111 Riata Valley Rd #350."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','dental','dentists dental offices orthodontists','Dicarlo Ronald DMD',
+  'https://www.mohavelocal.com/l/kingman-az/dentists','mohavelocal.com','Kingman pediatric dental office at 2401 Stockton Hill Rd #1.','assistant bootstrap research: Kingman dentists dental offices orthodontists',0,
+  null,'(928) 718-7188',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman pediatric dental office at 2401 Stockton Hill Rd #1."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','dental','dentists dental offices orthodontists','Family Dentistry By Design',
+  'https://www.mohavelocal.com/l/kingman-az/dentists','mohavelocal.com','Kingman dental practice identified in the current dentist directory.','assistant bootstrap research: Kingman dentists dental offices orthodontists',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman dental practice identified in the current dentist directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Arise Inc',
+  'https://www.mohavelocal.com/l/kingman-az/social-service-organizations','mohavelocal.com','Kingman social-service organization at 114 Tucker St #8.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 753-5889',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman social-service organization at 114 Tucker St #8."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Arizona Youth Partnership',
+  'https://www.mohavelocal.com/l/kingman-az/social-service-organizations','mohavelocal.com','Kingman youth/social-service organization.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 453-4003',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman youth/social-service organization."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Child & Family Resources',
+  'https://www.mohavelocal.com/l/kingman-az/social-service-organizations','mohavelocal.com','Kingman social-service organization at 2202 Hualapai Mountain Rd.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 753-4410',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman social-service organization at 2202 Hualapai Mountain Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Child & Family Support Service',
+  'https://www.mohavelocal.com/l/kingman-az/social-service-organizations','mohavelocal.com','Kingman social-service organization at 403 E Beale St.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 753-8778',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman social-service organization at 403 E Beale St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Cornerstone Mission',
+  'https://www.mohavelocal.com/l/kingman-az/social-service-organizations','mohavelocal.com','Kingman social-service organization at 3990 E John L Ave.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 692-7771',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman social-service organization at 3990 E John L Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Goodwill Industries',
+  'https://www.mohavelocal.com/l/kingman-az/social-service-organizations','mohavelocal.com','Kingman thrift/social-service facility at 4265 Stockton Hill Rd.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 757-9808',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman thrift/social-service facility at 4265 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Grand Vista Inc',
+  'https://www.mohavelocal.com/l/kingman-az/social-service-organizations','mohavelocal.com','Kingman social-service organization at 1075 Kenwood Ave.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 692-7001',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman social-service organization at 1075 Kenwood Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Kingman Aid To Abused People',
+  'https://www.mohavelocal.com/l/kingman-az/social-service-organizations','mohavelocal.com','Kingman crisis/social-service organization at 1770 Airway Ave.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 753-4242',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman crisis/social-service organization at 1770 Airway Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Kingman Community Foundation',
+  'https://www.mohavelocal.com/l/kingman-az/social-service-organizations','mohavelocal.com','Kingman community foundation listing at 2985 E John L Ave.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 757-1704',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman community foundation listing at 2985 E John L Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','River Cities United Way',
+  'https://www.mohavelocal.com/l/kingman-az/social-service-organizations','mohavelocal.com','Kingman social-service organization at 2202 Hualapai Mountain Rd.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 753-6720',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman social-service organization at 2202 Hualapai Mountain Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Sarah''s House',
+  'https://www.mohavelocal.com/l/kingman-az/social-service-organizations','mohavelocal.com','Kingman social-service organization at 1778 Airway Ave.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 757-8103',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman social-service organization at 1778 Airway Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','therapy_behavioral','therapy counseling behavioral health clinics','WestCare Arizona',
+  'https://www.mohavelocal.com/l/kingman-az/social-service-organizations','mohavelocal.com','Behavioral-health/human-services organization listing at 220 First St, Kingman.','assistant bootstrap research: Kingman therapy counseling behavioral health clinics',0,
+  null,'(760) 326-2368',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Behavioral-health/human-services organization listing at 220 First St, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Cerbat Cliffs Animal Hospital',
+  'https://www.mohavelocal.com/l/kingman-az/veterinarians','mohavelocal.com','Kingman animal hospital at 4110 Stockton Hill Rd.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 757-8855',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman animal hospital at 4110 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Kingman Animal Hospital',
+  'https://www.mohavelocal.com/l/kingman-az/veterinarians','mohavelocal.com','Kingman animal hospital at 1650 Northern Ave.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 757-4011',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman animal hospital at 1650 Northern Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Low Cost Spay & Neuter Clinic',
+  'https://www.mohavelocal.com/l/kingman-az/veterinarians','mohavelocal.com','Kingman veterinary clinic at 1520 Northern Ave.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 692-5226',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman veterinary clinic at 1520 Northern Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Manzanita Animal Hospital',
+  'https://www.mohavelocal.com/l/kingman-az/veterinarians','mohavelocal.com','Kingman animal hospital at 2323 E Detroit Ave.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 753-6138',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman animal hospital at 2323 E Detroit Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Mountain View Animal Hospital',
+  'https://www.mohavelocal.com/l/kingman-az/veterinarians','mohavelocal.com','Kingman animal hospital at 3975 Bank St N.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 529-5252',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman animal hospital at 3975 Bank St N."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Stockton Hill Animal Hospital Of Kingman',
+  'https://www.mohavelocal.com/l/kingman-az/veterinarians','mohavelocal.com','Kingman animal hospital at 4335 Stockton Hill Rd.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 757-7979',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman animal hospital at 4335 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','general_business','other local businesses','Wright Veterinary Service',
+  'https://www.mohavelocal.com/l/kingman-az/veterinarians','mohavelocal.com','Kingman veterinary practice at 2444 Kingman Ave.','assistant bootstrap research: Kingman other local businesses',0,
+  null,'(928) 718-1300',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman veterinary practice at 2444 Kingman Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','medical_centers','hospitals medical centers clinics','Arizona Desert Dermatology & Surgery PC',
+  'https://www.mohavelocal.com/l/kingman-az/physicians-surgeons','mohavelocal.com','Kingman medical office at 1700 Sycamore Ave.','assistant bootstrap research: Kingman hospitals medical centers clinics',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman medical office at 1700 Sycamore Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','medical_centers','hospitals medical centers clinics','Al-Khatib Jamal MD FACC FSCAI',
+  'https://www.mohavelocal.com/l/kingman-az/physicians-surgeons','mohavelocal.com','Kingman physician office at 1753 Airway Ave #A.','assistant bootstrap research: Kingman hospitals medical centers clinics',0,
+  null,'(928) 757-4359',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman physician office at 1753 Airway Ave #A."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','medical_centers','hospitals medical centers clinics','Alleman Wade MD',
+  'https://www.mohavelocal.com/l/kingman-az/physicians-surgeons','mohavelocal.com','Kingman physician office at 1608 N Stockton Hill Rd #104.','assistant bootstrap research: Kingman hospitals medical centers clinics',0,
+  null,'(928) 453-8346',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman physician office at 1608 N Stockton Hill Rd #104."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','medical_centers','hospitals medical centers clinics','Allergy Affiliates Southwest - Hosea E Brown MD',
+  'https://www.mohavelocal.com/l/kingman-az/physicians-surgeons','mohavelocal.com','Kingman physician office at 2901 Stockton Hill Rd #E.','assistant bootstrap research: Kingman hospitals medical centers clinics',0,
+  null,'(928) 757-1060',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman physician office at 2901 Stockton Hill Rd #E."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','medical_centers','hospitals medical centers clinics','Arizona Institute Medicine: Salim Attiya MD',
+  'https://www.mohavelocal.com/l/kingman-az/physicians-surgeons','mohavelocal.com','Kingman physician office at 3636 Stockton Hill Rd #3.','assistant bootstrap research: Kingman hospitals medical centers clinics',0,
+  null,'(928) 757-1739',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman physician office at 3636 Stockton Hill Rd #3."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','medical_centers','hospitals medical centers clinics','Arizona Institute Of Medicine & Surgery',
+  'https://www.mohavelocal.com/l/kingman-az/physicians-surgeons','mohavelocal.com','Kingman medical office at 3636 Stockton Hill Rd.','assistant bootstrap research: Kingman hospitals medical centers clinics',0,
+  null,'(928) 757-3636',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman medical office at 3636 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','medical_centers','hospitals medical centers clinics','Arizona Kidney Disease & Hypertension Center',
+  'https://www.mohavelocal.com/l/kingman-az/physicians-surgeons','mohavelocal.com','Kingman nephrology office at 2501 Stockton Hill Rd #102.','assistant bootstrap research: Kingman hospitals medical centers clinics',0,
+  null,'(928) 681-2772',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman nephrology office at 2501 Stockton Hill Rd #102."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','medical_centers','hospitals medical centers clinics','Trinity Allergy Asthma and Immunology',
+  'https://www.mohavelocal.com/l/kingman-az/physicians-surgeons','mohavelocal.com','Kingman allergy/immunology office at 3931 Stockton Hill Rd #D.','assistant bootstrap research: Kingman hospitals medical centers clinics',0,
+  null,'(928) 681-5800',false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Kingman allergy/immunology office at 3931 Stockton Hill Rd #D."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','medical_centers','hospitals medical centers clinics','Kingman Regional Medical Center',
+  'https://www.choosekingman.com/locate-here/target-industries/healthcare','choosekingman.com','City of Kingman Economic Development identifies KRMC as the largest healthcare provider in northwest Arizona with multiple Kingman campuses.','assistant bootstrap research: Kingman hospitals medical centers clinics',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development identifies KRMC as the largest healthcare provider in northwest Arizona with multiple Kingman campuses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','American Woodmark Corp.',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Laron Incorporated',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Cantex, Inc.',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','True Value Company',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Dillon Transportation, LLC',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Insteel',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Pepsi Cola',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Star R Foam',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Shelves West',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Interstate Group, LLC',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','West Coast Netting',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Honeywell',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Kingman Airline Service, Inc.',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Goodyear Tire & Rubber Co.',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','JM Manufacturing Co / JM Eagle',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Henry Co., LLC',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Love''s Trucking Solutions',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','MC2',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Lander Industries',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Potters Industries',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Jasper Engines',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Isco Industries',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Lomanco, Inc.',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+insert into market_inventory_candidates(
+  side,market,category_key,category_label,business_name,source_url,source_domain,
+  snippet,search_query,page_no,public_email,public_phone,official_site,
+  source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+  'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','I Corp',
+  'https://www.choosekingman.com/workforce/major-employers/','choosekingman.com','City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+  null,null,false,
+  'secondary','discovery',null,'discovered',7,
+  '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_02","researched_at":"2026-10-26T22:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City of Kingman Economic Development lists this company among Kingman''s major employers/manufacturing, distribution, aviation or industrial businesses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+  source_domain=excluded.source_domain,
+  snippet=excluded.snippet,
+  search_query=excluded.search_query,
+  public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+  official_site=excluded.official_site,
+  source_tier=excluded.source_tier,
+  verification_status=excluded.verification_status,
+  last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+  status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+  last_seen_at=now(),
+  query_strategy_version=excluded.query_strategy_version,
+  evidence=market_inventory_candidates.evidence || excluded.evidence,
+  updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+  select count(*) from market_inventory_candidates c
+  where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Kingman';
