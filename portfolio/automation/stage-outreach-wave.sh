@@ -170,8 +170,8 @@ fi
 
 if [ "$SIDE" = "vendor" ]; then
   printf '%s\n' "$SQL_CTE
-insert into outreach(entity_type,entity_id,campaign,wave,channel,sequence_step,status,next_followup_at,opt_out)
-select 'vendor',entity_id,'vendor_recruitment',:'wave','email',0,'queued',now(),false
+insert into outreach(entity_type,entity_id,campaign,wave,channel,sequence_step,status,next_followup_at,opt_out,target_market,target_service_key)
+select 'vendor',entity_id,'vendor_recruitment',:'wave','email',0,'queued',now(),false,market,service_or_campaign
 from selected;" | psql_stdin
 else
   printf '%s\n' "$SQL_CTE
