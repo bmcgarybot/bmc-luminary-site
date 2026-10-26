@@ -5368,3 +5368,207 @@ Instead:
 5. eliminate false-empty market/category cells;
 6. then conduct the planned line-by-line verification with Brett.
 
+
+
+## 56. STATEWIDE ASSISTANT-LED BOOTSTRAP ENGINE — 2026-10-26
+
+This section continues Section 55 and records the actual implementation now underway.
+
+### User expectation
+
+Brett expects the initial statewide research pool to contain **thousands of plausible businesses/buyers/vendors**, not dozens, because ordinary public search clearly exposes large numbers of organizations in every meaningful Arizona market.
+
+The assistant must continue doing the bootstrap work rather than waiting for the old VPS scanner to crawl 1,239 lanes slowly.
+
+### First hand-researched rural seed
+
+A first manually researched rural batch was committed:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-batch-01.json`
+- `portfolio/automation/seed-assistant-research-bootstrap.sql`
+
+It contains approximately 50 discovery/direct-evidence records across difficult small markets such as:
+- Ash Fork;
+- Mayer;
+- Cordes Lakes;
+- Williamson Valley;
+- Seligman;
+- Skull Valley;
+- Dewey-Humboldt;
+- Golden Valley.
+
+These records are discovery/research rows only. They do not auto-promote providers/buyers and do not send outreach.
+
+### Discovery-table dedupe flaw fixed
+
+The prior unique key effectively allowed only one candidate per:
+- side;
+- market;
+- category;
+- source URL.
+
+That meant one chamber/directory/category page listing many businesses could contribute only one candidate.
+
+This was changed so multiple distinct businesses may be supported by the same directory/category source while deduplicating the business/source pair.
+
+Relevant commits include:
+- `b897084f3b4299e5cbaca0901affd9b18625f8cb`
+- `88b189799002a0e6aa4f8dbead14233c449c0f49`
+- `ea6a9eb370c7c455bcf6dff057d97eef313cd375`
+
+### Statewide curated directory bootstrap importer
+
+New:
+- `portfolio/automation/assistant-directory-bootstrap.py`
+- `portfolio/data/assistant-bootstrap-source-registry.json`
+
+The importer uses public city/category directory pages selected by ChatGPT as discovery feeders.
+
+Current curated market set:
+- all 21 configured BMC markets.
+
+Current feed families include:
+- restaurants and bars;
+- educational services;
+- healthcare;
+- shopping;
+- government;
+- housing;
+- insurance;
+- automotive services;
+- construction;
+- electrical;
+- consumer services;
+- environmental services.
+
+The importer:
+- fetches only public pages;
+- extracts distinct company names;
+- captures visible phone/address where available;
+- uses the individual company page as the source URL when exposed;
+- classifies the company into a BMC buyer/vendor lane;
+- inserts only into `market_inventory_candidates`;
+- does not promote to base buyer/vendor tables;
+- does not stage outreach;
+- does not send email;
+- does not approve providers.
+
+This is intentionally **discovery bootstrap**, not verification.
+
+A safe allowlisted VPS relay action was added:
+- `assistant_bootstrap_import`
+
+It is an internal mutating action and therefore inherits the relay requirement that all outbound switches remain OFF.
+
+### Source quality is now explicit
+
+The candidate table now has explicit fields:
+- `source_tier`
+- `verification_status`
+- `last_verified_at`
+
+Current intended semantics:
+
+Source tier examples:
+- `direct`
+- `secondary`
+- `directory`
+- `search`
+- `weak`
+
+Verification status examples:
+- `discovery`
+- `direct_evidence`
+- later `manual_verified`
+- later `credential_verified`
+- `stale`
+- `rejected`
+
+The bulk public-directory importer writes:
+- `source_tier=directory`
+- `verification_status=discovery`
+
+Search-scanner direct pages use:
+- `source_tier=direct`
+- `verification_status=direct_evidence`
+
+This is specifically to prevent a repeat of the earlier reporting mistake where any source URL was visually treated like equally strong evidence.
+
+### Production proof now reports evidence tiers
+
+`production-proof-readout.sh` now includes candidate counts grouped by:
+- source tier;
+- verification status.
+
+It also separately reports:
+- base records;
+- search-discovered rows;
+- direct/verified-style evidence;
+- lane scan state.
+
+### Public source validation performed during this build
+
+The assistant confirmed public category pages with hundreds/thousands of records exist for markets including:
+- Kingman;
+- Winslow;
+- Camp Verde;
+- Chino Valley;
+- Prescott Valley;
+- Prescott;
+- Flagstaff;
+- Mayer;
+- Ash Fork;
+- Skull Valley;
+- Golden Valley.
+
+Examples of visible category depths:
+- Kingman automotive: hundreds;
+- Kingman construction: over a thousand;
+- Prescott Valley construction: over a thousand;
+- Chino Valley construction: hundreds;
+- Camp Verde construction: hundreds;
+- Winslow total directory: over a thousand;
+- Flagstaff total directory: many thousands.
+
+This proves the old apparent zeroes were not credible market reality.
+
+Some market names do not map cleanly to the same directory slug:
+- Cordes Lakes;
+- Dewey-Humboldt;
+- Williamson Valley.
+
+Those should continue using direct-search/manual/bootstrap sources rather than forcing a bad directory alias.
+
+### Important deployment state
+
+An earlier deploy request targeting:
+- `f9e75b35381bb8578af837a2e2db1cc399baec97`
+
+became obsolete because source-tier/schema/importer work continued afterward.
+
+Do not treat that older request as the intended final bootstrap deployment.
+
+Before production import:
+1. verify latest master;
+2. require BMC Portfolio CI success on that exact SHA;
+3. deploy the latest SHA through the VPS relay;
+4. keep all outreach switches OFF;
+5. run the assistant bootstrap importer in controlled market batches;
+6. inspect production row counts and evidence tiers;
+7. continue with remaining markets/source families until statewide discovery reaches the expected thousands.
+
+### Audit plan remains mandatory
+
+Thousands of discovery rows are not the same as thousands of verified companies.
+
+After bootstrap:
+- dedupe;
+- identify stale entries;
+- replace stale URLs;
+- direct-site verify;
+- verify service territory/category;
+- verify public contact data;
+- credential-check regulated services;
+- mark records line by line with Brett.
+
+The VPS scanner should thereafter operate as a delta/update layer, not as a substitute for the bootstrap.
+
