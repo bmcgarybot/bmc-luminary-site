@@ -3436,7 +3436,7 @@ async def process_inventory_closure_audit(x_bmc_admin_key:str|None=Header(defaul
           order by last_closure_checked_at nulls first, updated_at asc
           limit 25""")
         for row in rows:
-            query=f'"{clean(row["business_name"])}" "{clean(row["market"])}" Arizona permanently closed'
+            query=f'"{clean(row["business_name"])}" "{clean(row["market"])}" Arizona closed'
             try:
                 results=await search_research_web(query,1,10)
             except Exception as exc:
@@ -3457,21 +3457,20 @@ async def process_inventory_closure_audit(x_bmc_admin_key:str|None=Header(defaul
                 reason=why
                 break
             if hit:
-                # Close exact-name records for this market/side so multiple source
-                # rows for the same business disappear from active coverage together.
+                # Close only the specific evidence row. Same-name businesses can
+                # represent multiple chain locations, so closure propagation requires
+                # a future canonical location/entity identity rather than a name match.
                 affected=await conn.fetchval("""with changed as (
                   update market_inventory_candidates
-                  set status='closed',closed_at=now(),closure_reason=$4,
+                  set status='closed',closed_at=now(),closure_reason=$2,
                       last_closure_checked_at=now(),
                       evidence=evidence || jsonb_build_object('closure_audit',
-                        jsonb_build_object('source_url',$5,'source_domain',$6,'title',$7,'checked_at',now())),
+                        jsonb_build_object('source_url',$3,'source_domain',$4,'title',$5,'checked_at',now())),
                       updated_at=now()
-                  where side=$1 and market=$2 and lower(regexp_replace(coalesce(business_name,''),'[^a-z0-9]+','','g'))=
-                    lower(regexp_replace($3,'[^a-z0-9]+','','g'))
-                    and status='discovered'
+                  where candidate_id=$1 and status='discovered'
                   returning 1
                 ) select count(*) from changed""",
-                  row["side"],row["market"],row["business_name"],reason,
+                  row["candidate_id"],reason,
                   clean(hit.get("url")),clean(hit.get("domain")),clean(hit.get("title")))
                 closed+=int(affected or 0)
                 closed_rows.append({"market":row["market"],"business_name":row["business_name"],
