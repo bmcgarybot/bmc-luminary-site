@@ -1,0 +1,16 @@
+{
+  "action": "deploy_update",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-26T20:47:02.403725+00:00",
+  "error": "Refusing deploy: no completed BMC Portfolio CI run found for required SHA",
+  "exit_code": null,
+  "git_commit_after": "e56ff338269517e25bfac0bdff9057329c526e23",
+  "git_commit_before": "e56ff338269517e25bfac0bdff9057329c526e23",
+  "host": "vps-5675821a",
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_id": "deploy-inventory-v7-20261026T2048Z",
+  "started_at": "2026-10-26T20:47:02.403704+00:00",
+  "status": "rejected",
+  "version": 1
+}
