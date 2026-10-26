@@ -656,3 +656,38 @@ set next_page=1,
 where coalesce(query_strategy_version,2)<4;
 
 alter table local_demand_scan_state alter column query_strategy_version set default 4;
+
+-- Query strategy v5 requires explicit target-market evidence before a public
+-- indexed result can be counted as a local-demand signal. Preserve historical
+-- rows for audit, but quarantine unreviewed pre-v5 discoveries from clean data.
+alter table local_demand_signals add column if not exists query_strategy_version integer;
+update local_demand_signals
+set query_strategy_version=4
+where query_strategy_version is null;
+
+update local_demand_signals
+set status='superseded_pre_v5',
+    evidence=evidence || jsonb_build_object(
+      'superseded_reason','pre_v5_missing_market_relevance_verification',
+      'superseded_at',now()
+    ),
+    updated_at=now()
+where query_strategy_version<5
+  and status='discovered';
+
+alter table local_demand_signals alter column query_strategy_version set default 5;
+
+update local_demand_scan_state
+set next_page=1,
+    scans=0,
+    results_seen=0,
+    signals_found=0,
+    no_progress_scans=0,
+    last_run_at=null,
+    last_error=null,
+    query_strategy_version=5,
+    updated_at=now()
+where coalesce(query_strategy_version,4)<5;
+
+alter table local_demand_scan_state alter column query_strategy_version set default 5;
+
