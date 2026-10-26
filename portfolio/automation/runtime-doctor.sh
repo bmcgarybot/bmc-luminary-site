@@ -114,6 +114,27 @@ else
   fail "Docker Compose configuration does not validate"
 fi
 
+if docker compose --env-file "$ENV_FILE" --profile tunnel ps --status running --services 2>/dev/null | grep -qx cloudflared; then
+  cloudflared_version="$(docker compose --env-file "$ENV_FILE" --profile tunnel exec -T cloudflared cloudflared --version 2>/dev/null | sed -n 's/.*version \([0-9][0-9.]*\).*/\1/p' | head -1)"
+  if python3 - "$cloudflared_version" <<'PY'
+import re,sys
+m=re.fullmatch(r"(\d+)\.(\d+)\.(\d+)",sys.argv[1] if len(sys.argv)>1 else "")
+raise SystemExit(0 if m and tuple(map(int,m.groups())) >= (2026,10,2) else 1)
+PY
+  then
+    pass "Cloudflare Tunnel is running patched cloudflared ($cloudflared_version)"
+  else
+    fail "Cloudflare Tunnel cloudflared version '$cloudflared_version' is below required 2026.10.2"
+  fi
+else
+  tunnel_token="$(env_value CLOUDFLARE_TUNNEL_TOKEN)"
+  if [ -n "$tunnel_token" ] && [[ "$tunnel_token" != *CHANGE_ME* ]]; then
+    fail "Cloudflare Tunnel token is configured but cloudflared is not running"
+  else
+    warn "Cloudflare Tunnel is not running"
+  fi
+fi
+
 api_health_ok=0
 for i in $(seq 1 30); do
   if curl -fsS http://127.0.0.1:8000/health >/tmp/bmc_runtime_health.json 2>/dev/null; then
