@@ -9556,3 +9556,3445 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Scottsdale';
+
+
+-- Assistant-led Tucson buyer census batch 01 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','hotels_motels','hotels motels lodging','Aloft Tucson University',
+ 'https://business.tucsonchamber.org/list/Search/lodging-travel-346724','business.tucsonchamber.org','Current Chamber of Southern Arizona lodging/hotel listing.','assistant census research: Tucson hotels motels lodging',0,
+ null,'(520) 908-6820',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona lodging/hotel listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','hotels_motels','hotels motels lodging','Armory Park Inn',
+ 'https://business.tucsonchamber.org/list/Search/lodging-travel-346724','business.tucsonchamber.org','Current Chamber of Southern Arizona lodging/hotel listing.','assistant census research: Tucson hotels motels lodging',0,
+ null,'(520) 838-0535',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona lodging/hotel listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','hotels_motels','hotels motels lodging','Candlewood Suites Tucson',
+ 'https://business.tucsonchamber.org/list/Search/lodging-travel-346724','business.tucsonchamber.org','Current Chamber of Southern Arizona lodging/hotel listing.','assistant census research: Tucson hotels motels lodging',0,
+ null,'(520) 373-5799',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona lodging/hotel listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','hotels_motels','hotels motels lodging','Comfort Suites at Sabino Canyon',
+ 'https://business.tucsonchamber.org/list/Search/lodging-travel-346724','business.tucsonchamber.org','Current Chamber of Southern Arizona lodging/hotel listing.','assistant census research: Tucson hotels motels lodging',0,
+ null,'(520) 298-2300',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona lodging/hotel listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','hotels_motels','hotels motels lodging','Courtyard by Marriott - Williams Centre',
+ 'https://business.tucsonchamber.org/list/Search/lodging-travel-346724','business.tucsonchamber.org','Current Chamber of Southern Arizona lodging/hotel listing.','assistant census research: Tucson hotels motels lodging',0,
+ null,'(520) 745-6000',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona lodging/hotel listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','hotels_motels','hotels motels lodging','Doubletree Hotel Downtown Convention Center',
+ 'https://business.tucsonchamber.org/list/Search/lodging-travel-346724','business.tucsonchamber.org','Current Chamber of Southern Arizona lodging/hotel listing.','assistant census research: Tucson hotels motels lodging',0,
+ null,'(520) 372-7100',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona lodging/hotel listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','hotels_motels','hotels motels lodging','DoubleTree Suites by Hilton Tucson Airport',
+ 'https://business.tucsonchamber.org/list/Search/lodging-travel-346724','business.tucsonchamber.org','Current Chamber of Southern Arizona lodging/hotel listing.','assistant census research: Tucson hotels motels lodging',0,
+ null,'(520) 225-0800',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona lodging/hotel listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','hotels_motels','hotels motels lodging','Embassy Suites by Hilton Tucson East',
+ 'https://business.tucsonchamber.org/list/Search/lodging-travel-346724','business.tucsonchamber.org','Current Chamber of Southern Arizona lodging/hotel listing.','assistant census research: Tucson hotels motels lodging',0,
+ null,'(520) 721-7100',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona lodging/hotel listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','hotels_motels','hotels motels lodging','Graduate Tucson',
+ 'https://business.tucsonchamber.org/list/Search/lodging-travel-346724','business.tucsonchamber.org','Current Chamber of Southern Arizona lodging/hotel listing.','assistant census research: Tucson hotels motels lodging',0,
+ null,'(520) 467-5900',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona lodging/hotel listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','hotels_motels','hotels motels lodging','The Eddy Hotel Tucson, Tapestry Collection by Hilton',
+ 'https://business.tucsonchamber.org/list/Search/lodging-travel-346724','business.tucsonchamber.org','Current Chamber of Southern Arizona lodging/hotel listing.','assistant census research: Tucson hotels motels lodging',0,
+ null,'(520) 297-8624',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona lodging/hotel listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','hotels_motels','hotels motels lodging','Focus Hospitality Management',
+ 'https://business.tucsonchamber.org/list/Search/lodging-travel-346724','business.tucsonchamber.org','Current Tucson hospitality-management company managing multiple Tucson hotel properties.','assistant census research: Tucson hotels motels lodging',0,
+ null,'(520) 382-9011',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson hospitality-management company managing multiple Tucson hotel properties."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Si Charro',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 907-1329',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','UniConcepts',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 624-4177',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Arizona Sands Club',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(940) 395-7952',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Bacio Italiano',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 365-4501',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Barrio Bread',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 327-1292',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Barrio Brewing Company',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 791-2739',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Barrio Charro',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 327-1922',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Bisbee Breakfast Club - Broadway',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 327-0029',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Bisbee Breakfast Club - Sunrise',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 329-8769',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Bisbee Breakfast Club - Ina',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 579-7495',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Black Bear Diner',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 790-8881',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Caruso''s Restaurant',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 624-5765',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Charro del Rey',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 645-1922',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Charro Steak',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 485-1922',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Charro Vida',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 779-1922',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Chick-fil-A - Grant Road',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 305-4407',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Culver''s of Tucson',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 777-3213',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Culver''s on River',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 398-6338',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Dave & Buster''s',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 330-3400',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','eegee''s',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 294-3333',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Guadalajara Grill - Arizona Pavilions',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 296-4221',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Guadalajara Grill Fiesta',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 296-1122',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Guadalajara Grill Mexican',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 296-1199',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','HighWire Tucson',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 449-8673',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','HoneyBaked Ham',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 745-0700',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Kingfisher Bar & Grill',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 323-7739',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Original ChopShop',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 208-2629',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Portillo''s',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 246-2300',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Shake Shack - Ina Road',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Taco Giro',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 203-8159',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','restaurants','restaurants','Union Hospitality Group',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Chamber of Southern Arizona restaurant/food-service listing.','assistant census research: Tucson restaurants',0,
+ null,'(520) 329-8575',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Finley Distributing Co.',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Tucson beverage/food distribution or production facility.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 623-8800',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson beverage/food distribution or production facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Hensley Beverage Company',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Tucson beverage/food distribution or production facility.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 884-5999',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson beverage/food distribution or production facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Kalil Bottling Co.',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Tucson beverage/food distribution or production facility.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 622-5811',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson beverage/food distribution or production facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','PepsiCo - Tucson',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Tucson beverage/food distribution or production facility.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 623-8800',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson beverage/food distribution or production facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Shamrock Foods',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Tucson beverage/food distribution or production facility.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 887-0300',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson beverage/food distribution or production facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Swire Coca-Cola, USA',
+ 'https://business.tucsonchamber.org/list/Search/restaurants-food-beverages-346717','business.tucsonchamber.org','Current Tucson beverage/food distribution or production facility.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 744-1333',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson beverage/food distribution or production facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','Chase Bank - Oracle Road',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 792-5928',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','CITI - Rita Road',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(208) 822-1049',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','Hughes Federal Credit Union',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 794-8341',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','Wells Fargo Bank - Stone/Alameda',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 792-5401',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','Alliance Bank of Arizona',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 784-6000',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','Bank of America - Campbell/Skyline',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 615-6682',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','Crest Insurance Group, LLC',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 881-5760',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','HUB International - Tucson',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 729-1354',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','Edmund Marquez Allstate Agencies - Speedway',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 323-9333',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','Edmund Marquez Allstate Agencies - Campbell',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 298-1885',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','Enterprise Bank & Trust',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(314) 889-2028',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','First Credit Union',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 388-7252',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','Foothills Bank',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 989-7100',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','Gietl & Strutz Insurance Inc.',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 322-5229',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','NOVA Home Loans',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 745-0050',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','Busey Bank',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 529-5500',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','Cigna Healthcare',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 216-1598',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','Cigna Medicare',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 216-1598',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','Wells Fargo Home Mortgage',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 559-6527',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','insurance_professional','insurance agents professional offices','Wells Fargo Wealth Management',
+ 'https://business.tucsonchamber.org/list/Search/finance-insurance-346729','business.tucsonchamber.org','Current Chamber of Southern Arizona finance/insurance office listing.','assistant census research: Tucson insurance agents professional offices',0,
+ null,'(520) 529-5938',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Century Park Properties, LLC',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 623-1411',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Diamond Ventures',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 577-0200',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Tucson Frozen Storage',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 623-0660',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Cushman & Wakefield | PICOR',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Holualoa Companies',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 615-1094',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Long Realty Company',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 888-8844',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Norville Investments',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 882-4200',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Rancho Sahuarita',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 299-8766',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Realty Executives Tucson',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 877-4940',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','4800 Butterfield Tucson Holdings, LLC',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 745-3612',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','5151 Broadway',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 790-2858',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','A Level Up Realty',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 332-4114',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Ambrell Realty',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 777-6787',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Bancroft & Associates',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 881-4884',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Blue Agave Apartments',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 884-8279',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Bourn Companies',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 323-1005',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','CBRE, Inc. - Tucson',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 323-5100',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Chapman Management Group',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 622-5544',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','CID Holdings',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 392-8752',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','DSW Commercial Real Estate',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 297-8929',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','EMS Realty, Inc.',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 544-2727',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Fellowship Square Tucson',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 886-5537',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Grindstone Property Management',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 838-0562',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','GUD Community Management',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 317-3496',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Larsen Baker, LLC',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 296-0200',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','MAS Real Estate Services',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 888-5127',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','MEB Management Services',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 620-1640',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','On Q Property Management',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 244-0001',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Real Estate Direct, Inc.',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 623-2566',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Seldin Real Estate',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 790-2858',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Summit Residential Services',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 618-3799',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Town West Realty, Inc.',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 615-7707',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','property_management','property management companies apartment communities','Volk Company',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Chamber of Southern Arizona real-estate/property-management listing.','assistant census research: Tucson property management companies apartment communities',0,
+ null,'(520) 326-3200',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona real-estate/property-management listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','U-Haul Moving & Storage at Automall',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Tucson storage/industrial facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 575-5373',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson storage/industrial facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Outrig',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Tucson storage/industrial facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 379-3590',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson storage/industrial facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','U-Haul at Grant Rd',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Tucson storage/industrial facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 575-5364',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson storage/industrial facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','U-Haul Moving & Storage at Davis Monthan AFB',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Tucson storage/industrial facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 575-5370',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson storage/industrial facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','U-Haul Moving & Storage at East Speedway',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Tucson storage/industrial facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 575-5376',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson storage/industrial facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','U-Haul Storage of East Broadway',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Tucson storage/industrial facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 585-5667',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson storage/industrial facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','WillScot',
+ 'https://business.tucsonchamber.org/list/Search/real-estate-moving-storage-346719','business.tucsonchamber.org','Current Tucson storage/industrial facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(480) 721-9957',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson storage/industrial facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','medical_centers','hospitals medical centers clinics','Arizona Complete Health',
+ 'https://business.tucsonchamber.org/list/Search/health-care-346728','business.tucsonchamber.org','Current Chamber of Southern Arizona health-care listing.','assistant census research: Tucson hospitals medical centers clinics',0,
+ null,'(888) 788-4408',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona health-care listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','medical_centers','hospitals medical centers clinics','Banner - University Medical Center',
+ 'https://business.tucsonchamber.org/list/Search/health-care-346728','business.tucsonchamber.org','Current Chamber of Southern Arizona health-care listing.','assistant census research: Tucson hospitals medical centers clinics',0,
+ null,'(520) 694-8888',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona health-care listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','medical_centers','hospitals medical centers clinics','Tucson Medical Center',
+ 'https://business.tucsonchamber.org/list/Search/health-care-346728','business.tucsonchamber.org','Current Chamber of Southern Arizona health-care listing.','assistant census research: Tucson hospitals medical centers clinics',0,
+ null,'(520) 327-5461',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona health-care listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','medical_centers','hospitals medical centers clinics','El Rio Health',
+ 'https://business.tucsonchamber.org/list/Search/health-care-346728','business.tucsonchamber.org','Current Chamber of Southern Arizona health-care listing.','assistant census research: Tucson hospitals medical centers clinics',0,
+ null,'(520) 670-3909',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona health-care listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','medical_centers','hospitals medical centers clinics','Children''s Clinics',
+ 'https://business.tucsonchamber.org/list/Search/health-care-346728','business.tucsonchamber.org','Current Chamber of Southern Arizona health-care listing.','assistant census research: Tucson hospitals medical centers clinics',0,
+ null,'(520) 324-5437',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona health-care listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','medical_centers','hospitals medical centers clinics','Cigna Healthcare - Tucson',
+ 'https://business.tucsonchamber.org/list/Search/health-care-346728','business.tucsonchamber.org','Current Chamber of Southern Arizona health-care listing.','assistant census research: Tucson hospitals medical centers clinics',0,
+ null,'(520) 216-1598',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber of Southern Arizona health-care listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','therapy_behavioral','therapy counseling behavioral health clinics','CODAC Health, Recovery & Wellness, Inc.',
+ 'https://business.tucsonchamber.org/list','business.tucsonchamber.org','Current Chamber investor/member behavioral-health organization.','assistant census research: Tucson therapy counseling behavioral health clinics',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber investor/member behavioral-health organization."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','therapy_behavioral','therapy counseling behavioral health clinics','Old Pueblo Community Services',
+ 'https://business.tucsonchamber.org/list','business.tucsonchamber.org','Current Chamber member social/behavioral service organization.','assistant census research: Tucson therapy counseling behavioral health clinics',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber member social/behavioral service organization."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','AGM Container Controls, Inc.',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 881-2130',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Caterpillar Tucson Mining Center',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(414) 768-4883',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Hexagon Mining',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 795-3891',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Raytheon',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 746-2100',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','South32 Hermosa Inc.',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 485-1300',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Parsons Steel Builders',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 887-6207',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','AZ Industrial Lasers',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 790-5808',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Bayer Crop Science Marana',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 616-6636',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Critical Path Institute',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(502) 547-3440',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Dataforth Corp.',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 741-1404',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Industrial Tool Die & Engineering, Inc.',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 745-8771',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Kuumba Made',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 881-5550',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Micromex, Inc.',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 748-0101',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Mueller, Inc.',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 534-2188',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Paragon Space Development Corporation',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Prototron Circuits Southwest, Inc.',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 745-8515',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','RE Darling Co., Inc.',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 887-2400',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Sonoran Stitch Factory',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 338-9738',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Spartan Armor Systems',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 396-3335',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','warehouses_industrial','warehouses industrial businesses distribution centers','Port of Tucson',
+ 'https://business.tucsonchamber.org/list/Search/manufacturing-production-wholesale-346723','business.tucsonchamber.org','Current Tucson manufacturing, industrial, logistics or research facility listing.','assistant census research: Tucson warehouses industrial businesses distribution centers',0,
+ null,'(520) 623-1411',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson manufacturing, industrial, logistics or research facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','general_business','other local businesses','Community Foundation for Southern Arizona',
+ 'https://business.tucsonchamber.org/list/Search/family-community-civic-organizations-346730','business.tucsonchamber.org','Current Tucson nonprofit/community/business organization listing.','assistant census research: Tucson other local businesses',0,
+ null,'(520) 770-0800',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson nonprofit/community/business organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','general_business','other local businesses','Visit Tucson',
+ 'https://business.tucsonchamber.org/list/Search/family-community-civic-organizations-346730','business.tucsonchamber.org','Current Tucson nonprofit/community/business organization listing.','assistant census research: Tucson other local businesses',0,
+ null,'(520) 624-1817',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson nonprofit/community/business organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','general_business','other local businesses','AARP Arizona',
+ 'https://business.tucsonchamber.org/list/Search/family-community-civic-organizations-346730','business.tucsonchamber.org','Current Tucson nonprofit/community/business organization listing.','assistant census research: Tucson other local businesses',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson nonprofit/community/business organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','general_business','other local businesses','Alzheimer''s Association - Tucson',
+ 'https://business.tucsonchamber.org/list/Search/family-community-civic-organizations-346730','business.tucsonchamber.org','Current Tucson nonprofit/community/business organization listing.','assistant census research: Tucson other local businesses',0,
+ null,'(520) 230-1754',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson nonprofit/community/business organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','general_business','other local businesses','Amistades, Inc.',
+ 'https://business.tucsonchamber.org/list/Search/family-community-civic-organizations-346730','business.tucsonchamber.org','Current Tucson nonprofit/community/business organization listing.','assistant census research: Tucson other local businesses',0,
+ null,'(520) 882-8777',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson nonprofit/community/business organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','general_business','other local businesses','Chicanos Por La Causa, Inc.',
+ 'https://business.tucsonchamber.org/list/Search/family-community-civic-organizations-346730','business.tucsonchamber.org','Current Tucson nonprofit/community/business organization listing.','assistant census research: Tucson other local businesses',0,
+ null,'(520) 882-0018',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson nonprofit/community/business organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','general_business','other local businesses','Community Investment Corporation',
+ 'https://business.tucsonchamber.org/list/Search/family-community-civic-organizations-346730','business.tucsonchamber.org','Current Tucson nonprofit/community/business organization listing.','assistant census research: Tucson other local businesses',0,
+ null,'(520) 529-1766',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson nonprofit/community/business organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','general_business','other local businesses','Community Options',
+ 'https://business.tucsonchamber.org/list/Search/family-community-civic-organizations-346730','business.tucsonchamber.org','Current Tucson nonprofit/community/business organization listing.','assistant census research: Tucson other local businesses',0,
+ null,'(520) 207-9152',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson nonprofit/community/business organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','general_business','other local businesses','Companion Animal Care Team & Urban Sanctuary (CACTUS)',
+ 'https://business.tucsonchamber.org/list/Search/family-community-civic-organizations-346730','business.tucsonchamber.org','Current Tucson nonprofit/community/business organization listing.','assistant census research: Tucson other local businesses',0,
+ null,'(520) 331-4163',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson nonprofit/community/business organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','general_business','other local businesses','First Things First - Tucson',
+ 'https://business.tucsonchamber.org/list/Search/family-community-civic-organizations-346730','business.tucsonchamber.org','Current Tucson nonprofit/community/business organization listing.','assistant census research: Tucson other local businesses',0,
+ null,'(602) 771-5100',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson nonprofit/community/business organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','general_business','other local businesses','TMM Family Services, Inc.',
+ 'https://business.tucsonchamber.org/list/Search/family-community-civic-organizations-346730','business.tucsonchamber.org','Current Tucson nonprofit/community/business organization listing.','assistant census research: Tucson other local businesses',0,
+ null,'(520) 322-9557',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson nonprofit/community/business organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','general_business','other local businesses','Tucson Association of Realtors',
+ 'https://business.tucsonchamber.org/list/Search/family-community-civic-organizations-346730','business.tucsonchamber.org','Current Tucson nonprofit/community/business organization listing.','assistant census research: Tucson other local businesses',0,
+ null,'(520) 327-4218',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson nonprofit/community/business organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','retail','retail stores shopping stores','Gibson''s Office Solutions',
+ 'https://business.tucsonchamber.org/list/Search/shopping-specialty-retail-346716','business.tucsonchamber.org','Current Tucson Chamber retail/business facility listing.','assistant census research: Tucson retail stores shopping stores',0,
+ null,'(520) 622-6738',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson Chamber retail/business facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','retail','retail stores shopping stores','Cavender''s Boot City',
+ 'https://business.tucsonchamber.org/list/Search/shopping-specialty-retail-346716','business.tucsonchamber.org','Current Tucson Chamber retail/business facility listing.','assistant census research: Tucson retail stores shopping stores',0,
+ null,'(520) 462-8071',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson Chamber retail/business facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','retail','retail stores shopping stores','Circle K - Park Avenue',
+ 'https://business.tucsonchamber.org/list/Search/shopping-specialty-retail-346716','business.tucsonchamber.org','Current Tucson Chamber retail/business facility listing.','assistant census research: Tucson retail stores shopping stores',0,
+ null,'(520) 296-1085',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson Chamber retail/business facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','retail','retail stores shopping stores','Color Me Mine - Park Place Mall',
+ 'https://business.tucsonchamber.org/list/Search/shopping-specialty-retail-346716','business.tucsonchamber.org','Current Tucson Chamber retail/business facility listing.','assistant census research: Tucson retail stores shopping stores',0,
+ null,'(520) 790-1100',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson Chamber retail/business facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','retail','retail stores shopping stores','QuikTrip - Tucson',
+ 'https://business.tucsonchamber.org/list/Search/shopping-specialty-retail-346716','business.tucsonchamber.org','Current Tucson Chamber retail/business facility listing.','assistant census research: Tucson retail stores shopping stores',0,
+ null,'(520) 354-6940',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson Chamber retail/business facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','retail','retail stores shopping stores','CAL Ranch Stores',
+ 'https://business.tucsonchamber.org/list/Search/shopping-specialty-retail-346716','business.tucsonchamber.org','Current Tucson Chamber retail/business facility listing.','assistant census research: Tucson retail stores shopping stores',0,
+ null,'(520) 848-4242',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Tucson Chamber retail/business facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','public_facilities','government public facilities municipal buildings','City of Tucson',
+ 'https://business.tucsonchamber.org/list/findstartswith','business.tucsonchamber.org','Current Chamber government listing at 255 W Alameda St.','assistant census research: Tucson government public facilities municipal buildings',0,
+ null,'(520) 791-4201',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber government listing at 255 W Alameda St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','public_facilities','government public facilities municipal buildings','Tucson Airport Authority',
+ 'https://business.tucsonchamber.org/list','business.tucsonchamber.org','Current Chamber major public/transportation facility organization.','assistant census research: Tucson government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_buyers_01","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber major public/transportation facility organization."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Tucson';
