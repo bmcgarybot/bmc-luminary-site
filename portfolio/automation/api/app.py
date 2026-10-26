@@ -1981,12 +1981,14 @@ async def process_outreach(x_bmc_admin_key:str|None=Header(default=None)):
       if allowance<=0:return {"ok":True,"enabled":True,"sent":0,"message":"Daily outreach limit reached."}
       rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,o.wave,
           v.business_name,v.public_email,v.association_signal,
-          vm.market,vs.service_key,svc.display_name as service_name
+          coalesce(o.target_market,vm.market) as market,
+          coalesce(o.target_service_key,vs.service_key) as service_key,
+          svc.display_name as service_name
         from outreach o
         join vendors v on v.vendor_id=o.entity_id
         left join lateral (select market from vendor_markets where vendor_id=v.vendor_id order by market limit 1) vm on true
         left join lateral (select service_key from vendor_services where vendor_id=v.vendor_id order by service_key limit 1) vs on true
-        left join services svc on svc.service_key=vs.service_key
+        left join services svc on svc.service_key=coalesce(o.target_service_key,vs.service_key)
         where o.entity_type='vendor' and o.campaign='vendor_recruitment'
           and o.wave=$2 and o.opt_out=false and v.public_email is not null and v.public_email<>''
           and (
