@@ -3546,3 +3546,58 @@ Commit:
 - b49214052e3ebed38df1f5309bfa8e643481f3fe
 
 Next production rerun should use the normal drain command after git pull; no separate build command is required.
+
+
+## 43. CMS SOURCE CLARIFICATION + CURRENT DRAIN STATE — 2026-10-25
+
+Current production observation:
+
+The source-native CMS lanes are the only research source family still returning HTTP 403. The standard public-web research worker is functioning normally and is reducing the queue.
+
+Recent production output after the source-native stall:
+- source-native stopped itself after 8 rounds without record/cursor progress;
+- Phase 2 continued successfully;
+- research round 1: queued 774, processed 5, staged 16, errors 0;
+- later rounds continued processing 5 tasks at a time with 0 errors.
+
+Do not treat this as a full research-system failure.
+
+### What "CMS" means in BMC
+
+CMS = Centers for Medicare & Medicaid Services Provider Data Catalog.
+
+BMC uses four official public CMS datasets as healthcare/institutional **buyer prospect** sources:
+
+- Hospitals:
+  - dataset: Hospital General Information
+  - dataset ID: xubh-q36u
+- Nursing homes:
+  - dataset: Provider Information
+  - dataset ID: 4pq5-n9py
+- Home health:
+  - dataset: Home Health Care Agencies
+  - dataset ID: 6jpm-sxkc
+- Hospice:
+  - dataset: Hospice - General Information
+  - dataset ID: yc9t-dgbk
+
+These are not service-provider/vendor sources. They are used to identify facilities and healthcare organizations that may buy BMC-network services such as cleaning, HVAC, pest control, electrical, plumbing, floor care, window cleaning, landscaping, waste service, facility maintenance, etc.
+
+The CMS dataset pages are public and official. The 403 responses are CMS access-control/protection responses against the VPS request path, not evidence that the datasets are private or invalid.
+
+CMS's current API FAQ states:
+- 403 means protection measures have blocked the requester and support should be contacted if the block is believed to be in error;
+- 429 means reduce request volume;
+- for high-volume work, download underlying data files instead of many API calls;
+- 5xx should use incremental randomized backoff.
+
+Important interpretation of log lines like:
+`ERROR cms_hospitals · Dewey-Humboldt · HTTP Error 403: Forbidden`
+
+The market name is the BMC source-native lane that triggered the fetch. It does not mean CMS has a special Dewey-Humboldt API/source. Production bulk mode shares one official dataset across markets, but a failed CMS retrieval is recorded against the lane that attempted to use it.
+
+Current recommendation:
+- allow Phase 2 public-web research to continue;
+- do not restart source-native CMS repeatedly while the VPS is receiving 403;
+- ADHS and already-ingested CMS records remain valid and stored;
+- treat remaining CMS lanes as a separate blocked source issue rather than blocking the rest of launch research.
