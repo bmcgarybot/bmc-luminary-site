@@ -4452,3 +4452,291 @@ The VPS API deployment and the Cloudflare Pages static-site deployment are separ
 - Cloudflare Pages publishes the static customer/provider pages from the repository.
 
 Do not send the first real provider invitation until both sides reflect the current code.
+
+
+## 52. NEXT CONVERSATION BOOTSTRAP — AUTHORITATIVE STATE — 2026-10-25
+
+This section exists specifically so a new ChatGPT thread can resume BMC Service Network without asking Brett to reconstruct prior work.
+
+A standalone companion file also exists at:
+- `portfolio/automation/NEXT_THREAD.md`
+
+**New thread instruction:** read `NEXT_THREAD.md`, this section, Sections 47–51, `BUSINESS_MODEL.md`, and the current runtime/deployment scripts before changing production or asking Brett to redo infrastructure.
+
+### Current business/application state
+
+Pre-launch cleanup requested by Brett is complete:
+- public wording cleanup: complete;
+- research queue drain: complete;
+- Stripe live checkout/webhook validation: complete;
+- site/frontend/public-intake regressions: guarded by CI;
+- first-provider lifecycle: fully CI-proven but not yet exercised with a real provider.
+
+Research state:
+- queued = 0;
+- assigned = 0;
+- buyer prospects = 2,537;
+- vendor prospects = 211;
+- staged candidates = 205;
+- completed research backlog rows = 56;
+- review rows = 22;
+- searched/no-usable-result rows = 771.
+
+The 22 review rows and 205 staged candidates are not an unfinished queue. They are optional material for later human review/promotion.
+
+Public-site cleanup completed before this checkpoint:
+- remaining awkward/internal wording removed;
+- leftover `REPLACE_ME` public webhook placeholders replaced with the real intake endpoint;
+- core service positioning changed from Prescott-only language to Arizona where applicable;
+- sitemap/noindex contradictions corrected;
+- real `/providers/` page added to sitemap;
+- obsolete `/vendor-partner/` redirect removed from sitemap;
+- CI now guards sitemap/noindex conflicts and required public sitemap pages;
+- public-copy validator blocks the removed internal/placeholder language from returning;
+- runtime doctor treats a fully drained research queue as PASS.
+
+Research and public cleanup full CI passed before provider work.
+
+### Stripe / payments
+
+Production Stripe account is live:
+- charges enabled;
+- payouts enabled;
+- details submitted;
+- no outstanding requirements.
+
+Four live products/payment links:
+- Local Growth Pack: $499;
+- Premium Growth Pack: $749;
+- Local Competitor Intelligence Pack: $299;
+- Local Market Expansion Pack: $699.
+
+Live webhook:
+- endpoint ID: `we_1UUYgvQU2BLM8GhLlqebzgMb`;
+- URL: `https://hooks.bmcservicenetwork.com/api/stripe-webhook`;
+- signing secret is stored only in the VPS `.env`; never expose or rotate casually.
+
+Webhook was validated live:
+- Stripe event reached production;
+- post-repair delivery returned HTTP 200;
+- pending_webhooks cleared to 0;
+- manual resend returned `{"received":true,"duplicate":true}`, proving idempotency;
+- temporary test event subscription/metadata were removed afterward.
+
+Do not repeat Stripe setup unless a new failure proves it is necessary.
+
+### Production hosting / DNS
+
+Authoritative DNS and static production hosting:
+- Cloudflare is authoritative DNS;
+- static production is Cloudflare Pages project `bmc-service-network`;
+- apex CNAME points to `bmc-service-network.pages.dev`, proxied;
+- www redirects to apex/root;
+- `hooks.bmcservicenetwork.com` is a separate Cloudflare Tunnel to the restricted webhook gateway.
+
+Do not restart the prior GitHub Pages experiment.
+Do not move the apex CNAME to GitHub Pages.
+The repository GitHub Pages workflow is not the production static deployment path.
+
+VPS:
+- OVH VPS hostname: `vps-5675821a.vps.ovh.ca`;
+- IP: `148.113.151.47`;
+- SSH user: `ubuntu`;
+- repo path: `~/bmc-luminary-site`;
+- automation path: `~/bmc-luminary-site/portfolio/automation`.
+
+Private admin/API services intentionally bind locally/private; do not expose Postgres, n8n, SearXNG, Ollama, or the private admin API directly to the Internet.
+
+### Current repo/CI checkpoint
+
+At the beginning of this bootstrap section:
+- master was `b7341a511521e4dccc38cbf43ee3452c59d864b7`;
+- Section 51 was already present;
+- latest fully discussed green application CI: run `40268655215`, head `c26634f65758f4b5d861c22befdc51d872c4b9a3`, SUCCESS including full DB/API smoke test.
+
+The provider activation/admin/deployment/static-hosting clarifications added after that run are documented in Sections 49–51.
+
+### First real provider path
+
+No provider invitation has been sent.
+No real provider has been activated.
+Global vendor/buyer/growth outreach switches remain OFF.
+
+Recommended first controlled provider:
+- vendor ID: `v_prescott_americancrown`;
+- American Crown Commercial Cleaning;
+- public seed contact:
+  - `donna@americancrowncc.com`;
+  - `928-250-0490`;
+  - `https://americancrowncc.com/`.
+
+Why preferred:
+- directly matches current commercial-cleaning launch cell;
+- Prescott/Yavapai footprint;
+- direct public business contact;
+- active commercial janitorial/facility service presence;
+- current public business/accreditation signals were checked in Section 49.
+
+Important:
+- public business/vendor certifications are not substitutes for insurance or service-specific licensing;
+- review insurance/credentials appropriate to requested work before approval.
+
+Fallback:
+- vendor ID `v_prescott_windowwranglers`;
+- Window Wranglers.
+
+### Provider activation flow already hardened
+
+Real-provider activation issues found before outreach have been fixed:
+- capacity is now required on activation because approval requires it;
+- Pending Pilot Review now exposes the provider's actual submitted market, territory, services, minimum job, capacity, credentials, insurance response, and contact data;
+- provider remains `pilot_pending_review` and unroutable until explicit BMC approval;
+- CI proves submission -> pending review -> explicit approval -> pilot -> dashboard lifecycle;
+- first invite copy was cleaned and its promises locked in CI.
+
+Do not bypass the pending-review gate.
+Do not auto-approve the first provider.
+Do not turn on global outreach merely to send the first controlled invite.
+
+### Production code deployment status
+
+Repository is ready, but Section 50 explicitly stated the VPS still needed the newer provider/admin code deployed.
+
+Safe existing-VPS updater:
+- `portfolio/automation/deploy-update.sh`.
+
+It:
+- refuses tracked local changes rather than destroying them;
+- refuses detached HEAD;
+- verifies checkout against remote;
+- preserves production `.env`, secrets, outreach switches, DB and volumes;
+- rebuilds Ops API;
+- applies additive migrations;
+- recreates API;
+- refreshes webhook proxy;
+- runs runtime doctor.
+
+Manual production update command:
+
+```bash
+cd ~/bmc-luminary-site
+git pull --ff-only
+cd portfolio/automation
+chmod +x deploy-update.sh
+./deploy-update.sh .env
+```
+
+Do not use `git reset --hard` as a production deployment shortcut.
+
+### Important tooling limitation found in the prior thread
+
+A deep connector/plugin search found no authenticated SSH, OVH shell, remote-terminal, or existing VPS deployment connector available to ChatGPT in that thread.
+
+The repo contained:
+- VPS address/SSH instructions;
+- no existing GitHub Action with production SSH credentials;
+- no self-hosted GitHub runner;
+- no established deploy secrets such as `SSH_PRIVATE_KEY`, `VPS_HOST`, or equivalent.
+
+Therefore, do not claim ChatGPT can directly SSH to the production VPS unless the new thread actually discovers a newly connected tool.
+
+A future improvement was identified:
+- create a narrowly scoped deployment SSH key;
+- authorize it only for BMC deployment on the VPS;
+- store the private key as a protected GitHub Environment secret;
+- add a manually triggered production deployment workflow that executes the safe updater;
+- protect the production environment and ideally protect master before granting production credentials.
+
+This would allow future ChatGPT sessions to trigger/inspect production deployments through the connected GitHub integration instead of using Brett as the SSH bridge.
+
+Do not invent those credentials or assume the workflow already exists. Creating/connecting production credentials requires Brett's explicit setup/approval.
+
+### Static production verification still required before first invite
+
+VPS deployment and Cloudflare Pages deployment are separate.
+
+Before sending the first provider invitation, verify the public Cloudflare Pages deployment reflects current code, at minimum:
+- `https://bmcservicenetwork.com/providers/`;
+- `https://bmcservicenetwork.com/sitemap.xml`;
+- sitemap contains `https://bmcservicenetwork.com/providers/`;
+- provider activation page has required Current capacity control.
+
+Do not dispatch the manual GitHub Pages workflow as a substitute for Cloudflare Pages.
+
+### Search/indexing
+
+Search Console has not yet been completed.
+
+Documented path:
+1. create Google Search Console Domain property for `bmcservicenetwork.com`;
+2. add Google TXT verification in authoritative Cloudflare DNS;
+3. submit `https://bmcservicenetwork.com/sitemap.xml`;
+4. use URL Inspection on a small priority set, not every page.
+
+Priority set is documented in `portfolio/seo/SEO.md`.
+
+Google's general Indexing API is not appropriate for ordinary BMC local-service pages.
+
+### CMS source issue
+
+CMS source-native research returned HTTP 403 from the VPS and is a parallel/nonblocking issue.
+The standard public-web research queue nevertheless fully drained.
+Already-ingested ADHS/CMS records remain stored.
+Do not restart massive CMS source-native pulls as a launch prerequisite.
+
+### Business-model safeguards
+
+Do not casually rewrite pricing or business model.
+Before changing monetization, consult:
+- `portfolio/automation/BUSINESS_MODEL.md`;
+- current HANDOFF;
+- original BMC portfolio plan documents if needed.
+
+BMC remains a broad Arizona service/lead/referral/research network intended to compete with cumbersome directory/lead marketplaces while operating with high automation.
+
+Outreach remains OFF unless Brett explicitly authorizes it.
+
+### Correct next-thread sequence
+
+On a new conversation:
+
+1. Read:
+   - `portfolio/automation/NEXT_THREAD.md`;
+   - HANDOFF Sections 47–52;
+   - `BUSINESS_MODEL.md`;
+   - `deploy-update.sh`;
+   - latest CI state.
+2. Verify current GitHub master/head; do not assume this exact SHA remains latest.
+3. Do not ask Brett to redo Stripe, DNS, Cloudflare, research drain, or public-copy cleanup.
+4. Determine whether production VPS has already been updated since Section 50.
+   - If not, use the safe deployment command above.
+   - If ChatGPT still has no SSH execution tool, Brett must run it once or the deployment-automation path must be built.
+5. Verify Cloudflare Pages has current static provider/sitemap/activation-form changes.
+6. Rerun/inspect runtime doctor after API deployment.
+7. Keep all global outreach OFF.
+8. Only after both API and static production are current:
+   - recheck American Crown;
+   - copy the live secure pilot invite;
+   - manually send ONE invite;
+   - wait for submission;
+   - review submitted market/services/capacity/credentials/insurance;
+   - update routing if needed;
+   - approve only after appropriate checks;
+   - rerun runtime doctor and confirm `live_intake_ready = READY`.
+9. In parallel or before invite, Search Console setup is safe and useful.
+10. After the first verified provider is active and launch gate turns READY, move into controlled acquisition/launch, not more speculative infrastructure rebuilding.
+
+### Process rules for the next assistant
+
+- inspect GitHub/handoff before asking Brett to repeat anything;
+- write major new decisions/results into HANDOFF before long implementation stretches;
+- provide visible progress updates during multi-tool work;
+- do not disappear for 30–60 minutes without updates;
+- do not claim background/asynchronous work;
+- prefer direct implementation over repeatedly replanning the same system;
+- do not conflate BMC Service Network with Quantum Neuroshift;
+- do not enable outreach without explicit permission;
+- do not expose secrets;
+- do not rotate Stripe webhook secret without a proven need;
+- do not alter Cloudflare DNS/hosting architecture casually;
+- do not send a real provider invite from stale production code.
