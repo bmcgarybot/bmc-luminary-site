@@ -587,6 +587,10 @@ jobs:
           row=next(x for x in data["records"] if x["vendor_id"]=="v_prescott_zebrascapes")
           assert row["territory_notes"]
           assert row["capacity"]
+          assert row["activation"]["capacity"] == "3 new jobs per week"
+          assert row["activation"]["credentials"] == "CI credential review"
+          assert row["activation"]["insurance"] == "CI insurance review"
+          assert row["activation"]["pilot_terms"] == "accepted"
           PY
           curl -fsS -X POST http://127.0.0.1:8000/api/admin/approve-pilot \
             -H 'Content-Type: application/json' \
