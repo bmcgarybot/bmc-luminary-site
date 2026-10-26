@@ -1,4 +1,4 @@
-import os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, urllib.error, hmac, hashlib, time, html, random
+import os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, urllib.error, hmac, hashlib, time, html, random, csv, io
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 from email.utils import parseaddr
@@ -77,6 +77,12 @@ CMS_HOSPITALS_URL=os.getenv("CMS_HOSPITALS_URL","https://data.cms.gov/provider-d
 CMS_NURSING_HOMES_URL=os.getenv("CMS_NURSING_HOMES_URL","https://data.cms.gov/provider-data/api/1/datastore/query/4pq5-n9py/0").strip()
 CMS_HOME_HEALTH_URL=os.getenv("CMS_HOME_HEALTH_URL","https://data.cms.gov/provider-data/api/1/datastore/query/6jpm-sxkc/0").strip()
 CMS_HOSPICE_URL=os.getenv("CMS_HOSPICE_URL","https://data.cms.gov/provider-data/api/1/datastore/query/yc9t-dgbk/0").strip()
+CMS_BULK_DOWNLOAD_ENABLED=os.getenv("CMS_BULK_DOWNLOAD_ENABLED","true").lower()=="true"
+CMS_METADATA_BASE=os.getenv(
+    "CMS_METADATA_BASE",
+    "https://data.cms.gov/provider-data/api/1/metastore/schemas/dataset/items"
+).rstrip("/")
+CMS_BULK_CACHE_TTL_SECONDS=max(300,env_int("CMS_BULK_CACHE_TTL_SECONDS",21600))
 SOURCE_NATIVE_CHECK_BATCH=max(1,min(50,env_int("SOURCE_NATIVE_CHECK_BATCH",10)))
 
 BUYER_RESEARCH_HINTS={
@@ -179,6 +185,9 @@ CMS_SOURCE_DATASETS=(
       "services":CMS_HEALTH_OFFICE_SERVICES
     }
 )
+
+_CMS_BULK_CACHE={}
+_CMS_BULK_CACHE_AT={}
 
 def expected_source_native_keys():
     keys=[ADHS_SOURCE_KEY]
@@ -778,7 +787,122 @@ async def fetch_adhs_facility_page(market,cursor):
         raise RuntimeError("ADHS ArcGIS error: "+clean(raw["error"])[:400])
     return raw
 
+async def fetch_text_url(url,timeout=90,max_bytes=100_000_000):
+    def call_once():
+        req=urllib.request.Request(url,headers={
+            "User-Agent":"BMC-Luminary-Research/1.0",
+            "Accept":"text/csv,text/plain;q=0.9,*/*;q=0.1"
+        })
+        with urllib.request.urlopen(req,timeout=timeout) as resp:
+            return resp.read(max_bytes).decode("utf-8-sig","replace")
+
+    delays=(3,8,18,35,60)
+    for attempt in range(len(delays)+1):
+        try:
+            return await asyncio.to_thread(call_once)
+        except urllib.error.HTTPError as exc:
+            transient=(exc.code==429 or 500<=exc.code<=599)
+            if not transient or attempt>=len(delays):
+                raise
+            retry_after=clean(exc.headers.get("Retry-After")) if exc.headers else ""
+            base=delays[attempt]
+            try:
+                if retry_after:
+                    base=max(base,min(90,int(float(retry_after))))
+            except (TypeError,ValueError):
+                pass
+            await asyncio.sleep(base+random.uniform(0.5,3.0))
+        except (urllib.error.URLError,TimeoutError,OSError):
+            if attempt>=len(delays):
+                raise
+            await asyncio.sleep(delays[attempt]+random.uniform(0.5,3.0))
+    raise RuntimeError("Text fetch retry loop exhausted")
+
+def normalize_cms_csv_row(row):
+    out={}
+    for key,value in (row or {}).items():
+        normalized=re.sub(r"[^a-z0-9]+","_",clean(key).lower()).strip("_")
+        if normalized:
+            out[normalized]=clean(value)
+    if "city_town" in out and "citytown" not in out:
+        out["citytown"]=out["city_town"]
+    if "county_parish" in out and "countyparish" not in out:
+        out["countyparish"]=out["county_parish"]
+    return out
+
+def cms_metadata_distribution(metadata):
+    for item in (metadata.get("distribution") or []):
+        if not isinstance(item,dict):
+            continue
+        data=item.get("data") if isinstance(item.get("data"),dict) else item
+        media=clean(data.get("mediaType")).lower()
+        url=clean(data.get("downloadURL"))
+        if url and (media=="text/csv" or url.lower().endswith(".csv")):
+            return {
+                "download_url":url,
+                "modified":clean(metadata.get("modified")) or None,
+                "released":clean(metadata.get("released")) or None
+            }
+    raise RuntimeError("CMS metadata did not include a CSV download URL")
+
+async def fetch_cms_bulk_dataset(source):
+    dataset_id=clean(source.get("dataset_id"))
+    now=time.time()
+    cached=_CMS_BULK_CACHE.get(dataset_id)
+    cached_at=float(_CMS_BULK_CACHE_AT.get(dataset_id) or 0)
+    if cached is not None and now-cached_at<CMS_BULK_CACHE_TTL_SECONDS:
+        return cached
+
+    metadata_url=f"{CMS_METADATA_BASE}/{urllib.parse.quote(dataset_id)}?show-reference-ids"
+    metadata=await fetch_json_url(metadata_url,timeout=45,max_bytes=4_000_000)
+    if not isinstance(metadata,dict):
+        raise RuntimeError("CMS dataset metadata returned a non-object response")
+    distribution=cms_metadata_distribution(metadata)
+
+    csv_text=await fetch_text_url(distribution["download_url"])
+    rows_by_market={}
+    total_rows=0
+    arizona_rows=0
+    for raw_row in csv.DictReader(io.StringIO(csv_text)):
+        total_rows+=1
+        row=normalize_cms_csv_row(raw_row)
+        if clean(row.get("state")).upper()!="AZ":
+            continue
+        arizona_rows+=1
+        city=clean(row.get("citytown") or row.get("city_town")).upper()
+        if city:
+            rows_by_market.setdefault(city,[]).append(row)
+
+    payload={
+        "rows_by_market":rows_by_market,
+        "download_url":distribution["download_url"],
+        "dataset_modified":distribution["modified"],
+        "dataset_released":distribution["released"],
+        "total_rows":total_rows,
+        "arizona_rows":arizona_rows
+    }
+    _CMS_BULK_CACHE[dataset_id]=payload
+    _CMS_BULK_CACHE_AT[dataset_id]=now
+    return payload
+
 async def fetch_cms_provider_page(source,market,cursor):
+    # CI and explicit non-CMS overrides retain the old query behavior.
+    host=(urllib.parse.urlparse(clean(source.get("url"))).hostname or "").lower()
+    use_bulk=CMS_BULK_DOWNLOAD_ENABLED and host in ("data.cms.gov","www.data.cms.gov")
+    if use_bulk:
+        bulk=await fetch_cms_bulk_dataset(source)
+        market_rows=bulk["rows_by_market"].get(clean(market).upper(),[])
+        offset=max(0,int(cursor or 0))
+        results=market_rows[offset:offset+CMS_SOURCE_NATIVE_PAGE_SIZE]
+        return {
+            "results":results,
+            "_bmc_bulk":True,
+            "_bmc_download_url":bulk["download_url"],
+            "_bmc_dataset_modified":bulk["dataset_modified"],
+            "_bmc_total_rows":bulk["total_rows"],
+            "_bmc_arizona_rows":bulk["arizona_rows"]
+        }
+
     params={
       "offset":max(0,int(cursor or 0)),
       "limit":CMS_SOURCE_NATIVE_PAGE_SIZE,
@@ -2598,9 +2722,8 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
               where source_key=$1 and market=$2""",source_key,market)
             cursor=int(state["cursor"] or 0) if state else 0
             try:
-                # Pace CMS calls even when healthy. Their API guidance recommends
-                # limiting request volume for large automated pulls.
-                await asyncio.sleep(random.uniform(0.75,1.75))
+                # Production CMS uses one bulk CSV per dataset and filters locally.
+                # Explicit non-CMS overrides (CI/mocks) retain the legacy query path.
                 raw=await fetch_cms_provider_page(source,market,cursor)
                 successful_markets.add(market)
                 source_checks+=1
@@ -2676,7 +2799,10 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
                 source_key,market,next_cursor,latest_source_date,page_seen,page_upserted,
                 json.dumps({"page_size":CMS_SOURCE_NATIVE_PAGE_SIZE,"last_cursor":cursor,
                             "next_cursor":next_cursor,"last_page_records":len(rows),
-                            "dataset_id":source["dataset_id"],"last_error":None}))
+                            "dataset_id":source["dataset_id"],"last_error":None,
+                            "bulk_download":bool(raw.get("_bmc_bulk")),
+                            "dataset_modified":raw.get("_bmc_dataset_modified"),
+                            "bulk_arizona_rows":raw.get("_bmc_arizona_rows")}))
               for service_key in (source.get("services") or CMS_FACILITY_CORE_SERVICES):
                 count=await conn.fetchval("""select count(*) from buyers
                   where market=$1 and $2=any(string_to_array(coalesce(likely_services,''),'|'))
