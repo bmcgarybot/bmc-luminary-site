@@ -2119,6 +2119,16 @@ async def process_buyer_outreach(x_bmc_admin_key:str|None=Header(default=None)):
           and b.public_email is not null and b.public_email<>''
           and (o.status='queued' or (o.status='sent' and o.next_followup_at<=now() and o.sequence_step<2))
           and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(b.public_email))
+          and exists(
+            select 1
+            from vendors v
+            join vendor_markets vm on vm.vendor_id=v.vendor_id
+            join vendor_services vs on vs.vendor_id=v.vendor_id
+            where v.status in ('pilot','active')
+              and v.vendor_id not like 'test_%'
+              and vm.market=b.market
+              and vs.service_key=any(string_to_array(coalesce(b.likely_services,''),'|'))
+          )
         order by case when b.priority='A' then 0 else 1 end,coalesce(o.next_followup_at,o.created_at) asc
         limit $1""",allowance,BUYER_OUTREACH_WAVE)
       for row in rows:
