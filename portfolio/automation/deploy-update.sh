@@ -44,6 +44,11 @@ SCHEDULER_WAS_RUNNING=false
 if docker compose --env-file "$ENV_FILE" ps --status running --services 2>/dev/null | grep -qx scheduler; then
   SCHEDULER_WAS_RUNNING=true
 fi
+
+TUNNEL_WAS_RUNNING=false
+if docker compose --env-file "$ENV_FILE" --profile tunnel ps --status running --services 2>/dev/null | grep -qx cloudflared; then
+  TUNNEL_WAS_RUNNING=true
+fi
 if [ "$LOCAL_SHA" != "$REMOTE_SHA" ]; then
   echo "Production checkout is not at origin/$BRANCH."
   echo "Run: git -C \"$ROOT\" pull --ff-only"
@@ -91,6 +96,18 @@ fi
 echo
 echo "Refreshing the private webhook gateway after the API restart..."
 docker compose --env-file "$ENV_FILE" up -d --force-recreate webhook_proxy
+
+# Cloudflare disclosed a certificate trust issue fixed in cloudflared 2026.10.2+.
+# The compose file pins 2026.10.3; explicitly pull and recreate a running tunnel
+# so a cached pre-fix image cannot survive an otherwise successful deploy.
+if [ "$TUNNEL_WAS_RUNNING" = "true" ]; then
+  echo
+  echo "Pulling and recreating the patched Cloudflare Tunnel connector..."
+  docker compose --env-file "$ENV_FILE" --profile tunnel pull cloudflared
+  docker compose --env-file "$ENV_FILE" --profile tunnel up -d --force-recreate --no-deps cloudflared
+else
+  echo "Cloudflare Tunnel was stopped before deployment; leaving it stopped."
+fi
 
 if [ "$(env_value LOCAL_AI_ENABLED)" = "true" ]; then
   docker compose --env-file "$ENV_FILE" --profile local-ai up -d ollama
