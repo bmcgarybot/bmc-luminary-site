@@ -79,95 +79,6 @@ FEEDS=(
 PHONE_RE=re.compile(r"(?<!\d)(?:\+?1[\s.\-]?)?(?:\(\d{3}\)|\d{3})[\s.\-]\d{3}[\s.\-]\d{4}(?!\d)")
 COMPANY_HREF_RE=re.compile(r"^/[a-z0-9][a-z0-9\-]*-\d+/?$",re.I)
 
-class ListingParser(HTMLParser):
-    def __init__(self, market:str):
-        super().__init__(convert_charrefs=True)
-        self.market=market
-        self.anchor_href=None
-        self.anchor_text=[]
-        self.current=None
-        self.rows=[]
-        self.stopped=False
-
-    def handle_starttag(self, tag, attrs):
-        if self.stopped:
-            return
-        if tag.lower()=="a":
-            self.anchor_href=dict(attrs).get("href")
-            self.anchor_text=[]
-
-    def handle_data(self, data):
-        if self.stopped:
-            return
-        text=" ".join(str(data or "").split())
-        if not text:
-            return
-        if text.startswith("Whereorg has ") or text.startswith("Narrow down the browsing criteria"):
-            self._flush()
-            self.stopped=True
-            return
-        if self.anchor_href is not None:
-            self.anchor_text.append(text)
-        elif self.current is not None:
-            self.current["tail"].append(text)
-
-    def handle_endtag(self, tag):
-        if self.stopped:
-            return
-        if tag.lower()=="a" and self.anchor_href is not None:
-            href=str(self.anchor_href or "").strip()
-            name=" ".join(self.anchor_text).strip()
-            self.anchor_href=None
-            self.anchor_text=[]
-            if COMPANY_HREF_RE.match(href) and name and len(name)<=240:
-                self._flush()
-                self.current={"name":name,"href":href,"tail":[]}
-
-    def close(self):
-        super().close()
-        self._flush()
-
-    def _flush(self):
-        if not self.current:
-            return
-        name=self.current["name"].strip()
-        tail=[x.strip() for x in self.current["tail"] if x.strip()]
-        self.current=None
-        if not name or name.lower() in {"add a company","sign in","rate this page"}:
-            return
-        # Require the requested market to appear in listing text so similarly
-        # named regional pages cannot silently contaminate another market.
-        blob=" | ".join(tail[:14])
-        market_re=re.compile(r"\b"+re.escape(self.market)+r"\b",re.I)
-        if not market_re.search(blob):
-            return
-        phone=None
-        m=PHONE_RE.search(blob)
-        if m:
-            phone=m.group(0)
-        address_parts=[]
-        for item in tail[:10]:
-            if PHONE_RE.search(item):
-                continue
-            if item.startswith("*") or item.lower().startswith("not satisfied"):
-                continue
-            address_parts.append(item)
-            if market_re.search(item):
-                break
-        address=", ".join(address_parts[:4])[:500]
-        self.rows.append({
-          "business_name":name,
-          "company_href":self.current_href if False else "",
-          "href":self._last_href if False else "",
-          "source_href":None,
-          "phone":phone,
-          "address":address,
-          "_href_pending":False,
-        })
-        # _flush is called after the qualifying anchor was already saved in the
-        # current dict, so restore it from the temporary row context below.
-        self.rows[-1]["source_href"]=getattr(self,"_flush_href",None)
-
 def parse_listing(page_html:str,market:str):
     # Simpler event parser that keeps each qualifying company href with the
     # following visible text until the next qualifying company.
@@ -430,7 +341,11 @@ def main():
 )
 on conflict(side,market,category_key,source_url,business_name) do update set
  public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_domain=excluded.source_domain,
  snippet=excluded.snippet,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
  status='discovered',
  query_strategy_version=excluded.query_strategy_version,
  evidence=market_inventory_candidates.evidence || excluded.evidence,
