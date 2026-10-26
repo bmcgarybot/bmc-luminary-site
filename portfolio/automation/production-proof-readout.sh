@@ -72,10 +72,11 @@ if [ "$(dbq "select count(*) from information_schema.tables where table_name='ma
    union all select 'errors|'||count(*) from market_inventory_progress where status='error'
    union all select 'target_met|'||count(*) from market_inventory_progress where status='scan_complete_target_met'
    union all select 'under_target|'||count(*) from market_inventory_progress where status='scan_complete_under_target'
-   union all select 'candidate_rows|'||count(*) from market_inventory_candidates
-   union all select 'official_candidate_rows|'||count(*) from market_inventory_candidates where official_site=true
-   union all select 'candidate_email_ready|'||count(*) from market_inventory_candidates where coalesce(public_email,'')<>''
-   union all select 'candidate_phone_ready|'||count(*) from market_inventory_candidates where coalesce(public_phone,'')<>'';"
+   union all select 'candidate_rows_active_v4|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=4
+   union all select 'official_candidate_rows_active_v4|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=4 and official_site=true
+   union all select 'superseded_candidate_rows|'||count(*) from market_inventory_candidates where status='superseded_pre_v4'
+   union all select 'candidate_email_ready_active_v4|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=4 and coalesce(public_email,'')<>''
+   union all select 'candidate_phone_ready_active_v4|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=4 and coalesce(public_phone,'')<>'';"
 
   echo
   echo "Inventory coverage by market and side:"
