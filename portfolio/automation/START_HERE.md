@@ -22,49 +22,49 @@ The stack remains provider-neutral.
 ## Current durable build status
 
 As of October 25, 2026:
-- 48 registered BMC service businesses
-- 12 Arizona market hubs
-- 210 researched vendor prospects
-- 156 unique researched B2B buyer prospects
-- deterministic lead intake/matching API
-- provider accept/decline + job-outcome tracking
-- automatic offer expiry/rerouting and follow-up scheduler
-- bounded autonomous operator
-- private autonomous research worker with staged candidate review
-- Stripe webhook/revenue/subscription event handling
-- four live Stripe products/prices
-- Google Drive Master Operations sheet as human-readable command center
-- live cloud VPS deployed and runtime-doctor green
-- first checksummed production Postgres backup completed
-- cloud VPS provisioning/runbook
-- conservative resource limits/log rotation with headroom on the 12 GB host
-- clonable single-tenant foundation for future white-label deployments
+- 54 seeded BMC service categories;
+- 12 Arizona market hubs;
+- 211 researched vendor prospects;
+- 2,537 researched B2B buyer prospects;
+- 205 staged research candidates;
+- standard research backlog fully drained: 0 queued / 0 assigned;
+- deterministic lead intake/matching API;
+- provider accept/decline + job-outcome tracking;
+- provider pilot activation + manual approval gate;
+- private pilot shortlist / First Wave review cockpit;
+- automatic offer expiry/rerouting and follow-up scheduler;
+- bounded autonomous operator;
+- private autonomous research worker with staged candidate review;
+- Stripe webhook/revenue/subscription event handling;
+- live Stripe/payment readiness;
+- public Cloudflare ingress and live intake endpoint;
+- outbound email/reply/opt-out readiness, with global outreach switches intentionally OFF;
+- live cloud VPS deployed and runtime-doctor green;
+- local utility AI/search ready but not required for transaction flow;
+- checksummed production Postgres backup foundation;
+- cloud VPS provisioning/runbook;
+- conservative resource limits/log rotation with headroom on the 12 GB host;
+- clonable single-tenant foundation for future white-label deployments.
 
-## Current external blockers
+## Current launch gate
 
-1. **Public webhook ingress**
-   - create/authorize the Cloudflare Tunnel
-   - run `configure-cloudflare.sh`
-   - publish `hooks.bmcservicenetwork.com` to `http://webhook_proxy:8080`
-   - run `verify-public-ingress.sh`
+The only runtime launch gate is:
+1. activate at least one verified pilot provider.
 
-2. **Stripe account activation**
-   - finish BMC Stripe onboarding/verification
-   - enable card/payment methods
-   - create the existing products' Payment Links
+Before approving a provider:
+- the provider submits the secure pilot activation form;
+- BMC reviews requested market/services, territory, capacity, credentials and insurance where applicable;
+- BMC explicitly approves the pending pilot.
 
-3. **Portable backup automation**
-   - run `verify-backup.sh` against the latest production dump
-   - install `install-backup-timer.sh` for daily portable dumps
-   - add a true off-host copy before meaningful customer data accumulates
+Keep these switches OFF while the first controlled provider is activated:
+- `OUTREACH_ENABLED=false`;
+- `BUYER_OUTREACH_ENABLED=false`.
 
-4. **Outbound mail**
-   - configure SMTP
-   - configure monitored IMAP/reply mailbox
-   - configure SPF/DKIM/DMARC
-   - configure real BMC postal address
-   - test opt-out/reply processing
-   - only then enable vendor/buyer outreach
+Useful parallel work that does **not** block provider activation:
+- create/verify the Google Search Console Domain property and submit the sitemap;
+- review/promote useful staged research candidates;
+- continue off-host backup hardening before meaningful customer data accumulates;
+- revisit CMS source-native 403 access separately if useful.
 
 ## Runtime stack
 
@@ -100,6 +100,22 @@ cd bmc-luminary-site/portfolio/automation
 
 Bootstrap starts the private core. Public outreach remains OFF.
 
+## Updating the existing VPS
+
+For an existing production VPS, do not rely on `git pull && ./start.sh` for API-code changes because `ops_api` is a built Docker image.
+
+Use:
+
+```bash
+cd ~/bmc-luminary-site
+git pull --ff-only
+cd portfolio/automation
+chmod +x deploy-update.sh
+./deploy-update.sh .env
+```
+
+The helper refuses dirty tracked files, rebuilds the Ops API, runs additive migrations, refreshes the gateway, preserves production volumes/secrets/outreach switches, and ends with the runtime doctor.
+
 ## Verification
 
 ```bash
@@ -114,15 +130,15 @@ The runtime doctor checks:
 - cloud deployment target
 - RAM/disk/swap
 - API/Postgres health
-- 48-service registry
+- 54-service registry
 - vendor/buyer seeds
-- 651-item research backlog
+- drained research backlog state
 - exact 12-provider + 7-buyer First Wave
 - outreach OFF switches
 - private agent status
 - SearXNG availability
 - optional Ollama availability
-- remaining external launch blockers
+- current launch gates and readiness checks
 
 ## Private administration from your computer
 
