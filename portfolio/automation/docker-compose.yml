@@ -85,6 +85,9 @@ services:
       CMS_NURSING_HOMES_URL: ${CMS_NURSING_HOMES_URL:-https://data.cms.gov/provider-data/api/1/datastore/query/4pq5-n9py/0}
       CMS_HOME_HEALTH_URL: ${CMS_HOME_HEALTH_URL:-https://data.cms.gov/provider-data/api/1/datastore/query/6jpm-sxkc/0}
       CMS_HOSPICE_URL: ${CMS_HOSPICE_URL:-https://data.cms.gov/provider-data/api/1/datastore/query/yc9t-dgbk/0}
+      CMS_BULK_DOWNLOAD_ENABLED: ${CMS_BULK_DOWNLOAD_ENABLED:-true}
+      CMS_METADATA_BASE: ${CMS_METADATA_BASE:-https://data.cms.gov/provider-data/api/1/metastore/schemas/dataset/items}
+      CMS_BULK_CACHE_TTL_SECONDS: ${CMS_BULK_CACHE_TTL_SECONDS:-21600}
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
     ports:
       - "127.0.0.1:8000:8000"
