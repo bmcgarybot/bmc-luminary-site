@@ -3483,6 +3483,72 @@ async def process_inventory_closure_audit(x_bmc_admin_key:str|None=Header(defaul
     return {"ok":True,"enabled":True,"checked":checked,"closed":closed,
             "closed_records":closed_rows,"errors":errors}
 
+@app.get("/api/admin/inventory-businesses")
+async def admin_inventory_businesses(
+    market:str="",
+    side:str="",
+    category_key:str="",
+    limit:int=100,
+    offset:int=0,
+    x_bmc_admin_key:str|None=Header(default=None)
+):
+    require_admin(x_bmc_admin_key)
+    lim=max(1,min(500,int(limit or 100)))
+    off=max(0,int(offset or 0))
+    async with app.state.pool.acquire() as conn:
+        total=int(await conn.fetchval("""select count(*)
+          from market_inventory_business_rollup r
+          where ($1='' or r.market=$1)
+            and ($2='' or r.side=$2)
+            and ($3='' or $3=any(r.category_keys))""",
+          clean(market),clean(side),clean(category_key)) or 0)
+        rows=await conn.fetch("""select *
+          from market_inventory_business_rollup r
+          where ($1='' or r.market=$1)
+            and ($2='' or r.side=$2)
+            and ($3='' or $3=any(r.category_keys))
+          order by r.market,r.side,r.business_name
+          limit $4 offset $5""",
+          clean(market),clean(side),clean(category_key),lim,off)
+    items=[]
+    for r in rows:
+        d=dict(r)
+        for k in ("last_seen_at","last_verified_at"):
+            if d.get(k) is not None:
+                d[k]=d[k].isoformat()
+        items.append(d)
+    return {"ok":True,"total":total,"limit":lim,"offset":off,"businesses":items}
+
+@app.get("/api/admin/inventory-business-evidence")
+async def admin_inventory_business_evidence(
+    market:str,
+    side:str,
+    business_key:str,
+    x_bmc_admin_key:str|None=Header(default=None)
+):
+    require_admin(x_bmc_admin_key)
+    key=re.sub(r"[^a-z0-9]+","",clean(business_key).lower())
+    if not clean(market) or side not in ("vendor","buyer") or not key:
+        raise HTTPException(status_code=400,detail="market, side, and business_key are required")
+    async with app.state.pool.acquire() as conn:
+        rows=await conn.fetch("""select candidate_id,market,side,category_key,category_label,
+          business_name,source_url,source_domain,snippet,public_email,public_phone,
+          official_site,source_tier,verification_status,status,first_seen_at,last_seen_at,
+          last_verified_at,last_closure_checked_at,closed_at,closure_reason,evidence
+          from market_inventory_candidates
+          where market=$1 and side=$2
+            and lower(regexp_replace(coalesce(business_name,''),'[^a-z0-9]+','','g'))=$3
+          order by status='discovered' desc,official_site desc,last_seen_at desc nulls last""",
+          clean(market),side,key)
+    items=[]
+    for r in rows:
+        d=dict(r)
+        for k in ("first_seen_at","last_seen_at","last_verified_at","last_closure_checked_at","closed_at"):
+            if d.get(k) is not None:
+                d[k]=d[k].isoformat()
+        items.append(d)
+    return {"ok":True,"market":market,"side":side,"business_key":key,"evidence":items}
+
 @app.get("/api/admin/market-inventory-coverage")
 async def admin_market_inventory_coverage(x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)
