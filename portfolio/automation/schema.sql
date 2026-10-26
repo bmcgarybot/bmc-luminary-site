@@ -691,3 +691,63 @@ where coalesce(query_strategy_version,4)<5;
 
 alter table local_demand_scan_state alter column query_strategy_version set default 5;
 
+-- Inventory v5 and local-demand v6 require an exact normalized market phrase.
+-- This prevents overlapping market names such as Prescott and Prescott Valley
+-- from being counted in the wrong lane. Historical rows remain auditable.
+update market_inventory_candidates
+set status='superseded_pre_v5',
+    evidence=evidence || jsonb_build_object(
+      'superseded_reason','pre_v5_ambiguous_market_matching',
+      'superseded_at',now()
+    ),
+    updated_at=now()
+where promoted_entity_id is null
+  and query_strategy_version<5
+  and status='discovered';
+
+alter table market_inventory_candidates alter column query_strategy_version set default 5;
+
+update market_inventory_progress
+set pages_scanned=0,
+    raw_results=0,
+    official_candidates=0,
+    next_page=1,
+    query_variant=0,
+    no_progress_passes=0,
+    status='not_started',
+    last_run_at=null,
+    notes='Reset for inventory query strategy v5 exact-market baseline',
+    query_strategy_version=5,
+    updated_at=now()
+where coalesce(query_strategy_version,4)<5;
+
+alter table market_inventory_progress alter column query_strategy_version set default 5;
+
+-- Query strategy v6 uses the same exact-market matcher for public demand.
+update local_demand_signals
+set status='superseded_pre_v6',
+    evidence=evidence || jsonb_build_object(
+      'superseded_reason','pre_v6_ambiguous_market_matching',
+      'superseded_at',now()
+    ),
+    updated_at=now()
+where query_strategy_version<6
+  and status='discovered';
+
+alter table local_demand_signals alter column query_strategy_version set default 6;
+
+update local_demand_scan_state
+set next_page=1,
+    scans=0,
+    results_seen=0,
+    signals_found=0,
+    no_progress_scans=0,
+    last_run_at=null,
+    last_error=null,
+    query_strategy_version=6,
+    updated_at=now()
+where coalesce(query_strategy_version,5)<6;
+
+alter table local_demand_scan_state alter column query_strategy_version set default 6;
+
+
