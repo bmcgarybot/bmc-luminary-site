@@ -3119,6 +3119,42 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
       "expired_signals":expired_signals,"lanes_processed":len(lane_results),
       "lane_results":lane_results,"errors":errors}
 
+@app.get("/api/admin/local-demand-coverage")
+async def admin_local_demand_coverage(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    async with app.state.pool.acquire() as conn:
+        totals=await conn.fetchrow("""select count(*) total,
+          count(*) filter (where scans>0) touched,
+          count(*) filter (where scans=0) untouched,
+          coalesce(sum(results_seen),0) results_seen,
+          coalesce(sum(signals_found),0) signals_found
+          from local_demand_scan_state""")
+        by_market=await conn.fetch("""select market,count(*) total,
+          count(*) filter (where scans>0) touched,
+          coalesce(sum(results_seen),0) results_seen,
+          coalesce(sum(signals_found),0) signals_found,
+          max(last_run_at) last_run_at
+          from local_demand_scan_state
+          group by market order by market""")
+        by_source=await conn.fetch("""select source_key,source_name,count(*) total,
+          count(*) filter (where scans>0) touched,
+          coalesce(sum(results_seen),0) results_seen,
+          coalesce(sum(signals_found),0) signals_found,
+          max(last_run_at) last_run_at
+          from local_demand_scan_state
+          group by source_key,source_name order by source_key""")
+    return {"ok":True,"totals":{
+        "lanes":int(totals["total"] or 0),"touched":int(totals["touched"] or 0),
+        "untouched":int(totals["untouched"] or 0),"results_seen":int(totals["results_seen"] or 0),
+        "signals_found":int(totals["signals_found"] or 0)},
+      "markets":[{"market":r["market"],"lanes":int(r["total"] or 0),
+                  "touched":int(r["touched"] or 0),"results_seen":int(r["results_seen"] or 0),
+                  "signals_found":int(r["signals_found"] or 0),"last_run_at":r["last_run_at"]} for r in by_market],
+      "sources":[{"source_key":r["source_key"],"source_name":r["source_name"],
+                  "lanes":int(r["total"] or 0),"touched":int(r["touched"] or 0),
+                  "results_seen":int(r["results_seen"] or 0),"signals_found":int(r["signals_found"] or 0),
+                  "last_run_at":r["last_run_at"]} for r in by_source]}
+
 @app.get("/api/admin/local-demand-signals")
 async def admin_local_demand_signals(status:str="discovered",limit:int=100,x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)
