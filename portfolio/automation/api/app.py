@@ -3375,22 +3375,51 @@ async def admin_market_inventory_coverage(x_bmc_admin_key:str|None=Header(defaul
           from market_inventory_progress""")
         candidates=int(await conn.fetchval("""select count(*) from market_inventory_candidates
           where status='discovered' and query_strategy_version=$1""",INVENTORY_QUERY_STRATEGY_VERSION) or 0)
-        by_market=await conn.fetch("""select market,side,count(*) lanes,
-          count(*) filter (where pages_scanned>0) touched,
-          count(*) filter (where status='scan_complete_target_met') target_met,
-          count(*) filter (where status='scan_complete_under_target') under_target,
-          coalesce(sum(raw_results),0) raw_results,
-          coalesce(sum(official_candidates),0) official_candidates
+        by_market=await conn.fetch("""with progress as (
+          select market,side,count(*) lanes,
+            count(*) filter (where pages_scanned>0) touched,
+            count(*) filter (where status='scan_complete_target_met') target_met,
+            count(*) filter (where status='scan_complete_under_target') under_target,
+            coalesce(sum(raw_results),0) raw_results,
+            coalesce(sum(official_candidates),0) official_candidates
           from market_inventory_progress
-          group by market,side order by market,side""")
-        weakest=await conn.fetch("""select side,market,category_key,category_label,target,
-          pages_scanned,raw_results,official_candidates,status
-          from market_inventory_progress
-          order by case status when 'scan_complete_under_target' then 0 when 'not_started' then 1
+          group by market,side
+        ), candidates as (
+          select market,side,count(*) candidate_rows
+          from market_inventory_candidates
+          where status='discovered' and query_strategy_version=$1
+          group by market,side
+        ), base_records as (
+          select vm.market,'vendor'::text side,count(distinct vm.vendor_id)::bigint base_records
+          from vendor_markets vm
+          join vendors v on v.vendor_id=vm.vendor_id
+          where v.vendor_id not like 'test_%' and v.vendor_id not like 'v_synthetic_%'
+          group by vm.market
+          union all
+          select b.market,'buyer'::text side,count(*)::bigint base_records
+          from buyers b
+          where coalesce(b.market,'')<>''
+          group by b.market
+        )
+        select p.*,
+          coalesce(c.candidate_rows,0) candidate_rows,
+          coalesce(b.base_records,0) base_records,
+          coalesce(c.candidate_rows,0)+coalesce(b.base_records,0) discovered_records
+        from progress p
+        left join candidates c on c.market=p.market and c.side=p.side
+        left join base_records b on b.market=p.market and b.side=p.side
+        order by p.market,p.side""",INVENTORY_QUERY_STRATEGY_VERSION)
+        weakest=await conn.fetch("""select p.side,p.market,p.category_key,p.category_label,p.target,
+          p.pages_scanned,p.raw_results,p.official_candidates,p.status,
+          (select count(*) from market_inventory_candidates c
+             where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+               and c.status='discovered' and c.query_strategy_version=$1) candidate_rows
+          from market_inventory_progress p
+          order by candidate_rows asc,
+                   case p.status when 'scan_complete_under_target' then 0 when 'not_started' then 1
                     when 'error' then 2 else 3 end,
-                   case when target>0 then official_candidates::numeric/target else 0 end,
-                   market,category_key
-          limit 100""")
+                   p.pages_scanned asc,p.market,p.category_key
+          limit 100""",INVENTORY_QUERY_STRATEGY_VERSION)
     return {"ok":True,
       "totals":{"lanes":int(totals["lanes"] or 0),"touched":int(totals["touched"] or 0),
                 "untouched":int(totals["untouched"] or 0),"target_met":int(totals["target_met"] or 0),
@@ -3400,7 +3429,10 @@ async def admin_market_inventory_coverage(x_bmc_admin_key:str|None=Header(defaul
       "markets":[{"market":r["market"],"side":r["side"],"lanes":int(r["lanes"] or 0),
                   "touched":int(r["touched"] or 0),"target_met":int(r["target_met"] or 0),
                   "under_target":int(r["under_target"] or 0),"raw_results":int(r["raw_results"] or 0),
-                  "official_candidates":int(r["official_candidates"] or 0)} for r in by_market],
+                  "official_candidates":int(r["official_candidates"] or 0),
+                  "candidate_rows":int(r["candidate_rows"] or 0),
+                  "base_records":int(r["base_records"] or 0),
+                  "discovered_records":int(r["discovered_records"] or 0)} for r in by_market],
       "weakest_lanes":[dict(r) for r in weakest]}
 
 @app.post("/api/process-public-opportunities")
