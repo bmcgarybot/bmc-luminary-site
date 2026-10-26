@@ -4740,3 +4740,206 @@ On a new conversation:
 - do not rotate Stripe webhook secret without a proven need;
 - do not alter Cloudflare DNS/hosting architecture casually;
 - do not send a real provider invite from stale production code.
+
+
+## 53. LAUNCH READINESS AUDIT + RESEARCH QUEUE REGRESSION — 2026-10-25
+
+Brett explicitly stopped the move toward the first provider invitation because the goal is not merely to have one provider path working. Before any real provider, buyer, or Growth Pack outreach is sent, BMC must be genuinely ready to launch and to work the researched prospect pool in a controlled way.
+
+### Production deployment completed, but exposed a research-state regression
+
+Brett deployed the prior authoritative master `1b8606fbad9009b7464f31d8c48baef14e1c3d03` with `deploy-update.sh`.
+
+The deployment itself succeeded:
+- Ops API rebuilt and recreated;
+- additive migrations completed;
+- webhook proxy refreshed;
+- Postgres remained healthy;
+- scheduler, n8n, SearXNG and Ollama remained up;
+- runtime doctor returned 0 core failures / 0 warnings;
+- public ingress verification passed;
+- Cloudflare hooks hostname resolved;
+- `/api/intake` and `/api/stripe-webhook` reached the constrained application gateway;
+- private admin routes remained blocked publicly;
+- provider, buyer and growth sending remained effectively OFF.
+
+However, the post-deploy runtime doctor unexpectedly reported:
+- research queued = **56**;
+- research assigned = 0;
+- open agent tasks = 0.
+
+This contradicted the previously confirmed fully drained state.
+
+### Root cause
+
+`seed-research-scale.sql` was being run as part of every normal additive migration.
+
+Its scale-refresh block recalculated goals and then changed terminal research rows back to `queued` when:
+- candidates found were below the goal;
+- research_pass was below 4;
+- status was `completed`, `review`, or `searched_no_results`.
+
+That meant a normal future production deploy could resurrect already-finished research work even after the queue had intentionally drained to zero.
+
+This was a deployment/migration semantics bug, not evidence that 56 brand-new research cells had deliberately been added.
+
+### Fix
+
+`seed-research-scale.sql` now:
+- still raises/reconciles research goals;
+- still recalculates target gaps;
+- still inserts genuinely new expansion cells when they do not exist;
+- **never changes terminal research status back to queued merely because a migration is rerun**.
+
+Multi-pass retry remains the responsibility of the active research worker. A later deployment must preserve terminal research state.
+
+Fix commit:
+- `9e2d1f6948c85a2f686014cccd968a731a7f0b12`
+
+Regression CI:
+- creates synthetic `completed`, `review`, and `searched_no_results` rows with low pass counts;
+- reruns `seed-research-scale.sql`;
+- requires all three rows to remain terminal.
+
+Guard commit:
+- `239437e5745dc8475031a3cdfe4fb5bf8d97965c`
+- BMC Portfolio CI run `40274589901`: **SUCCESS**.
+
+The 56 production rows that were already resurrected still need to finish/return to terminal state once. The code fix prevents a later deploy from reopening them again.
+
+### Runtime outbound safety tightened
+
+The production deploy output showed `GROWTH_OUTREACH_ENABLED` was absent from the VPS `.env`.
+
+The application/Compose default is false, so this did not enable Growth outreach. Still, runtime doctor previously checked only vendor and buyer switches.
+
+Runtime doctor now explicitly verifies:
+- vendor outreach OFF;
+- buyer outreach OFF;
+- Growth Pack outreach effective OFF.
+
+Commit:
+- `f6a80225dc13bb6d828de6dd91a8886940b0014c`.
+
+No outreach was enabled and no messages were sent during this work.
+
+### Research records are not automatically outreach-ready
+
+A second launch-readiness gap was confirmed.
+
+The existence of:
+- 211 vendor records;
+- 2,537 buyer records;
+
+does not prove that all researched prospects are usable for outbound launch.
+
+The old `outreach_ready` preflight gate primarily proves outbound infrastructure:
+- SMTP;
+- monitored IMAP;
+- postal address.
+
+It does **not** prove:
+- research queue is fully drained;
+- records have usable public email/contact paths;
+- duplicate emails are controlled;
+- suppressions are honored at staging time;
+- research prospects have been deliberately selected into a launch wave.
+
+Therefore do not describe the entire research pool as outreach-ready merely because `outreach_ready: READY`.
+
+### New production launch-readiness audit
+
+Added:
+- `portfolio/automation/launch-readiness.sh`
+
+The audit is read-only and checks/reports:
+- current commit;
+- all three outreach switches;
+- research queued/assigned/open-agent-task counts;
+- staged review-candidate count;
+- total/prospect vendor counts;
+- vendor email/phone/website/contact-path readiness;
+- vendor records eligible for a new recruitment wave;
+- total/prospect buyer counts;
+- buyer email/phone/website/contact-path readiness;
+- buyer records eligible for a new wave;
+- suppression count;
+- duplicate email groups across vendor/buyer pools;
+- malformed stored email addresses;
+- current outreach rows grouped by side/campaign/wave/status;
+- verified pilot/active provider count;
+- SMTP / IMAP / postal / Stripe configuration state;
+- number of active products with live payment links;
+- public Providers page;
+- public sitemap and `/providers/` entry;
+- live provider activation capacity requirement;
+- constrained public webhook ingress.
+
+It distinguishes:
+- provider recruitment staging readiness;
+- buyer service-outreach readiness, which should remain unavailable until real provider coverage exists.
+
+The audit does not send or stage messages.
+
+### Controlled research-prospect wave staging added
+
+The old bootstrap seed scripts were too broad to be the preferred real-launch workflow.
+
+Added:
+- `portfolio/automation/stage-outreach-wave.sh`
+
+Safety behavior:
+- preview mode is the default;
+- refuses to run if vendor, buyer, or Growth sending is enabled;
+- accepts only a named wave;
+- allows bounded market/service/campaign filtering;
+- maximum batch is 100;
+- selects only vendor `prospect` or buyer `new/prospect` records;
+- requires a public email;
+- honors `outreach_suppressions`;
+- deduplicates by normalized email;
+- refuses to duplicate an already-staged recruitment/buyer record;
+- `--apply` stages rows only;
+- **never sends email**;
+- sending switches remain OFF after staging.
+
+CI now creates a synthetic researched vendor and proves:
+1. preview stages nothing;
+2. explicit `--apply` creates exactly one queued outreach row in the named test wave;
+3. `sent_at` remains null.
+
+Legacy bootstrap queue seeds were also hardened:
+- vendor seed now queues only unsuppressed `prospect` vendors with public email;
+- buyer seed now queues only unsuppressed `new/prospect` buyers with public email;
+- both explicitly use the `backlog` wave;
+- real launch staging should use `stage-outreach-wave.sh`, not a blind seed rerun.
+
+### Current launch policy
+
+Do **not** send the American Crown invitation yet.
+
+Do **not** enable:
+- `OUTREACH_ENABLED`;
+- `BUYER_OUTREACH_ENABLED`;
+- `GROWTH_OUTREACH_ENABLED`.
+
+Do not start broad researched-prospect outreach merely because records exist.
+
+Correct next production sequence after the latest GitHub CI is green:
+
+1. Pull/deploy the latest master with `deploy-update.sh`.
+2. Confirm future migration no longer resurrects terminal research.
+3. Drain the currently reopened 56 public-web research rows back to terminal state.
+   - Source-native CMS work is not required for this repair drain.
+4. Run `launch-readiness.sh .env`.
+5. Inspect the **actual contactability numbers** for the 211 vendors and 2,537 buyers.
+6. If email/contact readiness is weak, run a dedicated enrichment pass before outreach staging.
+7. Only once research is genuinely complete and contactability is acceptable:
+   - preview a small named provider recruitment wave;
+   - preview a small buyer wave only where verified provider coverage exists;
+   - inspect copy/targets;
+   - keep sending OFF until Brett explicitly approves.
+8. Provider activation still requires provider submission + review/verification before approval.
+9. Buyer service outreach should not outrun provider capacity.
+
+The operational goal is a launch-ready autonomous system, not merely a technically healthy runtime.
