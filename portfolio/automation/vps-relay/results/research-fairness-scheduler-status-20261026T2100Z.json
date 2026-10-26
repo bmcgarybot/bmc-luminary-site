@@ -1,0 +1,21 @@
+{
+  "action": "scheduler_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-26T21:12:28.558591+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "5073d84f08af01fe45db73aa8b193b1b16af6f4c",
+  "git_commit_before": "5073d84f08af01fe45db73aa8b193b1b16af6f4c",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "665e5eb4287c7b3ac797667dd8eae7241d886760",
+  "request_id": "research-fairness-scheduler-status-20261026T2100Z",
+  "request_sha256": "85a604e4d72cd92ab8d92d7bd7abfb1fc207ca6238c62166df54486f9ffd93ef",
+  "started_at": "2026-10-26T21:12:28.413618+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "NAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS\n",
+  "version": 1
+}
