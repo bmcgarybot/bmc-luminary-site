@@ -116,7 +116,9 @@ def category_href(href:str,slug:str):
         path=parsed.path or ""
     else:
         path=raw.split("?",1)[0].split("#",1)[0]
-    m=re.match(r"^/businesses/([a-z0-9][a-z0-9\-]*)-in-"+re.escape(slug)+r"-az/?$",path,re.I)
+    # WhereOrg paginates category pages by appending -02, -03, etc.
+    # Preserve the underlying category key while following every page.
+    m=re.match(r"^/businesses/([a-z0-9][a-z0-9\-]*?)-in-"+re.escape(slug)+r"-az(?:-(\d{2,3}))?/?$",path,re.I)
     if not m:
         return None
     return urllib.parse.urljoin(BASE,path),m.group(1).lower()
@@ -371,7 +373,7 @@ def main():
     ap.add_argument("env_file",nargs="?",default=".env")
     ap.add_argument("--markets",default="")
     ap.add_argument("--max-per-feed",type=int,default=250)
-    ap.add_argument("--max-pages-per-market",type=int,default=120)
+    ap.add_argument("--max-pages-per-market",type=int,default=1500)
     ap.add_argument("--delay",type=float,default=0.25)
     ap.add_argument("--dry-run",action="store_true")
     args=ap.parse_args()
@@ -410,7 +412,11 @@ def main():
             stats["errors"].append({"market":market,"feed":"market_root","error":str(exc)[:220]})
 
         pages=0
-        while queue and pages<max(1,args.max_pages_per_market):
+        # A high technical ceiling protects against malformed cyclic navigation;
+        # it is not a business/research target. The queue otherwise runs until all
+        # discovered category and pagination pages have been exhausted.
+        page_ceiling=max(100,int(args.max_pages_per_market or 1500))
+        while queue and pages<page_ceiling:
             url,feed_key=queue.pop(0); pages+=1
             stats["feeds_attempted"]+=1
             try:
@@ -446,6 +452,8 @@ def main():
                 stats["errors"].append({"market":market,"feed":feed_key,"error":str(exc)[:220]})
             if args.delay>0:time.sleep(args.delay)
         mstat["pages_discovered"]=len(queued)
+        mstat["pages_fetched"]=pages
+        mstat["pages_remaining_at_safety_ceiling"]=len(queue)
 
     print(json.dumps(stats,indent=2))
     if args.dry_run:
