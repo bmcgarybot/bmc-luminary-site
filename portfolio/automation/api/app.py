@@ -396,9 +396,13 @@ def result_matches_market(result,market):
         return bool(re.search(r"\bprescott\b(?!\s+valley\b)",normalized))
     return f" {place} " in padded
 
-def inventory_result_relevant(result,market,category_label):
+def inventory_result_relevant(result,market,category_label,side=None):
     # Search backends can occasionally return unrelated or poisoned results.
-    # Require evidence that the result actually belongs to the requested lane.
+    # Buyer candidates must prove the requested market in the returned result.
+    # Vendor discovery is allowed to use the market-specific search context so
+    # regional providers are not discarded just because their page omits a
+    # small town they serve. Market evidence is stored separately and is still
+    # required before a vendor result can count as a direct/verified match.
     haystack=" ".join([
         clean((result or {}).get("title")),
         clean((result or {}).get("snippet")),
@@ -418,7 +422,11 @@ def inventory_result_relevant(result,market,category_label):
         category_match=bool(subject_match and action_match)
     else:
         category_match=bool(subject_match)
-    return bool(market_match and category_match)
+    if not category_match:
+        return False
+    if market_match:
+        return True
+    return clean(side).lower()=="vendor"
 
 def inventory_official_site(result):
     host=clean((result or {}).get("domain")).lower().removeprefix("www.")
@@ -3204,20 +3212,50 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
     errors=[]
     total_new=0
     async with app.state.pool.acquire() as conn:
-        vendor_lanes=await conn.fetch("""select * from market_inventory_progress
-          where side='vendor' and status not in ('scan_complete_target_met','scan_complete_under_target')
-          order by last_run_at nulls first,
-                   case when market in ('Prescott','Prescott Valley','Kingman','Bullhead City') then 0
-                        when market in ('Phoenix','Scottsdale','Tucson','Flagstaff') then 1 else 2 end,
-                   target desc,market,category_key
-          limit 12""")
-        buyer_lanes=await conn.fetch("""select * from market_inventory_progress
-          where side='buyer' and status not in ('scan_complete_target_met','scan_complete_under_target')
-          order by last_run_at nulls first,
-                   case when market in ('Prescott','Prescott Valley','Kingman','Bullhead City') then 0
-                        when market in ('Phoenix','Scottsdale','Tucson','Flagstaff') then 1 else 2 end,
-                   target desc,market,category_key
-          limit 8""")
+        vendor_lanes=await conn.fetch("""with ranked as (
+          select p.*,
+            row_number() over (
+              partition by p.market
+              order by
+                case when exists (
+                  select 1 from market_inventory_candidates c
+                  where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+                    and c.status='discovered' and c.query_strategy_version=$1
+                ) then 1 else 0 end,
+                p.pages_scanned,
+                p.last_run_at nulls first,
+                p.category_key
+            ) as market_rank
+          from market_inventory_progress p
+          where p.side='vendor'
+            and p.status not in ('scan_complete_target_met','scan_complete_under_target')
+        )
+        select * from ranked
+        where market_rank=1
+        order by last_run_at nulls first, market
+        limit 12""",INVENTORY_QUERY_STRATEGY_VERSION)
+        buyer_lanes=await conn.fetch("""with ranked as (
+          select p.*,
+            row_number() over (
+              partition by p.market
+              order by
+                case when exists (
+                  select 1 from market_inventory_candidates c
+                  where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+                    and c.status='discovered' and c.query_strategy_version=$1
+                ) then 1 else 0 end,
+                p.pages_scanned,
+                p.last_run_at nulls first,
+                p.category_key
+            ) as market_rank
+          from market_inventory_progress p
+          where p.side='buyer'
+            and p.status not in ('scan_complete_target_met','scan_complete_under_target')
+        )
+        select * from ranked
+        where market_rank=1
+        order by last_run_at nulls first, market
+        limit 8""",INVENTORY_QUERY_STRATEGY_VERSION)
         for lane in list(vendor_lanes)+list(buyer_lanes):
             page=max(1,int(lane["next_page"] or 1))
             variant=max(0,int(lane["query_variant"] or 0))
@@ -3236,12 +3274,13 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
                 continue
 
             relevant_results=[r for r in results
-                              if inventory_result_relevant(r,lane["market"],lane["category_label"])]
+                              if inventory_result_relevant(r,lane["market"],lane["category_label"],lane["side"])]
             inserted=0
             official_added=0
             for result in relevant_results:
                 contact=extract_public_contact(f'{result["title"]} {result["snippet"]}')
-                official=inventory_official_site(result)
+                market_evidence=result_matches_market(result,lane["market"])
+                official=bool(inventory_official_site(result) and market_evidence)
                 cid=await conn.fetchval("""insert into market_inventory_candidates(
                     side,market,category_key,category_label,business_name,source_url,source_domain,
                     snippet,search_query,page_no,public_email,public_phone,official_site,status,
@@ -3268,7 +3307,9 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
                   INVENTORY_QUERY_STRATEGY_VERSION,
                   json.dumps({"search_engine":result["engine"],"search_score":result["score"],
                               "query_variant":variant,"page":page,
-                              "query_strategy_version":INVENTORY_QUERY_STRATEGY_VERSION}))
+                              "query_strategy_version":INVENTORY_QUERY_STRATEGY_VERSION,
+                              "market_evidence":market_evidence,
+                              "market_evidence_mode":"result_text" if market_evidence else "market_specific_query_context"}))
                 if cid:
                     inserted+=1
                     if official:
