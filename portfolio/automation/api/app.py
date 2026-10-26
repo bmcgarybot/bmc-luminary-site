@@ -432,6 +432,8 @@ def inventory_official_site(result):
     )
     if any(x in title for x in aggregate_phrases):
         return False
+    if re.search(r"\btop\s+(?:\d+|[a-z]+)\s+(?:restaurants?|hotels?|contractors?|companies|providers?)\b",title):
+        return False
     if any(x in url for x in ("/search?","/search/","/directory/","/best-restaurants","/restaurants-near")):
         return False
     return True
