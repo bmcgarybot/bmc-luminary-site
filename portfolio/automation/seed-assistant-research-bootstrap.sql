@@ -4687,3 +4687,2803 @@ update market_inventory_progress p set official_candidates=(
  select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
  and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ),updated_at=now() where p.market='Prescott';
+
+
+-- Assistant-led Prescott vendor/trade census batch 02 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Franklin Plumbing Services Inc.',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Gh Plumbing, Inc.',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Briggs Plumbing And Rooter Service Inc.',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Az Super Plumber',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Lueck''s Plumbing LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Bart''s Plumbing Inc.',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Yavapai Water Production LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Bar None Plumbing',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Alphabet Plumbing And Rooter Inc.',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Elsea Plumbing Inc.',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','4w Industries, LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Apex Plumbing Prescott Inc.',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Arizona Grinder Pumps LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Az Plumber Plus, LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Barrett Propane',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Bee Plumbing',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Benjamin Franklin Plumbing',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Brewer Plumbing Inc.',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Collins Plumbing LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Copper King Plumbing LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Enright Plumbing',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Heritage Plumbing LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Infinity Kitchen And Bath LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','J F R Plumbing LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','J&r Plumbing',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Juniper Ridge Plumbing',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Mike''s Plumbing, LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Og Plumbing',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Otter Plumbing, LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Parsons Plumbing LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Patriot Plumbing',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Pine Country Plumbing LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Plumber Of Prescott LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Plumbing Guild LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Prescott Plumbing',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','R&r Sewer & Drain Cleaning LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Smart Plumbing & Septic',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','T & T Plumbing Pros LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','The Elite Plumber LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Trademark Plumbing',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Yavapai Landscaping LLC',
+ 'https://homversa.com/az/prescott/plumbers','homversa.com','Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC plumbing-license record registered in Prescott; exact residential/commercial scope should be checked before assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','S & M Electric',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','S & K Electrical Contracting LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Angler Electric',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Fair Oaks Electric',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Kevin Lollar Electric LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Staltari Electrical Services',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','D A K Electric Company',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','G And S Electric, Inc.',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','A A A Froggy Electric Inc.',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Sarvi Co Electric LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Aaron Gene Gilbert',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Allied Electric LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Arizona Lights Electric LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Berthil Kristian Smit',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Blue Arco Solar Solutions LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Caliber Electrical Contractors LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Clear Electric LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Collins Electric LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Countywide Electric Inc.',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Custom Home Electric LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','D & S Electrical Services LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','D C M Builders LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Fann Environmental LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Hyperion Electric & Solar',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Integrity Electrical LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','James German Electric LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Liteguard LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','M H I Residential Inc.',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Mile High Electric LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Olympian Electric And Audio Video LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Ponderosa Electric LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Price Electric LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Projected Innovations And Electric, LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','R And L Elliott Power Systems',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','R D Electrical Contracting',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Rightway Electrical Inc.',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Sg Solar & Electrical, LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Sierra Prieta Electric LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Stephens-Son Electric LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Wurke Bettler Home Services, LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','Yavapai Power & Lighting LLC',
+ 'https://homversa.com/az/prescott/electricians','homversa.com','Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment.','assistant vendor census: Prescott Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current ROC electrical-license record registered in Prescott; license scope should be checked before commercial assignment."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','facility_maintenance','Building Maintenance Help','Central Basin Roofing, Inc.',
+ 'https://homversa.com/az/prescott/roofers','homversa.com','Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026.','assistant vendor census: Prescott Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','facility_maintenance','Building Maintenance Help','Granite Basin Roofing Inc.',
+ 'https://homversa.com/az/prescott/roofers','homversa.com','Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026.','assistant vendor census: Prescott Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','facility_maintenance','Building Maintenance Help','Legacy Roofing LLC',
+ 'https://homversa.com/az/prescott/roofers','homversa.com','Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026.','assistant vendor census: Prescott Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','facility_maintenance','Building Maintenance Help','Northline Roofing LLC',
+ 'https://homversa.com/az/prescott/roofers','homversa.com','Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026.','assistant vendor census: Prescott Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','facility_maintenance','Building Maintenance Help','Heritage Roofing Inc.',
+ 'https://homversa.com/az/prescott/roofers','homversa.com','Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026.','assistant vendor census: Prescott Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','facility_maintenance','Building Maintenance Help','Golden Roofing LLC',
+ 'https://homversa.com/az/prescott/roofers','homversa.com','Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026.','assistant vendor census: Prescott Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','facility_maintenance','Building Maintenance Help','Sun Spirit Roofing LLC',
+ 'https://homversa.com/az/prescott/roofers','homversa.com','Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026.','assistant vendor census: Prescott Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','facility_maintenance','Building Maintenance Help','Alexander Roofing LLC',
+ 'https://homversa.com/az/prescott/roofers','homversa.com','Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026.','assistant vendor census: Prescott Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','facility_maintenance','Building Maintenance Help','North Kings Roofing Corporation',
+ 'https://homversa.com/az/prescott/roofers','homversa.com','Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026.','assistant vendor census: Prescott Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','facility_maintenance','Building Maintenance Help','Drytop Roofing LLC',
+ 'https://homversa.com/az/prescott/roofers','homversa.com','Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026.','assistant vendor census: Prescott Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','facility_maintenance','Building Maintenance Help','Az Diamond Roofing LLC',
+ 'https://homversa.com/az/prescott/roofers','homversa.com','Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026.','assistant vendor census: Prescott Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','facility_maintenance','Building Maintenance Help','Empire Roofing & Contracting LLC',
+ 'https://homversa.com/az/prescott/roofers','homversa.com','Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026.','assistant vendor census: Prescott Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','facility_maintenance','Building Maintenance Help','Granite Mountain Roofing LLC',
+ 'https://homversa.com/az/prescott/roofers','homversa.com','Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026.','assistant vendor census: Prescott Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','facility_maintenance','Building Maintenance Help','Vantage Roofing Group LLC',
+ 'https://homversa.com/az/prescott/roofers','homversa.com','Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026.','assistant vendor census: Prescott Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott roofing company with active dual-scope ROC roofing license as of September 21, 2026."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','hvac_heat','Heating & Air','Comfort Pro Heating & Cooling, Inc.',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott-area HVAC contractor from current local/license-backed business evidence.','assistant vendor census: Prescott Heating & Air',0,
+ null,'(928) 899-4250',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott-area HVAC contractor from current local/license-backed business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','hvac_heat','Heating & Air','Phillips Heating & Cooling, Inc.',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott-area HVAC contractor from current local/license-backed business evidence.','assistant vendor census: Prescott Heating & Air',0,
+ null,'(928) 445-0282',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott-area HVAC contractor from current local/license-backed business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','hvac_heat','Heating & Air','AC Medic Heating & Air',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott-area HVAC contractor from current local/license-backed business evidence.','assistant vendor census: Prescott Heating & Air',0,
+ null,'(928) 848-6224',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott-area HVAC contractor from current local/license-backed business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','hvac_heat','Heating & Air','Advantage Home Performance Inc.',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott-area HVAC contractor from current local/license-backed business evidence.','assistant vendor census: Prescott Heating & Air',0,
+ null,'(928) 445-3828',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott-area HVAC contractor from current local/license-backed business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','hvac_heat','Heating & Air','Allied Electric, Heating & AC Repair',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott-area HVAC contractor from current local/license-backed business evidence.','assistant vendor census: Prescott Heating & Air',0,
+ null,'(928) 232-6477',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott-area HVAC contractor from current local/license-backed business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','hvac_heat','Heating & Air','Arizona Heating And Cooling Inc.',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott-area HVAC contractor from current local/license-backed business evidence.','assistant vendor census: Prescott Heating & Air',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott-area HVAC contractor from current local/license-backed business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','hvac_heat','Heating & Air','Chino Heating And Cooling Inc.',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott-area HVAC contractor from current local/license-backed business evidence.','assistant vendor census: Prescott Heating & Air',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott-area HVAC contractor from current local/license-backed business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','hvac_heat','Heating & Air','Mark''s Mechanical',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott-area HVAC contractor from current local/license-backed business evidence.','assistant vendor census: Prescott Heating & Air',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott-area HVAC contractor from current local/license-backed business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','hvac_heat','Heating & Air','Balanced Heating & Air Conditioning',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott-area HVAC contractor from current local/license-backed business evidence.','assistant vendor census: Prescott Heating & Air',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott-area HVAC contractor from current local/license-backed business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','hvac_heat','Heating & Air','Horizon Heating & Air LLC',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott-area HVAC contractor from current local/license-backed business evidence.','assistant vendor census: Prescott Heating & Air',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott-area HVAC contractor from current local/license-backed business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','hvac_heat','Heating & Air','Aire Serv of North Central Arizona',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott-area HVAC contractor from current local/license-backed business evidence.','assistant vendor census: Prescott Heating & Air',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott-area HVAC contractor from current local/license-backed business evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','landscaping','Landscaping & Yard Cleanup','Aspen Landscaping',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott landscaping/property-service candidate.','assistant vendor census: Prescott Landscaping & Yard Cleanup',0,
+ null,'(928) 832-2590',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott landscaping/property-service candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','landscaping','Landscaping & Yard Cleanup','Yavapai Landscaping Prescott',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott landscaping/property-service candidate.','assistant vendor census: Prescott Landscaping & Yard Cleanup',0,
+ null,'(928) 910-4147',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott landscaping/property-service candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','landscaping','Landscaping & Yard Cleanup','Rocky''s Landscaping',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott landscaping/property-service candidate.','assistant vendor census: Prescott Landscaping & Yard Cleanup',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott landscaping/property-service candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','landscaping','Landscaping & Yard Cleanup','Mortimer''s Custom Landscaping',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott landscaping/property-service candidate.','assistant vendor census: Prescott Landscaping & Yard Cleanup',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott landscaping/property-service candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','landscaping','Landscaping & Yard Cleanup','Common Ground Services LLC',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott landscaping/property-service candidate.','assistant vendor census: Prescott Landscaping & Yard Cleanup',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott landscaping/property-service candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','landscaping','Landscaping & Yard Cleanup','Prescott Landscape Company',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott landscaping/property-service candidate.','assistant vendor census: Prescott Landscaping & Yard Cleanup',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott landscaping/property-service candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','landscaping','Landscaping & Yard Cleanup','Arizona Native Landscapes',
+ 'https://homversa.com/az/prescott','homversa.com','Current Prescott landscaping/property-service candidate.','assistant vendor census: Prescott Landscaping & Yard Cleanup',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott landscaping/property-service candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','landscaping','Landscaping & Yard Cleanup','Jonny''s Tree & Landscaping',
+ 'https://prescott-az.gov/wp-content/uploads/2025/10/WAT-List_of_Approved_Backflow_Prevention_Assembly_Testers-20251007.pdf','prescott-az.gov','Current Prescott landscaping/property-service candidate.','assistant vendor census: Prescott Landscaping & Yard Cleanup',0,
+ null,'(928) 442-7274',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott landscaping/property-service candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','tree_service','Tree Service & Brush Clearing','Morgan Tree Service',
+ 'https://www.google.com/search?q=Morgan+Tree+Service+Prescott+AZ','google.com','Current veteran-owned Prescott tree-service company serving Prescott and surrounding communities.','assistant vendor census: Prescott Tree Service & Brush Clearing',0,
+ null,'(928) 232-0011',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current veteran-owned Prescott tree-service company serving Prescott and surrounding communities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','tree_service','Tree Service & Brush Clearing','Patriot Pest & Termite Control',
+ 'https://www.google.com/search?q=Patriot+Pest+Termite+Control+Prescott','google.com','Current Prescott pest company also offering tree care/plant-health services.','assistant vendor census: Prescott Tree Service & Brush Clearing',0,
+ null,'(928) 985-3098',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott pest company also offering tree care/plant-health services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','pest_control','Pest Control','Patriot Pest & Termite Control',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott pest-control company with residential/commercial service evidence.','assistant vendor census: Prescott Pest Control',0,
+ null,'(928) 985-3098',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott pest-control company with residential/commercial service evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','pest_control','Pest Control','AZEX Pest Solutions',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott pest-control company with residential/commercial service evidence.','assistant vendor census: Prescott Pest Control',0,
+ null,'(928) 445-5820',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott pest-control company with residential/commercial service evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','pest_control','Pest Control','Green Gecko Pest Solutions',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott pest-control company with residential/commercial service evidence.','assistant vendor census: Prescott Pest Control',0,
+ null,'(928) 985-4321',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott pest-control company with residential/commercial service evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','commercial_cleaning','Commercial Cleaning','American Crown Commercial Cleaning',
+ 'https://americancrowncc.com/','americancrowncc.com','Current Prescott commercial/janitorial cleaning candidate.','assistant vendor census: Prescott Commercial Cleaning',0,
+ null,'(928) 250-0490',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott commercial/janitorial cleaning candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','commercial_cleaning','Commercial Cleaning','Superior Maintenance',
+ 'https://www.yellowpages.com/prescott-az/janitorial-service','yellowpages.com','Current Prescott commercial/janitorial cleaning candidate.','assistant vendor census: Prescott Commercial Cleaning',0,
+ null,'(928) 445-2027',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott commercial/janitorial cleaning candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','commercial_cleaning','Commercial Cleaning','Close-Up-Cleaning',
+ 'https://www.yellowpages.com/prescott-az/janitorial-service','yellowpages.com','Current Prescott commercial/janitorial cleaning candidate.','assistant vendor census: Prescott Commercial Cleaning',0,
+ null,'(928) 778-1074',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott commercial/janitorial cleaning candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','commercial_cleaning','Commercial Cleaning','Clean Team Janitorial Services',
+ 'https://www.yellowpages.com/prescott-az/janitorial-service','yellowpages.com','Current Prescott commercial/janitorial cleaning candidate.','assistant vendor census: Prescott Commercial Cleaning',0,
+ null,'(928) 443-5433',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott commercial/janitorial cleaning candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','commercial_cleaning','Commercial Cleaning','Golden Phoenix Solutions',
+ 'https://www.yellowpages.com/prescott-az/janitorial-service','yellowpages.com','Current Prescott commercial/janitorial cleaning candidate.','assistant vendor census: Prescott Commercial Cleaning',0,
+ null,'(928) 277-6293',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott commercial/janitorial cleaning candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','commercial_cleaning','Commercial Cleaning','Kastle Keeper Cleaning Services LLC',
+ 'https://www.yellowpages.com/prescott-az/janitorial-service','yellowpages.com','Current Prescott commercial/janitorial cleaning candidate.','assistant vendor census: Prescott Commercial Cleaning',0,
+ null,'(928) 277-3868',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott commercial/janitorial cleaning candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','commercial_cleaning','Commercial Cleaning','Maid to Shine Bright',
+ 'https://www.yellowpages.com/prescott-az/janitorial-service','yellowpages.com','Current Prescott commercial/janitorial cleaning candidate.','assistant vendor census: Prescott Commercial Cleaning',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott commercial/janitorial cleaning candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','window_cleaning','Window Cleaning','American Crown Commercial Cleaning',
+ 'https://americancrowncc.com/','americancrowncc.com','Current Prescott window-cleaning candidate.','assistant vendor census: Prescott Window Cleaning',0,
+ null,'(928) 250-0490',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott window-cleaning candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','window_cleaning','Window Cleaning','Window Wranglers',
+ 'https://windowwranglers.com/','windowwranglers.com','Current Prescott window-cleaning candidate.','assistant vendor census: Prescott Window Cleaning',0,
+ null,'(928) 463-5393',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott window-cleaning candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','window_cleaning','Window Cleaning','Clearly Clean Window Cleaners',
+ 'https://www.yellowpages.com/prescott-az/janitorial-service','yellowpages.com','Current Prescott window-cleaning candidate.','assistant vendor census: Prescott Window Cleaning',0,
+ null,'(928) 299-1903',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott window-cleaning candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','window_cleaning','Window Cleaning','Platinum Edge Services',
+ 'https://platinumedgeservices.com/contact.html','platinumedgeservices.com','Current Prescott window-cleaning candidate.','assistant vendor census: Prescott Window Cleaning',0,
+ null,'(928) 227-5725',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott window-cleaning candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','window_cleaning','Window Cleaning','Just Windows',
+ 'https://www.yellowpages.com/prescott-az/janitorial-service','yellowpages.com','Current Prescott window-cleaning candidate.','assistant vendor census: Prescott Window Cleaning',0,
+ null,'(928) 420-0362',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott window-cleaning candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','pressure_washing','Pressure Washing','American Crown Commercial Cleaning',
+ 'https://americancrowncc.com/','americancrowncc.com','Current Prescott/Quad-City pressure-washing or commercial property-maintenance candidate.','assistant vendor census: Prescott Pressure Washing',0,
+ null,'(928) 250-0490',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott/Quad-City pressure-washing or commercial property-maintenance candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','pressure_washing','Pressure Washing','Window Wranglers',
+ 'https://windowwranglers.com/','windowwranglers.com','Current Prescott/Quad-City pressure-washing or commercial property-maintenance candidate.','assistant vendor census: Prescott Pressure Washing',0,
+ null,'(928) 463-5393',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott/Quad-City pressure-washing or commercial property-maintenance candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','pressure_washing','Pressure Washing','Clearly Clean Window Cleaners',
+ 'https://americancrowncc.com/','americancrowncc.com','Current Prescott/Quad-City pressure-washing or commercial property-maintenance candidate.','assistant vendor census: Prescott Pressure Washing',0,
+ null,'(928) 299-1903',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott/Quad-City pressure-washing or commercial property-maintenance candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','pressure_washing','Pressure Washing','Platinum Edge Services',
+ 'https://platinumedgeservices.com/','platinumedgeservices.com','Current Prescott/Quad-City pressure-washing or commercial property-maintenance candidate.','assistant vendor census: Prescott Pressure Washing',0,
+ null,'(928) 227-5725',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott/Quad-City pressure-washing or commercial property-maintenance candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','pressure_washing','Pressure Washing','Swept Away AZ, LLC',
+ 'https://sweptawayaz.com/','sweptawayaz.com','Current Prescott/Quad-City pressure-washing or commercial property-maintenance candidate.','assistant vendor census: Prescott Pressure Washing',0,
+ null,'(928) 775-0405',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott/Quad-City pressure-washing or commercial property-maintenance candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','garage_door','Garage Door Repair','A1 Garage Door Service',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott/Quad-City garage-door repair/installation provider.','assistant vendor census: Prescott Garage Door Repair',0,
+ null,'(928) 361-0478',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott/Quad-City garage-door repair/installation provider."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','garage_door','Garage Door Repair','Iconic Garage Door Services',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott/Quad-City garage-door repair/installation provider.','assistant vendor census: Prescott Garage Door Repair',0,
+ null,'(928) 216-4210',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott/Quad-City garage-door repair/installation provider."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','garage_door','Garage Door Repair','Neumann High Country Doors',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott/Quad-City garage-door repair/installation provider.','assistant vendor census: Prescott Garage Door Repair',0,
+ null,'(928) 772-9738',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott/Quad-City garage-door repair/installation provider."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','locksmith_access','Locks & Access Control','High Desert Lock and Safe',
+ 'https://web.prescott.org/v12/directory/index.aspx','web.prescott.org','Current Prescott locksmith/safe company serving the Quad City area.','assistant vendor census: Prescott Locks & Access Control',0,
+ null,'(928) 445-0197',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current Prescott locksmith/safe company serving the Quad City area."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','fire_safety','Fire Safety & Extinguisher Service','All West Fire Protection Systems LLC',
+ 'https://prescott-az.gov/wp-content/uploads/2025/10/WAT-List_of_Approved_Backflow_Prevention_Assembly_Testers-20251007.pdf','prescott-az.gov','City of Prescott approved backflow tester and local fire-protection company at 2957 State Route 89.','assistant vendor census: Prescott Fire Safety & Extinguisher Service',0,
+ null,'(928) 776-7861',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"City of Prescott approved backflow tester and local fire-protection company at 2957 State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','fire_safety','Fire Safety & Extinguisher Service','Life & Property Safety LLC',
+ 'https://prescott-az.gov/wp-content/uploads/2025/10/WAT-List_of_Approved_Backflow_Prevention_Assembly_Testers-20251007.pdf','prescott-az.gov','City of Prescott approved backflow tester/local life-safety service company.','assistant vendor census: Prescott Fire Safety & Extinguisher Service',0,
+ null,'(928) 910-6213',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"City of Prescott approved backflow tester/local life-safety service company."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Dave Morano',
+ 'https://prescott-az.gov/wp-content/uploads/2025/10/WAT-List_of_Approved_Backflow_Prevention_Assembly_Testers-20251007.pdf','prescott-az.gov','City of Prescott approved backflow-prevention assembly tester.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,'(928) 713-1606',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"City of Prescott approved backflow-prevention assembly tester."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','parking_lot','Parking Lot Cleaning & Striping','Swept Away AZ, LLC',
+ 'https://sweptawayaz.com/','sweptawayaz.com','Current commercial-property maintenance provider performing parking-lot sweeping, pressure washing, porter work and seasonal services throughout Prescott Quad-City.','assistant vendor census: Prescott Parking Lot Cleaning & Striping',0,
+ null,'(928) 775-0405',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"Current commercial-property maintenance provider performing parking-lot sweeping, pressure washing, porter work and seasonal services throughout Prescott Quad-City."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','pressure_washing','Pressure Washing','Bear Backflow and Pressure Washing LLC',
+ 'https://prescott-az.gov/wp-content/uploads/2025/10/WAT-List_of_Approved_Backflow_Prevention_Assembly_Testers-20251007.pdf','prescott-az.gov','City of Prescott approved backflow tester; company name explicitly includes pressure washing.','assistant vendor census: Prescott Pressure Washing',0,
+ null,'(928) 515-4516',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"City of Prescott approved backflow tester; company name explicitly includes pressure washing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Bear Backflow and Pressure Washing LLC',
+ 'https://prescott-az.gov/wp-content/uploads/2025/10/WAT-List_of_Approved_Backflow_Prevention_Assembly_Testers-20251007.pdf','prescott-az.gov','City of Prescott approved backflow tester serving Prescott area.','assistant vendor census: Prescott Backflow & Commercial Plumbing',0,
+ null,'(928) 515-4516',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_vendors_02","researched_at":"2026-10-27T01:47:00Z","source_quality":"licensed_or_directory_discovery","verification_status":"discovery","note":"City of Prescott approved backflow tester serving Prescott area."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p set official_candidates=(
+ select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
+ and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+),updated_at=now() where p.market='Prescott';
