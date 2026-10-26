@@ -138,6 +138,9 @@ def discover_category_pages(page_html:str,slug:str):
     p=C(); p.feed(page_html); p.close(); return p.rows
 
 def parse_listing(page_html:str,market:str):
+    # Directory geography does not always use the municipal label BMC uses.
+    # Dewey-Humboldt commonly appears simply as Dewey in public business data.
+    evidence_market="Dewey" if market=="Dewey-Humboldt" else market
     # Simpler event parser that keeps each qualifying company href with the
     # following visible text until the next qualifying company.
     class P(HTMLParser):
@@ -169,14 +172,14 @@ def parse_listing(page_html:str,market:str):
             if not self.current:return
             row=self.current; self.current=None
             blob=" | ".join(row["tail"][:16])
-            if not re.search(r"\b"+re.escape(market)+r"\b",blob,re.I):return
+            if not re.search(r"\b"+re.escape(evidence_market)+r"\b",blob,re.I):return
             pm=PHONE_RE.search(blob)
             address=[]
             for item in row["tail"][:10]:
                 if PHONE_RE.search(item):continue
                 if item.startswith("*") or item.lower().startswith("not satisfied"):continue
                 address.append(item)
-                if re.search(r"\b"+re.escape(market)+r"\b",item,re.I):break
+                if re.search(r"\b"+re.escape(evidence_market)+r"\b",item,re.I):break
             self.rows.append({
               "business_name":row["name"],
               "href":row["href"],
