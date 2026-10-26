@@ -131,6 +131,7 @@ jobs:
           assert "source_tier text not null default 'discovery'" in schema
           assert "verification_status text not null default 'discovery'" in schema
           assert "create table if not exists research_refresh_state" in schema
+          assert "last_closure_checked_at" in schema
           api=Path("api/app.py").read_text()
           assert '"direct_evidence" if official else ("closed_evidence" if closure_reason else "discovery")' in api
           proof=Path("production-proof-readout.sh").read_text()
@@ -235,7 +236,7 @@ jobs:
           for n in tree.body:
               if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=="INVENTORY_BLOCKED_DOMAINS" for t in n.targets):
                   nodes.append(n)
-              if isinstance(n,ast.FunctionDef) and n.name in {"result_matches_market","inventory_result_relevant","inventory_official_site"}:
+              if isinstance(n,ast.FunctionDef) and n.name in {"result_matches_market","inventory_result_relevant","inventory_official_site","inventory_result_closed","inventory_result_matches_business"}:
                   nodes.append(n)
           ns={"clean":lambda v:str(v or "").strip(),"re":re}
           exec(compile(ast.Module(body=nodes,type_ignores=[]),"relevance-check","exec"),ns)
@@ -258,6 +259,14 @@ jobs:
           assert ns["inventory_official_site"](directory_site) is False
           assert ns["inventory_official_site"](listicle_site) is False
           assert ns["inventory_official_site"](marketplace_site) is False
+          closed_hit={"title":"CRRS Restaurant Equipment Repair - Permanently Closed","snippet":"Prescott Arizona business has permanently closed","url":"https://example.com/crrs-closed"}
+          open_hit={"title":"CRRS Restaurant Equipment Repair","snippet":"Open for service in Prescott Arizona","url":"https://example.com/crrs"}
+          assert ns["inventory_result_closed"](closed_hit)=="permanently closed"
+          assert ns["inventory_result_closed"](open_hit) is None
+          assert ns["inventory_result_matches_business"](closed_hit,"CRRS Restaurant Equipment Repair") is True
+          assert ns["inventory_result_matches_business"](closed_hit,"Subway") is False
+          assert '@app.post("/api/process-inventory-closure-audit")' in api
+          assert "last_closure_checked_at" in api
           assert "superpages.com" in api and "allbiz.com" in api and "restaurantji.com" in api
           assert "INVENTORY_QUERY_STRATEGY_VERSION=7" in api
           assert "LOCAL_DEMAND_QUERY_STRATEGY_VERSION=7" in api
@@ -313,6 +322,7 @@ jobs:
           assert 'up -d --force-recreate scheduler' in deploy
           scheduler = Path("scheduler.sh").read_text()
           assert '[scheduler] POST $endpoint' in scheduler
+          assert "/api/process-inventory-closure-audit" in scheduler
           PY
 
       - name: Validate operational scripts
