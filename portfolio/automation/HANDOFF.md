@@ -5572,3 +5572,18 @@ After bootstrap:
 
 The VPS scanner should thereafter operate as a delta/update layer, not as a substitute for the bootstrap.
 
+
+
+### Section 56 follow-up — final pre-deploy bootstrap corrections
+
+Two implementation issues were caught before the statewide importer was allowed to touch production:
+
+1. The hand-researched SQL seed was briefly inconsistent after adding `source_tier`, `verification_status`, and `last_verified_at`. It was fully regenerated from the canonical JSON artifact rather than patched by string replacement.
+   - corrected seed commit: `85277b331c311253138193d0e1894e68834aab15`
+2. The bulk directory importer had an unused first-draft parser and its conflict-update path did not refresh the new evidence-tier fields.
+   - cleanup/evidence-refresh commit: `979552c1e36d6669ff5de5dd69be4716ae9bcb3a`
+   - CI was strengthened afterward to prevent regression.
+
+Do not use any earlier bootstrap deployment request. They target stale SHAs by design and should be rejected by the relay's exact-SHA guard.
+
+The next deploy must target the current master after this handoff update and must pass BMC Portfolio CI before the relay will execute it.
