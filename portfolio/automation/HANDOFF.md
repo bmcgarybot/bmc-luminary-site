@@ -3317,3 +3317,69 @@ The script prints:
 Do not activate the first provider until this cleanup/research pass is reviewed or Brett changes priority.
 
 Outreach remains OFF.
+
+
+## 38. COPY CLEANUP EXPANDED + RESEARCH DRAIN HARDENED — 2026-10-25
+
+The copy cleanup pass was expanded after the new CI guard surfaced older template residue.
+
+Additional service pages cleaned:
+- locksmith/access control;
+- parking lot services;
+- duct/vent cleaning;
+- commercial pest control;
+- grease/drain service;
+- mobile detailing;
+- mobile tire/battery;
+- fleet washing;
+- pet sitting/dog walking;
+- mobile pet grooming;
+- commercial window cleaning;
+- epoxy/concrete flooring;
+- windshield/auto glass;
+- pressure washing;
+- hood/exhaust cleaning.
+
+Key conversion pages also received a second manual wording pass:
+- Request;
+- Solutions;
+- Competitor Research;
+- Market Expansion.
+
+Examples:
+- "Describe the problem. We’ll sort out the service." -> "Describe the problem. We’ll help find the right kind of help."
+- "Location and timing help us move the request in the right direction." -> "Location and timing help us find the right option."
+- "Each path below has its own page, its own questions, and its own next step." -> "Choose the kind of help you need below."
+- "buyer pool map" -> "potential customer base";
+- "priority outreach targets" -> "businesses to contact first";
+- "competitor set" -> "who you’re up against";
+- "offer & reputation signals" -> "offers, reviews & visibility."
+
+Provider-page wording was also simplified:
+- BMC "sends/offers requests" rather than narrating routing mechanics;
+- "Services you want BMC to route" -> "Services you want to receive."
+
+### Research drain hardening
+
+The source-native drain stall detector was corrected before production use.
+
+Old risk:
+- a large source lane could process multiple pages while the pending-lane count stayed unchanged;
+- a count-only stall detector could stop early.
+
+Current behavior:
+- progress is measured using cumulative source-native records seen/upserted plus cursor movement;
+- failed source-native lanes remain pending when `last_error` is populated;
+- the drain stops only after 8 rounds with no actual record/cursor progress;
+- standard public-web research still stops after 10 no-progress rounds.
+
+The production command remains:
+
+```bash
+cd ~/bmc-luminary-site/portfolio/automation
+git pull --ff-only
+chmod +x drain-research-backlog.sh
+bash ./drain-research-backlog.sh .env
+```
+
+All outreach switches must remain OFF.
