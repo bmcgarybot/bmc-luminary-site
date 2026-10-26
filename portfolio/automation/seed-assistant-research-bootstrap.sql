@@ -11093,3 +11093,1188 @@ update market_inventory_progress p set official_candidates=(
  select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
  and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ),updated_at=now() where p.market='Mayer';
+
+
+-- Assistant-led Cordes Lakes census batch 02 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','restaurants','restaurants','El Gordo Real Mexican Grill',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Cordes Junction food-service business.','assistant census research: Cordes Lakes restaurants',0,
+ null,'(928) 273-4627',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Cordes Junction food-service business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','restaurants','restaurants','Subway',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Cordes Junction food-service business.','assistant census research: Cordes Lakes restaurants',0,
+ null,'(928) 642-1449',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Cordes Junction food-service business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','restaurants','restaurants','Cordes Market',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Cordes Junction food-service business.','assistant census research: Cordes Lakes restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Cordes Junction food-service business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','restaurants','restaurants','Krispy Krunchy Chicken',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Cordes Junction food-service business.','assistant census research: Cordes Lakes restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Cordes Junction food-service business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','restaurants','restaurants','Godfathers Pizza',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Cordes Junction food-service business.','assistant census research: Cordes Lakes restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Cordes Junction food-service business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','restaurants','restaurants','Arby''s',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Cordes Junction food-service business.','assistant census research: Cordes Lakes restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Cordes Junction food-service business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','restaurants','restaurants','McDonald''s',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Cordes Junction food-service business.','assistant census research: Cordes Lakes restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Cordes Junction food-service business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','restaurants','restaurants','Over the Hill Espresso',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Cordes Junction food-service business.','assistant census research: Cordes Lakes restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Cordes Junction food-service business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','restaurants','restaurants','fee family egg''s',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Cordes Junction food-service business.','assistant census research: Cordes Lakes restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Cordes Junction food-service business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','restaurants','restaurants','50''s Diner Backseat Bar',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Cordes Junction food-service business.','assistant census research: Cordes Lakes restaurants',0,
+ null,'(928) 632-4440',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Cordes Junction food-service business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','hotels_motels','hotels motels lodging','Cordes Junction Motel & RV Park',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Junction lodging/RV facility.','assistant census research: Cordes Lakes hotels motels lodging',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Junction lodging/RV facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','hotels_motels','hotels motels lodging','Quail Ridge RV Park',
+ 'https://www.iexitapp.com/Arizona/I-17/Exit%20263/18584?order=rank&origin=by+state','iexitapp.com','Current Cordes Lakes-area RV/lodging facility.','assistant census research: Cordes Lakes hotels motels lodging',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes-area RV/lodging facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','warehouses_industrial','warehouses industrial businesses distribution centers','X-tra Space Self Storage',
+ 'https://www.google.com/search?q=X-tra+Space+Self+Storage+Cordes+Lakes','google.com','Current Cordes Lakes self-storage/RV/boat storage facility at 14720 S Stagecoach Trail.','assistant census research: Cordes Lakes warehouses industrial businesses distribution centers',0,
+ null,'(928) 632-7700',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes self-storage/RV/boat storage facility at 14720 S Stagecoach Trail."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','warehouses_industrial','warehouses industrial businesses distribution centers','Shedbuddys',
+ 'https://www.google.com/search?q=Shedbuddys+Cordes+Lakes','google.com','Current local storage facility on Lichen Ln.','assistant census research: Cordes Lakes warehouses industrial businesses distribution centers',0,
+ null,'(928) 800-2377',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current local storage facility on Lichen Ln."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','warehouses_industrial','warehouses industrial businesses distribution centers','Cordes Lakes Water Company',
+ 'https://www.manta.com/c/mmnbbx7/cordes-lakes-water-co-inc','manta.com','Current Cordes Lakes water utility/business at 20175 E Stagecoach Trail.','assistant census research: Cordes Lakes warehouses industrial businesses distribution centers',0,
+ null,'(928) 632-5445',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes water utility/business at 20175 E Stagecoach Trail."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','retail','retail stores shopping stores','Dollar General',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Cordes Junction retail or traveler-service facility.','assistant census research: Cordes Lakes retail stores shopping stores',0,
+ null,'(928) 460-5702',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Cordes Junction retail or traveler-service facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','retail','retail stores shopping stores','Family Dollar',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Cordes Junction retail or traveler-service facility.','assistant census research: Cordes Lakes retail stores shopping stores',0,
+ null,'(928) 237-2181',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Cordes Junction retail or traveler-service facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','retail','retail stores shopping stores','Cordes Lakes Hardware & Locksmith',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Cordes Junction retail or traveler-service facility.','assistant census research: Cordes Lakes retail stores shopping stores',0,
+ null,'(928) 547-1784',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Cordes Junction retail or traveler-service facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','grocery','grocery stores supermarkets markets','Cordes Market',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Cordes Junction retail or traveler-service facility.','assistant census research: Cordes Lakes grocery stores supermarkets markets',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Cordes Junction retail or traveler-service facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','retail','retail stores shopping stores','Cordes Junction Chevron',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Cordes Junction retail or traveler-service facility.','assistant census research: Cordes Lakes retail stores shopping stores',0,
+ null,'(928) 632-8558',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Cordes Junction retail or traveler-service facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','retail','retail stores shopping stores','Pilot Travel Center',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Cordes Junction retail or traveler-service facility.','assistant census research: Cordes Lakes retail stores shopping stores',0,
+ null,'(928) 632-4521',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Cordes Junction retail or traveler-service facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','pharmacies','pharmacies drug stores','Cordes Pharmacy',
+ 'https://aspr.hhs.gov/EPAP/Documents/EPAP_Pharmacy_Network_041627.pdf','aspr.hhs.gov','2026 federal pharmacy network lists independent Cordes Pharmacy at 20172 E Stagecoach Trail Suite A, Cordes Lakes.','assistant census research: Cordes Lakes pharmacies drug stores',0,
+ null,'(928) 968-5040',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"2026 federal pharmacy network lists independent Cordes Pharmacy at 20172 E Stagecoach Trail Suite A, Cordes Lakes."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','medical_centers','hospitals medical centers clinics','Cordes Clinic',
+ 'https://www.google.com/search?q=Cordes+Clinic+Cordes+Lakes','google.com','Current appointment-based medical/primary-care clinic at 20172 E Stagecoach Trail.','assistant census research: Cordes Lakes hospitals medical centers clinics',0,
+ null,'(928) 632-4399',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current appointment-based medical/primary-care clinic at 20172 E Stagecoach Trail."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','medical_centers','hospitals medical centers clinics','Asura Healthcare',
+ 'https://www.google.com/search?q=Asura+Healthcare+Mayer+AZ','google.com','Current Mayer/Cordes Lakes primary-care/walk-in clinic.','assistant census research: Cordes Lakes hospitals medical centers clinics',0,
+ null,'(800) 725-0365',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Mayer/Cordes Lakes primary-care/walk-in clinic."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','therapy_behavioral','therapy counseling behavioral health clinics','Cordes Lakes Clinic / Carelock LLC',
+ 'https://www.npino.org/npi/carelock-llc-1972170322.html','npino.org','Registered multi-specialty and community-mental-health clinic serving Cordes Lakes.','assistant census research: Cordes Lakes therapy counseling behavioral health clinics',0,
+ null,'(928) 632-4399',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Registered multi-specialty and community-mental-health clinic serving Cordes Lakes."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','churches','churches worship centers','Community Bible Church of Cordes Lakes',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Mayer-area church facility.','assistant census research: Cordes Lakes churches worship centers',0,
+ null,'(928) 632-0207',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Mayer-area church facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','churches','churches worship centers','Mountain of Faith Lutheran Church',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Mayer-area church facility.','assistant census research: Cordes Lakes churches worship centers',0,
+ null,'(928) 632-8785',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Mayer-area church facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','churches','churches worship centers','Generations Church SBC',
+ 'https://www.iexitapp.com/guide/Arizona/3/Cordes%20Lakes/1569','iexitapp.com','Current Cordes Lakes/Mayer-area church facility.','assistant census research: Cordes Lakes churches worship centers',0,
+ null,'(928) 632-5021',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes/Mayer-area church facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','public_facilities','government public facilities municipal buildings','Cordes Lakes Community Center',
+ 'https://www.thehoursnow.com/united_states/az/cordes_lakes','thehoursnow.com','Current Cordes Lakes community/public facility.','assistant census research: Cordes Lakes government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes community/public facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','public_facilities','government public facilities municipal buildings','Cordes Lakes Community Park',
+ 'https://www.thehoursnow.com/united_states/az/cordes_lakes','thehoursnow.com','Current Cordes Lakes community/public facility.','assistant census research: Cordes Lakes government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes community/public facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','public_facilities','government public facilities municipal buildings','Henry Cordes Dog Park',
+ 'https://www.thehoursnow.com/united_states/az/cordes_lakes','thehoursnow.com','Current Cordes Lakes community/public facility.','assistant census research: Cordes Lakes government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes community/public facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','public_facilities','government public facilities municipal buildings','High Desert Heritage Visitor''s Center',
+ 'https://www.thehoursnow.com/united_states/az/cordes_lakes','thehoursnow.com','Current Cordes Lakes community/public facility.','assistant census research: Cordes Lakes government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes community/public facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','theaters_entertainment','theaters cinemas entertainment venues','Arcosanti',
+ 'https://www.iexitapp.com/Arizona/I-17/Exit%20263/18584?order=rank&origin=by+state','iexitapp.com','Major nearby visitor/cultural attraction serving the Cordes Junction market.','assistant census research: Cordes Lakes theaters cinemas entertainment venues',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Major nearby visitor/cultural attraction serving the Cordes Junction market."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','restaurants','restaurants','Arcosanti Cafe',
+ 'https://www.iexitapp.com/Arizona/I-17/Exit%20263/18584?order=rank&origin=by+state','iexitapp.com','Current nearby café/visitor facility serving Cordes Junction travelers.','assistant census research: Cordes Lakes restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current nearby café/visitor facility serving Cordes Junction travelers."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','general_business','other local businesses','D H Auto',
+ 'https://www.iexitapp.com/Arizona/I-17/Exit%20262/53232','iexitapp.com','Current Cordes Lakes-area automotive repair business.','assistant census research: Cordes Lakes other local businesses',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Lakes-area automotive repair business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','general_business','other local businesses','Pilot Travel Center',
+ 'https://www.google.com/search?q=Pilot+Travel+Center+Cordes+Lakes','google.com','24-hour Cordes Junction traveler/truck facility.','assistant census research: Cordes Lakes other local businesses',0,
+ null,'(928) 632-4521',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"24-hour Cordes Junction traveler/truck facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','general_business','other local businesses','Cordes Junction Chevron',
+ 'https://www.google.com/search?q=Cordes+Junction+Chevron','google.com','Current Cordes Junction fuel/convenience/auto-service facility.','assistant census research: Cordes Lakes other local businesses',0,
+ null,'(928) 632-8558',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Cordes Junction fuel/convenience/auto-service facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','property_management','property management companies apartment communities','Cordes Lakes Homes',
+ 'https://www.google.com/search?q=Cordes+Lakes+Homes','google.com','Current local home builder/developer and real-estate sales/rental operation.','assistant census research: Cordes Lakes property management companies apartment communities',0,
+ null,'(602) 900-1918',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current local home builder/developer and real-estate sales/rental operation."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','property_management','property management companies apartment communities','Rental Connect LLC',
+ 'https://www.dandb.com/businessdirectory/cordeslakes-arizona-az-businessservices-73.html','dandb.com','Cordes Lakes business-services/property rental entity at 20035 E Pinto Dr.','assistant census research: Cordes Lakes property management companies apartment communities',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes business-services/property rental entity at 20035 E Pinto Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cordes Lakes','commercial_cleaning','Commercial Cleaning','Amy''s Green Cleaning Service',
+ 'https://www.dandb.com/businessdirectory/cordeslakes-arizona-az-businessservices-73.html','dandb.com','Cordes Lakes/Mayer-area service candidate for Commercial Cleaning.','assistant census research: Cordes Lakes Commercial Cleaning',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes/Mayer-area service candidate for Commercial Cleaning."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cordes Lakes','locksmith_access','Locks & Access Control','Cordes Hardware & Locksmith',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Cordes Lakes/Mayer-area service candidate for Locks & Access Control.','assistant census research: Cordes Lakes Locks & Access Control',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes/Mayer-area service candidate for Locks & Access Control."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cordes Lakes','hvac_heat','Heating & Air','Todd Edwards AC Inc.',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Cordes Lakes/Mayer-area service candidate for Heating & Air.','assistant census research: Cordes Lakes Heating & Air',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes/Mayer-area service candidate for Heating & Air."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cordes Lakes','electrical_service','Electrician','Pat Electric LLC',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Cordes Lakes/Mayer-area service candidate for Electrician.','assistant census research: Cordes Lakes Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes/Mayer-area service candidate for Electrician."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cordes Lakes','electrical_service','Electrician','3rd Gen Electric',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Cordes Lakes/Mayer-area service candidate for Electrician.','assistant census research: Cordes Lakes Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes/Mayer-area service candidate for Electrician."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cordes Lakes','backflow_plumbing','Backflow & Commercial Plumbing','Manor Plumbing Co',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Cordes Lakes/Mayer-area service candidate for Backflow & Commercial Plumbing.','assistant census research: Cordes Lakes Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes/Mayer-area service candidate for Backflow & Commercial Plumbing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cordes Lakes','backflow_plumbing','Backflow & Commercial Plumbing','Heil Plumbing',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Cordes Lakes/Mayer-area service candidate for Backflow & Commercial Plumbing.','assistant census research: Cordes Lakes Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes/Mayer-area service candidate for Backflow & Commercial Plumbing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cordes Lakes','handyman_repairs','Handyman','Local Handyman Services, LLC',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Cordes Lakes/Mayer-area service candidate for Handyman.','assistant census research: Cordes Lakes Handyman',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes/Mayer-area service candidate for Handyman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cordes Lakes','facility_maintenance','Building Maintenance Help','Double S Maintenance, LLC',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Cordes Lakes/Mayer-area service candidate for Building Maintenance Help.','assistant census research: Cordes Lakes Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes/Mayer-area service candidate for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cordes Lakes','facility_maintenance','Building Maintenance Help','DD & S Construction, LLC',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Cordes Lakes/Mayer-area service candidate for Building Maintenance Help.','assistant census research: Cordes Lakes Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes/Mayer-area service candidate for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cordes Lakes','facility_maintenance','Building Maintenance Help','Dream Home Construction, LLC',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Cordes Lakes/Mayer-area service candidate for Building Maintenance Help.','assistant census research: Cordes Lakes Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes/Mayer-area service candidate for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cordes Lakes','rural_property','Septic, Grading & Wells','Far West Fencing & Excavating, LLC',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Cordes Lakes/Mayer-area service candidate for Septic, Grading & Wells.','assistant census research: Cordes Lakes Septic, Grading & Wells',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes/Mayer-area service candidate for Septic, Grading & Wells."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cordes Lakes','facility_maintenance','Building Maintenance Help','Farnsworth & Sons Roofing and Construction, LLC',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Cordes Lakes/Mayer-area service candidate for Building Maintenance Help.','assistant census research: Cordes Lakes Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes/Mayer-area service candidate for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cordes Lakes','towing_roadside','Towing & Roadside Help','Garcia''s Diesel Truck Repair, LLC',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Cordes Lakes/Mayer-area service candidate for Towing & Roadside Help.','assistant census research: Cordes Lakes Towing & Roadside Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes/Mayer-area service candidate for Towing & Roadside Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cordes Lakes','hvac_heat','Heating & Air','Easton Air, LLC',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Cordes Lakes/Mayer-area service candidate for Heating & Air.','assistant census research: Cordes Lakes Heating & Air',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes/Mayer-area service candidate for Heating & Air."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','warehouses_industrial','warehouses industrial businesses distribution centers','Diamond K. Transport L.L.C.',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Active business entity physically in/serving the Cordes Lakes-Mayer area.','assistant census research: Cordes Lakes warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active business entity physically in/serving the Cordes Lakes-Mayer area."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','warehouses_industrial','warehouses industrial businesses distribution centers','Double Time Trucking, LLC',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Active business entity physically in/serving the Cordes Lakes-Mayer area.','assistant census research: Cordes Lakes warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active business entity physically in/serving the Cordes Lakes-Mayer area."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','warehouses_industrial','warehouses industrial businesses distribution centers','DRA Block Farms, LLC',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Active business entity physically in/serving the Cordes Lakes-Mayer area.','assistant census research: Cordes Lakes warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active business entity physically in/serving the Cordes Lakes-Mayer area."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','warehouses_industrial','warehouses industrial businesses distribution centers','Diversified Stone of Arizona, LLC',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Active business entity physically in/serving the Cordes Lakes-Mayer area.','assistant census research: Cordes Lakes warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active business entity physically in/serving the Cordes Lakes-Mayer area."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','warehouses_industrial','warehouses industrial businesses distribution centers','Foot Hills Ranch, L.L.C.',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Active business entity physically in/serving the Cordes Lakes-Mayer area.','assistant census research: Cordes Lakes warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active business entity physically in/serving the Cordes Lakes-Mayer area."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','warehouses_industrial','warehouses industrial businesses distribution centers','Family Farm Alliance',
+ 'https://www.city-data.com/business-entities/Mayer-AZ.html','city-data.com','Active business entity physically in/serving the Cordes Lakes-Mayer area.','assistant census research: Cordes Lakes warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active business entity physically in/serving the Cordes Lakes-Mayer area."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','general_business','other local businesses','Grit and Grace Equine LLC / Diamond in the Rough Stables',
+ 'https://www.yavapaiaz.gov/files/sharedassets/public/v/1/county-government/board-of-supervisors/documents/july-2025.pdf','yavapaiaz.gov','Cordes Lakes equine-assisted services facility at 16325 E Brahma Dr.','assistant census research: Cordes Lakes other local businesses',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Cordes Lakes equine-assisted services facility at 16325 E Brahma Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cordes Lakes','retail','retail stores shopping stores','Cordes Junction Corporation',
+ 'https://azdot.gov/sites/default/files/2024-07/Vendor-Branch-List.pdf','azdot.gov','ADOT vendor-branch record at 19625 E Cordes Lakes Rd identifies current Cordes Junction commercial operation.','assistant census research: Cordes Lakes retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cordes_lakes_batch_02","researched_at":"2026-10-27T01:18:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"ADOT vendor-branch record at 19625 E Cordes Lakes Rd identifies current Cordes Junction commercial operation."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p set official_candidates=(
+ select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
+ and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+),updated_at=now() where p.market='Cordes Lakes';
