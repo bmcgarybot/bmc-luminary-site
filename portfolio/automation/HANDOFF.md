@@ -3383,3 +3383,49 @@ bash ./drain-research-backlog.sh .env
 ```
 
 All outreach switches must remain OFF.
+
+
+## 39. RESEARCH DRAIN EARLY-EXIT FIX — 2026-10-25
+
+The first production invocation of `drain-research-backlog.sh` exited immediately after `git pull` with no drain banner/output.
+
+Observed command:
+
+```bash
+bash ./drain-research-backlog.sh .env 1000 2 | tee research-drain.log
+```
+
+Root cause:
+- script runs with `set -euo pipefail`;
+- `env_value()` used a `grep | cut` pipeline;
+- if an optional key (for example a defaulted outreach/research key) was absent from the VPS `.env`, `grep` returned 1;
+- command substitution inherited that failure and the script exited before its first `echo`;
+- the outer `| tee` made the terminal return look deceptively clean.
+
+Fix committed:
+- `env_value()` now uses `awk` and returns an empty string with exit status 0 when a key is absent;
+- required keys are still explicitly validated afterward;
+- optional keys can safely fall back to defaults as intended.
+
+Fix commit:
+- `5508a5a2c2fa5139d40321a0653f11de3ef8490c`
+
+Production rerun:
+
+```bash
+cd ~/bmc-luminary-site/portfolio/automation
+git pull --ff-only
+chmod +x drain-research-backlog.sh
+bash ./drain-research-backlog.sh .env 1000 2 | tee research-drain.log
+```
+
+Expected first lines now:
+
+```text
+BMC research backlog drain
+==========================
+Outreach switches verified OFF.
+Temporarily using RESEARCH_WORKER_BATCH=5.
+```
+
+Outreach remains OFF.
