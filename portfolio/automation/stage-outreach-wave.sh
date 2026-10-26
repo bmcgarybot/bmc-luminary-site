@@ -18,7 +18,8 @@ Usage:
   ./stage-outreach-wave.sh .env vendor launch1 25 "Prescott" commercial_cleaning --apply
 
 This script stages researched prospects only. It NEVER sends email and it refuses to
-run if any outbound switch is enabled.
+run if any outbound switch is enabled. Existing unsent queued bootstrap rows may be
+restaged into the named wave; sent/replied/completed history is never recycled.
 
 Arguments:
   1 env file
@@ -71,7 +72,9 @@ with candidates as (
     coalesce(vm.market,'') market,
     coalesce(vs.service_key,'') service_or_campaign,
     coalesce(v.association_signal,'') signal,
-    coalesce(v.quality_score,0) quality_score
+    coalesce(v.quality_score,0) quality_score,
+    oq.outreach_id existing_outreach_id,
+    coalesce(oq.wave,'') existing_wave
   from vendors v
   left join lateral (
     select market from vendor_markets
@@ -85,6 +88,19 @@ with candidates as (
       and (:'filter'='' or service_key=:'filter')
     order by service_key limit 1
   ) vs on true
+  left join lateral (
+    select outreach_id,wave
+    from outreach
+    where entity_type='vendor'
+      and entity_id=v.vendor_id
+      and campaign='vendor_recruitment'
+      and status='queued'
+      and sent_at is null
+      and replied_at is null
+      and opt_out=false
+    order by created_at
+    limit 1
+  ) oq on true
   where v.status='prospect'
     and coalesce(v.public_email,'')<>''
     and (:'market'='' or vm.market is not null)
@@ -92,7 +108,15 @@ with candidates as (
     and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(v.public_email))
     and not exists(
       select 1 from outreach o
-      where o.entity_type='vendor' and o.entity_id=v.vendor_id and o.campaign='vendor_recruitment'
+      where o.entity_type='vendor'
+        and o.entity_id=v.vendor_id
+        and o.campaign='vendor_recruitment'
+        and (
+          o.sent_at is not null
+          or o.replied_at is not null
+          or o.opt_out=true
+          or o.status not in ('queued')
+        )
     )
   order by lower(v.public_email),
     case when coalesce(v.association_signal,'')<>'' then 0 else 1 end,
@@ -116,8 +140,22 @@ with candidates as (
     coalesce(b.market,'') market,
     coalesce(nullif(b.campaign,''),'buyer_general') service_or_campaign,
     coalesce(b.priority,'') signal,
-    case when b.priority='A' then 100 when b.priority='B' then 50 else 0 end quality_score
+    case when b.priority='A' then 100 when b.priority='B' then 50 else 0 end quality_score,
+    oq.outreach_id existing_outreach_id,
+    coalesce(oq.wave,'') existing_wave
   from buyers b
+  left join lateral (
+    select outreach_id,wave
+    from outreach
+    where entity_type='buyer'
+      and entity_id=b.buyer_id
+      and status='queued'
+      and sent_at is null
+      and replied_at is null
+      and opt_out=false
+    order by created_at
+    limit 1
+  ) oq on true
   where b.status in ('new','prospect')
     and coalesce(b.public_email,'')<>''
     and (:'market'='' or b.market=:'market')
@@ -127,7 +165,17 @@ with candidates as (
       or :'filter'=any(string_to_array(coalesce(b.likely_services,''),'|'))
     )
     and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(b.public_email))
-    and not exists(select 1 from outreach o where o.entity_type='buyer' and o.entity_id=b.buyer_id)
+    and not exists(
+      select 1 from outreach o
+      where o.entity_type='buyer'
+        and o.entity_id=b.buyer_id
+        and (
+          o.sent_at is not null
+          or o.replied_at is not null
+          or o.opt_out=true
+          or o.status not in ('queued')
+        )
+    )
   order by lower(b.public_email),
     case when b.priority='A' then 0 when b.priority='B' then 1 else 2 end,
     b.business_name
@@ -149,7 +197,8 @@ echo
 
 echo "Preview:"
 printf '%s\n' "$SQL_CTE
-select entity_id,business_name,public_email,market,service_or_campaign
+select entity_id,business_name,public_email,market,service_or_campaign,
+       case when existing_outreach_id is null then 'new' else 'restage:'||existing_wave end as staging_action
 from selected order by quality_score desc,business_name;" | psql_stdin
 
 COUNT="$(printf '%s\n' "$SQL_CTE
@@ -170,18 +219,46 @@ fi
 
 if [ "$SIDE" = "vendor" ]; then
   printf '%s\n' "$SQL_CTE
+update outreach o
+set wave=:'wave',
+    sequence_step=0,
+    status='queued',
+    subject=null,
+    body=null,
+    next_followup_at=now(),
+    opt_out=false,
+    target_market=s.market,
+    target_service_key=s.service_or_campaign
+from selected s
+where s.existing_outreach_id is not null
+  and o.outreach_id=s.existing_outreach_id;
+
 insert into outreach(entity_type,entity_id,campaign,wave,channel,sequence_step,status,next_followup_at,opt_out,target_market,target_service_key)
 select 'vendor',entity_id,'vendor_recruitment',:'wave','email',0,'queued',now(),false,market,service_or_campaign
-from selected;" | psql_stdin
+from selected
+where existing_outreach_id is null;" | psql_stdin
 else
   printf '%s\n' "$SQL_CTE
+update outreach o
+set wave=:'wave',
+    sequence_step=0,
+    status='queued',
+    subject=null,
+    body=null,
+    next_followup_at=now(),
+    opt_out=false
+from selected s
+where s.existing_outreach_id is not null
+  and o.outreach_id=s.existing_outreach_id;
+
 insert into outreach(entity_type,entity_id,campaign,wave,channel,sequence_step,status,next_followup_at,opt_out)
 select 'buyer',entity_id,
        case when service_or_campaign='' then 'buyer_general' else service_or_campaign end,
        :'wave','email',0,'queued',now(),false
-from selected;" | psql_stdin
+from selected
+where existing_outreach_id is null;" | psql_stdin
 fi
 
 echo
-echo "Staged $COUNT records into wave '$WAVE'."
+echo "Prepared $COUNT records in wave '$WAVE' (new rows plus safe restaging of unsent queued rows)."
 echo "No email was sent. Outbound switches remain OFF."
