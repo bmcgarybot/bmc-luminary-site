@@ -18,6 +18,18 @@ if sudo -n true >/dev/null 2>&1 && sudo -n systemctl list-timers bmc-directory-r
 fi
 rm -f /tmp/bmc-research-timers.$$ 2>/dev/null || true
 
+CRON_BEGIN="# BEGIN BMC RESEARCH REFRESH"
+CRON_END="# END BMC RESEARCH REFRESH"
+if command -v crontab >/dev/null 2>&1 && crontab -l 2>/dev/null | grep -Fq "$CRON_BEGIN"; then
+  echo "Backend: service-user crontab"
+  crontab -l | awk -v begin="$CRON_BEGIN" -v end="$CRON_END" '
+    $0 == begin {show=1}
+    show {print}
+    $0 == end {show=0}
+  '
+  exit 0
+fi
+
 if [ -f "$SCHEDULE_FILE" ]; then
   echo "Backend: existing VPS relay timer (rootless fallback)"
   python3 - "$SCHEDULE_FILE" <<'PY'
