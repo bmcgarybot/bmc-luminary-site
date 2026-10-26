@@ -107,7 +107,7 @@ jobs:
       - name: Validate assistant directory bootstrap
         working-directory: portfolio/automation
         run: |
-          python3 -m py_compile assistant-directory-bootstrap.py
+          python3 -m py_compile assistant-directory-bootstrap.py assistant-homversa-bootstrap.py
           python3 - <<'PY'
           import importlib.util
           from pathlib import Path
@@ -119,6 +119,10 @@ jobs:
           assert len(rows)==2, rows
           assert rows[0]["business_name"]=="Alpha Auto Repair"
           assert rows[0]["phone"]=="(928) 555-1212"
+          dewey='''<a href="/dewey-auto-123">Dewey Auto</a><div>10 Main St.</div><div>Dewey AZ 86327</div><div>(928) 555-0101</div><div>Whereorg has 1 results under Companies in Dewey, AZ.</div>'''
+          drows=m.parse_listing(dewey,"Dewey-Humboldt")
+          assert len(drows)==1 and drows[0]["business_name"]=="Dewey Auto", drows
+          assert m.MARKETS["Dewey-Humboldt"]=="dewey"
           assert m.classify("automotive-services","Alpha Auto Repair")[1]=="auto_repair_shop"
           assert m.classify("government","City Government")[1]=="public_facilities"
           assert len(m.MARKETS)==21
@@ -126,6 +130,7 @@ jobs:
           schema=Path("schema.sql").read_text()
           assert "source_tier text not null default 'discovery'" in schema
           assert "verification_status text not null default 'discovery'" in schema
+          assert "create table if not exists research_refresh_state" in schema
           api=Path("api/app.py").read_text()
           assert '"direct_evidence" if official else ("closed_evidence" if closure_reason else "discovery")' in api
           proof=Path("production-proof-readout.sh").read_text()
@@ -135,6 +140,8 @@ jobs:
           importer=Path("assistant-directory-bootstrap.py").read_text()
           assert "source_tier=excluded.source_tier" in importer
           assert "verification_status=excluded.verification_status" in importer
+          assert "DATABASE_URL" in importer
+          assert "status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end" in importer
           assert "discover_category_pages" in importer
           assert "general_business" in importer
           assert "--max-pages-per-market" in importer
@@ -277,6 +284,9 @@ jobs:
         working-directory: portfolio/automation
         run: |
           docker compose --env-file .env.example config >/dev/null
+          docker compose --env-file .env.example build research_refresher
+          grep -q 'research_refresher:' docker-compose.yml
+          grep -q 'research-refresher.Dockerfile' docker-compose.yml
           grep -q 'image: cloudflare/cloudflared:2026.10.3' docker-compose.yml
           grep -q 'pull cloudflared' deploy-update.sh
           grep -q 'pull cloudflared' configure-cloudflare.sh
@@ -307,7 +317,7 @@ jobs:
             expand-source-native-markets.sh configure-stripe-webhook.sh drain-research-backlog.sh launch-readiness.sh \
             stage-outreach-wave.sh install-vps-gitops-relay.sh research-source-refresh.sh \
             install-research-refresh-timers.sh research-refresh-status.sh
-          sh -n scheduler.sh
+          sh -n scheduler.sh research-refresher-loop.sh
 
       - name: Validate public gateway configuration
         working-directory: portfolio/automation
