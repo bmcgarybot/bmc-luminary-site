@@ -23,6 +23,8 @@ DBUSER="$(env_value POSTGRES_USER)"
 DBNAME="$(env_value POSTGRES_DB)"
 ORIGINAL_BATCH="$(env_value RESEARCH_WORKER_BATCH)"
 ORIGINAL_BATCH="${ORIGINAL_BATCH:-1}"
+ORIGINAL_SOURCE_BATCH="$(env_value SOURCE_NATIVE_CHECK_BATCH)"
+ORIGINAL_SOURCE_BATCH="${ORIGINAL_SOURCE_BATCH:-10}"
 
 if [ -z "$ADMIN_KEY" ] || [ -z "$DBUSER" ] || [ -z "$DBNAME" ]; then
   echo "BMC_ADMIN_KEY, POSTGRES_USER, and POSTGRES_DB must be configured."
@@ -42,14 +44,15 @@ dbq(){
   docker compose --env-file "$ENV_FILE" exec -T postgres     psql -v ON_ERROR_STOP=1 -U "$DBUSER" -d "$DBNAME" -Atc "$1"
 }
 
-set_batch(){
-  local value="$1"
-  python3 - "$ENV_FILE" "$value" <<'PY'
+set_env_key(){
+  local key="$1"
+  local value="$2"
+  python3 - "$ENV_FILE" "$key" "$value" <<'PY'
 from pathlib import Path
 import sys
 path=Path(sys.argv[1])
-value=sys.argv[2]
-key="RESEARCH_WORKER_BATCH"
+key=sys.argv[2]
+value=sys.argv[3]
 lines=path.read_text().splitlines()
 out=[]
 found=False
@@ -72,10 +75,19 @@ restart_api_gateway(){
 }
 
 cleanup(){
+  changed=0
   if [ "$(env_value RESEARCH_WORKER_BATCH)" != "$ORIGINAL_BATCH" ]; then
     echo
     echo "Restoring RESEARCH_WORKER_BATCH=$ORIGINAL_BATCH"
-    set_batch "$ORIGINAL_BATCH"
+    set_env_key RESEARCH_WORKER_BATCH "$ORIGINAL_BATCH"
+    changed=1
+  fi
+  if [ "$(env_value SOURCE_NATIVE_CHECK_BATCH)" != "$ORIGINAL_SOURCE_BATCH" ]; then
+    echo "Restoring SOURCE_NATIVE_CHECK_BATCH=$ORIGINAL_SOURCE_BATCH"
+    set_env_key SOURCE_NATIVE_CHECK_BATCH "$ORIGINAL_SOURCE_BATCH"
+    changed=1
+  fi
+  if [ "$changed" -eq 1 ]; then
     restart_api_gateway >/dev/null
   fi
 }
@@ -85,8 +97,10 @@ echo "BMC research backlog drain"
 echo "=========================="
 echo "Outreach switches verified OFF."
 echo "Temporarily using RESEARCH_WORKER_BATCH=5."
+echo "Temporarily using SOURCE_NATIVE_CHECK_BATCH=4 for paced public API pulls."
 
-set_batch 5
+set_env_key RESEARCH_WORKER_BATCH 5
+set_env_key SOURCE_NATIVE_CHECK_BATCH 4
 restart_api_gateway
 
 echo
