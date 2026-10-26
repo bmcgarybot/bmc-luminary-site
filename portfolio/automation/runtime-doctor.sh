@@ -94,10 +94,18 @@ else
   fail "BUYER_OUTREACH_ENABLED must remain false until BMC explicitly launches outreach"
 fi
 
-if [ "$(env_value OUTREACH_WAVE)" = "pilot1" ] && [ "$(env_value BUYER_OUTREACH_WAVE)" = "pilot1" ]; then
-  pass "Outbound waves are restricted to pilot1"
+GROWTH_OUTREACH_EFFECTIVE="$(env_value GROWTH_OUTREACH_ENABLED)"
+GROWTH_OUTREACH_EFFECTIVE="${GROWTH_OUTREACH_EFFECTIVE:-false}"
+if [ "$GROWTH_OUTREACH_EFFECTIVE" = "false" ]; then
+  pass "Growth Pack outreach global switch is OFF"
 else
-  warn "One or both outbound wave selectors are not pilot1"
+  fail "GROWTH_OUTREACH_ENABLED must remain false until BMC explicitly launches outreach"
+fi
+
+if [ "$(env_value OUTREACH_WAVE)" = "pilot1" ] && [ "$(env_value BUYER_OUTREACH_WAVE)" = "pilot1" ]; then
+  pass "Provider and buyer outbound waves are restricted to pilot1"
+else
+  warn "One or both provider/buyer outbound wave selectors are not pilot1"
 fi
 
 if docker compose --env-file "$ENV_FILE" config >/dev/null 2>&1; then
