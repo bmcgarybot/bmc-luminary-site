@@ -7487,3 +7487,390 @@ update market_inventory_progress p set official_candidates=(
  select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
  and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ),updated_at=now() where p.market='Prescott';
+
+
+-- Assistant-led verified Prescott batch 03 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','backflow_plumbing','Backflow & Commercial Plumbing','Franklin Plumbing Services Inc.',
+ 'https://franklinplumbingaz.com/','franklinplumbingaz.com','Direct Prescott company site lists 690 6th Street and explicitly offers commercial, residential and 24/7 emergency plumbing.','assistant verified research: Prescott Backflow & Commercial Plumbing',0,
+ 'brian@franklinservicesaz.com','928-445-1045',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Prescott company site lists 690 6th Street and explicitly offers commercial, residential and 24/7 emergency plumbing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','hvac_heat','Heating & Air','Comfort Pro Heating & Cooling, Inc.',
+ 'https://www.comfortproaz.com/','comfortproaz.com','Direct company site lists Prescott office at 1630 Shoup St and service to Prescott/Quad City homes and workplaces.','assistant verified research: Prescott Heating & Air',0,
+ 'office@comfortproaz.com','(928) 899-4250',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct company site lists Prescott office at 1630 Shoup St and service to Prescott/Quad City homes and workplaces."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','electrical_service','Electrician','S & M Electric',
+ 'https://sandmelectricinc.com/contact-us/','sandmelectricinc.com','Direct contractor site lists Prescott office at 3 Kiji Dava Dr Suite B and current electrical service operation.','assistant verified research: Prescott Electrician',0,
+ null,'(928) 778-1871',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct contractor site lists Prescott office at 3 Kiji Dava Dr Suite B and current electrical service operation."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','landscaping','Landscaping & Yard Cleanup','Aspen Landscaping',
+ 'https://www.aspenlandscapinginc.com/','aspenlandscapinginc.com','Direct site lists Prescott office at 625 5th St and explicitly provides residential and commercial landscaping, maintenance and irrigation.','assistant verified research: Prescott Landscaping & Yard Cleanup',0,
+ 'info@aspenlandscapinginc.com','928-775-2573',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site lists Prescott office at 625 5th St and explicitly provides residential and commercial landscaping, maintenance and irrigation."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','landscaping','Landscaping & Yard Cleanup','Yavapai Landscaping Prescott',
+ 'https://yavapailandscaping.com/prescott/','yavapailandscaping.com','Direct Prescott page lists 1106 E Gurley St and commercial/residential landscaping, irrigation, FireWise and maintenance services.','assistant verified research: Prescott Landscaping & Yard Cleanup',0,
+ 'office@yavapailandscaping.com','928-910-4147',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Prescott page lists 1106 E Gurley St and commercial/residential landscaping, irrigation, FireWise and maintenance services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','commercial_cleaning','Commercial Cleaning','American Crown Commercial Cleaning',
+ 'https://americancrowncc.com/','americancrowncc.com','Direct site identifies Prescott commercial cleaning company for large buildings, professional offices and restaurants; services include janitorial, event, construction cleanup and sanitizing.','assistant verified research: Prescott Commercial Cleaning',0,
+ 'donna@americancrowncc.com','(928) 250-0490',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site identifies Prescott commercial cleaning company for large buildings, professional offices and restaurants; services include janitorial, event, construction cleanup and sanitizing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','window_cleaning','Window Cleaning','American Crown Commercial Cleaning',
+ 'https://americancrowncc.com/','americancrowncc.com','Direct site explicitly lists commercial window cleaning in Prescott.','assistant verified research: Prescott Window Cleaning',0,
+ 'donna@americancrowncc.com','(928) 250-0490',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site explicitly lists commercial window cleaning in Prescott."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','pressure_washing','Pressure Washing','American Crown Commercial Cleaning',
+ 'https://americancrowncc.com/','americancrowncc.com','Direct site explicitly lists pressure/surface cleaning for Prescott commercial clients.','assistant verified research: Prescott Pressure Washing',0,
+ 'donna@americancrowncc.com','(928) 250-0490',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site explicitly lists pressure/surface cleaning for Prescott commercial clients."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','hood_exhaust','Hood & Exhaust Cleaning','American Crown Commercial Cleaning',
+ 'https://americancrowncc.com/','americancrowncc.com','Direct site says company performs commercial kitchen/restaurant cleaning and is NFPA 96/MFS certified.','assistant verified research: Prescott Hood & Exhaust Cleaning',0,
+ 'donna@americancrowncc.com','(928) 250-0490',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site says company performs commercial kitchen/restaurant cleaning and is NFPA 96/MFS certified."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','window_cleaning','Window Cleaning','Window Wranglers',
+ 'https://windowwranglers.com/','windowwranglers.com','Direct site lists Prescott address and commercial window cleaning plus gutter and pressure washing across Prescott/Yavapai County.','assistant verified research: Prescott Window Cleaning',0,
+ 'windowwranglers@gmail.com','(928) 463-5393',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site lists Prescott address and commercial window cleaning plus gutter and pressure washing across Prescott/Yavapai County."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','pressure_washing','Pressure Washing','Platinum Edge Services',
+ 'https://platinumedgeservices.com/contact.html','platinumedgeservices.com','Direct site identifies Prescott-based licensed/insured commercial fleet washing, commercial window cleaning and pressure washing company.','assistant verified research: Prescott Pressure Washing',0,
+ 'info@platinumedgeservices.com','(928) 227-5725',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site identifies Prescott-based licensed/insured commercial fleet washing, commercial window cleaning and pressure washing company."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','locksmith_access','Locks & Access Control','High Desert Lock and Safe',
+ 'https://www.highdesertlockaz.com/','highdesertlockaz.com','Direct site lists Prescott shop at 1201 Iron Springs Rd Suite 4 and commercial, residential and automotive locksmith/safe services.','assistant verified research: Prescott Locks & Access Control',0,
+ null,'(928) 445-0197',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site lists Prescott shop at 1201 Iron Springs Rd Suite 4 and commercial, residential and automotive locksmith/safe services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott','pest_control','Pest Control','Patriot Pest & Termite Control',
+ 'https://patriotpestprescott.com/','patriotpestprescott.com','Direct company domain corroborated by current Prescott-area REALTOR affiliate directory; current pest/termite control provider.','assistant verified research: Prescott Pest Control',0,
+ null,'(928) 442-1566',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct company domain corroborated by current Prescott-area REALTOR affiliate directory; current pest/termite control provider."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','hotels_motels','hotels motels lodging','Prescott Resort and Conference Center',
+ 'https://www.prescottresort.com/','prescottresort.com','Direct resort site lists 160 guest rooms, restaurant/bar, spa, pool and 17,000 sq ft of meeting/event space at 1500 E State Route 69.','assistant verified research: Prescott hotels motels lodging',0,
+ 'info@prescottresort.com','(928) 227-2313',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct resort site lists 160 guest rooms, restaurant/bar, spa, pool and 17,000 sq ft of meeting/event space at 1500 E State Route 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','hotels_motels','hotels motels lodging','Hassayampa Inn & Conference Center',
+ 'https://www.hassayampainn.com/','hassayampainn.com','Direct hotel site lists 122 E Gurley St, Prescott and active lodging, restaurant, laundry/back-of-house and conference operations.','assistant verified research: Prescott hotels motels lodging',0,
+ 'gm@hassayampainn.com','928-778-9434',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct hotel site lists 122 E Gurley St, Prescott and active lodging, restaurant, laundry/back-of-house and conference operations."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','hotels_motels','hotels motels lodging','Hotel St. Michael',
+ 'https://www.stmichaelhotel.com/','stmichaelhotel.com','Direct hotel site lists 205 W Gurley St, Prescott with active rooms, restaurant/cocktail operations and Whiskey Row location.','assistant verified research: Prescott hotels motels lodging',0,
+ 'frontdesk@stmichaelhotel.com','928-776-1999',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct hotel site lists 205 W Gurley St, Prescott with active rooms, restaurant/cocktail operations and Whiskey Row location."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','schools','schools charter schools private schools','Prescott Unified School District',
+ 'https://www.prescottschools.com/','prescottschools.com','Official district site lists district office at 300 E Gurley St and active K-12 facilities, transportation and student nutrition operations.','assistant verified research: Prescott schools charter schools private schools',0,
+ 'info@prescottschools.com','928-445-5400',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official district site lists district office at 300 E Gurley St and active K-12 facilities, transportation and student nutrition operations."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','schools','schools charter schools private schools','Yavapai College - Prescott Campus',
+ 'https://www.yc.edu/','yc.edu','Official college site identifies Prescott as a full-service campus with academic, residential, athletics, event and community facilities.','assistant verified research: Prescott schools charter schools private schools',0,
+ 'yc.admission@yc.edu','928-445-7300',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official college site identifies Prescott as a full-service campus with academic, residential, athletics, event and community facilities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','public_facilities','government public facilities municipal buildings','City of Prescott',
+ 'https://prescott-az.gov/','prescott-az.gov','Official municipal site identifies active city departments, maintenance, utilities, recreation, public safety and government facilities.','assistant verified research: Prescott government public facilities municipal buildings',0,
+ null,null,true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official municipal site identifies active city departments, maintenance, utilities, recreation, public safety and government facilities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott','medical_centers','hospitals medical centers clinics','Yavapai Regional Medical Center',
+ 'https://hsapps.azdhs.gov/ls/sod/Facility.aspx?FacId=MED0261','hsapps.azdhs.gov','Official Arizona licensing record: active 134-bed short-term hospital at 1003 Willow Creek Road, Prescott; license active through May 31, 2027.','assistant verified research: Prescott hospitals medical centers clinics',0,
+ null,'(928) 445-2700',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_verified_03","researched_at":"2026-10-27T01:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Arizona licensing record: active 134-bed short-term hospital at 1003 Willow Creek Road, Prescott; license active through May 31, 2027."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p set official_candidates=(
+ select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
+ and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+),updated_at=now() where p.market='Prescott';
