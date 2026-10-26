@@ -2343,3 +2343,380 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Prescott Valley';
+
+
+-- Assistant-led Prescott Valley census batch 03 (2026-10-26)
+-- Direct-source verification layer for Prescott Valley high-value vendors.
+-- Inventory evidence only; preserve closed status and never promote/stage/send.
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott Valley','electrical_service','Electrician','Recovery Electric',
+ 'https://www.recoveryelectricaz.com/','recoveryelectricaz.com','Official site: Prescott Valley PO Box 25304; residential/commercial/troubleshooting, 24/7 service; licensed/bonded/insured, ROC #349654.','assistant verification research: Prescott Valley Electrician',0,
+ 'RecoveryElectricAZ@gmail.com','(928) 910-5527',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_03","researched_at":"2026-10-26T23:34:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site: Prescott Valley PO Box 25304; residential/commercial/troubleshooting, 24/7 service; licensed/bonded/insured, ROC #349654."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,
+ source_tier='direct',
+ verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott Valley','electrical_service','Electrician','Assurance Electrical Services',
+ 'https://assuranceelectricalaz.com/','assuranceelectricalaz.com','Official site: 3649 N Mountain View Dr, Prescott Valley; residential/commercial/new construction, 24/7 emergency; ROC #322083.','assistant verification research: Prescott Valley Electrician',0,
+ null,'(928) 238-2479',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_03","researched_at":"2026-10-26T23:34:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site: 3649 N Mountain View Dr, Prescott Valley; residential/commercial/new construction, 24/7 emergency; ROC #322083."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,
+ source_tier='direct',
+ verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott Valley','backflow_plumbing','Backflow & Commercial Plumbing','Arizona All Service Plumbing',
+ 'https://azallserviceplumbing.com/','azallserviceplumbing.com','Official site serves Prescott Valley and Yavapai County; licensed, bonded and insured; emergency repairs, water heaters, sewer/drain and whole-home plumbing.','assistant verification research: Prescott Valley Backflow & Commercial Plumbing',0,
+ 'support@azallserviceplumbing.com','(928) 925-6809',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_03","researched_at":"2026-10-26T23:34:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site serves Prescott Valley and Yavapai County; licensed, bonded and insured; emergency repairs, water heaters, sewer/drain and whole-home plumbing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,
+ source_tier='direct',
+ verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott Valley','backflow_plumbing','Backflow & Commercial Plumbing','Lawhorn Plumbing LLC',
+ 'https://www.pvchamber.org/list/member/lawhorn-plumbing-llc-4156','pvchamber.org','Current Chamber member page links the business site and verifies 2700 N Lake Valley Rd Unit G7, all-service residential/commercial plumbing, ROC #342510.','assistant verification research: Prescott Valley Backflow & Commercial Plumbing',0,
+ 'lawhornplumbing@yahoo.com','(928) 529-7778',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_03","researched_at":"2026-10-26T23:34:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Current Chamber member page links the business site and verifies 2700 N Lake Valley Rd Unit G7, all-service residential/commercial plumbing, ROC #342510."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,
+ source_tier='direct',
+ verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott Valley','hvac_heat','Heating & Air','Goettl''s High Desert Mechanical Inc',
+ 'https://goettlshdm.com/','goettlshdm.com','Official Prescott Valley HVAC/plumbing company founded 1987; 24/7 service; residential/commercial credentials and current Arizona ROC licenses.','assistant verification research: Prescott Valley Heating & Air',0,
+ null,'(928) 567-2200',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_03","researched_at":"2026-10-26T23:34:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Prescott Valley HVAC/plumbing company founded 1987; 24/7 service; residential/commercial credentials and current Arizona ROC licenses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,
+ source_tier='direct',
+ verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott Valley','backflow_plumbing','Backflow & Commercial Plumbing','Goettl''s High Desert Mechanical Inc',
+ 'https://goettlshdm.com/about/business-profile/','goettlshdm.com','Official business profile lists full residential/commercial plumbing, backflow prevention, drain/sewer services and Plumbing ROC #307525.','assistant verification research: Prescott Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 567-2200',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_03","researched_at":"2026-10-26T23:34:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official business profile lists full residential/commercial plumbing, backflow prevention, drain/sewer services and Plumbing ROC #307525."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,
+ source_tier='direct',
+ verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott Valley','hvac_heat','Heating & Air','Indian Air',
+ 'https://indianair.com/','indianair.com','Official site: 8933 E Laredo Dr Suite B, Prescott Valley; full-service licensed HVAC contractor serving homes and businesses since 2000.','assistant verification research: Prescott Valley Heating & Air',0,
+ null,'(928) 772-8890',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_03","researched_at":"2026-10-26T23:34:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site: 8933 E Laredo Dr Suite B, Prescott Valley; full-service licensed HVAC contractor serving homes and businesses since 2000."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,
+ source_tier='direct',
+ verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott Valley','backflow_plumbing','Backflow & Commercial Plumbing','Stellar Plumbing',
+ 'https://stellarplumbingaz.com/','stellarplumbingaz.com','Official Prescott Valley plumbing site lists residential/commercial service, backflow testing, drain/sewer, septic, pumps and 24-hour on-call service.','assistant verification research: Prescott Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 533-3446',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_03","researched_at":"2026-10-26T23:34:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Prescott Valley plumbing site lists residential/commercial service, backflow testing, drain/sewer, septic, pumps and 24-hour on-call service."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,
+ source_tier='direct',
+ verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott Valley','commercial_cleaning','Commercial Cleaning','MTO Janitorial LLC',
+ 'https://mtojanitorial.com/','mtojanitorial.com','Official site: 5810 Prairie Lane, Prescott Valley; locally owned commercial janitorial provider for medical/industrial, office/commercial and restaurant/event facilities.','assistant verification research: Prescott Valley Commercial Cleaning',0,
+ null,'(928) 772-0004',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_03","researched_at":"2026-10-26T23:34:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site: 5810 Prairie Lane, Prescott Valley; locally owned commercial janitorial provider for medical/industrial, office/commercial and restaurant/event facilities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,
+ source_tier='direct',
+ verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott Valley','locksmith_access','Locks & Access Control','Norm''s Lock & Safe',
+ 'https://normslock.com/','normslock.com','Official site: 8732 E State Route 69, Prescott Valley; residential, commercial, automotive, access-control and 24-hour emergency locksmith service.','assistant verification research: Prescott Valley Locks & Access Control',0,
+ 'info@normslock.com','(928) 775-6827',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_03","researched_at":"2026-10-26T23:34:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site: 8732 E State Route 69, Prescott Valley; residential, commercial, automotive, access-control and 24-hour emergency locksmith service."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,
+ source_tier='direct',
+ verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott Valley','tree_service','Tree Service & Brush Clearing','A and C Tree Services LLC',
+ 'https://aandctree.com/','aandctree.com','Official Prescott Valley company site lists tree removal/trimming, stump grinding, brush clearing, commercial service and 24/7 emergency response.','assistant verification research: Prescott Valley Tree Service & Brush Clearing',0,
+ 'aandcservicesaz@gmail.com','(928) 800-0452',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_03","researched_at":"2026-10-26T23:34:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Prescott Valley company site lists tree removal/trimming, stump grinding, brush clearing, commercial service and 24/7 emergency response."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,
+ source_tier='direct',
+ verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott Valley','landscaping','Landscaping & Yard Cleanup','R.E. and Sons Landscaping',
+ 'https://www.reandsonslandscaping.com/','reandsonslandscaping.com','Official company site serves Prescott Valley; full landscapes/outdoor construction plus maintenance department; ROC #300642, licensed/bonded/insured.','assistant verification research: Prescott Valley Landscaping & Yard Cleanup',0,
+ 'info@reandsonslandscaping.com','(928) 533-7425',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_03","researched_at":"2026-10-26T23:34:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official company site serves Prescott Valley; full landscapes/outdoor construction plus maintenance department; ROC #300642, licensed/bonded/insured."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,
+ source_tier='direct',
+ verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott Valley','garage_door','Garage Door Repair','Neumann High Country Doors',
+ 'https://nhcdoors.com/','nhcdoors.com','Official local site: 7247 E 1st St, Prescott Valley; residential/commercial garage-door installation, repair, maintenance and 24/7 emergency service; license #316971.','assistant verification research: Prescott Valley Garage Door Repair',0,
+ 'neumannhcd@hotmail.com','(928) 772-9738',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_03","researched_at":"2026-10-26T23:34:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official local site: 7247 E 1st St, Prescott Valley; residential/commercial garage-door installation, repair, maintenance and 24/7 emergency service; license #316971."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,
+ source_tier='direct',
+ verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Prescott Valley','garage_door','Garage Door Repair','Hung Rite Garage Doors',
+ 'https://hungritegaragedoor.com/prescott-valley-az/','hungritegaragedoor.com','Official Prescott Valley service page and showroom at 8841 E Valley Rd; residential/commercial garage-door repair, installation, opener and spring service.','assistant verification research: Prescott Valley Garage Door Repair',0,
+ null,'(928) 775-0701',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_03","researched_at":"2026-10-26T23:34:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Prescott Valley service page and showroom at 8841 E Valley Rd; residential/commercial garage-door repair, installation, opener and spring service."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,
+ source_tier='direct',
+ verification_status='direct_evidence',
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Prescott Valley';
