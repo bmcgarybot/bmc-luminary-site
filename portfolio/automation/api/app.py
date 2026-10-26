@@ -319,7 +319,8 @@ BUYER_INVENTORY_CATEGORIES=(
     {"key":"auto_dealers","label":"auto dealers car dealerships"},
     {"key":"warehouses_industrial","label":"warehouses industrial businesses distribution centers"},
     {"key":"theaters_entertainment","label":"theaters cinemas entertainment venues"},
-    {"key":"public_facilities","label":"government public facilities municipal buildings"}
+    {"key":"public_facilities","label":"government public facilities municipal buildings"},
+    {"key":"general_business","label":"other local businesses"}
 )
 
 BUYER_INVENTORY_TARGETS={
@@ -330,7 +331,7 @@ BUYER_INVENTORY_TARGETS={
     "property_management":(100,30,10),"senior_daycare":(80,20,8),
     "gyms_fitness":(80,20,6),"auto_dealers":(50,15,5),
     "warehouses_industrial":(100,25,8),"theaters_entertainment":(40,10,3),
-    "public_facilities":(100,25,8)
+    "public_facilities":(100,25,8),"general_business":(500,150,40)
 }
 INVENTORY_MAJOR_MARKETS={"Phoenix","Scottsdale","Tucson"}
 INVENTORY_REGIONAL_MARKETS={"Prescott","Prescott Valley","Flagstaff","Kingman","Bullhead City","Cottonwood","Sedona"}
