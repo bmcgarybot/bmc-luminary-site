@@ -112,7 +112,7 @@ jobs:
           from pathlib import Path
           source=Path("api/app.py").read_text()
           tree=ast.parse(source)
-          names={"inventory_query","build_local_signal_query"}
+          names={"inventory_query","build_local_signal_query","local_signal_result_relevant"}
           funcs=[n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name in names]
           ns={"clean":lambda v:str(v or "").strip(),"re":__import__("re")}
           exec(compile(ast.Module(body=funcs,type_ignores=[]),"query-check","exec"),ns)
@@ -123,6 +123,10 @@ jobs:
           d=ns["build_local_signal_query"]("Prescott","facebook.com",'"restaurant equipment" OR "ice machine"',0)
           assert d.startswith("site:facebook.com Prescott Arizona "), d
           assert " OR " not in d, d
+          local_good={"title":"Prescott neighbor looking for a plumber","snippet":"Need a plumber in Prescott Arizona","url":"https://prescott.craigslist.org/services/example"}
+          local_wrong_city={"title":"Phoenix neighbor looking for a plumber","snippet":"Need a plumber in Phoenix Arizona","url":"https://phoenix.craigslist.org/services/example"}
+          assert ns["local_signal_result_relevant"](local_good,"Prescott") is True
+          assert ns["local_signal_result_relevant"](local_wrong_city,"Prescott") is False
           print(q)
           print(b)
           print(d)
@@ -159,14 +163,20 @@ jobs:
           assert ns["inventory_result_relevant"](supplier_only,"Prescott","Restaurant Equipment Repair") is False
           assert "superpages.com" in api and "allbiz.com" in api and "restaurantji.com" in api
           assert "INVENTORY_QUERY_STRATEGY_VERSION=4" in api
+          assert "LOCAL_DEMAND_QUERY_STRATEGY_VERSION=5" in api
+          assert "local_signal_result_relevant(result,lane[\"market\"])" in api
           assert "query_strategy_version=excluded.query_strategy_version" in api
           schema=Path("schema.sql").read_text()
           assert "query strategy v4 establishes a clean audited baseline" in schema.lower()
+          assert "query strategy v5 requires explicit target-market evidence" in schema.lower()
           assert "superseded_pre_v4" in schema
-          assert "query_strategy_version=4" in schema
+          assert "superseded_pre_v5" in schema
+          assert "query_strategy_version=5" in schema
           proof=Path("production-proof-readout.sh").read_text()
           assert "candidate_rows_active_v4" in proof
           assert "superseded_candidate_rows" in proof
+          assert "demand_signal_rows_active_v5" in proof
+          assert "superseded_demand_signal_rows" in proof
           PY
           grep -q 'up -d --force-recreate searxng' deploy-update.sh
 
