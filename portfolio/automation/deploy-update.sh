@@ -81,6 +81,7 @@ docker compose --env-file "$ENV_FILE" up -d --force-recreate ops_api
 echo
 echo "Ensuring supporting services are up..."
 docker compose --env-file "$ENV_FILE" up -d n8n
+docker compose --env-file "$ENV_FILE" up -d --build research_refresher
 # SearXNG reads settings.yml at process start. Recreate it so research-engine
 # changes are guaranteed to become active on every tested deployment.
 docker compose --env-file "$ENV_FILE" up -d --force-recreate searxng
