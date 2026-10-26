@@ -2679,3 +2679,219 @@ update market_inventory_progress p set official_candidates=(
  select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
  and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ),updated_at=now() where p.market='Winslow';
+
+
+-- Assistant-led verified Winslow batch 02 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Winslow','electrical_service','Electrician','AZE Electrical Contractors LLC',
+ 'https://azebldgco.com/','azebldgco.com','Direct site lists 101 North Warren Avenue, Winslow; local family-owned contractor triple-licensed in electrical, HVAC and general contracting.','assistant verified research: Winslow Electrician',0,
+ 'azeelectricinc@gmail.com','928-587-2612',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_winslow_verified_02","researched_at":"2026-10-27T00:27:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site lists 101 North Warren Avenue, Winslow; local family-owned contractor triple-licensed in electrical, HVAC and general contracting."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Winslow','hvac_heat','Heating & Air','AZE Electrical Contractors LLC',
+ 'https://azebldgco.com/','azebldgco.com','Direct site explicitly offers HVAC solutions and states triple licensing in HVAC, electrical and general contracting from Winslow.','assistant verified research: Winslow Heating & Air',0,
+ 'azeelectricinc@gmail.com','928-587-2612',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_winslow_verified_02","researched_at":"2026-10-27T00:27:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site explicitly offers HVAC solutions and states triple licensing in HVAC, electrical and general contracting from Winslow."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Winslow','facility_maintenance','Building Maintenance Help','AZE Electrical Contractors LLC',
+ 'https://azebldgco.com/','azebldgco.com','Direct site identifies Winslow-based general contractor with more than 20 years of industry experience.','assistant verified research: Winslow Building Maintenance Help',0,
+ 'azeelectricinc@gmail.com','928-587-2612',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_winslow_verified_02","researched_at":"2026-10-27T00:27:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site identifies Winslow-based general contractor with more than 20 years of industry experience."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Winslow','facility_maintenance','Building Maintenance Help','Independent Energy Homes, LLC',
+ 'https://iehomes.wixsite.com/iehomes','iehomes.wixsite.com','Direct site states licensed, bonded and insured contractor serving Holbrook and Winslow for new homes, remodels, roofing, flooring, doors/windows and related work; ROC licenses published.','assistant verified research: Winslow Building Maintenance Help',0,
+ 'iehomesaz@gmail.com','928-587-2047',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_winslow_verified_02","researched_at":"2026-10-27T00:27:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site states licensed, bonded and insured contractor serving Holbrook and Winslow for new homes, remodels, roofing, flooring, doors/windows and related work; ROC licenses published."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Winslow','electrical_service','Electrician','Independent Energy Homes, LLC',
+ 'https://iehomes.wixsite.com/iehomes','iehomes.wixsite.com','Direct site explicitly offers licensed electrical service in Winslow and publishes ROC license numbers.','assistant verified research: Winslow Electrician',0,
+ 'iehomesaz@gmail.com','928-587-2047',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_winslow_verified_02","researched_at":"2026-10-27T00:27:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site explicitly offers licensed electrical service in Winslow and publishes ROC license numbers."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Winslow','medical_centers','hospitals medical centers clinics','Little Colorado Medical Center',
+ 'https://lcmcwmh.com/','lcmcwmh.com','Direct hospital site identifies a 25-bed not-for-profit critical access hospital at 1501 N Williamson Ave, Winslow with emergency, inpatient, outpatient, surgery, cardiology, imaging, pharmacy and behavioral-health services.','assistant verified research: Winslow hospitals medical centers clinics',0,
+ 'QAstaff@lcmcwmh.com','(928) 289-4691',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_winslow_verified_02","researched_at":"2026-10-27T00:27:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct hospital site identifies a 25-bed not-for-profit critical access hospital at 1501 N Williamson Ave, Winslow with emergency, inpatient, outpatient, surgery, cardiology, imaging, pharmacy and behavioral-health services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Winslow','medical_centers','hospitals medical centers clinics','Little Colorado Physician’s Office',
+ 'https://lcmcwmh.com/contact/','lcmcwmh.com','Direct Little Colorado Medical Center contact page lists physician office at 200 E Lee St, Winslow.','assistant verified research: Winslow hospitals medical centers clinics',0,
+ null,'(928) 289-3396',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_winslow_verified_02","researched_at":"2026-10-27T00:27:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Little Colorado Medical Center contact page lists physician office at 200 E Lee St, Winslow."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Winslow','schools','schools charter schools private schools','Winslow Unified School District #1',
+ 'https://www.wusd1.org/','wusd1.org','Official district site says Winslow Unified operates five school locations serving the Winslow community and outlying areas.','assistant verified research: Winslow schools charter schools private schools',0,
+ null,'(928) 288-8101',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_winslow_verified_02","researched_at":"2026-10-27T00:27:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official district site says Winslow Unified operates five school locations serving the Winslow community and outlying areas."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Winslow','public_facilities','government public facilities municipal buildings','City of Winslow',
+ 'https://www.winslowaz.gov/','winslowaz.gov','Official City of Winslow site lists City Hall at 102 E Third Street and current municipal operations.','assistant verified research: Winslow government public facilities municipal buildings',0,
+ 'cityhall@winslowaz.gov','(928) 289-2422',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_winslow_verified_02","researched_at":"2026-10-27T00:27:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official City of Winslow site lists City Hall at 102 E Third Street and current municipal operations."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Winslow','insurance_professional','insurance agents professional offices','Hancock-Leavitt Insurance',
+ 'https://www.leavitt.com/hancock/office/winslow-303-w-2nd-st','leavitt.com','Direct agency site lists Winslow office at 303 W 2nd St and business, employee-benefit, home, auto and life insurance services.','assistant verified research: Winslow insurance agents professional offices',0,
+ null,'(928) 289-3333',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_winslow_verified_02","researched_at":"2026-10-27T00:27:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct agency site lists Winslow office at 303 W 2nd St and business, employee-benefit, home, auto and life insurance services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Winslow','hotels_motels','hotels motels lodging','La Posada Hotel',
+ 'https://www.laposada.org/','laposada.org','Direct hotel site confirms active historic Route 66 hotel with restaurant, museum and gardens in Winslow.','assistant verified research: Winslow hotels motels lodging',0,
+ 'info@laposada.org','(928) 289-4366',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_winslow_verified_02","researched_at":"2026-10-27T00:27:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct hotel site confirms active historic Route 66 hotel with restaurant, museum and gardens in Winslow."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p set official_candidates=(
+ select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
+ and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+),updated_at=now() where p.market='Winslow';
