@@ -1,0 +1,16 @@
+{
+  "action": "deploy_update",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-26T22:46:19.939700+00:00",
+  "error": "origin/master is 63e8031f9709e4538ff084685557c28cc27e3549, but request requires 558384f75a681a9b0c90086025e3fa5724c04c65; refusing stale deploy",
+  "exit_code": null,
+  "git_commit_after": "555e9b2f8cac8f0703c12805dac1f65542239ec9",
+  "git_commit_before": "555e9b2f8cac8f0703c12805dac1f65542239ec9",
+  "host": "vps-5675821a",
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_id": "deploy-database-census-20261026T2227Z",
+  "started_at": "2026-10-26T22:46:19.939680+00:00",
+  "status": "rejected",
+  "version": 1
+}
