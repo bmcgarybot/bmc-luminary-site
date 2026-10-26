@@ -334,7 +334,7 @@ BUYER_INVENTORY_TARGETS={
 }
 INVENTORY_MAJOR_MARKETS={"Phoenix","Scottsdale","Tucson"}
 INVENTORY_REGIONAL_MARKETS={"Prescott","Prescott Valley","Flagstaff","Kingman","Bullhead City","Cottonwood","Sedona"}
-INVENTORY_QUERY_STRATEGY_VERSION=6
+INVENTORY_QUERY_STRATEGY_VERSION=7
 
 INVENTORY_BLOCKED_DOMAINS={
     "facebook.com","nextdoor.com","linkedin.com","yelp.com","yellowpages.com","angi.com",
@@ -342,7 +342,13 @@ INVENTORY_BLOCKED_DOMAINS={
     "superpages.com","allbiz.com","restaurantji.com","manta.com","chamberofcommerce.com",
     "birdeye.com","foursquare.com","opentable.com","restaurantguru.com",
     "americascuisine.com","bringfido.com","restaurantobserver.com","thetouristchecklist.com",
-    "evendo.com","helloprescott.com","prescottaz365.com","prescott.com"
+    "evendo.com","helloprescott.com","prescottaz365.com","prescott.com",
+    "apartments.com","realtor.com","zillow.com","trulia.com","homes.com",
+    "seniorhomes.com","caring.com","aplaceformom.com","dentist-network.com",
+    "healthgrades.com","zocdoc.com","vitals.com","psychologytoday.com","goodtherapy.org",
+    "booking.com","expedia.com","hotels.com","kayak.com","priceline.com","travelocity.com",
+    "greatschools.org","niche.com","privateschoolreview.com","churchfinder.com",
+    "indeed.com","glassdoor.com","ziprecruiter.com"
 }
 
 def inventory_target(market,side,category_key):
