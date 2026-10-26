@@ -540,6 +540,33 @@ set pages_scanned=0,
 where coalesce(query_strategy_version,1)<2;
 alter table market_inventory_progress alter column query_strategy_version set default 2;
 
+-- Strategy v3 removes results from an engine that returned unrelated content
+-- and re-runs incomplete inventory using lane-level relevance filtering.
+delete from market_inventory_candidates
+where promoted_entity_id is null
+  and lower(coalesce(evidence->>'search_engine',''))='bing';
+
+update market_inventory_progress
+set pages_scanned=0,
+    raw_results=0,
+    next_page=1,
+    query_variant=0,
+    no_progress_passes=0,
+    status='not_started',
+    last_run_at=null,
+    notes='Reset for query strategy v3 relevance filtering',
+    query_strategy_version=3,
+    official_candidates=(
+      select count(*) from market_inventory_candidates c
+      where c.side=market_inventory_progress.side
+        and c.market=market_inventory_progress.market
+        and c.category_key=market_inventory_progress.category_key
+        and c.official_site=true
+    ),
+    updated_at=now()
+where coalesce(query_strategy_version,2)<3;
+alter table market_inventory_progress alter column query_strategy_version set default 3;
+
 create table if not exists local_demand_scan_state (
   source_key text not null,
   source_name text not null,
