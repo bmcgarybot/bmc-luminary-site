@@ -3287,7 +3287,7 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
                     query_strategy_version,evidence)
                   values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,nullif($11,''),nullif($12,''),$13,
                          'discovered',$14,$15::jsonb)
-                  on conflict(side,market,category_key,source_url) do update set
+                  on conflict(side,market,category_key,source_url,business_name) do update set
                     business_name=excluded.business_name,
                     source_domain=excluded.source_domain,
                     snippet=excluded.snippet,
