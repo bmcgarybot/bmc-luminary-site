@@ -138,7 +138,7 @@ jobs:
           assert "class ListingParser" not in importer
           assert "def normalize_company_href" in importer
           assert "empty_feeds" in importer
-          assert "pg_get_constraintdef(oid)='UNIQUE (side, market, category_key, source_url)'" in schema
+          assert "drop constraint if exists market_inventory_candidates_side_market_category_key_source_url;" in schema
           PY
 
       - name: Validate research query quality
