@@ -13,7 +13,9 @@ if [ ! -f "$ENV_FILE" ]; then
 fi
 
 env_value(){
-  grep -m1 "^$1=" "$ENV_FILE" 2>/dev/null | cut -d= -f2-
+  # Return an empty string, not a failing exit status, when an optional key
+  # is absent. This script runs with set -euo pipefail.
+  awk -F= -v key="$1" '$1==key {sub(/^[^=]*=/,""); print; exit}' "$ENV_FILE"
 }
 
 ADMIN_KEY="$(env_value BMC_ADMIN_KEY)"
