@@ -3411,18 +3411,23 @@ async def admin_market_inventory_coverage(x_bmc_admin_key:str|None=Header(defaul
         totals=await conn.fetchrow("""select count(*) lanes,
           count(*) filter (where pages_scanned>0) touched,
           count(*) filter (where pages_scanned=0) untouched,
-          count(*) filter (where status='scan_complete_target_met') target_met,
-          count(*) filter (where status='scan_complete_under_target') under_target,
+          count(*) filter (where scan_cycles>0) first_cycle_complete,
+          count(*) filter (where status='monitoring') monitoring,
+          count(*) filter (where status='error') errors,
+          coalesce(sum(scan_cycles),0) scan_cycles,
           coalesce(sum(raw_results),0) raw_results,
           coalesce(sum(official_candidates),0) official_candidates
           from market_inventory_progress""")
         candidates=int(await conn.fetchval("""select count(*) from market_inventory_candidates
           where status='discovered' and query_strategy_version=$1""",INVENTORY_QUERY_STRATEGY_VERSION) or 0)
+        closed_candidates=int(await conn.fetchval("""select count(*) from market_inventory_candidates
+          where status='closed' and query_strategy_version=$1""",INVENTORY_QUERY_STRATEGY_VERSION) or 0)
         by_market=await conn.fetch("""with progress as (
           select market,side,count(*) lanes,
             count(*) filter (where pages_scanned>0) touched,
-            count(*) filter (where status='scan_complete_target_met') target_met,
-            count(*) filter (where status='scan_complete_under_target') under_target,
+            count(*) filter (where scan_cycles>0) first_cycle_complete,
+            coalesce(sum(scan_cycles),0) scan_cycles,
+            count(*) filter (where status='error') errors,
             coalesce(sum(raw_results),0) raw_results,
             coalesce(sum(official_candidates),0) official_candidates
           from market_inventory_progress
@@ -3459,19 +3464,22 @@ async def admin_market_inventory_coverage(x_bmc_admin_key:str|None=Header(defaul
                and c.status='discovered' and c.query_strategy_version=$1) candidate_rows
           from market_inventory_progress p
           order by candidate_rows asc,
-                   case p.status when 'scan_complete_under_target' then 0 when 'not_started' then 1
-                    when 'error' then 2 else 3 end,
-                   p.pages_scanned asc,p.market,p.category_key
+                   case p.status when 'not_started' then 0 when 'error' then 1 when 'in_progress' then 2 else 3 end,
+                   p.scan_cycles asc,p.pages_scanned asc,p.market,p.category_key
           limit 100""",INVENTORY_QUERY_STRATEGY_VERSION)
     return {"ok":True,
       "totals":{"lanes":int(totals["lanes"] or 0),"touched":int(totals["touched"] or 0),
-                "untouched":int(totals["untouched"] or 0),"target_met":int(totals["target_met"] or 0),
-                "under_target":int(totals["under_target"] or 0),"raw_results":int(totals["raw_results"] or 0),
+                "untouched":int(totals["untouched"] or 0),
+                "first_cycle_complete":int(totals["first_cycle_complete"] or 0),
+                "monitoring":int(totals["monitoring"] or 0),"errors":int(totals["errors"] or 0),
+                "scan_cycles":int(totals["scan_cycles"] or 0),"raw_results":int(totals["raw_results"] or 0),
                 "official_candidates":int(totals["official_candidates"] or 0),
-                "candidate_rows":candidates},
+                "candidate_rows":candidates,"closed_candidate_rows":closed_candidates},
       "markets":[{"market":r["market"],"side":r["side"],"lanes":int(r["lanes"] or 0),
-                  "touched":int(r["touched"] or 0),"target_met":int(r["target_met"] or 0),
-                  "under_target":int(r["under_target"] or 0),"raw_results":int(r["raw_results"] or 0),
+                  "touched":int(r["touched"] or 0),
+                  "first_cycle_complete":int(r["first_cycle_complete"] or 0),
+                  "scan_cycles":int(r["scan_cycles"] or 0),"errors":int(r["errors"] or 0),
+                  "raw_results":int(r["raw_results"] or 0),
                   "official_candidates":int(r["official_candidates"] or 0),
                   "candidate_rows":int(r["candidate_rows"] or 0),
                   "base_records":int(r["base_records"] or 0),
