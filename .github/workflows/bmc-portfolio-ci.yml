@@ -208,6 +208,15 @@ jobs:
           assert "/provider-pilot-activate/?" in row["body"]
           assert "vendor_id=v_ci_stage" in row["body"]
           PY
+
+          # Execute the production launch audit against the disposable stack in report mode.
+          # Public production checks may legitimately report blockers here; the purpose is to
+          # prove all database/config queries execute without schema/SQL errors.
+          bash ./launch-readiness.sh .env.ci report >/tmp/bmc_launch_readiness_ci.txt
+          grep -q 'BMC launch readiness audit' /tmp/bmc_launch_readiness_ci.txt
+          grep -q 'Vendor prospect pool' /tmp/bmc_launch_readiness_ci.txt
+          grep -q 'Buyer prospect pool' /tmp/bmc_launch_readiness_ci.txt
+          grep -q 'Audit summary:' /tmp/bmc_launch_readiness_ci.txt
           docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
             delete from outreach where entity_type='vendor' and entity_id='v_ci_stage';
             delete from vendor_services where vendor_id='v_ci_stage';
