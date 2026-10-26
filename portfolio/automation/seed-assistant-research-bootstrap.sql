@@ -2895,3 +2895,1606 @@ update market_inventory_progress p set official_candidates=(
  select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
  and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ),updated_at=now() where p.market='Winslow';
+
+
+-- Assistant-led Golden Valley census batch 02 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','restaurants','restaurants','Carolines Country Cafe',
+ 'https://www.mohavelocal.com/l/golden-valley-az/restaurants','mohavelocal.com','Current Golden Valley restaurant listing from Mohave Local.','assistant census research: Golden Valley restaurants',0,
+ null,'(928) 565-2550',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley restaurant listing from Mohave Local."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','restaurants','restaurants','El Rancho Restaurant',
+ 'https://www.mohavelocal.com/l/golden-valley-az/restaurants','mohavelocal.com','Current Golden Valley restaurant listing from Mohave Local.','assistant census research: Golden Valley restaurants',0,
+ null,'(928) 565-2042',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley restaurant listing from Mohave Local."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','restaurants','restaurants','Fat Tony''s Pizzeria',
+ 'https://www.mohavelocal.com/l/golden-valley-az/restaurants','mohavelocal.com','Current Golden Valley restaurant listing from Mohave Local.','assistant census research: Golden Valley restaurants',0,
+ null,'(928) 565-7654',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley restaurant listing from Mohave Local."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','restaurants','restaurants','Great American Pizza & Subs',
+ 'https://www.mohavelocal.com/l/golden-valley-az/restaurants','mohavelocal.com','Current Golden Valley restaurant listing from Mohave Local.','assistant census research: Golden Valley restaurants',0,
+ null,'(928) 565-5550',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley restaurant listing from Mohave Local."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','restaurants','restaurants','Neena''s Cafe & Sweets',
+ 'https://www.mohavelocal.com/l/golden-valley-az/restaurants','mohavelocal.com','Current Golden Valley restaurant listing from Mohave Local.','assistant census research: Golden Valley restaurants',0,
+ null,'(928) 377-5959',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley restaurant listing from Mohave Local."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','restaurants','restaurants','Sonic Drive In',
+ 'https://www.mohavelocal.com/l/golden-valley-az/restaurants','mohavelocal.com','Current Golden Valley restaurant listing from Mohave Local.','assistant census research: Golden Valley restaurants',0,
+ null,'(928) 565-2255',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley restaurant listing from Mohave Local."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','restaurants','restaurants','Valley Pizza And Cafe',
+ 'https://www.mohavelocal.com/l/golden-valley-az/restaurants','mohavelocal.com','Current Golden Valley restaurant listing from Mohave Local.','assistant census research: Golden Valley restaurants',0,
+ null,'(928) 377-5970',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley restaurant listing from Mohave Local."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','restaurants','restaurants','Off Road Diner Mexican Cantina',
+ 'https://www.enigma.com/directory/az/golden-valley','enigma.com','Current Golden Valley restaurant at 120 S Emery Park Rd.','assistant census research: Golden Valley restaurants',0,
+ null,'(928) 377-1989',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley restaurant at 120 S Emery Park Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','restaurants','restaurants','Golden Oyster Mexican & Seafood',
+ 'https://www.enigma.com/directory/az/golden-valley','enigma.com','Current Golden Valley restaurant at 3244 Aztec Rd.','assistant census research: Golden Valley restaurants',0,
+ null,'(928) 377-1890',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley restaurant at 3244 Aztec Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','restaurants','restaurants','Castle Rock Bar & Grill',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley restaurant and event-space business.','assistant census research: Golden Valley restaurants',0,
+ null,'(928) 565-3303',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley restaurant and event-space business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Advantage Storage',
+ 'https://www.mohavelocal.com/l/golden-valley-az/storage-services','mohavelocal.com','Current Golden Valley storage facility.','assistant census research: Golden Valley warehouses industrial businesses distribution centers',0,
+ null,'(928) 565-3221',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley storage facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Echo Storage Options',
+ 'https://www.mohavelocal.com/l/golden-valley-az/storage-services','mohavelocal.com','Current Golden Valley storage facility.','assistant census research: Golden Valley warehouses industrial businesses distribution centers',0,
+ null,'(928) 753-4449',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley storage facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Golden Gate Mini Storage',
+ 'https://www.mohavelocal.com/l/golden-valley-az/storage-services','mohavelocal.com','Current Golden Valley storage facility.','assistant census research: Golden Valley warehouses industrial businesses distribution centers',0,
+ null,'(928) 565-3475',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley storage facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Kokopelli Storage',
+ 'https://www.mohavelocal.com/l/golden-valley-az/storage-services','mohavelocal.com','Current Golden Valley storage facility.','assistant census research: Golden Valley warehouses industrial businesses distribution centers',0,
+ null,'(928) 565-7507',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley storage facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Golden Valley Mini Storage',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Current Golden Valley storage facility.','assistant census research: Golden Valley warehouses industrial businesses distribution centers',0,
+ null,'(928) 753-2025',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley storage facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Storage Spot',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Current Golden Valley storage facility.','assistant census research: Golden Valley warehouses industrial businesses distribution centers',0,
+ null,'(951) 236-7247',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley storage facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Settlin'' In RV Park, LLC',
+ 'https://www.city-data.com/business-entities/Golden-Valley-AZ.html','city-data.com','Active Golden Valley business entity at 7930 E Highway 68; RV park/lodging facility candidate.','assistant census research: Golden Valley warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Golden Valley business entity at 7930 E Highway 68; RV park/lodging facility candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','churches','churches worship centers','Calvary Bible Fellowship',
+ 'https://www.mohavelocal.com/l/golden-valley-az/churches-religious-organizations','mohavelocal.com','Current Golden Valley church/religious facility.','assistant census research: Golden Valley churches worship centers',0,
+ null,'(928) 565-9611',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley church/religious facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','churches','churches worship centers','Chloride Baptist Church',
+ 'https://www.mohavelocal.com/l/golden-valley-az/churches-religious-organizations','mohavelocal.com','Current Golden Valley church/religious facility.','assistant census research: Golden Valley churches worship centers',0,
+ null,'(928) 565-2898',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley church/religious facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','churches','churches worship centers','Golden Valley Assembly Of God',
+ 'https://www.mohavelocal.com/l/golden-valley-az/churches-religious-organizations','mohavelocal.com','Current Golden Valley church/religious facility.','assistant census research: Golden Valley churches worship centers',0,
+ null,'(928) 565-2700',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley church/religious facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','churches','churches worship centers','Golden Valley Baptist Church',
+ 'https://www.mohavelocal.com/l/golden-valley-az/churches-religious-organizations','mohavelocal.com','Current Golden Valley church/religious facility.','assistant census research: Golden Valley churches worship centers',0,
+ null,'(928) 565-4682',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley church/religious facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','churches','churches worship centers','Cowboy Church of Mohave County',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Current Golden Valley church at 4327 Chino Dr.','assistant census research: Golden Valley churches worship centers',0,
+ null,'(425) 647-5399',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley church at 4327 Chino Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','churches','churches worship centers','Compassion Christian Fellowship',
+ 'https://www.uscorpdirectory.com/az/golden-valley','uscorpdirectory.com','Active Golden Valley nonprofit/church entity at 1315 S Tonto Rd.','assistant census research: Golden Valley churches worship centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Golden Valley nonprofit/church entity at 1315 S Tonto Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','Valley Auto Repair',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley automotive/fuel business listing.','assistant census research: Golden Valley other local businesses',0,
+ null,'(928) 565-6000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley automotive/fuel business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','Golden Valley Collision Center',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley automotive/fuel business listing.','assistant census research: Golden Valley other local businesses',0,
+ null,'(928) 565-3651',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley automotive/fuel business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','The Big Tow Towing & Storage',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley automotive/fuel business listing.','assistant census research: Golden Valley other local businesses',0,
+ null,'(928) 565-3651',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley automotive/fuel business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','The Outpost',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley automotive/fuel business listing.','assistant census research: Golden Valley other local businesses',0,
+ null,'(928) 565-4632',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley automotive/fuel business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','D & D Auto Repair',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley automotive/fuel business listing.','assistant census research: Golden Valley other local businesses',0,
+ null,'(928) 565-7770',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley automotive/fuel business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','Superior Tire',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley automotive/fuel business listing.','assistant census research: Golden Valley other local businesses',0,
+ null,'(928) 565-4277',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley automotive/fuel business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','Coast In Gas & Food',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley automotive/fuel business listing.','assistant census research: Golden Valley other local businesses',0,
+ null,'(928) 565-2910',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley automotive/fuel business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','M & M Mobile Mechanic & Auto Electric',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley automotive/fuel business listing.','assistant census research: Golden Valley other local businesses',0,
+ null,'(928) 565-2746',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley automotive/fuel business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','Tic Tac Tow',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley automotive/fuel business listing.','assistant census research: Golden Valley other local businesses',0,
+ null,'(928) 681-7375',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley automotive/fuel business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','Motorcycle Shop',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley automotive/fuel business listing.','assistant census research: Golden Valley other local businesses',0,
+ null,'(928) 565-3642',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley automotive/fuel business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','Mid-Fifty F-100 Parts',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley automotive/fuel business listing.','assistant census research: Golden Valley other local businesses',0,
+ null,'(928) 565-2727',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley automotive/fuel business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','K J''s Food Mart',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley automotive/fuel business listing.','assistant census research: Golden Valley other local businesses',0,
+ null,'(928) 565-2333',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley automotive/fuel business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','Auto 68',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley automotive/fuel business listing.','assistant census research: Golden Valley other local businesses',0,
+ null,'(928) 565-5926',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley automotive/fuel business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','Tire Works Total Car Care',
+ 'https://www.enigma.com/directory/az/golden-valley','enigma.com','Current full-service tire and auto-repair facility at 4115 AZ-68.','assistant census research: Golden Valley other local businesses',0,
+ null,'(928) 377-1782',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current full-service tire and auto-repair facility at 4115 AZ-68."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','Little Lit Customs',
+ 'https://www.enigma.com/directory/az/golden-valley','enigma.com','Current Golden Valley vehicle repair/customs shop at 4120 AZ-68.','assistant census research: Golden Valley other local businesses',0,
+ null,'(928) 303-9101',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley vehicle repair/customs shop at 4120 AZ-68."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','GV Diesel And Auto Repair LLC',
+ 'https://www.uscorpdirectory.com/az/golden-valley/9','uscorpdirectory.com','Active Golden Valley auto/diesel repair entity at 7044 US Highway 68.','assistant census research: Golden Valley other local businesses',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Golden Valley auto/diesel repair entity at 7044 US Highway 68."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','retail','retail stores shopping stores','Trophy Mart',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley retail/supply business listing.','assistant census research: Golden Valley retail stores shopping stores',0,
+ null,'(928) 565-4601',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley retail/supply business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','retail','retail stores shopping stores','Mail Boxes and More',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley retail/supply business listing.','assistant census research: Golden Valley retail stores shopping stores',0,
+ null,'(928) 565-3930',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley retail/supply business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','retail','retail stores shopping stores','John Graves Propane',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley retail/supply business listing.','assistant census research: Golden Valley retail stores shopping stores',0,
+ null,'(928) 565-2821',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley retail/supply business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','retail','retail stores shopping stores','Bucky''s Swap Meet',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley retail/supply business listing.','assistant census research: Golden Valley retail stores shopping stores',0,
+ null,'(928) 263-0074',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley retail/supply business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','retail','retail stores shopping stores','Rocky Mountain Slots',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley retail/supply business listing.','assistant census research: Golden Valley retail stores shopping stores',0,
+ null,'(928) 565-7568',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley retail/supply business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','retail','retail stores shopping stores','CBS Complete Business Systems',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley retail/supply business listing.','assistant census research: Golden Valley retail stores shopping stores',0,
+ null,'(928) 377-1037',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley retail/supply business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','retail','retail stores shopping stores','Tradition Christmas Tree Farm',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley retail/supply business listing.','assistant census research: Golden Valley retail stores shopping stores',0,
+ null,'(928) 565-4646',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley retail/supply business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','retail','retail stores shopping stores','Diamond Back Jewelry Services',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley retail/supply business listing.','assistant census research: Golden Valley retail stores shopping stores',0,
+ null,'(928) 565-4410',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley retail/supply business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','retail','retail stores shopping stores','Uptown Drug',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley retail/supply business listing.','assistant census research: Golden Valley retail stores shopping stores',0,
+ null,'(928) 565-3900',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley retail/supply business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','retail','retail stores shopping stores','Island Palms Nursery',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley retail/supply business listing.','assistant census research: Golden Valley retail stores shopping stores',0,
+ null,'(928) 279-0178',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley retail/supply business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','retail','retail stores shopping stores','Stock-Rite Bldg Supply',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley retail/supply business listing.','assistant census research: Golden Valley retail stores shopping stores',0,
+ null,'(928) 565-5555',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley retail/supply business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','retail','retail stores shopping stores','GV Pawn',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley retail/supply business listing.','assistant census research: Golden Valley retail stores shopping stores',0,
+ null,'(928) 565-2555',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley retail/supply business listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','retail','retail stores shopping stores','Dollar General',
+ 'https://www.enigma.com/directory/az/golden-valley','enigma.com','Current Golden Valley discount/grocery retail facility at 5181 AZ-68.','assistant census research: Golden Valley retail stores shopping stores',0,
+ null,'(928) 543-9028',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley discount/grocery retail facility at 5181 AZ-68."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','grocery','grocery stores supermarkets markets','Great American Mini Mart / Outpost',
+ 'https://www.enigma.com/directory/az/golden-valley','enigma.com','Current Golden Valley gas/convenience retail operation on Highway 68.','assistant census research: Golden Valley grocery stores supermarkets markets',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley gas/convenience retail operation on Highway 68."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','medical_centers','hospitals medical centers clinics','Golden Valley Medical Center',
+ 'https://www.enigma.com/directory/az/golden-valley','enigma.com','Current KRMC-affiliated primary-care clinic at 4995 AZ-68.','assistant census research: Golden Valley hospitals medical centers clinics',0,
+ null,'(928) 681-8500',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current KRMC-affiliated primary-care clinic at 4995 AZ-68."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','schools','schools charter schools private schools','Black Mountain School',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Current K-8 public school at 3404 N Santa Maria Rd.','assistant census research: Golden Valley schools charter schools private schools',0,
+ null,'(928) 565-9111',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current K-8 public school at 3404 N Santa Maria Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','insurance_professional','insurance agents professional offices','Edwards Insurance Agency',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Current Golden Valley insurance office on Highway 68.','assistant census research: Golden Valley insurance agents professional offices',0,
+ null,'(928) 565-3300',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Golden Valley insurance office on Highway 68."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','insurance_professional','insurance agents professional offices','Tri State Appraisal GV',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley appraisal/professional-services business.','assistant census research: Golden Valley insurance agents professional offices',0,
+ null,'(928) 565-5111',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley appraisal/professional-services business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','general_business','other local businesses','VFW Post 2555',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley nonprofit/community-service facility.','assistant census research: Golden Valley other local businesses',0,
+ null,'(928) 565-3344',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley nonprofit/community-service facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','theaters_entertainment','theaters cinemas entertainment venues','Castle Rock Event Center',
+ 'https://jway.homes/neighborhood/157014090/golden-valley','jway.homes','Golden Valley event venue.','assistant census research: Golden Valley theaters cinemas entertainment venues',0,
+ null,'(928) 565-3303',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley event venue."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Mohave Block Company',
+ 'https://www.city-data.com/business-entities/Golden-Valley-AZ.html','city-data.com','Golden Valley active concrete/block manufacturing entity at 6584 S Tampico Rd.','assistant census research: Golden Valley warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley active concrete/block manufacturing entity at 6584 S Tampico Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Morken Mfg., LLC',
+ 'https://www.city-data.com/business-entities/Golden-Valley-AZ.html','city-data.com','Active Golden Valley manufacturing entity at 3305 W Smith Dr.','assistant census research: Golden Valley warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Golden Valley manufacturing entity at 3305 W Smith Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','warehouses_industrial','warehouses industrial businesses distribution centers','MSG Distribution Inc',
+ 'https://www.city-data.com/business-entities/Golden-Valley-AZ.html','city-data.com','Active Golden Valley distribution entity at 3356 W Carmichael Rd.','assistant census research: Golden Valley warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Golden Valley distribution entity at 3356 W Carmichael Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Desert Drift Distribution LLC',
+ 'https://www.uscorpdirectory.com/az/golden-valley','uscorpdirectory.com','Active Golden Valley distribution entity at 3576 N Hassayampa Rd.','assistant census research: Golden Valley warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Golden Valley distribution entity at 3576 N Hassayampa Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','warehouses_industrial','warehouses industrial businesses distribution centers','LMCC Trucking Limited Liability Company',
+ 'https://www.city-data.com/business-entities/Golden-Valley-AZ.html','city-data.com','Golden Valley trucking/transportation entity at 6244 W Abrigo Dr.','assistant census research: Golden Valley warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley trucking/transportation entity at 6244 W Abrigo Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Mabry Transport, LLC',
+ 'https://www.city-data.com/business-entities/Golden-Valley-AZ.html','city-data.com','Golden Valley transportation entity on Lochiel Road.','assistant census research: Golden Valley warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley transportation entity on Lochiel Road."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Michael Hansen Transportation, LLC',
+ 'https://www.city-data.com/business-entities/Golden-Valley-AZ.html','city-data.com','Golden Valley transportation entity at 1598 S Glenbar Rd.','assistant census research: Golden Valley warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley transportation entity at 1598 S Glenbar Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','warehouses_industrial','warehouses industrial businesses distribution centers','New Era Transport, LLC',
+ 'https://www.city-data.com/business-entities/Golden-Valley-AZ.html','city-data.com','Golden Valley transportation entity at 4236 N Concho Rd.','assistant census research: Golden Valley warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley transportation entity at 4236 N Concho Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Golden Valley','warehouses_industrial','warehouses industrial businesses distribution centers','RSW Trucking, L.L.C.',
+ 'https://www.city-data.com/business-entities/Golden-Valley-AZ.html','city-data.com','Golden Valley trucking entity at 3200 N Kaba Rd.','assistant census research: Golden Valley warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley trucking entity at 3200 N Kaba Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Golden Valley','hvac_heat','Heating & Air','A 2 Z Refrigeration',
+ 'https://www.dnb.com/business-directory/company-information.construction.us.arizona.golden_valley.html','dnb.com','D&B Golden Valley construction directory candidate for Heating & Air.','assistant census research: Golden Valley Heating & Air',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"D&B Golden Valley construction directory candidate for Heating & Air."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Golden Valley','electrical_service','Electrician','Select Electric LLC',
+ 'https://www.dnb.com/business-directory/company-information.construction.us.arizona.golden_valley.html','dnb.com','D&B Golden Valley construction directory candidate for Electrician.','assistant census research: Golden Valley Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"D&B Golden Valley construction directory candidate for Electrician."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Golden Valley','rural_property','Septic, Grading & Wells','Rodenbaugh Excavation and Grading LLC',
+ 'https://www.dnb.com/business-directory/company-information.construction.us.arizona.golden_valley.html','dnb.com','D&B Golden Valley construction directory candidate for Septic, Grading & Wells.','assistant census research: Golden Valley Septic, Grading & Wells',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"D&B Golden Valley construction directory candidate for Septic, Grading & Wells."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Golden Valley','rural_property','Septic, Grading & Wells','MRA Excavating LLC',
+ 'https://www.dnb.com/business-directory/company-information.construction.us.arizona.golden_valley.html','dnb.com','D&B Golden Valley construction directory candidate for Septic, Grading & Wells.','assistant census research: Golden Valley Septic, Grading & Wells',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"D&B Golden Valley construction directory candidate for Septic, Grading & Wells."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Golden Valley','backflow_plumbing','Backflow & Commercial Plumbing','Dial Kyle Plumbing L.L.C.',
+ 'https://www.dnb.com/business-directory/company-information.construction.us.arizona.golden_valley.html','dnb.com','D&B Golden Valley construction directory candidate for Backflow & Commercial Plumbing.','assistant census research: Golden Valley Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"D&B Golden Valley construction directory candidate for Backflow & Commercial Plumbing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Golden Valley','backflow_plumbing','Backflow & Commercial Plumbing','Secret Pass Plumbing',
+ 'https://www.dnb.com/business-directory/company-information.construction.us.arizona.golden_valley.html','dnb.com','D&B Golden Valley construction directory candidate for Backflow & Commercial Plumbing.','assistant census research: Golden Valley Backflow & Commercial Plumbing',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"D&B Golden Valley construction directory candidate for Backflow & Commercial Plumbing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Golden Valley','facility_maintenance','Building Maintenance Help','Complete Restoration Inc.',
+ 'https://www.dnb.com/business-directory/company-information.construction.us.arizona.golden_valley.html','dnb.com','D&B Golden Valley construction directory candidate for Building Maintenance Help.','assistant census research: Golden Valley Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"D&B Golden Valley construction directory candidate for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Golden Valley','rural_property','Septic, Grading & Wells','Pinnacle Grading, L.L.C.',
+ 'https://www.dnb.com/business-directory/company-information.construction.us.arizona.golden_valley.html','dnb.com','D&B Golden Valley construction directory candidate for Septic, Grading & Wells.','assistant census research: Golden Valley Septic, Grading & Wells',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"D&B Golden Valley construction directory candidate for Septic, Grading & Wells."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Golden Valley','facility_maintenance','Building Maintenance Help','Neal Construction Industry LLC',
+ 'https://www.dnb.com/business-directory/company-information.construction.us.arizona.golden_valley.html','dnb.com','D&B Golden Valley construction directory candidate for Building Maintenance Help.','assistant census research: Golden Valley Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"D&B Golden Valley construction directory candidate for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Golden Valley','pest_control','Pest Control','J & S Pest Control LLC',
+ 'https://www.uscorpdirectory.com/az/golden-valley/4','uscorpdirectory.com','Active Golden Valley pest-control entity at 4496 N Cowlic Rd.','assistant census research: Golden Valley Pest Control',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Golden Valley pest-control entity at 4496 N Cowlic Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Golden Valley','handyman_repairs','Handyman','Whiteley Handyman Services LLC',
+ 'https://www.uscorpdirectory.com/az/golden-valley/9','uscorpdirectory.com','Active Golden Valley handyman entity at 2756 Chiricahua Rd.','assistant census research: Golden Valley Handyman',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Golden Valley handyman entity at 2756 Chiricahua Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Golden Valley','electrical_service','Electrician','RPN Electric, LLC',
+ 'https://www.city-data.com/business-entities/Golden-Valley-AZ.html','city-data.com','Golden Valley electrical entity at 3524 N Neptune Way.','assistant census research: Golden Valley Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley electrical entity at 3524 N Neptune Way."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Golden Valley','epoxy_flooring','Epoxy & Concrete Floors','River Tile and Stone, LLC',
+ 'https://www.city-data.com/business-entities/Golden-Valley-AZ.html','city-data.com','Golden Valley flooring/tile entity at 640 S Santa Maria Rd.','assistant census research: Golden Valley Epoxy & Concrete Floors',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Golden Valley flooring/tile entity at 640 S Santa Maria Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Golden Valley','facility_maintenance','Building Maintenance Help','PJH Construction, LLC',
+ 'https://statsnet.co/en/states/us-az/golden-valley','statsnet.co','Registered Golden Valley construction entity.','assistant census research: Golden Valley Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Registered Golden Valley construction entity."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Golden Valley','rural_property','Septic, Grading & Wells','Johnny & Son''s Bobcat Service, LLC',
+ 'https://statsnet.co/en/states/us-az/golden-valley','statsnet.co','Registered Golden Valley bobcat/site-work entity.','assistant census research: Golden Valley Septic, Grading & Wells',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Registered Golden Valley bobcat/site-work entity."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Golden Valley','electrical_service','Electrician','C&M Service Electric LLC',
+ 'https://statsnet.co/en/states/us-az/golden-valley','statsnet.co','Registered Golden Valley electrical service entity.','assistant census research: Golden Valley Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_golden_valley_batch_02","researched_at":"2026-10-27T00:36:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Registered Golden Valley electrical service entity."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p set official_candidates=(
+ select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
+ and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+),updated_at=now() where p.market='Golden Valley';
