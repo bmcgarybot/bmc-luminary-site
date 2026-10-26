@@ -153,11 +153,20 @@ jobs:
           exec(compile(ast.Module(body=[fn],type_ignores=[]),"relevance-check","exec"),ns)
           good={"title":"CRRS Restaurant Equipment Repair Prescott","snippet":"Commercial refrigeration and restaurant equipment repair in Prescott AZ","url":"https://prescottrepairs.com/commercial_repair"}
           wrong_city={"title":"Phoenix Restaurant Equipment Repair","snippet":"Restaurant equipment repair in Phoenix Arizona","url":"https://example.com/phoenix"}
+          supplier_only={"title":"Restaurant Equipment Supply Prescott","snippet":"New and used restaurant equipment, parts and kitchen smallwares in Prescott","url":"https://supplier.example/prescott"}
           assert ns["inventory_result_relevant"](good,"Prescott","Restaurant Equipment Repair") is True
           assert ns["inventory_result_relevant"](wrong_city,"Prescott","Restaurant Equipment Repair") is False
+          assert ns["inventory_result_relevant"](supplier_only,"Prescott","Restaurant Equipment Repair") is False
+          assert "superpages.com" in api and "allbiz.com" in api and "restaurantji.com" in api
+          assert "INVENTORY_QUERY_STRATEGY_VERSION=4" in api
+          assert "query_strategy_version=excluded.query_strategy_version" in api
           schema=Path("schema.sql").read_text()
-          assert "query strategy v3 relevance filtering" in schema.lower()
-          assert "evidence->>'search_engine'" in schema
+          assert "query strategy v4 establishes a clean audited baseline" in schema.lower()
+          assert "superseded_pre_v4" in schema
+          assert "query_strategy_version=4" in schema
+          proof=Path("production-proof-readout.sh").read_text()
+          assert "candidate_rows_active_v4" in proof
+          assert "superseded_candidate_rows" in proof
           PY
           grep -q 'up -d --force-recreate searxng' deploy-update.sh
 
