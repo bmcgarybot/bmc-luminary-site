@@ -364,6 +364,29 @@ def inventory_query(side,market,category_label,variant):
         )
     return variants[v]
 
+def inventory_result_relevant(result,market,category_label):
+    # Search backends can occasionally return unrelated or poisoned results.
+    # Require evidence that the result actually belongs to the requested lane.
+    haystack=" ".join([
+        clean((result or {}).get("title")),
+        clean((result or {}).get("snippet")),
+        clean((result or {}).get("url"))
+    ]).lower()
+    place=clean(market).lower()
+    label=clean(category_label).lower()
+    if not haystack or not place or not label:
+        return False
+    place_words=[w for w in re.findall(r"[a-z0-9]+",place) if len(w)>2]
+    generic={"service","services","repair","repairs","company","companies","contractor","contractors",
+             "local","business","businesses","and","the","for","near","arizona","az"}
+    label_words=[w for w in re.findall(r"[a-z0-9]+",label)
+                 if len(w)>2 and w not in generic]
+    market_match=(place in haystack or
+                  (place_words and all(w in haystack for w in place_words)) or
+                  " arizona" in haystack or "/az/" in haystack or "-az" in haystack)
+    category_match=any(w in haystack for w in label_words) if label_words else label in haystack
+    return bool(market_match and category_match)
+
 def inventory_official_site(domain):
     host=clean(domain).lower().removeprefix("www.")
     return bool(host and not any(host==d or host.endswith("."+d) for d in INVENTORY_BLOCKED_DOMAINS))
@@ -3131,9 +3154,11 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
                   lane["side"],lane["market"],lane["category_key"],err)
                 continue
 
+            relevant_results=[r for r in results
+                              if inventory_result_relevant(r,lane["market"],lane["category_label"])]
             inserted=0
             official_added=0
-            for result in results:
+            for result in relevant_results:
                 contact=extract_public_contact(f'{result["title"]} {result["snippet"]}')
                 official=inventory_official_site(result["domain"])
                 cid=await conn.fetchval("""insert into market_inventory_candidates(
@@ -3194,12 +3219,13 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
                   no_progress_passes=case when $8=0 then no_progress_passes+1 else 0 end,
                   status=$9,last_run_at=now(),notes=null,updated_at=now()
               where side=$1 and market=$2 and category_key=$3""",
-              lane["side"],lane["market"],lane["category_key"],len(results),official_count,
+              lane["side"],lane["market"],lane["category_key"],len(relevant_results),official_count,
               next_page,next_variant,inserted,status)
             lane_results.append({
               "side":lane["side"],"market":lane["market"],"category_key":lane["category_key"],
               "category_label":lane["category_label"],"page":page,"query_variant":variant,
-              "results_returned":len(results),"candidates":candidate_count,
+              "results_returned":len(results),"relevant_results":len(relevant_results),
+              "candidates":candidate_count,
               "official_candidates":official_count,"target":int(lane["target"] or 0),
               "status":status
             })
