@@ -1915,20 +1915,21 @@ def vendor_recruitment_copy(row,step):
     business=clean(row["business_name"])
     signal=clean(row["association_signal"])
     credibility=f" I found your business through {signal}." if signal else ""
+    activation=pilot_activation_url(row)
     if step==1:
         subject=f"{market}: want more {service.lower()} jobs?"
         body=f"""Hi {business},
 
 Are you open to more {service.lower()} work in {market}?{credibility}
 
-BMC is building a local provider network around one simple idea: do not make contractors pay just to find out the lead was wrong for them.
+BMC Service Network is opening its provider network in Arizona. There is no fee to join.
 
-Joining is free. You tell us where you work, what jobs you want, your minimum job size, and your capacity. When a request fits, you review the job details first and decide whether to take it or pass.
+You tell us where you work, what jobs you want, your minimum job size, and your capacity. When a matching customer request comes in, you review the job details first and decide whether to accept it or pass.
 
-You can join here:
-{PARTNER_URL}
+Set your provider preferences here:
+{activation}
 
-Selected pilot opportunities may be free or reduced while we prove the channel. Any future paid terms will be shown before they apply.
+Some early opportunities may be free or discounted. If BMC introduces paid leads or territory options later, the price and terms will be shown before you choose to participate.
 
 BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}
@@ -1938,11 +1939,12 @@ Reply no if you do not want future outreach."""
         subject=f"Re: {service.lower()} work in {market}"
         body=f"""Hi {business},
 
-Following up once in case a few more {service.lower()} jobs in {market} would help.
+Following up once in case more {service.lower()} work in {market} would be useful.
 
-The BMC pilot is free to join. Set the jobs and area you want, review matching requests first, then accept or pass.
+Joining the BMC provider network is free. You set the jobs and area you want, your minimum job size, and your capacity, then review matching requests before accepting or passing.
 
-{PARTNER_URL}
+Your provider setup link:
+{activation}
 
 BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}
@@ -1954,8 +1956,8 @@ Reply no if you do not want future outreach."""
 
 Last note from me.
 
-If you want BMC to consider your business for matching {service.lower()} requests in {market}, the free provider form is here:
-{PARTNER_URL}
+If you want BMC to consider your business for matching {service.lower()} requests in {market}, your provider setup link is here:
+{activation}
 
 If not, no action is needed.
 
