@@ -298,7 +298,7 @@ jobs:
           done
           test "$ready" -ge 3
 
-          for file in schema.sql seed-services.sql seed-vendors.sql seed-buyers.sql seed-outreach.sql seed-buyer-outreach.sql seed-growth-pack-sales.sql seed-first-wave.sql seed-products.sql seed-research.sql seed-research-sources.sql seed-research-scale.sql; do
+          for file in schema.sql seed-services.sql seed-vendors.sql seed-buyers.sql seed-outreach.sql seed-buyer-outreach.sql seed-growth-pack-sales.sql seed-first-wave.sql seed-products.sql seed-research.sql seed-research-sources.sql seed-research-scale.sql seed-assistant-research-bootstrap.sql; do
             docker compose --env-file .env.ci exec -T postgres psql -v ON_ERROR_STOP=1 -U bmc_automation -d bmc_portfolio < "$file"
           done
 
@@ -509,6 +509,8 @@ jobs:
           EXPECTED_INVENTORY="$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select 21*(count(*)+18) from services where is_active=true and fulfillment_mode='provider_match';")"
           ACTUAL_INVENTORY="$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from market_inventory_progress;")"
           test "$ACTUAL_INVENTORY" -eq "$EXPECTED_INVENTORY"
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from market_inventory_candidates where evidence->>'bootstrap_source'='assistant_web_research_2026_10_26_batch_01';")" -ge 45
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct market) from market_inventory_candidates where evidence->>'bootstrap_source'='assistant_web_research_2026_10_26_batch_01';")" -ge 8
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct market) from market_inventory_progress;")" -eq 21
           curl -fsS http://127.0.0.1:8000/api/admin/market-inventory-coverage             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_inventory_coverage.json
           python - <<'PY'
