@@ -28,7 +28,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 REPO = os.environ.get("BMC_RELAY_REPOSITORY", "bmcgarybot/bmc-luminary-site").strip()
@@ -44,6 +44,7 @@ ROOT = Path(__file__).resolve().parents[2]
 AUTOMATION = Path(__file__).resolve().parent
 STATE_DIR = Path(os.environ.get("BMC_RELAY_STATE_DIR", str(Path.home() / ".local/state/bmc-vps-relay")))
 LOCAL_RESULTS = STATE_DIR / "results"
+RESEARCH_SCHEDULE_FILE = STATE_DIR / "research-refresh-schedule.json"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
 READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status"}
@@ -142,6 +143,104 @@ def assert_outreach_off() -> dict[str, str]:
     if bad:
         raise RelayError(f"Refusing mutating action because outbound switches are not all OFF: {bad}")
     return state
+
+
+def _schedule_time(value: str) -> datetime:
+    dt = datetime.fromisoformat(str(value))
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc)
+
+
+def _save_research_schedule(payload: dict):
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    tmp = RESEARCH_SCHEDULE_FILE.with_suffix(".tmp")
+    tmp.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+    os.chmod(tmp, 0o600)
+    tmp.replace(RESEARCH_SCHEDULE_FILE)
+
+
+def run_due_research_refreshes() -> dict:
+    if not RESEARCH_SCHEDULE_FILE.exists():
+        return {"backend": None, "due": 0, "runs": []}
+
+    try:
+        schedule = json.loads(RESEARCH_SCHEDULE_FILE.read_text())
+    except Exception as exc:
+        raise RelayError(f"Invalid research refresh schedule: {exc}") from exc
+
+    if schedule.get("backend") != "vps-relay" or not schedule.get("enabled"):
+        return {"backend": schedule.get("backend"), "due": 0, "runs": []}
+
+    now = datetime.now(timezone.utc)
+    runs_out = []
+    due_count = 0
+
+    for lane_name in ("directory", "licensed"):
+        lane = schedule.get(lane_name)
+        if not isinstance(lane, dict):
+            continue
+        next_due_raw = lane.get("next_due_at")
+        if not next_due_raw:
+            continue
+        try:
+            next_due = _schedule_time(next_due_raw)
+        except Exception as exc:
+            lane["last_status"] = "invalid_schedule"
+            lane["last_error"] = str(exc)
+            continue
+        if next_due > now:
+            continue
+
+        due_count += 1
+        mode = str(lane.get("mode") or lane_name)
+        interval = max(3600, int(lane.get("interval_seconds") or (86400 if lane_name == "directory" else 604800)))
+        started_at = now_iso()
+        exit_code = None
+        stdout = ""
+        stderr = ""
+        status = "failed"
+
+        try:
+            gate = assert_outreach_off()
+            cp = run(["bash", "./research-source-refresh.sh", ENV_FILE, mode], timeout=3600)
+            exit_code = cp.returncode
+            stdout = cp.stdout
+            stderr = cp.stderr
+            status = "success" if cp.returncode == 0 else "failed"
+        except Exception as exc:
+            gate = outreach_state()
+            stderr = str(exc)
+            status = "blocked" if isinstance(exc, RelayError) else "error"
+
+        completed_at = now_iso()
+        lane["last_attempt_at"] = started_at
+        lane["last_completed_at"] = completed_at
+        lane["last_status"] = status
+        lane["last_exit_code"] = exit_code
+        lane["last_stdout_tail"] = redact(stdout[-20000:])
+        lane["last_stderr_tail"] = redact(stderr[-20000:])
+        lane["last_outreach_gate"] = gate
+        if status == "success":
+            lane["last_success_at"] = completed_at
+
+        while next_due <= now:
+            next_due += timedelta(seconds=interval)
+        lane["next_due_at"] = next_due.isoformat()
+
+        runs_out.append({
+            "lane": lane_name,
+            "mode": mode,
+            "status": status,
+            "exit_code": exit_code,
+            "started_at": started_at,
+            "completed_at": completed_at,
+            "next_due_at": lane["next_due_at"],
+        })
+
+    schedule["updated_at"] = now_iso()
+    _save_research_schedule(schedule)
+    return {"backend": "vps-relay", "due": due_count, "runs": runs_out}
 
 
 def secret_values() -> list[tuple[str, str]]:
@@ -606,6 +705,12 @@ def process_once() -> dict:
         except Exception as exc:
             stats["errors"].append({"request_id": request_id, "upload_error": redact(str(exc))})
         stats["processed"] += 1
+
+    try:
+        stats["scheduled_refresh"] = run_due_research_refreshes()
+    except Exception as exc:
+        stats["scheduled_refresh"] = {"status": "error", "error": redact(str(exc))}
+        stats["errors"].append({"scheduled_refresh": redact(str(exc))})
 
     return stats
 
