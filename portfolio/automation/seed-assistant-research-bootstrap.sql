@@ -7650,3 +7650,298 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Cottonwood';
+
+
+-- Assistant-led verified Cottonwood batch 02 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cottonwood','hvac_heat','Heating & Air','Nichols Plumbing, Electrical, & HVAC',
+ 'https://nicholsaz.com/','nicholsaz.com','Direct site: Cottonwood headquarters at 4140 Western Dr; triple-licensed local company serving commercial and residential HVAC.','assistant verified research: Cottonwood Heating & Air',0,
+ null,'(928) 300-1221',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cottonwood_verified_02","researched_at":"2026-10-26T23:38:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site: Cottonwood headquarters at 4140 Western Dr; triple-licensed local company serving commercial and residential HVAC."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cottonwood','backflow_plumbing','Backflow & Commercial Plumbing','Nichols Plumbing, Electrical, & HVAC',
+ 'https://nicholsaz.com/','nicholsaz.com','Direct site explicitly offers commercial and residential plumbing from Cottonwood headquarters.','assistant verified research: Cottonwood Backflow & Commercial Plumbing',0,
+ null,'(928) 300-1221',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cottonwood_verified_02","researched_at":"2026-10-26T23:38:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site explicitly offers commercial and residential plumbing from Cottonwood headquarters."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cottonwood','electrical_service','Electrician','Nichols Plumbing, Electrical, & HVAC',
+ 'https://nicholsaz.com/','nicholsaz.com','Direct site states three Arizona ROC licenses covering HVAC, plumbing and electrical; Cottonwood headquarters.','assistant verified research: Cottonwood Electrician',0,
+ null,'(928) 300-1221',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cottonwood_verified_02","researched_at":"2026-10-26T23:38:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site states three Arizona ROC licenses covering HVAC, plumbing and electrical; Cottonwood headquarters."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cottonwood','hvac_heat','Heating & Air','Absolute Comfort HVAC LLC',
+ 'https://www.absolute-comforthvac.com/','absolute-comforthvac.com','Direct site identifies Cottonwood HVAC contractor at 1460 E State Route 89A Suite C, licensed/bonded/insured ROC 342111 and serving residential/commercial.','assistant verified research: Cottonwood Heating & Air',0,
+ 'absolutecomforthvacllc@gmail.com','(928) 606-1030',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cottonwood_verified_02","researched_at":"2026-10-26T23:38:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site identifies Cottonwood HVAC contractor at 1460 E State Route 89A Suite C, licensed/bonded/insured ROC 342111 and serving residential/commercial."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cottonwood','hvac_heat','Heating & Air','Connolly Electric & Mechanical',
+ 'https://www.connollyelectric.com/','connollyelectric.com','Direct site says locally owned HVAC/electrical company serving Cottonwood and Verde Valley since 1997; 2651 S Union Dr.','assistant verified research: Cottonwood Heating & Air',0,
+ null,'(928) 862-5977',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cottonwood_verified_02","researched_at":"2026-10-26T23:38:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site says locally owned HVAC/electrical company serving Cottonwood and Verde Valley since 1997; 2651 S Union Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cottonwood','electrical_service','Electrician','Connolly Electric & Mechanical',
+ 'https://www.connollyelectric.com/about/','connollyelectric.com','Direct company about page explicitly states electrical installation, maintenance and repair in Cottonwood/Verde Valley; license numbers published.','assistant verified research: Cottonwood Electrician',0,
+ null,'(928) 862-5977',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cottonwood_verified_02","researched_at":"2026-10-26T23:38:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct company about page explicitly states electrical installation, maintenance and repair in Cottonwood/Verde Valley; license numbers published."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Cottonwood','electrical_service','Electrician','Arizona Wide Electric',
+ 'https://www.arizonawideelectric.com/','arizonawideelectric.com','Direct site: commercial-only electrical contractor based in Cottonwood, serving all Arizona counties; ROC 159818.','assistant verified research: Cottonwood Electrician',0,
+ null,'(928) 646-3059',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cottonwood_verified_02","researched_at":"2026-10-26T23:38:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site: commercial-only electrical contractor based in Cottonwood, serving all Arizona counties; ROC 159818."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cottonwood','general_business','other local businesses','Verde Veterinary Hospital',
+ 'https://www.verdevethospital.com/','verdevethospital.com','Direct site lists full-service animal hospital at 1201 East Cherry St, Cottonwood.','assistant verified research: Cottonwood other local businesses',0,
+ null,'(928) 634-7538',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cottonwood_verified_02","researched_at":"2026-10-26T23:38:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site lists full-service animal hospital at 1201 East Cherry St, Cottonwood."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cottonwood','dental','dentists dental offices orthodontists','Cottonwood Modern Dentistry and Orthodontics',
+ 'https://www.cottonwoodmoderndentistry.com/','cottonwoodmoderndentistry.com','Direct dental office site lists 1061 S State Route 260, Cottonwood and current office hours/services.','assistant verified research: Cottonwood dentists dental offices orthodontists',0,
+ null,'(928) 239-3254',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cottonwood_verified_02","researched_at":"2026-10-26T23:38:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct dental office site lists 1061 S State Route 260, Cottonwood and current office hours/services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cottonwood','hotels_motels','hotels motels lodging','Lux Verde Hotel',
+ 'https://luxverdehotel.com/','luxverdehotel.com','Direct hotel site lists 301 W SR 89-A, Cottonwood and current lodging operations.','assistant verified research: Cottonwood hotels motels lodging',0,
+ 'info@luxverdehotel.com','(928) 634-4207',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cottonwood_verified_02","researched_at":"2026-10-26T23:38:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct hotel site lists 301 W SR 89-A, Cottonwood and current lodging operations."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cottonwood','hotels_motels','hotels motels lodging','SpringHill Suites by Marriott Cottonwood',
+ 'https://www.marriott.com/en-us/hotels/prccw-springhill-suites-cottonwood/overview/','marriott.com','Official Marriott property page lists 565 South 6th Street, Cottonwood, with lodging, meeting space, pool and fitness center.','assistant verified research: Cottonwood hotels motels lodging',0,
+ null,'(928) 395-3697',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cottonwood_verified_02","researched_at":"2026-10-26T23:38:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Marriott property page lists 565 South 6th Street, Cottonwood, with lodging, meeting space, pool and fitness center."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cottonwood','schools','schools charter schools private schools','American Heritage Academy - Cottonwood',
+ 'https://ahacottonwood.org/','ahacottonwood.org','Direct school site lists Cottonwood campus at 2030 E Cherry St.','assistant verified research: Cottonwood schools charter schools private schools',0,
+ null,'(928) 634-2144',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cottonwood_verified_02","researched_at":"2026-10-26T23:38:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct school site lists Cottonwood campus at 2030 E Cherry St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cottonwood','schools','schools charter schools private schools','Cottonwood Community School',
+ 'https://www.cocsd.us/','cocsd.us','Official Cottonwood-Oak Creek School District evidence identifies Cottonwood Community School at 1 N Willard St.','assistant verified research: Cottonwood schools charter schools private schools',0,
+ null,'(928) 634-2231',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cottonwood_verified_02","researched_at":"2026-10-26T23:38:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Cottonwood-Oak Creek School District evidence identifies Cottonwood Community School at 1 N Willard St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cottonwood','schools','schools charter schools private schools','Dr. Daniel Bright School',
+ 'https://www.cocsd.us/','cocsd.us','Official Cottonwood-Oak Creek School District evidence identifies Dr. Daniel Bright School at 1500 S Monte Tesoro St.','assistant verified research: Cottonwood schools charter schools private schools',0,
+ null,'(928) 634-7039',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cottonwood_verified_02","researched_at":"2026-10-26T23:38:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Cottonwood-Oak Creek School District evidence identifies Dr. Daniel Bright School at 1500 S Monte Tesoro St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Cottonwood','public_facilities','government public facilities municipal buildings','Cottonwood Public Library',
+ 'https://cottonwoodaz.gov/facilities/facility/details/Library-2','cottonwoodaz.gov','Official City of Cottonwood facility page lists public library at 100 S 6th St.','assistant verified research: Cottonwood government public facilities municipal buildings',0,
+ null,'(928) 634-7559',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_cottonwood_verified_02","researched_at":"2026-10-26T23:38:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official City of Cottonwood facility page lists public library at 100 S 6th St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Cottonwood';
