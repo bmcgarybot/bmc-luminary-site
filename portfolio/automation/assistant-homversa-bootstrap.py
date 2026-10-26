@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import os
 from html.parser import HTMLParser
+from html import unescape
 import json
 from pathlib import Path
 import re
@@ -112,9 +113,12 @@ def discover_trades(page_html,slug):
         if not m or m.group(1).lower()!=slug.lower():
             continue
         trade=m.group(2).lower()
-        if trade in TRADE_MAP and trade not in [x[0] for x in out]:
+        if trade not in [x[0] for x in out]:
             out.append((trade,urllib.parse.urljoin(BASE,path),label))
     return out
+
+def trade_lane(trade):
+    return TRADE_MAP.get(trade,("facility_maintenance","Building Maintenance Help"))
 
 def parse_trade_page(page_html,market,trade):
     p=Tokens(); p.feed(page_html); p.close()
@@ -156,8 +160,23 @@ def parse_trade_page(page_html,market,trade):
         seen.add(key)
         rows.append({"business_name":name,"roc_license":rm.group(1)})
 
-    # The page also prints every non-ranked verified company as
-    # "Business Name - ROC #123456".
+    # The page also prints every non-ranked verified company as list
+    # items. Parse both HTML list items and visible tokens because markup differs
+    # among trade pages.
+    for lm in re.finditer(r"<li[^>]*>(.*?)</li>",page_html,re.I|re.S):
+        visible=unescape(re.sub(r"<[^>]+>"," ",lm.group(1)))
+        visible=" ".join(visible.split())
+        m=REST_ROC_RE.match(visible)
+        if not m:
+            continue
+        name=m.group(1).strip(" -*")
+        roc=m.group(2)
+        key=(name.lower(),roc)
+        if not name or key in seen:
+            continue
+        seen.add(key)
+        rows.append({"business_name":name,"roc_license":roc})
+
     for t in tokens:
         m=REST_ROC_RE.match(t)
         if not m:
@@ -237,7 +256,7 @@ def main():
             try:
                 page=fetch(url)
                 parsed=parse_trade_page(page,market,trade)
-                category_key,category_label=TRADE_MAP[trade]
+                category_key,category_label=trade_lane(trade)
                 stats["trade_pages"]+=1; mstat["trades"]+=1
                 mstat["claimed"]+=int(parsed["claimed_count"] or 0)
                 for row in parsed["records"]:
