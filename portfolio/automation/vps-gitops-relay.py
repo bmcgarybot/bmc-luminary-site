@@ -467,7 +467,7 @@ def execute(req: dict) -> dict:
     elif action == "assistant_bootstrap_import":
         markets = clean_arg = str(args.get("markets") or "").strip()
         max_per_feed = max(1, min(500, int(args.get("max_per_feed", 250))))
-        max_pages_per_market = max(10, min(250, int(args.get("max_pages_per_market", 120))))
+        max_pages_per_market = max(100, min(2500, int(args.get("max_pages_per_market", 1500))))
         delay = max(0.05, min(2.0, float(args.get("delay", 0.25))))
         cmd = ["python3", "./assistant-directory-bootstrap.py", ENV_FILE,
                "--max-per-feed", str(max_per_feed),
