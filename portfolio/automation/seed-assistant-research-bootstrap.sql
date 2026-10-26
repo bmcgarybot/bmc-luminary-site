@@ -6774,3 +6774,2700 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Chino Valley';
+
+
+-- Assistant-led Dewey-Humboldt census batch 01 (2026-10-26)
+-- First manually enumerated Dewey directory layer; Dewey is the public-directory alias for BMC market Dewey-Humboldt.
+-- Discovery inventory only; preserve closed status and never promote/stage/send.
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','restaurants','restaurants','Blue Hills Cafe',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Current Dewey directory discovery listing; direct current-operation verification remains required.','assistant bootstrap research: Dewey restaurants',0,
+ null,'(928) 632-7953',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Dewey directory discovery listing; direct current-operation verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','restaurants','restaurants','Sit-N-Bull',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Current Dewey directory discovery listing; direct current-operation verification remains required.','assistant bootstrap research: Dewey restaurants',0,
+ null,'(928) 632-4023',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Dewey directory discovery listing; direct current-operation verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','restaurants','restaurants','Turn Grill',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Current Dewey directory discovery listing; direct current-operation verification remains required.','assistant bootstrap research: Dewey restaurants',0,
+ null,'(928) 772-5718',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Dewey directory discovery listing; direct current-operation verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','restaurants','restaurants','Screamin Mimis Roadhouse',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Current Dewey directory discovery listing; direct current-operation verification remains required.','assistant bootstrap research: Dewey restaurants',0,
+ null,'(928) 772-1124',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Dewey directory discovery listing; direct current-operation verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','restaurants','restaurants','Guido''s Pizza',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Current Dewey directory discovery listing; direct current-operation verification remains required.','assistant bootstrap research: Dewey restaurants',0,
+ null,'(928) 632-5950',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Dewey directory discovery listing; direct current-operation verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','medical_centers','hospitals medical centers clinics','Kachina Animal Hospital',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey healthcare/business directory candidate; direct verification remains required.','assistant bootstrap research: Dewey hospitals medical centers clinics',0,
+ null,'(928) 772-8225',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare/business directory candidate; direct verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','medical_centers','hospitals medical centers clinics','Aqua Fria Health Center',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey healthcare/business directory candidate; direct verification remains required.','assistant bootstrap research: Dewey hospitals medical centers clinics',0,
+ null,'(928) 775-7221',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare/business directory candidate; direct verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','medical_centers','hospitals medical centers clinics','Alternative Health Works',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey healthcare/business directory candidate; direct verification remains required.','assistant bootstrap research: Dewey hospitals medical centers clinics',0,
+ null,'(928) 420-4875',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare/business directory candidate; direct verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','medical_centers','hospitals medical centers clinics','Hospice of the Pines',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey healthcare/business directory candidate; direct verification remains required.','assistant bootstrap research: Dewey hospitals medical centers clinics',0,
+ null,'(928) 632-0111',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare/business directory candidate; direct verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','medical_centers','hospitals medical centers clinics','United Westlabs',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey healthcare/business directory candidate; direct verification remains required.','assistant bootstrap research: Dewey hospitals medical centers clinics',0,
+ null,'(928) 632-5905',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare/business directory candidate; direct verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','medical_centers','hospitals medical centers clinics','Kachina Animal Hospital PA',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey healthcare/business directory candidate; direct verification remains required.','assistant bootstrap research: Dewey hospitals medical centers clinics',0,
+ null,'(928) 772-8225',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare/business directory candidate; direct verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','dental','dentists dental offices orthodontists','Dewery Dental Center',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey dental-office directory candidate at 150 S Highway 69.','assistant bootstrap research: Dewey dentists dental offices orthodontists',0,
+ null,'(928) 632-8333',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey dental-office directory candidate at 150 S Highway 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','dental','dentists dental offices orthodontists','Suit Orthodontics',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey orthodontic-office directory candidate.','assistant bootstrap research: Dewey dentists dental offices orthodontists',0,
+ null,'(928) 237-9645',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey orthodontic-office directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','pharmacies','pharmacies drug stores','Low Cost Prescription',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey pharmacy/prescription-service directory candidate.','assistant bootstrap research: Dewey pharmacies drug stores',0,
+ null,'(928) 632-5417',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey pharmacy/prescription-service directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','churches','churches worship centers','Dewey Seventh-Day Adventist',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey religious-organization directory candidate.','assistant bootstrap research: Dewey churches worship centers',0,
+ null,'(928) 632-5182',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey religious-organization directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','churches','churches worship centers','Jehovah''s Witnesses',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey religious-organization directory candidate.','assistant bootstrap research: Dewey churches worship centers',0,
+ null,'(928) 759-0212',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey religious-organization directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','churches','churches worship centers','Mountain View Southern Baptist',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey religious-organization directory candidate.','assistant bootstrap research: Dewey churches worship centers',0,
+ null,'(928) 632-5787',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey religious-organization directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','churches','churches worship centers','Faith Assembly of God',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey religious-organization directory candidate.','assistant bootstrap research: Dewey churches worship centers',0,
+ null,'(928) 632-7813',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey religious-organization directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','schools','schools charter schools private schools','Bradshaw Mountain Middle School',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey school directory candidate at 12255 E Turquoise Circle.','assistant bootstrap research: Dewey schools charter schools private schools',0,
+ null,'(928) 759-4900',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey school directory candidate at 12255 E Turquoise Circle."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','schools','schools charter schools private schools','Equine Learning Center',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey educational/professional-development facility candidate.','assistant bootstrap research: Dewey schools charter schools private schools',0,
+ null,'(928) 458-7834',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey educational/professional-development facility candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Dewey Mini Storage',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey storage-facility directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 632-9450',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey storage-facility directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Kachina Storage',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey storage-facility directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 237-3994',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey storage-facility directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Blue Hills Mini Storage',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey storage-facility directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 632-7766',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey storage-facility directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Indian Meadows Real Estate Co',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey real-estate/property directory candidate.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 632-4919',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/property directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','United Country Statler Bro',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey real-estate/property directory candidate.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 632-0014',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/property directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Exit Realty Cool Mountain Rock',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey real-estate/property directory candidate.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 632-1608',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/property directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Red Arrow Real Estate',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey real-estate/property directory candidate.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 772-7221',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/property directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Quail Wood Meadows LLC',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey real-estate/property directory candidate.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 632-1095',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/property directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Villages At Lynx Creek',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey real-estate/property directory candidate.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 772-7047',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/property directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Orchard Ranch Sales',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey real-estate/property directory candidate.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 772-9942',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/property directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','Spectrum Financial Group',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey professional/insurance/financial-office directory candidate.','assistant bootstrap research: Dewey insurance agents professional offices',0,
+ null,'(928) 632-7978',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey professional/insurance/financial-office directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','Chuck White Agency Inc',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey professional/insurance/financial-office directory candidate.','assistant bootstrap research: Dewey insurance agents professional offices',0,
+ null,'(928) 632-1069',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey professional/insurance/financial-office directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','Aai/Southwestern Hagstedt Ins',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey professional/insurance/financial-office directory candidate.','assistant bootstrap research: Dewey insurance agents professional offices',0,
+ null,'(928) 632-1396',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey professional/insurance/financial-office directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','Prepaid Legal Services',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey professional/insurance/financial-office directory candidate.','assistant bootstrap research: Dewey insurance agents professional offices',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey professional/insurance/financial-office directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','Donna L Chisum Bookkeeping & Tax S',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey professional/insurance/financial-office directory candidate.','assistant bootstrap research: Dewey insurance agents professional offices',0,
+ null,'(928) 237-9190',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey professional/insurance/financial-office directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','retail','retail stores shopping stores','Foxworth-Galbraith Lumber Co',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey retail/local-business directory candidate.','assistant bootstrap research: Dewey retail stores shopping stores',0,
+ null,'(928) 775-3300',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey retail/local-business directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','retail','retail stores shopping stores','Renas Thrifty Shop',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey retail/local-business directory candidate.','assistant bootstrap research: Dewey retail stores shopping stores',0,
+ null,'(928) 775-9246',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey retail/local-business directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','retail','retail stores shopping stores','Blue Ridge Market',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey retail/local-business directory candidate.','assistant bootstrap research: Dewey retail stores shopping stores',0,
+ null,'(928) 632-7278',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey retail/local-business directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','retail','retail stores shopping stores','Arizona Home Centers',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey retail/local-business directory candidate.','assistant bootstrap research: Dewey retail stores shopping stores',0,
+ null,'(928) 776-7296',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey retail/local-business directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','retail','retail stores shopping stores','Back To School Uniform Store',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey retail/local-business directory candidate.','assistant bootstrap research: Dewey retail stores shopping stores',0,
+ null,'(928) 632-8697',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey retail/local-business directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','retail','retail stores shopping stores','Tapestry Store',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey retail/local-business directory candidate.','assistant bootstrap research: Dewey retail stores shopping stores',0,
+ null,'(928) 775-0851',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey retail/local-business directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','retail','retail stores shopping stores','Paul''s Pet Food',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey retail/local-business directory candidate.','assistant bootstrap research: Dewey retail stores shopping stores',0,
+ null,'(928) 772-2771',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey retail/local-business directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','retail','retail stores shopping stores','Del Cor Florist',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey retail/local-business directory candidate.','assistant bootstrap research: Dewey retail stores shopping stores',0,
+ null,'(928) 772-7165',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey retail/local-business directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','retail','retail stores shopping stores','Donna S Floral Elegance',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey retail/local-business directory candidate.','assistant bootstrap research: Dewey retail stores shopping stores',0,
+ null,'(928) 710-5428',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey retail/local-business directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','retail','retail stores shopping stores','Best Choice Blinds & More LLC',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey retail/local-business directory candidate.','assistant bootstrap research: Dewey retail stores shopping stores',0,
+ null,'(928) 775-6228',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey retail/local-business directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Ultimate Automotive Repair',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey automotive/RV business directory candidate.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 775-7575',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive/RV business directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','H & H Diesel Performance',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey automotive/RV business directory candidate.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 632-5317',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive/RV business directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Affinity Rv Service Sales & Rntls',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey automotive/RV business directory candidate.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 445-7910',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive/RV business directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','York Rv Service Sales & Rental',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey automotive/RV business directory candidate.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 632-7656',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive/RV business directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Pioneer Classic Autos',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey automotive/RV business directory candidate.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 632-1166',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive/RV business directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Affinity Rv Service Sales',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey automotive/RV business directory candidate.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(623) 374-5785',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive/RV business directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Accuduct Manufacturing Inc',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 775-2541',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Classic Recreation Systems',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 775-3307',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Southwest Bronze Inc',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 442-9594',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Steyaert Castings',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 632-7707',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Continental Tooling',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Granite Mountain Archtrl Stone',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 775-9800',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Granite Mountain Architectural Stone',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Mdi Rock',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 632-5320',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','High Country Cabinets',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 772-2250',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Heavy Equipment Machinery',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 775-6525',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Yavapai Metal Recycling',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 632-5205',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Yavapai Metal Recylcing LLC',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 632-5205',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Mattera Enterprises Recycling',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 632-8287',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Sanders Freight Lines LLC',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 632-5008',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Bimbo Bakeries USA',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 775-3949',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Cherry Valley Spring Water',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 632-5528',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Santa Fe Propane',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 775-0002',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','warehouses_industrial','warehouses industrial businesses distribution centers','Yavapai Propane Inc',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey industrial/manufacturing/distribution directory candidate.','assistant bootstrap research: Dewey warehouses industrial businesses distribution centers',0,
+ null,'(928) 776-9007',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey industrial/manufacturing/distribution directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Dewey-Humboldt Historical Society',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey nonprofit/community/public-facing organization candidate.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 632-3962',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey nonprofit/community/public-facing organization candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Gift Of Tomorrows Foundation',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey nonprofit/community/public-facing organization candidate.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 277-6119',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey nonprofit/community/public-facing organization candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Gods Refuge Inc',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey nonprofit/community/public-facing organization candidate.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 775-5002',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey nonprofit/community/public-facing organization candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Agua Fria Open Space Alliance',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey nonprofit/community/public-facing organization candidate.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 925-7191',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey nonprofit/community/public-facing organization candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Crown King Public Library',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey nonprofit/community/public-facing organization candidate.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 632-5986',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey nonprofit/community/public-facing organization candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Construction Resources LLC',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey general construction/facility-maintenance directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 775-3311',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey general construction/facility-maintenance directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Scotskil Construction Co',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey general construction/facility-maintenance directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-4762',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey general construction/facility-maintenance directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Dominion Builders LLC',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey general construction/facility-maintenance directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 759-9690',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey general construction/facility-maintenance directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Elm Builders',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey general construction/facility-maintenance directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-5072',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey general construction/facility-maintenance directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Desert Development & Design',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey general construction/facility-maintenance directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-8018',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey general construction/facility-maintenance directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','A R General Contracting L L C',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey general construction/facility-maintenance directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-7687',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey general construction/facility-maintenance directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Yarber Contractors LLC',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey general construction/facility-maintenance directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 899-3447',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey general construction/facility-maintenance directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Elliotts Contracting Enterpri',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey general construction/facility-maintenance directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-7239',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey general construction/facility-maintenance directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Jeff Evans Constuction LLC',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey general construction/facility-maintenance directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-7211',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey general construction/facility-maintenance directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Swalve Construction',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey general construction/facility-maintenance directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-5162',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey general construction/facility-maintenance directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Davis Contracting',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey general construction/facility-maintenance directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-8741',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey general construction/facility-maintenance directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Aaz Contracting Inc',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey general construction/facility-maintenance directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 999-1234',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey general construction/facility-maintenance directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Eds Construction Service LLC',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey general construction/facility-maintenance directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-8961',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey general construction/facility-maintenance directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','LJS Construction',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey general construction/facility-maintenance directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-7928',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey general construction/facility-maintenance directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Marjanen Builders LLC',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey general construction/facility-maintenance directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 713-2480',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey general construction/facility-maintenance directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Schuck & Sons Cnstr Co Inc',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey general construction/facility-maintenance directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-6966',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey general construction/facility-maintenance directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','electrical_service','Electrician','Double B Electric',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey electrical-contractor directory candidate.','assistant bootstrap research: Dewey Electrician',0,
+ null,'(928) 632-1135',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey electrical-contractor directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','electrical_service','Electrician','Double B Electrical Contractor Inc',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey electrical-contractor directory candidate.','assistant bootstrap research: Dewey Electrician',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey electrical-contractor directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','electrical_service','Electrician','Haskins Electric Inc',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey electrical-contractor directory candidate.','assistant bootstrap research: Dewey Electrician',0,
+ null,'(928) 775-4512',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey electrical-contractor directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','rural_property','Rural Property Help','Jim Williams Well Drilling',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey well/septic/water/rural-property service directory candidate.','assistant bootstrap research: Dewey Rural Property Help',0,
+ null,'(928) 772-8881',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey well/septic/water/rural-property service directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','rural_property','Rural Property Help','B & M Well Drillers',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey well/septic/water/rural-property service directory candidate.','assistant bootstrap research: Dewey Rural Property Help',0,
+ null,'(928) 632-1911',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey well/septic/water/rural-property service directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','rural_property','Rural Property Help','Dewey Drilling & Pump Inc',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey well/septic/water/rural-property service directory candidate.','assistant bootstrap research: Dewey Rural Property Help',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey well/septic/water/rural-property service directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','rural_property','Rural Property Help','J T''s Backhoe & Septic',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey well/septic/water/rural-property service directory candidate.','assistant bootstrap research: Dewey Rural Property Help',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey well/septic/water/rural-property service directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','rural_property','Rural Property Help','Cbr Septic Solutions',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey well/septic/water/rural-property service directory candidate.','assistant bootstrap research: Dewey Rural Property Help',0,
+ null,'(928) 925-0227',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey well/septic/water/rural-property service directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','rural_property','Rural Property Help','Rockin R Water Delivery',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey well/septic/water/rural-property service directory candidate.','assistant bootstrap research: Dewey Rural Property Help',0,
+ null,'(928) 999-2171',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey well/septic/water/rural-property service directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','rural_property','Rural Property Help','Water Dance Water Delivery',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey well/septic/water/rural-property service directory candidate.','assistant bootstrap research: Dewey Rural Property Help',0,
+ null,'(928) 632-1174',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey well/septic/water/rural-property service directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','tree_service','Tree Service & Brush Clearing','Arbor One Tree and Landscape',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey tree/landscape service directory candidate.','assistant bootstrap research: Dewey Tree Service & Brush Clearing',0,
+ null,'(928) 632-8494',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey tree/landscape service directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','tree_service','Tree Service & Brush Clearing','Russ Murrays Tree Service',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey tree/landscape service directory candidate.','assistant bootstrap research: Dewey Tree Service & Brush Clearing',0,
+ null,'(831) 659-2322',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey tree/landscape service directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','tree_service','Tree Service & Brush Clearing','Hayden Tree Farms Inc',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey tree/landscape service directory candidate.','assistant bootstrap research: Dewey Tree Service & Brush Clearing',0,
+ null,'(928) 925-8721',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey tree/landscape service directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','landscaping','Landscaping & Yard Cleanup','Mdi Landscape Supplies',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey landscape-supply/service directory candidate.','assistant bootstrap research: Dewey Landscaping & Yard Cleanup',0,
+ null,'(928) 632-5320',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey landscape-supply/service directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','floor_carpet','Floor & Carpet Cleaning','AAA Classic Carpet Cleaning',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey carpet-cleaning directory candidate.','assistant bootstrap research: Dewey Floor & Carpet Cleaning',0,
+ null,'(928) 273-1257',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey carpet-cleaning directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','pressure_washing','Pressure Washing','Power Wash Plus',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey pressure-washing directory candidate.','assistant bootstrap research: Dewey Pressure Washing',0,
+ null,'(928) 772-7512',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey pressure-washing directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','garage_door','Garage Door Repair','All Tech Garage Door',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey garage-door service directory candidate.','assistant bootstrap research: Dewey Garage Door Repair',0,
+ null,'(928) 772-1665',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey garage-door service directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','pest_control','Pest Control','Absolute Pest Control',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey pest-control directory candidate.','assistant bootstrap research: Dewey Pest Control',0,
+ null,'(928) 775-5125',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey pest-control directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','handyman_repairs','Handyman','Home Repair By Dennis',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey home-repair/handyman directory candidate.','assistant bootstrap research: Dewey Handyman',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey home-repair/handyman directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','handyman_repairs','Handyman','Scott Weigele Remodel And Repair',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey remodel/repair directory candidate.','assistant bootstrap research: Dewey Handyman',0,
+ null,'(928) 458-9166',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey remodel/repair directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','epoxy_flooring','Epoxy & Concrete Floors','Kilduff Concrete LLC',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey concrete contractor directory candidate.','assistant bootstrap research: Dewey Epoxy & Concrete Floors',0,
+ null,'(928) 775-3801',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey concrete contractor directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','epoxy_flooring','Epoxy & Concrete Floors','Joe Webb Concrete LLC',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey concrete contractor directory candidate.','assistant bootstrap research: Dewey Epoxy & Concrete Floors',0,
+ null,'(928) 632-5438',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey concrete contractor directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Professional Fence',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey fence/facility contractor directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-8330',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey fence/facility contractor directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Diversified Roofing',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey roofing contractor directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-4866',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey roofing contractor directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Roofing Wholesale Co Inc',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey roofing/facility supplier directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-8160',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey roofing/facility supplier directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Artistic Design Tile & Stone',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey tile/stone contractor directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-7574',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey tile/stone contractor directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Allred Drywall',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey drywall contractor directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-0301',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey drywall contractor directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Sanders Plastering Systems',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey plastering contractor directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-5008',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey plastering contractor directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','High Country Cabinets',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey cabinet/woodwork facility contractor directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-2250',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey cabinet/woodwork facility contractor directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Ultimate Woodworks',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey woodworking/facility contractor directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey woodworking/facility contractor directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Precision Utility Locating',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey utility-locating contractor directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-9422',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey utility-locating contractor directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','AZ Service LLC',
+ 'https://www.whereorg.com/dewey-az','whereorg.com','Dewey service contractor directory candidate.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 379-0340',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_01","researched_at":"2026-10-26T23:59:30Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey service contractor directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Dewey-Humboldt';
