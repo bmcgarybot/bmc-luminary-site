@@ -556,6 +556,9 @@ jobs:
           provider=next(x for x in data["records"] if x["side"]=="vendor")
           assert "/provider-pilot-activate/?" in provider["activation_url"]
           assert "/provider-pilot-activate/?" in provider["body"]
+          assert "There is no fee to join." in provider["body"]
+          assert "price and terms will be shown before you choose to participate" in provider["body"]
+          assert "prove whether BMC is worth paying for" not in provider["body"]
           assert "/vendor-partner/" not in provider["body"]
           PY
 
