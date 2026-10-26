@@ -1,0 +1,154 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")"
+
+ENV_FILE="${1:-.env}"
+[ -f "$ENV_FILE" ] || { echo "Missing $ENV_FILE"; exit 1; }
+
+env_value(){
+  awk -F= -v key="$1" '$1==key {sub(/^[^=]*=/,""); print; exit}' "$ENV_FILE"
+}
+
+DBUSER="$(env_value POSTGRES_USER)"
+DBNAME="$(env_value POSTGRES_DB)"
+[ -n "$DBUSER" ] && [ -n "$DBNAME" ] || { echo "POSTGRES_USER / POSTGRES_DB missing."; exit 1; }
+
+dbq(){
+  docker compose --env-file "$ENV_FILE" exec -T postgres     psql -v ON_ERROR_STOP=1 -U "$DBUSER" -d "$DBNAME" -Atc "$1"
+}
+
+section(){
+  echo
+  echo "================================================================"
+  echo "$1"
+  echo "================================================================"
+}
+
+echo "BMC PRODUCTION PROOF READOUT"
+echo "Generated: $(date -Is)"
+echo "Host: $(hostname)"
+echo "Repo commit: $(git rev-parse HEAD 2>/dev/null || echo unknown)"
+echo "Branch: $(git branch --show-current 2>/dev/null || echo unknown)"
+
+section "1. OUTBOUND SAFETY"
+for key in OUTREACH_ENABLED BUYER_OUTREACH_ENABLED GROWTH_OUTREACH_ENABLED; do
+  value="$(env_value "$key")"; value="${value:-false}"
+  printf '%-28s %s\n' "$key" "$value"
+done
+dbq "select 'outreach_total|'||count(*) from outreach
+ union all select 'sent|'||count(*) from outreach where sent_at is not null
+ union all select 'replied|'||count(*) from outreach where replied_at is not null
+ union all select 'queued_unsent|'||count(*) from outreach where status='queued' and sent_at is null;"
+
+section "2. LIVE DATABASE TOTALS"
+dbq "select 'vendors|'||count(*) from vendors
+ union all select 'buyers|'||count(*) from buyers
+ union all select 'vendor_email_ready|'||count(*) from vendors where coalesce(public_email,'')<>''
+ union all select 'buyer_email_ready|'||count(*) from buyers where coalesce(public_email,'')<>''
+ union all select 'vendor_phone_ready|'||count(*) from vendors where coalesce(public_phone,'')<>''
+ union all select 'buyer_phone_ready|'||count(*) from buyers where coalesce(public_phone,'')<>'';"
+
+section "3. VENDORS BY MARKET"
+dbq "select vm.market||'|'||count(distinct vm.vendor_id)
+ from vendor_markets vm join vendors v on v.vendor_id=vm.vendor_id
+ where v.vendor_id not like 'test_%' and v.vendor_id not like 'v_synthetic_%'
+ group by vm.market order by vm.market;"
+
+section "4. BUYERS BY MARKET"
+dbq "select coalesce(nullif(market,''),'(blank)')||'|'||count(*)
+ from buyers group by market order by market;"
+
+section "5. LEGACY RESEARCH WORKER STATE"
+dbq "select status||'|'||count(*) from research_backlog group by status order by status;"
+dbq "select 'open_research_tasks|'||count(*) from tasks
+ where owner='research_agent' and status in ('open','queued','assigned','in_progress');"
+dbq "select 'staged_research_candidates|'||count(*) from research_candidates where status='discovered';"
+
+section "6. DEEP MARKET INVENTORY TOTALS"
+if [ "$(dbq "select count(*) from information_schema.tables where table_name='market_inventory_progress';")" -eq 1 ]; then
+  dbq "select 'lanes|'||count(*) from market_inventory_progress
+   union all select 'untouched|'||count(*) from market_inventory_progress where pages_scanned=0
+   union all select 'in_progress|'||count(*) from market_inventory_progress where status='in_progress'
+   union all select 'errors|'||count(*) from market_inventory_progress where status='error'
+   union all select 'target_met|'||count(*) from market_inventory_progress where status='scan_complete_target_met'
+   union all select 'under_target|'||count(*) from market_inventory_progress where status='scan_complete_under_target'
+   union all select 'candidate_rows|'||count(*) from market_inventory_candidates
+   union all select 'official_candidate_rows|'||count(*) from market_inventory_candidates where official_site=true
+   union all select 'candidate_email_ready|'||count(*) from market_inventory_candidates where coalesce(public_email,'')<>''
+   union all select 'candidate_phone_ready|'||count(*) from market_inventory_candidates where coalesce(public_phone,'')<>'';"
+
+  echo
+  echo "Inventory coverage by market and side:"
+  dbq "select market||'|'||side||'|lanes='||count(*)||
+      '|touched='||count(*) filter (where pages_scanned>0)||
+      '|met='||count(*) filter (where status='scan_complete_target_met')||
+      '|under='||count(*) filter (where status='scan_complete_under_target')||
+      '|official='||coalesce(sum(official_candidates),0)
+    from market_inventory_progress
+    group by market,side order by market,side;"
+
+  echo
+  echo "Completed lanes with ZERO official-site candidates:"
+  dbq "select side||'|'||market||'|'||category_key||'|'||category_label||'|target='||target
+    from market_inventory_progress
+    where status like 'scan_complete_%' and official_candidates=0
+    order by side,market,category_key;" || true
+else
+  echo "market_inventory_progress table NOT DEPLOYED"
+fi
+
+section "7. PUBLIC LOCAL-DEMAND MONITOR COVERAGE"
+if [ "$(dbq "select count(*) from information_schema.tables where table_name='local_demand_scan_state';")" -eq 1 ]; then
+  dbq "select 'lanes|'||count(*) from local_demand_scan_state
+   union all select 'touched|'||count(*) from local_demand_scan_state where scans>0
+   union all select 'untouched|'||count(*) from local_demand_scan_state where scans=0
+   union all select 'indexed_results_seen|'||coalesce(sum(results_seen),0) from local_demand_scan_state
+   union all select 'signals_found|'||coalesce(sum(signals_found),0) from local_demand_scan_state;"
+
+  echo
+  echo "Demand coverage by source:"
+  dbq "select source_key||'|'||source_name||
+      '|lanes='||count(*)||
+      '|touched='||count(*) filter (where scans>0)||
+      '|results='||coalesce(sum(results_seen),0)||
+      '|signals='||coalesce(sum(signals_found),0)
+    from local_demand_scan_state
+    group by source_key,source_name order by source_key;"
+
+  echo
+  echo "Demand coverage by market:"
+  dbq "select market||
+      '|lanes='||count(*)||
+      '|touched='||count(*) filter (where scans>0)||
+      '|results='||coalesce(sum(results_seen),0)||
+      '|signals='||coalesce(sum(signals_found),0)
+    from local_demand_scan_state
+    group by market order by market;"
+else
+  echo "local_demand_scan_state table NOT DEPLOYED"
+fi
+
+section "8. CURRENT DEMAND SIGNALS"
+dbq "select source_key||'|'||market||'|'||status||'|'||count(*)
+ from local_demand_signals
+ group by source_key,market,status
+ order by source_key,market,status;" || true
+
+section "9. PUBLIC PROCUREMENT / CONTRACT OPPORTUNITIES"
+dbq "select source_key||'|'||source_name||'|'||coalesce(market,'')||'|'||status||'|'||count(*)
+ from public_opportunities
+ group by source_key,source_name,market,status
+ order by source_key,status;" || true
+
+section "10. OUTREACH STAGING"
+dbq "select entity_type||'|'||campaign||'|wave='||coalesce(wave,'')||
+    '|status='||status||'|count='||count(*)
+ from outreach
+ group by entity_type,campaign,wave,status
+ order by entity_type,campaign,wave,status;"
+
+section "11. STRICT LAUNCH AUDIT"
+bash ./launch-readiness.sh "$ENV_FILE" report
+
+echo
+echo "END BMC PRODUCTION PROOF READOUT"
