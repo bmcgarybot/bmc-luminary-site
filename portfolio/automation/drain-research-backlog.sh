@@ -101,6 +101,10 @@ echo "Temporarily using SOURCE_NATIVE_CHECK_BATCH=4 for paced public API pulls."
 
 set_env_key RESEARCH_WORKER_BATCH 5
 set_env_key SOURCE_NATIVE_CHECK_BATCH 4
+
+# app.py may have changed since the last deployment. Build once before the
+# drain so recreating ops_api cannot silently reuse an older image.
+docker compose --env-file "$ENV_FILE" build ops_api
 restart_api_gateway
 
 echo
