@@ -403,6 +403,21 @@ def inventory_result_closed(result):
             return phrase
     return None
 
+def inventory_result_matches_business(result,business_name):
+    text=" ".join([
+        clean((result or {}).get("title")),
+        clean((result or {}).get("snippet")),
+        clean((result or {}).get("url"))
+    ]).lower()
+    generic={"llc","inc","corp","corporation","company","co","the","and","of","services","service","az","arizona"}
+    words=[w for w in re.findall(r"[a-z0-9]+",clean(business_name).lower())
+           if len(w)>2 and w not in generic]
+    # Avoid auto-closing ambiguous one-word chain/common names.
+    if len(words)<2:
+        return False
+    needed=min(3,len(words))
+    return sum(1 for w in words if w in text)>=needed
+
 def result_matches_market(result,market):
     # Normalize punctuation in titles, snippets and URLs so hyphenated URL slugs
     # can still prove a market while requiring the complete market token phrase.
@@ -3403,6 +3418,71 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
             })
     return {"ok":True,"enabled":True,"lanes_processed":len(lane_results),
             "new_candidates":total_new,"lane_results":lane_results,"errors":errors}
+
+@app.post("/api/process-inventory-closure-audit")
+async def process_inventory_closure_audit(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    if not RESEARCH_SEARCH_ENABLED:
+        return {"ok":True,"enabled":False,"checked":0,"closed":0,"errors":[]}
+    checked=0
+    closed=0
+    errors=[]
+    closed_rows=[]
+    async with app.state.pool.acquire() as conn:
+        rows=await conn.fetch("""select candidate_id,side,market,business_name
+          from market_inventory_candidates
+          where status='discovered'
+            and coalesce(business_name,'')<>''
+          order by last_closure_checked_at nulls first, updated_at asc
+          limit 25""")
+        for row in rows:
+            query=f'"{clean(row["business_name"])}" "{clean(row["market"])}" Arizona permanently closed'
+            try:
+                results=await search_research_web(query,1,10)
+            except Exception as exc:
+                errors.append({"candidate_id":str(row["candidate_id"]),"error":str(exc)[:250]})
+                continue
+            checked+=1
+            hit=None
+            reason=None
+            for result in results:
+                why=inventory_result_closed(result)
+                if not why:
+                    continue
+                if not result_matches_market(result,row["market"]):
+                    continue
+                if not inventory_result_matches_business(result,row["business_name"]):
+                    continue
+                hit=result
+                reason=why
+                break
+            if hit:
+                # Close exact-name records for this market/side so multiple source
+                # rows for the same business disappear from active coverage together.
+                affected=await conn.fetchval("""with changed as (
+                  update market_inventory_candidates
+                  set status='closed',closed_at=now(),closure_reason=$4,
+                      last_closure_checked_at=now(),
+                      evidence=evidence || jsonb_build_object('closure_audit',
+                        jsonb_build_object('source_url',$5,'source_domain',$6,'title',$7,'checked_at',now())),
+                      updated_at=now()
+                  where side=$1 and market=$2 and lower(regexp_replace(coalesce(business_name,''),'[^a-z0-9]+','','g'))=
+                    lower(regexp_replace($3,'[^a-z0-9]+','','g'))
+                    and status='discovered'
+                  returning 1
+                ) select count(*) from changed""",
+                  row["side"],row["market"],row["business_name"],reason,
+                  clean(hit.get("url")),clean(hit.get("domain")),clean(hit.get("title")))
+                closed+=int(affected or 0)
+                closed_rows.append({"market":row["market"],"business_name":row["business_name"],
+                                    "reason":reason,"source_url":clean(hit.get("url")),
+                                    "rows_closed":int(affected or 0)})
+            else:
+                await conn.execute("""update market_inventory_candidates
+                  set last_closure_checked_at=now(),updated_at=now()
+                  where candidate_id=$1""",row["candidate_id"])
+    return {"ok":True,"enabled":True,"checked":checked,"closed":closed,
+            "closed_records":closed_rows,"errors":errors}
 
 @app.get("/api/admin/market-inventory-coverage")
 async def admin_market_inventory_coverage(x_bmc_admin_key:str|None=Header(default=None)):
