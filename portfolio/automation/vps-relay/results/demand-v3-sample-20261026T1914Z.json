@@ -1,0 +1,27 @@
+{
+  "action": "local_demand_step",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-26T19:13:47.535373+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "95d529e374d33bcf8287170dfc9c1eccd444da84",
+  "git_commit_before": "95d529e374d33bcf8287170dfc9c1eccd444da84",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "9e16a8210f28146917bfe2edd00ea159ec2a9937",
+  "request_id": "demand-v3-sample-20261026T1914Z",
+  "request_sha256": "dd2e654aacd9e21bacee1726ff19416af681814a3c094208f6b306943e2a2156",
+  "started_at": "2026-10-26T19:13:30.011993+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"iterations\": 1,\n  \"responses\": [\n    {\n      \"ok\": true,\n      \"enabled\": true,\n      \"searches\": 15,\n      \"new_signals\": 5,\n      \"expired_signals\": 0,\n      \"lanes_processed\": 15,\n      \"lane_results\": [\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Prescott\",\n          \"group\": \"cleaning_property\",\n          \"page\": 1,\n          \"results_seen\": 7,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Prescott\",\n          \"group\": \"home_property\",\n          \"page\": 1,\n          \"results_seen\": 7,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Prescott\",\n          \"group\": \"outdoor_land\",\n          \"page\": 1,\n          \"results_seen\": 1,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Prescott\",\n          \"group\": \"restaurant_facility\",\n          \"page\": 1,\n          \"results_seen\": 3,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Prescott\",\n          \"group\": \"vehicle\",\n          \"page\": 1,\n          \"results_seen\": 7,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Prescott Valley\",\n          \"group\": \"cleaning_property\",\n          \"page\": 1,\n          \"results_seen\": 7,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Prescott Valley\",\n          \"group\": \"home_property\",\n          \"page\": 1,\n          \"results_seen\": 7,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Prescott Valley\",\n          \"group\": \"outdoor_land\",\n          \"page\": 1,\n          \"results_seen\": 2,\n          \"new_signals\": 1\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Prescott Valley\",\n          \"group\": \"restaurant_facility\",\n          \"page\": 1,\n          \"results_seen\": 3,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Prescott Valley\",\n          \"group\": \"vehicle\",\n          \"page\": 1,\n          \"results_seen\": 7,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Scottsdale\",\n          \"group\": \"cleaning_property\",\n          \"page\": 1,\n          \"results_seen\": 7,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Scottsdale\",\n          \"group\": \"home_property\",\n          \"page\": 1,\n          \"results_seen\": 7,\n          \"new_signals\": 2\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Scottsdale\",\n          \"group\": \"outdoor_land\",\n          \"page\": 1,\n          \"results_seen\": 4,\n          \"new_signals\": 2\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Scottsdale\",\n          \"group\": \"restaurant_facility\",\n          \"page\": 1,\n          \"results_seen\": 6,\n          \"new_signals\": 0\n        },\n        {\n          \"source\": \"craigslist_public\",\n          \"market\": \"Scottsdale\",\n          \"group\": \"vehicle\",\n          \"page\": 1,\n          \"results_seen\": 7,\n          \"new_signals\": 0\n        }\n      ],\n      \"errors\": []\n    }\n  ]\n}",
+  "version": 1
+}
