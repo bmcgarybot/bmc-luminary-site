@@ -176,6 +176,7 @@ jobs:
           direct_site={"title":"State Farm Insurance Agent Tracy Murr in Prescott AZ","snippet":"Local insurance office in Prescott Arizona","url":"https://tracymurr.com/","domain":"tracymurr.com"}
           directory_site={"title":"Dog Friendly Restaurants in Prescott, AZ - BringFido","snippet":"Restaurant list in Prescott Arizona","url":"https://www.bringfido.com/restaurant/city/prescott_az_us/","domain":"bringfido.com"}
           listicle_site={"title":"Prescott's Top Four Restaurants","snippet":"Guide to restaurants in Prescott Arizona","url":"https://example-local.com/top-restaurants","domain":"example-local.com"}
+          marketplace_site={"title":"Apartments for Rent in Bullhead City, AZ","snippet":"Bullhead City Arizona listings","url":"https://www.realtor.com/apartments/Bullhead-City_AZ","domain":"realtor.com"}
           assert ns["inventory_result_relevant"](good,"Prescott","Restaurant Equipment Repair") is True
           assert ns["inventory_result_relevant"](wrong_city,"Prescott","Restaurant Equipment Repair") is False
           assert ns["inventory_result_relevant"](supplier_only,"Prescott","Restaurant Equipment Repair") is False
@@ -184,8 +185,9 @@ jobs:
           assert ns["inventory_official_site"](direct_site) is True
           assert ns["inventory_official_site"](directory_site) is False
           assert ns["inventory_official_site"](listicle_site) is False
+          assert ns["inventory_official_site"](marketplace_site) is False
           assert "superpages.com" in api and "allbiz.com" in api and "restaurantji.com" in api
-          assert "INVENTORY_QUERY_STRATEGY_VERSION=6" in api
+          assert "INVENTORY_QUERY_STRATEGY_VERSION=7" in api
           assert "LOCAL_DEMAND_QUERY_STRATEGY_VERSION=7" in api
           assert "local_signal_result_relevant(result,lane[\"market\"])" in api
           assert "query_strategy_version=excluded.query_strategy_version" in api
@@ -194,12 +196,13 @@ jobs:
           assert "query strategy v5 requires explicit target-market evidence" in schema.lower()
           assert "inventory v5 and local-demand v6 require an exact normalized market phrase" in schema.lower()
           assert "inventory v6 rejects obvious directory/listicle pages" in schema.lower()
+          assert "inventory v7 broadens direct-site exclusions" in schema.lower()
           assert "superseded_pre_v4" in schema
           assert "superseded_pre_v5" in schema
           assert "superseded_pre_v6" in schema
           assert "query_strategy_version=7" in schema
           proof=Path("production-proof-readout.sh").read_text()
-          assert "candidate_rows_active_v6" in proof
+          assert "candidate_rows_active_v7" in proof
           assert "superseded_candidate_rows" in proof
           assert "demand_signal_rows_active_v7" in proof
           assert "superseded_demand_signal_rows" in proof
