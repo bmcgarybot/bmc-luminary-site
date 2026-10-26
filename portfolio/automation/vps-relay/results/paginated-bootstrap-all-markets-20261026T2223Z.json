@@ -1,0 +1,16 @@
+{
+  "action": "assistant_bootstrap_import",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-26T22:46:02.352072+00:00",
+  "error": "Command '['python3', './assistant-directory-bootstrap.py', '.env', '--max-per-feed', '500', '--max-pages-per-market', '1500', '--delay', '0.15']' timed out after 1200 seconds",
+  "exit_code": null,
+  "git_commit_after": "555e9b2f8cac8f0703c12805dac1f65542239ec9",
+  "git_commit_before": "555e9b2f8cac8f0703c12805dac1f65542239ec9",
+  "host": "vps-5675821a",
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_id": "paginated-bootstrap-all-markets-20261026T2223Z",
+  "started_at": "2026-10-26T22:46:02.352006+00:00",
+  "status": "error",
+  "version": 1
+}
