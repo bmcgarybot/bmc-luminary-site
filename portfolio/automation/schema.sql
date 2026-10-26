@@ -571,6 +571,27 @@ on market_inventory_progress(status,side,market,category_key);
 create index if not exists idx_market_inventory_candidates_lane
 on market_inventory_candidates(side,market,category_key,official_site,status);
 
+create or replace view market_inventory_business_rollup as
+select
+  market,
+  side,
+  lower(regexp_replace(coalesce(business_name,''),'[^a-z0-9]+','','g')) as business_key,
+  min(business_name) as business_name,
+  array_agg(distinct category_key order by category_key) as category_keys,
+  array_agg(distinct category_label order by category_label) as category_labels,
+  count(*) as evidence_rows,
+  count(distinct source_domain) filter (where coalesce(source_domain,'')<>'') as source_domains,
+  bool_or(official_site) as has_direct_evidence,
+  max(last_seen_at) as last_seen_at,
+  max(last_verified_at) as last_verified_at,
+  count(*) filter (where coalesce(public_phone,'')<>'') as phone_evidence_rows,
+  count(*) filter (where coalesce(public_email,'')<>'') as email_evidence_rows
+from market_inventory_candidates
+where status='discovered'
+  and coalesce(business_name,'')<>''
+group by market,side,lower(regexp_replace(coalesce(business_name,''),'[^a-z0-9]+','','g'));
+
+
 
 alter table market_inventory_candidates add column if not exists first_seen_at timestamptz default now();
 alter table market_inventory_candidates add column if not exists last_seen_at timestamptz default now();
