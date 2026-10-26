@@ -2720,3 +2720,2419 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Prescott Valley';
+
+
+-- Assistant-led Chino Valley census batch 01 (2026-10-26)
+-- Broad Chino Valley buyer/facility census researched manually from current local sources.
+-- Inventory only; preserve closed status and never promote/stage/send.
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','restaurants','restaurants','Pizza Hut',
+ 'https://business.chinovalley.org/list/ql/restaurants-food-beverages-22','business.chinovalley.org','Current Chino Valley restaurant candidate. 312 Marketplace.','assistant bootstrap research: Chino Valley restaurants',0,
+ null,'(928) 636-6400',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley restaurant candidate. 312 Marketplace."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','restaurants','restaurants','Scooter''s Coffee',
+ 'https://business.chinovalley.org/list/ql/restaurants-food-beverages-22','business.chinovalley.org','Current Chino Valley restaurant candidate. 78 State Hwy 89.','assistant bootstrap research: Chino Valley restaurants',0,
+ null,'(928) 515-8833',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley restaurant candidate. 78 State Hwy 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','restaurants','restaurants','Up In Smoke Bar-B-Que',
+ 'https://business.chinovalley.org/list/ql/restaurants-food-beverages-22','business.chinovalley.org','Current Chino Valley restaurant candidate. 380 W Butterfield Rd.','assistant bootstrap research: Chino Valley restaurants',0,
+ null,'(928) 515-2344',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley restaurant candidate. 380 W Butterfield Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','restaurants','restaurants','Arturo''s Mexican Restaurant',
+ 'https://business.chinovalley.org/list/ql/restaurants-food-beverages-22','business.chinovalley.org','Current Chino Valley restaurant candidate. 900 S Hwy 89.','assistant bootstrap research: Chino Valley restaurants',0,
+ null,'(928) 636-0221',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley restaurant candidate. 900 S Hwy 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','restaurants','restaurants','PepperJacks',
+ 'https://business.chinovalley.org/list/ql/restaurants-food-beverages-22','business.chinovalley.org','Current Chino Valley restaurant candidate. 289 S State Route 89.','assistant bootstrap research: Chino Valley restaurants',0,
+ null,'(928) 636-5552',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley restaurant candidate. 289 S State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','restaurants','restaurants','Essence Kitchen + Bar',
+ 'https://business.chinovalley.org/list/ql/restaurants-food-beverages-22','business.chinovalley.org','Current Chino Valley restaurant candidate. 1021 Hwy 89 Suite 104.','assistant bootstrap research: Chino Valley restaurants',0,
+ null,'(928) 925-3888',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley restaurant candidate. 1021 Hwy 89 Suite 104."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','restaurants','restaurants','El Paraiso Mexican-Italian Restaurant',
+ 'https://business.chinovalley.org/list/ql/restaurants-food-beverages-22','business.chinovalley.org','Current Chino Valley restaurant candidate. 1150 State Rte 89.','assistant bootstrap research: Chino Valley restaurants',0,
+ null,'(928) 636-4060',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley restaurant candidate. 1150 State Rte 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','restaurants','restaurants','Skillets Cafe',
+ 'https://business.chinovalley.org/list/ql/restaurants-food-beverages-22','business.chinovalley.org','Current Chino Valley restaurant candidate. 990 AZ-89.','assistant bootstrap research: Chino Valley restaurants',0,
+ null,'(928) 237-5235',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley restaurant candidate. 990 AZ-89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','restaurants','restaurants','Casa Grande Mexican Restaurant',
+ 'https://business.chinovalley.org/list/ql/restaurants-food-beverages-22','business.chinovalley.org','Current Chino Valley restaurant candidate. 443 W Butterfield Rd.','assistant bootstrap research: Chino Valley restaurants',0,
+ null,'(928) 636-7275',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley restaurant candidate. 443 W Butterfield Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','restaurants','restaurants','Insurgent Brewing',
+ 'https://business.chinovalley.org/list/ql/restaurants-food-beverages-22','business.chinovalley.org','Current Chino Valley restaurant candidate. 990 N Hwy 89 Suite D.','assistant bootstrap research: Chino Valley restaurants',0,
+ null,'(928) 925-4773',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley restaurant candidate. 990 N Hwy 89 Suite D."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','retail','retail stores shopping stores','Sew-n-Sew Fabric, Notions & More',
+ 'https://business.chinovalley.org/list/category/retail-sales-131','business.chinovalley.org','Current Chino Valley Chamber retail member. 1120 S Hwy 89 Suite E.','assistant bootstrap research: Chino Valley retail stores shopping stores',0,
+ null,'(928) 636-3769',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber retail member. 1120 S Hwy 89 Suite E."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','retail','retail stores shopping stores','Michele''s Kustom Kreations LLC',
+ 'https://business.chinovalley.org/list/category/retail-sales-131','business.chinovalley.org','Current Chino Valley Chamber retail member. 2515 N Hopi Ln.','assistant bootstrap research: Chino Valley retail stores shopping stores',0,
+ null,'(928) 642-3363',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber retail member. 2515 N Hopi Ln."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','retail','retail stores shopping stores','Wild Sage Antiques & Boutique',
+ 'https://business.chinovalley.org/list/category/retail-sales-131','business.chinovalley.org','Current Chino Valley Chamber retail member. 378 State Route 89.','assistant bootstrap research: Chino Valley retail stores shopping stores',0,
+ null,'(928) 910-9341',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber retail member. 378 State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','retail','retail stores shopping stores','Mary''s Cozy Home Furnishings',
+ 'https://business.chinovalley.org/list/category/retail-sales-131','business.chinovalley.org','Current Chino Valley Chamber retail member. 1299 N AZ-89.','assistant bootstrap research: Chino Valley retail stores shopping stores',0,
+ null,'(928) 636-7473',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber retail member. 1299 N AZ-89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','retail','retail stores shopping stores','Ace Hardware - Chino Valley',
+ 'https://business.chinovalley.org/list/category/retail-sales-131','business.chinovalley.org','Current Chino Valley Chamber retail member. 1395 S AZ Hwy 89.','assistant bootstrap research: Chino Valley retail stores shopping stores',0,
+ null,'(928) 636-4401',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber retail member. 1395 S AZ Hwy 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','retail','retail stores shopping stores','Liquor Barn, CV',
+ 'https://business.chinovalley.org/list/category/retail-sales-131','business.chinovalley.org','Current Chino Valley Chamber retail member. 315 Business Park Dr.','assistant bootstrap research: Chino Valley retail stores shopping stores',0,
+ null,'(928) 636-2989',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber retail member. 315 Business Park Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','retail','retail stores shopping stores','Open Hands Bargain Store',
+ 'https://business.chinovalley.org/list/category/retail-sales-131','business.chinovalley.org','Current Chino Valley Chamber retail member. 391 Butterfield Rd.','assistant bootstrap research: Chino Valley retail stores shopping stores',0,
+ null,'(928) 202-9112',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber retail member. 391 Butterfield Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','retail','retail stores shopping stores','The Pea Vine',
+ 'https://business.chinovalley.org/list/category/retail-sales-131','business.chinovalley.org','Current Chino Valley Chamber retail member. 400 W Butterfield Rd.','assistant bootstrap research: Chino Valley retail stores shopping stores',0,
+ null,'(928) 710-9509',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber retail member. 400 W Butterfield Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','grocery','grocery stores supermarkets markets','Safeway',
+ 'https://www.chamberofcommerce.com/business-directory/arizona/chino-valley/','chamberofcommerce.com','Current Chino Valley business directory lists full-service Safeway at 1031 N US Hwy 89.','assistant bootstrap research: Chino Valley grocery stores supermarkets markets',0,
+ null,'(928) 636-8358',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley business directory lists full-service Safeway at 1031 N US Hwy 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','grocery','grocery stores supermarkets markets','Healthy Essentials LLC',
+ 'https://business.chinovalley.org/members/member/healthy-essentials-llc-1704','business.chinovalley.org','Current Chamber member at 2235 S Highway 89 Suite B2-4; health food, bulk food, grocery and supplements.','assistant bootstrap research: Chino Valley grocery stores supermarkets markets',0,
+ null,'(928) 255-4474',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chamber member at 2235 S Highway 89 Suite B2-4; health food, bulk food, grocery and supplements."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','pharmacies','pharmacies drug stores','Safeway Pharmacy',
+ 'https://www.chamberofcommerce.com/business-directory/arizona/chino-valley/','chamberofcommerce.com','Current Chino Valley business directory lists Safeway Pharmacy at 1031 N US Hwy 89.','assistant bootstrap research: Chino Valley pharmacies drug stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley business directory lists Safeway Pharmacy at 1031 N US Hwy 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','hotels_motels','hotels motels lodging','Days Inn Chino Valley',
+ 'https://business.chinovalley.org/members/category/hotels-motels-resorts-79','business.chinovalley.org','Current Chino Valley Chamber lodging member. 688 Fletcher Ct.','assistant bootstrap research: Chino Valley hotels motels lodging',0,
+ null,'(928) 636-0311',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber lodging member. 688 Fletcher Ct."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','hotels_motels','hotels motels lodging','Primrose Inn & Suites',
+ 'https://business.chinovalley.org/members/category/hotels-motels-resorts-79','business.chinovalley.org','Current Chino Valley Chamber lodging member. 1304 State Highway 89.','assistant bootstrap research: Chino Valley hotels motels lodging',0,
+ null,'(928) 636-2894',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber lodging member. 1304 State Highway 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','schools','schools charter schools private schools','Territorial Early Childhood Center',
+ 'https://www.chinovalleyschools.com/','chinovalleyschools.com','Official CVUSD preschool through grade 2 campus.','assistant bootstrap research: Chino Valley schools charter schools private schools',0,
+ null,null,true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official CVUSD preschool through grade 2 campus."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','schools','schools charter schools private schools','Del Rio Elementary School',
+ 'https://www.chinovalleyschools.com/','chinovalleyschools.com','1036 N Rd 1 West; grades 3-6.','assistant bootstrap research: Chino Valley schools charter schools private schools',0,
+ null,'(928) 636-4414',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"1036 N Rd 1 West; grades 3-6."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','schools','schools charter schools private schools','Heritage Middle School',
+ 'https://www.chinovalleyschools.com/','chinovalleyschools.com','1076 N Rd 1 West; grades 7-8.','assistant bootstrap research: Chino Valley schools charter schools private schools',0,
+ null,'(928) 636-4464',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"1076 N Rd 1 West; grades 7-8."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','schools','schools charter schools private schools','Chino Valley High School',
+ 'https://www.chinovalleyschools.com/','chinovalleyschools.com','760 E Center St; grades 9-12.','assistant bootstrap research: Chino Valley schools charter schools private schools',0,
+ null,'(928) 636-2298',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"760 E Center St; grades 9-12."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','churches','churches worship centers','Saving Grace Lutheran Church',
+ 'https://business.chinovalley.org/list/ql/religious-organizations-21','business.chinovalley.org','Current Chino Valley Chamber religious organization. 440 W Palomino Rd.','assistant bootstrap research: Chino Valley churches worship centers',0,
+ null,'(928) 910-1909',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber religious organization. 440 W Palomino Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','churches','churches worship centers','Chino Valley Community Church',
+ 'https://business.chinovalley.org/list/ql/religious-organizations-21','business.chinovalley.org','Current Chino Valley Chamber religious organization. 1969 N Highway 89.','assistant bootstrap research: Chino Valley churches worship centers',0,
+ null,'(928) 636-4184',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber religious organization. 1969 N Highway 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','churches','churches worship centers','Grace Church',
+ 'https://business.chinovalley.org/list/ql/religious-organizations-21','business.chinovalley.org','Current Chino Valley Chamber religious organization. 2010 S State Route 89.','assistant bootstrap research: Chino Valley churches worship centers',0,
+ null,'(928) 636-2949',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber religious organization. 2010 S State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','churches','churches worship centers','Chino Valley United Methodist Church',
+ 'https://business.chinovalley.org/list/ql/religious-organizations-21','business.chinovalley.org','Current Chino Valley Chamber religious organization. 735 E Road 1 South.','assistant bootstrap research: Chino Valley churches worship centers',0,
+ null,'(928) 636-2969',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber religious organization. 735 E Road 1 South."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','churches','churches worship centers','The Garchen Buddhist Institute',
+ 'https://business.chinovalley.org/list/ql/religious-organizations-21','business.chinovalley.org','Current Chino Valley Chamber religious organization. 9995 E Blissful Path.','assistant bootstrap research: Chino Valley churches worship centers',0,
+ null,'(928) 925-1237',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber religious organization. 9995 E Blissful Path."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','medical_centers','hospitals medical centers clinics','Malin Medical',
+ 'https://business.chinovalley.org/list/ql/health-care-11.htm','business.chinovalley.org','Current Chino Valley health-care candidate. 1780 N AZ Hwy 89.','assistant bootstrap research: Chino Valley hospitals medical centers clinics',0,
+ null,'(928) 460-5214',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley health-care candidate. 1780 N AZ Hwy 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','dental','dentists dental offices orthodontists','Granite View Dental',
+ 'https://business.chinovalley.org/list/ql/health-care-11.htm','business.chinovalley.org','Current Chino Valley health-care candidate. 1260 S State Route 89 Suite G.','assistant bootstrap research: Chino Valley dentists dental offices orthodontists',0,
+ null,'(928) 237-1305',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley health-care candidate. 1260 S State Route 89 Suite G."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','therapy_behavioral','therapy counseling behavioral health clinics','Polara Health',
+ 'https://business.chinovalley.org/list/ql/health-care-11.htm','business.chinovalley.org','Current Chino Valley health-care candidate. 555 W Road 3 N.','assistant bootstrap research: Chino Valley therapy counseling behavioral health clinics',0,
+ null,'(928) 445-5211',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley health-care candidate. 555 W Road 3 N."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','medical_centers','hospitals medical centers clinics','Medical 360',
+ 'https://business.chinovalley.org/list/ql/health-care-11.htm','business.chinovalley.org','Current Chino Valley health-care candidate. 87 S State Hwy 89.','assistant bootstrap research: Chino Valley hospitals medical centers clinics',0,
+ null,'(928) 404-1488',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley health-care candidate. 87 S State Hwy 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','medical_centers','hospitals medical centers clinics','Copper Coyote Aesthetics & Health',
+ 'https://business.chinovalley.org/list/ql/health-care-11.htm','business.chinovalley.org','Current Chino Valley health-care candidate. 1174 S SR 89 Suite 2.','assistant bootstrap research: Chino Valley hospitals medical centers clinics',0,
+ null,'(928) 710-0405',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley health-care candidate. 1174 S SR 89 Suite 2."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','medical_centers','hospitals medical centers clinics','Life Pregnancy Center',
+ 'https://business.chinovalley.org/list/ql/health-care-11.htm','business.chinovalley.org','Current Chino Valley health-care candidate. 448 N Highway 89 Suite C.','assistant bootstrap research: Chino Valley hospitals medical centers clinics',0,
+ null,'(928) 636-5025',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley health-care candidate. 448 N Highway 89 Suite C."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','dental','dentists dental offices orthodontists','Chino Valley Family Dental',
+ 'https://business.chinovalley.org/list/ql/health-care-11.htm','business.chinovalley.org','Current Chino Valley health-care candidate. 328 Business Park Dr.','assistant bootstrap research: Chino Valley dentists dental offices orthodontists',0,
+ null,'(928) 636-6872',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley health-care candidate. 328 Business Park Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','therapy_behavioral','therapy counseling behavioral health clinics','Rise Canyon Ranch',
+ 'https://business.chinovalley.org/list/ql/health-care-11.htm','business.chinovalley.org','Current Chino Valley health-care candidate. 1021 N State Rte 89 #141.','assistant bootstrap research: Chino Valley therapy counseling behavioral health clinics',0,
+ null,'(928) 288-0780',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley health-care candidate. 1021 N State Rte 89 #141."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','medical_centers','hospitals medical centers clinics','Bowen Chiropractic Center',
+ 'https://business.chinovalley.org/list/ql/health-care-11.htm','business.chinovalley.org','Current Chino Valley health-care candidate. 794 S State Route 89.','assistant bootstrap research: Chino Valley hospitals medical centers clinics',0,
+ null,'(928) 636-7682',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley health-care candidate. 794 S State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','medical_centers','hospitals medical centers clinics','Anita Demello',
+ 'https://business.chinovalley.org/list/ql/health-care-11.htm','business.chinovalley.org','Current Chino Valley health-care candidate. 181 Sycamore Vista.','assistant bootstrap research: Chino Valley hospitals medical centers clinics',0,
+ null,'(928) 227-2798',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley health-care candidate. 181 Sycamore Vista."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','therapy_behavioral','therapy counseling behavioral health clinics','Lower22vets',
+ 'https://business.chinovalley.org/list/ql/health-care-11.htm','business.chinovalley.org','Current Chino Valley health-care candidate. PO Box 484, Chino Valley.','assistant bootstrap research: Chino Valley therapy counseling behavioral health clinics',0,
+ null,'(928) 350-7062',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley health-care candidate. PO Box 484, Chino Valley."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','medical_centers','hospitals medical centers clinics','Optima Medical - Chino Valley',
+ 'https://business.chinovalley.org/list/ql/health-care-11.htm','business.chinovalley.org','Current Chino Valley health-care candidate. 87 State Rte 89.','assistant bootstrap research: Chino Valley hospitals medical centers clinics',0,
+ null,'(928) 404-1488',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley health-care candidate. 87 State Rte 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','dental','dentists dental offices orthodontists','Horizon Dental of Chino Valley',
+ 'https://business.chinovalley.org/list/ql/health-care-11.htm','business.chinovalley.org','Current Chino Valley health-care candidate. 432 W Butterfield Rd.','assistant bootstrap research: Chino Valley dentists dental offices orthodontists',0,
+ null,'(928) 636-1565',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley health-care candidate. 432 W Butterfield Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','property_management','property management companies apartment communities','Country West Mobile Home Park',
+ 'https://business.chinovalley.org/list/ql/real-estate-moving-storage-20','business.chinovalley.org','Current Chino Valley Chamber real-estate/property candidate. 853 N Highway 89.','assistant bootstrap research: Chino Valley property management companies apartment communities',0,
+ null,'(928) 636-2000',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber real-estate/property candidate. 853 N Highway 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','property_management','property management companies apartment communities','Mountain Lake Realty',
+ 'https://business.chinovalley.org/list/ql/real-estate-moving-storage-20','business.chinovalley.org','Current Chino Valley Chamber real-estate/property candidate. 1600 W Marshall Way.','assistant bootstrap research: Chino Valley property management companies apartment communities',0,
+ null,'(602) 888-7073',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber real-estate/property candidate. 1600 W Marshall Way."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','property_management','property management companies apartment communities','Realty One Group Mountain Desert',
+ 'https://business.chinovalley.org/list/ql/real-estate-moving-storage-20','business.chinovalley.org','Current Chino Valley Chamber real-estate/property candidate. 1689 S State Route 89.','assistant bootstrap research: Chino Valley property management companies apartment communities',0,
+ null,'(928) 445-2600',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber real-estate/property candidate. 1689 S State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','property_management','property management companies apartment communities','KMF Real Estate',
+ 'https://business.chinovalley.org/list/ql/real-estate-moving-storage-20','business.chinovalley.org','Current Chino Valley Chamber real-estate/property candidate. 1689 S State Route 89.','assistant bootstrap research: Chino Valley property management companies apartment communities',0,
+ null,'(602) 999-7223',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber real-estate/property candidate. 1689 S State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','property_management','property management companies apartment communities','Cindy Horton - Coldwell Banker Northland',
+ 'https://business.chinovalley.org/list/ql/real-estate-moving-storage-20','business.chinovalley.org','Current Chino Valley Chamber real-estate/property candidate. 4101 W Road 4 N.','assistant bootstrap research: Chino Valley property management companies apartment communities',0,
+ null,'(928) 356-8276',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber real-estate/property candidate. 4101 W Road 4 N."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','property_management','property management companies apartment communities','G&M Premier Real Estate',
+ 'https://business.chinovalley.org/list/ql/real-estate-moving-storage-20','business.chinovalley.org','Current Chino Valley Chamber real-estate/property candidate. 156 Heidi Ln.','assistant bootstrap research: Chino Valley property management companies apartment communities',0,
+ null,'(928) 533-3135',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber real-estate/property candidate. 156 Heidi Ln."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','property_management','property management companies apartment communities','Oakwood Homes',
+ 'https://business.chinovalley.org/list/ql/real-estate-moving-storage-20','business.chinovalley.org','Current Chino Valley Chamber real-estate/property candidate. 3280 N State Route 89.','assistant bootstrap research: Chino Valley property management companies apartment communities',0,
+ null,'(928) 636-9000',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber real-estate/property candidate. 3280 N State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','property_management','property management companies apartment communities','Granillos Mobile Home Service',
+ 'https://business.chinovalley.org/list/ql/real-estate-moving-storage-20','business.chinovalley.org','Current Chino Valley Chamber real-estate/property candidate. 150 S Rd 1 East.','assistant bootstrap research: Chino Valley property management companies apartment communities',0,
+ null,'(928) 636-5330',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber real-estate/property candidate. 150 S Rd 1 East."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','property_management','property management companies apartment communities','Heather Wherley and Your Home Team',
+ 'https://business.chinovalley.org/list/ql/real-estate-moving-storage-20','business.chinovalley.org','Current Chino Valley Chamber real-estate/property candidate. 182 Chino Dr.','assistant bootstrap research: Chino Valley property management companies apartment communities',0,
+ null,'(928) 830-2950',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber real-estate/property candidate. 182 Chino Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','property_management','property management companies apartment communities','Yavapai Title Agency',
+ 'https://business.chinovalley.org/list/ql/real-estate-moving-storage-20','business.chinovalley.org','Current Chino Valley Chamber real-estate/property candidate. 980 N State Route 89.','assistant bootstrap research: Chino Valley property management companies apartment communities',0,
+ null,'(928) 636-0899',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber real-estate/property candidate. 980 N State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','property_management','property management companies apartment communities','iRealty Professionals',
+ 'https://business.chinovalley.org/list/ql/real-estate-moving-storage-20','business.chinovalley.org','Current Chino Valley Chamber real-estate/property candidate. 140 N Hwy 89.','assistant bootstrap research: Chino Valley property management companies apartment communities',0,
+ null,'(760) 219-4433',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber real-estate/property candidate. 140 N Hwy 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','property_management','property management companies apartment communities','Cindy Lee Davies - Clark Realty Homes & Land',
+ 'https://business.chinovalley.org/list/ql/real-estate-moving-storage-20','business.chinovalley.org','Current Chino Valley Chamber real-estate/property candidate. 154 Heidi Ln.','assistant bootstrap research: Chino Valley property management companies apartment communities',0,
+ null,'(928) 533-3176',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber real-estate/property candidate. 154 Heidi Ln."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','property_management','property management companies apartment communities','Clayton Homes',
+ 'https://business.chinovalley.org/list/ql/real-estate-moving-storage-20','business.chinovalley.org','Current Chino Valley Chamber real-estate/property candidate. 325 W Industrial Dr.','assistant bootstrap research: Chino Valley property management companies apartment communities',0,
+ null,'(928) 636-9843',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber real-estate/property candidate. 325 W Industrial Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','property_management','property management companies apartment communities','Holliday Properties & Development',
+ 'https://business.chinovalley.org/list/ql/real-estate-moving-storage-20','business.chinovalley.org','Current Chino Valley Chamber real-estate/property candidate. 860 W Road 1 South Suite C.','assistant bootstrap research: Chino Valley property management companies apartment communities',0,
+ null,'(928) 636-5503',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley Chamber real-estate/property candidate. 860 W Road 1 South Suite C."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','warehouses_industrial','warehouses industrial businesses distribution centers','860 Staley Lane Storage',
+ 'https://business.chinovalley.org/list/category/storage-self-service-148','business.chinovalley.org','Current Chino Valley storage facility. 860 Staley Lane.','assistant bootstrap research: Chino Valley warehouses industrial businesses distribution centers',0,
+ null,'(805) 829-2336',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley storage facility. 860 Staley Lane."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','warehouses_industrial','warehouses industrial businesses distribution centers','STORAGExperts at Chino Valley',
+ 'https://business.chinovalley.org/list/category/storage-self-service-148','business.chinovalley.org','Current Chino Valley storage facility. 1272 N Hwy 89.','assistant bootstrap research: Chino Valley warehouses industrial businesses distribution centers',0,
+ null,'(928) 636-5547',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley storage facility. 1272 N Hwy 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Budget Mini Storage',
+ 'https://business.chinovalley.org/list/category/storage-self-service-148','business.chinovalley.org','Current Chino Valley storage facility. 496 W Center St.','assistant bootstrap research: Chino Valley warehouses industrial businesses distribution centers',0,
+ null,'(928) 636-2010',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley storage facility. 496 W Center St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','warehouses_industrial','warehouses industrial businesses distribution centers','High Plains Storage',
+ 'https://business.chinovalley.org/list/category/storage-self-service-148','business.chinovalley.org','Current Chino Valley storage facility. 975 E Road 4-1/2 South.','assistant bootstrap research: Chino Valley warehouses industrial businesses distribution centers',0,
+ null,'(928) 800-1021',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley storage facility. 975 E Road 4-1/2 South."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Infinity Storage Space',
+ 'https://business.chinovalley.org/list/category/storage-self-service-148','business.chinovalley.org','Current Chino Valley storage facility. 2369 State Highway 89.','assistant bootstrap research: Chino Valley warehouses industrial businesses distribution centers',0,
+ null,'(917) 575-7000',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley storage facility. 2369 State Highway 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','insurance_professional','insurance agents professional offices','OneAZ Credit Union CV',
+ 'https://business.chinovalley.org/members/ql/finance-insurance-10','business.chinovalley.org','Current Chino Valley finance/insurance candidate. 1021 N Highway 89 Suite 106.','assistant bootstrap research: Chino Valley insurance agents professional offices',0,
+ null,'(928) 777-6000',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley finance/insurance candidate. 1021 N Highway 89 Suite 106."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','insurance_professional','insurance agents professional offices','American Family Insurance - Leah McLemore',
+ 'https://business.chinovalley.org/members/ql/finance-insurance-10','business.chinovalley.org','Current Chino Valley finance/insurance candidate. 1578 N Hwy 89 #3.','assistant bootstrap research: Chino Valley insurance agents professional offices',0,
+ null,'(928) 636-8593',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley finance/insurance candidate. 1578 N Hwy 89 #3."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','insurance_professional','insurance agents professional offices','Loan Factory',
+ 'https://business.chinovalley.org/members/ql/finance-insurance-10','business.chinovalley.org','Current Chino Valley finance/insurance candidate. Chino Valley.','assistant bootstrap research: Chino Valley insurance agents professional offices',0,
+ null,'(520) 477-6789',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley finance/insurance candidate. Chino Valley."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','insurance_professional','insurance agents professional offices','National Bank of Arizona',
+ 'https://business.chinovalley.org/members/ql/finance-insurance-10','business.chinovalley.org','Current Chino Valley finance/insurance candidate. 481 State Highway 89.','assistant bootstrap research: Chino Valley insurance agents professional offices',0,
+ null,'(928) 636-4466',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley finance/insurance candidate. 481 State Highway 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','insurance_professional','insurance agents professional offices','Farmers Insurance - Jeffrey Champ',
+ 'https://business.chinovalley.org/members/ql/finance-insurance-10','business.chinovalley.org','Current Chino Valley finance/insurance candidate. 1496 AZ-89.','assistant bootstrap research: Chino Valley insurance agents professional offices',0,
+ null,'(928) 636-2700',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley finance/insurance candidate. 1496 AZ-89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','insurance_professional','insurance agents professional offices','Penny Hubble - State Farm',
+ 'https://business.chinovalley.org/members/ql/finance-insurance-10','business.chinovalley.org','Current Chino Valley finance/insurance candidate. 360 AZ-89 B.','assistant bootstrap research: Chino Valley insurance agents professional offices',0,
+ null,'(928) 636-3377',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley finance/insurance candidate. 360 AZ-89 B."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','insurance_professional','insurance agents professional offices','LRG Agency LLC American Family Insurance',
+ 'https://business.chinovalley.org/members/ql/finance-insurance-10','business.chinovalley.org','Current Chino Valley finance/insurance candidate. 1578 AZ-89 Ste 3.','assistant bootstrap research: Chino Valley insurance agents professional offices',0,
+ null,'(928) 636-8593',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley finance/insurance candidate. 1578 AZ-89 Ste 3."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','insurance_professional','insurance agents professional offices','Patti McCormick Insurance',
+ 'https://business.chinovalley.org/members/ql/finance-insurance-10','business.chinovalley.org','Current Chino Valley finance/insurance candidate. 743 B E Rd 2 N.','assistant bootstrap research: Chino Valley insurance agents professional offices',0,
+ null,'(928) 636-1300',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley finance/insurance candidate. 743 B E Rd 2 N."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','Affordable Auto Repair',
+ 'https://www.chamberofcommerce.com/business-directory/arizona/chino-valley/','chamberofcommerce.com','Current Chino Valley automotive/equipment business. 2805 N Highway 89 Unit A.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(928) 251-3551',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley automotive/equipment business. 2805 N Highway 89 Unit A."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','Dans Affordable Auto Repair LLC',
+ 'https://www.chamberofcommerce.com/business-directory/arizona/chino-valley/','chamberofcommerce.com','Current Chino Valley automotive/equipment business. 2805 N Highway 89 Unit A.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(928) 227-0561',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley automotive/equipment business. 2805 N Highway 89 Unit A."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','Morrison Motors',
+ 'https://www.chamberofcommerce.com/business-directory/arizona/chino-valley/','chamberofcommerce.com','Current Chino Valley automotive/equipment business. 3555 State Highway 89.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(928) 636-7877',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley automotive/equipment business. 3555 State Highway 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','Alvarez Tire',
+ 'https://www.chamberofcommerce.com/business-directory/arizona/chino-valley/','chamberofcommerce.com','Current Chino Valley automotive/equipment business. 1574 S AZ-89.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(928) 636-1771',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley automotive/equipment business. 1574 S AZ-89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','Bruno Auto Glass',
+ 'https://www.chamberofcommerce.com/business-directory/arizona/chino-valley/','chamberofcommerce.com','Current Chino Valley automotive/equipment business. 1962 AZ-89 Suite D.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(928) 460-9388',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley automotive/equipment business. 1962 AZ-89 Suite D."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','3C''s Automotive Fleet Repair LLC',
+ 'https://www.chamberofcommerce.com/business-directory/arizona/chino-valley/','chamberofcommerce.com','Current Chino Valley automotive/equipment business. 3699 State Highway 89.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(928) 641-8353',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley automotive/equipment business. 3699 State Highway 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','AutoZone Auto Parts',
+ 'https://www.chamberofcommerce.com/business-directory/arizona/chino-valley/','chamberofcommerce.com','Current Chino Valley automotive/equipment business. 1940 N US Hwy 89.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(928) 636-0036',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley automotive/equipment business. 1940 N US Hwy 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','Blowing Diesel Designs',
+ 'https://www.chamberofcommerce.com/business-directory/arizona/chino-valley/','chamberofcommerce.com','Current Chino Valley automotive/equipment business. 3627 AZ-89 Unit C.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(928) 389-5900',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley automotive/equipment business. 3627 AZ-89 Unit C."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','Chino Valley Auto Spa',
+ 'https://www.chamberofcommerce.com/business-directory/arizona/chino-valley/','chamberofcommerce.com','Current Chino Valley automotive/equipment business. 820 E Rd 2 N.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(928) 485-1910',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley automotive/equipment business. 820 E Rd 2 N."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','Bob''s Complete Automotive Repair',
+ 'https://www.chamberofcommerce.com/business-directory/arizona/chino-valley/','chamberofcommerce.com','Current Chino Valley automotive/equipment business. 1080 S State Route 89.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(928) 636-2628',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley automotive/equipment business. 1080 S State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','NAPA Auto Parts - Grand Canyon Auto Supply',
+ 'https://www.chamberofcommerce.com/business-directory/arizona/chino-valley/','chamberofcommerce.com','Current Chino Valley automotive/equipment business. 991 SR-89.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(928) 470-6272',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley automotive/equipment business. 991 SR-89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','Chino Rentals',
+ 'https://www.chamberofcommerce.com/business-directory/arizona/chino-valley/','chamberofcommerce.com','Current Chino Valley automotive/equipment business. 1181 N State Route 89.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(928) 636-2026',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley automotive/equipment business. 1181 N State Route 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','Chino Valley Food Bank',
+ 'https://business.chinovalley.org/members/searchalpha/c','business.chinovalley.org','Current Chino Valley community/business organization. 840 E Road 1 South.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(928) 636-8478',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley community/business organization. 840 E Road 1 South."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','Chino Valley Elks Lodge 2842',
+ 'https://business.chinovalley.org/members/searchalpha/c','business.chinovalley.org','Current Chino Valley community/business organization. 1021 W Butterfield Rd.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(818) 388-8942',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley community/business organization. 1021 W Butterfield Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','Chino Valley Equestrian Association',
+ 'https://business.chinovalley.org/members/searchalpha/c','business.chinovalley.org','Current Chino Valley community/business organization. PO Box 381.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(928) 266-2877',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley community/business organization. PO Box 381."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','Chino Valley Funeral Home',
+ 'https://business.chinovalley.org/members/searchalpha/c','business.chinovalley.org','Current Chino Valley community/business organization. 480 W Palomino Rd.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(928) 636-8225',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley community/business organization. 480 W Palomino Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Chino Valley','general_business','other local businesses','Chino Valley Area Chamber of Commerce',
+ 'https://business.chinovalley.org/members/searchalpha/c','business.chinovalley.org','Current Chino Valley community/business organization. 199 N AZ Hwy 89.','assistant bootstrap research: Chino Valley other local businesses',0,
+ null,'(928) 636-2493',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_01","researched_at":"2026-10-26T23:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Chino Valley community/business organization. 199 N AZ Hwy 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Chino Valley';
