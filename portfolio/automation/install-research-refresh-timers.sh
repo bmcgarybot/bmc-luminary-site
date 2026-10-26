@@ -97,9 +97,39 @@ EOF
   exit 0
 fi
 
-# The VPS relay already runs every minute under a root-installed systemd timer.
-# When the relay service account cannot sudo, install a rootless schedule that
-# the relay itself will honor. This avoids requiring a second privileged timer.
+# Prefer a rootless user crontab when systemd installation is unavailable.
+# Cron has no systemd oneshot start timeout, which is useful for long directory crawls.
+CRON_BEGIN="# BEGIN BMC RESEARCH REFRESH"
+CRON_END="# END BMC RESEARCH REFRESH"
+LOG_DIR="$STATE_DIR/logs"
+if command -v crontab >/dev/null 2>&1; then
+  mkdir -p "$LOG_DIR"
+  existing="$(crontab -l 2>/dev/null || true)"
+  cleaned="$(printf '%s\n' "$existing" | awk -v begin="$CRON_BEGIN" -v end="$CRON_END" '
+    $0 == begin {skip=1; next}
+    $0 == end {skip=0; next}
+    !skip {print}
+  ')"
+  {
+    printf '%s\n' "$cleaned"
+    echo "$CRON_BEGIN"
+    echo "CRON_TZ=UTC"
+    printf '30 11 * * * cd %q && /bin/bash %q %q directory >> %q 2>&1\n' "$PROJECT_DIR" "$PROJECT_DIR/research-source-refresh.sh" "$ENV_ABS" "$LOG_DIR/directory.log"
+    printf '30 12 * * 0 cd %q && /bin/bash %q %q licensed >> %q 2>&1\n' "$PROJECT_DIR" "$PROJECT_DIR/research-source-refresh.sh" "$ENV_ABS" "$LOG_DIR/licensed.log"
+    echo "$CRON_END"
+  } | crontab -
+  rm -f "$SCHEDULE_FILE"
+  echo "BMC research refresh schedule installed in the service user's crontab."
+  crontab -l | awk -v begin="$CRON_BEGIN" -v end="$CRON_END" '
+    $0 == begin {show=1}
+    show {print}
+    $0 == end {show=0}
+  '
+  exit 0
+fi
+
+# Last-resort rootless backend: the VPS relay already runs every minute under a
+# root-installed timer. Record a schedule that the relay itself will honor.
 mkdir -p "$STATE_DIR"
 python3 - "$SCHEDULE_FILE" <<'PY'
 import json
