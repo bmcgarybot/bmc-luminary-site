@@ -5587,3 +5587,87 @@ Two implementation issues were caught before the statewide importer was allowed 
 Do not use any earlier bootstrap deployment request. They target stale SHAs by design and should be rejected by the relay's exact-SHA guard.
 
 The next deploy must target the current master after this handoff update and must pass BMC Portfolio CI before the relay will execute it.
+
+
+## 56. EXHAUSTIVE MARKET ENUMERATION BOOTSTRAP — 2026-10-26
+
+Brett clarified the research target again: do not stop at “multiple local candidates per market.” The bootstrap objective is to enumerate **all publicly discoverable plausible candidates per configured market/category**, subject to reasonable deduplication and source provenance.
+
+### Current research state
+
+Assistant-led bootstrap batch 01 was created with **50 researched rural-market records** spanning Ash Fork, Mayer, Cordes Lakes, Williamson Valley, Seligman, Skull Valley, Dewey-Humboldt and Golden Valley.
+
+Artifacts:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-batch-01.json`
+- `portfolio/automation/seed-assistant-research-bootstrap.sql`
+
+The SQL seed:
+- inserts only into `market_inventory_candidates`;
+- is idempotent;
+- does not promote records into live vendors/buyers;
+- does not stage or send outreach;
+- preserves source quality / verification state in evidence JSON.
+
+Migration and CI were updated to ingest/test the assistant bootstrap seed.
+
+### Important ingestion defect fixed
+
+The prior inventory uniqueness rule was:
+`unique(side,market,category_key,source_url)`.
+
+That was too restrictive for directory/chamber/registry research because one directory page can legitimately contain dozens or hundreds of distinct businesses. Under the old key, the first business from a source page could block every other business from that same source URL.
+
+This was changed to dedupe by:
+`(side,market,category_key,source_url,business_name)`.
+
+Related commits:
+- `b897084f3b4299e5cbaca0901affd9b18625f8cb` — schema allows multiple businesses per source page;
+- `88b189799002a0e6aa4f8dbead14233c449c0f49` — API uses business+source dedupe;
+- `ea6a9eb370c7c455bcf6dff057d97eef313cd375` — bootstrap seed aligned to new dedupe key.
+
+### Scalable discovery path confirmed
+
+Public city/category directories expose enough records to make a statewide thousands-record bootstrap realistic.
+
+Examples found during the live research pass:
+- Prescott Yellow Pages business listing reports 4,281 businesses;
+- Mayer business listing reports 104;
+- Ash Fork reports 28;
+- Golden Valley exposes hundreds of listings;
+- Seligman plumber category reports 61;
+- Seligman restaurants reports 17;
+- Chino Valley plumbers contains many local entries;
+- Dewey-Humboldt category pages expose many service-area providers.
+
+These sources are **discovery feeders**, not automatic verification.
+
+### New research rule
+
+For each configured market:
+1. enumerate broad local business directory results;
+2. enumerate each BMC buyer category;
+3. enumerate each BMC vendor/service category;
+4. preserve every plausible unique business/organization candidate;
+5. retain phone/address/site where publicly visible;
+6. label source provenance and source tier;
+7. deduplicate across sources and categories without throwing away multi-source corroboration;
+8. direct-site / government / registry research later raises verification confidence;
+9. do not cap at a small arbitrary number when the source exposes more.
+
+The objective is a **statewide bootstrap in the thousands**, with large markets naturally containing hundreds or thousands and rural markets containing all discoverable local + serving-area candidates.
+
+### Current limitation / honesty rule
+
+At this checkpoint, the repository contains the initial 50-record assistant bootstrap batch plus the ingestion/schema changes. The thousands-record enumeration is **in progress**, not complete.
+
+Do not claim the full statewide bootstrap is finished until actual committed row counts support that claim.
+
+### Next actions
+
+1. Continue market-by-market enumeration, beginning with public directory/category pages and direct sources.
+2. Build batch artifacts large enough to materially move coverage counts.
+3. Commit each batch with provenance.
+4. Deploy only after CI is green; outreach remains OFF.
+5. Use VPS automation afterward for delta/new-record detection and refresh.
+6. Continue periodic HANDOFF updates so conversation changes do not lose state.
+
