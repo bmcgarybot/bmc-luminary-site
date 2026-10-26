@@ -602,3 +602,57 @@ alter table local_demand_scan_state alter column query_strategy_version set defa
 
 create index if not exists idx_local_demand_scan_state_run
 on local_demand_scan_state(last_run_at nulls first,source_key,market,group_key);
+
+
+-- Query strategy v4 establishes a clean audited baseline. Historical candidates
+-- remain available for review but do not count toward current coverage until they
+-- are rediscovered under the current relevance and engine rules.
+alter table market_inventory_candidates add column if not exists query_strategy_version integer;
+update market_inventory_candidates
+set query_strategy_version=3
+where query_strategy_version is null;
+
+update market_inventory_candidates
+set status='superseded_pre_v4',
+    evidence=evidence || jsonb_build_object(
+      'superseded_reason','pre_v4_unverified_search_strategy',
+      'superseded_at',now()
+    ),
+    updated_at=now()
+where promoted_entity_id is null
+  and query_strategy_version<4
+  and status<>'superseded_pre_v4';
+
+alter table market_inventory_candidates alter column query_strategy_version set default 4;
+
+update market_inventory_progress
+set pages_scanned=0,
+    raw_results=0,
+    official_candidates=0,
+    next_page=1,
+    query_variant=0,
+    no_progress_passes=0,
+    status='not_started',
+    last_run_at=null,
+    notes='Reset for query strategy v4 clean candidate baseline',
+    query_strategy_version=4,
+    updated_at=now()
+where coalesce(query_strategy_version,3)<4;
+
+alter table market_inventory_progress alter column query_strategy_version set default 4;
+
+-- Demand coverage also restarts under the repaired search backend. Signals remain
+-- preserved in local_demand_signals; only coverage counters are reset.
+update local_demand_scan_state
+set next_page=1,
+    scans=0,
+    results_seen=0,
+    signals_found=0,
+    no_progress_scans=0,
+    last_run_at=null,
+    last_error=null,
+    query_strategy_version=4,
+    updated_at=now()
+where coalesce(query_strategy_version,2)<4;
+
+alter table local_demand_scan_state alter column query_strategy_version set default 4;
