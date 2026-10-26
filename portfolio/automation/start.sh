@@ -14,7 +14,10 @@ env_value(){
 
 docker compose --env-file "$ENV_FILE" up -d postgres
 bash ./migrate.sh "$ENV_FILE"
-docker compose --env-file "$ENV_FILE" up -d ops_api n8n webhook_proxy scheduler searxng
+docker compose --env-file "$ENV_FILE" up -d ops_api n8n scheduler searxng
+# Refresh nginx after application containers are settled so its Docker DNS
+# resolution points at the current ops_api/n8n container addresses.
+docker compose --env-file "$ENV_FILE" up -d --force-recreate webhook_proxy
 
 if [ "$(env_value LOCAL_AI_ENABLED)" = "true" ]; then
   echo "LOCAL_AI_ENABLED=true; starting Ollama..."
