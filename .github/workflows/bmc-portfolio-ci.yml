@@ -164,6 +164,9 @@ jobs:
           parsed=m2.parse_trade_page(page2,"Kingman","plumbers")
           names={x["business_name"] for x in parsed["records"]}
           assert {"Alpha Plumbing LLC","Beta Plumbing LLC"} <= names, parsed
+          assert m2.trade_lane("plumbers")[0]=="backflow_plumbing"
+          assert m2.trade_lane("masonry-contractors")[0]=="facility_maintenance"
+          assert "DATABASE_URL" in licensed.read_text()
           relay=Path("vps-gitops-relay.py").read_text()
           assert '"assistant_licensed_bootstrap_import"' in relay
           assert "status=\"monitoring\"" in api
@@ -287,6 +290,9 @@ jobs:
           docker compose --env-file .env.example build research_refresher
           grep -q 'research_refresher:' docker-compose.yml
           grep -q 'research-refresher.Dockerfile' docker-compose.yml
+          grep -q 'up -d --build research_refresher' deploy-update.sh
+          grep -q 'Continuous bulk research refresher is running' runtime-doctor.sh
+          grep -q 'research_refresh_state' schema.sql
           grep -q 'image: cloudflare/cloudflared:2026.10.3' docker-compose.yml
           grep -q 'pull cloudflared' deploy-update.sh
           grep -q 'pull cloudflared' configure-cloudflare.sh
