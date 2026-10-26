@@ -4498,3 +4498,1891 @@ update market_inventory_progress p set official_candidates=(
  select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
  and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ),updated_at=now() where p.market='Golden Valley';
+
+
+-- Assistant-led Ash Fork census batch 02 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','American Sand Stone',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork stone/quarry/materials business in the local business directory.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 637-2542',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork stone/quarry/materials business in the local business directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Dunbar Stone Co',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork stone/quarry/materials business in the local business directory.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 637-2592',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork stone/quarry/materials business in the local business directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Levin Stone Company Inc',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork stone/quarry/materials business in the local business directory.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 637-2288',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork stone/quarry/materials business in the local business directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Horner Stone',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork stone/quarry/materials business in the local business directory.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 637-2271',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork stone/quarry/materials business in the local business directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Rock Ridge Quarries',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork stone/quarry/materials business in the local business directory.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 636-0508',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork stone/quarry/materials business in the local business directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','International Stone',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork stone/quarry/materials business in the local business directory.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 637-2222',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork stone/quarry/materials business in the local business directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Bluebird Stone',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork stone/quarry/materials business in the local business directory.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 637-2522',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork stone/quarry/materials business in the local business directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Horner Stone Company Inc',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork stone/quarry/materials business in the local business directory.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 637-2271',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork stone/quarry/materials business in the local business directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Hammond Wholesale Flagstone',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork stone/quarry/materials business in the local business directory.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 637-9852',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork stone/quarry/materials business in the local business directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Juniper Wood Ranch',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork ranch/agriculture/land-based business candidate.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 637-2506',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork ranch/agriculture/land-based business candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Grand Canyon Farms',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork ranch/agriculture/land-based business candidate.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 637-2328',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork ranch/agriculture/land-based business candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','AlAnn Ranch',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork ranch/agriculture/land-based business candidate.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 925-0139',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork ranch/agriculture/land-based business candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Juniper Wood Ranch Winery',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork ranch/agriculture/land-based business candidate.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork ranch/agriculture/land-based business candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Leist Land and Livestock, LLC',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Ash Fork ranch/agriculture/land-based business candidate.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork ranch/agriculture/land-based business candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Lakota Ranch, LLC',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Ash Fork ranch/agriculture/land-based business candidate.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork ranch/agriculture/land-based business candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Point Fire Ranch, LLC',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Ash Fork ranch/agriculture/land-based business candidate.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork ranch/agriculture/land-based business candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Ash Fork','facility_maintenance','Building Maintenance Help','Joe Ulrich Masonry',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork masonry/construction business.','assistant census research: Ash Fork Building Maintenance Help',0,
+ null,'(928) 637-2662',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork masonry/construction business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','retail','retail stores shopping stores','Hammonds Route 66 Lumber',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork lumber/building-supply business.','assistant census research: Ash Fork retail stores shopping stores',0,
+ null,'(928) 637-9877',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork lumber/building-supply business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','churches','churches worship centers','First Southern Baptist Church',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork church facility.','assistant census research: Ash Fork churches worship centers',0,
+ null,'(928) 637-2226',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork church facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','grocery','grocery stores supermarkets markets','Corral Market',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork grocery/convenience market at 93 Lewis Ave.','assistant census research: Ash Fork grocery stores supermarkets markets',0,
+ null,'(928) 637-2268',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork grocery/convenience market at 93 Lewis Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','Monte Carlo Truck Service',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork truck-service business.','assistant census research: Ash Fork other local businesses',0,
+ null,'(928) 637-2678',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork truck-service business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','property_management','property management companies apartment communities','Country Life Realty',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork real-estate office.','assistant census research: Ash Fork property management companies apartment communities',0,
+ null,'(928) 637-2399',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork real-estate office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','U-Haul Co',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork truck-rental/moving business on Old Route 66.','assistant census research: Ash Fork other local businesses',0,
+ null,'(928) 637-0010',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork truck-rental/moving business on Old Route 66."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','Ash Fork Mobil',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork fuel/convenience facility.','assistant census research: Ash Fork other local businesses',0,
+ null,'(928) 637-2308',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork fuel/convenience facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','insurance_professional','insurance agents professional offices','Kanaka Internet Services',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork technology/business-services operation.','assistant census research: Ash Fork insurance agents professional offices',0,
+ null,'(928) 637-0048',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork technology/business-services operation."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Ash Fork','facility_maintenance','Building Maintenance Help','Ash Creek Homes',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork home/construction business.','assistant census research: Ash Fork Building Maintenance Help',0,
+ null,'(928) 637-9882',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork home/construction business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','grocery','grocery stores supermarkets markets','Mandy''s Market',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork market/retail facility.','assistant census research: Ash Fork grocery stores supermarkets markets',0,
+ null,'(928) 637-2698',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork market/retail facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','hotels_motels','hotels motels lodging','Copperstate Motel',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork motel at 101 W Lewis Ave.','assistant census research: Ash Fork hotels motels lodging',0,
+ null,'(928) 637-2335',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork motel at 101 W Lewis Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Double F Transportation',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork transportation business.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 637-2788',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork transportation business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','restaurants','restaurants','Route 66 Grill',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork Route 66 restaurant listing.','assistant census research: Ash Fork restaurants',0,
+ null,'(928) 637-2528',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork Route 66 restaurant listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','Desoto''s Beauty & Barber Shop',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork beauty/barber business.','assistant census research: Ash Fork other local businesses',0,
+ null,'(928) 637-9886',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork beauty/barber business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','retail','retail stores shopping stores','Davis Leather Co',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork leather/retail business.','assistant census research: Ash Fork retail stores shopping stores',0,
+ null,'(928) 637-0111',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork leather/retail business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','American Legion Post 57',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork American Legion/community facility.','assistant census research: Ash Fork other local businesses',0,
+ null,'(928) 637-2254',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork American Legion/community facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','schools','schools charter schools private schools','Ash Fork Unified School District',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork public school district facility.','assistant census research: Ash Fork schools charter schools private schools',0,
+ null,'(928) 637-2561',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork public school district facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','public_facilities','government public facilities municipal buildings','Ash Fork Water Service',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork water utility/public-service facility.','assistant census research: Ash Fork government public facilities municipal buildings',0,
+ null,'(928) 637-2774',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork water utility/public-service facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','property_management','property management companies apartment communities','Jakes Old West Properties',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork real-estate/property business.','assistant census research: Ash Fork property management companies apartment communities',0,
+ null,'(928) 637-2675',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork real-estate/property business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','property_management','property management companies apartment communities','Buyer''s Realty',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork real-estate office.','assistant census research: Ash Fork property management companies apartment communities',0,
+ null,'(928) 637-0066',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork real-estate office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','Canine Coifeuse & Creations',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork pet/grooming business.','assistant census research: Ash Fork other local businesses',0,
+ null,'(928) 637-2377',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork pet/grooming business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','ASND Transportation',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork transportation business.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 637-2232',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork transportation business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','Rick Murphy''s Chevron',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork fuel/convenience/travel facility.','assistant census research: Ash Fork other local businesses',0,
+ null,'(928) 637-2580',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork fuel/convenience/travel facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','Ash Fork Food Bank',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork nonprofit food-bank facility.','assistant census research: Ash Fork other local businesses',0,
+ null,'(928) 637-0462',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork nonprofit food-bank facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','property_management','property management companies apartment communities','Ash Fork Realty',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork real-estate business.','assistant census research: Ash Fork property management companies apartment communities',0,
+ null,'(928) 637-0066',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork real-estate business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','Old Nevada Corporation',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork Route 66 business entity at 921 W Old Route 66.','assistant census research: Ash Fork other local businesses',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork Route 66 business entity at 921 W Old Route 66."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','3north LLC',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork forestry/land-based business.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 636-4454',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork forestry/land-based business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','All American Track Inc',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork business at 1238 W Canyon Rd.','assistant census research: Ash Fork other local businesses',0,
+ null,'(928) 606-5686',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork business at 1238 W Canyon Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','retail','retail stores shopping stores','Sun San Distribute',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork distribution/retail business at 96 W Park Ave.','assistant census research: Ash Fork retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork distribution/retail business at 96 W Park Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','JJ Enterprise',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork local business entity.','assistant census research: Ash Fork other local businesses',0,
+ null,'(928) 637-2744',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork local business entity."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','retail','retail stores shopping stores','Windspirit Embroidery',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork custom embroidery/maker business.','assistant census research: Ash Fork retail stores shopping stores',0,
+ null,'(928) 237-0281',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork custom embroidery/maker business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Ash Fork','facility_maintenance','Building Maintenance Help','Cauthen Construction LLC',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork construction contractor.','assistant census research: Ash Fork Building Maintenance Help',0,
+ null,'(928) 637-2679',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork construction contractor."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Ash Fork','rural_property','Septic, Grading & Wells','Triple R Excavation',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork excavation/site-work business.','assistant census research: Ash Fork Septic, Grading & Wells',0,
+ null,'(520) 308-0280',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork excavation/site-work business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','retail','retail stores shopping stores','Towels Scrubs & More',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork apparel/supplies business.','assistant census research: Ash Fork retail stores shopping stores',0,
+ null,'(928) 637-2249',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork apparel/supplies business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','Hillside Texaco & RV',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork fuel/RV traveler facility at I-40.','assistant census research: Ash Fork other local businesses',0,
+ null,'(928) 637-2228',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork fuel/RV traveler facility at I-40."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','hotels_motels','hotels motels lodging','Route 66 RV.com LLC',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork RV/campground business.','assistant census research: Ash Fork hotels motels lodging',0,
+ null,'(928) 637-2402',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork RV/campground business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','insurance_professional','insurance agents professional offices','Yavaco Technologies',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork technology/professional-services business.','assistant census research: Ash Fork insurance agents professional offices',0,
+ null,'(928) 637-0098',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork technology/professional-services business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','gyms_fitness','gyms fitness centers recreation centers','Essentially Oils & Massage',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork wellness/massage business.','assistant census research: Ash Fork gyms fitness centers recreation centers',0,
+ null,'(928) 380-8864',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork wellness/massage business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','gyms_fitness','gyms fitness centers recreation centers','KJ''s Tanning',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork tanning/wellness business.','assistant census research: Ash Fork gyms fitness centers recreation centers',0,
+ null,'(928) 637-6434',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork tanning/wellness business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','schools','schools charter schools private schools','High Desert Educational Consulting',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork educational consulting/training business.','assistant census research: Ash Fork schools charter schools private schools',0,
+ null,'(928) 380-2870',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork educational consulting/training business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','Bridge Ministries',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork ministry/community organization.','assistant census research: Ash Fork other local businesses',0,
+ null,'(928) 637-6567',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork ministry/community organization."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','public_facilities','government public facilities municipal buildings','Juniper Woods Volunteer Fire Department',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork-area volunteer fire facility.','assistant census research: Ash Fork government public facilities municipal buildings',0,
+ null,'(928) 607-9758',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork-area volunteer fire facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','public_facilities','government public facilities municipal buildings','Kaibab Estates West Fire Department',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork-area volunteer fire/public-safety facility.','assistant census research: Ash Fork government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork-area volunteer fire/public-safety facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','public_facilities','government public facilities municipal buildings','US Post Office - Ash Fork',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork federal postal facility at 435 Park Ave.','assistant census research: Ash Fork government public facilities municipal buildings',0,
+ null,'(928) 637-2554',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork federal postal facility at 435 Park Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','churches','churches worship centers','St Anne Roman Catholic Mission Ash Fork',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork Catholic church facility.','assistant census research: Ash Fork churches worship centers',0,
+ null,'(928) 637-2458',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork Catholic church facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Ash Fork','electrical_service','Electrician','Solar Guy',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork solar/electrical service candidate.','assistant census research: Ash Fork Electrician',0,
+ null,'(928) 607-3415',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork solar/electrical service candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','Anderson''s Kennels',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork kennel/pet-services business.','assistant census research: Ash Fork other local businesses',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork kennel/pet-services business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','retail','retail stores shopping stores','Horner Feed & Mercantile LLC',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork feed/mercantile retail business.','assistant census research: Ash Fork retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork feed/mercantile retail business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','restaurants','restaurants','Piccadilly Pizza & Subs',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork pizza/sub restaurant at 1198 W Old Route 66.','assistant census research: Ash Fork restaurants',0,
+ null,'(928) 637-2580',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork pizza/sub restaurant at 1198 W Old Route 66."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','retail','retail stores shopping stores','Family Dollar Store',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork discount retail store at 155 Park Ave.','assistant census research: Ash Fork retail stores shopping stores',0,
+ null,'(928) 637-0115',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork discount retail store at 155 Park Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Ash Fork','facility_maintenance','Building Maintenance Help','High Country Vinyl Siding',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork siding/property-maintenance business.','assistant census research: Ash Fork Building Maintenance Help',0,
+ null,'(928) 899-0936',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork siding/property-maintenance business."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','senior_daycare','senior living assisted living daycare childcare','Ash Fork Head Start Center',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork Head Start/childcare facility.','assistant census research: Ash Fork senior living assisted living daycare childcare',0,
+ null,'(928) 637-1027',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork Head Start/childcare facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','hotels_motels','hotels motels lodging','ReUnion Camp / Juniperwood Ranch Winery',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork camp/rural lodging and winery facility.','assistant census research: Ash Fork hotels motels lodging',0,
+ null,'(602) 626-0316',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork camp/rural lodging and winery facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','hotels_motels','hotels motels lodging','Interstate 40 Grand Canyon RV Park & Campground',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork RV park/campground on Old Highway 66.','assistant census research: Ash Fork hotels motels lodging',0,
+ null,'(928) 637-9897',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork RV park/campground on Old Highway 66."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Stapleton Transportation Company, LLC',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork trucking/transportation company.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 310-4030',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork trucking/transportation company."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Ash Fork','rural_property','Septic, Grading & Wells','KP Ventures Well Drilling & Pump',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork well-drilling and pump service candidate.','assistant census research: Ash Fork Septic, Grading & Wells',0,
+ null,'(928) 637-1709',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork well-drilling and pump service candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','Double Track Publishing',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork publishing/business-services company.','assistant census research: Ash Fork other local businesses',0,
+ null,'(928) 637-2707',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork publishing/business-services company."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Magdrive LLC',
+ 'https://www.whereorg.com/businesses/ash-fork-az','whereorg.com','Ash Fork industrial/technology entity at 2225 N Gemini Dr.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,'(928) 637-6797',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Ash Fork industrial/technology entity at 2225 N Gemini Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','hotels_motels','hotels motels lodging','Ash Fork Inn / Canyon''s Edge Route 66 Motel',
+ 'https://www.iexitapp.com/Arizona/I-40/Exit%20144/14301','iexitapp.com','Current Ash Fork Route 66 motel near I-40 Exit 144.','assistant census research: Ash Fork hotels motels lodging',0,
+ null,'(928) 637-2514',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Ash Fork Route 66 motel near I-40 Exit 144."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','theaters_entertainment','theaters cinemas entertainment venues','Ash Fork Tourist Center and Museum',
+ 'https://www.iexitapp.com/Arizona/I-40/Exit%20144/14301','iexitapp.com','Current Ash Fork Route 66 museum/tourist facility.','assistant census research: Ash Fork theaters cinemas entertainment venues',0,
+ null,'(928) 637-0204',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Ash Fork Route 66 museum/tourist facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','restaurants','restaurants','Ranch House Cafe',
+ 'https://www.iexitapp.com/Arizona/I-40/Exit%20146/14300','iexitapp.com','Current Ash Fork cafe/diner near I-40 Exit 146.','assistant census research: Ash Fork restaurants',0,
+ null,'(928) 890-7929',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Ash Fork cafe/diner near I-40 Exit 146."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','restaurants','restaurants','Spice Grill & Bar',
+ 'https://www.iexitapp.com/Arizona/I-40/Exit%20146/14300','iexitapp.com','Current Ash Fork restaurant at 33 Lewis Ave.','assistant census research: Ash Fork restaurants',0,
+ null,'(928) 277-1292',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Ash Fork restaurant at 33 Lewis Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','restaurants','restaurants','AGAF Smokehouse',
+ 'https://www.iexitapp.com/Arizona/I-40/Exit%20146/14300','iexitapp.com','Current Ash Fork food business at 96 W Park Ave.','assistant census research: Ash Fork restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Ash Fork food business at 96 W Park Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','restaurants','restaurants','Oasis Lounge',
+ 'https://www.iexitapp.com/Arizona/I-40/Exit%20146/14300','iexitapp.com','Current Ash Fork bar/lounge at 346 Park Ave.','assistant census research: Ash Fork restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Ash Fork bar/lounge at 346 Park Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','ONE9 Travel Center',
+ 'https://www.iexitapp.com/Arizona/I-40/Exit%20146/14300','iexitapp.com','Current 24-hour Ash Fork truck stop/convenience/fuel facility at 43 Park Ave.','assistant census research: Ash Fork other local businesses',0,
+ null,'(928) 754-1285',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current 24-hour Ash Fork truck stop/convenience/fuel facility at 43 Park Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','TA Travel Center Ash Fork',
+ 'https://www.iexitapp.com/Arizona/I-40/Exit%20144/14301','iexitapp.com','Current large Ash Fork travel center/truck stop on Old Route 66.','assistant census research: Ash Fork other local businesses',0,
+ null,'(928) 405-7788',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current large Ash Fork travel center/truck stop on Old Route 66."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','Patriot Automotive & Truck Repair',
+ 'https://www.iexitapp.com/Arizona/I-40/Exit%20146/14300','iexitapp.com','Current Ash Fork automotive/truck repair facility at 268 Lewis Ave.','assistant census research: Ash Fork other local businesses',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Ash Fork automotive/truck repair facility at 268 Lewis Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Ash Fork','facility_maintenance','Building Maintenance Help','JDL Contracting, LLC',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Active Ash Fork business entity candidate for Building Maintenance Help.','assistant census research: Ash Fork Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Ash Fork business entity candidate for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Ash Fork','electrical_service','Electrician','KJ Electrical Contractors, LLC',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Active Ash Fork business entity candidate for Electrician.','assistant census research: Ash Fork Electrician',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Ash Fork business entity candidate for Electrician."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Ash Fork','facility_maintenance','Building Maintenance Help','New West Construction, L.L.C.',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Active Ash Fork business entity candidate for Building Maintenance Help.','assistant census research: Ash Fork Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Ash Fork business entity candidate for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Ash Fork','facility_maintenance','Building Maintenance Help','Olive Branch Construction, LLC',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Active Ash Fork business entity candidate for Building Maintenance Help.','assistant census research: Ash Fork Building Maintenance Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Ash Fork business entity candidate for Building Maintenance Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Ash Fork','fire_safety','Fire Safety & Extinguisher Service','Titan Fire Protection, Inc.',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Active Ash Fork business entity candidate for Fire Safety & Extinguisher Service.','assistant census research: Ash Fork Fire Safety & Extinguisher Service',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Ash Fork business entity candidate for Fire Safety & Extinguisher Service."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Ash Fork','towing_roadside','Towing & Roadside Help','Road Serve, LLC',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Active Ash Fork business entity candidate for Towing & Roadside Help.','assistant census research: Ash Fork Towing & Roadside Help',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Ash Fork business entity candidate for Towing & Roadside Help."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Juniper Woods Transport, LLC',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Active Ash Fork trucking/transportation entity.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Ash Fork trucking/transportation entity."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Keele Trucking, LLC',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Active Ash Fork trucking/transportation entity.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Ash Fork trucking/transportation entity."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Meant 2 B Trucking, LLC',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Active Ash Fork trucking/transportation entity.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Ash Fork trucking/transportation entity."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','Purple Works Trucking, LLC',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Active Ash Fork trucking/transportation entity.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Ash Fork trucking/transportation entity."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','warehouses_industrial','warehouses industrial businesses distribution centers','SSM Trucking, LLC',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Active Ash Fork trucking/transportation entity.','assistant census research: Ash Fork warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Ash Fork trucking/transportation entity."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','retail','retail stores shopping stores','Thrift 66 Store, LLC',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Active Ash Fork retail entity at 322 W Lewis Ave.','assistant census research: Ash Fork retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Ash Fork retail entity at 322 W Lewis Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','restaurants','restaurants','Lulu Belle''s BBQ, LLC',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Active Ash Fork restaurant/food entity at 33 W Lewis Ave.','assistant census research: Ash Fork restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Ash Fork restaurant/food entity at 33 W Lewis Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','Northern Arizona Animal Assistance Corp.',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Active Ash Fork animal/nonprofit entity.','assistant census research: Ash Fork other local businesses',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Ash Fork animal/nonprofit entity."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Ash Fork','general_business','other local businesses','Robert Fulton Post 57, Inc.',
+ 'https://www.city-data.com/business-entities/Ash-Fork-AZ.html','city-data.com','Active Ash Fork American Legion/community entity.','assistant census research: Ash Fork other local businesses',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_ash_fork_batch_02","researched_at":"2026-10-27T00:46:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Active Ash Fork American Legion/community entity."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p set official_candidates=(
+ select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
+ and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+),updated_at=now() where p.market='Ash Fork';
