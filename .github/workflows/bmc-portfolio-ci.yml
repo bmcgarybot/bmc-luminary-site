@@ -131,6 +131,14 @@ jobs:
       - name: Validate search and download readiness
         run: python portfolio/automation/validate-search-readiness.py
 
+      - name: Validate research search engines
+        working-directory: portfolio/automation
+        run: |
+          grep -A20 '^engines:' searxng/settings.yml | grep -q 'name: bing'
+          grep -A20 '^engines:' searxng/settings.yml | grep -q 'name: qwant'
+          grep -A20 '^engines:' searxng/settings.yml | grep -q 'name: yahoo'
+          grep -q 'up -d --force-recreate searxng' deploy-update.sh
+
       - name: Validate Compose
         working-directory: portfolio/automation
         run: docker compose --env-file .env.example config >/dev/null
