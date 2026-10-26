@@ -3058,3 +3058,49 @@ The primary operational launch blocker is now:
 - activate at least one real, verified pilot provider.
 
 After provider activation, re-run `runtime-doctor.sh .env` and confirm `live_intake_ready` becomes READY.
+
+
+## 34. STRIPE LIVE WEBHOOK 502 ROOT CAUSE + GATEWAY REFRESH FIX — 2026-10-25
+
+A harmless live Stripe validation was performed:
+- production webhook temporarily subscribed to `payment_link.updated`;
+- metadata-only update made to the $499 live Payment Link;
+- Stripe generated event `evt_1UUbryQU2BLM8GhLYqgJ5WtA`;
+- no charge, price change, customer-facing change, or fake revenue was created.
+
+Stripe delivery returned:
+- **HTTP 502**
+- delivery status: Failed
+- event remained pending.
+
+Root cause identified:
+- `configure-stripe-webhook.sh` recreated `ops_api` after installing the signing secret;
+- `webhook_proxy` (nginx) was not recreated;
+- nginx resolves Docker service names at container startup and retained the old `ops_api` container address;
+- GET `/api/stripe-webhook` returning 405 did not prove upstream health because nginx itself returns that 405 before proxying;
+- the POST request therefore reached nginx but failed to reach the recreated API container, producing 502.
+
+Permanent mitigation committed:
+- `configure-stripe-webhook.sh` now force-recreates `webhook_proxy` immediately after recreating `ops_api`;
+- `start.sh` now starts application services first and then force-recreates `webhook_proxy` so nginx resolves current Docker container addresses.
+
+Immediate production repair:
+```bash
+cd ~/bmc-luminary-site/portfolio/automation
+git pull --ff-only
+docker compose --env-file .env up -d --force-recreate webhook_proxy
+```
+
+Then in Stripe, use **Resend** on event:
+- `evt_1UUbryQU2BLM8GhLYqgJ5WtA`
+
+Expected result:
+- HTTP 2xx, normally 200;
+- pending webhook count clears.
+
+After successful delivery:
+- remove temporary `payment_link.updated` subscription from the Stripe production webhook;
+- remove temporary `bmc_webhook_test` metadata from the $499 Payment Link;
+- record validation success here.
+
+Outreach remains OFF.
