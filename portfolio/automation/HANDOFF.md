@@ -3632,3 +3632,76 @@ Commits:
 - `57b59ae45ca2cafa1d42f80c0b2afe81f29dcb08` — show successful source-native lanes in drain output.
 
 These diagnostics apply on the next pulled/rebuilt run; do not interrupt the currently healthy Phase 2 drain just to obtain them.
+
+
+## 45. PARALLEL PRE-LAUNCH SEO + PUBLIC ENDPOINT CLEANUP — 2026-10-25
+
+While the VPS Phase 2 research drain continued, a parallel GitHub-only pre-launch cleanup was performed. This work did not touch the running database worker.
+
+### Sitemap / indexing corrections
+
+A sitemap-vs-robots conflict was found:
+- multiple real public offer/service pages were listed in `sitemap.xml` while also carrying `noindex,follow`.
+
+Corrected public pages include:
+- garage door service;
+- office coffee & water;
+- facility maintenance;
+- market expansion;
+- waste/recycling audit;
+- linen/laundry sourcing;
+- competitor research;
+- quote sourcing;
+- equipment quotes;
+- move-out/turnover cleaning;
+- used restaurant equipment;
+- restaurant maintenance.
+
+The legacy `/vendor-partner/` page is only a redirect stub to `/providers/`, so it was removed from the sitemap instead of being made indexable.
+
+`validate-search-readiness.py` now:
+- verifies every sitemap URL maps to a public page;
+- rejects sitemap URLs that contain a `noindex` robots meta tag.
+
+This prevents future sitemap/indexing contradictions.
+
+### Storefront generator cleanup
+
+`generate-storefronts.py` now emits the actual live intake endpoint:
+
+`https://hooks.bmcservicenetwork.com/api/intake`
+
+instead of:
+
+`REPLACE_ME`
+
+The 10 generator-managed storefronts were updated to match the generator.
+
+The stale `noindex` override on facility maintenance was also removed from `storefront-overrides.json`.
+
+### Core public pages cleaned
+
+The live intake endpoint was also written directly into high-value manual public pages, including:
+- main Request page;
+- Providers page;
+- Growth Packs;
+- Market Expansion;
+- Competitor Research;
+- Facility Maintenance;
+- Auto Repair;
+- Quote Sourcing;
+- Equipment Quotes;
+- Restaurant Maintenance.
+
+This is a source-code cleanup, not a fix for a broken form. Forms already worked because `core.js` ignored `REPLACE_ME` and fell back to the live global endpoint.
+
+### Validation state
+
+The SEO/indexing/generator changes passed BMC Portfolio CI at commit:
+- `58d8d772105e5d58ef94babcea70727a5952a8fe`
+
+Later endpoint-only page edits were still progressing through CI when this handoff section was written.
+
+GitHub code-search indexing can lag behind direct file writes, so old `REPLACE_ME` search hits may remain visible briefly after the files are updated. Use direct file contents and CI status as the source of truth.
+
+The VPS research drain should continue uninterrupted; do not pull these static-site changes solely to affect the currently running Phase 2 worker.
