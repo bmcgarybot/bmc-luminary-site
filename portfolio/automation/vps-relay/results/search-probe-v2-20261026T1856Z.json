@@ -1,0 +1,21 @@
+{
+  "action": "search_quality_probe",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-26T18:58:14.545162+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "324afe79d1452a7630a3281b13058601c3a87a77",
+  "git_commit_before": "324afe79d1452a7630a3281b13058601c3a87a77",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "32f6a56cc289544db321968d04a180db7855d3fd",
+  "request_id": "search-probe-v2-20261026T1856Z",
+  "request_sha256": "7c7717accc09437c123339aafd5b197dc58c1fb86610d401c10e5d2daf25b8fe",
+  "started_at": "2026-10-26T18:58:11.206804+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"probes\": [\n    {\n      \"query\": \"restaurant equipment repair prescott\",\n      \"result_count\": 0,\n      \"top_results\": [],\n      \"unresponsive_engines\": [\n        [\n          \"brave\",\n          \"Suspended: too many requests\"\n        ],\n        [\n          \"duckduckgo\",\n          \"Suspended: access denied\"\n        ],\n        [\n          \"google cse\",\n          \"Suspended: too many requests\"\n        ]\n      ]\n    },\n    {\n      \"query\": \"commercial refrigeration prescott valley\",\n      \"result_count\": 0,\n      \"top_results\": [],\n      \"unresponsive_engines\": [\n        [\n          \"brave\",\n          \"Suspended: too many requests\"\n        ],\n        [\n          \"duckduckgo\",\n          \"Suspended: access denied\"\n        ],\n        [\n          \"google cse\",\n          \"Suspended: too many requests\"\n        ]\n      ]\n    },\n    {\n      \"query\": \"restaurants kingman arizona\",\n      \"result_count\": 0,\n      \"top_results\": [],\n      \"unresponsive_engines\": [\n        [\n          \"brave\",\n          \"Suspended: too many requests\"\n        ],\n        [\n          \"duckduckgo\",\n          \"Suspended: access denied\"\n        ],\n        [\n          \"google cse\",\n          \"Suspended: too many requests\"\n        ]\n      ]\n    },\n    {\n      \"query\": \"commercial cleaning phoenix arizona\",\n      \"result_count\": 0,\n      \"top_results\": [],\n      \"unresponsive_engines\": [\n        [\n          \"brave\",\n          \"Suspended: too many requests\"\n        ],\n        [\n          \"duckduckgo\",\n          \"Suspended: access denied\"\n        ],\n        [\n          \"google cse\",\n          \"Suspended: too many requests\"\n        ]\n      ]\n    },\n    {\n      \"query\": \"site:facebook.com prescott arizona restaurant equipment repair\",\n      \"result_count\": 0,\n      \"top_results\": [],\n      \"unresponsive_engines\": [\n        [\n          \"brave\",\n          \"Suspended: too many requests\"\n        ],\n        [\n          \"duckduckgo\",\n          \"Suspended: access denied\"\n        ],\n        [\n          \"google cse\",\n          \"Suspended: too many requests\"\n        ]\n      ]\n    }\n  ]\n}",
+  "version": 1
+}
