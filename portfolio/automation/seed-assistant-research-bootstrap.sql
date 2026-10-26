@@ -9247,3 +9247,3769 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Kingman';
+
+
+-- Assistant-led Bullhead City census batch 01 (2026-10-26)
+-- Broad Bullhead City buyer/facility census researched manually by assistant.
+-- Inventory only; preserve closed status and never promote/stage/send.
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','restaurants','restaurants','Bullhead Belle',
+ 'https://www.bullheadcity.com/food-drinks/','bullheadcity.com','City tourism page lists 1251 Highway 95.','assistant bootstrap research: Bullhead City restaurants',0,
+ null,'(928) 763-9400',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City tourism page lists 1251 Highway 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','restaurants','restaurants','Chaparral Golf Course & Restaurant',
+ 'https://www.bullheadcity.com/food-drinks/','bullheadcity.com','City tourism page lists 1260 Mohave Dr.','assistant bootstrap research: Bullhead City restaurants',0,
+ null,'(928) 758-3939',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City tourism page lists 1260 Mohave Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','restaurants','restaurants','Culver''s of Bullhead City AZ',
+ 'https://www.bullheadcity.com/food-drinks/','bullheadcity.com','City tourism page lists 3699 Highway 95.','assistant bootstrap research: Bullhead City restaurants',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City tourism page lists 3699 Highway 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','restaurants','restaurants','Dickey''s BBQ',
+ 'https://www.bullheadcity.com/food-drinks/','bullheadcity.com','City tourism page lists 1931 Mohave Valley Highway 95.','assistant bootstrap research: Bullhead City restaurants',0,
+ null,'858-201-5030',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City tourism page lists 1931 Mohave Valley Highway 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','restaurants','restaurants','Honey Paws BBQ',
+ 'https://www.bullheadcity.com/food-drinks/','bullheadcity.com','City tourism page lists 596 Marina Blvd.','assistant bootstrap research: Bullhead City restaurants',0,
+ null,'(928) 366-3562',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City tourism page lists 596 Marina Blvd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','restaurants','restaurants','Mohave Steakhouse',
+ 'https://www.bullheadcity.com/food-drinks/','bullheadcity.com','City tourism page lists 2430 Highway 95 Suite 4.','assistant bootstrap research: Bullhead City restaurants',0,
+ null,'(928) 704-6878',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City tourism page lists 2430 Highway 95 Suite 4."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','restaurants','restaurants','The Heavy Metal Brewing Co',
+ 'https://www.bullheadcity.com/food-drinks/','bullheadcity.com','City tourism page lists 2921 Friendly Pl.','assistant bootstrap research: Bullhead City restaurants',0,
+ null,'(928) 450-5008',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City tourism page lists 2921 Friendly Pl."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','restaurants','restaurants','Voodoo Cove',
+ 'https://www.bullheadcity.com/food-drinks/','bullheadcity.com','City tourism page lists 2247 Clearwater Dr.','assistant bootstrap research: Bullhead City restaurants',0,
+ null,'(702) 205-5031',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City tourism page lists 2247 Clearwater Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','restaurants','restaurants','Agaves Mexican Restaurant',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/restaurants','mohavelocal.com','Local directory lists 865 Hancock Rd.','assistant bootstrap research: Bullhead City restaurants',0,
+ null,'(928) 763-2633',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Local directory lists 865 Hancock Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','restaurants','restaurants','Antonucci''s Restaurant',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/restaurants','mohavelocal.com','Local directory lists 3061 Hwy 95.','assistant bootstrap research: Bullhead City restaurants',0,
+ null,'(928) 763-8118',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Local directory lists 3061 Hwy 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','restaurants','restaurants','Arby''s',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/restaurants','mohavelocal.com','Local directory lists 2320 Hwy 95.','assistant bootstrap research: Bullhead City restaurants',0,
+ null,'(928) 757-5204',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Local directory lists 2320 Hwy 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','restaurants','restaurants','Bearded Gentleman Pub & Grill',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/restaurants','mohavelocal.com','Local directory lists 1884 Hwy 95.','assistant bootstrap research: Bullhead City restaurants',0,
+ null,'(928) 763-5511',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Local directory lists 1884 Hwy 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','restaurants','restaurants','Black Bear Diner',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/restaurants','mohavelocal.com','Local directory lists 1751 Hwy 95 #25.','assistant bootstrap research: Bullhead City restaurants',0,
+ null,'(928) 763-2477',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Local directory lists 1751 Hwy 95 #25."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','restaurants','restaurants','Buffalo Wild Wings',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/restaurants','mohavelocal.com','Local directory lists 2040 Hwy 95.','assistant bootstrap research: Bullhead City restaurants',0,
+ null,'(928) 763-9464',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Local directory lists 2040 Hwy 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','restaurants','restaurants','California Pit Smoked BBQ Grill',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/restaurants','mohavelocal.com','Local directory lists 990 AZ-95 #1707.','assistant bootstrap research: Bullhead City restaurants',0,
+ null,'(626) 242-7456',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Local directory lists 990 AZ-95 #1707."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','restaurants','restaurants','Carl''s Jr / Green Burrito',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/restaurants','mohavelocal.com','Local directory lists 2195 Hwy 95.','assistant bootstrap research: Bullhead City restaurants',0,
+ null,'(760) 326-4476',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Local directory lists 2195 Hwy 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','hotels_motels','hotels motels lodging','Days Inn',
+ 'https://www.bullheadcity.com/accommodations/','bullheadcity.com','City accommodations page lists 1126 Highway 95.','assistant bootstrap research: Bullhead City hotels motels lodging',0,
+ null,'(928) 754-4040',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City accommodations page lists 1126 Highway 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','hotels_motels','hotels motels lodging','Holiday Inn Express & Suites Bullhead City',
+ 'https://www.bullheadcity.com/accommodations/','bullheadcity.com','City accommodations page lists 1300 Silver Creek Rd.','assistant bootstrap research: Bullhead City hotels motels lodging',0,
+ null,'(928) 538-7200',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City accommodations page lists 1300 Silver Creek Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','hotels_motels','hotels motels lodging','Colorado River Value Inn',
+ 'https://www.bullheadcity.com/accommodations/','bullheadcity.com','City accommodations page lists 1616 Highway 95.','assistant bootstrap research: Bullhead City hotels motels lodging',0,
+ null,'(928) 763-1002',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City accommodations page lists 1616 Highway 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','hotels_motels','hotels motels lodging','Desert Rancho Motel',
+ 'https://www.bullheadcity.com/accommodations/','bullheadcity.com','City accommodations page lists 1041 Highway 95.','assistant bootstrap research: Bullhead City hotels motels lodging',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City accommodations page lists 1041 Highway 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','hotels_motels','hotels motels lodging','Grand Vista',
+ 'https://www.bullheadcity.com/accommodations/','bullheadcity.com','City accommodations page lists 1817 Arcadia Plz.','assistant bootstrap research: Bullhead City hotels motels lodging',0,
+ null,'(928) 763-3090',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City accommodations page lists 1817 Arcadia Plz."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','hotels_motels','hotels motels lodging','Hilltop Hotel',
+ 'https://www.bullheadcity.com/accommodations/','bullheadcity.com','City accommodations page lists 2037 Highway 95.','assistant bootstrap research: Bullhead City hotels motels lodging',0,
+ null,'(928) 758-6620',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City accommodations page lists 2037 Highway 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','hotels_motels','hotels motels lodging','Motel 6',
+ 'https://www.bullheadcity.com/accommodations/','bullheadcity.com','City accommodations page lists 11081 Highway 95.','assistant bootstrap research: Bullhead City hotels motels lodging',0,
+ null,'(928) 444-8019',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City accommodations page lists 11081 Highway 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','hotels_motels','hotels motels lodging','Sunshine Motel',
+ 'https://www.bullheadcity.com/accommodations/','bullheadcity.com','City accommodations page lists 3181 Highway 95.','assistant bootstrap research: Bullhead City hotels motels lodging',0,
+ null,'(928) 444-0079',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City accommodations page lists 3181 Highway 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','schools','schools charter schools private schools','Bullhead City Junior High School',
+ 'https://www.mohave.gov/departments/information-technology/gis-maps/documents/all-mohave-county-schools/','mohave.gov','Mohave County lists 1062 Hancock Rd.','assistant bootstrap research: Bullhead City schools charter schools private schools',0,
+ null,'(928) 758-3921',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County lists 1062 Hancock Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','schools','schools charter schools private schools','Coyote Canyon School',
+ 'https://www.mohave.gov/departments/information-technology/gis-maps/documents/all-mohave-county-schools/','mohave.gov','Mohave County lists 1820 Lakeside Dr.','assistant bootstrap research: Bullhead City schools charter schools private schools',0,
+ null,'(928) 758-4909',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County lists 1820 Lakeside Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','schools','schools charter schools private schools','Desert Valley School',
+ 'https://www.mohave.gov/departments/information-technology/gis-maps/documents/all-mohave-county-schools/','mohave.gov','Mohave County lists 1066 Marina Blvd.','assistant bootstrap research: Bullhead City schools charter schools private schools',0,
+ null,'(928) 758-6606',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County lists 1066 Marina Blvd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','schools','schools charter schools private schools','Diamondback Elementary School',
+ 'https://www.mohave.gov/departments/information-technology/gis-maps/documents/all-mohave-county-schools/','mohave.gov','Mohave County lists 2550 Tesota Way.','assistant bootstrap research: Bullhead City schools charter schools private schools',0,
+ null,'(928) 758-6858',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County lists 2550 Tesota Way."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','schools','schools charter schools private schools','Fox Creek Junior High School',
+ 'https://www.mohave.gov/departments/information-technology/gis-maps/documents/all-mohave-county-schools/','mohave.gov','Mohave County lists 3101 Desert Sky Blvd.','assistant bootstrap research: Bullhead City schools charter schools private schools',0,
+ null,'(928) 704-2500',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County lists 3101 Desert Sky Blvd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','schools','schools charter schools private schools','Mountain View Elementary School',
+ 'https://www.mohave.gov/departments/information-technology/gis-maps/documents/all-mohave-county-schools/','mohave.gov','Mohave County lists 2380 E Third St.','assistant bootstrap research: Bullhead City schools charter schools private schools',0,
+ null,'(928) 754-3203',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County lists 2380 E Third St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','schools','schools charter schools private schools','Sunrise Elementary School',
+ 'https://www.mohave.gov/departments/information-technology/gis-maps/documents/all-mohave-county-schools/','mohave.gov','Mohave County lists 2645 Landon Dr.','assistant bootstrap research: Bullhead City schools charter schools private schools',0,
+ null,'(928) 754-1815',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County lists 2645 Landon Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','schools','schools charter schools private schools','Mohave High School',
+ 'https://www.mohave.gov/departments/information-technology/gis-maps/documents/all-mohave-county-schools/','mohave.gov','Mohave County lists 2251 Highway 95.','assistant bootstrap research: Bullhead City schools charter schools private schools',0,
+ null,'(928) 758-3916',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County lists 2251 Highway 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','schools','schools charter schools private schools','Mohave Accelerated Learning Center',
+ 'https://azreportcards.azed.gov/districts/detail/79498','azreportcards.azed.gov','Arizona Department of Education lists charter district/school at 625 Marina Blvd, Bullhead City.','assistant bootstrap research: Bullhead City schools charter schools private schools',0,
+ null,'(928) 704-9345',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Arizona Department of Education lists charter district/school at 625 Marina Blvd, Bullhead City."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','schools','schools charter schools private schools','Young Scholars Academy',
+ 'https://azreportcards.azed.gov/districts/detail/4385','azreportcards.azed.gov','Arizona Department of Education lists Young Scholars Academy district at 1501 E Valencia Rd, Bullhead City.','assistant bootstrap research: Bullhead City schools charter schools private schools',0,
+ null,'(928) 704-1100',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Arizona Department of Education lists Young Scholars Academy district at 1501 E Valencia Rd, Bullhead City."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','churches','churches worship centers','Anointed Word International Church',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/churches-religious-organizations','mohavelocal.com','Directory lists 2875 Desert Sky Blvd.','assistant bootstrap research: Bullhead City churches worship centers',0,
+ null,'(928) 763-9227',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 2875 Desert Sky Blvd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','churches','churches worship centers','Bethel Community Church',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/churches-religious-organizations','mohavelocal.com','Directory lists 858 Hancock Rd.','assistant bootstrap research: Bullhead City churches worship centers',0,
+ null,'(928) 758-4455',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 858 Hancock Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','churches','churches worship centers','Bullhead City Church of Christ',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/churches-religious-organizations','mohavelocal.com','Directory lists 1656 Turquoise Rd.','assistant bootstrap research: Bullhead City churches worship centers',0,
+ null,'(928) 219-3951',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 1656 Turquoise Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','churches','churches worship centers','Calvary Chapel Desert Light',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/churches-religious-organizations','mohavelocal.com','Directory lists 1690 Newberry Dr.','assistant bootstrap research: Bullhead City churches worship centers',0,
+ null,'(928) 758-2636',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 1690 Newberry Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','churches','churches worship centers','City Bible Church',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/churches-religious-organizations','mohavelocal.com','Directory lists 922 Marina Blvd.','assistant bootstrap research: Bullhead City churches worship centers',0,
+ null,'(928) 758-2232',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 922 Marina Blvd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','churches','churches worship centers','Community Lutheran Church',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/churches-religious-organizations','mohavelocal.com','Directory lists 2275 Ricca Rd.','assistant bootstrap research: Bullhead City churches worship centers',0,
+ null,'(928) 763-2422',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 2275 Ricca Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','churches','churches worship centers','Desert Shores Community Baptist Church',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/churches-religious-organizations','mohavelocal.com','Directory lists 2625 Landon Dr.','assistant bootstrap research: Bullhead City churches worship centers',0,
+ null,'(928) 754-1111',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 2625 Landon Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','dental','dentists dental offices orthodontists','Abdelnour Joe W DDS MS',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/dentists','mohavelocal.com','Directory lists 1467 Palma Rd.','assistant bootstrap research: Bullhead City dentists dental offices orthodontists',0,
+ null,'(928) 753-2126',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 1467 Palma Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','dental','dentists dental offices orthodontists','Arizona Dental',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/dentists','mohavelocal.com','Directory lists 1980 Hwy 95.','assistant bootstrap research: Bullhead City dentists dental offices orthodontists',0,
+ null,'(928) 758-2778',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 1980 Hwy 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','dental','dentists dental offices orthodontists','Arizona Valley Dental',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/dentists','mohavelocal.com','Directory lists 1360 Ramar Rd.','assistant bootstrap research: Bullhead City dentists dental offices orthodontists',0,
+ null,'(928) 763-4137',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 1360 Ramar Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','dental','dentists dental offices orthodontists','Boyd Keith E Jr DDS PC',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/dentists','mohavelocal.com','Directory lists 3003 Hwy 95 #103.','assistant bootstrap research: Bullhead City dentists dental offices orthodontists',0,
+ null,'(928) 763-5777',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 3003 Hwy 95 #103."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','dental','dentists dental offices orthodontists','Bruehl Rudy G DDS',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/dentists','mohavelocal.com','Directory lists 2600 Silver Creek Rd.','assistant bootstrap research: Bullhead City dentists dental offices orthodontists',0,
+ null,'(928) 514-5043',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 2600 Silver Creek Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','dental','dentists dental offices orthodontists','Bullhead City Dentist',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/dentists','mohavelocal.com','Directory lists 3015 Hwy 95 #112.','assistant bootstrap research: Bullhead City dentists dental offices orthodontists',0,
+ null,'(928) 754-0601',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 3015 Hwy 95 #112."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','dental','dentists dental offices orthodontists','Crossroads Family Dental',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/dentists','mohavelocal.com','Directory lists 3750 Hwy 95.','assistant bootstrap research: Bullhead City dentists dental offices orthodontists',0,
+ null,'(928) 704-2580',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 3750 Hwy 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','dental','dentists dental offices orthodontists','Kort Michael DDS',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/dentists','mohavelocal.com','Directory lists 2401 Miracle Mile.','assistant bootstrap research: Bullhead City dentists dental offices orthodontists',0,
+ null,'(928) 505-5437',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 2401 Miracle Mile."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','dental','dentists dental offices orthodontists','Lamb Frederick B DDS',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/dentists','mohavelocal.com','Directory lists 1467 Palma Rd.','assistant bootstrap research: Bullhead City dentists dental offices orthodontists',0,
+ null,'(928) 763-2515',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 1467 Palma Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','dental','dentists dental offices orthodontists','Lucero Charles DDS',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/dentists','mohavelocal.com','Current Bullhead dentist directory candidate.','assistant bootstrap research: Bullhead City dentists dental offices orthodontists',0,
+ null,'(928) 505-5437',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead dentist directory candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','dental','dentists dental offices orthodontists','Melde Michael J DMD',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/dentists','mohavelocal.com','Directory lists 3003 Hwy 95 #103.','assistant bootstrap research: Bullhead City dentists dental offices orthodontists',0,
+ null,'(928) 763-5551',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 3003 Hwy 95 #103."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','AJS Insurance Services',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Allstate Insurance Companies',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','American Family Insurance',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Applewhite Kelly Farmers',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Atis',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Avalos Mary Farmers',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Barton Kirk Farmers',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Carling Kitty Insurance',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Citywide Insurance Center Inc',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Donathan Insurance Agency',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Esgro Insurance Services',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Farm Bureau Financial Services - Hwy 95 Unit 7',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Farm Bureau Financial Services - Hwy 95 Suite A',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Farmers Claims',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Farmers Insurance - Kelly Applewhite',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Farmers Insurance Group',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Fulco Mavis A Insurance',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Hiestand Troy Insurance',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','Insured Services',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','insurance_professional','insurance agents professional offices','M & O Insurance',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/insurance-agents-brokers','mohavelocal.com','Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion.','assistant bootstrap research: Bullhead City insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City insurance/professional-office directory candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','A-1 Automotive',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 366 Marina Blvd.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 704-4155',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 366 Marina Blvd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','AATCO Transmissions & Auto Repair',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 1575 Alta Vista Rd.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 444-1155',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 1575 Alta Vista Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','AJ''s & Billy''s Big Daddy''s Garage',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 366 Marina Blvd B&C.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 299-5062',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 366 Marina Blvd B&C."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','AZ Automotive Repair & Off Road Center LLC',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 3700 Hwy 95.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 704-6989',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 3700 Hwy 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','All About Auto Service & Towing Mobile RV',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 1166 Hwy 95.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 754-7869',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 1166 Hwy 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','All Express Lube',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 1097 Hwy 95.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 754-4844',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 1097 Hwy 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','All Inclusive Auto Center',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 2725 AZ-95.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 278-8225',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 2725 AZ-95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','All Performance Auto Care',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 1272 Baseline Rd.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 704-9099',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 1272 Baseline Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','Auto AC Transmission Repair',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 1141 Hancock Rd.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 404-1413',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 1141 Hancock Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','Auto Doc Service Center LLC',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 2170 Hwy 95.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 758-5300',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 2170 Hwy 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','Auto King',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 1131 Interstate Pl #3.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 704-2886',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 1131 Interstate Pl #3."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','B & G Automotive',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 145 Lee Ave.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 754-3469',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 145 Lee Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','Bullhead Auto & Marine Superstore',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 2535 Miracle Mile.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 754-2236',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 2535 Miracle Mile."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','Bullhead Auto Machine',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 1591 Ramar Rd.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 763-6599',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 1591 Ramar Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','Bullhead Auto Repair',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 165 Lee Ave.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 754-2405',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 165 Lee Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','Bullhead''s Carb & Auto Repair',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 543 Marina Blvd.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 704-0070',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 543 Marina Blvd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','general_business','other local businesses','C & C Automotive Repair LLC',
+ 'https://www.mohavelocal.com/l/bullhead-city-az/auto-repair','mohavelocal.com','Directory lists 1340 Riverview Dr.','assistant bootstrap research: Bullhead City other local businesses',0,
+ null,'(928) 704-8620',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Directory lists 1340 Riverview Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Bath & Body Works',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 3699 Arizona 95 Suite 660.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,'(614) 415-0129',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 3699 Arizona 95 Suite 660."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Kohl''s',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 3699 Highway 95 #180.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,'(928) 704-3700',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 3699 Highway 95 #180."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Sam''s Club',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 600 Highway 95 Suite 200.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,'(928) 754-3900',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 600 Highway 95 Suite 200."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Target',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 3699 Highway 95 Suite 100.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,'(928) 704-5064',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 3699 Highway 95 Suite 100."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Ulta Beauty',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 3699 Highway 95 #600.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,'(928) 450-4143',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 3699 Highway 95 #600."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Abriana''s Boutique',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 810 Gemstone Ave Suite 4.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,'(928) 219-9963',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 810 Gemstone Ave Suite 4."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Arizona Candle Company',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 2557 Trade Wind Dr.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 2557 Trade Wind Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Astoria Net Shop',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 1642 N Oatman Rd Suite B.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,'(503) 440-1493',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 1642 N Oatman Rd Suite B."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','AT&T',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 2840 Highway 95.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 2840 Highway 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','AutoZone',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 2380 Highway 95.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 2380 Highway 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Batteries Plus',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 1798 Hwy 95 Suite 38.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,'(928) 299-5400',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 1798 Hwy 95 Suite 38."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Big 5',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 1835 Highway 95.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,'(928) 763-0608',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 1835 Highway 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Boot Barn',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 3699 Highway 95 Suite 360.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 3699 Highway 95 Suite 360."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Bullhead Solar',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 2813 Fort Mojave Dr.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,'(928) 704-6202',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 2813 Fort Mojave Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','C-A-L Ranch',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 2350 Miracle Mile Unit 450.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 2350 Miracle Mile Unit 450."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Cato',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 3699 Highway 95 #160.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 3699 Highway 95 #160."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Cosmo Prof',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 2350 Miracle Mile #346.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 2350 Miracle Mile #346."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Dollar General - Commercial Way',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 2010 Commercial Way.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 2010 Commercial Way."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Dollar General - Adobe Rd',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 2930 Adobe Rd.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 2930 Adobe Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','retail','retail stores shopping stores','Dollar General - Landon Dr',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','City retail page lists 832 Landon Dr.','assistant bootstrap research: Bullhead City retail stores shopping stores',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City retail page lists 832 Landon Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','grocery','grocery stores supermarkets markets','Sam''s Club Supermarket',
+ 'https://www.riversideresort.com/community-information/local-information/','riversideresort.com','Local information source lists 600 AZ-95.','assistant bootstrap research: Bullhead City grocery stores supermarkets markets',0,
+ null,'(928) 754-3900',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Local information source lists 600 AZ-95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','grocery','grocery stores supermarkets markets','Safeway Supermarket',
+ 'https://www.riversideresort.com/community-information/local-information/','riversideresort.com','Local information source lists 1751 AZ-95.','assistant bootstrap research: Bullhead City grocery stores supermarkets markets',0,
+ null,'(928) 763-3555',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Local information source lists 1751 AZ-95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','grocery','grocery stores supermarkets markets','Walmart Supercenter',
+ 'https://www.riversideresort.com/community-information/local-information/','riversideresort.com','Local information source lists 2840 AZ-95.','assistant bootstrap research: Bullhead City grocery stores supermarkets markets',0,
+ null,'(928) 758-7222',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Local information source lists 2840 AZ-95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','grocery','grocery stores supermarkets markets','Smith''s Food and Drug',
+ 'https://www.riversideresort.com/community-information/local-information/','riversideresort.com','Local information source lists 1775 Lakeside Dr.','assistant bootstrap research: Bullhead City grocery stores supermarkets markets',0,
+ null,'(928) 763-8686',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Local information source lists 1775 Lakeside Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','grocery','grocery stores supermarkets markets','Smart & Final Extra!',
+ 'https://www.riversideresort.com/community-information/local-information/','riversideresort.com','Current structured local-business result places warehouse-style grocer at 2250 AZ-95 Ste 496.','assistant bootstrap research: Bullhead City grocery stores supermarkets markets',0,
+ null,'(928) 758-1505',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current structured local-business result places warehouse-style grocer at 2250 AZ-95 Ste 496."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','pharmacies','pharmacies drug stores','CVS Pharmacy',
+ 'https://www.bullheadcityaz.gov/media/pmhbsygy/1-sec-resource-guide.pdf','bullheadcityaz.gov','City resource guide lists 2350 Miracle Mile.','assistant bootstrap research: Bullhead City pharmacies drug stores',0,
+ null,'(928) 758-2212',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City resource guide lists 2350 Miracle Mile."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','pharmacies','pharmacies drug stores','Riverside Pharmacy',
+ 'https://www.bullheadcityaz.gov/media/pmhbsygy/1-sec-resource-guide.pdf','bullheadcityaz.gov','City resource guide lists 2410 AZ-95.','assistant bootstrap research: Bullhead City pharmacies drug stores',0,
+ null,'(928) 219-4700',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City resource guide lists 2410 AZ-95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','pharmacies','pharmacies drug stores','Safeway Food and Drug Pharmacy',
+ 'https://www.bullheadcityaz.gov/media/pmhbsygy/1-sec-resource-guide.pdf','bullheadcityaz.gov','City resource guide lists 1751 AZ-95.','assistant bootstrap research: Bullhead City pharmacies drug stores',0,
+ null,'(928) 763-1888',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City resource guide lists 1751 AZ-95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','pharmacies','pharmacies drug stores','Sam''s Club Pharmacy',
+ 'https://www.bullheadcityaz.gov/media/pmhbsygy/1-sec-resource-guide.pdf','bullheadcityaz.gov','City resource guide lists 600 AZ-95.','assistant bootstrap research: Bullhead City pharmacies drug stores',0,
+ null,'(928) 754-3961',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City resource guide lists 600 AZ-95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','pharmacies','pharmacies drug stores','Smith''s Pharmacy',
+ 'https://www.bullheadcityaz.gov/media/pmhbsygy/1-sec-resource-guide.pdf','bullheadcityaz.gov','City resource guide lists 1775 Lakeside Dr.','assistant bootstrap research: Bullhead City pharmacies drug stores',0,
+ null,'(928) 763-8777',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City resource guide lists 1775 Lakeside Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','pharmacies','pharmacies drug stores','Target CVS Pharmacy',
+ 'https://www.bullheadcityaz.gov/media/pmhbsygy/1-sec-resource-guide.pdf','bullheadcityaz.gov','City resource guide lists 3699 AZ-95.','assistant bootstrap research: Bullhead City pharmacies drug stores',0,
+ null,'(928) 704-5064',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City resource guide lists 3699 AZ-95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','pharmacies','pharmacies drug stores','Walgreens',
+ 'https://www.bullheadcityaz.gov/media/pmhbsygy/1-sec-resource-guide.pdf','bullheadcityaz.gov','City resource guide lists 2360 AZ-95.','assistant bootstrap research: Bullhead City pharmacies drug stores',0,
+ null,'(928) 763-5858',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"City resource guide lists 2360 AZ-95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','medical_centers','hospitals medical centers clinics','Western Arizona Regional Medical Center',
+ 'https://www.riversideresort.com/community-information/local-information/','riversideresort.com','Local information source lists hospital at 2735 Silver Creek Rd.','assistant bootstrap research: Bullhead City hospitals medical centers clinics',0,
+ null,'(928) 763-2273',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Local information source lists hospital at 2735 Silver Creek Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','medical_centers','hospitals medical centers clinics','Optima Medical - Bullhead City',
+ 'https://www.optimamedicalaz.com/locations/bullhead-city/','optimamedicalaz.com','Current primary-care clinic at 2500 Canyon Rd in Bullhead City.','assistant bootstrap research: Bullhead City hospitals medical centers clinics',0,
+ null,'(928) 704-4499',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Current primary-care clinic at 2500 Canyon Rd in Bullhead City."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','medical_centers','hospitals medical centers clinics','Optima Medical - South Bullhead City',
+ 'https://www.optimamedicalaz.com/locations/south-bullhead-city/','optimamedicalaz.com','Current outpatient primary-care clinic at 3015 AZ-95 Suite 105.','assistant bootstrap research: Bullhead City hospitals medical centers clinics',0,
+ null,'(928) 763-2001',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Current outpatient primary-care clinic at 3015 AZ-95 Suite 105."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','medical_centers','hospitals medical centers clinics','Khatib Family Practice',
+ 'https://khatibfamilypractice.com/','khatibfamilypractice.com','Current independent primary-care clinic at 2755 Silver Creek Rd Suite 109.','assistant bootstrap research: Bullhead City hospitals medical centers clinics',0,
+ null,'(928) 763-9009',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Current independent primary-care clinic at 2755 Silver Creek Rd Suite 109."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','senior_daycare','senior living assisted living daycare childcare','Davis Place Senior Living',
+ 'https://www.seniorlifestyle.com/property/arizona/davis-place/','seniorlifestyle.com','Current assisted-living facility at 2943 Desert Sky Blvd.','assistant bootstrap research: Bullhead City senior living assisted living daycare childcare',0,
+ null,'(928) 763-4570',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Current assisted-living facility at 2943 Desert Sky Blvd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','senior_daycare','senior living assisted living daycare childcare','Discovery Learning Center And Child Care',
+ 'https://www.azcarecheck.com/','azcarecheck.com','Current licensed childcare center at 1895 Lakeside Dr; structured local-business result shows AZ license CDC-17668.','assistant bootstrap research: Bullhead City senior living assisted living daycare childcare',0,
+ null,'(928) 763-3290',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current licensed childcare center at 1895 Lakeside Dr; structured local-business result shows AZ license CDC-17668."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','gyms_fitness','gyms fitness centers recreation centers','Planet Fitness',
+ 'https://www.planetfitness.com/gyms/bullhead-city-az/','planetfitness.com','Current gym at 1568 Marina Blvd.','assistant bootstrap research: Bullhead City gyms fitness centers recreation centers',0,
+ null,'(928) 299-5074',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Current gym at 1568 Marina Blvd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','gyms_fitness','gyms fitness centers recreation centers','Mad Dog Fitness',
+ 'https://www.maddogfitnessaz.com/','maddogfitnessaz.com','Current Bullhead City gym at 2250 AZ-95 #336.','assistant bootstrap research: Bullhead City gyms fitness centers recreation centers',0,
+ null,'(928) 704-7717',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Current Bullhead City gym at 2250 AZ-95 #336."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','property_management','property management companies apartment communities','Singer & Co. Properties',
+ 'https://singerproperties.com/','singerproperties.com','Current Bullhead City property-management company at 1107 Hancock Rd.','assistant bootstrap research: Bullhead City property management companies apartment communities',0,
+ null,'(928) 444-0275',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Current Bullhead City property-management company at 1107 Hancock Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','warehouses_industrial','warehouses industrial businesses distribution centers','City Square Storage',
+ 'https://www.bullheadareachamber.com/directory','bullheadareachamber.com','Current Bullhead City storage-facility candidate; 2250 AZ-95 #256.','assistant bootstrap research: Bullhead City warehouses industrial businesses distribution centers',0,
+ null,'(928) 588-3600',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City storage-facility candidate; 2250 AZ-95 #256."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','warehouses_industrial','warehouses industrial businesses distribution centers','Bullhead AAA Storage',
+ 'https://www.bullheadareachamber.com/directory','bullheadareachamber.com','Current Bullhead City storage-facility candidate; 1594 Booster Dr.','assistant bootstrap research: Bullhead City warehouses industrial businesses distribution centers',0,
+ null,'(928) 704-4440',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City storage-facility candidate; 1594 Booster Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','warehouses_industrial','warehouses industrial businesses distribution centers','American Mini Storage',
+ 'https://www.bullheadareachamber.com/directory','bullheadareachamber.com','Current Bullhead City storage-facility candidate; 1596 Riverview Dr.','assistant bootstrap research: Bullhead City warehouses industrial businesses distribution centers',0,
+ null,'(928) 758-4700',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City storage-facility candidate; 1596 Riverview Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','warehouses_industrial','warehouses industrial businesses distribution centers','Mohave Storage - Interstate Pl',
+ 'https://www.bullheadareachamber.com/directory','bullheadareachamber.com','Current Bullhead City storage-facility candidate; 1129 Interstate Pl.','assistant bootstrap research: Bullhead City warehouses industrial businesses distribution centers',0,
+ null,'(928) 219-6598',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City storage-facility candidate; 1129 Interstate Pl."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','auto_dealers','auto dealers car dealerships','Findlay Chevrolet Bullhead',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','Current Bullhead City full-service dealership candidate; 2565 Laughlin View Dr.','assistant bootstrap research: Bullhead City auto dealers car dealerships',0,
+ null,'(928) 754-3400',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City full-service dealership candidate; 2565 Laughlin View Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','auto_dealers','auto dealers car dealerships','Anderson Ford Bullhead City',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','Current Bullhead City full-service dealership candidate; 2585 S Hwy 95.','assistant bootstrap research: Bullhead City auto dealers car dealerships',0,
+ null,'(928) 704-9850',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City full-service dealership candidate; 2585 S Hwy 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','auto_dealers','auto dealers car dealerships','Swanty''s of Bullhead City',
+ 'https://www.bullheadcity.com/retail/','bullheadcity.com','Current Bullhead City full-service dealership candidate; 2494 S Hwy 95.','assistant bootstrap research: Bullhead City auto dealers car dealerships',0,
+ null,'(928) 704-2222',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Bullhead City full-service dealership candidate; 2494 S Hwy 95."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','public_facilities','government public facilities municipal buildings','Optimum Community Center',
+ 'https://www.bullheadcityaz.gov/leadership-government/departments-and-divisions/marketplace/','bullheadcityaz.gov','City Marketplace page identifies Optimum Community Center as an active municipal event/facility venue.','assistant bootstrap research: Bullhead City government public facilities municipal buildings',0,
+ null,'(928) 763-9400',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"City Marketplace page identifies Optimum Community Center as an active municipal event/facility venue."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Bullhead City','public_facilities','government public facilities municipal buildings','Bullhead City Senior Enrichment Center',
+ 'https://www.bullheadcityaz.gov/leadership-government/departments-and-divisions/marketplace/','bullheadcityaz.gov','City resources identify the Senior Center at 2275 Trane Rd and Marketplace operations.','assistant bootstrap research: Bullhead City government public facilities municipal buildings',0,
+ null,'(928) 763-0193',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_bullhead_city_batch_01","researched_at":"2026-10-26T22:55:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"City resources identify the Senior Center at 2275 Trane Rd and Marketplace operations."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Bullhead City';
