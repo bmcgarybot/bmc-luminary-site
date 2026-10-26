@@ -60,81 +60,83 @@ psql_cmd(){
 }
 
 if [ "$SIDE" = "vendor" ]; then
-  SQL_CTE='
+  SQL_CTE="$(cat <<'SQL'
 with candidates as (
   select distinct on (lower(v.public_email))
     v.vendor_id entity_id,
     v.business_name,
     lower(v.public_email) public_email,
-    coalesce(vm.market,'''') market,
-    coalesce(vs.service_key,'''') service_or_campaign,
-    coalesce(v.association_signal,'''') signal,
+    coalesce(vm.market,'') market,
+    coalesce(vs.service_key,'') service_or_campaign,
+    coalesce(v.association_signal,'') signal,
     coalesce(v.quality_score,0) quality_score
   from vendors v
   left join lateral (
     select market from vendor_markets
     where vendor_id=v.vendor_id
-      and (:'"'"'market'"'"'='''' or market=:'"'"'market'"'"')
+      and (:'market'='' or market=:'market')
     order by market limit 1
   ) vm on true
   left join lateral (
     select service_key from vendor_services
     where vendor_id=v.vendor_id
-      and (:'"'"'filter'"'"'='''' or service_key=:'"'"'filter'"'"')
+      and (:'filter'='' or service_key=:'filter')
     order by service_key limit 1
   ) vs on true
-  where v.status=''prospect''
-    and coalesce(v.public_email,'''')<>''''
-    and (:'"'"'market'"'"'='''' or vm.market is not null)
-    and (:'"'"'filter'"'"'='''' or vs.service_key is not null)
+  where v.status='prospect'
+    and coalesce(v.public_email,'')<>''
+    and (:'market'='' or vm.market is not null)
+    and (:'filter'='' or vs.service_key is not null)
     and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(v.public_email))
     and not exists(
       select 1 from outreach o
-      where o.entity_type=''vendor'' and o.entity_id=v.vendor_id and o.campaign=''vendor_recruitment''
+      where o.entity_type='vendor' and o.entity_id=v.vendor_id and o.campaign='vendor_recruitment'
     )
   order by lower(v.public_email),
-    case when coalesce(v.association_signal,'''')<>'''' then 0 else 1 end,
+    case when coalesce(v.association_signal,'')<>'' then 0 else 1 end,
     v.quality_score desc nulls last,
     v.business_name
 ),
 selected as (
   select * from candidates
-  order by case when signal<>'''' then 0 else 1 end,quality_score desc,business_name
+  order by case when signal<>'' then 0 else 1 end,quality_score desc,business_name
   limit :lim
-)'
-  CAMPAIGN="vendor_recruitment"
+)
+SQL
+)"
 else
-  SQL_CTE='
+  SQL_CTE="$(cat <<'SQL'
 with candidates as (
   select distinct on (lower(b.public_email))
     b.buyer_id entity_id,
     b.business_name,
     lower(b.public_email) public_email,
-    coalesce(b.market,'''') market,
-    coalesce(nullif(b.campaign,''''),''buyer_general'') service_or_campaign,
-    coalesce(b.priority,'''') signal,
-    case when b.priority=''A'' then 100 when b.priority=''B'' then 50 else 0 end quality_score
+    coalesce(b.market,'') market,
+    coalesce(nullif(b.campaign,''),'buyer_general') service_or_campaign,
+    coalesce(b.priority,'') signal,
+    case when b.priority='A' then 100 when b.priority='B' then 50 else 0 end quality_score
   from buyers b
-  where b.status in (''new'',''prospect'')
-    and coalesce(b.public_email,'''')<>''''
-    and (:'"'"'market'"'"'='''' or b.market=:'"'"'market'"'"')
+  where b.status in ('new','prospect')
+    and coalesce(b.public_email,'')<>''
+    and (:'market'='' or b.market=:'market')
     and (
-      :'"'"'filter'"'"'=''''
-      or coalesce(b.campaign,'''')=:'"'"'filter'"'"'
-      or :'"'"'filter'"'"'=any(string_to_array(coalesce(b.likely_services,''''),''|''))
+      :'filter'=''
+      or coalesce(b.campaign,'')=:'filter'
+      or :'filter'=any(string_to_array(coalesce(b.likely_services,''),'|'))
     )
     and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(b.public_email))
-    and not exists(select 1 from outreach o where o.entity_type=''buyer'' and o.entity_id=b.buyer_id)
+    and not exists(select 1 from outreach o where o.entity_type='buyer' and o.entity_id=b.buyer_id)
   order by lower(b.public_email),
-    case when b.priority=''A'' then 0 when b.priority=''B'' then 1 else 2 end,
+    case when b.priority='A' then 0 when b.priority='B' then 1 else 2 end,
     b.business_name
 ),
 selected as (
   select * from candidates
   order by quality_score desc,business_name
   limit :lim
-)'
-  CAMPAIGN="buyer_general"
+)
+SQL
+)"
 fi
 
 echo "BMC researched outreach wave staging"
@@ -166,14 +168,14 @@ fi
 if [ "$SIDE" = "vendor" ]; then
   psql_cmd -c "$SQL_CTE
 insert into outreach(entity_type,entity_id,campaign,wave,channel,sequence_step,status,next_followup_at,opt_out)
-select ''vendor'',entity_id,''vendor_recruitment'',:'"'"'wave'"'"',''email'',0,''queued'',now(),false
+select 'vendor',entity_id,'vendor_recruitment',:'wave','email',0,'queued',now(),false
 from selected;"
 else
   psql_cmd -c "$SQL_CTE
 insert into outreach(entity_type,entity_id,campaign,wave,channel,sequence_step,status,next_followup_at,opt_out)
-select ''buyer'',entity_id,
-       case when service_or_campaign='''' then ''buyer_general'' else service_or_campaign end,
-       :'"'"'wave'"'"',''email'',0,''queued'',now(),false
+select 'buyer',entity_id,
+       case when service_or_campaign='' then 'buyer_general' else service_or_campaign end,
+       :'wave','email',0,'queued',now(),false
 from selected;"
 fi
 
