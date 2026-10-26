@@ -55,8 +55,10 @@ DBUSER="$(env_value POSTGRES_USER)"
 DBNAME="$(env_value POSTGRES_DB)"
 [ -n "$DBUSER" ] && [ -n "$DBNAME" ] || { echo "POSTGRES_USER / POSTGRES_DB missing."; exit 1; }
 
-psql_cmd(){
-  docker compose --env-file "$ENV_FILE" exec -T postgres     psql -v ON_ERROR_STOP=1 -U "$DBUSER" -d "$DBNAME"     -v wave="$WAVE" -v lim="$LIMIT" -v market="$MARKET" -v filter="$FILTER" "$@"
+psql_stdin(){
+  docker compose --env-file "$ENV_FILE" exec -T postgres \
+    psql -v ON_ERROR_STOP=1 -U "$DBUSER" -d "$DBNAME" \
+    -v wave="$WAVE" -v lim="$LIMIT" -v market="$MARKET" -v filter="$FILTER" "$@"
 }
 
 if [ "$SIDE" = "vendor" ]; then
@@ -146,11 +148,12 @@ echo "All outbound switches verified OFF."
 echo
 
 echo "Preview:"
-psql_cmd -c "$SQL_CTE
+printf '%s\n' "$SQL_CTE
 select entity_id,business_name,public_email,market,service_or_campaign
-from selected order by quality_score desc,business_name;"
+from selected order by quality_score desc,business_name;" | psql_stdin
 
-COUNT="$(psql_cmd -Atc "$SQL_CTE select count(*) from selected;")"
+COUNT="$(printf '%s\n' "$SQL_CTE
+select count(*) from selected;" | psql_stdin -At)"
 echo
 echo "Eligible selected records: $COUNT"
 
@@ -166,17 +169,17 @@ if [ "$COUNT" -eq 0 ]; then
 fi
 
 if [ "$SIDE" = "vendor" ]; then
-  psql_cmd -c "$SQL_CTE
+  printf '%s\n' "$SQL_CTE
 insert into outreach(entity_type,entity_id,campaign,wave,channel,sequence_step,status,next_followup_at,opt_out)
 select 'vendor',entity_id,'vendor_recruitment',:'wave','email',0,'queued',now(),false
-from selected;"
+from selected;" | psql_stdin
 else
-  psql_cmd -c "$SQL_CTE
+  printf '%s\n' "$SQL_CTE
 insert into outreach(entity_type,entity_id,campaign,wave,channel,sequence_step,status,next_followup_at,opt_out)
 select 'buyer',entity_id,
        case when service_or_campaign='' then 'buyer_general' else service_or_campaign end,
        :'wave','email',0,'queued',now(),false
-from selected;"
+from selected;" | psql_stdin
 fi
 
 echo
