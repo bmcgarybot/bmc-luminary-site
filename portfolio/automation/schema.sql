@@ -503,6 +503,9 @@ create table if not exists market_inventory_candidates (
   public_email text,
   public_phone text,
   official_site boolean default false,
+  source_tier text not null default 'discovery',
+  verification_status text not null default 'discovery',
+  last_verified_at timestamptz,
   promoted_entity_id text,
   status text default 'discovered',
   evidence jsonb default '{}'::jsonb,
@@ -517,6 +520,15 @@ alter table market_inventory_candidates
   drop constraint if exists market_inventory_candidates_side_market_category_key_source_url_key;
 create unique index if not exists uq_market_inventory_candidate_business_source
 on market_inventory_candidates(side,market,category_key,source_url,business_name);
+
+alter table market_inventory_candidates add column if not exists source_tier text not null default 'discovery';
+alter table market_inventory_candidates add column if not exists verification_status text not null default 'discovery';
+alter table market_inventory_candidates add column if not exists last_verified_at timestamptz;
+update market_inventory_candidates
+set source_tier=case when official_site then 'direct' else coalesce(nullif(source_tier,''),'discovery') end,
+    verification_status=case when official_site then 'direct_evidence' else coalesce(nullif(verification_status,''),'discovery') end
+where source_tier is null or source_tier='' or verification_status is null or verification_status=''
+   or (official_site and verification_status='discovery');
 
 create index if not exists idx_market_inventory_progress_status
 on market_inventory_progress(status,side,market,category_key);
