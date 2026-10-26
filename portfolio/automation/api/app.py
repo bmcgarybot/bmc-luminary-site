@@ -1,4 +1,4 @@
-import os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, urllib.error, hmac, hashlib, time, html
+import os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, urllib.error, hmac, hashlib, time, html, random
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 from email.utils import parseaddr
@@ -705,7 +705,7 @@ async def fetch_json_url(url,params=None,timeout=30,max_bytes=8_000_000):
 
     # Public data APIs can throttle or transiently fail during batch research.
     # Retry only transient transport/server failures; do not hide permanent 4xx errors.
-    delays=(2,5,10,20)
+    delays=(3,8,18,35,60)
     for attempt in range(len(delays)+1):
         try:
             return await asyncio.to_thread(call_once)
@@ -714,15 +714,18 @@ async def fetch_json_url(url,params=None,timeout=30,max_bytes=8_000_000):
             if not transient or attempt>=len(delays):
                 raise
             retry_after=clean(exc.headers.get("Retry-After")) if exc.headers else ""
+            base=delays[attempt]
             try:
-                delay=max(delays[attempt],min(60,int(float(retry_after)))) if retry_after else delays[attempt]
+                if retry_after:
+                    base=max(base,min(90,int(float(retry_after))))
             except (TypeError,ValueError):
-                delay=delays[attempt]
-            await asyncio.sleep(delay)
+                pass
+            # CMS explicitly recommends incremental and randomized back-off.
+            await asyncio.sleep(base+random.uniform(0.5,3.0))
         except (urllib.error.URLError,TimeoutError,OSError):
             if attempt>=len(delays):
                 raise
-            await asyncio.sleep(delays[attempt])
+            await asyncio.sleep(delays[attempt]+random.uniform(0.5,3.0))
     raise RuntimeError("JSON fetch retry loop exhausted")
 
 def arcgis_date(value):
@@ -2595,6 +2598,9 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
               where source_key=$1 and market=$2""",source_key,market)
             cursor=int(state["cursor"] or 0) if state else 0
             try:
+                # Pace CMS calls even when healthy. Their API guidance recommends
+                # limiting request volume for large automated pulls.
+                await asyncio.sleep(random.uniform(0.75,1.75))
                 raw=await fetch_cms_provider_page(source,market,cursor)
                 successful_markets.add(market)
                 source_checks+=1
