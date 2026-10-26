@@ -233,6 +233,7 @@ from selected s
 where s.existing_outreach_id is not null
   and o.outreach_id=s.existing_outreach_id;
 
+$SQL_CTE
 insert into outreach(entity_type,entity_id,campaign,wave,channel,sequence_step,status,next_followup_at,opt_out,target_market,target_service_key)
 select 'vendor',entity_id,'vendor_recruitment',:'wave','email',0,'queued',now(),false,market,service_or_campaign
 from selected
@@ -251,6 +252,7 @@ from selected s
 where s.existing_outreach_id is not null
   and o.outreach_id=s.existing_outreach_id;
 
+$SQL_CTE
 insert into outreach(entity_type,entity_id,campaign,wave,channel,sequence_step,status,next_followup_at,opt_out)
 select 'buyer',entity_id,
        case when service_or_campaign='' then 'buyer_general' else service_or_campaign end,
