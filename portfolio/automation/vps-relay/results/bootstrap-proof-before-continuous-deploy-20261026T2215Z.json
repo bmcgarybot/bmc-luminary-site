@@ -1,0 +1,16 @@
+{
+  "action": "proof_readout",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-26T22:09:32.132288+00:00",
+  "error": "Request created_at is unexpectedly in the future",
+  "exit_code": null,
+  "git_commit_after": "9d1d2edc47ff307205c1e88e7e266b4a5491465c",
+  "git_commit_before": "9d1d2edc47ff307205c1e88e7e266b4a5491465c",
+  "host": "vps-5675821a",
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_id": "bootstrap-proof-before-continuous-deploy-20261026T2215Z",
+  "started_at": "2026-10-26T22:09:32.132273+00:00",
+  "status": "rejected",
+  "version": 1
+}
