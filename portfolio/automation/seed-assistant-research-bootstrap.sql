@@ -9471,3 +9471,2568 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Dewey-Humboldt';
+
+
+-- Assistant-led Dewey-Humboldt census batch 02 (2026-10-26)
+-- Dewey category-specific expansion across automotive, insurance, real estate, healthcare and construction.
+-- Discovery inventory only; preserve closed status and never promote/stage/send.
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Proto Fab',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 632-0216',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Thumb Butte Gas & Convenience',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 632-7069',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Northern Arizona Truck Repair',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 632-7388',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Locksmith 24 Hour Service',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 772-2670',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Chevron',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 775-3263',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Mobile Rv Works',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 772-2260',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Texaco',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 632-7831',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Artist''s Touch',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 632-8091',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','auto_dealers','auto dealers car dealerships','Whalen Auto Sales',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey auto dealers car dealerships',0,
+ null,'(928) 717-1788',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','auto_dealers','auto dealers car dealerships','Southwest Motors N Rv CO',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey auto dealers car dealerships',0,
+ null,'(928) 772-4858',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Texaco Inc',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 632-4075',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Maverik Country Store',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 759-7334',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Yavapai County Jeep Posse Inc',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 759-2959',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','auto_dealers','auto dealers car dealerships','Colt Trailer Sales',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey auto dealers car dealerships',0,
+ null,'(928) 632-7744',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Affordable Small Engine And Equiment Repair',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 632-8009',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Bga Fleet Service Truck Repair',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(602) 710-0250',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Diamond Touch Inc',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey other local businesses',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','general_business','other local businesses','Hh Mobile Diesel Service',
+ 'https://www.whereorg.com/businesses/automotive-services-in-dewey-az','whereorg.com','Dewey automotive-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey other local businesses',0,
+ null,'(928) 632-5317',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey automotive-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','Southwestern Hagstedt Ins',
+ 'https://www.whereorg.com/businesses/insurance-in-dewey-az','whereorg.com','Dewey insurance-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey insurance agents professional offices',0,
+ null,'(928) 632-1396',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey insurance-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','Farmer''s Insurance',
+ 'https://www.whereorg.com/businesses/insurance-in-dewey-az','whereorg.com','Dewey insurance-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey insurance agents professional offices',0,
+ null,'(928) 775-9994',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey insurance-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','CDS',
+ 'https://www.whereorg.com/businesses/insurance-in-dewey-az','whereorg.com','Dewey insurance-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey insurance agents professional offices',0,
+ null,'(928) 772-8614',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey insurance-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','Group Insurance Service',
+ 'https://www.whereorg.com/businesses/insurance-in-dewey-az','whereorg.com','Dewey insurance-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey insurance agents professional offices',0,
+ null,'(928) 632-5820',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey insurance-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','R Bobadilla Insurance Service',
+ 'https://www.whereorg.com/businesses/insurance-in-dewey-az','whereorg.com','Dewey insurance-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey insurance agents professional offices',0,
+ null,'(928) 775-6551',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey insurance-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','Farmers Insurance Group',
+ 'https://www.whereorg.com/businesses/insurance-in-dewey-az','whereorg.com','Dewey insurance-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey insurance agents professional offices',0,
+ null,'(928) 771-1483',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey insurance-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','Farmers Insurance',
+ 'https://www.whereorg.com/businesses/insurance-in-dewey-az','whereorg.com','Dewey insurance-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey insurance agents professional offices',0,
+ null,'(928) 771-1483',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey insurance-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','Ron Bobadilla Insurance Service',
+ 'https://www.whereorg.com/businesses/insurance-in-dewey-az','whereorg.com','Dewey insurance-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey insurance agents professional offices',0,
+ null,'(928) 775-6551',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey insurance-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','State Farm Insurance - State Route 69',
+ 'https://www.whereorg.com/businesses/insurance-in-dewey-az','whereorg.com','Dewey insurance-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey insurance agents professional offices',0,
+ null,'(928) 775-4080',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey insurance-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','State Farm Insurance - S State Route 69',
+ 'https://www.whereorg.com/businesses/insurance-in-dewey-az','whereorg.com','Dewey insurance-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey insurance agents professional offices',0,
+ null,'(928) 237-5801',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey insurance-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','Sharon Hagstedt',
+ 'https://www.whereorg.com/businesses/insurance-in-dewey-az','whereorg.com','Dewey insurance-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey insurance agents professional offices',0,
+ null,'(928) 632-1396',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey insurance-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Summer Sweet Realty Pro',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 632-7825',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','High Desert Home Inspections',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 775-0211',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Realty Experts',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 632-8055',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','C Lewis Realty',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 772-4323',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','hotels_motels','hotels motels lodging','Rancho Sonora Inn & Rv Park',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey hotels motels lodging',0,
+ null,'(928) 772-2612',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Dominic Corrao',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 772-8205',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Impact Professional Realty',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 632-7825',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Bella Realty & Development LLC',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 775-9011',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Prudential Manzanita Realty',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 772-0150',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','TDH Investments L L C',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 632-0371',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Exit Realty Cool Mountain',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 632-1600',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Glenron LLC',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 632-5069',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Rafter Eleven Rv & MBL HM Park',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 772-8266',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Trendsetter Realty',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 772-2400',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Gone West Properties CO LLC',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Summer Sweet Productions',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 632-7825',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Jennie Shook Real Estate',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 632-5416',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Prudential Foothills Rl Est',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 772-3105',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Circle P Development LLC',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Sl Development LLC',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 775-8630',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Devstar Realty LLC',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 420-0057',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Statler Brothers LLC',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 632-0014',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','property_management','property management companies apartment communities','Tri-City Appraisals',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey property management companies apartment communities',0,
+ null,'(928) 899-3140',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','hotels_motels','hotels motels lodging','Bear Creek Cabins',
+ 'https://www.whereorg.com/businesses/real-estate-2-in-dewey-az','whereorg.com','Dewey real-estate/lodging category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey hotels motels lodging',0,
+ null,'(928) 632-5035',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey real-estate/lodging category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','therapy_behavioral','therapy counseling behavioral health clinics','Daybreak Behavioral Resources',
+ 'https://www.whereorg.com/businesses/healthcare-in-dewey-az','whereorg.com','Dewey healthcare-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey therapy counseling behavioral health clinics',0,
+ null,'(928) 632-5529',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','dental','dentists dental offices orthodontists','Our Family Dentist',
+ 'https://www.whereorg.com/businesses/healthcare-in-dewey-az','whereorg.com','Dewey healthcare-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey dentists dental offices orthodontists',0,
+ null,'(928) 632-8333',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','senior_daycare','senior living assisted living daycare childcare','Caring Senior Service',
+ 'https://www.whereorg.com/businesses/healthcare-in-dewey-az','whereorg.com','Dewey healthcare-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey senior living assisted living daycare childcare',0,
+ null,'(928) 759-5760',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','medical_centers','hospitals medical centers clinics','Home Dialysys',
+ 'https://www.whereorg.com/businesses/healthcare-in-dewey-az','whereorg.com','Dewey healthcare-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey hospitals medical centers clinics',0,
+ null,'(928) 713-5122',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','medical_centers','hospitals medical centers clinics','Dewey Medical Center',
+ 'https://www.whereorg.com/businesses/healthcare-in-dewey-az','whereorg.com','Dewey healthcare-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey hospitals medical centers clinics',0,
+ null,'(928) 632-1155',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','medical_centers','hospitals medical centers clinics','Dewey Medical Center Diagnostic Lab Inc',
+ 'https://www.whereorg.com/businesses/healthcare-in-dewey-az','whereorg.com','Dewey healthcare-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey hospitals medical centers clinics',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','medical_centers','hospitals medical centers clinics','Khan Marium',
+ 'https://www.whereorg.com/businesses/healthcare-in-dewey-az','whereorg.com','Dewey healthcare-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey hospitals medical centers clinics',0,
+ null,'(928) 916-0012',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','medical_centers','hospitals medical centers clinics','Accentcare Inc',
+ 'https://www.whereorg.com/businesses/healthcare-in-dewey-az','whereorg.com','Dewey healthcare-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey hospitals medical centers clinics',0,
+ null,'(928) 632-5219',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','medical_centers','hospitals medical centers clinics','Classes Unlimited',
+ 'https://www.whereorg.com/businesses/healthcare-in-dewey-az','whereorg.com','Dewey healthcare-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey hospitals medical centers clinics',0,
+ null,'(928) 710-7787',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','therapy_behavioral','therapy counseling behavioral health clinics','Mikrut Physical Therapy LLC',
+ 'https://www.whereorg.com/businesses/healthcare-in-dewey-az','whereorg.com','Dewey healthcare-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey therapy counseling behavioral health clinics',0,
+ null,'(928) 632-0800',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','therapy_behavioral','therapy counseling behavioral health clinics','Lyonnais Therapy Services LLC',
+ 'https://www.whereorg.com/businesses/healthcare-in-dewey-az','whereorg.com','Dewey healthcare-category directory candidate; direct/current verification remains required.','assistant bootstrap research: Dewey therapy counseling behavioral health clinics',0,
+ null,'(928) 592-8757',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey healthcare-category directory candidate; direct/current verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Paul Merritt Construction',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-9376',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Northern Arizona Masonry Inc',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 771-0335',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Steve Reddell Construction',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-9748',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Summit Ridge Industries',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-4663',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Silverwood Homes LLC',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-5744',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Moon Crest Enterprises LLC',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-9402',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Jim Lovin Construction',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-0286',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','garage_door','Garage Door Repair','High Desert Doors',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Garage Door Repair',0,
+ null,'(928) 567-1453',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','ADS Builders',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 717-4489',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','rural_property','Rural Property Help','A S P Excavating',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Rural Property Help',0,
+ null,'(928) 632-7821',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Phillips Homes',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-5567',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','S & D Construction',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-9180',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Dwight Peterson & Sons Inc',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-5051',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Masco',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 778-0222',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Seneca Design Materials Group',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 759-8999',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Jerry Carnes',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-8079',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','rural_property','Rural Property Help','J T''s Septic LLC',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Rural Property Help',0,
+ null,'(928) 632-7077',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Kjb Construction LLC',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-8369',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Black Canyon Homes',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-2913',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Thurman Construction Inc',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-9789',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Reddell Steve Construction',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-9748',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Ross Equipment',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-0067',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Pine Time Builders Inc',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 775-6118',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','High Desert Woodworks LLC',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-0234',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Stapp Drywall Inc',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-8057',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','epoxy_flooring','Epoxy & Concrete Floors','Rjb Concrete',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Epoxy & Concrete Floors',0,
+ null,'(928) 632-0429',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Sierra Pacific',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-1700',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','rural_property','Rural Property Help','Docs Dirt Works',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Rural Property Help',0,
+ null,'(928) 632-7491',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','rural_property','Rural Property Help','Dewey Dirt Diggers',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Rural Property Help',0,
+ null,'(928) 713-2055',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','R C Savage Construction Corp',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-8429',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','House Of Furniture Warehouse',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-7448',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Van Horn Builders',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-8429',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Woodwonders',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 636-5024',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Huntington Equipment Leasing',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-1149',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Schuck & Sons Dewey Lumber',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-7662',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','A-S Portables',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-0955',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Phillips Three Inc',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-1332',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Thurman Construction Company',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-9789',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Mile HI Rock',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 775-5084',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','P B Mfgd Homes Inc',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-5499',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','L&H Homes LLC',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 775-5946',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','epoxy_flooring','Epoxy & Concrete Floors','Sundance Redi-Rock',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Epoxy & Concrete Floors',0,
+ null,'(928) 759-2700',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','rural_property','Rural Property Help','Dewey Drilling & Pump Service',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Rural Property Help',0,
+ null,'(928) 632-7687',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','epoxy_flooring','Epoxy & Concrete Floors','Colt Concrete LLC',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Epoxy & Concrete Floors',0,
+ null,'(928) 999-2150',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Foxworth Galbraith Lumber Company',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 775-3300',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Ross Equipment Rentals',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 772-0067',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','C B R Adventures Inc',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 632-5275',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','rural_property','Rural Property Help','Summit Ridge Construction & Excavation Inc',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Rural Property Help',0,
+ null,'(928) 632-4663',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Byrd Roofing',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','T''s Quality Tile LLC',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 533-5139',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','facility_maintenance','Building Maintenance Help','Eisenhour Construction LLC',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Building Maintenance Help',0,
+ null,'(928) 499-7379',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','rural_property','Rural Property Help','A J ''s Trenching LLC',
+ 'https://www.whereorg.com/businesses/construction-in-dewey-az','whereorg.com','Dewey construction-category directory candidate; direct/license verification remains required.','assistant bootstrap research: Dewey Rural Property Help',0,
+ null,'(928) 308-4498',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_02","researched_at":"2026-10-27T00:05:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Dewey construction-category directory candidate; direct/license verification remains required."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Dewey-Humboldt';
