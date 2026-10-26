@@ -14889,3 +14889,2458 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Bullhead City';
+
+
+-- Assistant-led Prescott Valley census batch 01 (2026-10-26)
+-- Broad Prescott Valley buyer/facility census researched manually from current Chamber/local sources.
+-- Discovery inventory only; preserve closed status and never promote/stage/send.
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Backburner Family Restaurant',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 8400 E Long Mesa Dr.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 772-9298',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 8400 E Long Mesa Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Bahama Buck''s',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 3730 N Glassford Hill Rd.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 237-3039',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 3730 N Glassford Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Buffalo Wild Wings - Prescott Valley',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 2985 N Centre Court.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 759-9800',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 2985 N Centre Court."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Carlito''s Cafe'' and Coffee House',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 6719 E 2nd St #C.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 515-2753',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 6719 E 2nd St #C."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Carniceria Azteca',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 6426 E State Route 69.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 772-2726',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 6426 E State Route 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Chick-Fil-A',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 5773 E Hwy 69.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 778-0112',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 5773 E Hwy 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Ciao Bella',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 7025 E Florentine Rd Ste 102.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 756-2783',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 7025 E Florentine Rd Ste 102."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Denny''s',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 7925 E Hwy 69.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 772-4420',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 7925 E Hwy 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','El Gordo Mexican Grill',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 4641 N Robert Rd.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 237-5548',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 4641 N Robert Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','El Pollo Loco',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 7860 E State Rte 69.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(602) 349-8536',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 7860 E State Rte 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Gabby''s Grill',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 2982 N Park Ave Ste B.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 277-1787',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 2982 N Park Ave Ste B."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Gabriella''s Ristorante',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 8930 E Valley Rd.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 227-0358',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 8930 E Valley Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','McDonald''s',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 7500 E Hwy 69.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 772-2272',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 7500 E Hwy 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Nothing Bundt Cakes',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 3088 N Glassford Hill Rd Suite 101.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 470-2785',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 3088 N Glassford Hill Rd Suite 101."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Oliva''s Mexican Restaurant',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 8370 E Hwy 69.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 772-6070',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 8370 E Hwy 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Pizza Hut',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 7430 Pav Way.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 775-0906',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 7430 Pav Way."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Dunkin''/Baskin Robbins',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 3015 N Glassford Hill Rd.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 458-5600',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 3015 N Glassford Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Raising Cane''s Chicken Fingers',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 5737 E State Rte 69.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 248-3689',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 5737 E State Rte 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Rosa''s Pizzeria',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 2992 Park Ave Suite B.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 277-0633',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 2992 Park Ave Suite B."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Sally B''s Cafe',
+ 'https://www.pvchamber.org/list/ql/restaurants-food-beverages-22','pvchamber.org','Prescott Valley Chamber current restaurant member; 7680 E Hwy 69 #1.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,'(928) 772-2053',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber current restaurant member; 7680 E Hwy 69 #1."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Canton Dragon Bistro',
+ 'https://www.prescottinsider.com/local-business-directory/restaurants/','prescottinsider.com','Current Prescott Insider listing confirmed open; 7305 E Pav Way.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Insider listing confirmed open; 7305 E Pav Way."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Casa Perez',
+ 'https://www.prescottinsider.com/local-business-directory/restaurants/','prescottinsider.com','Current Prescott Insider listing confirmed open; 3088 N Glassford Hill Rd.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Insider listing confirmed open; 3088 N Glassford Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Dad''s Backyard Grill',
+ 'https://www.prescottinsider.com/local-business-directory/restaurants/','prescottinsider.com','Current Prescott Insider listing confirmed open; 3040 N Windsong Dr Ste 101.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Insider listing confirmed open; 3040 N Windsong Dr Ste 101."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','El Asadero PV',
+ 'https://www.prescottinsider.com/local-business-directory/restaurants/','prescottinsider.com','Current Prescott Insider listing confirmed open; 3101 N Robert Rd.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Insider listing confirmed open; 3101 N Robert Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Kalavera''s Bar & Grill',
+ 'https://www.prescottinsider.com/local-business-directory/restaurants/','prescottinsider.com','Current Prescott Insider listing confirmed open; 8164 E Spouse Dr.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Insider listing confirmed open; 8164 E Spouse Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Lindo Mexico',
+ 'https://www.prescottinsider.com/local-business-directory/restaurants/','prescottinsider.com','Current Prescott Insider listing confirmed open; 6648 N Viewpoint Dr Ste 3.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Insider listing confirmed open; 6648 N Viewpoint Dr Ste 3."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Luiza''s Filipino Kitchen',
+ 'https://www.prescottinsider.com/local-business-directory/restaurants/','prescottinsider.com','Current Prescott Insider listing confirmed open; 8108 E Frontage Rd.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Insider listing confirmed open; 8108 E Frontage Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Maggie''s Kitchen',
+ 'https://www.prescottinsider.com/local-business-directory/restaurants/','prescottinsider.com','Current Prescott Insider listing confirmed open; 3040 N Windsong Dr Ste 106.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Insider listing confirmed open; 3040 N Windsong Dr Ste 106."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Maya''s Mercado',
+ 'https://www.prescottinsider.com/local-business-directory/restaurants/','prescottinsider.com','Current Prescott Insider listing confirmed open; 3900 N Robert Rd.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Insider listing confirmed open; 3900 N Robert Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','restaurants','restaurants','Prescott Club at StoneRidge',
+ 'https://www.prescottinsider.com/local-business-directory/restaurants/','prescottinsider.com','Current Prescott Insider listing confirmed open; 1601 N Bluff Top Dr.','assistant bootstrap research: Prescott Valley restaurants',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Insider listing confirmed open; 1601 N Bluff Top Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','Ace Hardware Prescott Valley',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; 7211 1st St.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(928) 772-8111',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; 7211 1st St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','Amish Home Decor',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; 2710 N Glassford Hill Rd Ste G.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(928) 277-8267',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; 2710 N Glassford Hill Rd Ste G."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','Archer''s Bikes',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; 3484 N Glassford Hill Rd.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(928) 277-4211',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; 3484 N Glassford Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','Arizona Hot Tub Company',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; 6947 E 1st St Ste A.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(928) 775-9884',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; 6947 E 1st St Ste A."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','Arizona Ranch & Resort Cars',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; 7273 E 1st St.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(928) 775-8178',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; 7273 E 1st St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','C-A-L RANCH STORES',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; 5757 E State Route 69.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(928) 800-5705',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; 5757 E State Route 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','CallTeks',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; 8332 State Route 69 Ste A.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(928) 575-0246',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; 8332 State Route 69 Ste A."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','Double H Leather Works',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; 7129 E 1st St Ste 105.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(928) 632-8560',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; 7129 E 1st St Ste 105."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','FANZ',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; 6546 E 2nd St Suite A.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(928) 350-7400',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; 6546 E 2nd St Suite A."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','La-Z-Boy Home Furnishings & Decor',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; 5584 E State Rt 69.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(928) 776-3057',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; 5584 E State Rt 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','Mary Kay - Georgia Atwell',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; Prescott Valley.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(559) 903-0358',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; Prescott Valley."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','Mary Kay Cosmetics - Brenda''s Butterfly Beauty Center',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; 3850 N Civic Dr 8-205.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(909) 239-3961',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; 3850 N Civic Dr 8-205."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','Mobility Pros',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; 8591 E Florentine Rd Ste B.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(928) 308-2465',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; 8591 E Florentine Rd Ste B."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','Nutrishop',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; 6616 E 2nd St Suite D.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(602) 644-1355',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; 6616 E 2nd St Suite D."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','Rogue Rue Flora',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; Prescott Valley.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(651) 380-8850',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; Prescott Valley."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','SMARTgirls Resale Fashion',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; 7025 E Florentine Rd Suite 107.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(928) 772-1227',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; 7025 E Florentine Rd Suite 107."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','Stepping Stones Agencies & Thrift Store',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; 2651 N Industrial Way Ste A.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(928) 772-4184',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; 2651 N Industrial Way Ste A."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','retail','retail stores shopping stores','Wilson Aesthetics Beauty & Wellness',
+ 'https://www.pvchamber.org/list/ql/shopping-specialty-retail-23','pvchamber.org','Prescott Valley Chamber retail member; 8196 E Florentine Rd Ste B.','assistant bootstrap research: Prescott Valley retail stores shopping stores',0,
+ null,'(928) 350-5484',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber retail member; 8196 E Florentine Rd Ste B."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','hotels_motels','hotels motels lodging','America''s Best Value Inn - Prescott Valley',
+ 'https://www.pvchamber.org/list/ql/lodging-travel-15','pvchamber.org','Prescott Valley Chamber lodging member; 8383 E Hwy 69.','assistant bootstrap research: Prescott Valley hotels motels lodging',0,
+ null,'(928) 772-2200',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber lodging member; 8383 E Hwy 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','hotels_motels','hotels motels lodging','Clarion Pointe',
+ 'https://www.pvchamber.org/list/ql/lodging-travel-15','pvchamber.org','Prescott Valley Chamber lodging member; 7801 E State Rte 69.','assistant bootstrap research: Prescott Valley hotels motels lodging',0,
+ null,'(928) 583-9510',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber lodging member; 7801 E State Rte 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','hotels_motels','hotels motels lodging','GreenTree Inn',
+ 'https://www.pvchamber.org/list/ql/lodging-travel-15','pvchamber.org','Prescott Valley Chamber lodging member; 7875 E Hwy 69.','assistant bootstrap research: Prescott Valley hotels motels lodging',0,
+ null,'(928) 772-8600',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber lodging member; 7875 E Hwy 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','hotels_motels','hotels motels lodging','Hampton Inn & Suites Prescott Valley',
+ 'https://www.pvchamber.org/list/ql/lodging-travel-15','pvchamber.org','Prescott Valley Chamber lodging member; 2901 N Glassford Hill Rd.','assistant bootstrap research: Prescott Valley hotels motels lodging',0,
+ null,'(928) 772-1800',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber lodging member; 2901 N Glassford Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','hotels_motels','hotels motels lodging','The View at Prescott Valley',
+ 'https://www.pvchamber.org/list/ql/lodging-travel-15','pvchamber.org','Prescott Valley Chamber lodging member; 2601 N Crownpointe Dr.','assistant bootstrap research: Prescott Valley hotels motels lodging',0,
+ null,'(928) 515-2505',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber lodging member; 2601 N Crownpointe Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','hotels_motels','hotels motels lodging','TownePlace Suites by Marriott',
+ 'https://www.pvchamber.org/list/ql/lodging-travel-15','pvchamber.org','Prescott Valley Chamber lodging member; 7300 Florentine Rd.','assistant bootstrap research: Prescott Valley hotels motels lodging',0,
+ null,'(928) 356-1988',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber lodging member; 7300 Florentine Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','schools','schools charter schools private schools','AAEC Early College High School',
+ 'https://www.pvchamber.org/members/category/higher-education-1662','pvchamber.org','Prescott Valley Chamber education member; 7500 E Skoog Blvd.','assistant bootstrap research: Prescott Valley schools charter schools private schools',0,
+ null,'(928) 775-3200',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber education member; 7500 E Skoog Blvd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','schools','schools charter schools private schools','Acorn Montessori Schools',
+ 'https://www.pvchamber.org/members/category/higher-education-1662','pvchamber.org','Prescott Valley Chamber education member; 8556 E Loos Dr.','assistant bootstrap research: Prescott Valley schools charter schools private schools',0,
+ null,'(928) 772-5778',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber education member; 8556 E Loos Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','schools','schools charter schools private schools','Franklin Phonetic Primary School',
+ 'https://www.pvchamber.org/members/category/higher-education-1662','pvchamber.org','Prescott Valley Chamber education member; 6116 E Hwy 69.','assistant bootstrap research: Prescott Valley schools charter schools private schools',0,
+ null,'(928) 775-6747',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber education member; 6116 E Hwy 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','schools','schools charter schools private schools','Humboldt Unified School District',
+ 'https://www.pvchamber.org/members/category/higher-education-1662','pvchamber.org','Prescott Valley Chamber education member; 6901 E Panther Path.','assistant bootstrap research: Prescott Valley schools charter schools private schools',0,
+ null,'(928) 759-4000',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber education member; 6901 E Panther Path."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','schools','schools charter schools private schools','PACE Academy',
+ 'https://www.pvchamber.org/members/category/higher-education-1662','pvchamber.org','Prescott Valley Chamber education member; 6711 E 2nd St.','assistant bootstrap research: Prescott Valley schools charter schools private schools',0,
+ null,'(928) 775-9675',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber education member; 6711 E 2nd St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','schools','schools charter schools private schools','Prescott Valley Charter School',
+ 'https://www.pvchamber.org/members/category/higher-education-1662','pvchamber.org','Prescott Valley Chamber education member; 9500 Lorna Ln.','assistant bootstrap research: Prescott Valley schools charter schools private schools',0,
+ null,'(928) 772-8744',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber education member; 9500 Lorna Ln."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','senior_daycare','senior living assisted living daycare childcare','Busy Bee Learning Center',
+ 'https://www.pvchamber.org/members/category/higher-education-1662','pvchamber.org','Prescott Valley Chamber childcare/preschool member; 8665 E Florentine Rd.','assistant bootstrap research: Prescott Valley senior living assisted living daycare childcare',0,
+ null,'(928) 772-6333',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber childcare/preschool member; 8665 E Florentine Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','senior_daycare','senior living assisted living daycare childcare','Leap & Learn Preschool',
+ 'https://www.pvchamber.org/members/category/higher-education-1662','pvchamber.org','Prescott Valley Chamber childcare/preschool member; 7175 E 2nd St Ste B.','assistant bootstrap research: Prescott Valley senior living assisted living daycare childcare',0,
+ null,'(928) 499-4111',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber childcare/preschool member; 7175 E 2nd St Ste B."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','churches','churches worship centers','Christ''s Church of Prescott Valley',
+ 'https://www.pvchamber.org/map/ql/religious-organizations','pvchamber.org','Current Prescott Valley Chamber religious-organization member.','assistant bootstrap research: Prescott Valley churches worship centers',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Valley Chamber religious-organization member."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','churches','churches worship centers','Emmanuel Lutheran Church',
+ 'https://www.pvchamber.org/map/ql/religious-organizations','pvchamber.org','Current Prescott Valley Chamber religious-organization member.','assistant bootstrap research: Prescott Valley churches worship centers',0,
+ null,'(928) 772-4135',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Valley Chamber religious-organization member."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','churches','churches worship centers','Firm Foundation Bible Church',
+ 'https://www.pvchamber.org/map/ql/religious-organizations','pvchamber.org','Current Prescott Valley Chamber religious-organization member.','assistant bootstrap research: Prescott Valley churches worship centers',0,
+ null,'(928) 515-2303',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Valley Chamber religious-organization member."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','churches','churches worship centers','LifePointe Church',
+ 'https://www.pvchamber.org/map/ql/religious-organizations','pvchamber.org','Current Prescott Valley Chamber religious-organization member.','assistant bootstrap research: Prescott Valley churches worship centers',0,
+ null,'(928) 772-1360',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Valley Chamber religious-organization member."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','churches','churches worship centers','Mingus View Presbyterian Church',
+ 'https://www.pvchamber.org/map/ql/religious-organizations','pvchamber.org','Current Prescott Valley Chamber religious-organization member.','assistant bootstrap research: Prescott Valley churches worship centers',0,
+ null,'(928) 775-4606',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Valley Chamber religious-organization member."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','churches','churches worship centers','Prescott Valley United Methodist Church',
+ 'https://www.pvchamber.org/map/ql/religious-organizations','pvchamber.org','Current Prescott Valley Chamber religious-organization member.','assistant bootstrap research: Prescott Valley churches worship centers',0,
+ null,'(928) 772-6366',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Valley Chamber religious-organization member."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','churches','churches worship centers','QuadCity Christian Church',
+ 'https://www.pvchamber.org/map/ql/religious-organizations','pvchamber.org','Current Prescott Valley Chamber religious-organization member.','assistant bootstrap research: Prescott Valley churches worship centers',0,
+ null,'(928) 800-0171',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Valley Chamber religious-organization member."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','churches','churches worship centers','St. Barnabas Anglican Church',
+ 'https://www.pvchamber.org/map/ql/religious-organizations','pvchamber.org','Current Prescott Valley Chamber religious-organization member.','assistant bootstrap research: Prescott Valley churches worship centers',0,
+ null,null,false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott Valley Chamber religious-organization member."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','property_management','property management companies apartment communities','Bungalows on Market Street',
+ 'https://www.pvchamber.org/list/category/real-estate-1611','pvchamber.org','Prescott Valley Chamber real-estate/property member; 5805 Market Street #7.','assistant bootstrap research: Prescott Valley property management companies apartment communities',0,
+ null,'(928) 399-7442',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber real-estate/property member; 5805 Market Street #7."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','property_management','property management companies apartment communities','Bungalows on Village Way',
+ 'https://www.pvchamber.org/list/category/real-estate-1611','pvchamber.org','Prescott Valley Chamber real-estate/property member; 12900 E State Route 169.','assistant bootstrap research: Prescott Valley property management companies apartment communities',0,
+ null,'(928) 356-1170',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber real-estate/property member; 12900 E State Route 169."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','property_management','property management companies apartment communities','Central Highlands Real Estate',
+ 'https://www.pvchamber.org/list/category/real-estate-1611','pvchamber.org','Prescott Valley Chamber real-estate/property member; 8363 E Florentine.','assistant bootstrap research: Prescott Valley property management companies apartment communities',0,
+ null,'(928) 717-2473',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber real-estate/property member; 8363 E Florentine."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','property_management','property management companies apartment communities','Code of the West Realty',
+ 'https://www.pvchamber.org/list/category/real-estate-1611','pvchamber.org','Prescott Valley Chamber real-estate/property member; 8088 E State Route 69.','assistant bootstrap research: Prescott Valley property management companies apartment communities',0,
+ null,'(928) 713-7207',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber real-estate/property member; 8088 E State Route 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','property_management','property management companies apartment communities','Home Team Prescott',
+ 'https://www.pvchamber.org/list/category/real-estate-1611','pvchamber.org','Prescott Valley Chamber real-estate/property member; 2485 N Great Western Dr Ste B.','assistant bootstrap research: Prescott Valley property management companies apartment communities',0,
+ null,'(928) 756-8710',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber real-estate/property member; 2485 N Great Western Dr Ste B."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','property_management','property management companies apartment communities','Kooiman Realty',
+ 'https://www.pvchamber.org/list/category/real-estate-1611','pvchamber.org','Prescott Valley Chamber real-estate/property member; 7120 Pav Way #101.','assistant bootstrap research: Prescott Valley property management companies apartment communities',0,
+ null,'(928) 775-8880',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber real-estate/property member; 7120 Pav Way #101."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','property_management','property management companies apartment communities','Pierce Property Management',
+ 'https://www.pvchamber.org/list/category/real-estate-1611','pvchamber.org','Prescott Valley Chamber real-estate/property member; 7120 Pav Way Ste 103.','assistant bootstrap research: Prescott Valley property management companies apartment communities',0,
+ null,'(928) 445-8750',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber real-estate/property member; 7120 Pav Way Ste 103."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','property_management','property management companies apartment communities','The Crossings at Windsong',
+ 'https://www.pvchamber.org/list/category/real-estate-1611','pvchamber.org','Prescott Valley Chamber real-estate/property member; 3830 N Windsong Dr.','assistant bootstrap research: Prescott Valley property management companies apartment communities',0,
+ null,'(928) 440-8405',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber real-estate/property member; 3830 N Windsong Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','property_management','property management companies apartment communities','The View at Prescott Valley',
+ 'https://www.pvchamber.org/list/category/real-estate-1611','pvchamber.org','Prescott Valley Chamber real-estate/property member; 2601 N Crownpointe Dr.','assistant bootstrap research: Prescott Valley property management companies apartment communities',0,
+ null,'(928) 515-2505',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber real-estate/property member; 2601 N Crownpointe Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','property_management','property management companies apartment communities','USA Real Estate & Property Management',
+ 'https://www.pvchamber.org/list/category/real-estate-1611','pvchamber.org','Prescott Valley Chamber real-estate/property member; 3661 N Robert Rd.','assistant bootstrap research: Prescott Valley property management companies apartment communities',0,
+ null,'(928) 775-0400',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber real-estate/property member; 3661 N Robert Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Budget Mini Storage - E Long Mesa',
+ 'https://www.pvchamber.org/list/ql/real-estate-moving-storage-20','pvchamber.org','Prescott Valley Chamber storage member; 8500 E Long Mesa.','assistant bootstrap research: Prescott Valley warehouses industrial businesses distribution centers',0,
+ null,'(928) 775-4595',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber storage member; 8500 E Long Mesa."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Budget Mini Storage - E Second St',
+ 'https://www.pvchamber.org/list/ql/real-estate-moving-storage-20','pvchamber.org','Prescott Valley Chamber storage member; 6701 E 2nd St.','assistant bootstrap research: Prescott Valley warehouses industrial businesses distribution centers',0,
+ null,'(928) 759-9595',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber storage member; 6701 E 2nd St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Budget Mini Storage - E Valley Rd',
+ 'https://www.pvchamber.org/list/ql/real-estate-moving-storage-20','pvchamber.org','Prescott Valley Chamber storage member; 9101 E Valley Rd.','assistant bootstrap research: Prescott Valley warehouses industrial businesses distribution centers',0,
+ null,'(928) 772-6464',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber storage member; 9101 E Valley Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','warehouses_industrial','warehouses industrial businesses distribution centers','Budget Mini Storage - N Fulton Rd',
+ 'https://www.pvchamber.org/list/ql/real-estate-moving-storage-20','pvchamber.org','Prescott Valley Chamber storage member; 5800 N Fulton Rd.','assistant bootstrap research: Prescott Valley warehouses industrial businesses distribution centers',0,
+ null,'(928) 772-6900',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber storage member; 5800 N Fulton Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','general_business','other local businesses','Adventure Auto Glass',
+ 'https://www.pvchamber.org/list/ql/automotive-marine-4','pvchamber.org','Prescott Valley Chamber automotive business; 7205 E 2nd St.','assistant bootstrap research: Prescott Valley other local businesses',0,
+ null,'(928) 775-9898',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber automotive business; 7205 E 2nd St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','general_business','other local businesses','Arizona RV Sales & Service',
+ 'https://www.pvchamber.org/list/ql/automotive-marine-4','pvchamber.org','Prescott Valley Chamber automotive business; 6750 E State Route 69.','assistant bootstrap research: Prescott Valley other local businesses',0,
+ null,'(928) 800-1763',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber automotive business; 6750 E State Route 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','general_business','other local businesses','Autoworks Service & Repair',
+ 'https://www.pvchamber.org/list/ql/automotive-marine-4','pvchamber.org','Prescott Valley Chamber automotive business; 8572 E Eastridge Dr.','assistant bootstrap research: Prescott Valley other local businesses',0,
+ null,'(928) 775-3332',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber automotive business; 8572 E Eastridge Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','general_business','other local businesses','Big O Tires - Prescott Valley',
+ 'https://www.pvchamber.org/list/ql/automotive-marine-4','pvchamber.org','Prescott Valley Chamber automotive business; 7690 E Hwy 69.','assistant bootstrap research: Prescott Valley other local businesses',0,
+ null,'(928) 772-1176',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber automotive business; 7690 E Hwy 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','general_business','other local businesses','FooteWork Auto License & Title Service',
+ 'https://www.pvchamber.org/list/ql/automotive-marine-4','pvchamber.org','Prescott Valley Chamber automotive business; 6520 E 2nd St.','assistant bootstrap research: Prescott Valley other local businesses',0,
+ null,'(928) 759-8575',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber automotive business; 6520 E 2nd St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','general_business','other local businesses','Hi Country Rec-V Center',
+ 'https://www.pvchamber.org/list/ql/automotive-marine-4','pvchamber.org','Prescott Valley Chamber automotive business; 8670 E Hwy 69.','assistant bootstrap research: Prescott Valley other local businesses',0,
+ null,'(928) 772-8231',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber automotive business; 8670 E Hwy 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','general_business','other local businesses','NAPA AUTO PARTS',
+ 'https://www.pvchamber.org/list/ql/automotive-marine-4','pvchamber.org','Prescott Valley Chamber automotive business; 7563 E State Route 69 Suite A.','assistant bootstrap research: Prescott Valley other local businesses',0,
+ null,'(928) 772-9455',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber automotive business; 7563 E State Route 69 Suite A."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','general_business','other local businesses','Novus Glass of Northern Arizona',
+ 'https://www.pvchamber.org/list/ql/automotive-marine-4','pvchamber.org','Prescott Valley Chamber automotive business; 6616 E 2nd St Suite A.','assistant bootstrap research: Prescott Valley other local businesses',0,
+ null,'(928) 495-6423',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber automotive business; 6616 E 2nd St Suite A."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','general_business','other local businesses','Ocean Blue Car Wash',
+ 'https://www.pvchamber.org/list/ql/automotive-marine-4','pvchamber.org','Prescott Valley Chamber automotive business; 7837 E Hwy 69.','assistant bootstrap research: Prescott Valley other local businesses',0,
+ null,'(928) 759-9130',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber automotive business; 7837 E Hwy 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','general_business','other local businesses','Southwest Truck and RV LLC',
+ 'https://www.pvchamber.org/list/ql/automotive-marine-4','pvchamber.org','Prescott Valley Chamber automotive business; 8626 E Long Mesa.','assistant bootstrap research: Prescott Valley other local businesses',0,
+ null,'(928) 772-3424',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber automotive business; 8626 E Long Mesa."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','general_business','other local businesses','Summit 4x4 Company',
+ 'https://www.pvchamber.org/list/ql/automotive-marine-4','pvchamber.org','Prescott Valley Chamber automotive business; 6901 E 1st St.','assistant bootstrap research: Prescott Valley other local businesses',0,
+ null,'(928) 756-0004',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber automotive business; 6901 E 1st St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','auto_dealers','auto dealers car dealerships','Arizona Ranch & Resort Cars',
+ 'https://www.pvchamber.org/list/ql/automotive-marine-4','pvchamber.org','Prescott Valley Chamber dealership; 7273 E 1st St.','assistant bootstrap research: Prescott Valley auto dealers car dealerships',0,
+ null,'(928) 775-8178',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber dealership; 7273 E 1st St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','auto_dealers','auto dealers car dealerships','Oxendale Auto Center of Prescott Valley',
+ 'https://www.pvchamber.org/list/ql/automotive-marine-4','pvchamber.org','Prescott Valley Chamber dealership; 6600 E State Route 69.','assistant bootstrap research: Prescott Valley auto dealers car dealerships',0,
+ null,'(928) 772-2720',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber dealership; 6600 E State Route 69."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','insurance_professional','insurance agents professional offices','Farmers Insurance - Stephen Carbajal',
+ 'https://embed-rech-01.dialog.cm/atlanticcommunicationsgroup/docs/prescott_valley_arizona_2025_community_guide_bus','embed-rech-01.dialog.cm','Prescott Valley Chamber 2025 community/business guide insurance member.','assistant bootstrap research: Prescott Valley insurance agents professional offices',0,
+ null,'(928) 775-9994',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber 2025 community/business guide insurance member."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','insurance_professional','insurance agents professional offices','MeLynda Davis Agency - American Family Insurance',
+ 'https://embed-rech-01.dialog.cm/atlanticcommunicationsgroup/docs/prescott_valley_arizona_2025_community_guide_bus','embed-rech-01.dialog.cm','Prescott Valley Chamber 2025 community/business guide insurance member.','assistant bootstrap research: Prescott Valley insurance agents professional offices',0,
+ null,'(928) 772-1443',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber 2025 community/business guide insurance member."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','insurance_professional','insurance agents professional offices','State Farm - Eric Strobel',
+ 'https://embed-rech-01.dialog.cm/atlanticcommunicationsgroup/docs/prescott_valley_arizona_2025_community_guide_bus','embed-rech-01.dialog.cm','Prescott Valley Chamber 2025 community/business guide insurance member.','assistant bootstrap research: Prescott Valley insurance agents professional offices',0,
+ null,'(928) 772-8338',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber 2025 community/business guide insurance member."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','insurance_professional','insurance agents professional offices','State Farm - Heidi Fowler',
+ 'https://embed-rech-01.dialog.cm/atlanticcommunicationsgroup/docs/prescott_valley_arizona_2025_community_guide_bus','embed-rech-01.dialog.cm','Prescott Valley Chamber 2025 community/business guide insurance member.','assistant bootstrap research: Prescott Valley insurance agents professional offices',0,
+ null,'(928) 775-4080',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber 2025 community/business guide insurance member."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','insurance_professional','insurance agents professional offices','State Farm - Jerome Prazak',
+ 'https://embed-rech-01.dialog.cm/atlanticcommunicationsgroup/docs/prescott_valley_arizona_2025_community_guide_bus','embed-rech-01.dialog.cm','Prescott Valley Chamber 2025 community/business guide insurance member.','assistant bootstrap research: Prescott Valley insurance agents professional offices',0,
+ null,'(928) 277-0707',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber 2025 community/business guide insurance member."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','insurance_professional','insurance agents professional offices','State Farm - Makayla Chadwick',
+ 'https://embed-rech-01.dialog.cm/atlanticcommunicationsgroup/docs/prescott_valley_arizona_2025_community_guide_bus','embed-rech-01.dialog.cm','Prescott Valley Chamber 2025 community/business guide insurance member.','assistant bootstrap research: Prescott Valley insurance agents professional offices',0,
+ null,'(928) 237-5094',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber 2025 community/business guide insurance member."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','insurance_professional','insurance agents professional offices','State Farm - Scott Smith',
+ 'https://embed-rech-01.dialog.cm/atlanticcommunicationsgroup/docs/prescott_valley_arizona_2025_community_guide_bus','embed-rech-01.dialog.cm','Prescott Valley Chamber 2025 community/business guide insurance member.','assistant bootstrap research: Prescott Valley insurance agents professional offices',0,
+ null,'(928) 772-7100',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber 2025 community/business guide insurance member."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','insurance_professional','insurance agents professional offices','Farm Bureau Financial Services',
+ 'https://embed-rech-01.dialog.cm/atlanticcommunicationsgroup/docs/prescott_valley_arizona_2025_community_guide_bus','embed-rech-01.dialog.cm','Prescott Valley Chamber 2025 community/business guide insurance member.','assistant bootstrap research: Prescott Valley insurance agents professional offices',0,
+ null,'(928) 916-1434',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber 2025 community/business guide insurance member."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','medical_centers','hospitals medical centers clinics','Miracle-Ear',
+ 'https://embed-rech-01.dialog.cm/atlanticcommunicationsgroup/docs/prescott_valley_arizona_2025_community_guide_bus','embed-rech-01.dialog.cm','Prescott Valley Chamber community/business guide: Medical office/services.','assistant bootstrap research: Prescott Valley hospitals medical centers clinics',0,
+ null,'(928) 493-8100',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber community/business guide: Medical office/services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','medical_centers','hospitals medical centers clinics','Sonora Quest Laboratories',
+ 'https://embed-rech-01.dialog.cm/atlanticcommunicationsgroup/docs/prescott_valley_arizona_2025_community_guide_bus','embed-rech-01.dialog.cm','Prescott Valley Chamber community/business guide: Medical laboratory/office services.','assistant bootstrap research: Prescott Valley hospitals medical centers clinics',0,
+ null,'(928) 772-5308',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber community/business guide: Medical laboratory/office services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','therapy_behavioral','therapy counseling behavioral health clinics','Southwest Behavioral Health Services',
+ 'https://embed-rech-01.dialog.cm/atlanticcommunicationsgroup/docs/prescott_valley_arizona_2025_community_guide_bus','embed-rech-01.dialog.cm','Prescott Valley Chamber community/business guide: Behavioral health provider.','assistant bootstrap research: Prescott Valley therapy counseling behavioral health clinics',0,
+ null,'(928) 772-1610',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber community/business guide: Behavioral health provider."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','medical_centers','hospitals medical centers clinics','Spectrum Healthcare',
+ 'https://embed-rech-01.dialog.cm/atlanticcommunicationsgroup/docs/prescott_valley_arizona_2025_community_guide_bus','embed-rech-01.dialog.cm','Prescott Valley Chamber community/business guide: Medical/behavioral health provider.','assistant bootstrap research: Prescott Valley hospitals medical centers clinics',0,
+ null,'(928) 778-0330',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber community/business guide: Medical/behavioral health provider."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','therapy_behavioral','therapy counseling behavioral health clinics','Start Moving-On Counseling, Trauma Center, and TelePractice',
+ 'https://embed-rech-01.dialog.cm/atlanticcommunicationsgroup/docs/prescott_valley_arizona_2025_community_guide_bus','embed-rech-01.dialog.cm','Prescott Valley Chamber community/business guide: Counseling/trauma center.','assistant bootstrap research: Prescott Valley therapy counseling behavioral health clinics',0,
+ null,'(928) 910-5145',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber community/business guide: Counseling/trauma center."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Prescott Valley','public_facilities','government public facilities municipal buildings','Prescott Valley Police Department',
+ 'https://www.pvchamber.org/list/ql/government-education-individuals-8','pvchamber.org','Prescott Valley Chamber lists municipal police facility at 7601 E Skoog Blvd.','assistant bootstrap research: Prescott Valley government public facilities municipal buildings',0,
+ null,'(928) 772-9261',false,'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_prescott_valley_batch_01","researched_at":"2026-10-26T23:20:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Prescott Valley Chamber lists municipal police facility at 7601 E Skoog Blvd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Prescott Valley';
