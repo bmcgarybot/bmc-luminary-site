@@ -516,3 +516,30 @@ on market_inventory_progress(status,side,market,category_key);
 
 create index if not exists idx_market_inventory_candidates_lane
 on market_inventory_candidates(side,market,category_key,official_site,status);
+
+
+alter table market_inventory_progress add column if not exists next_page integer default 1;
+alter table market_inventory_progress add column if not exists query_variant integer default 0;
+alter table market_inventory_progress add column if not exists no_progress_passes integer default 0;
+
+create table if not exists local_demand_scan_state (
+  source_key text not null,
+  source_name text not null,
+  source_domain text not null,
+  market text not null,
+  group_key text not null,
+  group_label text not null,
+  next_page integer default 1,
+  scans integer default 0,
+  results_seen integer default 0,
+  signals_found integer default 0,
+  no_progress_scans integer default 0,
+  last_run_at timestamptz,
+  last_error text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now(),
+  primary key(source_key,market,group_key)
+);
+
+create index if not exists idx_local_demand_scan_state_run
+on local_demand_scan_state(last_run_at nulls first,source_key,market,group_key);
