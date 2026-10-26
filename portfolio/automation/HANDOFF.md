@@ -3204,3 +3204,116 @@ Current known production state before this pass:
 - outreach remains OFF.
 
 Do not activate a provider until this copy/research cleanup pass is substantially complete or Brett explicitly changes priority.
+
+
+## 37. PUBLIC COPY SWEEP + RESEARCH DRAIN TOOLING — 2026-10-25
+
+The pre-launch wording cleanup is now underway and materially implemented.
+
+### Public copy cleaned
+
+Customer-facing wording was simplified across:
+- homepage;
+- How It Works;
+- Growth Packs;
+- payment/order confirmation pages;
+- restaurant maintenance help;
+- snow service;
+- ice machine service;
+- fire safety service;
+- mobile vehicle service;
+- pet waste cleanup;
+- towing/roadside;
+- restaurant repair;
+- short-term rental property care;
+- floor/carpet care;
+- pool/desert property care;
+- sign/lighting repair;
+- septic/earthwork/water;
+- backflow/commercial plumbing;
+- multiple Arizona market pages;
+- provider pilot terms;
+- provider pilot activation.
+
+Examples removed/replaced:
+- `Local service routing`;
+- `routing path underneath`;
+- `Tow / roadside matching`;
+- `100 qualified prospects`;
+- `begin fulfillment`;
+- `fulfillment starts`;
+- `Payment confirmation is recorded server-side`;
+- `vendor routing`;
+- `lead-routing tests`.
+
+Direction:
+- explain the outcome/customer action, not BMC's internal machinery;
+- prefer "local service help," "towing and roadside help," "100 researched businesses," "add order details," etc.;
+- provider-facing pages now say BMC sends/offers requests rather than narrating "routing."
+
+### Copy regression guard
+
+`portfolio/automation/validate-public-ui.py` now rejects the removed internal/awkward phrases if they reappear in public HTML.
+
+CI continues to validate the public-site shell and now also protects the cleaned wording.
+
+### Research backlog drain tooling
+
+Added:
+- `portfolio/automation/drain-research-backlog.sh`
+
+Purpose:
+- work through the currently seeded research backlog without enabling outreach.
+
+Safety behavior:
+- refuses to run if `OUTREACH_ENABLED`, `BUYER_OUTREACH_ENABLED`, or `GROWTH_OUTREACH_ENABLED` is true;
+- temporarily raises `RESEARCH_WORKER_BATCH` to 5 for the drain;
+- restores the original research batch setting on exit/interruption;
+- recreates `ops_api` and then `webhook_proxy` so nginx does not retain stale Docker addresses;
+- never activates providers;
+- never sends outreach.
+
+Drain order:
+1. complete a source-native Arizona sweep first;
+   - processes expected ADHS/CMS lanes;
+   - continues lanes with nonzero cursors until the sweep is complete or genuinely stalls;
+   - updates buyer/prospect coverage and research gaps from authoritative data.
+2. process the standard public-web research backlog;
+   - cycles `/api/agent-cycle`;
+   - processes up to 5 assigned research tasks per worker call;
+   - continues until queued + assigned research reaches zero or the script detects 10 no-progress rounds;
+   - keeps discoveries staged/reviewable;
+   - conservative direct-domain public-email auto-promotion remains prospect-only.
+
+Default production command:
+
+```bash
+cd ~/bmc-luminary-site/portfolio/automation
+git pull --ff-only
+chmod +x drain-research-backlog.sh
+bash ./drain-research-backlog.sh .env
+```
+
+Optional arguments:
+- arg 2 = maximum standard research rounds (default 1000);
+- arg 3 = pause in seconds between rounds (default 1).
+
+Example:
+```bash
+bash ./drain-research-backlog.sh .env 1000 2
+```
+
+The script prints:
+- source-native pending lanes;
+- records seen;
+- prospects created/updated;
+- queued/assigned research counts;
+- candidates staged;
+- conservative auto-promotions;
+- final backlog statuses;
+- vendor/buyer totals;
+- final runtime-doctor state.
+
+Do not activate the first provider until this cleanup/research pass is reviewed or Brett changes priority.
+
+Outreach remains OFF.
