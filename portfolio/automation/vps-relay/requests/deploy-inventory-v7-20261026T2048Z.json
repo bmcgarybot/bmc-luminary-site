@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "deploy-inventory-v7-20261026T2048Z",
+  "action": "deploy_update",
+  "allow_external_actions": false,
+  "created_at": "2026-10-26T20:48:00Z",
+  "expires_at": "2026-10-27T20:48:00Z",
+  "required_ci_sha": "5073d84f08af01fe45db73aa8b193b1b16af6f4c",
+  "args": {}
+}
