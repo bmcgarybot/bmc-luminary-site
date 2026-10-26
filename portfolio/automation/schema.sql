@@ -374,6 +374,17 @@ create table if not exists research_sources (
 create index if not exists idx_research_sources_active
 on research_sources(is_active,side,market,county,priority);
 
+
+create table if not exists research_refresh_state (
+  source_key text primary key,
+  last_started_at timestamptz,
+  last_success_at timestamptz,
+  last_failure_at timestamptz,
+  last_status text,
+  last_error text,
+  updated_at timestamptz default now()
+);
+
 create table if not exists source_native_state (
   source_key text not null,
   market text not null,
