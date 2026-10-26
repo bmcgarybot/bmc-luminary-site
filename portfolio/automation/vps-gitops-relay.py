@@ -46,7 +46,7 @@ STATE_DIR = Path(os.environ.get("BMC_RELAY_STATE_DIR", str(Path.home() / ".local
 LOCAL_RESULTS = STATE_DIR / "results"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe"}
+READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
     "market_inventory_step",
@@ -55,6 +55,7 @@ MUTATING_INTERNAL_ACTIONS = {
     "source_native_step",
     "assistant_bootstrap_import",
     "assistant_licensed_bootstrap_import",
+    "research_refresh_install",
     "scheduler_start",
     "scheduler_stop",
 }
@@ -485,6 +486,14 @@ def execute(req: dict) -> dict:
         if markets:
             cmd += ["--markets", markets]
         cp = run(cmd, timeout=1200)
+        stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
+
+    elif action == "research_refresh_install":
+        cp = run(["bash", "./install-research-refresh-timers.sh", ENV_FILE], timeout=300)
+        stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
+
+    elif action == "research_refresh_status":
+        cp = run(["bash", "./research-refresh-status.sh"], timeout=60)
         stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
 
     elif action == "scheduler_start":
