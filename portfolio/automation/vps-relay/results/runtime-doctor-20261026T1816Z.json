@@ -1,0 +1,21 @@
+{
+  "action": "runtime_doctor",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-26T18:21:01.895051+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "923294da08aed86228696febe51419f5ce258a79",
+  "git_commit_before": "923294da08aed86228696febe51419f5ce258a79",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "8864e141c420621eda30415f1d0cf6901d06fb8c",
+  "request_id": "runtime-doctor-20261026T1816Z",
+  "request_sha256": "a436c0ed0954adeab51c15dedc3c21b4c85306d307405114d8b650ed14ab6a62",
+  "started_at": "2026-10-26T18:21:00.301934+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "BMC runtime doctor\n==================\nPASS  Deployment target is cloud-vps\nPASS  Host memory fits 8 GB production class (11671 MB visible)\nPASS  Working filesystem has 78 GB free\nPASS  Emergency swap is configured\nPASS  Docker command is installed\nPASS  Docker Compose plugin is available\nPASS  .env exists\nPASS  Public site URL is bmcservicenetwork.com\nPASS  Vendor outreach global switch is OFF\nPASS  Buyer outreach global switch is OFF\nPASS  Growth Pack outreach global switch is OFF\nPASS  Provider and buyer outbound waves are restricted to pilot1\nPASS  Docker Compose configuration validates\nPASS  Ops API health endpoint is OK\nPASS  Service registry seeded (54)\nPASS  Traditional auto repair service is active\nPASS  Vendor research pool seeded (211)\nPASS  Buyer research pool seeded (2537)\nPASS  First Wave provider cohort is exactly 12\nPASS  First Wave buyer cohort is exactly 7\nPASS  Research backlog is fully drained (0 queued)\nPASS  Recovered Arizona expansion research cells are seeded (198)\nPASS  Source-native market scope includes recovered Arizona expansion\nPASS  Private admin preflight endpoint is reachable\nLaunch gates:\n  live_intake_ready: BLOCKED\n  outreach_ready: READY\n  payments_ready: READY\n  intelligent_search_ai_ready: READY\nExternal/launch actions still required:\n  - Activate at least one verified pilot provider\nPASS  Private agent status endpoint is reachable\nAgent:\n  enabled: True\n  mode: bounded_internal_operator_v1\n  external actions allowed: False\n  open agent tasks: 0\n  research queued: 0\n  research assigned: 0\nPASS  Local AI service is reachable\nPASS  Configured local AI model is loaded (qwen3:1.7b)\nPASS  Intelligent service search maps 'fix my fryer' to restaurant equipment repair\nPASS  Intelligent service search maps 'brake repair' to traditional auto repair\nPASS  Private research search is reachable\n\nCore failures: 0 \u00b7 warnings: 0\nCore runtime is healthy. Warnings are launch/external configuration items.\n",
+  "version": 1
+}
