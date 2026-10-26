@@ -62,7 +62,10 @@ research_queued="${research_counts%%|*}"
 research_assigned="${research_counts##*|}"
 research_tasks="$(dbq "select count(*) from tasks where owner='research_agent' and status='open';")"
 staged_candidates="$(dbq "select count(*) from research_candidates where status='discovered';")"
-printf '  queued backlog: %s\n  assigned backlog: %s\n  open research tasks: %s\n  staged/review candidates: %s\n'   "$research_queued" "$research_assigned" "$research_tasks" "$staged_candidates"
+staged_candidate_email="$(dbq "select count(*) from research_candidates where status='discovered' and coalesce(evidence->>'public_email','')<>'';")"
+staged_candidate_phone="$(dbq "select count(*) from research_candidates where status='discovered' and coalesce(evidence->>'public_phone','')<>'';")"
+printf '  queued backlog: %s\n  assigned backlog: %s\n  open research tasks: %s\n  staged/review candidates: %s\n  staged candidates with email evidence: %s\n  staged candidates with phone evidence: %s\n' \
+  "$research_queued" "$research_assigned" "$research_tasks" "$staged_candidates" "$staged_candidate_email" "$staged_candidate_phone"
 if [ "$research_queued" -eq 0 ] && [ "$research_assigned" -eq 0 ] && [ "$research_tasks" -eq 0 ]; then
   pass "Research execution queue is fully drained"
 else
@@ -83,8 +86,12 @@ IFS='|' read -r vendor_total vendor_prospect vendor_email vendor_phone vendor_si
 vendor_eligible="$(dbq "select count(*) from vendors v
   where v.status='prospect' and coalesce(v.public_email,'')<>''
     and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(v.public_email))
-    and not exists(select 1 from outreach o where o.entity_type='vendor' and o.entity_id=v.vendor_id and o.campaign='vendor_recruitment');")"
-printf '  total vendors: %s\n  prospect status: %s\n  email-ready: %s\n  phone-ready: %s\n  website-ready: %s\n  no contact/source path: %s\n  eligible for a new recruitment wave: %s\n'   "$vendor_total" "$vendor_prospect" "$vendor_email" "$vendor_phone" "$vendor_site" "$vendor_no_path" "$vendor_eligible"
+    and not exists(
+      select 1 from outreach o
+      where o.entity_type='vendor' and o.entity_id=v.vendor_id and o.campaign='vendor_recruitment'
+        and (o.sent_at is not null or o.replied_at is not null or o.opt_out=true or o.status not in ('queued'))
+    );")"
+printf '  total vendors: %s\n  prospect status: %s\n  email-ready: %s\n  phone-ready: %s\n  website-ready: %s\n  no contact/source path: %s\n  stageable for a reviewed recruitment wave: %s\n'   "$vendor_total" "$vendor_prospect" "$vendor_email" "$vendor_phone" "$vendor_site" "$vendor_no_path" "$vendor_eligible"
 if [ "$vendor_email" -gt 0 ]; then pass "At least one researched provider is email-contactable"; else fail "No researched provider has a public email"; fi
 [ "$vendor_no_path" -eq 0 ] || warn "$vendor_no_path provider prospects have no stored contact/source path"
 
@@ -102,8 +109,12 @@ IFS='|' read -r buyer_total buyer_prospect buyer_email buyer_phone buyer_site bu
 buyer_eligible="$(dbq "select count(*) from buyers b
   where b.status in ('new','prospect') and coalesce(b.public_email,'')<>''
     and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(b.public_email))
-    and not exists(select 1 from outreach o where o.entity_type='buyer' and o.entity_id=b.buyer_id);")"
-printf '  total buyers: %s\n  prospect/new status: %s\n  email-ready: %s\n  phone-ready: %s\n  website-ready: %s\n  no contact/source path: %s\n  eligible for a new buyer wave: %s\n'   "$buyer_total" "$buyer_prospect" "$buyer_email" "$buyer_phone" "$buyer_site" "$buyer_no_path" "$buyer_eligible"
+    and not exists(
+      select 1 from outreach o
+      where o.entity_type='buyer' and o.entity_id=b.buyer_id
+        and (o.sent_at is not null or o.replied_at is not null or o.opt_out=true or o.status not in ('queued'))
+    );")"
+printf '  total buyers: %s\n  prospect/new status: %s\n  email-ready: %s\n  phone-ready: %s\n  website-ready: %s\n  no contact/source path: %s\n  stageable for a reviewed buyer wave: %s\n'   "$buyer_total" "$buyer_prospect" "$buyer_email" "$buyer_phone" "$buyer_site" "$buyer_no_path" "$buyer_eligible"
 if [ "$buyer_email" -gt 0 ]; then pass "At least one researched buyer is email-contactable"; else warn "No researched buyer has a public email yet"; fi
 [ "$buyer_no_path" -eq 0 ] || warn "$buyer_no_path buyer prospects have no stored contact/source path"
 
