@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "resume-d-proof-after-steps-20261026T2013Z",
+  "action": "proof_readout",
+  "allow_external_actions": false,
+  "created_at": "2026-10-26T20:13:00Z",
+  "expires_at": "2026-10-27T20:13:00Z",
+  "args": {}
+}
