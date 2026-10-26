@@ -2,7 +2,82 @@
 
 **Purpose:** This file is the authoritative starting point for a new ChatGPT conversation in the BMC Service Network / BMC Luminary Ventures project.
 
-**Last updated:** 2026-10-25
+**Last updated:** 2026-10-26
+
+## 2026-10-26 AUTHORITATIVE RESEARCH OVERRIDE — READ BEFORE ALL OLDER LAUNCH SECTIONS
+
+Brett explicitly rejected treating the autonomous VPS scanner as the primary source of truth for market research.
+
+### New operating model
+
+**ChatGPT does the heavy bootstrap research first.**
+Use connected web/search tools directly to find real businesses, buyers, vendors, facilities, public agencies, procurement sources, directories, chambers, Google-style search results, and other publicly discoverable sources across every configured Arizona market and service/buyer category.
+
+The VPS/GitHub automation should then be used primarily for:
+- deduplication;
+- structured ingestion;
+- scoring/source grading;
+- refreshes;
+- finding net-new records;
+- detecting changed/stale contact information;
+- continuous local-demand/procurement monitoring;
+- later enrichment.
+
+Do **not** simply wait for the VPS scanner to crawl 1,239 lanes and call that “research.”
+
+### Coverage philosophy
+
+A market/category cell should distinguish:
+1. **Base records** already stored.
+2. **Search-discovered candidates** found from ordinary public web research, including search engines, chambers, directories, Yelp/YellowPages-style results, etc.
+3. **Direct/verified evidence** where a direct organization/business/government page supports the market/service.
+4. **Scan state** — untouched / in progress / complete.
+
+“Untouched” must never be displayed or described as “zero businesses exist.”
+
+A discovery source can be useful without being authoritative. Google-style/discovery results are acceptable for filling the research pool. Source quality is graded **after discovery**, not used as an excuse to leave obvious markets empty.
+
+### Manual audit commitment
+
+Brett intends to audit the resulting dataset **line by line with ChatGPT before launch**.
+
+For each record, the audit should verify:
+- business/organization actually exists;
+- correct market/service/category;
+- source URL resolves or has a current replacement;
+- phone/email/site when publicly available;
+- source type/trust tier;
+- stale/duplicate/misattributed records;
+- whether the record should remain discovery-only or can be treated as directly verified.
+
+Do not call the dataset launch-ready until that audit is substantially complete.
+
+### Current backend correction in progress
+
+Recent commits changed inventory behavior so:
+- research selection spreads across markets rather than letting priority cities monopolize runs;
+- regional vendor results from a market-specific search can be retained as **discovery** even if the page does not explicitly print the small town name;
+- direct/verified market status still requires result-level market evidence;
+- coverage API reports base records, search-discovered candidates, and direct/verified candidates separately;
+- CI includes regression checks for these semantics.
+
+Current latest commit at this handoff update:
+- `fd6f208df376830b42e74d30932facf8b141ccae` — **Test fair discovery coverage semantics**
+
+A CI-gated deploy request was submitted through the VPS relay, but its success was **not yet confirmed at the moment of this handoff update**. Verify the relay result and production SHA before assuming these changes are live.
+
+### Immediate next research task
+
+Before returning to launch work:
+1. verify/deploy the fair-coverage backend change;
+2. keep all outreach switches OFF;
+3. have ChatGPT actively research and seed the markets itself;
+4. prioritize eliminating false-empty market/category cells;
+5. store source provenance and trust grade for every discovered record;
+6. use the VPS scanner afterward as a delta/update engine;
+7. then audit records line by line with Brett.
+
+This section overrides older NEXT_THREAD language that says the drained legacy research queue means research is broadly complete or that provider launch should be the immediate next move.
 
 ## Read this first
 
