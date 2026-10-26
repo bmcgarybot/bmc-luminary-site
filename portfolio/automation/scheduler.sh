@@ -40,6 +40,7 @@ while true; do
 
   if [ $((i % 6)) -eq 0 ]; then
     post /api/process-local-demand-signals 240
+    post /api/process-inventory-closure-audit 240
   fi
 
   if [ $((i % 12)) -eq 6 ]; then
