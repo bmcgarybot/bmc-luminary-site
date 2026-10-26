@@ -199,6 +199,7 @@ jobs:
           docker compose --env-file .env.example config >/dev/null
           grep -q 'image: cloudflare/cloudflared:2026.10.3' docker-compose.yml
           grep -q 'pull cloudflared' deploy-update.sh
+          grep -q 'pull cloudflared' configure-cloudflare.sh
           grep -q 'Cloudflare Tunnel is running patched cloudflared' runtime-doctor.sh
 
       - name: Validate outbound safety invariants
