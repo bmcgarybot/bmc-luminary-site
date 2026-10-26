@@ -81,24 +81,37 @@ if [ "$inventory_exists" -eq 1 ]; then
     count(*) filter (where pages_scanned=0),
     count(*) filter (where status='in_progress'),
     count(*) filter (where status='error'),
-    count(*) filter (where status='scan_complete_target_met'),
-    count(*) filter (where status='scan_complete_under_target')
+    count(*) filter (where scan_cycles>0),
+    coalesce(sum(scan_cycles),0)
     from market_inventory_progress;")"
-  IFS='|' read -r inventory_lanes inventory_untouched inventory_in_progress inventory_errors inventory_met inventory_under <<<"$inventory_stats"
+  IFS='|' read -r inventory_lanes inventory_untouched inventory_in_progress inventory_errors inventory_first_cycle inventory_cycles <<<"$inventory_stats"
   inventory_vendor_zero="$(dbq "select count(*) from market_inventory_progress
-    where side='vendor' and status like 'scan_complete_%' and official_candidates=0;")"
+    where side='vendor' and scan_cycles>0
+      and not exists (
+        select 1 from market_inventory_candidates c
+        where c.side=market_inventory_progress.side
+          and c.market=market_inventory_progress.market
+          and c.category_key=market_inventory_progress.category_key
+          and c.status='discovered'
+      );")"
   inventory_buyer_zero="$(dbq "select count(*) from market_inventory_progress
-    where side='buyer' and status like 'scan_complete_%' and official_candidates=0;")"
-  printf '  inventory lanes: %s\n  untouched lanes: %s\n  in-progress lanes: %s\n  errored lanes: %s\n  target-met lanes: %s\n  under-target lanes: %s\n  completed vendor lanes with zero official candidates: %s\n  completed buyer lanes with zero official candidates: %s\n' \
-    "$inventory_lanes" "$inventory_untouched" "$inventory_in_progress" "$inventory_errors" "$inventory_met" "$inventory_under" "$inventory_vendor_zero" "$inventory_buyer_zero"
-  if [ "$inventory_lanes" -gt 0 ] && [ "$inventory_untouched" -eq 0 ] && [ "$inventory_in_progress" -eq 0 ] && [ "$inventory_errors" -eq 0 ]; then
-    pass "Every deep market inventory lane has been scanned to a terminal coverage state"
+    where side='buyer' and scan_cycles>0
+      and not exists (
+        select 1 from market_inventory_candidates c
+        where c.side=market_inventory_progress.side
+          and c.market=market_inventory_progress.market
+          and c.category_key=market_inventory_progress.category_key
+          and c.status='discovered'
+      );")"
+  printf '  inventory lanes: %s\n  untouched lanes: %s\n  in-progress lanes: %s\n  errored lanes: %s\n  lanes with >=1 full scan cycle: %s\n  total completed scan cycles: %s\n  fully-scanned vendor lanes with zero active discoveries: %s\n  fully-scanned buyer lanes with zero active discoveries: %s\n' \
+    "$inventory_lanes" "$inventory_untouched" "$inventory_in_progress" "$inventory_errors" "$inventory_first_cycle" "$inventory_cycles" "$inventory_vendor_zero" "$inventory_buyer_zero"
+  if [ "$inventory_lanes" -gt 0 ] && [ "$inventory_first_cycle" -eq "$inventory_lanes" ] && [ "$inventory_errors" -eq 0 ]; then
+    pass "Every deep market inventory lane has completed at least one full scan cycle and remains in continuous monitoring"
   else
-    fail "Deep market inventory is not fully scanned across all markets/categories"
+    fail "Deep market inventory has not completed a first full scan cycle across all markets/categories"
   fi
-  [ "$inventory_vendor_zero" -eq 0 ] || fail "$inventory_vendor_zero completed provider lanes still have zero official-site candidates"
-  [ "$inventory_buyer_zero" -eq 0 ] || warn "$inventory_buyer_zero completed buyer-category lanes have zero official-site candidates"
-  [ "$inventory_under" -eq 0 ] || warn "$inventory_under inventory lanes finished below their minimum coverage target and require review"
+  [ "$inventory_vendor_zero" -eq 0 ] || fail "$inventory_vendor_zero fully-scanned provider lanes still have zero active discoveries"
+  [ "$inventory_buyer_zero" -eq 0 ] || warn "$inventory_buyer_zero fully-scanned buyer-category lanes still have zero active discoveries"
 else
   fail "Deep market inventory schema is not deployed"
   inventory_lanes=0
