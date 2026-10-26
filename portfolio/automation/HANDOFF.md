@@ -4413,3 +4413,42 @@ Fallback:
 14. Rerun runtime doctor and confirm `live_intake_ready = READY`.
 
 No real-provider invitation should be sent from an old production API image.
+
+
+## 51. STATIC HOSTING CLARIFIED — CLOUDFLARE PAGES — 2026-10-25
+
+A final hosting check corrected one ambiguity in Section 50.
+
+Production static hosting is **Cloudflare Pages**, not the repository's manual GitHub Pages workflow.
+
+Current source-of-truth:
+- `portfolio/automation/DNS_HOSTING.md`;
+- canonical public site: `https://bmcservicenetwork.com`;
+- Cloudflare is authoritative DNS;
+- apex `bmcservicenetwork.com` is a proxied CNAME to `bmc-service-network.pages.dev`;
+- the temporary GitHub Pages custom-domain experiment is explicitly not the production hosting architecture;
+- `hooks.bmcservicenetwork.com` remains the separate Cloudflare Tunnel for the restricted webhook gateway.
+
+Therefore:
+- do **not** dispatch the manual GitHub Pages workflow merely to publish production;
+- do **not** change the apex CNAME to GitHub Pages;
+- preserve the existing Cloudflare Pages project and Cloudflare DNS records.
+
+The repository's synthetic E2E tooling also refers to opening the public test page once **Cloudflare Pages deploys the latest commit**, consistent with Cloudflare Pages being the intended static publish path.
+
+What is not yet independently verified from this chat:
+- whether Cloudflare Pages has already completed deployment of the newest static commits containing the sitemap/provider/search changes.
+
+The browsing environment used in this thread cannot directly fetch the BMC domain or pages.dev hostname, so that tool failure must not be treated as evidence that the site is down.
+
+Before Search Console submission or the first real provider invite, verify the public site is on the current Cloudflare Pages deployment by checking at minimum:
+- `https://bmcservicenetwork.com/providers/`;
+- `https://bmcservicenetwork.com/sitemap.xml`;
+- that the sitemap contains `https://bmcservicenetwork.com/providers/`;
+- that the provider activation page contains the required Current capacity field.
+
+The VPS API deployment and the Cloudflare Pages static-site deployment are separate concerns:
+- VPS pull/rebuild updates the private Ops API/admin/runtime;
+- Cloudflare Pages publishes the static customer/provider pages from the repository.
+
+Do not send the first real provider invitation until both sides reflect the current code.
