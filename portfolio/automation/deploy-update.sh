@@ -70,7 +70,10 @@ docker compose --env-file "$ENV_FILE" up -d --force-recreate ops_api
 
 echo
 echo "Ensuring supporting services are up..."
-docker compose --env-file "$ENV_FILE" up -d n8n scheduler searxng
+docker compose --env-file "$ENV_FILE" up -d n8n searxng
+# scheduler.sh is bind-mounted but the shell reads it only at container start.
+# Force recreation so every deployed scheduler change becomes active immediately.
+docker compose --env-file "$ENV_FILE" up -d --force-recreate scheduler
 
 echo
 echo "Refreshing the private webhook gateway after the API restart..."
