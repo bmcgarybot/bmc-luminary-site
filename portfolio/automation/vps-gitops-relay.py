@@ -46,13 +46,15 @@ STATE_DIR = Path(os.environ.get("BMC_RELAY_STATE_DIR", str(Path.home() / ".local
 LOCAL_RESULTS = STATE_DIR / "results"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor"}
+READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
     "market_inventory_step",
     "local_demand_step",
     "public_opportunities_step",
     "source_native_step",
+    "scheduler_start",
+    "scheduler_stop",
 }
 ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS
 
@@ -394,6 +396,34 @@ def execute(req: dict) -> dict:
 
     elif action == "runtime_doctor":
         cp = run(["bash", "./runtime-doctor.sh", ENV_FILE], timeout=300)
+        stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
+
+    elif action == "scheduler_status":
+        cp = run(["docker", "compose", "--env-file", ENV_FILE, "ps", "scheduler"], timeout=60)
+        stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
+
+    elif action == "diagnostic_bundle":
+        commands = [
+            ["docker", "compose", "--env-file", ENV_FILE, "ps"],
+            ["docker", "compose", "--env-file", ENV_FILE, "logs", "--tail=250", "ops_api"],
+            ["docker", "compose", "--env-file", ENV_FILE, "logs", "--tail=250", "scheduler"],
+        ]
+        chunks = []
+        exit_code = 0
+        for cmd in commands:
+            cp = run(cmd, timeout=120)
+            chunks.append("$ " + " ".join(cmd) + "\n" + cp.stdout + ("\nSTDERR:\n" + cp.stderr if cp.stderr else ""))
+            if cp.returncode != 0:
+                exit_code = cp.returncode
+        stdout = "\n\n".join(chunks)
+        stderr = ""
+
+    elif action == "scheduler_start":
+        cp = run(["docker", "compose", "--env-file", ENV_FILE, "up", "-d", "scheduler"], timeout=180)
+        stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
+
+    elif action == "scheduler_stop":
+        cp = run(["docker", "compose", "--env-file", ENV_FILE, "stop", "scheduler"], timeout=180)
         stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
 
     elif action == "deploy_update":
