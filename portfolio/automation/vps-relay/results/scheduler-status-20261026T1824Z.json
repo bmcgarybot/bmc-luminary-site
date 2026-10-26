@@ -1,0 +1,21 @@
+{
+  "action": "scheduler_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-26T18:24:19.880600+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "93ff884f2362d77fbdc8c33390a31d60da095209",
+  "git_commit_before": "93ff884f2362d77fbdc8c33390a31d60da095209",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "d1907e2a214bd344ae1a8203945c8f49c207bf8c",
+  "request_id": "scheduler-status-20261026T1824Z",
+  "request_sha256": "8f0c0262d8db4c367a3ed7158f6f72e91dede7a1d17e05636d20304ed0e049df",
+  "started_at": "2026-10-26T18:24:19.759273+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "NAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS\n",
+  "version": 1
+}
