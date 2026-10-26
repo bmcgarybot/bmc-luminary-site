@@ -4232,3 +4232,184 @@ Once the latest code is deployed to the VPS:
 
 If American Crown declines or does not respond, use Window Wranglers as the next controlled candidate.
 
+
+
+## 50. PILOT PATH GREEN + SAFE VPS DEPLOY READY — 2026-10-25
+
+This checkpoint closes the pre-invite code work started in Sections 48–49.
+
+No provider outreach has been sent.
+No provider has been activated.
+Global vendor and buyer outreach remain OFF.
+Production has **not** yet been pulled/rebuilt with these latest commits.
+
+### Pilot activation contract is now fully CI-proven
+
+The first regression-guard pass exposed a validator bug in the new guard itself:
+- `CONTROL_RE` was referenced before being defined;
+- the required-field regex was double escaped.
+
+The application/pilot flow was not the source of that failure.
+
+Fix:
+- `080e1e8e067936658791d92a89829f0a427c2fad` — Fix pilot form contract validator.
+
+BMC Portfolio CI run `40268442797` completed SUCCESS after that fix, including the full database/API smoke test.
+
+That proves the controlled pilot lifecycle still executes end-to-end:
+1. First Wave provider receives a secure activation URL;
+2. provider activation submission records market, territory, requested services, minimum job, capacity, credentials, insurance and accepted pilot terms;
+3. vendor remains `pilot_pending_review` and unroutable;
+4. Pending Pilot Review exposes the provider's actual submission;
+5. BMC explicitly approves;
+6. vendor changes to `pilot`;
+7. approved provider can use the provider dashboard.
+
+### Safe existing-VPS update path added
+
+A deployment footgun was found in the old operator path:
+
+- `start.sh` applies additive migrations and starts services;
+- it does **not** rebuild the `ops_api` Docker image;
+- therefore `git pull && ./start.sh` can leave production running old API code after a source update.
+
+New helper:
+- `20c12a242151ac3e8eff22e4b39cb5425499bedd` — Add safe production update helper.
+- file: `portfolio/automation/deploy-update.sh`.
+
+The helper:
+- refuses tracked local changes rather than discarding them;
+- refuses detached HEAD;
+- verifies the checkout matches the current remote branch;
+- preserves the existing production `.env`, secrets and outreach switches;
+- rebuilds the current Ops API image;
+- applies only the existing additive migrations;
+- recreates Ops API from the new image;
+- refreshes the webhook proxy after the API restart;
+- keeps persistent Postgres/n8n/Ollama volumes intact;
+- finishes with `runtime-doctor.sh`.
+
+CI now syntax-checks the helper:
+- `b14eb5ed1dff1850fa85e836375d4743e5c051b8` — Validate production update helper.
+
+Deployment guide updated:
+- `a24fd50a1a98c5bee6b2d27f4cd65f9cb8608818` — Document safe VPS update path.
+
+Use on the existing production VPS:
+
+```bash
+cd ~/bmc-luminary-site
+git pull --ff-only
+cd portfolio/automation
+chmod +x deploy-update.sh
+./deploy-update.sh .env
+```
+
+Do not use a hard reset as a production deployment shortcut.
+
+### START_HERE status corrected
+
+`START_HERE.md` was still describing a much older state:
+- 48 services;
+- 210 vendors;
+- 156 buyers;
+- Cloudflare/Stripe/outbound mail as unresolved blockers.
+
+That contradicted the current runtime doctor and handoff.
+
+Fix:
+- `9007665ad32e47a1c9b838d0e25cb78b77dedab2` — Refresh production start-here status.
+
+It now records:
+- 54 seeded service categories;
+- 211 vendor prospects;
+- 2,537 buyer prospects;
+- 205 staged candidates;
+- research backlog fully drained;
+- Cloudflare/live intake ready;
+- payments ready;
+- mail/reply/opt-out readiness with outreach intentionally OFF;
+- only runtime launch gate: one verified pilot provider;
+- safe existing-VPS update command.
+
+Search Console, staged-candidate review, off-host backup hardening and CMS 403 source access are parallel/nonblocking work.
+
+### First-provider invite copy cleaned before real outreach
+
+The First Wave step-1 copy contained an internal-sounding phrase:
+
+> “while we prove whether BMC is worth paying for”
+
+That was removed before any real provider saw it.
+
+Fix:
+- `39301277aa3f292e1ea91cff61e236c7f6c26e92` — Polish first provider pilot invitation.
+
+Current offer language:
+- BMC Service Network is opening a small provider pilot in Arizona;
+- there is no fee to join;
+- provider chooses work area, jobs, minimum job size and capacity;
+- provider sees the matching customer request before deciding;
+- some pilot opportunities may be free or discounted;
+- any future paid lead/territory price and terms are shown before the provider chooses to participate.
+
+CI now locks those promises into the First Wave smoke test:
+- `c26634f65758f4b5d861c22befdc51d872c4b9a3` — Lock first provider invite copy in CI.
+
+Latest BMC Portfolio CI:
+- run: `40268655215`;
+- head: `c26634f65758f4b5d861c22befdc51d872c4b9a3`;
+- result: **SUCCESS**;
+- API syntax: PASS;
+- service/front validation: PASS;
+- generated storefront sync: PASS;
+- public UI/copy guards: PASS;
+- public form contracts: PASS;
+- search/download readiness: PASS;
+- Compose: PASS;
+- operational scripts, including `deploy-update.sh`: PASS;
+- public gateway config: PASS;
+- full database/API smoke test: PASS.
+
+### Production state at this checkpoint
+
+Repository side:
+- ready for controlled deployment.
+
+Production VPS:
+- still on the previously deployed code until the VPS pull/rebuild commands above are run.
+
+Public static site:
+- repository source contains the sitemap/provider/search changes;
+- do not assume every static change is live solely because it is committed;
+- the repository's BMC Service Network GitHub Pages workflow is manual-only (`workflow_dispatch`), so static hosting/deployment should be verified separately before claiming a public-page change is deployed.
+
+Provider activation:
+- not started with a real provider yet.
+
+Recommended first controlled candidate remains:
+- `v_prescott_americancrown` — American Crown Commercial Cleaning.
+
+Fallback:
+- `v_prescott_windowwranglers` — Window Wranglers.
+
+### Exact next operational sequence
+
+1. On the production VPS, run:
+   `git pull --ff-only`
+2. Run:
+   `./deploy-update.sh .env`
+3. Confirm runtime doctor returns the expected ready state with only the verified-provider gate remaining.
+4. Open the private admin through the existing SSH tunnel.
+5. Open Pilot shortlist / First Wave.
+6. Recheck American Crown's displayed source/contact details.
+7. Copy the exact live pilot invitation containing its secure activation URL.
+8. Send **one** controlled invitation only.
+9. Keep all global outreach switches OFF.
+10. Wait for the provider's activation submission.
+11. Review submitted services/market/capacity/credentials/insurance.
+12. Update routing if needed.
+13. Approve only after appropriate checks.
+14. Rerun runtime doctor and confirm `live_intake_ready = READY`.
+
+No real-provider invitation should be sent from an old production API image.
