@@ -1926,6 +1926,10 @@ async def process_expired(x_bmc_admin_key:str|None=Header(default=None)):
 @app.post("/api/process-followups")
 async def process_followups(x_bmc_admin_key:str|None=Header(default=None)):
     if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY: raise HTTPException(403,"Forbidden")
+    # Scheduled research/monitoring must never bypass the master outbound gate.
+    if not OUTREACH_ENABLED:
+        return {"ok":True,"enabled":False,"sent":0,
+                "message":"Provider follow-up email is disabled while vendor outreach is disabled."}
     sent=0
     async with app.state.pool.acquire() as conn:
       rows=await conn.fetch("""select lm.*,v.public_email,v.business_name,l.market,l.service_key,
