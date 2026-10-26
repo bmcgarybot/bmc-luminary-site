@@ -130,8 +130,13 @@ else
 fi
 
 section "8. CURRENT DEMAND SIGNALS"
+dbq "select 'demand_signal_rows_active_v5|'||count(*) from local_demand_signals
+ where status in ('discovered','useful') and query_strategy_version=5
+ union all select 'superseded_demand_signal_rows|'||count(*) from local_demand_signals
+ where status='superseded_pre_v5';" || true
 dbq "select source_key||'|'||market||'|'||status||'|'||count(*)
  from local_demand_signals
+ where query_strategy_version=5 and status in ('discovered','useful')
  group by source_key,market,status
  order by source_key,market,status;" || true
 
