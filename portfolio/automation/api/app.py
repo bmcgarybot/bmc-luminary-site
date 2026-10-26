@@ -298,7 +298,7 @@ LOCAL_SIGNAL_GROUPS=(
      "terms":'"restaurant equipment" OR "ice machine" OR "hood cleaning" OR "grease trap" OR "fire extinguisher" OR "parking lot" OR "sign repair" OR "access control"'}
 )
 LOCAL_SIGNAL_INTENT_TERMS='"looking for" OR "recommend" OR "recommendation" OR "need a" OR "need an" OR "anyone know" OR "seeking" OR "looking to hire" OR "who can"'
-LOCAL_DEMAND_QUERY_STRATEGY_VERSION=6
+LOCAL_DEMAND_QUERY_STRATEGY_VERSION=7
 
 MARKET_INVENTORY_MARKETS=LOCAL_SIGNAL_MARKETS
 BUYER_INVENTORY_CATEGORIES=(
@@ -334,13 +334,15 @@ BUYER_INVENTORY_TARGETS={
 }
 INVENTORY_MAJOR_MARKETS={"Phoenix","Scottsdale","Tucson"}
 INVENTORY_REGIONAL_MARKETS={"Prescott","Prescott Valley","Flagstaff","Kingman","Bullhead City","Cottonwood","Sedona"}
-INVENTORY_QUERY_STRATEGY_VERSION=5
+INVENTORY_QUERY_STRATEGY_VERSION=6
 
 INVENTORY_BLOCKED_DOMAINS={
     "facebook.com","nextdoor.com","linkedin.com","yelp.com","yellowpages.com","angi.com",
     "thumbtack.com","bbb.org","mapquest.com","tripadvisor.com","doordash.com","grubhub.com",
     "superpages.com","allbiz.com","restaurantji.com","manta.com","chamberofcommerce.com",
-    "birdeye.com","foursquare.com","opentable.com","restaurantguru.com"
+    "birdeye.com","foursquare.com","opentable.com","restaurantguru.com",
+    "americascuisine.com","bringfido.com","restaurantobserver.com","thetouristchecklist.com",
+    "evendo.com","helloprescott.com","prescottaz365.com","prescott.com"
 }
 
 def inventory_target(market,side,category_key):
@@ -412,9 +414,27 @@ def inventory_result_relevant(result,market,category_label):
         category_match=bool(subject_match)
     return bool(market_match and category_match)
 
-def inventory_official_site(domain):
-    host=clean(domain).lower().removeprefix("www.")
-    return bool(host and not any(host==d or host.endswith("."+d) for d in INVENTORY_BLOCKED_DOMAINS))
+def inventory_official_site(result):
+    host=clean((result or {}).get("domain")).lower().removeprefix("www.")
+    title=clean((result or {}).get("title")).lower()
+    url=clean((result or {}).get("url")).lower()
+    if not host or any(host==d or host.endswith("."+d) for d in INVENTORY_BLOCKED_DOMAINS):
+        return False
+    # A domain that is not on a known-directory blocklist is still not
+    # necessarily the business itself. Reject obvious listicle/directory/search
+    # result pages so "official" means a plausible direct business/organization
+    # page rather than merely "not Yelp".
+    aggregate_phrases=(
+      "top 10","top 20","best restaurants","best hotels","restaurants near",
+      "restaurants in ","restaurant reviews","where to eat","discover restaurants",
+      "with reviews","updated 2026","directory","things to do","find hotels",
+      "best 30","near me"
+    )
+    if any(x in title for x in aggregate_phrases):
+        return False
+    if any(x in url for x in ("/search?","/search/","/directory/","/best-restaurants","/restaurants-near")):
+        return False
+    return True
 
 def build_local_signal_query(market,domain,terms,variant=0):
     # Public social indexing is inconsistent across engines. Use short queries
@@ -425,13 +445,37 @@ def build_local_signal_query(market,domain,terms,variant=0):
         raw_terms=["service"]
     v=max(0,int(variant or 0))
     term=raw_terms[v % len(raw_terms)]
-    intent_terms=("looking for","recommend","need","who can","seeking")
+    intent_terms=("looking for","recommend","need a","who can","seeking")
     intent=intent_terms[(v // max(1,len(raw_terms))) % len(intent_terms)]
     return f'site:{clean(domain)} {place} Arizona "{term}" "{intent}"'
 
+def local_signal_request_intent(result):
+    title=clean((result or {}).get("title")).lower()
+    snippet=clean((result or {}).get("snippet")).lower()
+    text=f"{title} {snippet}"
+    # Reject employment posts and provider self-promotion before looking for
+    # request language. These are common false positives in indexed Craigslist.
+    negative=(
+      "sign-on bonus","sign on bonus","now hiring","we are hiring","job opening",
+      "employment","full-time","part-time","compensation","send resume","apply today",
+      "skilled trades","general labor","household services","services offered",
+      "we offer","we provide","free estimate","licensed and insured","licensed & insured",
+      "call us","call/text","book now","appointments available"
+    )
+    if any(x in text for x in negative):
+        return False
+    patterns=(
+      r"\blooking for\b",r"\blooking to hire\b",r"\banyone know\b",
+      r"\bcan anyone recommend\b",r"\brecommend(?:ation|ations)?\b",
+      r"\bneed (?:a|an|someone|somebody)\b",r"\bwho can\b",
+      r"\bseeking (?:a|an|someone|somebody)\b"
+    )
+    return any(re.search(p,text) for p in patterns)
+
 def local_signal_result_relevant(result,market):
-    # Indexed social results must independently prove the requested market.
-    return result_matches_market(result,market)
+    # Indexed social results must independently prove both the requested market
+    # and genuine buyer/request intent; ads and job posts are not demand leads.
+    return bool(result_matches_market(result,market) and local_signal_request_intent(result))
 
 def classify_local_signal_service(text):
     t=clean(text).lower()
@@ -3189,7 +3233,7 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
             official_added=0
             for result in relevant_results:
                 contact=extract_public_contact(f'{result["title"]} {result["snippet"]}')
-                official=inventory_official_site(result["domain"])
+                official=inventory_official_site(result)
                 cid=await conn.fetchval("""insert into market_inventory_candidates(
                     side,market,category_key,category_label,business_name,source_url,source_domain,
                     snippet,search_query,page_no,public_email,public_phone,official_site,status,
