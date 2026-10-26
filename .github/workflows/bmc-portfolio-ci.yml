@@ -29,7 +29,7 @@ jobs:
           expected={
               "proof_readout","launch_audit","runtime_doctor","diagnostic_bundle","scheduler_status","search_quality_probe","research_refresh_status",
               "deploy_update","market_inventory_step","local_demand_step",
-              "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","research_refresh_install","scheduler_start","scheduler_stop"
+              "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","inventory_closure_step","research_refresh_install","scheduler_start","scheduler_stop"
           }
           assert ns["ALLOWED_ACTIONS"] == expected, ns["ALLOWED_ACTIONS"]
           assert all("shell" not in x for x in ns["ALLOWED_ACTIONS"])
@@ -171,6 +171,8 @@ jobs:
           assert "DATABASE_URL" in licensed.read_text()
           relay=Path("vps-gitops-relay.py").read_text()
           assert '"assistant_licensed_bootstrap_import"' in relay
+          assert '"inventory_closure_step"' in relay
+          assert "research_refresher" in relay
           assert "status=\"monitoring\"" in api
           assert "scan_cycles=scan_cycles+case when" in api
           assert "def inventory_result_closed" in api
