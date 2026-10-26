@@ -27,8 +27,10 @@ engines:
   - name: google cse
     disabled: true
   - name: bing
-    disabled: false
+    disabled: true
   - name: qwant
-    disabled: false
+    disabled: true
   - name: yahoo
+    disabled: false
+  - name: yep
     disabled: false
