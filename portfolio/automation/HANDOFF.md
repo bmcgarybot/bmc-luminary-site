@@ -4115,3 +4115,120 @@ B. Provider activation:
 - rerun runtime doctor and confirm `live_intake_ready = READY`.
 
 Bulk vendor and buyer outreach remain OFF.
+
+
+## 49. FIRST PILOT CANDIDATE + ACTIVATION HARDENING — 2026-10-25
+
+After Section 48, the 12 First Wave providers were compared using the existing seed record plus fresh public verification.
+
+No outreach was sent.
+No pilot was activated.
+Bulk outreach remains OFF.
+
+### Recommended first manual pilot invite: American Crown Commercial Cleaning
+
+Vendor ID:
+- `v_prescott_americancrown`
+
+Why this provider is the strongest first test:
+- directly covers `commercial_cleaning`, which is in the current launch cell;
+- Prescott-based and serves the wider Yavapai County footprint;
+- direct public business email and phone are available;
+- public site is active and advertises commercial janitorial, window cleaning, pressure washing, construction cleanup, venue cleaning and related facility work;
+- BBB profile currently shows the business as accredited with an A+ rating, accredited since 2020;
+- Prescott Valley Chamber has a live member listing;
+- an Arizona Department of Gaming active-vendor list includes American Crown Commercial Cleaning as vendor certification `V99196` with an expiration of 2027-03-31.
+
+Important:
+- the Arizona gaming vendor certification is an active-business/vendor signal, **not** a substitute for a contractor license, insurance certificate, or any service-specific credential;
+- the company's site states NFPA Code 96 / MFS certification for relevant kitchen work, but those claims still need appropriate review if BMC routes regulated/specialty work;
+- insurance must still be reviewed from the provider activation response / documentation before approval where applicable.
+
+Public contact in the BMC seed remains:
+- `donna@americancrowncc.com`
+- `928-250-0490`
+- `https://americancrowncc.com/`
+
+Fallback candidate:
+- `v_prescott_windowwranglers` — Window Wranglers.
+- Active local site, direct email/phone, family-owned, broad Yavapai coverage, commercial/residential window cleaning and pressure washing.
+- Lower regulatory complexity, but American Crown is preferred first because commercial cleaning is already one of the launch-cell services.
+
+### Pilot activation dead-end found and fixed before outreach
+
+While reviewing the real provider path, a contract mismatch was found:
+
+- the provider activation page allowed Current capacity to be blank;
+- the admin `approve-pilot` endpoint refuses approval if capacity is blank.
+
+That meant a real provider could submit the activation form successfully but become impossible to approve without manual database repair or a second submission.
+
+Fix:
+- `c30b3d0c4c92cfa089a99461ec10c7d86a8e40a5` — Require provider capacity before pilot review.
+- `provider-pilot-activate/index.html` now requires the capacity field.
+
+### Pending pilot review now shows the provider's actual submission
+
+A second review gap was fixed.
+
+Previously:
+- the activation submission stored market/services/credentials/insurance in the event payload and vendor fields;
+- the Pending Pilot Review endpoint/card mostly showed the seeded/current vendor record;
+- a reviewer could not easily compare what the provider actually requested against current routing.
+
+Fix:
+- `f0e58b52e5661c9e65ba14c5206d920337daab27` — Show provider-submitted pilot review details.
+
+Pending Pilot Review now shows:
+- current routing markets;
+- current routing services;
+- provider-submitted primary market;
+- territory;
+- requested services;
+- minimum job;
+- current capacity;
+- credentials;
+- insurance response;
+- contact name/email/phone;
+- submission timestamp.
+
+The admin card explicitly warns to update Vendor controls before approval if submitted market/services differ from current routing.
+
+### Regression guards added
+
+Form validator:
+- `301453c505cc1f263f4143c9e5fad79449cac1a5` — Guard required pilot activation fields.
+- the public form contract validator now requires the activation form to contain vendor ID, market, territory, services, capacity and pilot terms;
+- it also verifies that contact name, email, market, territory, services, capacity and pilot-terms controls retain the HTML `required` contract.
+
+CI smoke coverage:
+- `9059a32b74f50878224dd91cc84289c303ce35e2` — Cover submitted pilot review details in CI.
+- the existing end-to-end pilot smoke test now asserts the review endpoint returns the provider-submitted capacity, credentials, insurance and accepted pilot terms before approval.
+
+The existing CI pilot lifecycle already proves:
+1. First Wave activation URL is generated;
+2. provider activation submits against the existing vendor record;
+3. provider stays unroutable at `pilot_pending_review`;
+4. seed reruns preserve the activation data;
+5. provider appears in Pending Pilot Review;
+6. BMC approval changes the provider to `pilot`;
+7. the approved provider can load/update the provider dashboard.
+
+### Next operational move
+
+Once the latest code is deployed to the VPS:
+1. open the private admin;
+2. open Pilot shortlist / First Wave;
+3. locate American Crown Commercial Cleaning;
+4. recheck the displayed source/contact evidence;
+5. copy the pilot invite;
+6. manually send **one** invitation only;
+7. keep global vendor/buyer outreach OFF;
+8. wait for American Crown to submit the activation form;
+9. review the actual submitted market/services/capacity/credentials/insurance in Pending Pilot Review;
+10. update routing if their requested services/market differ from the seed;
+11. approve only after the appropriate credential/insurance checks;
+12. rerun runtime doctor.
+
+If American Crown declines or does not respond, use Window Wranglers as the next controlled candidate.
+
