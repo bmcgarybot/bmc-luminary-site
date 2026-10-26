@@ -5770,3 +5770,276 @@ update market_inventory_progress p set official_candidates=(
  select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
  and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ),updated_at=now() where p.market='Phoenix';
+
+
+-- Assistant-led verified Phoenix batch 05 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Phoenix','hvac_heat','Heating & Air','Chas Roberts Air Conditioning & Plumbing',
+ 'https://www.chasroberts.com/commercial-ac-heating/','chasroberts.com','Direct Phoenix company site explicitly offers commercial HVAC service for larger commercial buildings; Phoenix office is at 9828 N 19th Ave.','assistant verified research: Phoenix Heating & Air',0,
+ null,'602-331-2693',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_verified_05","researched_at":"2026-10-27T01:05:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Phoenix company site explicitly offers commercial HVAC service for larger commercial buildings; Phoenix office is at 9828 N 19th Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Phoenix','backflow_plumbing','Backflow & Commercial Plumbing','Chas Roberts Air Conditioning & Plumbing',
+ 'https://www.chasroberts.com/plumbing/','chasroberts.com','Direct company site confirms full-service plumbing department with 24-hour service; Phoenix headquarters at 9828 N 19th Ave.','assistant verified research: Phoenix Backflow & Commercial Plumbing',0,
+ null,'602-331-2693',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_verified_05","researched_at":"2026-10-27T01:05:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct company site confirms full-service plumbing department with 24-hour service; Phoenix headquarters at 9828 N 19th Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Phoenix','electrical_service','Electrician','Cannon & Wendt Electric Co Inc.',
+ 'https://www.cannon-wendt.com/contact/','cannon-wendt.com','Direct company contact page lists Phoenix headquarters at 4020 N 16th St and 24/7 service; company portfolio documents large commercial electrical work.','assistant verified research: Phoenix Electrician',0,
+ 'info@cannon-wendt.com','602-279-1681',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_verified_05","researched_at":"2026-10-27T01:05:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct company contact page lists Phoenix headquarters at 4020 N 16th St and 24/7 service; company portfolio documents large commercial electrical work."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Phoenix','fire_safety','Fire Safety & Extinguisher Service','Cannon & Wendt Electric Co Inc.',
+ 'https://www.cannon-wendt.com/technologies-low-voltage-systems-and-careers-in-construction/','cannon-wendt.com','Direct company site documents low-voltage fire alarm systems, building automation and related technologies from its Phoenix operation.','assistant verified research: Phoenix Fire Safety & Extinguisher Service',0,
+ 'info@cannon-wendt.com','602-279-1681',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_verified_05","researched_at":"2026-10-27T01:05:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct company site documents low-voltage fire alarm systems, building automation and related technologies from its Phoenix operation."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Phoenix','locksmith_access','Locks & Access Control','Southwest Access and Video Corporation',
+ 'https://www.swaccess.com/','swaccess.com','Direct company site explicitly provides commercial key-card access, alarms, surveillance and integrated security systems for campuses and facilities.','assistant verified research: Phoenix Locks & Access Control',0,
+ null,'602-286-0001',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_verified_05","researched_at":"2026-10-27T01:05:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct company site explicitly provides commercial key-card access, alarms, surveillance and integrated security systems for campuses and facilities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Phoenix','facility_maintenance','Building Maintenance Help','Progressive Roofing',
+ 'https://progressiveroofing.us/phoenix/','progressiveroofing.us','Direct Phoenix page lists main office at 23 N 35th Ave and a separate Phoenix service department; commercial roofing and cooperative-contract vendor.','assistant verified research: Phoenix Building Maintenance Help',0,
+ null,'602-278-4900',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_verified_05","researched_at":"2026-10-27T01:05:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Phoenix page lists main office at 23 N 35th Ave and a separate Phoenix service department; commercial roofing and cooperative-contract vendor."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Phoenix','landscaping','Landscaping & Yard Cleanup','Gothic Landscape',
+ 'https://gothiclandscape.com/location/arizona/','gothiclandscape.com','Direct company Arizona locations page lists Phoenix landscape-construction and management branches and explicitly describes commercial landscape capabilities.','assistant verified research: Phoenix Landscaping & Yard Cleanup',0,
+ null,'602-470-1711',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_verified_05","researched_at":"2026-10-27T01:05:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct company Arizona locations page lists Phoenix landscape-construction and management branches and explicitly describes commercial landscape capabilities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Phoenix','parking_lot','Parking Lot Cleaning & Striping','Sunland Asphalt & Construction LLC',
+ 'https://sunlandasphalt.com/phoenix/','sunlandasphalt.com','Direct Phoenix page lists office at 3030 S 7th St and commercial/public asphalt, parking-lot maintenance, sealcoating, milling and paving services.','assistant verified research: Phoenix Parking Lot Cleaning & Striping',0,
+ null,'602-323-2800',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_verified_05","researched_at":"2026-10-27T01:05:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Phoenix page lists office at 3030 S 7th St and commercial/public asphalt, parking-lot maintenance, sealcoating, milling and paving services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','Phoenix Children''s Hospital - Thomas Campus',
+ 'https://phoenixchildrens.org/locations/Phoenix/1919-E-Thomas-Rd','phoenixchildrens.org','Official hospital site lists active Thomas Campus at 1919 E Thomas Rd, Phoenix with 24/7 emergency department and major hospital facilities.','assistant verified research: Phoenix hospitals medical centers clinics',0,
+ null,'602-933-1000',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_verified_05","researched_at":"2026-10-27T01:05:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official hospital site lists active Thomas Campus at 1919 E Thomas Rd, Phoenix with 24/7 emergency department and major hospital facilities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','Banner - University Medical Center Phoenix',
+ 'https://www.bannerhealth.com/medicare/-/media/files/project/medicare/medicare-adv/cy26-hmo-materials/directories/april/hmo_provider-directory_cy26-april_bil.pdf','bannerhealth.com','Official Banner Health provider directory lists Banner - University Medical Center Phoenix at 1111 E McDowell Rd.','assistant verified research: Phoenix hospitals medical centers clinics',0,
+ null,'602-839-2000',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_verified_05","researched_at":"2026-10-27T01:05:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Banner Health provider directory lists Banner - University Medical Center Phoenix at 1111 E McDowell Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','warehouses_industrial','warehouses industrial businesses distribution centers','TSMC Arizona',
+ 'https://ro.careers.tsmc.com/job/Phoenix-Fall-2026-TSMC-Arizona-Engineering-Career-Opportunities-AZ-85001/1366233566/','careers.tsmc.com','Official TSMC site confirms on-site Phoenix Arizona facility at 5088 W Innovation Circle, Phoenix.','assistant verified research: Phoenix warehouses industrial businesses distribution centers',0,
+ null,null,true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_verified_05","researched_at":"2026-10-27T01:05:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official TSMC site confirms on-site Phoenix Arizona facility at 5088 W Innovation Circle, Phoenix."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','Arizona Biltmore, LXR Hotels & Resorts',
+ 'https://www.hilton.com/en/hotels/phxbmol-arizona-biltmore/','hilton.com','Official Hilton property page lists 2400 E Missouri Ave, Phoenix with resort, spa, seven dining outlets, pools, golf, fitness and meeting facilities.','assistant verified research: Phoenix hotels motels lodging',0,
+ null,'602-955-6600',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_verified_05","researched_at":"2026-10-27T01:05:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Hilton property page lists 2400 E Missouri Ave, Phoenix with resort, spa, seven dining outlets, pools, golf, fitness and meeting facilities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','hotels_motels','hotels motels lodging','JW Marriott Phoenix Desert Ridge Resort & Spa',
+ 'https://www.marriott.com/en-us/destinations/united-states/arizona/phoenix/hotels-near-desert-ridge.mi','marriott.com','Official Marriott site confirms active luxury Desert Ridge resort in Phoenix with golf, pools, spa and other large-facility amenities.','assistant verified research: Phoenix hotels motels lodging',0,
+ null,null,true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_verified_05","researched_at":"2026-10-27T01:05:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Marriott site confirms active luxury Desert Ridge resort in Phoenix with golf, pools, spa and other large-facility amenities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','public_facilities','government public facilities municipal buildings','Phoenix City Hall',
+ 'https://www.phoenix.gov/contact-us.html','phoenix.gov','Official City of Phoenix site lists City Hall at 200 W Washington St, Phoenix.','assistant verified research: Phoenix government public facilities municipal buildings',0,
+ null,'602-262-3111',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_verified_05","researched_at":"2026-10-27T01:05:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official City of Phoenix site lists City Hall at 200 W Washington St, Phoenix."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p set official_candidates=(
+ select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
+ and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+),updated_at=now() where p.market='Phoenix';
