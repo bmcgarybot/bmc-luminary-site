@@ -5169,3 +5169,202 @@ After this checkpoint:
 11. Buyer sender now enforces that coverage in code as a backstop.
 
 The target is not merely "server healthy." The target is a measurable, controlled, launch-ready research-to-outreach system.
+
+
+## 55. ASSISTANT-LED MARKET RESEARCH BOOTSTRAP + LINE-BY-LINE AUDIT — 2026-10-26
+
+This section is authoritative over older language that implied the drained legacy research queue meant the overall market research job was substantially complete or that provider launch should be the next priority.
+
+Brett explicitly said the current research experience is not acceptable because obvious Arizona markets still show zero/empty cells even though real businesses and potential buyers plainly exist.
+
+### User directive
+
+Brett's preferred operating model is now:
+
+1. **ChatGPT performs the heavy bootstrap research itself** using connected public-web search/research tools.
+2. ChatGPT gathers as much useful public business/buyer/vendor/source data as practical across all configured markets and categories.
+3. That data is structured and handed to GitHub/VPS for storage, dedupe, scoring and ongoing automation.
+4. The VPS scanner becomes the **continuous delta/update engine**:
+   - find net-new businesses;
+   - refresh stale records;
+   - detect changed contacts;
+   - find new public demand;
+   - find new procurement opportunities;
+   - continue enrichment.
+5. The VPS scanner is **not** to be treated as the sole primary researcher while ChatGPT waits for it to crawl thousands of lanes.
+6. Before launch, Brett and ChatGPT intend to go **line by line** through the resulting dataset and verify accuracy.
+
+### What counts as useful research
+
+Do not require a pristine official/direct source before retaining a discovery.
+
+Useful discovery may come from:
+- ordinary search-engine results;
+- direct business websites;
+- official government/institutional pages;
+- chambers of commerce;
+- tourism/business directories;
+- Yelp/Yellow Pages/BBB-style directories;
+- association/member directories;
+- public school/church/medical/facility listings;
+- public procurement portals;
+- publicly indexed social/community pages;
+- other publicly accessible sources that a normal customer might find.
+
+The correct model is:
+- **discover first**;
+- **grade the source**;
+- **verify/promote later**.
+
+A directory result can establish that a candidate is worth investigating without being strong enough to call the candidate verified.
+
+### Coverage semantics must be honest
+
+Never equate:
+- scanner has not touched the lane
+with:
+- no business exists.
+
+The research/coverage UI and reports should distinguish:
+- base records already stored;
+- newly search-discovered candidate records;
+- direct/verified records;
+- scan state.
+
+A “0” should only mean there are currently zero records in that specific defined bucket — not “there are no businesses in this city.”
+
+### Backend issue found
+
+The prior deep-inventory worker had several behaviors that made the board look falsely empty:
+
+- 1,239 market/category lanes existed;
+- each inventory invocation processed only a bounded subset;
+- priority ordering repeatedly favored a small group of cities before rural markets;
+- a lane can take multiple pages/variants to complete;
+- vendor relevance required result-level market text, which could reject a legitimate regional provider returned by a market-specific search merely because its website did not literally print the small town name.
+
+That made workflow state look like market truth.
+
+### Backend changes committed
+
+Recent commits:
+- `bf12d742abd7fe8b70b8bbeabb28427bc8baafa6`
+  - spreads inventory selection across markets;
+  - retains vendor discoveries from market-specific search context even when direct page market text is absent;
+  - stores whether market evidence came from result text vs market-specific query context;
+  - direct/verified classification still requires explicit result-level market evidence.
+- `bea20a58ee78ee6323146f9ff295da9f3aef73e1`
+  - coverage API now reports:
+    - base records;
+    - current search-discovered candidates;
+    - combined discovered records;
+    - direct/official candidate counts;
+    - scanner state separately.
+- `2f516675964b59fbd36996ab014eb69cc7c723d8`
+  - production proof output separates base / search-discovered / direct-verified coverage.
+- `fd6f208df376830b42e74d30932facf8b141ccae`
+  - CI regression tests for the new discovery/coverage semantics.
+
+At the moment this handoff section was written, a CI-gated relay deployment for `fd6f208...` had been requested but **not yet confirmed complete**.
+Verify:
+- relay deploy result;
+- production SHA;
+- scheduler state;
+- all outreach switches OFF;
+before assuming the change is live.
+
+### Recent source audit lesson
+
+Brett also directed a line-by-line source audit.
+
+The first 100 stored source-domain entries showed:
+- many real direct business/organization sites;
+- many useful but secondary chamber/directory sources;
+- stale/bad URLs that need replacement;
+- discovery sources that should not be labeled “verified” merely because they resolve;
+- a major concentration of buyer records from an ADHS ArcGIS source that requires freshness checking.
+
+Important examples discovered:
+- `prescottelkstheater.com` was stale/bad and should be replaced with the current Prescott Elks Theatre source.
+- the stored Southern Tire Mart location URL was stale and should be replaced with the current official location page.
+- an AppliTrack job/recruiting URL is the wrong evidence type for PUSD facilities/buyer verification.
+- Clear My Land Directory showed obvious taxonomy contamination and should be discovery-only at best.
+- a self-published Canva STR page requires independent corroboration.
+- official/direct, secondary-discovery, and weak/lead-gen sources must be distinguished.
+
+### Line-by-line verification standard
+
+For every final buyer/vendor record, verify as much as publicly available:
+
+- canonical business/organization name;
+- correct Arizona market / service territory;
+- correct buyer/vendor role;
+- correct service/category fit;
+- direct website if available;
+- source URL and source type;
+- public phone;
+- public email;
+- address/service territory if relevant;
+- licensing/credential information where the category requires it;
+- duplicate/stale status;
+- whether source is:
+  - direct/official;
+  - established secondary directory/association/chamber;
+  - ordinary discovery;
+  - weak/untrusted;
+- whether the record is:
+  - discovery only;
+  - corroborated;
+  - directly verified;
+  - stale/reject.
+
+Do not silently delete history; quarantine/supersede stale evidence where useful.
+
+### Research-bootstrap implementation strategy
+
+The preferred next engineering/research phase is:
+
+1. Use ChatGPT/web search to research market/category batches directly.
+2. Produce structured seed data with provenance, e.g. JSON/CSV/SQL records containing:
+   - market;
+   - side;
+   - category/service;
+   - business name;
+   - source URL/domain;
+   - discovered phone/email/site;
+   - source tier;
+   - verification status;
+   - evidence notes;
+   - researched timestamp.
+3. Commit those seed artifacts to GitHub.
+4. Add/verify idempotent import/upsert tooling so the VPS can ingest them safely without duplicating existing records.
+5. Never enable outreach merely because a seed import happened.
+6. Let the VPS scanner continue afterward for new discoveries and refresh.
+7. Build board/reporting so empty/untouched/verified are distinct concepts.
+8. Audit records line by line with Brett before launch.
+
+### Safety and launch state
+
+Current policy remains:
+- no vendor outreach without explicit Brett approval;
+- no buyer outreach without explicit Brett approval;
+- no Growth Pack outreach without explicit Brett approval;
+- no automatic procurement bidding;
+- no private-group scraping/bypass;
+- no automatic contact to individual social/community posters;
+- no provider auto-approval.
+
+The business is **not launch-ready** merely because infrastructure works or legacy queues are drained.
+
+### Immediate next-thread instruction
+
+The next assistant should **not** restart with “let the scheduler run and see what it finds.”
+
+Instead:
+1. read this Section 55 and the new top override in `NEXT_THREAD.md`;
+2. verify the pending fair-coverage deploy;
+3. keep outreach OFF;
+4. begin active assistant-led research seeding;
+5. eliminate false-empty market/category cells;
+6. then conduct the planned line-by-line verification with Brett.
+
