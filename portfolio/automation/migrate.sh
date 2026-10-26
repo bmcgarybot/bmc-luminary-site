@@ -36,7 +36,7 @@ if [ "$ready" -lt 3 ]; then
   exit 1
 fi
 
-for file in schema.sql seed-services.sql seed-products.sql seed-research-sources.sql seed-research-scale.sql seed-assistant-research-bootstrap.sql; do
+for file in schema.sql seed-services.sql seed-products.sql seed-research-sources.sql seed-research-scale.sql seed-assistant-research-bootstrap.sql seed-assistant-williamson-bootstrap.sql; do
   echo "Applying additive migration: $file"
   docker compose --env-file "$ENV_FILE" exec -T postgres psql -v ON_ERROR_STOP=1 -U "$DBUSER" -d "$DBNAME" < "$file"
 done
