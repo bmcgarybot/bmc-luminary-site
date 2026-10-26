@@ -1,0 +1,24 @@
+{
+  "allowed_actions": [
+    "deploy_update",
+    "launch_audit",
+    "local_demand_step",
+    "market_inventory_step",
+    "proof_readout",
+    "public_opportunities_step",
+    "runtime_doctor",
+    "source_native_step"
+  ],
+  "checked_at": "2026-10-26T18:20:57.152579+00:00",
+  "git_commit": "923294da08aed86228696febe51419f5ce258a79",
+  "github_actions_readable": true,
+  "host": "vps-5675821a",
+  "ok": true,
+  "outreach": {
+    "BUYER_OUTREACH_ENABLED": "false",
+    "GROWTH_OUTREACH_ENABLED": "false",
+    "OUTREACH_ENABLED": "false"
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site"
+}
