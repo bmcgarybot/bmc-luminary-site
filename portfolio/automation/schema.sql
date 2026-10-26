@@ -268,6 +268,8 @@ create index if not exists idx_payment_events_product on payment_events(product_
 create index if not exists idx_subscriptions_status on subscriptions(status);
 
 alter table outreach add column if not exists wave text default 'backlog';
+alter table outreach add column if not exists target_market text;
+alter table outreach add column if not exists target_service_key text;
 create index if not exists idx_outreach_wave_status on outreach(entity_type,wave,status,next_followup_at);
 
 alter table services add column if not exists fulfillment_mode text default 'provider_match';
