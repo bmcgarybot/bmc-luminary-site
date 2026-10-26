@@ -403,6 +403,34 @@ async def initialize_local_demand_scan_state(pool):
                         updated_at=now()""",
                         source["key"],source["name"],source["domain"],market,group["key"],group["label"])
 
+
+async def initialize_market_inventory_state(pool):
+    async with pool.acquire() as conn:
+        provider_services=await conn.fetch("""select service_key,display_name from services
+          where is_active=true and fulfillment_mode='provider_match'
+          order by service_key""")
+        for market in MARKET_INVENTORY_MARKETS:
+            for row in provider_services:
+                target=inventory_target(market,"vendor",row["service_key"])
+                await conn.execute("""insert into market_inventory_progress(
+                    side,market,category_key,category_label,target)
+                  values('vendor',$1,$2,$3,$4)
+                  on conflict(side,market,category_key) do update set
+                    category_label=excluded.category_label,
+                    target=excluded.target,
+                    updated_at=now()""",
+                    market,row["service_key"],row["display_name"],target)
+            for category in BUYER_INVENTORY_CATEGORIES:
+                target=inventory_target(market,"buyer",category["key"])
+                await conn.execute("""insert into market_inventory_progress(
+                    side,market,category_key,category_label,target)
+                  values('buyer',$1,$2,$3,$4)
+                  on conflict(side,market,category_key) do update set
+                    category_label=excluded.category_label,
+                    target=excluded.target,
+                    updated_at=now()""",
+                    market,category["key"],category["label"],target)
+
 app=FastAPI(title="BMC Portfolio Ops API",version="0.1.0")
 app.add_middleware(CORSMiddleware,allow_origins=[
     "https://bmcservicenetwork.com","https://www.bmcservicenetwork.com"
@@ -413,6 +441,7 @@ async def startup():
     app.state.pool=await asyncpg.create_pool(DB_DSN,min_size=1,max_size=5)
     await initialize_source_native_state(app.state.pool)
     await initialize_local_demand_scan_state(app.state.pool)
+    await initialize_market_inventory_state(app.state.pool)
 
 @app.on_event("shutdown")
 async def shutdown():
