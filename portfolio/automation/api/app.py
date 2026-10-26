@@ -1,4 +1,4 @@
-import os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, hmac, hashlib, time, html
+import os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, urllib.error, hmac, hashlib, time, html
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 from email.utils import parseaddr
@@ -694,14 +694,36 @@ async def fetch_json_url(url,params=None,timeout=30,max_bytes=8_000_000):
     if params:
         encoded=urllib.parse.urlencode(params)
         target=url+("&" if "?" in url else "?")+encoded
-    def call():
+
+    def call_once():
         req=urllib.request.Request(target,headers={
             "User-Agent":"BMC-Luminary-Research/1.0",
             "Accept":"application/json"
         })
         with urllib.request.urlopen(req,timeout=timeout) as resp:
             return json.loads(resp.read(max_bytes).decode("utf-8","replace"))
-    return await asyncio.to_thread(call)
+
+    # Public data APIs can throttle or transiently fail during batch research.
+    # Retry only transient transport/server failures; do not hide permanent 4xx errors.
+    delays=(2,5,10,20)
+    for attempt in range(len(delays)+1):
+        try:
+            return await asyncio.to_thread(call_once)
+        except urllib.error.HTTPError as exc:
+            transient=(exc.code==429 or 500<=exc.code<=599)
+            if not transient or attempt>=len(delays):
+                raise
+            retry_after=clean(exc.headers.get("Retry-After")) if exc.headers else ""
+            try:
+                delay=max(delays[attempt],min(60,int(float(retry_after)))) if retry_after else delays[attempt]
+            except (TypeError,ValueError):
+                delay=delays[attempt]
+            await asyncio.sleep(delay)
+        except (urllib.error.URLError,TimeoutError,OSError):
+            if attempt>=len(delays):
+                raise
+            await asyncio.sleep(delays[attempt])
+    raise RuntimeError("JSON fetch retry loop exhausted")
 
 def arcgis_date(value):
     if isinstance(value,(int,float)) and value>0:
