@@ -123,6 +123,13 @@ jobs:
           assert m.classify("government","City Government")[1]=="public_facilities"
           assert len(m.MARKETS)==21
           assert len(m.FEEDS)>=10
+          schema=Path("schema.sql").read_text()
+          assert "source_tier text not null default 'discovery'" in schema
+          assert "verification_status text not null default 'discovery'" in schema
+          api=Path("api/app.py").read_text()
+          assert '"direct_evidence" if official else "discovery"' in api
+          proof=Path("production-proof-readout.sh").read_text()
+          assert "Candidate evidence tiers:" in proof
           relay=Path("vps-gitops-relay.py").read_text()
           assert '"assistant_bootstrap_import"' in relay
           PY
