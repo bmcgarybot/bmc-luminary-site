@@ -1,0 +1,27 @@
+{
+  "action": "assistant_bootstrap_import",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-26T21:42:22.015682+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "fa7d7c0022c83209722cd4df33d79155e52f3e57",
+  "git_commit_before": "fa7d7c0022c83209722cd4df33d79155e52f3e57",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "a7b3f9b851e4c4a382d32ecdbac725ebcace8354",
+  "request_id": "bootstrap-pilot-kcv-20261026T2141Z",
+  "request_sha256": "e974930a3fee6596a748fafa101f8b48920033c7b63ae341c8532f06d88b4a24",
+  "started_at": "2026-10-26T21:41:49.405168+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"markets\": 3,\n  \"feeds_attempted\": 36,\n  \"feeds_ok\": 36,\n  \"feeds_failed\": 0,\n  \"raw_companies\": 0,\n  \"classified\": 0,\n  \"by_market\": {\n    \"Camp Verde\": {\n      \"feeds\": 12,\n      \"raw\": 0,\n      \"classified\": 0\n    },\n    \"Chino Valley\": {\n      \"feeds\": 12,\n      \"raw\": 0,\n      \"classified\": 0\n    },\n    \"Kingman\": {\n      \"feeds\": 12,\n      \"raw\": 0,\n      \"classified\": 0\n    }\n  },\n  \"errors\": []\n}\nInserted/updated 0 discovery candidates.\nBEGIN\nCOMMIT\n\n",
+  "version": 1
+}
