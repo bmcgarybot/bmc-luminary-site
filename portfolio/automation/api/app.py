@@ -345,20 +345,22 @@ def inventory_target(market,side,category_key):
     return (40,20,10)[tier]
 
 def inventory_query(side,market,category_label,variant):
+    # Keep search syntax deliberately plain. Exact-quoting long category labels
+    # such as "hospitals medical centers clinics" suppresses obvious local results.
     place=clean(market).replace('"'," ")
     label=clean(category_label).replace('"'," ")
     v=int(variant or 0)%3
     if side=="buyer":
         variants=(
-          f'"{place}" Arizona "{label}"',
-          f'"{place}" Arizona {label} business',
-          f'"{place}" Arizona {label} directory local'
+          f'{label} {place} Arizona',
+          f'{place} AZ {label}',
+          f'{label} near {place} AZ'
         )
     else:
         variants=(
-          f'"{label}" "{place}" Arizona',
-          f'"{place}" Arizona "{label}" company contractor',
-          f'"{place}" Arizona local "{label}" service'
+          f'{label} {place} Arizona',
+          f'{label} near {place} AZ',
+          f'{place} AZ {label} service repair contractor'
         )
     return variants[v]
 
@@ -366,8 +368,18 @@ def inventory_official_site(domain):
     host=clean(domain).lower().removeprefix("www.")
     return bool(host and not any(host==d or host.endswith("."+d) for d in INVENTORY_BLOCKED_DOMAINS))
 
-def build_local_signal_query(market,domain,terms):
-    return f'site:{domain} "{clean(market)}" Arizona ({LOCAL_SIGNAL_INTENT_TERMS}) ({terms})'
+def build_local_signal_query(market,domain,terms,variant=0):
+    # Public social indexing is inconsistent across engines. Use short queries
+    # instead of one giant parenthesized OR expression that frequently returns 0.
+    place=clean(market).replace('"'," ")
+    raw_terms=[clean(x).strip('" ') for x in re.split(r'\s+OR\s+',clean(terms)) if clean(x)]
+    if not raw_terms:
+        raw_terms=["service"]
+    v=max(0,int(variant or 0))
+    term=raw_terms[v % len(raw_terms)]
+    intent_terms=("looking for","recommend","need","who can","seeking")
+    intent=intent_terms[(v // max(1,len(raw_terms))) % len(intent_terms)]
+    return f'site:{clean(domain)} {place} Arizona "{term}" "{intent}"'
 
 def classify_local_signal_service(text):
     t=clean(text).lower()
@@ -3316,7 +3328,7 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
           if not group:
               continue
           page=max(1,int(lane["next_page"] or 1))
-          query=build_local_signal_query(lane["market"],lane["source_domain"],group["terms"])
+          query=build_local_signal_query(lane["market"],lane["source_domain"],group["terms"],int(lane["scans"] or 0))
           try:
               results=await search_research_web(query,page)
               searches+=1
