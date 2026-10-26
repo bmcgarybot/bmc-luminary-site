@@ -3976,3 +3976,142 @@ Current launch state:
 - only launch gate remains activating at least one verified pilot provider.
 
 CMS 403 source-native access remains a separate research-source issue and is not blocking the drained standard research backlog.
+
+
+## 48. PRE-LAUNCH REVIEW COCKPIT + SEARCH CONSOLE READINESS — 2026-10-25
+
+Work resumed from commit `e662c966cd86d135765a991908a124aea9597233` after the research queue was fully drained and the public-copy cleanup was complete.
+
+No outreach was enabled.
+No provider was activated.
+No customer/provider message was sent.
+
+### Private admin review cockpit improved
+
+Commit:
+- `2afa0e701a815903a4ab0143aa697b891e9986e2` — Improve prelaunch provider and research review admin.
+
+The existing private admin already had the necessary review endpoints, but it hid useful information and only displayed the newest 100 staged research candidates.
+
+The private admin now:
+- relabels First Wave as the pilot shortlist / First Wave;
+- displays the exact secure pilot activation URL already generated for each First Wave provider;
+- shows provider ID, market, service, public email, public phone, website/source URL, status and association/source signal when available;
+- includes a copy button for the exact provider pilot invite;
+- keeps the process manual — displaying/copying the invite does not send anything;
+- loads up to 250 staged research candidates so the current 205 staged rows can all be reviewed;
+- filters staged candidates by provider/buyer side;
+- supports free-text filtering by market, service, business, domain, snippet and public contact details;
+- supports a “has public contact” filter;
+- shows public email/phone evidence when the research worker captured it;
+- preserves the existing Add as prospect / Mark reviewed / Reject controls.
+
+The pilot approval safety path is unchanged:
+- a researched prospect is not automatically a provider;
+- a provider must submit the pilot activation flow;
+- pilot terms must be accepted;
+- territory and capacity must be recorded;
+- credentials/insurance must be reviewed where applicable;
+- BMC must explicitly approve the pending pilot;
+- only then does the vendor become `pilot`.
+
+BMC Portfolio CI for `2afa0e701a815903a4ab0143aa697b891e9986e2` completed SUCCESS, including the database/API smoke test.
+
+### Search/indexing reality check
+
+External search checks did not surface BMC Service Network as an indexed Google result yet.
+
+Repository search-readiness was already strong:
+- canonical BMC origin;
+- sitemap;
+- robots sitemap declaration;
+- Organization JSON-LD;
+- sitemap/noindex conflict guard;
+- public offer/service pages indexable where intended.
+
+Google's general Indexing API is not appropriate for ordinary BMC local-service pages; the normal launch path is Search Console + sitemap + URL Inspection.
+
+No Search Console property was created during this pass. Domain-property verification requires access to the Google account and the Cloudflare DNS verification step.
+
+### Provider sitemap omission found and fixed
+
+A discrepancy was found between the prior handoff text and the actual source tree.
+
+The handoff said the old `/vendor-partner/` sitemap entry had been replaced by the real `/providers/` page.
+
+Actual state at the start of this pass:
+- `/vendor-partner/` was correctly absent;
+- but `/providers/` was also absent from `portfolio/sitemap.xml`.
+
+The real Providers page is public and indexable, so it should be discoverable.
+
+Fix:
+- `13c39c6ff0dd02f2b66fdd51d61056d8935122e1` — Add provider network page to sitemap.
+
+Regression guard:
+- `0bfbc4b236459b73bb87bed89d6b4f09713cd488` — Guard required public pages in sitemap.
+- `validate-search-readiness.py` now requires:
+  - homepage;
+  - `/services/`;
+  - `/providers/`;
+  - `/request/`;
+  - `/how-it-works/`.
+
+This is in addition to the existing per-service front and sitemap/noindex checks.
+
+### First Search Console launch procedure documented
+
+Commit:
+- `7fcf7a417047f23eb2639c5fb87f19b45cffc652` — Document first Search Console indexing launch.
+
+`portfolio/seo/SEO.md` now records the exact launch path:
+1. create a Google Search Console Domain property for `bmcservicenetwork.com`;
+2. verify ownership with the Google TXT record in authoritative Cloudflare DNS;
+3. submit `https://bmcservicenetwork.com/sitemap.xml`;
+4. inspect/request a small priority set instead of manually submitting every page.
+
+Initial URL Inspection set documented:
+- homepage;
+- Services;
+- Providers;
+- Prescott market;
+- Phoenix market;
+- Facility Maintenance;
+- Restaurant Equipment Repair;
+- Traditional Auto Repair;
+- Growth Packs;
+- Market Expansion Pack.
+
+The sitemap remains the discovery path for the rest of the public pages.
+
+At the time this section was written, the latest indexing commit had already passed:
+- API syntax;
+- service/front validation;
+- generated storefront validation;
+- public UI/copy guards;
+- public form contracts;
+- search/download readiness;
+- Compose;
+- operational scripts.
+
+Its full database/API smoke run was still completing.
+
+### Current next actions
+
+The business is now at a clean fork:
+
+A. Search discovery:
+- complete Google Search Console Domain verification;
+- submit the sitemap;
+- inspect the documented priority URLs.
+
+B. Provider activation:
+- deploy/pull the latest admin changes to the VPS;
+- use the private pilot shortlist to choose one real provider;
+- verify the business/contact/credentials as appropriate;
+- send one controlled manual pilot invitation;
+- wait for that provider to submit the activation form;
+- review and approve only after the required checks;
+- rerun runtime doctor and confirm `live_intake_ready = READY`.
+
+Bulk vendor and buyer outreach remain OFF.
