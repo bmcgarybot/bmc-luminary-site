@@ -10066,3 +10066,2575 @@ update market_inventory_progress p set official_candidates=(
  select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
  and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ),updated_at=now() where p.market='Phoenix';
+
+
+-- Assistant-led Phoenix healthcare/education/professional census batch 02 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','Banner Health - Central Ave',
+ 'https://business.phoenixchamber.com/list/category/hospitals-281','business.phoenixchamber.com','Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,'(602) 747-4000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','Banner University Medical Center Phoenix',
+ 'https://business.phoenixchamber.com/list/category/hospitals-281','business.phoenixchamber.com','Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,'(602) 839-2000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','College Medical Center Phoenix',
+ 'https://business.phoenixchamber.com/list/category/hospitals-281','business.phoenixchamber.com','Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,'(602) 251-8535',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','Dignity Health - St. Joseph''s / Central Phoenix',
+ 'https://business.phoenixchamber.com/list/category/hospitals-281','business.phoenixchamber.com','Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,'(602) 406-3000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','Haven Behavioral Hospital of Phoenix',
+ 'https://business.phoenixchamber.com/list/category/hospitals-281','business.phoenixchamber.com','Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,'(623) 236-2000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','HonorHealth - Utopia',
+ 'https://business.phoenixchamber.com/list/category/hospitals-281','business.phoenixchamber.com','Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,'(623) 434-6200',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','HonorHealth John C. Lincoln Medical Center',
+ 'https://business.phoenixchamber.com/list/category/hospitals-281','business.phoenixchamber.com','Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,'(623) 434-6200',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','Mayo Hospital Phoenix',
+ 'https://business.phoenixchamber.com/list/category/hospitals-281','business.phoenixchamber.com','Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,'(480) 515-6296',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','Phoenix Children''s',
+ 'https://business.phoenixchamber.com/list/category/hospitals-281','business.phoenixchamber.com','Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,'(602) 546-1000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','Phoenix Medical Psychiatric Hospital',
+ 'https://business.phoenixchamber.com/list/category/hospitals-281','business.phoenixchamber.com','Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,'(574) 277-2630',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','Valleywise Health Medical Center',
+ 'https://business.phoenixchamber.com/list/category/hospitals-281','business.phoenixchamber.com','Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,'(602) 344-5011',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','Concentra - Agua Fria Phoenix',
+ 'https://business.phoenixchamber.com/list/category/hospitals-281','business.phoenixchamber.com','Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber hospital/medical facility listing with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','Adelante Healthcare - Central Office',
+ 'https://business.phoenixchamber.com/list/category/health-and-wellness-10014','business.phoenixchamber.com','Current Greater Phoenix Chamber health/wellness facility with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,'(623) 544-5129',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber health/wellness facility with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','Adelante Healthcare - Phoenix',
+ 'https://business.phoenixchamber.com/list/category/health-and-wellness-10014','business.phoenixchamber.com','Current Greater Phoenix Chamber health/wellness facility with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,'(877) 809-5092',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber health/wellness facility with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','Adelante Healthcare Central Phoenix',
+ 'https://business.phoenixchamber.com/list/category/health-and-wellness-10014','business.phoenixchamber.com','Current Greater Phoenix Chamber health/wellness facility with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,'(877) 809-5092',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber health/wellness facility with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','Adelante Healthcare Mobile Health Program',
+ 'https://business.phoenixchamber.com/list/category/health-and-wellness-10014','business.phoenixchamber.com','Current Greater Phoenix Chamber health/wellness facility with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,'(877) 809-5092',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber health/wellness facility with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','medical_centers','hospitals medical centers clinics','AdmireMD Skin + Wellness Clinic',
+ 'https://business.phoenixchamber.com/list/category/health-and-wellness-10014','business.phoenixchamber.com','Current Greater Phoenix Chamber health/wellness facility with Phoenix address.','assistant census research: Phoenix hospitals medical centers clinics',0,
+ null,'(480) 573-0082',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber health/wellness facility with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','senior_daycare','senior living assisted living daycare childcare','Beatitudes Campus',
+ 'https://business.phoenixchamber.com/list/category/health-and-wellness-10014','business.phoenixchamber.com','Current Greater Phoenix Chamber senior living/care campus at 1610 W Glendale Ave.','assistant census research: Phoenix senior living assisted living daycare childcare',0,
+ null,'(602) 995-6100',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber senior living/care campus at 1610 W Glendale Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','senior_daycare','senior living assisted living daycare childcare','Fellowship Square Phoenix',
+ 'https://business.phoenixchamber.com/list/member/fellowship-square-phoenix-1132','business.phoenixchamber.com','Current nonprofit senior campus offering independent living, assisted living, memory care and rehab.','assistant census research: Phoenix senior living assisted living daycare childcare',0,
+ null,'(602) 833-4330',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current nonprofit senior campus offering independent living, assisted living, memory care and rehab."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','therapy_behavioral','therapy counseling behavioral health clinics','Haven Behavioral Hospital of Phoenix',
+ 'https://business.phoenixchamber.com/list/category/hospitals-281','business.phoenixchamber.com','Current inpatient behavioral-health hospital in Phoenix.','assistant census research: Phoenix therapy counseling behavioral health clinics',0,
+ null,'(623) 236-2000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current inpatient behavioral-health hospital in Phoenix."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','therapy_behavioral','therapy counseling behavioral health clinics','Phoenix Medical Psychiatric Hospital',
+ 'https://business.phoenixchamber.com/list/category/hospitals-281','business.phoenixchamber.com','Current Phoenix psychiatric hospital facility.','assistant census research: Phoenix therapy counseling behavioral health clinics',0,
+ null,'(574) 277-2630',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix psychiatric hospital facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','therapy_behavioral','therapy counseling behavioral health clinics','Valleywise Behavioral Health / Valleywise Health',
+ 'https://business.phoenixchamber.com/list/category/hospitals-281','business.phoenixchamber.com','Current major Phoenix public-health system with behavioral-health services.','assistant census research: Phoenix therapy counseling behavioral health clinics',0,
+ null,'(602) 344-5011',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current major Phoenix public-health system with behavioral-health services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','dental','dentists dental offices orthodontists','Central Dental',
+ 'https://www.google.com/search?q=Phoenix+AZ+dentists','google.com','Current Phoenix dental office from current local-business/Chamber evidence.','assistant census research: Phoenix dentists dental offices orthodontists',0,
+ null,'(480) 808-9494',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dental office from current local-business/Chamber evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','dental','dentists dental offices orthodontists','Hall Dental',
+ 'https://www.google.com/search?q=Phoenix+AZ+dentists','google.com','Current Phoenix dental office from current local-business/Chamber evidence.','assistant census research: Phoenix dentists dental offices orthodontists',0,
+ null,'(602) 277-1400',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dental office from current local-business/Chamber evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','dental','dentists dental offices orthodontists','Downtown Smiles Phoenix Dental Care',
+ 'https://www.google.com/search?q=Phoenix+AZ+dentists','google.com','Current Phoenix dental office from current local-business/Chamber evidence.','assistant census research: Phoenix dentists dental offices orthodontists',0,
+ null,'(602) 566-9005',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dental office from current local-business/Chamber evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','dental','dentists dental offices orthodontists','Downtown Phoenix Dental',
+ 'https://www.google.com/search?q=Phoenix+AZ+dentists','google.com','Current Phoenix dental office from current local-business/Chamber evidence.','assistant census research: Phoenix dentists dental offices orthodontists',0,
+ null,'(602) 626-7952',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dental office from current local-business/Chamber evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','dental','dentists dental offices orthodontists','24th Street Dental Biltmore',
+ 'https://www.google.com/search?q=Phoenix+AZ+dentists','google.com','Current Phoenix dental office from current local-business/Chamber evidence.','assistant census research: Phoenix dentists dental offices orthodontists',0,
+ null,'(602) 468-1135',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dental office from current local-business/Chamber evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','dental','dentists dental offices orthodontists','Phoenix Dental Design',
+ 'https://www.google.com/search?q=Phoenix+AZ+dentists','google.com','Current Phoenix dental office from current local-business/Chamber evidence.','assistant census research: Phoenix dentists dental offices orthodontists',0,
+ null,'(602) 956-2241',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dental office from current local-business/Chamber evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','dental','dentists dental offices orthodontists','Arcadia Dental Group',
+ 'https://www.google.com/search?q=Phoenix+AZ+dentists','google.com','Current Phoenix dental office from current local-business/Chamber evidence.','assistant census research: Phoenix dentists dental offices orthodontists',0,
+ null,'(602) 954-2177',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dental office from current local-business/Chamber evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','dental','dentists dental offices orthodontists','Dental Art Family Dentistry',
+ 'https://www.google.com/search?q=Phoenix+AZ+dentists','google.com','Current Phoenix dental office from current local-business/Chamber evidence.','assistant census research: Phoenix dentists dental offices orthodontists',0,
+ null,'(602) 253-0994',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dental office from current local-business/Chamber evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','dental','dentists dental offices orthodontists','Radiant Smiles Phoenix',
+ 'https://www.google.com/search?q=Phoenix+AZ+dentists','google.com','Current Phoenix dental office from current local-business/Chamber evidence.','assistant census research: Phoenix dentists dental offices orthodontists',0,
+ null,'(602) 277-2222',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dental office from current local-business/Chamber evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','dental','dentists dental offices orthodontists','Open Wide Dental',
+ 'https://www.google.com/search?q=Phoenix+AZ+dentists','google.com','Current Phoenix dental office from current local-business/Chamber evidence.','assistant census research: Phoenix dentists dental offices orthodontists',0,
+ null,'(602) 806-9999',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dental office from current local-business/Chamber evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','dental','dentists dental offices orthodontists','Arizona Biltmore Dentistry',
+ 'https://www.google.com/search?q=Phoenix+AZ+dentists','google.com','Current Phoenix dental office from current local-business/Chamber evidence.','assistant census research: Phoenix dentists dental offices orthodontists',0,
+ null,'(602) 957-8200',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix dental office from current local-business/Chamber evidence."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','A Ready Minded Youth Foundation',
+ 'https://business.phoenixchamber.com/list/category/education-12123','business.phoenixchamber.com','Greater Phoenix Chamber education organization/campus with Phoenix address.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(480) 469-4950',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Greater Phoenix Chamber education organization/campus with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','Alliant School of Nursing and Health Sciences',
+ 'https://business.phoenixchamber.com/list/category/education-12123','business.phoenixchamber.com','Greater Phoenix Chamber education organization/campus with Phoenix address.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(866) 825-5426',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Greater Phoenix Chamber education organization/campus with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','BASIS Ahwatukee',
+ 'https://business.phoenixchamber.com/list/category/education-12123','business.phoenixchamber.com','Greater Phoenix Chamber education organization/campus with Phoenix address.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(480) 659-2294',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Greater Phoenix Chamber education organization/campus with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','BASIS Phoenix',
+ 'https://business.phoenixchamber.com/list/category/education-12123','business.phoenixchamber.com','Greater Phoenix Chamber education organization/campus with Phoenix address.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(602) 595-9870',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Greater Phoenix Chamber education organization/campus with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','BASIS Phoenix Central',
+ 'https://business.phoenixchamber.com/list/category/education-12123','business.phoenixchamber.com','Greater Phoenix Chamber education organization/campus with Phoenix address.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(602) 559-5399',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Greater Phoenix Chamber education organization/campus with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','BASIS Phoenix South',
+ 'https://business.phoenixchamber.com/list/category/education-12123','business.phoenixchamber.com','Greater Phoenix Chamber education organization/campus with Phoenix address.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(480) 447-1795',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Greater Phoenix Chamber education organization/campus with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','Catholic Education Arizona',
+ 'https://business.phoenixchamber.com/list/category/education-12123','business.phoenixchamber.com','Greater Phoenix Chamber education organization/campus with Phoenix address.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(602) 218-6542',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Greater Phoenix Chamber education organization/campus with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','Chamberlain University - Phoenix',
+ 'https://business.phoenixchamber.com/list/category/education-12123','business.phoenixchamber.com','Greater Phoenix Chamber education organization/campus with Phoenix address.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(602) 331-2720',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Greater Phoenix Chamber education organization/campus with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','Creighton University Health Sciences Campus - Phoenix',
+ 'https://business.phoenixchamber.com/list/category/education-12123','business.phoenixchamber.com','Greater Phoenix Chamber education organization/campus with Phoenix address.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(602) 406-9900',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Greater Phoenix Chamber education organization/campus with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','Education Forward Arizona',
+ 'https://business.phoenixchamber.com/list/category/education-12123','business.phoenixchamber.com','Greater Phoenix Chamber education organization/campus with Phoenix address.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(602) 636-1850',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Greater Phoenix Chamber education organization/campus with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','First Things First',
+ 'https://business.phoenixchamber.com/list/category/education-12123','business.phoenixchamber.com','Greater Phoenix Chamber education organization/campus with Phoenix address.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(602) 771-5100',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Greater Phoenix Chamber education organization/campus with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','Helios Education Foundation',
+ 'https://business.phoenixchamber.com/list/category/education-12123','business.phoenixchamber.com','Greater Phoenix Chamber education organization/campus with Phoenix address.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(602) 381-2260',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Greater Phoenix Chamber education organization/campus with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','National Technical Institute - Phoenix',
+ 'https://business.phoenixchamber.com/list/category/education-12123','business.phoenixchamber.com','Greater Phoenix Chamber education organization/campus with Phoenix address.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(480) 591-4000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Greater Phoenix Chamber education organization/campus with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','Pathways in Education - Phoenix',
+ 'https://business.phoenixchamber.com/list/category/education-12123','business.phoenixchamber.com','Greater Phoenix Chamber education organization/campus with Phoenix address.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(602) 626-7057',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Greater Phoenix Chamber education organization/campus with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','Arizona Charter Schools Association',
+ 'https://business.phoenixchamber.com/list/category/education-12123','business.phoenixchamber.com','Greater Phoenix Chamber education organization/campus with Phoenix address.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(602) 944-0644',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Greater Phoenix Chamber education organization/campus with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','Baruch Educational Services',
+ 'https://business.phoenixchamber.com/list/category/education-12123','business.phoenixchamber.com','Greater Phoenix Chamber education organization/campus with Phoenix address.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(646) 853-6635',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Greater Phoenix Chamber education organization/campus with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','Phoenix Union High School District',
+ 'https://www.phoenix.gov/education','phoenix.gov','Current Phoenix public-school district/facility operator.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(602) 764-1100',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix public-school district/facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','Phoenix Elementary School District #1',
+ 'https://www.phoenix.gov/education','phoenix.gov','Current Phoenix public-school district/facility operator.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(602) 257-3755',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix public-school district/facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','Creighton School District',
+ 'https://www.phoenix.gov/education','phoenix.gov','Current Phoenix public-school district/facility operator.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(602) 381-6000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix public-school district/facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','Osborn School District',
+ 'https://www.phoenix.gov/education','phoenix.gov','Current Phoenix public-school district/facility operator.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(602) 707-2000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix public-school district/facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','Cartwright School District #83',
+ 'https://www.phoenix.gov/education','phoenix.gov','Current Phoenix public-school district/facility operator.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(623) 691-4000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix public-school district/facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','schools','schools charter schools private schools','Washington Elementary School District',
+ 'https://www.phoenix.gov/education','phoenix.gov','Current Phoenix public-school district/facility operator.','assistant census research: Phoenix schools charter schools private schools',0,
+ null,'(602) 347-2600',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix public-school district/facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Agave Home Loans',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 325-5400',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Arizona Escrow & Financial Corporation',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 956-2629',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Arizona Financial Credit Union - Main',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 683-1000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Arnold Insurance',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 317-8807',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Bank of America - Buckeye Rd Office',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Bankers Trust Company - Camelback',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 224-2020',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','BOK Financial - 30th St & Camelback',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 840-5550',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','BOK Financial - W Camelback & 101',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(623) 872-3200',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Brown & Brown Insurance of Arizona',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 277-6672',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Chase - West Glendale & 19th Ave',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 242-9311',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Copper State Credit Union',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 491-0891',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','CopperPoint Mutual Insurance Co.',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 631-2212',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Desert Financial Credit Union - Main Papago',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 433-7000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Ernst & Young LLP - Phoenix',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 322-3000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','JPMorgan Chase Bank - Camelback Office',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(480) 367-3264',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Julie Jakubek Allstate Insurance',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(480) 949-5670',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','KS StateBank - Central Ave',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 393-6950',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','MJ Insurance - Camelback',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 772-3300',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','National Bank of Arizona - Biltmore',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 235-6000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','National Bank of Arizona - Camelback',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 952-9700',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','National Bank of Arizona - Central',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 530-5880',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','National Bank of Arizona - Deer Valley',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(623) 581-5493',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','National Bank of Arizona - Scottsdale 101 Phoenix',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(480) 384-5000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','OneAZ Credit Union - Monroe',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 467-4010',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','OneAZ Credit Union Corporate Office',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(844) 663-2928',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','REDW Advisors & CPAs - Phoenix',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(888) 602-7339',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Rocket Mortgage - Central Ave',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(800) 251-9080',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','RSM US LLP - Camelback',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 636-6000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','TrustBank - Camelback',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 957-2006',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','TruWest Credit Union - Roosevelt',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 629-2600',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','US Bank - 75th & McDowell',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(623) 848-4600',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','US Bank - Shea & Tatum Fry''s',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(480) 483-0522',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Wells Fargo Advisors - Esplanade',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 952-2243',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Wells Fargo Bank - 20th & Camelback',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 957-5210',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Wells Fargo Bank - 23rd & Northern',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 528-7367',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Wells Fargo Bank - 35th & Bell',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 547-4041',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Wells Fargo Bank - 35th & Glendale',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 528-7381',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Wells Fargo Bank - 44th & Thomas',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 952-7777',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Wells Fargo Bank - 59th & Thomas',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(623) 245-5060',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Wells Fargo Bank - South Mountain',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 528-7529',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Wells Fargo Bank - Tatum & Cactus',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 528-7437',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Western Alliance Bank - Biltmore Park',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 952-5400',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Western Alliance Bank - CityScape',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 952-5447',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Western Alliance Bank - Phoenix Midtown',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 629-1700',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Your Part-time Controller LLC - Phoenix',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 281-9466',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','insurance_professional','insurance agents professional offices','Arizona Bankers Association',
+ 'https://business.phoenixchamber.com/list/ql/finance-insurance-10','business.phoenixchamber.com','Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address.','assistant census research: Phoenix insurance agents professional offices',0,
+ null,'(602) 258-1200',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber finance/insurance/professional office with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','Apartment Hunters',
+ 'https://business.phoenixchamber.com/list/category/real-estate-73','business.phoenixchamber.com','Current Phoenix real-estate/property-management office.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(602) 863-1500',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix real-estate/property-management office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','Arizona Association of Realtors',
+ 'https://business.phoenixchamber.com/list/category/real-estate-73','business.phoenixchamber.com','Current Phoenix real-estate/property-management office.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(602) 248-7787',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix real-estate/property-management office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','CBRE Phoenix',
+ 'https://business.phoenixchamber.com/list/category/real-estate-73','business.phoenixchamber.com','Current Phoenix real-estate/property-management office.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(602) 735-5555',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix real-estate/property-management office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','Colliers International - Phoenix',
+ 'https://business.phoenixchamber.com/list/category/real-estate-73','business.phoenixchamber.com','Current Phoenix real-estate/property-management office.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(602) 222-5000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix real-estate/property-management office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','Dr. Win Realty LLC',
+ 'https://business.phoenixchamber.com/list/category/real-estate-73','business.phoenixchamber.com','Current Phoenix real-estate/property-management office.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(480) 696-9886',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix real-estate/property-management office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','Raintree Capital',
+ 'https://business.phoenixchamber.com/list/category/real-estate-73','business.phoenixchamber.com','Current Phoenix real-estate/property-management office.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(602) 451-9326',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix real-estate/property-management office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','RE/MAX Signature - Phoenix',
+ 'https://business.phoenixchamber.com/list/category/real-estate-73','business.phoenixchamber.com','Current Phoenix real-estate/property-management office.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(602) 626-9200',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix real-estate/property-management office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','The Hernandez Team - Real Estate',
+ 'https://business.phoenixchamber.com/list/category/real-estate-73','business.phoenixchamber.com','Current Phoenix real-estate/property-management office.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(623) 887-5052',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix real-estate/property-management office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','Trammell Crow Company - Phoenix',
+ 'https://business.phoenixchamber.com/list/category/real-estate-73','business.phoenixchamber.com','Current Phoenix real-estate/property-management office.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(602) 222-4000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix real-estate/property-management office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','City Property Management Company',
+ 'https://business.phoenixchamber.com/list/category/real-estate-73','business.phoenixchamber.com','Current Phoenix real-estate/property-management office.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(602) 437-4777',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix real-estate/property-management office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','Time 2 Rent LLC',
+ 'https://business.phoenixchamber.com/list/category/real-estate-73','business.phoenixchamber.com','Current Phoenix real-estate/property-management office.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(602) 944-7368',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix real-estate/property-management office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','AZ Prime Property Management',
+ 'https://business.phoenixchamber.com/list/category/real-estate-73','business.phoenixchamber.com','Current Phoenix real-estate/property-management office.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(480) 449-6632',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix real-estate/property-management office."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','Alanna Apartments',
+ 'https://business.phoenixchamber.com/list/category/apartment-communities-10347','business.phoenixchamber.com','Current Greater Phoenix Chamber apartment-community facility with Phoenix address.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(602) 830-7968',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber apartment-community facility with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','Amavi Aster Ridge',
+ 'https://business.phoenixchamber.com/list/category/apartment-communities-10347','business.phoenixchamber.com','Current Greater Phoenix Chamber apartment-community facility with Phoenix address.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(480) 744-0073',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber apartment-community facility with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','AVE Phoenix Terra',
+ 'https://business.phoenixchamber.com/list/category/apartment-communities-10347','business.phoenixchamber.com','Current Greater Phoenix Chamber apartment-community facility with Phoenix address.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(602) 836-4680',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber apartment-community facility with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','Laurel Tree at Northern',
+ 'https://business.phoenixchamber.com/list/category/apartment-communities-10347','business.phoenixchamber.com','Current Greater Phoenix Chamber apartment-community facility with Phoenix address.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(480) 506-8611',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber apartment-community facility with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','Placemakr Downtown Phoenix Apartments',
+ 'https://business.phoenixchamber.com/list/category/apartment-communities-10347','business.phoenixchamber.com','Current Greater Phoenix Chamber apartment-community facility with Phoenix address.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(623) 745-4202',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber apartment-community facility with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','Refinery at Pointe17',
+ 'https://business.phoenixchamber.com/list/category/apartment-communities-10347','business.phoenixchamber.com','Current Greater Phoenix Chamber apartment-community facility with Phoenix address.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(888) 373-0623',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber apartment-community facility with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','SORA Phoenix',
+ 'https://business.phoenixchamber.com/list/category/apartment-communities-10347','business.phoenixchamber.com','Current Greater Phoenix Chamber apartment-community facility with Phoenix address.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(602) 844-6104',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber apartment-community facility with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','property_management','property management companies apartment communities','Meritum Sheely Farms',
+ 'https://business.phoenixchamber.com/list/category/apartment-communities-10347','business.phoenixchamber.com','Current Greater Phoenix Chamber apartment-community facility with Phoenix address.','assistant census research: Phoenix property management companies apartment communities',0,
+ null,'(480) 863-8633',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Phoenix Chamber apartment-community facility with Phoenix address."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','churches','churches worship centers','Fixate PHX',
+ 'https://www.google.com/search?q=Phoenix+AZ+church','google.com','Current Phoenix church/religious campus.','assistant census research: Phoenix churches worship centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix church/religious campus."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','churches','churches worship centers','NPHX Church',
+ 'https://www.google.com/search?q=Phoenix+AZ+church','google.com','Current Phoenix church/religious campus.','assistant census research: Phoenix churches worship centers',0,
+ null,'(602) 707-5757',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix church/religious campus."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','churches','churches worship centers','CalvaryPHX - Central Campus',
+ 'https://www.google.com/search?q=Phoenix+AZ+church','google.com','Current Phoenix church/religious campus.','assistant census research: Phoenix churches worship centers',0,
+ null,'(602) 973-4768',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix church/religious campus."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','churches','churches worship centers','Pilgrim Rest Baptist Church',
+ 'https://www.google.com/search?q=Phoenix+AZ+church','google.com','Current Phoenix church/religious campus.','assistant census research: Phoenix churches worship centers',0,
+ null,'(602) 258-0831',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix church/religious campus."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','churches','churches worship centers','Church for the Nations - Central Campus',
+ 'https://www.google.com/search?q=Phoenix+AZ+church','google.com','Current Phoenix church/religious campus.','assistant census research: Phoenix churches worship centers',0,
+ null,'(602) 861-0000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix church/religious campus."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','churches','churches worship centers','Unidos en una Vision',
+ 'https://www.google.com/search?q=Phoenix+AZ+church','google.com','Current Phoenix church/religious campus.','assistant census research: Phoenix churches worship centers',0,
+ null,'(623) 239-9044',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix church/religious campus."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','churches','churches worship centers','City of Grace - Phoenix Campus',
+ 'https://www.google.com/search?q=Phoenix+AZ+church','google.com','Current Phoenix church/religious campus.','assistant census research: Phoenix churches worship centers',0,
+ null,'(480) 834-1822',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix church/religious campus."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','churches','churches worship centers','Living Streams Church',
+ 'https://www.google.com/search?q=Phoenix+AZ+church','google.com','Current Phoenix church/religious campus.','assistant census research: Phoenix churches worship centers',0,
+ null,'(602) 957-7500',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix church/religious campus."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','general_business','other local businesses','Circle the City',
+ 'https://business.phoenixchamber.com/list/ql/family-community-civic-organizations-9','business.phoenixchamber.com','Current Phoenix nonprofit/community organization facility.','assistant census research: Phoenix other local businesses',0,
+ null,'(602) 776-0776',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix nonprofit/community organization facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','general_business','other local businesses','CIVITAN Foundation',
+ 'https://business.phoenixchamber.com/list/ql/family-community-civic-organizations-9','business.phoenixchamber.com','Current Phoenix nonprofit/community organization facility.','assistant census research: Phoenix other local businesses',0,
+ null,'(602) 953-2944',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix nonprofit/community organization facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','general_business','other local businesses','Dress for Success Arizona',
+ 'https://business.phoenixchamber.com/list/ql/family-community-civic-organizations-9','business.phoenixchamber.com','Current Phoenix nonprofit/community organization facility.','assistant census research: Phoenix other local businesses',0,
+ null,'(602) 489-7397',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix nonprofit/community organization facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','general_business','other local businesses','Epi-Hab Phoenix, Inc.',
+ 'https://business.phoenixchamber.com/list/ql/family-community-civic-organizations-9','business.phoenixchamber.com','Current Phoenix nonprofit/community organization facility.','assistant census research: Phoenix other local businesses',0,
+ null,'(602) 254-7027',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix nonprofit/community organization facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','general_business','other local businesses','First Things First',
+ 'https://business.phoenixchamber.com/list/ql/family-community-civic-organizations-9','business.phoenixchamber.com','Current Phoenix nonprofit/community organization facility.','assistant census research: Phoenix other local businesses',0,
+ null,'(602) 771-5100',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix nonprofit/community organization facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Phoenix','general_business','other local businesses','The Salvation Army Southwest Divisional Headquarters',
+ 'https://business.phoenixchamber.com/list/ql/family-community-civic-organizations-9','business.phoenixchamber.com','Current Phoenix nonprofit/community organization facility.','assistant census research: Phoenix other local businesses',0,
+ null,'(602) 267-4239',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_phoenix_health_professional_02","researched_at":"2026-10-27T02:31:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Phoenix nonprofit/community organization facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p set official_candidates=(
+ select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
+ and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+),updated_at=now() where p.market='Phoenix';
