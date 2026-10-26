@@ -79,6 +79,14 @@ if [ "$(dbq "select count(*) from information_schema.tables where table_name='ma
    union all select 'candidate_phone_ready_active_v7|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=7 and coalesce(public_phone,'')<>'';"
 
   echo
+  echo "Candidate evidence tiers:"
+  dbq "select source_tier||'|'||verification_status||'|'||count(*)
+    from market_inventory_candidates
+    where status='discovered' and query_strategy_version=7
+    group by source_tier,verification_status
+    order by source_tier,verification_status;" || true
+
+  echo
   echo "Recent active inventory sample:"
   dbq "select side||'|'||market||'|'||category_key||
       '|official='||coalesce(official_site,false)::text||'|'||
