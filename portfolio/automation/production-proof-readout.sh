@@ -69,10 +69,12 @@ if [ "$(dbq "select count(*) from information_schema.tables where table_name='ma
   dbq "select 'lanes|'||count(*) from market_inventory_progress
    union all select 'untouched|'||count(*) from market_inventory_progress where pages_scanned=0
    union all select 'in_progress|'||count(*) from market_inventory_progress where status='in_progress'
+   union all select 'monitoring|'||count(*) from market_inventory_progress where status='monitoring'
    union all select 'errors|'||count(*) from market_inventory_progress where status='error'
-   union all select 'target_met|'||count(*) from market_inventory_progress where status='scan_complete_target_met'
-   union all select 'under_target|'||count(*) from market_inventory_progress where status='scan_complete_under_target'
+   union all select 'first_cycle_complete|'||count(*) from market_inventory_progress where scan_cycles>0
+   union all select 'total_scan_cycles|'||coalesce(sum(scan_cycles),0) from market_inventory_progress
    union all select 'candidate_rows_active_v7|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=7
+   union all select 'candidate_rows_closed_v7|'||count(*) from market_inventory_candidates where status='closed' and query_strategy_version=7
    union all select 'official_candidate_rows_active_v7|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=7 and official_site=true
    union all select 'superseded_candidate_rows|'||count(*) from market_inventory_candidates where status like 'superseded_pre_v%'
    union all select 'candidate_email_ready_active_v7|'||count(*) from market_inventory_candidates where status='discovered' and query_strategy_version=7 and coalesce(public_email,'')<>''
@@ -101,8 +103,8 @@ if [ "$(dbq "select count(*) from information_schema.tables where table_name='ma
   dbq "with p as (
       select market,side,count(*) lanes,
         count(*) filter (where pages_scanned>0) touched,
-        count(*) filter (where status='scan_complete_target_met') met,
-        count(*) filter (where status='scan_complete_under_target') under_target,
+        count(*) filter (where scan_cycles>0) first_cycle_complete,
+        coalesce(sum(scan_cycles),0) scan_cycles,
         coalesce(sum(official_candidates),0) direct_verified
       from market_inventory_progress
       group by market,side
@@ -123,8 +125,8 @@ if [ "$(dbq "select count(*) from information_schema.tables where table_name='ma
     select p.market||'|'||p.side||
       '|lanes='||p.lanes||
       '|touched='||p.touched||
-      '|met='||p.met||
-      '|under='||p.under_target||
+      '|first_cycle='||p.first_cycle_complete||
+      '|scan_cycles='||p.scan_cycles||
       '|base='||coalesce(b.base_records,0)||
       '|search_discovered='||coalesce(c.search_discovered,0)||
       '|direct_verified='||p.direct_verified
@@ -134,11 +136,15 @@ if [ "$(dbq "select count(*) from information_schema.tables where table_name='ma
     order by p.market,p.side;"
 
   echo
-  echo "Completed lanes with ZERO official-site candidates:"
-  dbq "select side||'|'||market||'|'||category_key||'|'||category_label||'|target='||target
-    from market_inventory_progress
-    where status like 'scan_complete_%' and official_candidates=0
-    order by side,market,category_key;" || true
+  echo "Fully-scanned lanes with ZERO active discoveries:"
+  dbq "select p.side||'|'||p.market||'|'||p.category_key||'|'||p.category_label
+    from market_inventory_progress p
+    where p.scan_cycles>0 and not exists (
+      select 1 from market_inventory_candidates c
+      where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+        and c.status='discovered'
+    )
+    order by p.side,p.market,p.category_key;" || true
 else
   echo "market_inventory_progress table NOT DEPLOYED"
 fi
