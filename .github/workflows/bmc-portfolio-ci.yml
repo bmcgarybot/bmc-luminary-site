@@ -194,7 +194,7 @@ jobs:
           bash ./stage-outreach-wave.sh .env.ci vendor ci_launch 1 "CI Stage Market" commercial_cleaning --apply >/tmp/bmc_stage_apply.txt
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='vendor' and entity_id='v_ci_stage' and campaign='vendor_recruitment' and wave='ci_launch' and status='queued' and sent_at is null and target_market='CI Stage Market' and target_service_key='commercial_cleaning';")" -eq 1
           curl -fsS 'http://127.0.0.1:8000/api/admin/outreach-wave-preview?side=vendor&wave=ci_launch&limit=10' \
-            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_wave_preview.json
+            -H 'X-BMC-Admin-Key: ci_admin_key' >/tmp/bmc_wave_preview.json
           python - <<'PY'
           import json
           data=json.load(open("/tmp/bmc_wave_preview.json"))
