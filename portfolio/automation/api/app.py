@@ -1967,6 +1967,91 @@ BMC Luminary Ventures LLC
 Reply no to suppress future outreach."""
     return subject,body
 
+@app.get("/api/admin/outreach-wave-preview")
+async def admin_outreach_wave_preview(
+    side:str,
+    wave:str,
+    limit:int=25,
+    x_bmc_admin_key:str|None=Header(default=None)
+):
+    if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY:
+        raise HTTPException(403,"Forbidden")
+    side=clean(side).lower()
+    wave=clean(wave)
+    if side not in ("vendor","buyer"):
+        raise HTTPException(400,"side must be vendor or buyer")
+    if not wave:
+        raise HTTPException(400,"wave is required")
+    limit=max(1,min(100,int(limit or 25)))
+    records=[]
+    async with app.state.pool.acquire() as conn:
+      if side=="vendor":
+        rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,o.wave,
+            o.target_market,o.target_service_key,
+            v.business_name,v.public_email,v.association_signal,
+            coalesce(o.target_market,vm.market) as market,
+            coalesce(o.target_service_key,vs.service_key) as service_key,
+            svc.display_name as service_name
+          from outreach o
+          join vendors v on v.vendor_id=o.entity_id
+          left join lateral (
+            select market from vendor_markets where vendor_id=v.vendor_id order by market limit 1
+          ) vm on true
+          left join lateral (
+            select service_key from vendor_services where vendor_id=v.vendor_id order by service_key limit 1
+          ) vs on true
+          left join services svc on svc.service_key=coalesce(o.target_service_key,vs.service_key)
+          where o.entity_type='vendor' and o.campaign='vendor_recruitment' and o.wave=$1
+          order by o.created_at,o.outreach_id
+          limit $2""",wave,limit)
+        for row in rows:
+            step=1 if row["status"]=="queued" else min(3,int(row["sequence_step"] or 1)+1)
+            subject,body=(first_wave_vendor_copy(row,step) if row["wave"]=="pilot1" else vendor_recruitment_copy(row,step))
+            records.append({
+              "outreach_id":str(row["outreach_id"]),
+              "entity_id":row["entity_id"],
+              "business_name":row["business_name"],
+              "recipient":row["public_email"],
+              "market":row["market"],
+              "service_key":row["service_key"],
+              "step":step,
+              "status":row["status"],
+              "subject":subject,
+              "body":body
+            })
+      else:
+        rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,o.wave,
+            b.business_name,b.public_email,b.market,b.buyer_type,b.campaign,b.likely_services
+          from outreach o join buyers b on b.buyer_id=o.entity_id
+          where o.entity_type='buyer' and o.wave=$1
+          order by o.created_at,o.outreach_id
+          limit $2""",wave,limit)
+        for row in rows:
+            step=1 if row["status"]=="queued" else min(2,int(row["sequence_step"] or 1)+1)
+            subject,body=buyer_outreach_copy(row,step)
+            records.append({
+              "outreach_id":str(row["outreach_id"]),
+              "entity_id":row["entity_id"],
+              "business_name":row["business_name"],
+              "recipient":row["public_email"],
+              "market":row["market"],
+              "campaign":row["campaign"],
+              "likely_services":row["likely_services"],
+              "step":step,
+              "status":row["status"],
+              "subject":subject,
+              "body":body
+            })
+    return {
+      "ok":True,
+      "side":side,
+      "wave":wave,
+      "count":len(records),
+      "sending_enabled":OUTREACH_ENABLED if side=="vendor" else BUYER_OUTREACH_ENABLED,
+      "records":records
+    }
+
+
 @app.post("/api/process-outreach")
 async def process_outreach(x_bmc_admin_key:str|None=Header(default=None)):
     if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY: raise HTTPException(403,"Forbidden")
