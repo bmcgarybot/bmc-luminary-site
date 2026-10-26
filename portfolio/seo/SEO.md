@@ -9,6 +9,31 @@
 - Build real citations/backlinks through local associations, vendor partners, chambers, directories, local publications, sponsorships, and useful resources.
 - Do not create fake Google Business Profiles for virtual lead-gen fronts. Use GBP only for a real eligible business/location.
 
+
+## First indexing launch
+Use the normal Search Console path for BMC's service pages. Google's Indexing API is not a general-purpose submission API for ordinary local-service pages.
+
+1. In Google Search Console, add a **Domain** property for `bmcservicenetwork.com`.
+2. Verify ownership with the TXT record in **Cloudflare DNS**, which is authoritative for the domain.
+3. Submit `https://bmcservicenetwork.com/sitemap.xml`.
+4. Confirm the sitemap is accepted, then use URL Inspection on a small launch set rather than manually requesting every URL at once.
+5. Request indexing only after the inspected URL reports that Google can fetch it and indexing is allowed.
+6. Recheck coverage after Google has had time to crawl; do not create duplicate/thin pages merely to force faster discovery.
+
+Initial URL Inspection set:
+- `https://bmcservicenetwork.com/`
+- `https://bmcservicenetwork.com/services/`
+- `https://bmcservicenetwork.com/providers/`
+- `https://bmcservicenetwork.com/markets/prescott/`
+- `https://bmcservicenetwork.com/markets/phoenix/`
+- `https://bmcservicenetwork.com/facility-maintenance/`
+- `https://bmcservicenetwork.com/restaurant-equipment-repair/`
+- `https://bmcservicenetwork.com/auto-repair-shop/`
+- `https://bmcservicenetwork.com/growth-packs/`
+- `https://bmcservicenetwork.com/market-expansion-pack/`
+
+The sitemap remains the discovery mechanism for the rest of the public pages. Keep private provider workflows, payment confirmations, synthetic tests, and other noindex pages out of it.
+
 ## Bing / Microsoft ecosystem
 - Add domain to Bing Webmaster Tools.
 - Submit sitemap.
