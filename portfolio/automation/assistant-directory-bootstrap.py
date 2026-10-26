@@ -417,13 +417,15 @@ def main():
         }
         sql.append(f"""insert into market_inventory_candidates(
  side,market,category_key,category_label,business_name,source_url,source_domain,
- snippet,search_query,page_no,public_email,public_phone,official_site,status,query_strategy_version,evidence
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
 ) values (
  '{esc(r["side"])}','{esc(r["market"])}','{esc(r["category_key"])}','{esc(r["category_label"])}',
  '{esc(r["business_name"])}','{esc(r["source_url"])}','whereorg.com',
  '{esc((r["address"] or "")+" | directory discovery")}',
  'assistant curated directory bootstrap: {esc(r["market"])} {esc(r["feed_key"])}',0,
- null,{("'"+esc(r["public_phone"])+"'") if r["public_phone"] else "null"},false,'discovered',7,
+ null,{("'"+esc(r["public_phone"])+"'") if r["public_phone"] else "null"},false,
+ 'directory','discovery',null,'discovered',7,
  '{esc(json.dumps(evidence,separators=(",",":")))}'::jsonb
 )
 on conflict(side,market,category_key,source_url,business_name) do update set
