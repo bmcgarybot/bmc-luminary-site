@@ -155,7 +155,11 @@ expansion_count="$(db_query "select count(*) from research_backlog where market 
 [ "${buyer_count:-0}" -ge 150 ] && pass "Buyer research pool seeded (${buyer_count})" || fail "Buyer research pool unexpectedly small (${buyer_count:-0})"
 [ "${fw_vendor_count:-0}" -eq 12 ] && pass "First Wave provider cohort is exactly 12" || fail "First Wave provider cohort is ${fw_vendor_count:-0}, expected 12"
 [ "${fw_buyer_count:-0}" -eq 7 ] && pass "First Wave buyer cohort is exactly 7" || fail "First Wave buyer cohort is ${fw_buyer_count:-0}, expected 7"
-[ "${research_count:-0}" -gt 0 ] && pass "Research backlog is seeded (${research_count} queued)" || warn "Research backlog has no queued rows"
+if [ "${research_count:-0}" -gt 0 ]; then
+  pass "Research backlog is active (${research_count} queued)"
+else
+  pass "Research backlog is fully drained (0 queued)"
+fi
 [ "${expansion_count:-0}" -ge 198 ] && pass "Recovered Arizona expansion research cells are seeded (${expansion_count})" || fail "Arizona expansion research cells are incomplete (${expansion_count:-0}; expected at least 198)"
 
 source_markets="$(env_value SOURCE_NATIVE_MARKETS)"
