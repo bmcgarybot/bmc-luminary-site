@@ -134,9 +134,22 @@ jobs:
       - name: Validate research search engines
         working-directory: portfolio/automation
         run: |
-          grep -A20 '^engines:' searxng/settings.yml | grep -q 'name: bing'
-          grep -A20 '^engines:' searxng/settings.yml | grep -q 'name: qwant'
-          grep -A20 '^engines:' searxng/settings.yml | grep -q 'name: yahoo'
+          python - <<'PY'
+          from pathlib import Path
+          text=Path("searxng/settings.yml").read_text()
+          for name in ("brave","duckduckgo","google cse","bing","qwant"):
+              block=text.split(f"- name: {name}",1)[1].split("- name:",1)[0]
+              assert "disabled: true" in block, (name,block)
+          for name in ("yahoo","yep"):
+              block=text.split(f"- name: {name}",1)[1].split("- name:",1)[0]
+              assert "disabled: false" in block, (name,block)
+          api=Path("api/app.py").read_text()
+          assert "def inventory_result_relevant" in api
+          assert "relevant_results=[r for r in results" in api
+          schema=Path("schema.sql").read_text()
+          assert "query strategy v3 relevance filtering" in schema.lower()
+          assert "evidence->>'search_engine'" in schema
+          PY
           grep -q 'up -d --force-recreate searxng' deploy-update.sh
 
       - name: Validate Compose
