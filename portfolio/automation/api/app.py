@@ -268,16 +268,33 @@ PUBLIC_OPPORTUNITY_SOURCES=(
      "query":'site:sam.gov/opportunities Arizona (janitorial OR cleaning OR landscaping OR locksmith OR "access control" OR HVAC OR plumbing OR facility OR parking OR pest OR electrical OR laundry OR "vehicle maintenance" OR "auto repair")'}
 )
 
-LOCAL_SIGNAL_MARKETS=("Prescott","Prescott Valley","Chino Valley","Camp Verde","Cottonwood","Sedona","Flagstaff","Winslow","Kingman","Phoenix","Scottsdale","Tucson")
+LOCAL_SIGNAL_MARKETS=(
+    "Prescott","Prescott Valley","Chino Valley","Dewey-Humboldt","Mayer","Cordes Lakes",
+    "Williamson Valley","Ash Fork","Seligman","Skull Valley","Camp Verde","Cottonwood",
+    "Sedona","Flagstaff","Winslow","Kingman","Golden Valley","Bullhead City",
+    "Phoenix","Scottsdale","Tucson"
+)
 LOCAL_SIGNAL_SOURCES=(
     {"key":"nextdoor_public","name":"Publicly indexed Nextdoor","domain":"nextdoor.com"},
-    {"key":"facebook_public","name":"Publicly indexed Facebook","domain":"facebook.com"}
+    {"key":"facebook_public","name":"Publicly indexed Facebook","domain":"facebook.com"},
+    {"key":"craigslist_public","name":"Publicly indexed Craigslist","domain":"craigslist.org"}
 )
-LOCAL_SIGNAL_SERVICE_TERMS='"plumber" OR "electrician" OR "locksmith" OR "access control" OR "HVAC" OR "heating" OR "air conditioning" OR "tree service" OR "landscaping" OR "junk removal" OR "handyman" OR "house cleaning" OR "garage door" OR "pest control" OR "towing" OR "mechanic" OR "auto repair"'
-LOCAL_SIGNAL_INTENT_TERMS='"looking for" OR "recommend" OR "recommendation" OR "need a" OR "need an" OR "anyone know" OR "seeking" OR "looking to hire"'
+LOCAL_SIGNAL_GROUPS=(
+    {"key":"home_property","label":"Home & property services",
+     "terms":'"plumber" OR "electrician" OR "locksmith" OR "HVAC" OR "heating" OR "air conditioning" OR "handyman" OR "garage door" OR "pest control"'},
+    {"key":"outdoor_land","label":"Outdoor & land services",
+     "terms":'"tree service" OR "tree removal" OR "landscaping" OR "yard cleanup" OR "junk removal" OR "hauling" OR "septic" OR "grading" OR "well"'},
+    {"key":"cleaning_property","label":"Cleaning & property care",
+     "terms":'"house cleaning" OR "commercial cleaning" OR "window cleaning" OR "carpet cleaning" OR "pressure washing" OR "move out cleaning"'},
+    {"key":"vehicle","label":"Vehicle services",
+     "terms":'"towing" OR "roadside" OR "mechanic" OR "auto repair" OR "brake repair" OR "mobile tire" OR "battery" OR "windshield" OR "auto glass"'},
+    {"key":"restaurant_facility","label":"Restaurant & facility services",
+     "terms":'"restaurant equipment" OR "ice machine" OR "hood cleaning" OR "grease trap" OR "fire extinguisher" OR "parking lot" OR "sign repair" OR "access control"'}
+)
+LOCAL_SIGNAL_INTENT_TERMS='"looking for" OR "recommend" OR "recommendation" OR "need a" OR "need an" OR "anyone know" OR "seeking" OR "looking to hire" OR "who can"'
 
-def build_local_signal_query(market,domain):
-    return f'site:{domain} "{clean(market)}" Arizona ({LOCAL_SIGNAL_INTENT_TERMS}) ({LOCAL_SIGNAL_SERVICE_TERMS})'
+def build_local_signal_query(market,domain,terms):
+    return f'site:{domain} "{clean(market)}" Arizona ({LOCAL_SIGNAL_INTENT_TERMS}) ({terms})'
 
 def classify_local_signal_service(text):
     t=clean(text).lower()
@@ -659,14 +676,15 @@ def public_source_host_allowed(host,domain):
     d=clean(domain).lower()
     return bool(h and d and (h==d or h.endswith("."+d)))
 
-async def search_research_web(query):
+async def search_research_web(query,pageno=1):
     if not RESEARCH_SEARCH_ENABLED or not RESEARCH_SEARCH_URL:
         return []
     params=urllib.parse.urlencode({
         "q":query,
         "format":"json",
         "language":"en-US",
-        "safesearch":"1"
+        "safesearch":"1",
+        "pageno":max(1,int(pageno or 1))
     })
     url=RESEARCH_SEARCH_URL+("&" if "?" in RESEARCH_SEARCH_URL else "?")+params
     def call():
