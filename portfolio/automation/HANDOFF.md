@@ -5671,3 +5671,170 @@ Do not claim the full statewide bootstrap is finished until actual committed row
 5. Use VPS automation afterward for delta/new-record detection and refresh.
 6. Continue periodic HANDOFF updates so conversation changes do not lose state.
 
+
+
+## 57. CONTINUOUS EXHAUSTIVE DISCOVERY + CLOSURE REFRESH — 2026-10-26
+
+This section supersedes older inventory language that treated research depth targets as terminal completion.
+
+### Current master at this checkpoint
+
+Latest observed master:
+- `b28e9b67b0a086626d80c8d3fd42ad1523c54836`
+- commit message: **Test paginated exhaustive directory crawl**
+
+CI/deployment note:
+- GitHub combined status had not yet reported a completed status for this exact SHA when this handoff section was written.
+- Therefore do **not** assume this exact master is green or deployed until a successful BMC Portfolio CI run and production relay proof are confirmed.
+
+### Open-ended inventory is implemented in code
+
+The inventory worker no longer stops because an arbitrary numeric target was met.
+
+Current behavior:
+- every market/category lane remains eligible for future refresh;
+- a complete search pass transitions the lane to `monitoring`, not terminal complete;
+- cursor resets to page 1 / variant 0 for later refresh;
+- `scan_cycles` increments each full cycle;
+- `last_full_scan_at` records the latest completed cycle;
+- old `scan_complete_target_met` / `scan_complete_under_target` states are migrated back to active monitoring;
+- depth targets remain useful as reporting goals only and do not stop discovery.
+
+Current search cycle:
+- up to 8 query variants;
+- up to 4 result pages per variant;
+- full cycle then repeats later.
+
+### Candidate lifecycle / closure tracking
+
+`market_inventory_candidates` now has:
+- `first_seen_at`
+- `last_seen_at`
+- `closed_at`
+- `closure_reason`
+- `source_tier`
+- `verification_status`
+- `last_verified_at`
+
+The market search worker checks result text for credible closure evidence. When closure evidence is returned:
+- candidate status becomes `closed`;
+- `closed_at` and `closure_reason` are recorded;
+- closed records no longer count as active discovery/direct coverage;
+- history is preserved rather than silently deleted.
+
+This is the beginning of the requested ability to remove closed businesses from active coverage while retaining audit history.
+
+### Exhaustive public-directory bootstrap
+
+Current importer:
+- `portfolio/automation/assistant-directory-bootstrap.py`
+
+It covers all 21 configured BMC markets and has broadened feed families including:
+- restaurants/bars;
+- education;
+- healthcare;
+- shopping;
+- government;
+- housing;
+- insurance;
+- automotive;
+- construction;
+- electrical;
+- consumer services;
+- environmental services;
+- travel/leisure;
+- real estate;
+- professional services;
+- nonprofits;
+- food;
+- pharmaceuticals;
+- industrial machinery;
+- manufacturing;
+- transportation;
+- storage.
+
+It:
+- follows public WhereOrg category pages;
+- recursively discovers more specific subcategory pages;
+- follows pagination pages such as `-02`, `-03`, etc.;
+- extracts individual business pages, phone/address where visible;
+- classifies rows into BMC buyer/vendor lanes;
+- inserts them as discovery evidence only;
+- does not promote providers/buyers;
+- does not stage outreach;
+- does not send anything.
+
+The previous one-page/sample behavior has been replaced with paginated enumeration.
+
+### Bulk refresh commands
+
+New:
+- `portfolio/automation/research-source-refresh.sh`
+
+Modes:
+- `directory`
+- `licensed`
+- `all`
+
+Directory refresh currently runs:
+- up to 500 candidates per feed;
+- up to 1500 discovered pages per market;
+- 0.20 second inter-request delay.
+
+It refuses to run unless all three outbound switches are OFF.
+
+### Continuous timers
+
+New:
+- `portfolio/automation/install-research-refresh-timers.sh`
+
+Intended production cadence:
+- public directory discovery refresh: daily;
+- licensed-trade discovery refresh: weekly.
+
+The installer uses systemd timers and requires the VPS service user to have passwordless sudo for installation.
+
+Do not assume the timers are installed until the relay action/result proves it.
+
+### VPS relay support
+
+Current relay allowlist includes:
+- `assistant_bootstrap_import`
+- `assistant_licensed_bootstrap_import`
+- `research_refresh_install`
+- `research_refresh_status`
+
+Mutating research actions still require all outbound switches OFF.
+
+The directory bootstrap relay now supports large exhaustive parameters:
+- max_per_feed up to 500;
+- max_pages_per_market up to 2500.
+
+### Important current limitation
+
+The architecture for exhaustive discovery and refresh is now substantially built, but the actual production database has **not yet been proven to contain the expected statewide thousands from this new exhaustive importer** at this checkpoint.
+
+The next assistant must not confuse:
+- code capable of exhaustive crawling
+with
+- production crawl already completed.
+
+### Immediate next actions
+
+1. Verify BMC Portfolio CI success on the exact latest master.
+2. Deploy that exact tested SHA through the relay.
+3. Confirm all outreach switches remain OFF.
+4. Run exhaustive assistant directory bootstrap across all 21 markets.
+5. Run licensed-trade bootstrap.
+6. Capture actual production counts by:
+   - market;
+   - buyer/vendor side;
+   - category;
+   - source tier;
+   - verification status;
+   - closed status.
+7. Install/verify research refresh timers.
+8. Run fresh production proof.
+9. Continue assistant-led direct-site/manual research for gaps and weak classifications.
+10. Begin the planned line-by-line verification with Brett after the bootstrap population is materially complete.
+
