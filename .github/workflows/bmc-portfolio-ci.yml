@@ -104,6 +104,29 @@ jobs:
           grep -q 'href="/tree-service/"' services/index.html
           grep -q 'href="/auto-repair-shop/"' services/index.html
 
+      - name: Validate assistant directory bootstrap
+        working-directory: portfolio/automation
+        run: |
+          python3 -m py_compile assistant-directory-bootstrap.py
+          python3 - <<'PY'
+          import importlib.util
+          from pathlib import Path
+          p=Path("assistant-directory-bootstrap.py")
+          spec=importlib.util.spec_from_file_location("adb",p)
+          m=importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+          sample='''<a href="/alpha-auto-repair-12345">Alpha Auto Repair</a><div>12 Main St.</div><div>Kingman AZ 86401</div><div>(928) 555-1212</div><a href="/city-government-99999">City Government</a><div>1 Civic Way</div><div>Kingman AZ 86401</div><div>(928) 555-9999</div><div>Whereorg has 2 results under Companies in Kingman, AZ.</div>'''
+          rows=m.parse_listing(sample,"Kingman")
+          assert len(rows)==2, rows
+          assert rows[0]["business_name"]=="Alpha Auto Repair"
+          assert rows[0]["phone"]=="(928) 555-1212"
+          assert m.classify("automotive-services","Alpha Auto Repair")[1]=="auto_repair_shop"
+          assert m.classify("government","City Government")[1]=="public_facilities"
+          assert len(m.MARKETS)==21
+          assert len(m.FEEDS)>=10
+          relay=Path("vps-gitops-relay.py").read_text()
+          assert '"assistant_bootstrap_import"' in relay
+          PY
+
       - name: Validate research query quality
         working-directory: portfolio/automation
         run: |
