@@ -6491,3 +6491,286 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Chino Valley';
+
+
+-- Assistant-led Chino Valley census batch 03 (2026-10-26)
+-- Direct/authoritative verification layer for Chino Valley high-value vendors.
+-- Inventory evidence only; preserve closed status and never promote/stage/send.
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','hvac_heat','Heating & Air','Chino Heating & Cooling, Inc.',
+ 'https://www.airconditionerprescott.com/','airconditionerprescott.com','Official site confirms Chino Valley location at 550 N US Highway 89, family owned since 1980, residential through light-industrial/commercial HVAC, maintenance agreements and 24-hour emergency service.','assistant verification research: Chino Valley Heating & Air',0,
+ null,'(928) 636-2955',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_03","researched_at":"2026-10-26T23:58:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site confirms Chino Valley location at 550 N US Highway 89, family owned since 1980, residential through light-industrial/commercial HVAC, maintenance agreements and 24-hour emergency service."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','hvac_heat','Heating & Air','Balanced Heating & Air Conditioning',
+ 'https://hvac.balancedheating.com/','hvac.balancedheating.com','Official Chino Valley HVAC site lists 555 W Rd 3 N Ste D and residential/commercial HVAC repair, installation, maintenance and indoor-air-quality service.','assistant verification research: Chino Valley Heating & Air',0,
+ null,'(928) 460-7819',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_03","researched_at":"2026-10-26T23:58:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Chino Valley HVAC site lists 555 W Rd 3 N Ste D and residential/commercial HVAC repair, installation, maintenance and indoor-air-quality service."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','backflow_plumbing','Backflow & Commercial Plumbing','WIHN Services Plumbing',
+ 'https://www.wihnservices.com/','wihnservices.com','Official site confirms multi-generation full-service plumbing; current Chamber evidence places Chino Valley base at 1420 S Table Mountain Rd.','assistant verification research: Chino Valley Backflow & Commercial Plumbing',0,
+ null,'(928) 636-5405',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_03","researched_at":"2026-10-26T23:58:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site confirms multi-generation full-service plumbing; current Chamber evidence places Chino Valley base at 1420 S Table Mountain Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','electrical_service','Electrician','Copper Cross Electrical',
+ 'https://www.coppercrosselectrical.com/','coppercrosselectrical.com','Official site lists 1244 E Red Cinder Rd, Chino Valley and commercial electrical, new construction, remodels, panels, EV chargers, generators and automated gates.','assistant verification research: Chino Valley Electrician',0,
+ null,'(928) 379-2875',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_03","researched_at":"2026-10-26T23:58:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site lists 1244 E Red Cinder Rd, Chino Valley and commercial electrical, new construction, remodels, panels, EV chargers, generators and automated gates."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','electrical_service','Electrician','Elan Electric Inc',
+ 'https://elanelectricinc.com/','elanelectricinc.com','Official site confirms Chino Valley/Yavapai County electrical contractor with residential, commercial and industrial work plus generator/solar/battery capability; current local listing places office at 3699 AZ-89.','assistant verification research: Chino Valley Electrician',0,
+ null,'(928) 925-7937',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_03","researched_at":"2026-10-26T23:58:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site confirms Chino Valley/Yavapai County electrical contractor with residential, commercial and industrial work plus generator/solar/battery capability; current local listing places office at 3699 AZ-89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','pest_control','Pest Control','Chino Exterminating',
+ 'https://chinoexterminating.com/','chinoexterminating.com','Official site confirms Chino Valley-based residential and commercial pest/wildlife control serving restaurants, hospitality, industrial, healthcare, schools, property management, retail and offices.','assistant verification research: Chino Valley Pest Control',0,
+ null,'(928) 636-7378',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_03","researched_at":"2026-10-26T23:58:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site confirms Chino Valley-based residential and commercial pest/wildlife control serving restaurants, hospitality, industrial, healthcare, schools, property management, retail and offices."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','rural_property','Rural Property Help','PumpWorks, LLC',
+ 'https://pumpworksaz.com/about-us-2/','pumpworksaz.com','Official site lists 1646 S Yellow Brick Rd, Chino Valley; Arizona licensed well-pump contractor providing installation, maintenance, repair and emergency water support across Yavapai County.','assistant verification research: Chino Valley Rural Property Help',0,
+ null,'(928) 308-4472',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_03","researched_at":"2026-10-26T23:58:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site lists 1646 S Yellow Brick Rd, Chino Valley; Arizona licensed well-pump contractor providing installation, maintenance, repair and emergency water support across Yavapai County."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','towing_roadside','Towing & Roadside Help','Custom Towing',
+ 'https://www.towingprescott.com/','towingprescott.com','Official company site confirms Chino Valley service/base, 24/7 light/medium towing, roadside assistance, lockouts, fuel delivery and recovery; Chamber lists 1222 S Highway 89.','assistant verification research: Chino Valley Towing & Roadside Help',0,
+ null,'(928) 771-8697',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_03","researched_at":"2026-10-26T23:58:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official company site confirms Chino Valley service/base, 24/7 light/medium towing, roadside assistance, lockouts, fuel delivery and recovery; Chamber lists 1222 S Highway 89."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','linen_laundry','Linen & Laundry Service','Western Laundry & Dry Cleaning',
+ 'https://westerndrycleaners.com/commercial-services/','westerndrycleaners.com','Official commercial-service page lists Chino Valley location at 382 W Butterfield Rd and commercial linen, restaurant/hospitality textiles, mats and janitorial-supply delivery across Northern Arizona.','assistant verification research: Chino Valley Linen & Laundry Service',0,
+ 'info@westerndrycleaners.com','(928) 636-7667',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_03","researched_at":"2026-10-26T23:58:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official commercial-service page lists Chino Valley location at 382 W Butterfield Rd and commercial linen, restaurant/hospitality textiles, mats and janitorial-supply delivery across Northern Arizona."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Chino Valley','hvac_heat','Heating & Air','TDK Comfort Systems Inc',
+ 'https://www.trane.com/residential/en/dealers/tdk-comfort-systems-chino-valley-arizona-404241/','trane.com','Manufacturer-authorized Trane dealer page confirms current Chino Valley HVAC business, service area including 86323, HVAC repair/install/cleaning, 24/7 emergency service and NATE certification.','assistant verification research: Chino Valley Heating & Air',0,
+ null,'(928) 636-0846',false,
+ 'secondary','verified_secondary',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_chino_valley_batch_03","researched_at":"2026-10-26T23:58:00Z","source_quality":"authoritative_industry_evidence","verification_status":"verified_secondary","note":"Manufacturer-authorized Trane dealer page confirms current Chino Valley HVAC business, service area including 86323, HVAC repair/install/cleaning, 24/7 emergency service and NATE certification."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Chino Valley';
