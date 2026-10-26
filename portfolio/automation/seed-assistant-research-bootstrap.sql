@@ -6254,3 +6254,1580 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Kingman';
+
+
+-- Assistant-led Kingman census batch 04 (2026-10-26)
+-- Manually enumerated Kingman long-tail trade directory candidates.
+-- Discovery inventory only; preserve closed status and never promote/send.
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','A Sunrise Plumbing Company',
+ 'https://www.mohavelocal.com/l/kingman-az/plumbers','mohavelocal.com','Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(928) 757-7095',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','Arizona Discount Plumbing',
+ 'https://www.mohavelocal.com/l/kingman-az/plumbers','mohavelocal.com','Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(928) 692-0534',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','Benchmark Plumbing Co',
+ 'https://www.mohavelocal.com/l/kingman-az/plumbers','mohavelocal.com','Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(928) 718-5624',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','Craig Plumbing',
+ 'https://www.mohavelocal.com/l/kingman-az/plumbers','mohavelocal.com','Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(888) 453-7173',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','Frank The Plumber & Handyman LLC',
+ 'https://www.mohavelocal.com/l/kingman-az/plumbers','mohavelocal.com','Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(562) 842-5687',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','G M L Plumbing',
+ 'https://www.mohavelocal.com/l/kingman-az/plumbers','mohavelocal.com','Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(928) 897-9952',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','Hawkeye Plumbing',
+ 'https://www.mohavelocal.com/l/kingman-az/plumbers','mohavelocal.com','Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(928) 377-0468',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','Higbee Plumbing Corporation',
+ 'https://www.mohavelocal.com/l/kingman-az/plumbers','mohavelocal.com','Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(928) 718-0625',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','Horsman Plumbing',
+ 'https://www.mohavelocal.com/l/kingman-az/plumbers','mohavelocal.com','Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(928) 757-7775',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','Kingman Emergency Plumbing Service',
+ 'https://www.mohavelocal.com/l/kingman-az/plumbers','mohavelocal.com','Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(702) 417-7958',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','Kingman Septic Pumping LLC',
+ 'https://www.mohavelocal.com/l/kingman-az/plumbers','mohavelocal.com','Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(928) 753-2649',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','Lon''s Plumbing Co',
+ 'https://www.mohavelocal.com/l/kingman-az/plumbers','mohavelocal.com','Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(928) 718-0381',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','Plumbing By Jake',
+ 'https://www.mohavelocal.com/l/kingman-az/plumbers','mohavelocal.com','Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(928) 263-8688',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','R And N Plumbing',
+ 'https://www.mohavelocal.com/l/kingman-az/plumbers','mohavelocal.com','Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(928) 263-2789',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','Retro Plumbing Inc',
+ 'https://www.mohavelocal.com/l/kingman-az/plumbers','mohavelocal.com','Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(928) 757-3883',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','Rolland Plumbing Service',
+ 'https://www.mohavelocal.com/l/kingman-az/plumbers','mohavelocal.com','Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(928) 757-2290',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman plumbing-directory discovery candidate; direct/license verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','electrical_service','Electrician','McKenzie Electric',
+ 'https://www.mohavelocal.com/l/kingman-az/electrician','mohavelocal.com','Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Kingman Electrician',0,
+ null,'(928) 377-8057',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','electrical_service','Electrician','C R Wright Electric Inc',
+ 'https://www.mohavelocal.com/l/kingman-az/electrician','mohavelocal.com','Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Kingman Electrician',0,
+ null,'(928) 753-2405',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','electrical_service','Electrician','Devault Electric',
+ 'https://www.mohavelocal.com/l/kingman-az/electrician','mohavelocal.com','Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Kingman Electrician',0,
+ null,'(928) 757-7767',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','electrical_service','Electrician','Diggs Electric Inc',
+ 'https://www.mohavelocal.com/l/kingman-az/electrician','mohavelocal.com','Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Kingman Electrician',0,
+ null,'(928) 753-5772',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','electrical_service','Electrician','E & R Electric',
+ 'https://www.mohavelocal.com/l/kingman-az/electrician','mohavelocal.com','Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Kingman Electrician',0,
+ null,'(928) 692-1098',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','electrical_service','Electrician','Ever Electric',
+ 'https://www.mohavelocal.com/l/kingman-az/electrician','mohavelocal.com','Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Kingman Electrician',0,
+ null,'(928) 692-5256',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','electrical_service','Electrician','Farner Electric',
+ 'https://www.mohavelocal.com/l/kingman-az/electrician','mohavelocal.com','Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Kingman Electrician',0,
+ null,'(928) 757-8414',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','electrical_service','Electrician','Guernsey Electric',
+ 'https://www.mohavelocal.com/l/kingman-az/electrician','mohavelocal.com','Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Kingman Electrician',0,
+ null,'(928) 757-0553',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','electrical_service','Electrician','High Tech Electric',
+ 'https://www.mohavelocal.com/l/kingman-az/electrician','mohavelocal.com','Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Kingman Electrician',0,
+ null,'(928) 718-1150',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','electrical_service','Electrician','JC Electrical Svc LLC',
+ 'https://www.mohavelocal.com/l/kingman-az/electrician','mohavelocal.com','Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Kingman Electrician',0,
+ null,'(928) 681-7727',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','electrical_service','Electrician','Multer Electric LLC',
+ 'https://www.mohavelocal.com/l/kingman-az/electrician','mohavelocal.com','Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Kingman Electrician',0,
+ null,'(928) 293-0810',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','electrical_service','Electrician','Romar Electric',
+ 'https://www.mohavelocal.com/l/kingman-az/electrician','mohavelocal.com','Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Kingman Electrician',0,
+ null,'(928) 692-1389',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','electrical_service','Electrician','Walker Service Electric Inc',
+ 'https://www.mohavelocal.com/l/kingman-az/electrician','mohavelocal.com','Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Kingman Electrician',0,
+ null,'(928) 718-9444',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','electrical_service','Electrician','Wjh Electric Services Supply',
+ 'https://www.mohavelocal.com/l/kingman-az/electrician','mohavelocal.com','Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion.','assistant bootstrap research: Kingman Electrician',0,
+ null,'(928) 757-5858',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman electrician-directory discovery candidate; direct/ROC verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','locksmith_access','Locks & Access Control','Ace Lock And Key Service',
+ 'https://www.mohavelocal.com/l/kingman-az/locksmiths','mohavelocal.com','Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman Locks & Access Control',0,
+ null,'(928) 219-5940',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','locksmith_access','Locks & Access Control','ACD Lock & Key',
+ 'https://www.mohavelocal.com/l/kingman-az/locksmiths','mohavelocal.com','Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman Locks & Access Control',0,
+ null,'(928) 279-5787',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','locksmith_access','Locks & Access Control','Charlie''s Lock & Key LLC',
+ 'https://www.mohavelocal.com/l/kingman-az/locksmiths','mohavelocal.com','Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman Locks & Access Control',0,
+ null,'(928) 681-9081',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','locksmith_access','Locks & Access Control','Garon''s Locksmithing',
+ 'https://www.mohavelocal.com/l/kingman-az/locksmiths','mohavelocal.com','Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman Locks & Access Control',0,
+ null,'(928) 718-1266',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','locksmith_access','Locks & Access Control','Minute Key',
+ 'https://www.mohavelocal.com/l/kingman-az/locksmiths','mohavelocal.com','Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman Locks & Access Control',0,
+ null,'(928) 352-5699',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','locksmith_access','Locks & Access Control','Northwest Lock & Safe Inc',
+ 'https://www.mohavelocal.com/l/kingman-az/locksmiths','mohavelocal.com','Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman Locks & Access Control',0,
+ null,'(928) 753-6094',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','locksmith_access','Locks & Access Control','River Valley Locksmith',
+ 'https://www.mohavelocal.com/l/kingman-az/locksmiths','mohavelocal.com','Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman Locks & Access Control',0,
+ null,'(928) 296-0940',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','locksmith_access','Locks & Access Control','Spartan Locksmithing',
+ 'https://www.mohavelocal.com/l/kingman-az/locksmiths','mohavelocal.com','Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman Locks & Access Control',0,
+ null,'(928) 288-0560',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','locksmith_access','Locks & Access Control','Stockton Hill Locksmith',
+ 'https://www.mohavelocal.com/l/kingman-az/locksmiths','mohavelocal.com','Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman Locks & Access Control',0,
+ null,'(928) 530-3312',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman locksmith-directory discovery candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','pest_control','Pest Control','Assassin Pest Control',
+ 'https://www.mohavelocal.com/l/kingman-az/pest-control-services','mohavelocal.com','Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion.','assistant bootstrap research: Kingman Pest Control',0,
+ null,'(928) 757-9199',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','pest_control','Pest Control','Blue Moon Pest Control',
+ 'https://www.mohavelocal.com/l/kingman-az/pest-control-services','mohavelocal.com','Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion.','assistant bootstrap research: Kingman Pest Control',0,
+ null,'(928) 692-9417',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','pest_control','Pest Control','Bugs Out Pest Control',
+ 'https://www.mohavelocal.com/l/kingman-az/pest-control-services','mohavelocal.com','Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion.','assistant bootstrap research: Kingman Pest Control',0,
+ null,'(928) 757-5999',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','pest_control','Pest Control','Del Rio Pest Control',
+ 'https://www.mohavelocal.com/l/kingman-az/pest-control-services','mohavelocal.com','Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion.','assistant bootstrap research: Kingman Pest Control',0,
+ null,'(928) 753-3936',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','pest_control','Pest Control','Desert Shield Pest Management LLC',
+ 'https://www.mohavelocal.com/l/kingman-az/pest-control-services','mohavelocal.com','Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion.','assistant bootstrap research: Kingman Pest Control',0,
+ null,'(928) 754-3444',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','pest_control','Pest Control','Kingman Termite Co',
+ 'https://www.mohavelocal.com/l/kingman-az/pest-control-services','mohavelocal.com','Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion.','assistant bootstrap research: Kingman Pest Control',0,
+ null,'(928) 753-1616',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','pest_control','Pest Control','Mohave Pest Control',
+ 'https://www.mohavelocal.com/l/kingman-az/pest-control-services','mohavelocal.com','Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion.','assistant bootstrap research: Kingman Pest Control',0,
+ null,'(928) 377-3365',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','pest_control','Pest Control','Pesty Pest Control',
+ 'https://www.mohavelocal.com/l/kingman-az/pest-control-services','mohavelocal.com','Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion.','assistant bootstrap research: Kingman Pest Control',0,
+ null,'(928) 753-7111',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','pest_control','Pest Control','Tri-State Pest Management',
+ 'https://www.mohavelocal.com/l/kingman-az/pest-control-services','mohavelocal.com','Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion.','assistant bootstrap research: Kingman Pest Control',0,
+ null,'(928) 692-8800',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman pest-control directory discovery candidate; direct/licensing verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','commercial_cleaning','Commercial Cleaning','Absolute Cleaning Services',
+ 'https://www.mohavelocal.com/l/kingman-az/janitor-service','mohavelocal.com','Current Kingman janitorial-directory discovery candidate; service scope/direct verification remains required before promotion.','assistant bootstrap research: Kingman Commercial Cleaning',0,
+ null,'(928) 293-5106',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman janitorial-directory discovery candidate; service scope/direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','commercial_cleaning','Commercial Cleaning','Advance Janitorial',
+ 'https://www.mohavelocal.com/l/kingman-az/janitor-service','mohavelocal.com','Current Kingman janitorial-directory discovery candidate; service scope/direct verification remains required before promotion.','assistant bootstrap research: Kingman Commercial Cleaning',0,
+ null,'(928) 279-6668',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman janitorial-directory discovery candidate; service scope/direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','commercial_cleaning','Commercial Cleaning','Armao Janitorial Services Inc',
+ 'https://www.mohavelocal.com/l/kingman-az/janitor-service','mohavelocal.com','Current Kingman janitorial-directory discovery candidate; service scope/direct verification remains required before promotion.','assistant bootstrap research: Kingman Commercial Cleaning',0,
+ null,'(928) 530-9582',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman janitorial-directory discovery candidate; service scope/direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','commercial_cleaning','Commercial Cleaning','Diamond Janitorial Supply LLC',
+ 'https://www.mohavelocal.com/l/kingman-az/janitor-service','mohavelocal.com','Current Kingman janitorial-directory discovery candidate; service scope/direct verification remains required before promotion.','assistant bootstrap research: Kingman Commercial Cleaning',0,
+ null,'(928) 692-5304',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman janitorial-directory discovery candidate; service scope/direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','commercial_cleaning','Commercial Cleaning','Keepin it Kleen Home & Office Cleaning',
+ 'https://www.mohavelocal.com/l/kingman-az/janitor-service','mohavelocal.com','Current Kingman janitorial-directory discovery candidate; service scope/direct verification remains required before promotion.','assistant bootstrap research: Kingman Commercial Cleaning',0,
+ null,'(928) 716-4040',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman janitorial-directory discovery candidate; service scope/direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','commercial_cleaning','Commercial Cleaning','Keepin'' It Kleen',
+ 'https://www.mohavelocal.com/l/kingman-az/janitor-service','mohavelocal.com','Current Kingman janitorial-directory discovery candidate; service scope/direct verification remains required before promotion.','assistant bootstrap research: Kingman Commercial Cleaning',0,
+ null,'(928) 565-7347',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman janitorial-directory discovery candidate; service scope/direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','commercial_cleaning','Commercial Cleaning','Night Owl Janitorial',
+ 'https://www.mohavelocal.com/l/kingman-az/janitor-service','mohavelocal.com','Current Kingman janitorial-directory discovery candidate; service scope/direct verification remains required before promotion.','assistant bootstrap research: Kingman Commercial Cleaning',0,
+ null,'(928) 279-7390',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman janitorial-directory discovery candidate; service scope/direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','tree_service','Tree Service & Brush Clearing','Anthony''s Tree Service',
+ 'https://www.mohavelocal.com/l/kingman-az/tree-service','mohavelocal.com','Current Kingman tree-service directory discovery candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman Tree Service & Brush Clearing',0,
+ null,'(928) 753-3399',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman tree-service directory discovery candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','tree_service','Tree Service & Brush Clearing','Professional Tree Care',
+ 'https://www.mohavelocal.com/l/kingman-az/tree-service','mohavelocal.com','Current Kingman tree-service directory discovery candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman Tree Service & Brush Clearing',0,
+ null,'(928) 718-2657',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman tree-service directory discovery candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','tree_service','Tree Service & Brush Clearing','Sim''s Tree Service',
+ 'https://www.mohavelocal.com/l/kingman-az/tree-service','mohavelocal.com','Current Kingman tree-service directory discovery candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman Tree Service & Brush Clearing',0,
+ null,'(928) 681-3074',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman tree-service directory discovery candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','landscaping','Landscaping & Yard Cleanup','Kingman Landscape & Maintenance',
+ 'https://www.mohavelocal.com/l/kingman-az/landscapers','mohavelocal.com','Current Kingman landscaping-directory discovery candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman Landscaping & Yard Cleanup',0,
+ null,'(928) 757-2723',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman landscaping-directory discovery candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','landscaping','Landscaping & Yard Cleanup','Landscape Arts',
+ 'https://www.mohavelocal.com/l/kingman-az/landscapers','mohavelocal.com','Current Kingman landscaping-directory discovery candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman Landscaping & Yard Cleanup',0,
+ null,'(928) 757-5025',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman landscaping-directory discovery candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','landscaping','Landscaping & Yard Cleanup','Rock Solid Landscaping',
+ 'https://www.mohavelocal.com/l/kingman-az/landscapers','mohavelocal.com','Current Kingman landscaping-directory discovery candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman Landscaping & Yard Cleanup',0,
+ null,'(928) 897-4996',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman landscaping-directory discovery candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','landscaping','Landscaping & Yard Cleanup','Sweet Pete''s Landscaping & Trash Removal',
+ 'https://www.mohavelocal.com/l/kingman-az/landscapers','mohavelocal.com','Current Kingman landscaping-directory discovery candidate; direct verification remains required before promotion.','assistant bootstrap research: Kingman Landscaping & Yard Cleanup',0,
+ null,'(928) 530-7300',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman landscaping-directory discovery candidate; direct verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','towing_roadside','Towing & Roadside Help','AMOCO Towing - Dykman''s Route 66 Mobile & Towing',
+ 'https://www.mohavelocal.com/l/kingman-az/auto-towing','mohavelocal.com','Current Kingman towing-directory discovery candidate; direct/FMCSA verification remains required before promotion.','assistant bootstrap research: Kingman Towing & Roadside Help',0,
+ null,'(928) 692-6611',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman towing-directory discovery candidate; direct/FMCSA verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','towing_roadside','Towing & Roadside Help','Ace Towing',
+ 'https://www.mohavelocal.com/l/kingman-az/auto-towing','mohavelocal.com','Current Kingman towing-directory discovery candidate; direct/FMCSA verification remains required before promotion.','assistant bootstrap research: Kingman Towing & Roadside Help',0,
+ null,'(928) 377-9111',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman towing-directory discovery candidate; direct/FMCSA verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','towing_roadside','Towing & Roadside Help','Advance Tire & Towing',
+ 'https://www.mohavelocal.com/l/kingman-az/auto-towing','mohavelocal.com','Current Kingman towing-directory discovery candidate; direct/FMCSA verification remains required before promotion.','assistant bootstrap research: Kingman Towing & Roadside Help',0,
+ null,'(928) 757-1966',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman towing-directory discovery candidate; direct/FMCSA verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','towing_roadside','Towing & Roadside Help','D&G Towing',
+ 'https://www.mohavelocal.com/l/kingman-az/auto-towing','mohavelocal.com','Current Kingman towing-directory discovery candidate; direct/FMCSA verification remains required before promotion.','assistant bootstrap research: Kingman Towing & Roadside Help',0,
+ null,'(928) 692-0886',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman towing-directory discovery candidate; direct/FMCSA verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','towing_roadside','Towing & Roadside Help','EXTREME SYNTHETICS Roadside Assistance LLC',
+ 'https://www.mohavelocal.com/l/kingman-az/auto-towing','mohavelocal.com','Current Kingman towing-directory discovery candidate; direct/FMCSA verification remains required before promotion.','assistant bootstrap research: Kingman Towing & Roadside Help',0,
+ null,'(928) 715-4549',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman towing-directory discovery candidate; direct/FMCSA verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','towing_roadside','Towing & Roadside Help','England Towing & Recovery',
+ 'https://www.mohavelocal.com/l/kingman-az/auto-towing','mohavelocal.com','Current Kingman towing-directory discovery candidate; direct/FMCSA verification remains required before promotion.','assistant bootstrap research: Kingman Towing & Roadside Help',0,
+ null,'(928) 718-1255',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_04","researched_at":"2026-10-26T22:43:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Kingman towing-directory discovery candidate; direct/FMCSA verification remains required before promotion."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Kingman';
