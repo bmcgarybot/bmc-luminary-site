@@ -10802,3 +10802,2955 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Sedona';
+
+
+-- Assistant-led Flagstaff buyer/facility census batch 01 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Americana Motor Hotel',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 833-3060',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Basecamp at Snowbowl',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 774-0729',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Bespoke Inn Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 981-4095',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Best Western Pony Soldier Inn & Suites',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 526-2388',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Canyon Inn Motel',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 774-7301',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Comfort Inn',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 774-2225',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Comfort Inn Lucky Lane',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 774-9157',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Country Inn & Suites - NAU/Downtown',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 774-8888',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Courtyard by Marriott Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 774-5800',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','DoubleTree by Hilton Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 773-8888',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Embassy Suites by Hilton - Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 774-4333',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Fairfield Inn & Suites Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 707-7800',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','GreenTree Inn Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 773-1111',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Hampton Inn & Suites of Flagstaff East',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 433-1234',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','High Country Motor Lodge',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(866) 928-4265',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Highland Country Inn',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 774-5041',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Hilton Garden Inn - Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 226-8888',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Holiday Inn Express',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 714-1000',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Home2 Suites by Hilton Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 220-6700',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Hotel Elev8 Flagstaff - Trademark Collection by Wyndham',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 774-1821',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Hyatt Place Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 433-6930',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Little America Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 779-7900',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Sonesta ES Suites Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 526-5555',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','SpringHill Suites Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 774-8042',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','The Kendrick Hotel/Northern Pines Restaurant',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 779-6944',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Tru by Hilton Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 220-6800',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Weatherford Hotel & Charly''s Pub & Grill',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 779-1919',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Hampton Inn & Suites',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 913-0900',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Motel Du Beau Travelers Inn',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 774-6731',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','hotels_motels','hotels motels lodging','Rodeway Inn - Downtown',
+ 'https://business.flagstaffchamber.com/list/category/lodging-hotels-motels-1148','business.flagstaffchamber.com','Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff.','assistant census research: Flagstaff hotels motels lodging',0,
+ null,'(928) 774-5081',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber hotel/motel listing in Flagstaff."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','1899 Bar & Grill',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 523-1899',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','2 Bar 3 Cafe and Saloon',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 526-5388',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Alpine Pizza',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 774-3840',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Atria Restaurant',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 440-4377',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Baja Mar',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 440-4113',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Campus Coffee Bean',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 556-0660',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Chili''s Grill & Bar',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 774-4546',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Cracker Barrel Old Country Store, Inc.',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 773-1524',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Culver''s of Flagstaff',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 266-1925',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Dairy Queen',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 779-2028',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Dara Thai Restaurant',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 774-0047',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Delhi Palace',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 556-0019',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Dog Haus',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 774-3211',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Domino''s Pizza - Milton Road',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 779-3686',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Domino''s Pizza - Seventh Avenue',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 527-0797',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Del Taco - Hwy 89',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 526-5101',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Del Taco - Milton Rd',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 226-9186',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Eat N'' Run',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 679-9818',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Flame Broiler',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 226-1875',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','FLG Terroir',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 773-9463',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Himalayan Grill',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 213-5444',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','KickStand Kafe',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 779-5393',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Macy''s European Coffee, Bakery, Restaurant',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 774-2243',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','McDonald''s Restaurant - Butler Avenue',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 779-9509',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','McDonald''s Restaurant - Milton Road',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 774-9030',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Pita Jungle',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 774-0086',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Satchmo''s',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 774-7292',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','SHIFT',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 440-5135',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Sizzler Steak, Seafood, Salad - Milton',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 779-3267',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Sonic Drive-In #1073',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 527-9245',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Sonic Drive-In #1077',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 773-1123',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Texas Roadhouse',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 522-9247',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Outback Steakhouse',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 774-7630',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Go Sushi',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 440-5001',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Black Barts Steakhouse & RV Park',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 779-3142',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','The Place Mike & Ronda''s Restaurant East',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 526-8138',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Wildflower Bread Company',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 233-5010',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Juice Pub & Eatery',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 440-3429',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','White Dove Coffee / The Nest',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 774-3059',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','restaurants','restaurants','Single Speed Coffee Roasters',
+ 'https://business.flagstaffchamber.com/list/ql/restaurants-food-beverages-22?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber restaurant/food-service listing.','assistant census research: Flagstaff restaurants',0,
+ null,'(928) 266-0520',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber restaurant/food-service listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','Aurora Surgical Center',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(928) 395-3296',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','Flagstaff Bone & Joint, PLLC',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(928) 773-2280',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','Flagstaff Surgical Associates',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(928) 773-2222',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','Mend Medical Care',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(928) 220-6363',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','Native Americans for Community Action, Inc.',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(928) 773-1245',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','NextCare Urgent Care',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(928) 779-3844',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','Northern Arizona Healthcare',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(928) 779-3366',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','Northern Arizona Hospice',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(928) 779-9795',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','Northern Arizona Orthopaedics',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(928) 226-2900',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','Rehabilitation Hospital of Northern Arizona',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(928) 774-7070',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','Flagstaff Foot Doctors',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(928) 774-4825',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','Flagstaff Primary Care',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(928) 374-6129',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','Northern Arizona Dermatology Center',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(928) 774-5074',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','Plastic Surgeons of Northern Arizona',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(928) 774-2300',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','Remedy Direct Primary Care',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(928) 223-4823',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','Sacred Peaks Health Center',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(866) 976-5941',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','medical_centers','hospitals medical centers clinics','Vitalant Blood Donation',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Greater Flagstaff Chamber health/medical facility listing.','assistant census research: Flagstaff hospitals medical centers clinics',0,
+ null,'(877) 258-4825',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber health/medical facility listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','therapy_behavioral','therapy counseling behavioral health clinics','Denova Collaborative Health',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Flagstaff behavioral-health organization/facility.','assistant census research: Flagstaff therapy counseling behavioral health clinics',0,
+ null,'(602) 230-7373',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Flagstaff behavioral-health organization/facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','therapy_behavioral','therapy counseling behavioral health clinics','Southwest Behavioral & Health Services',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Flagstaff behavioral-health organization/facility.','assistant census research: Flagstaff therapy counseling behavioral health clinics',0,
+ null,'(928) 779-4550',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Flagstaff behavioral-health organization/facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','therapy_behavioral','therapy counseling behavioral health clinics','The Guidance Center',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Current Flagstaff behavioral-health organization/facility.','assistant census research: Flagstaff therapy counseling behavioral health clinics',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Flagstaff behavioral-health organization/facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','senior_daycare','senior living assisted living daycare childcare','Brookdale Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-1347','business.flagstaffchamber.com','Current Flagstaff senior living facility.','assistant census research: Flagstaff senior living assisted living daycare childcare',0,
+ null,'(928) 779-7045',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Flagstaff senior living facility."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','senior_daycare','senior living assisted living daycare childcare','The Peaks Senior Living Center',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff lists The Peaks among major local employers.','assistant census research: Flagstaff senior living assisted living daycare childcare',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff lists The Peaks among major local employers."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','dental','dentists dental offices orthodontists','Country Club Dental',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-dentists-1107','business.flagstaffchamber.com','Current Greater Flagstaff Chamber dental/orthodontic office listing.','assistant census research: Flagstaff dentists dental offices orthodontists',0,
+ null,'(928) 526-4314',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber dental/orthodontic office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','dental','dentists dental offices orthodontists','Flagstaff Dentistry 4 Kids',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-dentists-1107','business.flagstaffchamber.com','Current Greater Flagstaff Chamber dental/orthodontic office listing.','assistant census research: Flagstaff dentists dental offices orthodontists',0,
+ null,'(928) 773-8517',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber dental/orthodontic office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','dental','dentists dental offices orthodontists','Flagstaff Downtown Dental',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-dentists-1107','business.flagstaffchamber.com','Current Greater Flagstaff Chamber dental/orthodontic office listing.','assistant census research: Flagstaff dentists dental offices orthodontists',0,
+ null,'(928) 774-1168',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber dental/orthodontic office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','dental','dentists dental offices orthodontists','Peak Family Dental Care',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-dentists-1107','business.flagstaffchamber.com','Current Greater Flagstaff Chamber dental/orthodontic office listing.','assistant census research: Flagstaff dentists dental offices orthodontists',0,
+ null,'(928) 440-8856',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber dental/orthodontic office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','dental','dentists dental offices orthodontists','Woodlands Village Dentistry',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-dentists-1107','business.flagstaffchamber.com','Current Greater Flagstaff Chamber dental/orthodontic office listing.','assistant census research: Flagstaff dentists dental offices orthodontists',0,
+ null,'(928) 774-5599',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber dental/orthodontic office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','dental','dentists dental offices orthodontists','Around the Mountain Pediatric Dentistry, PLLC',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-dentists-1107','business.flagstaffchamber.com','Current Greater Flagstaff Chamber dental/orthodontic office listing.','assistant census research: Flagstaff dentists dental offices orthodontists',0,
+ null,'(928) 779-0385',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber dental/orthodontic office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','dental','dentists dental offices orthodontists','Flagstaff Dental Arts',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-dentists-1107','business.flagstaffchamber.com','Current Greater Flagstaff Chamber dental/orthodontic office listing.','assistant census research: Flagstaff dentists dental offices orthodontists',0,
+ null,'(928) 774-7123',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber dental/orthodontic office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','dental','dentists dental offices orthodontists','Northern Heights Dental',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-dentists-1107','business.flagstaffchamber.com','Current Greater Flagstaff Chamber dental/orthodontic office listing.','assistant census research: Flagstaff dentists dental offices orthodontists',0,
+ null,'(928) 774-5050',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber dental/orthodontic office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','dental','dentists dental offices orthodontists','Oasis Dental Care of Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-dentists-1107','business.flagstaffchamber.com','Current Greater Flagstaff Chamber dental/orthodontic office listing.','assistant census research: Flagstaff dentists dental offices orthodontists',0,
+ null,'(928) 774-4030',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber dental/orthodontic office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','dental','dentists dental offices orthodontists','Six Summits Dentistry Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-dentists-1107','business.flagstaffchamber.com','Current Greater Flagstaff Chamber dental/orthodontic office listing.','assistant census research: Flagstaff dentists dental offices orthodontists',0,
+ null,'(928) 774-4726',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber dental/orthodontic office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','dental','dentists dental offices orthodontists','Timberline Dental',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-dentists-1107','business.flagstaffchamber.com','Current Greater Flagstaff Chamber dental/orthodontic office listing.','assistant census research: Flagstaff dentists dental offices orthodontists',0,
+ null,'(928) 774-4705',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber dental/orthodontic office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','dental','dentists dental offices orthodontists','Village Dental Care - BJ Henkenius DDS',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-dentists-1107','business.flagstaffchamber.com','Current Greater Flagstaff Chamber dental/orthodontic office listing.','assistant census research: Flagstaff dentists dental offices orthodontists',0,
+ null,'(928) 774-0181',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber dental/orthodontic office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','dental','dentists dental offices orthodontists','Northern Arizona Orthodontics',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-dentists-1107','business.flagstaffchamber.com','Current Greater Flagstaff Chamber dental/orthodontic office listing.','assistant census research: Flagstaff dentists dental offices orthodontists',0,
+ null,'(928) 774-2745',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber dental/orthodontic office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','dental','dentists dental offices orthodontists','McLaughlin Spendlove Orthodontics',
+ 'https://business.flagstaffchamber.com/list/category/health-medical-related-dentists-1107','business.flagstaffchamber.com','Current Greater Flagstaff Chamber dental/orthodontic office listing.','assistant census research: Flagstaff dentists dental offices orthodontists',0,
+ null,'(928) 779-4568',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber dental/orthodontic office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','insurance_professional','insurance agents professional offices','ABC''s of Medicare, LLC',
+ 'https://business.flagstaffchamber.com/list/ql/finance-insurance-10?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber finance/insurance office listing.','assistant census research: Flagstaff insurance agents professional offices',0,
+ null,'(602) 931-3728',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','insurance_professional','insurance agents professional offices','Abundant Family Financial Services LLC',
+ 'https://business.flagstaffchamber.com/list/ql/finance-insurance-10?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber finance/insurance office listing.','assistant census research: Flagstaff insurance agents professional offices',0,
+ null,'(928) 890-8343',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','insurance_professional','insurance agents professional offices','Alison Rucker at Success Mortgage Partners, Inc.',
+ 'https://business.flagstaffchamber.com/list/ql/finance-insurance-10?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber finance/insurance office listing.','assistant census research: Flagstaff insurance agents professional offices',0,
+ null,'(928) 415-3841',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','insurance_professional','insurance agents professional offices','Allstate Insurance - Eric Boatner Agency',
+ 'https://business.flagstaffchamber.com/list/ql/finance-insurance-10?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber finance/insurance office listing.','assistant census research: Flagstaff insurance agents professional offices',0,
+ null,'(928) 774-8722',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','insurance_professional','insurance agents professional offices','NFP Property & Casualty Services',
+ 'https://business.flagstaffchamber.com/list/ql/finance-insurance-10?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber finance/insurance office listing.','assistant census research: Flagstaff insurance agents professional offices',0,
+ null,'(928) 326-2030',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','insurance_professional','insurance agents professional offices','Northern Arizona Financial Services',
+ 'https://business.flagstaffchamber.com/list/ql/finance-insurance-10?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber finance/insurance office listing.','assistant census research: Flagstaff insurance agents professional offices',0,
+ null,'(928) 526-3999',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','insurance_professional','insurance agents professional offices','Northwestern Mutual',
+ 'https://business.flagstaffchamber.com/list/ql/finance-insurance-10?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber finance/insurance office listing.','assistant census research: Flagstaff insurance agents professional offices',0,
+ null,'(928) 779-1819',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','insurance_professional','insurance agents professional offices','Oasis Advisors',
+ 'https://business.flagstaffchamber.com/list/ql/finance-insurance-10?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber finance/insurance office listing.','assistant census research: Flagstaff insurance agents professional offices',0,
+ null,'(928) 714-1448',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','insurance_professional','insurance agents professional offices','OneAZ Credit Union - Butler Ave',
+ 'https://business.flagstaffchamber.com/list/ql/finance-insurance-10?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber finance/insurance office listing.','assistant census research: Flagstaff insurance agents professional offices',0,
+ null,'(928) 291-4439',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','insurance_professional','insurance agents professional offices','OneAZ Credit Union - Hwy 89',
+ 'https://business.flagstaffchamber.com/list/ql/finance-insurance-10?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber finance/insurance office listing.','assistant census research: Flagstaff insurance agents professional offices',0,
+ null,'(928) 213-6816',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','insurance_professional','insurance agents professional offices','HUB International / Flagstaff Insurance',
+ 'https://business.flagstaffchamber.com/list/ql/finance-insurance-10?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber finance/insurance office listing.','assistant census research: Flagstaff insurance agents professional offices',0,
+ null,'(928) 774-6631',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','insurance_professional','insurance agents professional offices','International Insurance Group',
+ 'https://business.flagstaffchamber.com/list/ql/finance-insurance-10?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber finance/insurance office listing.','assistant census research: Flagstaff insurance agents professional offices',0,
+ null,'(928) 214-9750',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','insurance_professional','insurance agents professional offices','Leavitt Group of Northern Arizona',
+ 'https://business.flagstaffchamber.com/list/ql/finance-insurance-10?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber finance/insurance office listing.','assistant census research: Flagstaff insurance agents professional offices',0,
+ null,'(928) 526-3223',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','insurance_professional','insurance agents professional offices','Schultz & Schultz Agency - Goosehead Insurance',
+ 'https://business.flagstaffchamber.com/list/ql/finance-insurance-10?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber finance/insurance office listing.','assistant census research: Flagstaff insurance agents professional offices',0,
+ null,'(928) 239-5704',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','insurance_professional','insurance agents professional offices','State Farm Insurance - Richard Sanchez',
+ 'https://business.flagstaffchamber.com/list/ql/finance-insurance-10?o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber finance/insurance office listing.','assistant census research: Flagstaff insurance agents professional offices',0,
+ null,'(928) 774-0657',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber finance/insurance office listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','churches','churches worship centers','Chabad Jewish Community Center',
+ 'https://business.flagstaffchamber.com/list/category/churches-1314?dm=True&o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber religious organization listing.','assistant census research: Flagstaff churches worship centers',0,
+ null,'(928) 255-5756',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber religious organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','churches','churches worship centers','Christ''s Church of Flagstaff',
+ 'https://business.flagstaffchamber.com/list/category/churches-1314?dm=True&o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber religious organization listing.','assistant census research: Flagstaff churches worship centers',0,
+ null,'(928) 522-0462',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber religious organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','churches','churches worship centers','Grace Church',
+ 'https://business.flagstaffchamber.com/list/category/churches-1314?dm=True&o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber religious organization listing.','assistant census research: Flagstaff churches worship centers',0,
+ null,'(928) 774-8091',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber religious organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','churches','churches worship centers','Trinity Heights United Methodist Church',
+ 'https://business.flagstaffchamber.com/list/category/churches-1314?dm=True&o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber religious organization listing.','assistant census research: Flagstaff churches worship centers',0,
+ null,'(928) 526-1397',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber religious organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','churches','churches worship centers','Urban Hope Church',
+ 'https://business.flagstaffchamber.com/list/category/churches-1314?dm=True&o=alpha','business.flagstaffchamber.com','Current Greater Flagstaff Chamber religious organization listing.','assistant census research: Flagstaff churches worship centers',0,
+ null,'(928) 440-5212',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber religious organization listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','property_management','property management companies apartment communities','Elkwood',
+ 'https://business.flagstaffchamber.com/list/category/apartments-1293','business.flagstaffchamber.com','Current Greater Flagstaff Chamber apartment/community listing.','assistant census research: Flagstaff property management companies apartment communities',0,
+ null,'(928) 985-3482',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber apartment/community listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','property_management','property management companies apartment communities','Legacy Pines',
+ 'https://business.flagstaffchamber.com/list/category/apartments-1293','business.flagstaffchamber.com','Current Greater Flagstaff Chamber apartment/community listing.','assistant census research: Flagstaff property management companies apartment communities',0,
+ null,'(928) 774-5204',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber apartment/community listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','property_management','property management companies apartment communities','Mountain Trail Apartments',
+ 'https://business.flagstaffchamber.com/list/category/apartments-1293','business.flagstaffchamber.com','Current Greater Flagstaff Chamber apartment/community listing.','assistant census research: Flagstaff property management companies apartment communities',0,
+ null,'(928) 433-0130',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Greater Flagstaff Chamber apartment/community listing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','W.L. Gore & Associates',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','Nestle Purina PetCare',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','Pepsi-Cola Bottling',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','Joy Cone Company',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','IML Containers',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','ATC Materials',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','Axolotl Biologix',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','Canyon Coolers',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','Deckers Brands',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','Electric Torque Machines',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','Elemental Motorworks',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','FireFlight',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','Katalyst Space Technologies',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','Machine Solutions',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','Mack Automation',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','Novakinetics',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','POBA Medical Group',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','T-Gen North',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','Culinary Concepts Southwest',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','warehouses_industrial','warehouses industrial businesses distribution centers','Nackard Pepsi',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem.','assistant census research: Flagstaff warehouses industrial businesses distribution centers',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this company in Flagstaff''s major-employer, manufacturing, bioscience, food-processing or advanced-industry ecosystem."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','schools','schools charter schools private schools','Northern Arizona University',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this major local education institution/employer.','assistant census research: Flagstaff schools charter schools private schools',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this major local education institution/employer."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','schools','schools charter schools private schools','Flagstaff Unified School District',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this major local education institution/employer.','assistant census research: Flagstaff schools charter schools private schools',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this major local education institution/employer."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','schools','schools charter schools private schools','Coconino Community College',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this major local education institution/employer.','assistant census research: Flagstaff schools charter schools private schools',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this major local education institution/employer."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','public_facilities','government public facilities municipal buildings','City of Flagstaff',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this major government/public employer and facility operator.','assistant census research: Flagstaff government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this major government/public employer and facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','public_facilities','government public facilities municipal buildings','Coconino County',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this major government/public employer and facility operator.','assistant census research: Flagstaff government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this major government/public employer and facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Flagstaff','public_facilities','government public facilities municipal buildings','US Forest Service',
+ 'https://www.chooseflagstaff.com/doing-business-here/leading-industries/','chooseflagstaff.com','Choose Flagstaff identifies this major government/public employer and facility operator.','assistant census research: Flagstaff government public facilities municipal buildings',0,
+ null,null,false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_flagstaff_buyers_01","researched_at":"2026-10-26T23:57:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Choose Flagstaff identifies this major government/public employer and facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ source_tier=excluded.source_tier,verification_status=excluded.verification_status,
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p set official_candidates=(
+ select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
+ and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+),updated_at=now() where p.market='Flagstaff';
