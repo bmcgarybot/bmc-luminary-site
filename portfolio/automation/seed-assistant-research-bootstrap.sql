@@ -12036,3 +12036,226 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Dewey-Humboldt';
+
+
+-- Assistant-led Dewey-Humboldt census batch 03 (2026-10-26)
+-- Direct-source verification layer for current Dewey-Humboldt buyers and vendors.
+-- Inventory evidence only; preserve closed status and never promote/stage/send.
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','electrical_service','Electrician','Kage Electric',
+ 'https://kageelectric.com/','kageelectric.com','Official site confirms family-owned Dewey-Humboldt electrical contractor at 270 S Dewey Rd with residential and commercial electrical service.','assistant verification research: Dewey-Humboldt Electrician',0,
+ 'OFFICE-INFO@KAGEELECTRIC.COM','(928) 444-9860',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_03","researched_at":"2026-10-27T00:12:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site confirms family-owned Dewey-Humboldt electrical contractor at 270 S Dewey Rd with residential and commercial electrical service."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','backflow_plumbing','Backflow & Commercial Plumbing','R.E.D. Plumbing Inc.',
+ 'https://www.redplumbinginc.com/','redplumbinginc.com','Official site confirms Dewey office at 11800 E Berry Dr and full-service residential/commercial plumbing across Dewey-Humboldt and the Quad Cities.','assistant verification research: Dewey-Humboldt Backflow & Commercial Plumbing',0,
+ null,'(928) 772-9296',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_03","researched_at":"2026-10-27T00:12:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site confirms Dewey office at 11800 E Berry Dr and full-service residential/commercial plumbing across Dewey-Humboldt and the Quad Cities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','dental','dentists dental offices orthodontists','Our Family Dentist',
+ 'https://www.ourfamilydentist.com/','ourfamilydentist.com','Official practice site confirms full-scope family/general/cosmetic dental office at 150 S Hwy 69 Suite 5, Dewey.','assistant verification research: Dewey-Humboldt dentists dental offices orthodontists',0,
+ null,'(928) 632-8333',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_03","researched_at":"2026-10-27T00:12:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official practice site confirms full-scope family/general/cosmetic dental office at 150 S Hwy 69 Suite 5, Dewey."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','medical_centers','hospitals medical centers clinics','Optima Medical - Dewey',
+ 'https://optimamedicalaz.com/locations/mesa-arizo/','optimamedicalaz.com','Official Optima locations page lists current Dewey clinic at 12075 E AZ-69 Suite B with office and fax numbers.','assistant verification research: Dewey-Humboldt hospitals medical centers clinics',0,
+ 'Info@OptimaMedicalAZ.com','(928) 772-1673',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_03","researched_at":"2026-10-27T00:12:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Optima locations page lists current Dewey clinic at 12075 E AZ-69 Suite B with office and fax numbers."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','gyms_fitness','gyms fitness centers recreation centers','Prescott Golf Club',
+ 'https://www.prescottgolfclub.com/','prescottgolfclub.com','Official site confirms semi-private/public golf facility, practice complex, restaurant and events at 1030 N Prescott Country Club, Dewey.','assistant verification research: Dewey-Humboldt gyms fitness centers recreation centers',0,
+ 'info@prescottgolfclub.com','(928) 772-8984',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_03","researched_at":"2026-10-27T00:12:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site confirms semi-private/public golf facility, practice complex, restaurant and events at 1030 N Prescott Country Club, Dewey."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','grocery','grocery stores supermarkets markets','Mortimer Farms Market & Deli',
+ 'https://mortimerfarmsaz.com/','mortimerfarmsaz.com','Official current site identifies Dewey farm market, deli and bakery at 12907 E State Route 169, open daily year-round.','assistant verification research: Dewey-Humboldt grocery stores supermarkets markets',0,
+ 'mortimerfarmsaz@gmail.com','(928) 830-1116',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_03","researched_at":"2026-10-27T00:12:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official current site identifies Dewey farm market, deli and bakery at 12907 E State Route 169, open daily year-round."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','theaters_entertainment','theaters cinemas entertainment venues','Mortimer Farms',
+ 'https://mortimerfarmsaz.com/','mortimerfarmsaz.com','Official site confirms large Dewey agritourism/event operation with farm park, festivals, barn dances, workshops, weddings and private/corporate events.','assistant verification research: Dewey-Humboldt theaters cinemas entertainment venues',0,
+ 'support@mortimerfarmsaz.com','(928) 830-1116',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_03","researched_at":"2026-10-27T00:12:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official site confirms large Dewey agritourism/event operation with farm park, festivals, barn dances, workshops, weddings and private/corporate events."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Dewey-Humboldt','insurance_professional','insurance agents professional offices','Heidi Fowler - State Farm Insurance Agent',
+ 'https://heidifowlerinsurance.com/','heidifowlerinsurance.com','Official agent site confirms Dewey office at 150 S Highway 69 Suite 9 and personal, small-business and commercial insurance services.','assistant verification research: Dewey-Humboldt insurance agents professional offices',0,
+ null,'(928) 775-4080',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_03","researched_at":"2026-10-27T00:12:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official agent site confirms Dewey office at 150 S Highway 69 Suite 9 and personal, small-business and commercial insurance services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','hvac_heat','Heating & Air','Goettl''s High Desert Mechanical',
+ 'https://goettlshdm.com/','goettlshdm.com','Official company site confirms Northern Arizona HVAC contractor with 24/7 service; current local evidence places Dewey operation at 11715 E Berry Dr.','assistant verification research: Dewey-Humboldt Heating & Air',0,
+ null,'(928) 567-2200',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_03","researched_at":"2026-10-27T00:12:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official company site confirms Northern Arizona HVAC contractor with 24/7 service; current local evidence places Dewey operation at 11715 E Berry Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Dewey-Humboldt','backflow_plumbing','Backflow & Commercial Plumbing','Goettl''s High Desert Mechanical',
+ 'https://goettlshdm.com/','goettlshdm.com','Official company site provides full residential/commercial plumbing, drain/sewer, water-quality and emergency services; current local evidence places Dewey operation at 11715 E Berry Dr.','assistant verification research: Dewey-Humboldt Backflow & Commercial Plumbing',0,
+ null,'(928) 567-2200',true,'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_dewey_humboldt_batch_03","researched_at":"2026-10-27T00:12:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official company site provides full residential/commercial plumbing, drain/sewer, water-quality and emergency services; current local evidence places Dewey operation at 11715 E Berry Dr."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Dewey-Humboldt';
