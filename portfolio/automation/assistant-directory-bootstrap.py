@@ -43,7 +43,7 @@ MARKETS={
   "Chino Valley":"chino-valley",
   "Cordes Lakes":"cordes-lakes",
   "Cottonwood":"cottonwood",
-  "Dewey-Humboldt":"dewey-humboldt",
+  "Dewey-Humboldt":"dewey",
   "Flagstaff":"flagstaff",
   "Golden Valley":"golden-valley",
   "Kingman":"kingman",
