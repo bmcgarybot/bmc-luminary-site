@@ -73,6 +73,63 @@ else
 fi
 
 echo
+echo "Deep market inventory coverage"
+inventory_exists="$(dbq "select count(*) from information_schema.tables where table_name='market_inventory_progress';")"
+if [ "$inventory_exists" -eq 1 ]; then
+  inventory_stats="$(dbq "select
+    count(*),
+    count(*) filter (where pages_scanned=0),
+    count(*) filter (where status='in_progress'),
+    count(*) filter (where status='error'),
+    count(*) filter (where status='scan_complete_target_met'),
+    count(*) filter (where status='scan_complete_under_target')
+    from market_inventory_progress;")"
+  IFS='|' read -r inventory_lanes inventory_untouched inventory_in_progress inventory_errors inventory_met inventory_under <<<"$inventory_stats"
+  inventory_vendor_zero="$(dbq "select count(*) from market_inventory_progress
+    where side='vendor' and status like 'scan_complete_%' and official_candidates=0;")"
+  inventory_buyer_zero="$(dbq "select count(*) from market_inventory_progress
+    where side='buyer' and status like 'scan_complete_%' and official_candidates=0;")"
+  printf '  inventory lanes: %s\n  untouched lanes: %s\n  in-progress lanes: %s\n  errored lanes: %s\n  target-met lanes: %s\n  under-target lanes: %s\n  completed vendor lanes with zero official candidates: %s\n  completed buyer lanes with zero official candidates: %s\n' \
+    "$inventory_lanes" "$inventory_untouched" "$inventory_in_progress" "$inventory_errors" "$inventory_met" "$inventory_under" "$inventory_vendor_zero" "$inventory_buyer_zero"
+  if [ "$inventory_lanes" -gt 0 ] && [ "$inventory_untouched" -eq 0 ] && [ "$inventory_in_progress" -eq 0 ] && [ "$inventory_errors" -eq 0 ]; then
+    pass "Every deep market inventory lane has been scanned to a terminal coverage state"
+  else
+    fail "Deep market inventory is not fully scanned across all markets/categories"
+  fi
+  [ "$inventory_vendor_zero" -eq 0 ] || fail "$inventory_vendor_zero completed provider lanes still have zero official-site candidates"
+  [ "$inventory_buyer_zero" -eq 0 ] || warn "$inventory_buyer_zero completed buyer-category lanes have zero official-site candidates"
+  [ "$inventory_under" -eq 0 ] || warn "$inventory_under inventory lanes finished below their minimum coverage target and require review"
+else
+  fail "Deep market inventory schema is not deployed"
+  inventory_lanes=0
+  inventory_untouched=0
+  inventory_in_progress=0
+  inventory_errors=0
+  inventory_under=0
+fi
+
+echo
+echo "Public local-demand coverage"
+signal_state_exists="$(dbq "select count(*) from information_schema.tables where table_name='local_demand_scan_state';")"
+if [ "$signal_state_exists" -eq 1 ]; then
+  signal_stats="$(dbq "select count(*),count(*) filter (where scans=0),
+    count(*) filter (where scans>0),coalesce(sum(results_seen),0),coalesce(sum(signals_found),0)
+    from local_demand_scan_state;")"
+  IFS='|' read -r signal_lanes signal_untouched signal_touched signal_results signal_found <<<"$signal_stats"
+  printf '  market/source/service-group lanes: %s\n  touched lanes: %s\n  untouched lanes: %s\n  indexed results inspected: %s\n  demand signals found: %s\n' \
+    "$signal_lanes" "$signal_touched" "$signal_untouched" "$signal_results" "$signal_found"
+  if [ "$signal_lanes" -ge 315 ] && [ "$signal_untouched" -eq 0 ]; then
+    pass "Every configured Nextdoor/Facebook/Craigslist demand lane has been scanned at least once"
+  else
+    fail "Public local-demand monitoring has not touched every configured market/source/service lane"
+  fi
+else
+  fail "Local-demand scan-state schema is not deployed"
+  signal_lanes=0
+  signal_untouched=0
+fi
+
+echo
 echo "Vendor prospect pool"
 vendor_stats="$(dbq "select
   count(*),
@@ -216,4 +273,4 @@ if [ "$failures" -gt 0 ]; then
   exit 2
 fi
 
-echo "BMC pre-outreach systems are ready. Outreach remains OFF until explicitly approved."
+echo "BMC launch audit has no blocking checks at this moment. Outreach remains OFF until explicitly approved."
