@@ -53,6 +53,7 @@ MUTATING_INTERNAL_ACTIONS = {
     "local_demand_step",
     "public_opportunities_step",
     "source_native_step",
+    "assistant_bootstrap_import",
     "scheduler_start",
     "scheduler_stop",
 }
@@ -460,6 +461,17 @@ def execute(req: dict) -> dict:
                 exit_code = cp.returncode
         stdout = "\n\n".join(chunks)
         stderr = ""
+
+    elif action == "assistant_bootstrap_import":
+        markets = clean_arg = str(args.get("markets") or "").strip()
+        max_per_feed = max(1, min(250, int(args.get("max_per_feed", 100))))
+        delay = max(0.1, min(2.0, float(args.get("delay", 0.4))))
+        cmd = ["python3", "./assistant-directory-bootstrap.py", ENV_FILE,
+               "--max-per-feed", str(max_per_feed), "--delay", str(delay)]
+        if markets:
+            cmd += ["--markets", markets]
+        cp = run(cmd, timeout=1200)
+        stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
 
     elif action == "scheduler_start":
         cp = run(["docker", "compose", "--env-file", ENV_FILE, "up", "-d", "scheduler"], timeout=180)
