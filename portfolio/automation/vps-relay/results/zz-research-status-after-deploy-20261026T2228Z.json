@@ -1,0 +1,21 @@
+{
+  "action": "research_refresh_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-26T22:46:44.580932+00:00",
+  "exit_code": 1,
+  "git_branch_before": "master",
+  "git_commit_after": "555e9b2f8cac8f0703c12805dac1f65542239ec9",
+  "git_commit_before": "555e9b2f8cac8f0703c12805dac1f65542239ec9",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "0e5ac2abc0601fa6183d3e2a37213adb658b0d2e",
+  "request_id": "zz-research-status-after-deploy-20261026T2228Z",
+  "request_sha256": "de355654782eb75d1d6cbc4b416b50a63322e0a1ddd00cd1926b94c913fcd700",
+  "started_at": "2026-10-26T22:46:44.571915+00:00",
+  "status": "failed",
+  "stderr": "",
+  "stdout": "BMC research refresh timers\nTimers are not installed or sudo status access is unavailable.\n",
+  "version": 1
+}
