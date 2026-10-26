@@ -3166,3 +3166,41 @@ The next launch blocker remains:
 - activate at least one real, verified pilot provider so `live_intake_ready` can become READY.
 
 Outreach remains OFF.
+
+
+## 36. PRE-LAUNCH COPY CLEANUP + RESEARCH BACKLOG PASS — 2026-10-25
+
+Owner explicitly paused first-provider activation to do one more pre-launch quality pass.
+
+Current priorities, in order:
+
+1. **Public-site wording cleanup**
+   - review public-facing descriptions, headings, buttons, and explanatory copy;
+   - remove wording that sounds like internal product taxonomy, AI-generated filler, vague consultant language, or awkward operational jargon;
+   - make the site sound like a straightforward Arizona service network that helps people/businesses find providers and helps businesses grow;
+   - preserve the approved BMC Service Network identity, service breadth, pricing, offers, and business model;
+   - do not rename Quantum Neuroshift or mix QNS into this project;
+   - keep public copy concrete and easy to understand;
+   - no unnecessary hype or unsupported claims.
+
+2. **Research queue reduction**
+   - work through the existing research backlog using the already-built bounded research system;
+   - prioritize useful provider/buyer prospect discovery and source-native Arizona research already seeded;
+   - preserve safeguards: no automatic outreach, no unverified activation, no private/social-network scraping that violates current boundaries;
+   - outreach remains OFF unless Brett explicitly approves it.
+
+3. **Handoff discipline**
+   - record material copy decisions, research changes, scripts, counts, and remaining blockers here before long implementation stretches;
+   - do not let this pass disappear into an unrecorded debugging/build session.
+
+Current known production state before this pass:
+- Stripe live account active;
+- four live Payment Links active;
+- live Stripe webhook validated end-to-end with HTTP 200;
+- webhook test cleanup complete;
+- `payments_ready = READY`;
+- `live_intake_ready = BLOCKED` only because no real verified pilot provider is active yet;
+- runtime doctor previously reported 839 queued research items + 5 assigned;
+- outreach remains OFF.
+
+Do not activate a provider until this copy/research cleanup pass is substantially complete or Brett explicitly changes priority.
