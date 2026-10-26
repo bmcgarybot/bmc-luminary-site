@@ -3104,3 +3104,65 @@ After successful delivery:
 - record validation success here.
 
 Outreach remains OFF.
+
+
+## 35. STRIPE WEBHOOK LIVE DELIVERY VERIFIED — 2026-10-25
+
+Production Stripe webhook validation is now **PASS**.
+
+Harmless live test:
+- temporary event subscription: `payment_link.updated`;
+- test event: `evt_1UUbryQU2BLM8GhLYqgJ5WtA`;
+- no charge or customer payment occurred;
+- temporary metadata only was used on the $499 Payment Link.
+
+Initial delivery failed with HTTP 502 because nginx retained the old `ops_api` Docker address after API recreation.
+
+Production repair:
+- pulled the gateway-refresh fix;
+- recreated `webhook_proxy`;
+- Stripe retried successfully.
+
+Verified Stripe Workbench result:
+- delivery status: **Delivered**
+- recovery status: **Recovered**
+- HTTP status: **200 OK**
+- `pending_webhooks: 0`
+- response on manual resend:
+  `{"received": true, "duplicate": true}`
+
+Interpretation:
+- the first successful post-repair delivery was already persisted by the backend;
+- the manual resend was safely rejected as a duplicate by the backend's idempotency check;
+- public Cloudflare -> nginx -> ops_api POST routing works;
+- Stripe signature verification works with the installed live signing secret;
+- `payment_events` idempotency works.
+
+Cleanup completed:
+- removed temporary `payment_link.updated` subscription;
+- removed temporary `bmc_webhook_test` metadata from the $499 Payment Link;
+- production webhook is back to the intended event set only.
+
+Current webhook endpoint:
+- `we_1UUYgvQU2BLM8GhLlqebzgMb`
+- `https://hooks.bmcservicenetwork.com/api/stripe-webhook`
+- status: enabled
+- live mode: true
+
+Production events:
+- `checkout.session.completed`
+- `checkout.session.async_payment_succeeded`
+- `invoice.paid`
+- `customer.subscription.created`
+- `customer.subscription.updated`
+- `customer.subscription.deleted`
+- `customer.subscription.paused`
+- `customer.subscription.resumed`
+- `refund.created`
+
+Stripe webhook infrastructure is now operationally complete.
+
+The next launch blocker remains:
+- activate at least one real, verified pilot provider so `live_intake_ready` can become READY.
+
+Outreach remains OFF.
