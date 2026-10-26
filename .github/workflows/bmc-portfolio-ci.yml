@@ -29,7 +29,7 @@ jobs:
           expected={
               "proof_readout","launch_audit","runtime_doctor","diagnostic_bundle","scheduler_status","search_quality_probe",
               "deploy_update","market_inventory_step","local_demand_step",
-              "public_opportunities_step","source_native_step","assistant_bootstrap_import","scheduler_start","scheduler_stop"
+              "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","scheduler_start","scheduler_stop"
           }
           assert ns["ALLOWED_ACTIONS"] == expected, ns["ALLOWED_ACTIONS"]
           assert all("shell" not in x for x in ns["ALLOWED_ACTIONS"])
@@ -127,7 +127,7 @@ jobs:
           assert "source_tier text not null default 'discovery'" in schema
           assert "verification_status text not null default 'discovery'" in schema
           api=Path("api/app.py").read_text()
-          assert '"direct_evidence" if official else "discovery"' in api
+          assert '"direct_evidence" if official else ("closed_evidence" if closure_reason else "discovery")' in api
           proof=Path("production-proof-readout.sh").read_text()
           assert "Candidate evidence tiers:" in proof
           relay=Path("vps-gitops-relay.py").read_text()
@@ -142,6 +142,22 @@ jobs:
           assert "def normalize_company_href" in importer
           assert "empty_feeds" in importer
           assert "drop constraint if exists market_inventory_candidates_side_market_category_key_source_url;" in schema
+          licensed=Path("assistant-homversa-bootstrap.py")
+          assert licensed.exists()
+          spec2=importlib.util.spec_from_file_location("ahb",licensed)
+          m2=importlib.util.module_from_spec(spec2); spec2.loader.exec_module(m2)
+          sample2='''<html><body><a href="/az/kingman/plumbers">Plumbers in Kingman, AZ</a></body></html>'''
+          trades=m2.discover_trades(sample2,"kingman")
+          assert trades and trades[0][0]=="plumbers", trades
+          page2='''<html><body><div>Checked as of September 21, 2026</div><div>1.</div><a>Alpha Plumbing LLC</a><div>On the ROC register since 2001.</div><div>ROC License</div><div>#123456</div><li>Beta Plumbing LLC - ROC #234567</li></body></html>'''
+          parsed=m2.parse_trade_page(page2,"Kingman","plumbers")
+          names={x["business_name"] for x in parsed["records"]}
+          assert {"Alpha Plumbing LLC","Beta Plumbing LLC"} <= names, parsed
+          relay=Path("vps-gitops-relay.py").read_text()
+          assert '"assistant_licensed_bootstrap_import"' in relay
+          assert "status=\"monitoring\"" in api
+          assert "scan_cycles=scan_cycles+case when" in api
+          assert "def inventory_result_closed" in api
           PY
 
       - name: Validate research query quality
