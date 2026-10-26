@@ -46,7 +46,7 @@ STATE_DIR = Path(os.environ.get("BMC_RELAY_STATE_DIR", str(Path.home() / ".local
 LOCAL_RESULTS = STATE_DIR / "results"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status"}
+READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
     "market_inventory_step",
@@ -401,6 +401,49 @@ def execute(req: dict) -> dict:
     elif action == "scheduler_status":
         cp = run(["docker", "compose", "--env-file", ENV_FILE, "ps", "scheduler"], timeout=60)
         stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
+
+    elif action == "search_quality_probe":
+        probes = [
+            "restaurant equipment repair prescott",
+            "commercial refrigeration prescott valley",
+            "restaurants kingman arizona",
+            "commercial cleaning phoenix arizona",
+            "site:facebook.com prescott arizona restaurant equipment repair",
+        ]
+        rows = []
+        for query in probes:
+            params = urllib.parse.urlencode({
+                "q": query,
+                "format": "json",
+                "language": "en-US",
+                "safesearch": "1",
+            })
+            req_obj = urllib.request.Request(
+                "http://127.0.0.1:8888/search?" + params,
+                headers={"User-Agent": "BMC-VPS-Relay/1.0", "Accept": "application/json"},
+            )
+            try:
+                with urllib.request.urlopen(req_obj, timeout=30) as resp:
+                    data = json.loads(resp.read(2_000_000).decode("utf-8", "replace"))
+                results = []
+                for item in (data.get("results") or [])[:10]:
+                    results.append({
+                        "title": str(item.get("title") or "")[:300],
+                        "url": str(item.get("url") or "")[:1000],
+                        "engine": str(item.get("engine") or "")[:100],
+                        "score": item.get("score"),
+                    })
+                rows.append({
+                    "query": query,
+                    "result_count": len(data.get("results") or []),
+                    "top_results": results,
+                    "unresponsive_engines": data.get("unresponsive_engines") or [],
+                })
+            except Exception as exc:
+                rows.append({"query": query, "error": str(exc)})
+        stdout = json.dumps({"probes": rows}, indent=2, default=str)
+        stderr = ""
+        exit_code = 0 if all("error" not in x for x in rows) else 1
 
     elif action == "diagnostic_bundle":
         commands = [
