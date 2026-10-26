@@ -3069,6 +3069,162 @@ async def process_source_native_research(x_bmc_admin_key:str|None=Header(default
       "records_seen":records_seen,"prospects_created":prospects_created,
       "prospects_updated":prospects_updated,"external_actions_performed":0,"errors":errors}
 
+@app.post("/api/process-market-inventory")
+async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    if not RESEARCH_SEARCH_ENABLED:
+        return {"ok":True,"enabled":False,"lanes_processed":0,"new_candidates":0,"errors":[]}
+    lane_results=[]
+    errors=[]
+    total_new=0
+    async with app.state.pool.acquire() as conn:
+        vendor_lanes=await conn.fetch("""select * from market_inventory_progress
+          where side='vendor' and status not in ('scan_complete_target_met','scan_complete_under_target')
+          order by last_run_at nulls first,
+                   case when market in ('Prescott','Prescott Valley','Kingman','Bullhead City') then 0
+                        when market in ('Phoenix','Scottsdale','Tucson','Flagstaff') then 1 else 2 end,
+                   target desc,market,category_key
+          limit 12""")
+        buyer_lanes=await conn.fetch("""select * from market_inventory_progress
+          where side='buyer' and status not in ('scan_complete_target_met','scan_complete_under_target')
+          order by last_run_at nulls first,
+                   case when market in ('Prescott','Prescott Valley','Kingman','Bullhead City') then 0
+                        when market in ('Phoenix','Scottsdale','Tucson','Flagstaff') then 1 else 2 end,
+                   target desc,market,category_key
+          limit 8""")
+        for lane in list(vendor_lanes)+list(buyer_lanes):
+            page=max(1,int(lane["next_page"] or 1))
+            variant=max(0,int(lane["query_variant"] or 0))
+            query=inventory_query(lane["side"],lane["market"],lane["category_label"],variant)
+            try:
+                results=await search_research_web(query,page,20)
+            except Exception as exc:
+                err=str(exc)[:300]
+                errors.append({"side":lane["side"],"market":lane["market"],
+                               "category":lane["category_key"],"page":page,
+                               "variant":variant,"error":err})
+                await conn.execute("""update market_inventory_progress
+                  set status='error',last_run_at=now(),notes=$4,updated_at=now()
+                  where side=$1 and market=$2 and category_key=$3""",
+                  lane["side"],lane["market"],lane["category_key"],err)
+                continue
+
+            inserted=0
+            official_added=0
+            for result in results:
+                contact=extract_public_contact(f'{result["title"]} {result["snippet"]}')
+                official=inventory_official_site(result["domain"])
+                cid=await conn.fetchval("""insert into market_inventory_candidates(
+                    side,market,category_key,category_label,business_name,source_url,source_domain,
+                    snippet,search_query,page_no,public_email,public_phone,official_site,status,evidence)
+                  values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,nullif($11,''),nullif($12,''),$13,
+                         'discovered',$14::jsonb)
+                  on conflict(side,market,category_key,source_url) do update set
+                    business_name=excluded.business_name,
+                    source_domain=excluded.source_domain,
+                    snippet=excluded.snippet,
+                    search_query=excluded.search_query,
+                    page_no=excluded.page_no,
+                    public_email=coalesce(market_inventory_candidates.public_email,excluded.public_email),
+                    public_phone=coalesce(market_inventory_candidates.public_phone,excluded.public_phone),
+                    official_site=market_inventory_candidates.official_site or excluded.official_site,
+                    evidence=market_inventory_candidates.evidence || excluded.evidence,
+                    updated_at=now()
+                  returning candidate_id""",
+                  lane["side"],lane["market"],lane["category_key"],lane["category_label"],
+                  result["title"][:240],result["url"],result["domain"],result["snippet"],query,page,
+                  clean(contact.get("public_email")),clean(contact.get("public_phone")),official,
+                  json.dumps({"search_engine":result["engine"],"search_score":result["score"],
+                              "query_variant":variant,"page":page}))
+                if cid:
+                    inserted+=1
+                    if official:
+                        official_added+=1
+            total_new+=inserted
+
+            candidate_count=int(await conn.fetchval("""select count(*) from market_inventory_candidates
+              where side=$1 and market=$2 and category_key=$3""",
+              lane["side"],lane["market"],lane["category_key"]) or 0)
+            official_count=int(await conn.fetchval("""select count(*) from market_inventory_candidates
+              where side=$1 and market=$2 and category_key=$3 and official_site=true""",
+              lane["side"],lane["market"],lane["category_key"]) or 0)
+
+            final_scan=(variant>=2 and page>=4)
+            if final_scan:
+                status="scan_complete_target_met" if candidate_count>=int(lane["target"] or 0) else "scan_complete_under_target"
+                next_page=1
+                next_variant=0
+            else:
+                status="in_progress"
+                if page<4:
+                    next_page=page+1
+                    next_variant=variant
+                else:
+                    next_page=1
+                    next_variant=variant+1
+
+            await conn.execute("""update market_inventory_progress
+              set pages_scanned=pages_scanned+1,
+                  raw_results=raw_results+$4,
+                  official_candidates=$5,
+                  next_page=$6,
+                  query_variant=$7,
+                  no_progress_passes=case when $8=0 then no_progress_passes+1 else 0 end,
+                  status=$9,last_run_at=now(),notes=null,updated_at=now()
+              where side=$1 and market=$2 and category_key=$3""",
+              lane["side"],lane["market"],lane["category_key"],len(results),official_count,
+              next_page,next_variant,inserted,status)
+            lane_results.append({
+              "side":lane["side"],"market":lane["market"],"category_key":lane["category_key"],
+              "category_label":lane["category_label"],"page":page,"query_variant":variant,
+              "results_returned":len(results),"candidates":candidate_count,
+              "official_candidates":official_count,"target":int(lane["target"] or 0),
+              "status":status
+            })
+    return {"ok":True,"enabled":True,"lanes_processed":len(lane_results),
+            "new_candidates":total_new,"lane_results":lane_results,"errors":errors}
+
+@app.get("/api/admin/market-inventory-coverage")
+async def admin_market_inventory_coverage(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    async with app.state.pool.acquire() as conn:
+        totals=await conn.fetchrow("""select count(*) lanes,
+          count(*) filter (where pages_scanned>0) touched,
+          count(*) filter (where pages_scanned=0) untouched,
+          count(*) filter (where status='scan_complete_target_met') target_met,
+          count(*) filter (where status='scan_complete_under_target') under_target,
+          coalesce(sum(raw_results),0) raw_results,
+          coalesce(sum(official_candidates),0) official_candidates
+          from market_inventory_progress""")
+        candidates=int(await conn.fetchval("select count(*) from market_inventory_candidates") or 0)
+        by_market=await conn.fetch("""select market,side,count(*) lanes,
+          count(*) filter (where pages_scanned>0) touched,
+          count(*) filter (where status='scan_complete_target_met') target_met,
+          count(*) filter (where status='scan_complete_under_target') under_target,
+          coalesce(sum(raw_results),0) raw_results,
+          coalesce(sum(official_candidates),0) official_candidates
+          from market_inventory_progress
+          group by market,side order by market,side""")
+        weakest=await conn.fetch("""select side,market,category_key,category_label,target,
+          pages_scanned,raw_results,official_candidates,status
+          from market_inventory_progress
+          order by case status when 'scan_complete_under_target' then 0 when 'not_started' then 1
+                    when 'error' then 2 else 3 end,
+                   case when target>0 then official_candidates::numeric/target else 0 end,
+                   market,category_key
+          limit 100""")
+    return {"ok":True,
+      "totals":{"lanes":int(totals["lanes"] or 0),"touched":int(totals["touched"] or 0),
+                "untouched":int(totals["untouched"] or 0),"target_met":int(totals["target_met"] or 0),
+                "under_target":int(totals["under_target"] or 0),"raw_results":int(totals["raw_results"] or 0),
+                "official_candidates":int(totals["official_candidates"] or 0),
+                "candidate_rows":candidates},
+      "markets":[{"market":r["market"],"side":r["side"],"lanes":int(r["lanes"] or 0),
+                  "touched":int(r["touched"] or 0),"target_met":int(r["target_met"] or 0),
+                  "under_target":int(r["under_target"] or 0),"raw_results":int(r["raw_results"] or 0),
+                  "official_candidates":int(r["official_candidates"] or 0)} for r in by_market],
+      "weakest_lanes":[dict(r) for r in weakest]}
+
 @app.post("/api/process-public-opportunities")
 async def process_public_opportunities(x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)
