@@ -3930,3 +3930,49 @@ Remaining launch gate is still:
 - activate at least one verified pilot provider.
 
 Outreach remains OFF.
+
+
+## 47. RESEARCH DRAIN COMPLETE + RUNTIME DOCTOR NORMALIZED — 2026-10-25
+
+Production research is now fully drained:
+- queued: 0;
+- assigned: 0;
+- completed: 56;
+- review: 22;
+- searched_no_results: 771;
+- vendors: 211;
+- buyers: 2537;
+- staged candidates: 205.
+
+The prior runtime doctor behavior treated `0 queued` research as a warning:
+- `WARN Research backlog has no queued rows`.
+
+That is no longer appropriate after an intentional full drain.
+
+`runtime-doctor.sh` now reports:
+- `PASS Research backlog is fully drained (0 queued)`
+
+when the queue is empty.
+
+Commit:
+- `090a5f639e0c4cdb21965ae14bc08cee35a23069`
+
+Public-site cleanup commit `61106777c70360f19c17a7891b62594e9ce7a4f9` passed the full BMC Portfolio CI workflow, including:
+- generated storefront sync;
+- public copy/legacy UI guards;
+- form contracts;
+- search readiness;
+- Compose;
+- operational scripts;
+- public gateway;
+- database/API smoke tests.
+
+Current launch state:
+- copy cleanup: substantially complete;
+- research queue: fully drained;
+- Stripe/payments: READY;
+- intelligent search: READY;
+- outreach: OFF;
+- only launch gate remains activating at least one verified pilot provider.
+
+CMS 403 source-native access remains a separate research-source issue and is not blocking the drained standard research backlog.
