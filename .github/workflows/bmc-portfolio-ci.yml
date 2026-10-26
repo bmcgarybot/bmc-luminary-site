@@ -126,10 +126,12 @@ jobs:
           local_good={"title":"Prescott neighbor looking for a plumber","snippet":"Need a plumber in Prescott Arizona","url":"https://prescott.craigslist.org/services/example"}
           local_wrong_city={"title":"Phoenix neighbor looking for a plumber","snippet":"Need a plumber in Phoenix Arizona","url":"https://phoenix.craigslist.org/services/example"}
           local_prescott_valley={"title":"Prescott Valley neighbor looking for a plumber","snippet":"Need a plumber in Prescott Valley Arizona","url":"https://example.com/prescott-valley"}
+          local_compact_prescott_valley={"title":"Need a plumber","snippet":"Looking for service","url":"https://prescottvalley.example.com/post"}
           assert ns["local_signal_result_relevant"](local_good,"Prescott") is True
           assert ns["local_signal_result_relevant"](local_wrong_city,"Prescott") is False
           assert ns["local_signal_result_relevant"](local_prescott_valley,"Prescott") is False
           assert ns["local_signal_result_relevant"](local_prescott_valley,"Prescott Valley") is True
+          assert ns["local_signal_result_relevant"](local_compact_prescott_valley,"Prescott") is False
           print(q)
           print(b)
           print(d)
