@@ -90,13 +90,40 @@ if [ "$(dbq "select count(*) from information_schema.tables where table_name='ma
 
   echo
   echo "Inventory coverage by market and side:"
-  dbq "select market||'|'||side||'|lanes='||count(*)||
-      '|touched='||count(*) filter (where pages_scanned>0)||
-      '|met='||count(*) filter (where status='scan_complete_target_met')||
-      '|under='||count(*) filter (where status='scan_complete_under_target')||
-      '|official='||coalesce(sum(official_candidates),0)
-    from market_inventory_progress
-    group by market,side order by market,side;"
+  dbq "with p as (
+      select market,side,count(*) lanes,
+        count(*) filter (where pages_scanned>0) touched,
+        count(*) filter (where status='scan_complete_target_met') met,
+        count(*) filter (where status='scan_complete_under_target') under_target,
+        coalesce(sum(official_candidates),0) direct_verified
+      from market_inventory_progress
+      group by market,side
+    ), c as (
+      select market,side,count(*) search_discovered
+      from market_inventory_candidates
+      where status='discovered' and query_strategy_version=7
+      group by market,side
+    ), b as (
+      select vm.market,'vendor'::text side,count(distinct vm.vendor_id)::bigint base_records
+      from vendor_markets vm join vendors v on v.vendor_id=vm.vendor_id
+      where v.vendor_id not like 'test_%' and v.vendor_id not like 'v_synthetic_%'
+      group by vm.market
+      union all
+      select market,'buyer'::text side,count(*)::bigint base_records
+      from buyers where coalesce(market,'')<>'' group by market
+    )
+    select p.market||'|'||p.side||
+      '|lanes='||p.lanes||
+      '|touched='||p.touched||
+      '|met='||p.met||
+      '|under='||p.under_target||
+      '|base='||coalesce(b.base_records,0)||
+      '|search_discovered='||coalesce(c.search_discovered,0)||
+      '|direct_verified='||p.direct_verified
+    from p
+    left join c on c.market=p.market and c.side=p.side
+    left join b on b.market=p.market and b.side=p.side
+    order by p.market,p.side;"
 
   echo
   echo "Completed lanes with ZERO official-site candidates:"
