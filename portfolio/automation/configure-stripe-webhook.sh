@@ -42,6 +42,9 @@ unset SECRET
 chmod 600 "$ENV_FILE"
 
 docker compose --env-file "$ENV_FILE" up -d --force-recreate ops_api
+# nginx resolves Docker service names when it starts. Recreate the public
+# gateway after ops_api so it cannot retain the previous container IP.
+docker compose --env-file "$ENV_FILE" up -d --force-recreate webhook_proxy
 echo
 bash ./runtime-doctor.sh "$ENV_FILE"
 echo
