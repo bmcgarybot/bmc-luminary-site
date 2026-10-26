@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "updated_at": "2026-10-26T21:30:00Z",
+  "purpose": "Source registry for assistant-curated public discovery bootstrap. Directory results are discovery-only until verified.",
+  "markets": {
+    "Ash Fork": "ash-fork",
+    "Bullhead City": "bullhead-city",
+    "Camp Verde": "camp-verde",
+    "Chino Valley": "chino-valley",
+    "Cordes Lakes": "cordes-lakes",
+    "Cottonwood": "cottonwood",
+    "Dewey-Humboldt": "dewey-humboldt",
+    "Flagstaff": "flagstaff",
+    "Golden Valley": "golden-valley",
+    "Kingman": "kingman",
+    "Mayer": "mayer",
+    "Phoenix": "phoenix",
+    "Prescott": "prescott",
+    "Prescott Valley": "prescott-valley",
+    "Scottsdale": "scottsdale",
+    "Sedona": "sedona",
+    "Seligman": "seligman",
+    "Skull Valley": "skull-valley",
+    "Tucson": "tucson",
+    "Williamson Valley": "williamson-valley",
+    "Winslow": "winslow"
+  },
+  "feed_templates": [
+    "https://www.whereorg.com/businesses/restaurants-and-bars-in-{slug}-az",
+    "https://www.whereorg.com/businesses/educational-services-in-{slug}-az",
+    "https://www.whereorg.com/businesses/healthcare-in-{slug}-az",
+    "https://www.whereorg.com/businesses/shopping-in-{slug}-az",
+    "https://www.whereorg.com/businesses/government-in-{slug}-az",
+    "https://www.whereorg.com/businesses/housing-in-{slug}-az",
+    "https://www.whereorg.com/businesses/insurance-in-{slug}-az",
+    "https://www.whereorg.com/businesses/automotive-services-in-{slug}-az",
+    "https://www.whereorg.com/businesses/construction-in-{slug}-az",
+    "https://www.whereorg.com/businesses/electrical-in-{slug}-az",
+    "https://www.whereorg.com/businesses/consumer-services-in-{slug}-az",
+    "https://www.whereorg.com/businesses/environmental-services-in-{slug}-az"
+  ],
+  "verified_examples": [
+    "https://www.whereorg.com/businesses/automotive-services-in-kingman-az",
+    "https://www.whereorg.com/businesses/restaurants-and-bars-in-chino-valley-az",
+    "https://www.whereorg.com/businesses/healthcare-in-prescott-valley-az",
+    "https://www.whereorg.com/businesses/electrical-in-camp-verde-az",
+    "https://www.whereorg.com/businesses/government-in-kingman-az",
+    "https://www.whereorg.com/businesses/shopping-in-kingman-az",
+    "https://www.whereorg.com/businesses/housing-in-kingman-az"
+  ]
+}
