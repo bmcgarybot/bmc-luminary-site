@@ -520,6 +520,9 @@ alter table market_inventory_candidates
   drop constraint if exists market_inventory_candidates_side_market_category_key_source_url_key;
 alter table market_inventory_candidates
   drop constraint if exists market_inventory_candidates_side_market_category_key_source_url;
+alter table market_inventory_candidates
+  drop constraint if exists market_inventory_candidates_side_market_category_key_source_key;
+drop index if exists market_inventory_candidates_side_market_category_key_source_key;
 create unique index if not exists uq_market_inventory_candidate_business_source
 on market_inventory_candidates(side,market,category_key,source_url,business_name);
 
