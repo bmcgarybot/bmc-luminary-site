@@ -221,6 +221,13 @@ jobs:
           grep -q 'Vendor prospect pool' /tmp/bmc_launch_readiness_ci.txt
           grep -q 'Buyer prospect pool' /tmp/bmc_launch_readiness_ci.txt
           grep -q 'Audit summary:' /tmp/bmc_launch_readiness_ci.txt
+          grep -q 'Deep market inventory coverage' /tmp/bmc_launch_readiness_ci.txt
+          grep -q 'Public local-demand coverage' /tmp/bmc_launch_readiness_ci.txt
+          bash ./production-proof-readout.sh .env.ci >/tmp/bmc_production_proof_ci.txt
+          grep -q 'BMC PRODUCTION PROOF READOUT' /tmp/bmc_production_proof_ci.txt
+          grep -q 'DEEP MARKET INVENTORY TOTALS' /tmp/bmc_production_proof_ci.txt
+          grep -q 'PUBLIC LOCAL-DEMAND MONITOR COVERAGE' /tmp/bmc_production_proof_ci.txt
+          grep -q 'STRICT LAUNCH AUDIT' /tmp/bmc_production_proof_ci.txt
           docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
             delete from outreach where entity_type='vendor' and entity_id='v_ci_stage';
             delete from vendor_services where vendor_id='v_ci_stage';
@@ -306,7 +313,7 @@ jobs:
           data=json.load(open("/tmp/bmc_public_opportunities.json"))
           assert data["ok"] is True
           assert data["enabled"] is True
-          assert data["sources_checked"] == 17, data
+          assert data["sources_checked"] == 20, data
           assert data["expired_opportunities"] >= 0, data
           assert data["errors"] == [], data
           PY
@@ -318,9 +325,41 @@ jobs:
           data=json.load(open("/tmp/bmc_local_signals.json"))
           assert data["ok"] is True
           assert data["enabled"] is True
-          assert data["searches"] == 24, data
+          assert data["searches"] == 15, data
           assert data["expired_signals"] >= 0, data
           assert data["errors"] == [], data
+          PY
+
+          # Deep local-demand coverage must represent every launch market, all three
+          # public-index sources, and all five service groups.
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from local_demand_scan_state;")" -eq 315
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from local_demand_scan_state where source_key='craigslist_public';")" -eq 105
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct market) from local_demand_scan_state;")" -eq 21
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select min(c) from (select market,count(*) c from local_demand_scan_state group by market) x;")" -eq 15
+          curl -fsS http://127.0.0.1:8000/api/admin/local-demand-coverage             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_local_coverage.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_local_coverage.json"))
+          assert data["ok"] is True
+          assert data["totals"]["lanes"] == 315, data
+          assert data["totals"]["touched"] == 15, data
+          assert len(data["markets"]) == 21, data
+          assert len(data["sources"]) == 3, data
+          PY
+
+          # Deep inventory lanes must exist for every market and every active
+          # provider-match service plus all 18 explicit buyer categories.
+          EXPECTED_INVENTORY="$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select 21*(count(*)+18) from services where is_active=true and fulfillment_mode='provider_match';")"
+          ACTUAL_INVENTORY="$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from market_inventory_progress;")"
+          test "$ACTUAL_INVENTORY" -eq "$EXPECTED_INVENTORY"
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct market) from market_inventory_progress;")" -eq 21
+          curl -fsS http://127.0.0.1:8000/api/admin/market-inventory-coverage             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_inventory_coverage.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_inventory_coverage.json"))
+          assert data["ok"] is True
+          assert data["totals"]["lanes"] > 1000, data
+          assert len(data["markets"]) == 42, data
           PY
 
           curl -fsS http://127.0.0.1:8000/api/admin/daily-brief \
