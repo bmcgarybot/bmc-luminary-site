@@ -4864,3 +4864,1393 @@ set official_candidates=(
     and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Kingman';
+
+
+-- Assistant-led Kingman census batch 03 (2026-10-26)
+-- Current official/direct-source layer plus selected government/regulatory discovery evidence.
+-- Inventory only; preserves closed status and never stages/sends outreach.
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Kingman High School',
+ 'https://www.kusd.org/page/our-schools','kusd.org','Official KUSD current school listing; 4182 Bank St, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 692-6480',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official KUSD current school listing; 4182 Bank St, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Lee Williams High School',
+ 'https://www.kusd.org/page/our-schools','kusd.org','Official KUSD current school listing; 400 Grandview Ave, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 718-6000',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official KUSD current school listing; 400 Grandview Ave, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Kingman Middle School',
+ 'https://www.kusd.org/page/our-schools','kusd.org','Official KUSD current school listing; 1969 Detroit Ave, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 753-3588',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official KUSD current school listing; 1969 Detroit Ave, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','White Cliffs Middle School',
+ 'https://www.kusd.org/page/our-schools','kusd.org','Official KUSD current school listing; 3550 Prospector St, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 753-6216',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official KUSD current school listing; 3550 Prospector St, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Cerbat Elementary School',
+ 'https://www.kusd.org/page/our-schools','kusd.org','Official KUSD current school listing; 2689 Jagerson Ave, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 757-5100',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official KUSD current school listing; 2689 Jagerson Ave, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Desert Willow Elementary School',
+ 'https://www.kusd.org/page/our-schools','kusd.org','Official KUSD current school listing; 3700 Prospector St, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 753-2472',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official KUSD current school listing; 3700 Prospector St, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Hualapai Elementary School',
+ 'https://www.kusd.org/page/our-schools','kusd.org','Official KUSD current school listing; 350 Eastern St, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 753-1919',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official KUSD current school listing; 350 Eastern St, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Manzanita Elementary School',
+ 'https://www.kusd.org/page/our-schools','kusd.org','Official KUSD current school listing; 2601 Detroit Ave, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 753-6197',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official KUSD current school listing; 2601 Detroit Ave, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Little Explorers Early Learning Center',
+ 'https://www.kusd.org/page/our-schools','kusd.org','Official KUSD current school listing; 3175 Gordon Dr, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 753-6413',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official KUSD current school listing; 3175 Gordon Dr, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Kingman Online Learning Academy / Sandy McCoy Positive Alternative Campus',
+ 'https://www.kusd.org/page/our-schools','kusd.org','Official KUSD current school listing; 690 Spring St Suite A, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 753-8400',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official KUSD current school listing; 690 Spring St Suite A, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Kingman Academy of Learning',
+ 'https://www.kaolaz.org/','kaolaz.org','Current official charter-school site; 3410 N Burbank St, Kingman and 2026-27 admissions/calendar information.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 681-2400',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Current official charter-school site; 3410 N Burbank St, Kingman and 2026-27 admissions/calendar information."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Kingman Academy High School',
+ 'https://www.mohave.gov/departments/information-technology/gis-maps/documents/all-mohave-county-schools/','mohave.gov','Mohave County school inventory lists charter high school at 3420 Burbank St, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 681-2900',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County school inventory lists charter high school at 3420 Burbank St, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Kingman Academy Intermediate School',
+ 'https://www.mohave.gov/departments/information-technology/gis-maps/documents/all-mohave-county-schools/','mohave.gov','Mohave County school inventory lists charter intermediate campus at 3419 Harrison Ave, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 681-3200',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County school inventory lists charter intermediate campus at 3419 Harrison Ave, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Kingman Academy Middle School',
+ 'https://www.mohave.gov/departments/information-technology/gis-maps/documents/all-mohave-county-schools/','mohave.gov','Mohave County school inventory lists charter middle campus at 3269 Harrison St, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 692-5265',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County school inventory lists charter middle campus at 3269 Harrison St, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Kingman Academy Primary School',
+ 'https://www.mohave.gov/departments/information-technology/gis-maps/documents/all-mohave-county-schools/','mohave.gov','Mohave County school inventory lists charter primary campus at 3120 Hualapai Mtn Rd, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 718-2500',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County school inventory lists charter primary campus at 3120 Hualapai Mtn Rd, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Emmanuel Christian Academy',
+ 'https://www.mohave.gov/departments/information-technology/gis-maps/documents/all-mohave-county-schools/','mohave.gov','Mohave County school inventory lists Christian school at 4798 N Stockton Hill Rd, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 718-4200',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County school inventory lists Christian school at 4798 N Stockton Hill Rd, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Cedar Hills School',
+ 'https://www.mohave.gov/departments/information-technology/gis-maps/documents/all-mohave-county-schools/','mohave.gov','Mohave County school inventory lists public K-8 campus at 9501 Nellie Dr, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 692-0013',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County school inventory lists public K-8 campus at 9501 Nellie Dr, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','schools','schools charter schools private schools','Kingman Adventist Christian School',
+ 'https://www.mohave.gov/departments/information-technology/gis-maps/documents/all-mohave-county-schools/','mohave.gov','Mohave County school inventory lists Christian school at 3180 N White Cliffs Rd, Kingman.','assistant bootstrap research: Kingman schools charter schools private schools',0,
+ null,'(928) 757-8676',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Mohave County school inventory lists Christian school at 3180 N White Cliffs Rd, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','grocery','grocery stores supermarkets markets','Smith''s Food and Drug',
+ 'https://www.smithsfoodanddrug.com/stores/grocery/az/kingman','smithsfoodanddrug.com','Official current Kingman grocery location at 3490 N Stockton Hill Rd.','assistant bootstrap research: Kingman grocery stores supermarkets markets',0,
+ null,'(928) 757-2544',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official current Kingman grocery location at 3490 N Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','grocery','grocery stores supermarkets markets','Walmart Supercenter #2051',
+ 'https://www.walmart.com/store/2051-kingman-az','walmart.com','Official current Kingman Supercenter at 3396 Stockton Hill Rd.','assistant bootstrap research: Kingman grocery stores supermarkets markets',0,
+ null,'(928) 692-0555',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official current Kingman Supercenter at 3396 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','grocery','grocery stores supermarkets markets','Safeway - 3125 Stockton Hill Rd',
+ 'https://local.safeway.com/safeway/az/kingman.html','local.safeway.com','Official Safeway location page lists current Kingman grocery at 3125 Stockton Hill Rd.','assistant bootstrap research: Kingman grocery stores supermarkets markets',0,
+ null,'(928) 753-2943',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Safeway location page lists current Kingman grocery at 3125 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','grocery','grocery stores supermarkets markets','Safeway - 3970 Stockton Hill Rd',
+ 'https://local.safeway.com/safeway/az/kingman.html','local.safeway.com','Official Safeway location page lists current Kingman grocery at 3970 Stockton Hill Rd.','assistant bootstrap research: Kingman grocery stores supermarkets markets',0,
+ null,'(928) 681-4900',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Safeway location page lists current Kingman grocery at 3970 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','pharmacies','pharmacies drug stores','CVS Pharmacy #08977',
+ 'https://www.cvs.com/store-locator/cvs-pharmacy-locations/Arizona/Kingman','cvs.com','Official CVS locator lists current store/pharmacy at 3501 Stockton Hill Rd, Kingman.','assistant bootstrap research: Kingman pharmacies drug stores',0,
+ null,'(928) 757-1999',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official CVS locator lists current store/pharmacy at 3501 Stockton Hill Rd, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','pharmacies','pharmacies drug stores','Walgreens #03245',
+ 'https://www.walgreens.com/storelocator/storeDetails.jsp?stnum=3245','walgreens.com','Official Walgreens store page for 3487 N Stockton Hill Rd, Kingman; pharmacy phone corroborated by 2026 pharmacy directory.','assistant bootstrap research: Kingman pharmacies drug stores',0,
+ null,'(928) 692-1822',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Walgreens store page for 3487 N Stockton Hill Rd, Kingman; pharmacy phone corroborated by 2026 pharmacy directory."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','pharmacies','pharmacies drug stores','Walgreens #12880',
+ 'https://www.bannerhealth.com/medicare/-/media/files/project/medicare/medicare-adv/cy26-dsnp-materials/directories/jun/dsnp_pharmacy-pd_cy26-jun_bil_508.pdf','bannerhealth.com','2026 pharmacy directory lists Walgreens #12880 at 1925 E Andy Devine Ave, Kingman.','assistant bootstrap research: Kingman pharmacies drug stores',0,
+ null,'(928) 753-7766',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"2026 pharmacy directory lists Walgreens #12880 at 1925 E Andy Devine Ave, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','pharmacies','pharmacies drug stores','West Kingman Pharmacy',
+ 'https://www.westkingmanpharmacy.com/','westkingmanpharmacy.com','Official current pharmacy site at 3135 Stockton Hill Road, Kingman.','assistant bootstrap research: Kingman pharmacies drug stores',0,
+ null,'(928) 377-1350',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official current pharmacy site at 3135 Stockton Hill Road, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','pharmacies','pharmacies drug stores','Uptown Drug',
+ 'https://www.bannerhealth.com/medicare/-/media/files/project/medicare/medicare-adv/cy26-dsnp-materials/directories/jun/dsnp_pharmacy-pd_cy26-jun_bil_508.pdf','bannerhealth.com','2026 pharmacy directory lists Uptown Drug at 2820 E Andy Devine Ave, Kingman.','assistant bootstrap research: Kingman pharmacies drug stores',0,
+ null,'(928) 753-2226',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"2026 pharmacy directory lists Uptown Drug at 2820 E Andy Devine Ave, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','retail','retail stores shopping stores','Ace Hardware of Kingman AZ',
+ 'https://www.acehardware.com/store-details/18312','acehardware.com','Official current Ace store at 4550 N Stockton Hill Rd, Kingman.','assistant bootstrap research: Kingman retail stores shopping stores',0,
+ null,'(928) 757-2154',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official current Ace store at 4550 N Stockton Hill Rd, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','retail','retail stores shopping stores','Kingman True Value Home Center',
+ 'https://www.truevalue.com/find-a-store/arizona/','truevalue.com','Official True Value locator lists Kingman store at 3633 Stockton Hill Rd.','assistant bootstrap research: Kingman retail stores shopping stores',0,
+ null,'(928) 757-4459',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official True Value locator lists Kingman store at 3633 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','retail','retail stores shopping stores','MattressLand & Furniture - Kingman',
+ 'https://www.mattresslandaz.com/','mattresslandaz.com','Official current Kingman showroom at 4290 Stockton Hill Rd.','assistant bootstrap research: Kingman retail stores shopping stores',0,
+ 'Kingman@MattressLandaz.com','(928) 692-3311',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official current Kingman showroom at 4290 Stockton Hill Rd."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','retail','retail stores shopping stores','Ashley Outlet Kingman',
+ 'https://stores.ashleyfurniture.com/outlet/arizona/','stores.ashleyfurniture.com','Official Ashley outlet locator lists Kingman at 3340 E Andy Devine Ave.','assistant bootstrap research: Kingman retail stores shopping stores',0,
+ null,'(928) 295-4851',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Ashley outlet locator lists Kingman at 3340 E Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','property_management','property management companies apartment communities','Real Property Management Northern Arizona',
+ 'https://www.rpmnorthernarizona.com/','rpmnorthernarizona.com','Official property-management site lists main office at 703 E Beale St, Kingman and Mohave County service.','assistant bootstrap research: Kingman property management companies apartment communities',0,
+ null,'(928) 757-7039',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official property-management site lists main office at 703 E Beale St, Kingman and Mohave County service."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','property_management','property management companies apartment communities','Kingman Elite Properties',
+ 'https://www.kingmanrentals.com/','kingmanrentals.com','Official Kingman property-management office at 1916 Stockton Hill Road; Arizona real-estate database also shows active Kingman DBA.','assistant bootstrap research: Kingman property management companies apartment communities',0,
+ null,'(928) 753-1500',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Kingman property-management office at 1916 Stockton Hill Road; Arizona real-estate database also shows active Kingman DBA."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','senior_daycare','senior living assisted living daycare childcare','Avista Senior Living White Cliffs',
+ 'https://avistaseniorliving.com/white-cliffs','avistaseniorliving.com','Official current assisted-living and memory-care community at 3600 Peterson Rd, Kingman.','assistant bootstrap research: Kingman senior living assisted living daycare childcare',0,
+ null,'(928) 681-1050',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official current assisted-living and memory-care community at 3600 Peterson Rd, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','gyms_fitness','gyms fitness centers recreation centers','Northern Arizona Health Club',
+ 'https://www.northernarizonahealthclub.com/','northernarizonahealthclub.com','Official current Kingman health club/fitness facility at 1707 E Andy Devine Ave.','assistant bootstrap research: Kingman gyms fitness centers recreation centers',0,
+ 'referrals@nazpta.com','(928) 440-6880',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official current Kingman health club/fitness facility at 1707 E Andy Devine Ave."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','theaters_entertainment','theaters cinemas entertainment venues','Cerbat Lanes',
+ 'https://cerbatlanesbowling.com/','cerbatlanesbowling.com','Official current 24-lane bowling/arcade/banquet/food facility at 3631 Stockton Hill Rd, Kingman.','assistant bootstrap research: Kingman theaters cinemas entertainment venues',0,
+ 'Krystadeleon92@gmail.com','(928) 692-1818',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official current 24-lane bowling/arcade/banquet/food facility at 3631 Stockton Hill Rd, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','warehouses_industrial','warehouses industrial businesses distribution centers','Mohave Storage - Kingman',
+ 'https://www.mohavestorage.com/','mohavestorage.com','Official storage company site lists Kingman among active Arizona markets; multi-location facility operator.','assistant bootstrap research: Kingman warehouses industrial businesses distribution centers',0,
+ null,'(928) 219-6598',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official storage company site lists Kingman among active Arizona markets; multi-location facility operator."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Anderson Ford Kingman',
+ 'https://www.andersonfordkingman.com/','andersonfordkingman.com','Official current Ford dealership at 3601 Stockton Hill Rd, Kingman.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 565-1922',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official current Ford dealership at 3601 Stockton Hill Rd, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Martin Swanty Kia',
+ 'https://www.kingmankia.com/','kingmankia.com','Official current Kia dealership at 2610 E Andy Devine Ave, Kingman.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 753-3131',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official current Kia dealership at 2610 E Andy Devine Ave, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','Mother Road Harley-Davidson',
+ 'https://www.motherroadhd.com/','motherroadhd.com','Official current motorcycle dealership/service facility at 2501 Beverly Ave, Kingman.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 757-1166',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official current motorcycle dealership/service facility at 2501 Beverly Ave, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Kingman','auto_dealers','auto dealers car dealerships','66 Auto Sales',
+ 'https://66autosales.com/about_us','66autosales.com','Official current used-car dealership at 1945 E Andy Devine Ave, Kingman.','assistant bootstrap research: Kingman auto dealers car dealerships',0,
+ null,'(928) 753-6600',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official current used-car dealership at 1945 E Andy Devine Ave, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','electrical_service','Electrician','Black Rock Power Systems LLC',
+ 'https://www.blackrockpoweraz.com/','blackrockpoweraz.com','Official Kingman electrical contractor at 3830 N Bank St; AZ ROC 352572.','assistant bootstrap research: Kingman Electrician',0,
+ 'office@brpsaz.com','(928) 757-7767',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Kingman electrical contractor at 3830 N Bank St; AZ ROC 352572."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','hvac_heat','Heating & Air','Service General HVAC',
+ 'https://servicegeneralhvac.com/','servicegeneralhvac.com','Official Kingman HVAC contractor; residential/small-business HVAC and light commercial refrigeration; AZROC 352943.','assistant bootstrap research: Kingman Heating & Air',0,
+ null,'(928) 438-2665',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Kingman HVAC contractor; residential/small-business HVAC and light commercial refrigeration; AZROC 352943."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','hvac_heat','Heating & Air','Air-Exx Heating Cooling and Ventilation LLC',
+ 'https://www.airexxhvac.com/kingman-hvac/','airexxhvac.com','Official Kingman HVAC page; veteran-owned, residential/commercial, AZ ROC 350424.','assistant bootstrap research: Kingman Heating & Air',0,
+ null,'(928) 565-6440',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Kingman HVAC page; veteran-owned, residential/commercial, AZ ROC 350424."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','hvac_heat','Heating & Air','Air Control Home Services',
+ 'https://www.aircontrolaz.com/','aircontrolaz.com','Official company site lists Kingman office and HVAC service across Mohave County.','assistant bootstrap research: Kingman Heating & Air',0,
+ null,'(928) 361-9902',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official company site lists Kingman office and HVAC service across Mohave County."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','Air Control Home Services',
+ 'https://www.aircontrolaz.com/','aircontrolaz.com','Official company site lists Kingman office and plumbing service across Mohave County.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(928) 361-9902',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official company site lists Kingman office and plumbing service across Mohave County."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','electrical_service','Electrician','Air Control Home Services',
+ 'https://www.aircontrolaz.com/','aircontrolaz.com','Official company site lists Kingman office and electrical service across Mohave County.','assistant bootstrap research: Kingman Electrician',0,
+ null,'(928) 361-9902',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official company site lists Kingman office and electrical service across Mohave County."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','backflow_plumbing','Backflow & Commercial Plumbing','Benjamin Franklin Plumbing of Kingman',
+ 'https://www.benjaminfranklinplumbing.com/kingman/','benjaminfranklinplumbing.com','Official locally operated Kingman plumbing company serving Mohave County.','assistant bootstrap research: Kingman Backflow & Commercial Plumbing',0,
+ null,'(928) 882-2691',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official locally operated Kingman plumbing company serving Mohave County."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','pest_control','Pest Control','Patriot Environmental',
+ 'https://patriotenvironmental.tech/','patriotenvironmental.tech','Official Kingman pest/termite/weed/commercial pest company at 820 E Beale St.','assistant bootstrap research: Kingman Pest Control',0,
+ null,'(928) 753-5046',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Kingman pest/termite/weed/commercial pest company at 820 E Beale St."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','garage_door','Garage Door Repair','Graszer Garage Doors',
+ 'https://graszergaragedoors.com/','graszergaragedoors.com','Official local Kingman garage-door repair/install company, including commercial doors; ROC CR-350524.','assistant bootstrap research: Kingman Garage Door Repair',0,
+ null,'(928) 418-0448',true,
+ 'direct','direct_evidence',now(),'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official local Kingman garage-door repair/install company, including commercial doors; ROC CR-350524."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Kingman','towing_roadside','Towing & Roadside Help','City Towing LLC',
+ 'https://safer.fmcsa.dot.gov/query.asp?original_query_param=NAME&original_query_string=CITY+TOWING+LLC&query_param=USDOT&query_string=1431707&query_type=queryCarrierSnapshot&searchtype=ANY','safer.fmcsa.dot.gov','Current FMCSA carrier snapshot (MCS-150 dated 2026-08-27) lists authorized City Towing LLC at 3001 Eastern St, Kingman.','assistant bootstrap research: Kingman Towing & Roadside Help',0,
+ null,'(928) 692-2489',false,
+ 'secondary','discovery',null,'discovered',7,
+ '{"bootstrap_source":"assistant_web_research_2026_10_26_kingman_batch_03","researched_at":"2026-10-26T22:37:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current FMCSA carrier snapshot (MCS-150 dated 2026-08-27) lists authorized City Towing LLC at 3001 Eastern St, Kingman."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,
+ snippet=excluded.snippet,
+ search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Kingman';
