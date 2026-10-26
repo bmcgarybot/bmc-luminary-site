@@ -135,6 +135,9 @@ jobs:
           importer=Path("assistant-directory-bootstrap.py").read_text()
           assert "source_tier=excluded.source_tier" in importer
           assert "verification_status=excluded.verification_status" in importer
+          assert "discover_category_pages" in importer
+          assert "general_business" in importer
+          assert "--max-pages-per-market" in importer
           assert "class ListingParser" not in importer
           assert "def normalize_company_href" in importer
           assert "empty_feeds" in importer
@@ -543,7 +546,7 @@ jobs:
 
           # Deep inventory lanes must exist for every market and every active
           # provider-match service plus all 18 explicit buyer categories.
-          EXPECTED_INVENTORY="$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select 21*(count(*)+18) from services where is_active=true and fulfillment_mode='provider_match';")"
+          EXPECTED_INVENTORY="$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select 21*(count(*)+19) from services where is_active=true and fulfillment_mode='provider_match';")"
           ACTUAL_INVENTORY="$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from market_inventory_progress;")"
           test "$ACTUAL_INVENTORY" -eq "$EXPECTED_INVENTORY"
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from market_inventory_candidates where evidence->>'bootstrap_source'='assistant_web_research_2026_10_26_batch_01';")" -ge 45
