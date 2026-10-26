@@ -808,5 +808,37 @@ where coalesce(query_strategy_version,6)<7;
 
 alter table local_demand_scan_state alter column query_strategy_version set default 7;
 
+-- Inventory v7 broadens direct-site exclusions for marketplaces and directories
+-- (real-estate portals, provider directories, travel aggregators, job boards).
+update market_inventory_candidates
+set status='superseded_pre_v7',
+    evidence=evidence || jsonb_build_object(
+      'superseded_reason','pre_v7_marketplace_directory_filter',
+      'superseded_at',now()
+    ),
+    updated_at=now()
+where promoted_entity_id is null
+  and query_strategy_version<7
+  and status='discovered';
+
+alter table market_inventory_candidates alter column query_strategy_version set default 7;
+
+update market_inventory_progress
+set pages_scanned=0,
+    raw_results=0,
+    official_candidates=0,
+    next_page=1,
+    query_variant=0,
+    no_progress_passes=0,
+    status='not_started',
+    last_run_at=null,
+    notes='Reset for inventory query strategy v7 marketplace-directory baseline',
+    query_strategy_version=7,
+    updated_at=now()
+where coalesce(query_strategy_version,6)<7;
+
+alter table market_inventory_progress alter column query_strategy_version set default 7;
+
+
 
 
