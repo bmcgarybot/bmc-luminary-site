@@ -1,0 +1,27 @@
+{
+  "action": "scheduler_stop",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-26T20:46:08.720080+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "e56ff338269517e25bfac0bdff9057329c526e23",
+  "git_commit_before": "e56ff338269517e25bfac0bdff9057329c526e23",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "c7511151bac4f83b312e3ca383c1e25be28b262a",
+  "request_id": "stop-for-directory-hardening-20261026T2047Z",
+  "request_sha256": "ab7344f3399947d6df39af418fd1e2601cdec42d4fe798029962b953b6c5d432",
+  "started_at": "2026-10-26T20:45:58.420767+00:00",
+  "status": "success",
+  "stderr": " Container bmc-scheduler-1 Stopping \n Container bmc-scheduler-1 Stopped \n",
+  "stdout": "",
+  "version": 1
+}
