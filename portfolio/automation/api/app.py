@@ -321,6 +321,21 @@ def classify_local_signal_service(text):
             return key
     return None
 
+async def initialize_local_demand_scan_state(pool):
+    async with pool.acquire() as conn:
+        for source in LOCAL_SIGNAL_SOURCES:
+            for market in LOCAL_SIGNAL_MARKETS:
+                for group in LOCAL_SIGNAL_GROUPS:
+                    await conn.execute("""insert into local_demand_scan_state(
+                        source_key,source_name,source_domain,market,group_key,group_label)
+                      values($1,$2,$3,$4,$5,$6)
+                      on conflict(source_key,market,group_key) do update set
+                        source_name=excluded.source_name,
+                        source_domain=excluded.source_domain,
+                        group_label=excluded.group_label,
+                        updated_at=now()""",
+                        source["key"],source["name"],source["domain"],market,group["key"],group["label"])
+
 app=FastAPI(title="BMC Portfolio Ops API",version="0.1.0")
 app.add_middleware(CORSMiddleware,allow_origins=[
     "https://bmcservicenetwork.com","https://www.bmcservicenetwork.com"
@@ -330,6 +345,7 @@ app.add_middleware(CORSMiddleware,allow_origins=[
 async def startup():
     app.state.pool=await asyncpg.create_pool(DB_DSN,min_size=1,max_size=5)
     await initialize_source_native_state(app.state.pool)
+    await initialize_local_demand_scan_state(app.state.pool)
 
 @app.on_event("shutdown")
 async def shutdown():
@@ -3017,24 +3033,46 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
     new_signals=0
     expired_signals=0
     errors=[]
+    lane_results=[]
     async with app.state.pool.acquire() as conn:
       expired_signals=int(await conn.fetchval("""with expired as (
           update local_demand_signals set status='expired',updated_at=now()
           where status='discovered' and last_seen_at < now()-interval '14 days'
           returning 1
         ) select count(*) from expired""") or 0)
-      for market in LOCAL_SIGNAL_MARKETS:
-        for source in LOCAL_SIGNAL_SOURCES:
-          query=build_local_signal_query(market,source["domain"])
+
+      lanes=await conn.fetch("""select source_key,source_name,source_domain,market,group_key,group_label,
+             next_page,scans,results_seen,signals_found,no_progress_scans
+        from local_demand_scan_state
+        order by last_run_at nulls first,no_progress_scans,source_key,market,group_key
+        limit 15""")
+
+      group_map={g["key"]:g for g in LOCAL_SIGNAL_GROUPS}
+      for lane in lanes:
+          group=group_map.get(lane["group_key"])
+          if not group:
+              continue
+          page=max(1,int(lane["next_page"] or 1))
+          query=build_local_signal_query(lane["market"],lane["source_domain"],group["terms"])
           try:
-              results=await search_research_web(query)
+              results=await search_research_web(query,page)
               searches+=1
           except Exception as exc:
-              errors.append({"market":market,"source":source["key"],"error":str(exc)[:300]})
+              err=str(exc)[:300]
+              errors.append({"market":lane["market"],"source":lane["source_key"],
+                             "group":lane["group_key"],"page":page,"error":err})
+              await conn.execute("""update local_demand_scan_state
+                set scans=scans+1,last_run_at=now(),last_error=$4,updated_at=now()
+                where source_key=$1 and market=$2 and group_key=$3""",
+                lane["source_key"],lane["market"],lane["group_key"],err)
               continue
+
+          lane_new=0
+          lane_seen=0
           for result in results:
-              if not public_source_host_allowed(result["domain"],source["domain"]):
+              if not public_source_host_allowed(result["domain"],lane["source_domain"]):
                   continue
+              lane_seen+=1
               combined=f'{result["title"]} {result["snippet"]}'
               service_key=classify_local_signal_service(combined)
               if not service_key:
@@ -3044,14 +3082,17 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
                 values($1,$2,$3,$4,$5,$6,$7,$8,$9,'discovered',$10::jsonb)
                 on conflict(source_key,market,source_url) do nothing
                 returning signal_id""",
-                source["key"],source["name"],market,service_key,result["title"],result["url"],
-                result["domain"],result["snippet"],query,
+                lane["source_key"],lane["source_name"],lane["market"],service_key,
+                result["title"],result["url"],result["domain"],result["snippet"],query,
                 json.dumps({"search_engine":result["engine"],"search_score":result["score"],
-                            "public_index_only":True,"automatic_contact_allowed":False}))
+                            "public_index_only":True,"automatic_contact_allowed":False,
+                            "group_key":lane["group_key"],"page":page}))
               if sid:
                   new_signals+=1
+                  lane_new+=1
                   await event(conn,"local_demand_signal",sid,"discovered",{
-                    "source":source["key"],"market":market,"service_key":service_key,
+                    "source":lane["source_key"],"market":lane["market"],"service_key":service_key,
+                    "group_key":lane["group_key"],"page":page,
                     "source_url":result["url"],"automatic_contact_allowed":False
                   },"research_agent")
               else:
@@ -3059,9 +3100,24 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
                     set last_seen_at=now(),title=$4,snippet=$5,service_key=coalesce(service_key,$6),
                         search_query=$7,updated_at=now()
                     where source_key=$1 and market=$2 and source_url=$3""",
-                    source["key"],market,result["url"],result["title"],result["snippet"],service_key,query)
+                    lane["source_key"],lane["market"],result["url"],result["title"],
+                    result["snippet"],service_key,query)
+
+          next_page=page+1 if page<5 else 1
+          await conn.execute("""update local_demand_scan_state
+            set next_page=$4,scans=scans+1,results_seen=results_seen+$5,
+                signals_found=signals_found+$6,
+                no_progress_scans=case when $6=0 then no_progress_scans+1 else 0 end,
+                last_run_at=now(),last_error=null,updated_at=now()
+            where source_key=$1 and market=$2 and group_key=$3""",
+            lane["source_key"],lane["market"],lane["group_key"],next_page,lane_seen,lane_new)
+          lane_results.append({"source":lane["source_key"],"market":lane["market"],
+                               "group":lane["group_key"],"page":page,
+                               "results_seen":lane_seen,"new_signals":lane_new})
+
     return {"ok":True,"enabled":True,"searches":searches,"new_signals":new_signals,
-      "expired_signals":expired_signals,"errors":errors}
+      "expired_signals":expired_signals,"lanes_processed":len(lane_results),
+      "lane_results":lane_results,"errors":errors}
 
 @app.get("/api/admin/local-demand-signals")
 async def admin_local_demand_signals(status:str="discovered",limit:int=100,x_bmc_admin_key:str|None=Header(default=None)):
