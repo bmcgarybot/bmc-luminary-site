@@ -293,6 +293,73 @@ LOCAL_SIGNAL_GROUPS=(
 )
 LOCAL_SIGNAL_INTENT_TERMS='"looking for" OR "recommend" OR "recommendation" OR "need a" OR "need an" OR "anyone know" OR "seeking" OR "looking to hire" OR "who can"'
 
+MARKET_INVENTORY_MARKETS=LOCAL_SIGNAL_MARKETS
+BUYER_INVENTORY_CATEGORIES=(
+    {"key":"restaurants","label":"restaurants"},
+    {"key":"hotels_motels","label":"hotels motels lodging"},
+    {"key":"schools","label":"schools charter schools private schools"},
+    {"key":"churches","label":"churches worship centers"},
+    {"key":"medical_centers","label":"hospitals medical centers clinics"},
+    {"key":"dental","label":"dentists dental offices orthodontists"},
+    {"key":"therapy_behavioral","label":"therapy counseling behavioral health clinics"},
+    {"key":"pharmacies","label":"pharmacies drug stores"},
+    {"key":"grocery","label":"grocery stores supermarkets markets"},
+    {"key":"retail","label":"retail stores shopping stores"},
+    {"key":"insurance_professional","label":"insurance agents professional offices"},
+    {"key":"property_management","label":"property management companies apartment communities"},
+    {"key":"senior_daycare","label":"senior living assisted living daycare childcare"},
+    {"key":"gyms_fitness","label":"gyms fitness centers recreation centers"},
+    {"key":"auto_dealers","label":"auto dealers car dealerships"},
+    {"key":"warehouses_industrial","label":"warehouses industrial businesses distribution centers"},
+    {"key":"theaters_entertainment","label":"theaters cinemas entertainment venues"},
+    {"key":"public_facilities","label":"government public facilities municipal buildings"}
+)
+
+BUYER_INVENTORY_TARGETS={
+    "restaurants":(150,50,20),"hotels_motels":(60,20,8),"schools":(80,20,8),
+    "churches":(100,25,8),"medical_centers":(100,30,10),"dental":(100,30,8),
+    "therapy_behavioral":(100,25,8),"pharmacies":(40,12,4),"grocery":(50,15,5),
+    "retail":(150,50,15),"insurance_professional":(150,50,15),
+    "property_management":(100,30,10),"senior_daycare":(80,20,8),
+    "gyms_fitness":(80,20,6),"auto_dealers":(50,15,5),
+    "warehouses_industrial":(100,25,8),"theaters_entertainment":(40,10,3),
+    "public_facilities":(100,25,8)
+}
+INVENTORY_MAJOR_MARKETS={"Phoenix","Scottsdale","Tucson"}
+INVENTORY_REGIONAL_MARKETS={"Prescott","Prescott Valley","Flagstaff","Kingman","Bullhead City","Cottonwood","Sedona"}
+INVENTORY_BLOCKED_DOMAINS={
+    "facebook.com","nextdoor.com","linkedin.com","yelp.com","yellowpages.com","angi.com",
+    "thumbtack.com","bbb.org","mapquest.com","tripadvisor.com","doordash.com","grubhub.com"
+}
+
+def inventory_target(market,side,category_key):
+    tier=0 if market in INVENTORY_MAJOR_MARKETS else (1 if market in INVENTORY_REGIONAL_MARKETS else 2)
+    if side=="buyer":
+        return BUYER_INVENTORY_TARGETS.get(category_key,(100,30,10))[tier]
+    return (40,20,10)[tier]
+
+def inventory_query(side,market,category_label,variant):
+    place=clean(market).replace('"'," ")
+    label=clean(category_label).replace('"'," ")
+    v=int(variant or 0)%3
+    if side=="buyer":
+        variants=(
+          f'"{place}" Arizona "{label}"',
+          f'"{place}" Arizona {label} business',
+          f'"{place}" Arizona {label} directory local'
+        )
+    else:
+        variants=(
+          f'"{label}" "{place}" Arizona',
+          f'"{place}" Arizona "{label}" company contractor',
+          f'"{place}" Arizona local "{label}" service'
+        )
+    return variants[v]
+
+def inventory_official_site(domain):
+    host=clean(domain).lower().removeprefix("www.")
+    return bool(host and not any(host==d or host.endswith("."+d) for d in INVENTORY_BLOCKED_DOMAINS))
+
 def build_local_signal_query(market,domain,terms):
     return f'site:{domain} "{clean(market)}" Arizona ({LOCAL_SIGNAL_INTENT_TERMS}) ({terms})'
 
@@ -692,9 +759,10 @@ def public_source_host_allowed(host,domain):
     d=clean(domain).lower()
     return bool(h and d and (h==d or h.endswith("."+d)))
 
-async def search_research_web(query,pageno=1):
+async def search_research_web(query,pageno=1,result_limit=None):
     if not RESEARCH_SEARCH_ENABLED or not RESEARCH_SEARCH_URL:
         return []
+    limit=max(1,min(20,int(result_limit or RESEARCH_SEARCH_RESULTS)))
     params=urllib.parse.urlencode({
         "q":query,
         "format":"json",
@@ -712,7 +780,7 @@ async def search_research_web(query,pageno=1):
             return json.loads(resp.read(2_000_000).decode("utf-8","replace"))
     raw=await asyncio.to_thread(call)
     out=[]
-    for item in (raw.get("results") or [])[:RESEARCH_SEARCH_RESULTS]:
+    for item in (raw.get("results") or [])[:limit]:
         source_url=clean(item.get("url"))
         try:
             parsed=urllib.parse.urlparse(source_url)
