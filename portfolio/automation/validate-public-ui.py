@@ -7,6 +7,17 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 LEGACY_MARKERS = ("BMC Service Portfolio", "service-front-4")
+FORBIDDEN_PUBLIC_PHRASES = (
+    "Local service routing",
+    "routing path underneath",
+    "Tow / roadside matching",
+    "100 qualified prospects",
+    "begin fulfillment",
+    "fulfillment starts",
+    "Payment confirmation is recorded server-side",
+    "vendor routing",
+    "lead-routing tests",
+)
 MARKET_SLUGS = (
     "prescott", "prescott-valley", "chino-valley", "cottonwood",
     "camp-verde", "sedona", "flagstaff", "winslow", "kingman",
@@ -48,6 +59,9 @@ def main() -> int:
         for marker in LEGACY_MARKERS:
             if marker in text:
                 failures.append(f"{rel}: legacy marker {marker!r}")
+        for phrase in FORBIDDEN_PUBLIC_PHRASES:
+            if phrase in text:
+                failures.append(f"{rel}: internal/awkward public phrase {phrase!r}")
 
     services = json.loads((ROOT / "data/services.json").read_text())["services"]
     for service in services:
