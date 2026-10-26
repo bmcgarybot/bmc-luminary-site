@@ -24,13 +24,13 @@ done
 
 case "$MODE" in
   directory)
-    python3 ./assistant-directory-bootstrap.py "$ENV_FILE" --max-per-feed 500 --max-pages-per-market 250 --delay 0.20
+    python3 ./assistant-directory-bootstrap.py "$ENV_FILE" --max-per-feed 500 --max-pages-per-market 1500 --delay 0.20
     ;;
   licensed)
     python3 ./assistant-homversa-bootstrap.py "$ENV_FILE" --delay 0.30
     ;;
   all)
-    python3 ./assistant-directory-bootstrap.py "$ENV_FILE" --max-per-feed 500 --max-pages-per-market 250 --delay 0.20
+    python3 ./assistant-directory-bootstrap.py "$ENV_FILE" --max-per-feed 500 --max-pages-per-market 1500 --delay 0.20
     python3 ./assistant-homversa-bootstrap.py "$ENV_FILE" --delay 0.30
     ;;
   *)
