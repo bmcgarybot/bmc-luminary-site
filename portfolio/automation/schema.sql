@@ -537,6 +537,23 @@ drop index if exists market_inventory_candidates_side_market_category_key_source
 create unique index if not exists uq_market_inventory_candidate_business_source
 on market_inventory_candidates(side,market,category_key,source_url,business_name);
 
+-- If assistant bootstrap rows already exist before the Docker refresher is first
+-- deployed, initialize cadence from the most recent successful imported rows so
+-- the new container does not immediately repeat the same statewide crawl.
+insert into research_refresh_state(source_key,last_success_at,last_status,updated_at)
+select 'directory_graph',max(updated_at),'success',now()
+from market_inventory_candidates
+where evidence->>'bootstrap_source'='assistant_curated_whereorg_bootstrap_v1'
+having count(*)>0
+on conflict(source_key) do nothing;
+
+insert into research_refresh_state(source_key,last_success_at,last_status,updated_at)
+select 'licensed_trades',max(updated_at),'success',now()
+from market_inventory_candidates
+where evidence->>'bootstrap_source'='assistant_homversa_licensed_bootstrap_v1'
+having count(*)>0
+on conflict(source_key) do nothing;
+
 
 
 alter table market_inventory_candidates add column if not exists source_tier text not null default 'discovery';
