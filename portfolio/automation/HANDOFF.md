@@ -3601,3 +3601,34 @@ Current recommendation:
 - do not restart source-native CMS repeatedly while the VPS is receiving 403;
 - ADHS and already-ingested CMS records remain valid and stored;
 - treat remaining CMS lanes as a separate blocked source issue rather than blocking the rest of launch research.
+
+
+## 44. PHASE 2 HEALTHY + SOURCE SUCCESS VISIBILITY — 2026-10-25
+
+Current drain behavior after CMS source-native stalled:
+- source-native stopped itself after repeated no-progress CMS 403s;
+- Phase 2 public-web research continued normally;
+- recent rounds processed 5 research tasks each with 0 errors;
+- queue continued falling unevenly because a processed research pass does not always complete the parent backlog row immediately.
+
+Important interpretation:
+- `processed=5` means five research task passes were executed;
+- it does not mean five backlog rows must leave `queued` in that round;
+- some gaps require multiple research passes before completion;
+- flat queue counts for one or two rounds are expected when tasks are advancing through additional passes.
+
+Do not stop the current Phase 2 run merely because CMS source-native stopped. Phase 2 is independent and healthy.
+
+Visibility improvement committed for future source-native runs:
+- API now returns `successful_lanes` with source + market;
+- CMS successes indicate whether bulk mode was used;
+- drain output now prints up to four successful lanes, e.g.:
+  - `OK adhs_facilities_arcgis · Prescott`
+  - `OK cms_hospitals · Phoenix · bulk`
+- failures continue to print source + market + error.
+
+Commits:
+- `fb5e640b5f8f3c9d327f502ff1efb66afb63a220` — report successful source-native lanes.
+- `57b59ae45ca2cafa1d42f80c0b2afe81f29dcb08` — show successful source-native lanes in drain output.
+
+These diagnostics apply on the next pulled/rebuilt run; do not interrupt the currently healthy Phase 2 drain just to obtain them.
