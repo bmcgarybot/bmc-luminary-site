@@ -101,7 +101,7 @@ for round in $(seq 1 "$SOURCE_NATIVE_MAX_ROUNDS"); do
   fi
 
   result="$(curl --max-time 360 -fsS -X POST http://127.0.0.1:8000/api/process-source-native-research     -H "X-BMC-Admin-Key: $ADMIN_KEY")"
-  summary="$(printf '%s' "$result" | python3 -c 'import json,sys; d=json.load(sys.stdin); print("checks=%s seen=%s created=%s updated=%s errors=%s" % (d.get("source_checks",d.get("markets_checked",0)),d.get("records_seen",0),d.get("prospects_created",0),d.get("prospects_updated",0),len(d.get("errors",[]))))')"
+  summary="$(printf '%s' "$result" | python3 -c 'import json,sys; d=json.load(sys.stdin); errs=d.get("errors",[]); print("checks=%s seen=%s created=%s updated=%s errors=%s" % (d.get("source_checks",d.get("markets_checked",0)),d.get("records_seen",0),d.get("prospects_created",0),d.get("prospects_updated",0),len(errs))); [print("    ERROR %s · %s · %s" % (e.get("source","adhs"),e.get("market","?"),e.get("error","")[:180])) for e in errs[:3]]')"
   now_pending="$(dbq "select count(*) from source_native_state where coalesce((metadata->>'expected')::boolean,false)=true and (last_run_at is null or coalesce(cursor,0)>0 or coalesce(metadata->>'last_error','')<>'');")"
   marker="$(dbq "select coalesce(sum(records_seen),0)||'|'||coalesce(sum(records_upserted),0)||'|'||coalesce(sum(cursor),0) from source_native_state where coalesce((metadata->>'expected')::boolean,false)=true;")"
   echo "  source round $round: pending_lanes=$now_pending · $summary"
