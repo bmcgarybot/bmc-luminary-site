@@ -1,0 +1,27 @@
+{
+  "action": "research_refresh_install",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-26T22:20:37.613532+00:00",
+  "exit_code": 3,
+  "git_branch_before": "master",
+  "git_commit_after": "6548ddb55a6cf3fc3f7a07b3cce78738e772d011",
+  "git_commit_before": "6548ddb55a6cf3fc3f7a07b3cce78738e772d011",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "63c0b521609f1e4eda35b84eebe50c5ba684329c",
+  "request_id": "install-research-refresh-timers-20261026T2218Z",
+  "request_sha256": "10d11882c33ef95a5569ada96bdf49beace73254982e06dd6290d2f9018bbf47",
+  "started_at": "2026-10-26T22:20:37.579214+00:00",
+  "status": "failed",
+  "stderr": "",
+  "stdout": "Passwordless sudo is required to install system timers.\n",
+  "version": 1
+}
