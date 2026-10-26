@@ -13,6 +13,13 @@ while true; do
       -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
   fi
 
+  # Deep market inventory is deliberately separate from the legacy gap queue.
+  # Every 10 minutes it advances a bounded set of buyer-category and provider-service lanes.
+  if [ $((i % 2)) -eq 0 ]; then
+    curl --max-time 240 -fsS -X POST http://ops_api:8000/api/process-market-inventory \
+      -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
+  fi
+
   if [ $((i % 12)) -eq 0 ]; then
     curl -fsS -X POST http://ops_api:8000/api/process-followups \
       -H "X-BMC-Admin-Key: ${BMC_ADMIN_KEY}" || true
