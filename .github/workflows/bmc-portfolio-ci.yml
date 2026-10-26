@@ -138,6 +138,10 @@ jobs:
           assert "discover_category_pages" in importer
           assert "general_business" in importer
           assert "--max-pages-per-market" in importer
+          page_links=m.discover_category_pages('<a href="/businesses/restaurants-and-bars-in-kingman-az-02">2</a><a href="/businesses/restaurants-and-bars-in-kingman-az-05">5</a>',"kingman")
+          assert len(page_links)==2, page_links
+          assert page_links[0][0].endswith("-02"), page_links
+          assert "pages_remaining_at_safety_ceiling" in importer
           assert "class ListingParser" not in importer
           assert "def normalize_company_href" in importer
           assert "empty_feeds" in importer
