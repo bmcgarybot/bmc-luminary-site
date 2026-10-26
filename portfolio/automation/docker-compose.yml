@@ -93,6 +93,26 @@ services:
       - "127.0.0.1:8000:8000"
     networks: [bmc_internal]
 
+  research_refresher:
+    build:
+      context: .
+      dockerfile: research-refresher.Dockerfile
+    restart: unless-stopped
+    mem_limit: 512m
+    logging: *default-logging
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      OUTREACH_ENABLED: ${OUTREACH_ENABLED}
+      BUYER_OUTREACH_ENABLED: ${BUYER_OUTREACH_ENABLED}
+      GROWTH_OUTREACH_ENABLED: ${GROWTH_OUTREACH_ENABLED:-false}
+      RESEARCH_REFRESH_POLL_SECONDS: ${RESEARCH_REFRESH_POLL_SECONDS:-900}
+      DIRECTORY_REFRESH_INTERVAL_SECONDS: ${DIRECTORY_REFRESH_INTERVAL_SECONDS:-86400}
+      LICENSED_REFRESH_INTERVAL_SECONDS: ${LICENSED_REFRESH_INTERVAL_SECONDS:-604800}
+    networks: [bmc_internal]
+
   scheduler:
     image: curlimages/curl:8.11.1
     restart: unless-stopped
