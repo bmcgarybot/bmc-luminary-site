@@ -15,3 +15,20 @@ server:
   limiter: false
   public_instance: false
   image_proxy: false
+
+# The default general-search mix was repeatedly suspended from this VPS
+# (Brave 429, DuckDuckGo access denied, Google CSE 429). Keep those disabled
+# for automated research and explicitly enable alternative general engines.
+engines:
+  - name: brave
+    disabled: true
+  - name: duckduckgo
+    disabled: true
+  - name: google cse
+    disabled: true
+  - name: bing
+    disabled: false
+  - name: qwant
+    disabled: false
+  - name: yahoo
+    disabled: false
