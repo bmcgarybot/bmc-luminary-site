@@ -298,6 +298,7 @@ LOCAL_SIGNAL_GROUPS=(
      "terms":'"restaurant equipment" OR "ice machine" OR "hood cleaning" OR "grease trap" OR "fire extinguisher" OR "parking lot" OR "sign repair" OR "access control"'}
 )
 LOCAL_SIGNAL_INTENT_TERMS='"looking for" OR "recommend" OR "recommendation" OR "need a" OR "need an" OR "anyone know" OR "seeking" OR "looking to hire" OR "who can"'
+LOCAL_DEMAND_QUERY_STRATEGY_VERSION=5
 
 MARKET_INVENTORY_MARKETS=LOCAL_SIGNAL_MARKETS
 BUYER_INVENTORY_CATEGORIES=(
@@ -414,6 +415,21 @@ def build_local_signal_query(market,domain,terms,variant=0):
     intent_terms=("looking for","recommend","need","who can","seeking")
     intent=intent_terms[(v // max(1,len(raw_terms))) % len(intent_terms)]
     return f'site:{clean(domain)} {place} Arizona "{term}" "{intent}"'
+
+def local_signal_result_relevant(result,market):
+    # Search engines can return a valid social-domain result from the wrong city.
+    # Never assign the lane market unless the returned title/snippet/URL itself
+    # contains the requested market evidence.
+    haystack=" ".join([
+        clean((result or {}).get("title")),
+        clean((result or {}).get("snippet")),
+        clean((result or {}).get("url"))
+    ]).lower()
+    place=clean(market).lower()
+    if not haystack or not place:
+        return False
+    place_words=[w for w in re.findall(r"[a-z0-9]+",place) if len(w)>2]
+    return bool(place in haystack or (place_words and all(w in haystack for w in place_words)))
 
 def classify_local_signal_service(text):
     t=clean(text).lower()
@@ -3392,36 +3408,53 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
           for result in results:
               if not public_source_host_allowed(result["domain"],lane["source_domain"]):
                   continue
+              if not local_signal_result_relevant(result,lane["market"]):
+                  continue
               lane_seen+=1
               combined=f'{result["title"]} {result["snippet"]}'
               service_key=classify_local_signal_service(combined)
               if not service_key:
                   continue
+              existing=await conn.fetchrow("""select signal_id,status,query_strategy_version
+                from local_demand_signals
+                where source_key=$1 and market=$2 and source_url=$3""",
+                lane["source_key"],lane["market"],result["url"])
               sid=await conn.fetchval("""insert into local_demand_signals(
-                  source_key,source_name,market,service_key,title,source_url,source_domain,snippet,search_query,status,evidence)
-                values($1,$2,$3,$4,$5,$6,$7,$8,$9,'discovered',$10::jsonb)
-                on conflict(source_key,market,source_url) do nothing
+                  source_key,source_name,market,service_key,title,source_url,source_domain,snippet,search_query,
+                  status,query_strategy_version,evidence)
+                values($1,$2,$3,$4,$5,$6,$7,$8,$9,'discovered',$10,$11::jsonb)
+                on conflict(source_key,market,source_url) do update set
+                  source_name=excluded.source_name,
+                  service_key=excluded.service_key,
+                  title=excluded.title,
+                  source_domain=excluded.source_domain,
+                  snippet=excluded.snippet,
+                  search_query=excluded.search_query,
+                  status=case when local_demand_signals.status='superseded_pre_v5'
+                              then 'discovered' else local_demand_signals.status end,
+                  query_strategy_version=excluded.query_strategy_version,
+                  last_seen_at=now(),
+                  evidence=local_demand_signals.evidence || excluded.evidence,
+                  updated_at=now()
                 returning signal_id""",
                 lane["source_key"],lane["source_name"],lane["market"],service_key,
                 result["title"],result["url"],result["domain"],result["snippet"],query,
+                LOCAL_DEMAND_QUERY_STRATEGY_VERSION,
                 json.dumps({"search_engine":result["engine"],"search_score":result["score"],
                             "public_index_only":True,"automatic_contact_allowed":False,
-                            "group_key":lane["group_key"],"page":page}))
-              if sid:
+                            "group_key":lane["group_key"],"page":page,
+                            "query_strategy_version":LOCAL_DEMAND_QUERY_STRATEGY_VERSION,
+                            "market_relevance_verified":True}))
+              activated=(existing is None or clean(existing["status"])=="superseded_pre_v5")
+              if sid and activated:
                   new_signals+=1
                   lane_new+=1
                   await event(conn,"local_demand_signal",sid,"discovered",{
                     "source":lane["source_key"],"market":lane["market"],"service_key":service_key,
                     "group_key":lane["group_key"],"page":page,
-                    "source_url":result["url"],"automatic_contact_allowed":False
+                    "source_url":result["url"],"automatic_contact_allowed":False,
+                    "query_strategy_version":LOCAL_DEMAND_QUERY_STRATEGY_VERSION
                   },"research_agent")
-              else:
-                  await conn.execute("""update local_demand_signals
-                    set last_seen_at=now(),title=$4,snippet=$5,service_key=coalesce(service_key,$6),
-                        search_query=$7,updated_at=now()
-                    where source_key=$1 and market=$2 and source_url=$3""",
-                    lane["source_key"],lane["market"],result["url"],result["title"],
-                    result["snippet"],service_key,query)
 
           next_page=page+1 if page<5 else 1
           await conn.execute("""update local_demand_scan_state
