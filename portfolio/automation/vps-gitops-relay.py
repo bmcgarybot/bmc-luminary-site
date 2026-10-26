@@ -468,6 +468,7 @@ def process_once() -> dict:
 
     for item in list_requests():
         stats["seen"] += 1
+        req = None
         fallback_id = Path(str(item.get("name") or "")).stem
         if not REQUEST_ID_RE.match(fallback_id):
             stats["errors"].append({"file": item.get("name"), "error": "invalid request filename"})
@@ -489,7 +490,7 @@ def process_once() -> dict:
             result = execute(req)
         except Exception as exc:
             request_id = fallback_id
-            result = failed_result(locals().get("req") if "req" in locals() else None, request_id, exc)
+            result = failed_result(req, request_id, exc)
 
         save_local_result(result)
         try:
@@ -509,8 +510,11 @@ def self_test(write_registration: bool = False):
     repo_info = github_request("GET", "")
     branch = github_request("GET", f"/branches/{urllib.parse.quote(RELAY_BRANCH)}")
     mailbox = github_contents("portfolio/automation/vps-relay/README.md", RELAY_BRANCH)
+    actions_probe = github_request("GET", "/actions/runs?per_page=1")
     if not repo_info or not branch or not mailbox:
         raise RelayError("GitHub repository/relay branch/mailbox could not be read")
+    if not isinstance(actions_probe, dict) or "workflow_runs" not in actions_probe:
+        raise RelayError("GitHub Actions read access could not be verified")
     result = {
         "ok": True,
         "host": socket.gethostname(),
@@ -518,6 +522,7 @@ def self_test(write_registration: bool = False):
         "relay_branch": RELAY_BRANCH,
         "git_commit": current_sha(),
         "outreach": outreach_state(),
+        "github_actions_readable": True,
         "allowed_actions": sorted(ALLOWED_ACTIONS),
         "checked_at": now_iso(),
     }
