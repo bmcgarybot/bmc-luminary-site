@@ -89,6 +89,35 @@ if [ "$(dbq "select count(*) from information_schema.tables where table_name='ma
     order by source_tier,verification_status;" || true
 
   echo
+  echo "Active inventory by market and side (evidence rows vs normalized businesses):"
+  dbq "select market||'|'||side||
+      '|rows='||count(*)||
+      '|businesses='||count(distinct lower(regexp_replace(coalesce(business_name,''),'[^a-z0-9]+','','g')))||
+      '|direct='||count(*) filter (where official_site=true)
+    from market_inventory_candidates
+    where status='discovered' and query_strategy_version=7
+    group by market,side
+    order by market,side;" || true
+
+  echo
+  echo "Active inventory by category:"
+  dbq "select side||'|'||category_key||'|'||category_label||
+      '|rows='||count(*)||
+      '|businesses='||count(distinct lower(regexp_replace(coalesce(business_name,''),'[^a-z0-9]+','','g')))||
+      '|markets='||count(distinct market)
+    from market_inventory_candidates
+    where status='discovered' and query_strategy_version=7
+    group by side,category_key,category_label
+    order by side,category_key;" || true
+
+  echo
+  echo "Closed inventory by market and side:"
+  dbq "select market||'|'||side||'|closed_rows='||count(*)
+    from market_inventory_candidates
+    where status='closed' and query_strategy_version=7
+    group by market,side order by market,side;" || true
+
+  echo
   echo "Recent active inventory sample:"
   dbq "select side||'|'||market||'|'||category_key||
       '|official='||coalesce(official_site,false)::text||'|'||
