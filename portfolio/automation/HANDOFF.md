@@ -5838,3 +5838,221 @@ with
 9. Continue assistant-led direct-site/manual research for gaps and weak classifications.
 10. Begin the planned line-by-line verification with Brett after the bootstrap population is materially complete.
 
+
+
+## 57. STATEWIDE BOOTSTRAP CROSSED 15K + CONTINUOUS RESEARCH DEPLOYED — 2026-10-26
+
+This section supersedes any older handoff wording that describes the inventory as only a few hundred candidates.
+
+### Actual production bootstrap result
+
+The first assistant-driven all-market WhereOrg bulk import completed successfully on production.
+
+Relay request:
+- `assistant-bootstrap-all-markets-20261026T2208Z`
+
+Production commit during that import:
+- `9d1d2edc47ff307205c1e88e7e266b4a5491465c`
+
+Import result:
+- 21 configured markets attempted;
+- 252 category feeds attempted;
+- 209 succeeded;
+- 43 returned 404;
+- 11,618 raw company rows read;
+- **9,519 classified discovery candidates inserted/updated**.
+
+Per-market classified counts from this first pass:
+- Ash Fork 66
+- Bullhead City 633
+- Camp Verde 493
+- Chino Valley 485
+- Cordes Lakes 6
+- Cottonwood 641
+- Dewey-Humboldt 0 from the literal WhereOrg slug
+- Flagstaff 785
+- Golden Valley 253
+- Kingman 712
+- Mayer 221
+- Phoenix 909
+- Prescott 784
+- Prescott Valley 664
+- Scottsdale 864
+- Sedona 462
+- Seligman 107
+- Skull Valley 31
+- Tucson 909
+- Williamson Valley 0 from the literal WhereOrg slug
+- Winslow 494
+
+No outbound action occurred:
+- OUTREACH_ENABLED=false
+- BUYER_OUTREACH_ENABLED=false
+- GROWTH_OUTREACH_ENABLED=false
+
+### Fresh production proof after import
+
+Proof request:
+- `bootstrap-proof-20261026T2208Z`
+
+At that checkpoint:
+- **15,185 active v7 inventory candidates**
+- direct/direct-evidence: 211
+- directory/discovery: 14,859
+- discovery/discovery: 97
+- secondary/discovery: 18
+- 11 candidates with email
+- 14,362 candidates with phone
+- 829 superseded historical candidates
+
+Examples of market-side search-discovered counts at that checkpoint:
+- Kingman buyer 821 / vendor 343
+- Phoenix buyer 1,073 / vendor 599
+- Prescott buyer 933 / vendor 409
+- Prescott Valley buyer 627 / vendor 361
+- Flagstaff buyer 965 / vendor 424
+- Scottsdale buyer 1,046 / vendor 557
+- Tucson buyer 1,138 / vendor 575
+- Bullhead City buyer 674 / vendor 479
+- Cottonwood buyer 651 / vendor 294
+
+These are discovery records, not automatically verified/prospects approved for outreach.
+
+### Important quality caveat
+
+The first 9,519 import used the older fixed-feed WhereOrg importer. It still materially solved the “nothing is being researched” problem, but it was **not exhaustive** because large WhereOrg categories paginate.
+
+A live inspection proved WhereOrg pagination URLs:
+- base page
+- `-02`
+- `-03`
+- etc.
+
+Example: a 508-result category exposes pages 1–5.
+
+The upgraded importer now follows:
+- market root;
+- discovered subcategories;
+- all discovered pagination pages.
+
+Therefore the next exhaustive run should materially exceed the first 9,519 where sources expose additional pages.
+
+### Dewey-Humboldt alias correction
+
+The public directories commonly use **Dewey, AZ** rather than the municipal label Dewey-Humboldt.
+
+Current evidence:
+- WhereOrg reports 846 companies under Dewey;
+- Enigma reports 259 Dewey entities;
+- public business search returns many live Dewey/Humboldt businesses.
+
+The importer market slug was corrected:
+- Dewey-Humboldt -> `dewey`
+
+Do not interpret the prior 0 as market scarcity.
+
+### Williamson Valley interpretation
+
+Williamson Valley behaves more like a Prescott-area service territory/community than an independent directory city.
+
+Direct service-area research already supports multiple vendors serving Williamson Valley, including plumbing, HVAC/electrical, landscaping, tree service and related trades.
+
+Buyer discovery should use:
+- Williamson Valley addresses;
+- Williamson Valley Road / Prescott 86305 entities;
+- local community/church/school/property organizations;
+- service-territory evidence;
+rather than expecting a standalone city directory page.
+
+### Open-ended inventory system deployed
+
+CI-gated deploy:
+- deployed commit `6548ddb55a6cf3fc3f7a07b3cce78738e772d011`
+- BMC Portfolio CI success run: **40411170657**
+- relay deploy status: success
+- production runtime doctor: 0 core failures / 0 warnings
+- scheduler was intentionally stopped before deploy and remained stopped
+- all outreach switches remained OFF
+
+This deployed tree includes:
+- candidate first_seen_at / last_seen_at;
+- closed_at / closure_reason;
+- scan_cycles / last_full_scan_at;
+- expanded ordinary-search query variants;
+- explicit permanent-closure phrase detection;
+- closed candidates excluded from active discovery counts;
+- full scan cycles reset into `monitoring` instead of terminal “target met” states;
+- first-cycle launch semantics instead of numeric target completion;
+- general local business buyer lane;
+- initial licensed-trade importer and relay action;
+- daily/weekly refresh timer code/actions.
+
+### Open-ended research rule
+
+Numeric inventory targets are now advisory depth goals only.
+
+The system must never stop researching because a count was reached.
+
+After a lane finishes a full ordinary-search cycle:
+- increment scan_cycles;
+- record last_full_scan_at;
+- reset search cursor;
+- status becomes monitoring;
+- the lane remains eligible for future refresh forever.
+
+### Closed-business rule
+
+Explicit permanent-closure evidence can set a candidate status to `closed`.
+
+Closed candidates:
+- remain stored for audit/history;
+- are excluded from active coverage;
+- carry closure reason/time;
+- can be reopened if later rediscovered active.
+
+Do not treat “closed now” / normal business hours as permanent closure.
+
+### Further improvements committed after deployed 6548 tree
+
+Newer master work not yet production-confirmed at the moment this section was written includes:
+- exhaustive WhereOrg category-graph crawl;
+- pagination following;
+- up to a high technical page safety ceiling, not a business target;
+- Dewey-Humboldt -> Dewey directory alias;
+- deeper relay limits;
+- licensed-trade bulk import from Homversa/ROC-derived public data;
+- managed research refresh scripts/timers.
+
+Current pagination example proved that the old first-page-only logic could miss hundreds of records in one category.
+
+### Pending at this handoff checkpoint
+
+Relay requests in progress:
+- `licensed-bootstrap-all-markets-20261026T2218Z`
+- `install-research-refresh-timers-20261026T2218Z`
+
+A deploy request for the first pagination SHA was rejected safely because CI had not yet completed. This was expected guard behavior.
+
+The current master has advanced beyond that SHA. Verify current master + CI and deploy the exact green head before rerunning the exhaustive paginated bootstrap.
+
+### Correct next actions
+
+1. Poll licensed-bootstrap and timer-install relay results.
+2. Verify latest master CI.
+3. Deploy latest green master.
+4. Run the upgraded paginated `assistant_bootstrap_import` across all markets with high page ceiling.
+5. Re-run licensed-trade bootstrap on the latest build if needed.
+6. Run proof and count:
+   - active candidates total;
+   - closed candidates;
+   - by market;
+   - by side;
+   - by category;
+   - by source tier;
+   - duplicate/entity-level cleanup needs.
+7. Keep scheduler/outreach safe while validating.
+8. Once bulk bootstrap is stable, enable the internal scheduler only with all outbound switches still OFF.
+9. Verify daily public-directory timer and weekly licensed-trade timer.
+10. Continue adding public source families and direct verification feeds.
+11. Never revert to capped “target met = stop” semantics.
+
