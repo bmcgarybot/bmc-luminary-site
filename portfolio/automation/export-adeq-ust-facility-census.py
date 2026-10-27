@@ -127,6 +127,74 @@ def classify(place_type):
     return "general_business", "Commercial & Institutional Facilities"
 
 
+def service_hypotheses(place_type, category_key):
+    p = clean(place_type).casefold()
+    tags = []
+
+    def add_tags(*values):
+        for value in values:
+            if value not in tags:
+                tags.append(value)
+
+    if "gas filling station" in p or "gasoline" in p or "service station" in p:
+        add_tags(
+            "fuel-island / pump-pad pressure washing",
+            "sidewalk and storefront pressure washing",
+            "dumpster-pad degreasing",
+            "parking-lot sweeping",
+            "parking-lot striping / restriping",
+            "commercial window cleaning",
+        )
+    if "fleet" in p or "equipment yard" in p or "auto" in p or "vehicle" in p or "transport" in p:
+        add_tags(
+            "fleet / equipment washing",
+            "oil and grease stain cleanup",
+            "yard / parking-lot sweeping",
+            "parking-lot striping / restriping",
+            "exterior pressure washing",
+        )
+    if category_key in {"retail", "grocery"}:
+        add_tags(
+            "sidewalk and storefront pressure washing",
+            "dumpster-pad cleaning",
+            "parking-lot sweeping",
+            "parking-lot striping / restriping",
+            "commercial window cleaning",
+        )
+    if category_key == "hotels_motels":
+        add_tags(
+            "exterior pressure washing",
+            "parking-lot sweeping",
+            "parking-lot striping / restriping",
+            "commercial window cleaning",
+            "recurring common-area cleaning",
+        )
+    if category_key == "medical_centers":
+        add_tags(
+            "parking-lot sweeping",
+            "parking-lot striping / restriping",
+            "sidewalk pressure washing",
+            "commercial window cleaning",
+            "recurring janitorial cleaning",
+        )
+    if category_key == "property_management":
+        add_tags(
+            "parking-lot sweeping",
+            "parking-lot striping / restriping",
+            "exterior pressure washing",
+            "dumpster-area cleaning",
+            "turnover / common-area cleaning",
+        )
+    if category_key in {"warehouses_industrial", "general_business", "public_facilities", "schools_education", "churches_nonprofits"}:
+        add_tags(
+            "parking-lot sweeping",
+            "parking-lot striping / restriping",
+            "exterior pressure washing",
+            "commercial window cleaning",
+        )
+    return tags
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--date", required=True)
@@ -187,6 +255,7 @@ def main():
             place_type = clean(a.get("PLACE_TYPE"))
             place_id = clean(a.get("PLACE_ID"))
             category_key, category_label = classify(place_type)
+            opportunity_tags = service_hypotheses(place_type, category_key)
 
             note = [
                 "Arizona Department of Environmental Quality active Underground Storage Tank facility government record",
@@ -225,6 +294,8 @@ def main():
                     "adeq_ust_facility_code": facility or None,
                     "adeq_ust_place_type": place_type or None,
                     "adeq_ust_status": "ACTIVE",
+                    "commercial_service_hypotheses": opportunity_tags,
+                    "opportunity_qualification_required": True,
                     "latitude": a.get("LATITUDE"),
                     "longitude": a.get("LONGITUDE"),
                     "source_service": LAYER,
