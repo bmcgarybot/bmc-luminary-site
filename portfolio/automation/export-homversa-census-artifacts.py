@@ -233,20 +233,28 @@ def records_for_trade(market, trade, main_url, delay):
     main_html = fetch(main_url)
     claimed_count, verified_date = page_metadata(main_html)
     ranked_rows = parse_ranked(main_html)
-    rows = list(ranked_rows)
+    main_list_rows = parse_all_list(main_html)
+    rows = list(ranked_rows) + list(main_list_rows)
     all_rows = []
 
     if claimed_count is None:
         raise RuntimeError(f"{trade}: could not parse claimed count from {main_url}")
 
-    if claimed_count > len(rows):
+    current_unique = {
+        (name.casefold(), roc): (name, roc)
+        for name, roc in rows
+    }
+    if len(current_unique) < claimed_count:
         all_url = main_url.rstrip("/") + "/all"
         try:
             all_html = fetch(all_url)
             all_rows = parse_all_list(all_html)
             rows.extend(all_rows)
         except Exception as exc:
-            raise RuntimeError(f"{trade}: failed complete A-to-Z page {all_url}: {exc}") from exc
+            raise RuntimeError(
+                f"{trade}: main page recovered {len(current_unique)}/{claimed_count}; "
+                f"failed complete A-to-Z page {all_url}: {exc}"
+            ) from exc
         if delay:
             time.sleep(delay)
 
@@ -259,7 +267,7 @@ def records_for_trade(market, trade, main_url, delay):
         raise RuntimeError(
             f"{trade}: completeness failure: page claims {claimed_count} verified companies, "
             f"but parser recovered {len(rows)} unique company/license pairs; "
-            f"ranked_raw={len(ranked_rows)} all_raw={len(all_rows)} "
+            f"ranked_raw={len(ranked_rows)} main_list_raw={len(main_list_rows)} all_raw={len(all_rows)} "
             f"ranked={ranked_rows!r}"
         )
 
