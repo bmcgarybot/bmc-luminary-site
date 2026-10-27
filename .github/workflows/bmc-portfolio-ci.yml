@@ -802,6 +802,40 @@ jobs:
           PY
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct prospect_key) from growth_prospect_exposures where market='CI Race Market' and status='delivered';")" -eq 10
 
+          # EMAIL_FAILURE_DISCLOSURE_V1: failed SMTP does NOT mean no disclosure;
+          # the HTTP response contains the five, and retry must not leak new five.
+          docker compose --env-file .env.ci exec -T ops_api python - <<'PY'
+          import asyncio,asyncpg
+          import app as m
+          async def smtp_failure(_to,_subject,_body,_html_body=None,_attachments=None):
+              return False
+          async def check():
+              m.send_mail=smtp_failure
+              conn=await asyncpg.connect(m.DB_DSN)
+              request={"submission_id":"ci-smtp-failure-1","form_type":"growth_snapshot",
+                       "service_key":"pressure_washing","business_name":"CI SMTP Failure Contractor",
+                       "contact_name":"CI Owner","email":"ci-smtp-failure@example.com",
+                       "market":"CI Race Market","consent":"yes"}
+              async with conn.transaction():
+                  first=await m.handle_growth_snapshot(conn,request)
+              assert first["status"]=="sample_ready" and len(first["sample"])==5,first
+              sid=first["sample_id"]
+              state=await conn.fetchrow("select status,sample_sent_at from growth_sample_requests where sample_id=$1",__import__("uuid").UUID(sid))
+              assert state["status"]=="delivery_error" and state["sample_sent_at"] is None,state
+              n=await conn.fetchval("""select count(*) from growth_prospect_exposures
+                where delivery_ref=$1 and status='delivered'""","sample:"+sid)
+              assert n==5,n
+              async with conn.transaction():
+                  again=await m.handle_growth_snapshot(conn,request)
+              assert again["sample"]==first["sample"] and again["sample_id"]==sid,(first,again)
+              n2=await conn.fetchval("""select count(*) from growth_prospect_exposures
+                where delivery_ref=$1""","sample:"+sid)
+              assert n2==5,n2
+              await conn.close()
+              print("SMTP failure disclosure and idempotent retry passed")
+          asyncio.run(check())
+          PY
+
           # Exact real-world search regressions from manual QA.
           curl -fsS -X POST http://127.0.0.1:8000/api/service-search \
             -H 'Content-Type: application/json' \
