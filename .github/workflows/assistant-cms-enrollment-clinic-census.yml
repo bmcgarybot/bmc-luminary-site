@@ -1,0 +1,46 @@
+name: Assistant CMS Clinic Enrollment Census Export
+
+on:
+  push:
+    paths:
+      - 'portfolio/automation/export-cms-enrollment-clinic-census.py'
+      - '.github/workflows/assistant-cms-enrollment-clinic-census.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Export official CMS clinic enrollment facilities for BMC markets
+        run: |
+          python3 portfolio/automation/export-cms-enrollment-clinic-census.py \
+            --date 2026-10-26 \
+            --output-dir portfolio/data
+
+      - name: Validate deterministic census builder
+        run: |
+          python3 portfolio/automation/build-assistant-research-seed.py \
+            --data-dir portfolio/data \
+            --output /tmp/assistant-research-seed.sql \
+            --summary-json 2>/tmp/census-summary.json
+          cat /tmp/census-summary.json
+
+      - name: Commit CMS clinic government-registry artifacts
+        run: |
+          git config user.name "BMC Assistant Census"
+          git config user.email "actions@users.noreply.github.com"
+          git add portfolio/data/assistant-research-bootstrap-2026-10-26-cms-*-23.json
+          if git diff --cached --quiet; then
+            echo "No CMS clinic artifact changes."
+            exit 0
+          fi
+          git commit -m "Seed official CMS clinic buyer census"
+          git pull --rebase origin master
+          git push origin HEAD:master
