@@ -1161,3 +1161,19 @@ set contact_key=case
     else null end
 from market_inventory_candidates c
 where e.candidate_id=c.candidate_id and e.contact_key is null;
+
+
+-- Companion buyer-organization identity catches repeat purchases via a new email.
+alter table growth_prospect_exposures add column if not exists recipient_business_key text;
+update growth_prospect_exposures e
+set recipient_business_key='business:'||regexp_replace(lower(g.business_name),'[^a-z0-9]','','g')
+from growth_sample_requests g
+where e.delivery_ref in ('sample:'||g.sample_id::text,'historical-sample:'||g.sample_id::text)
+  and e.recipient_business_key is null;
+update growth_prospect_exposures e
+set recipient_business_key='business:'||regexp_replace(lower(g.business_name),'[^a-z0-9]','','g')
+from orders o join growth_sample_requests g on g.sample_id=o.growth_sample_id
+where e.delivery_ref in ('order:'||o.order_id::text,'historical-order:'||o.order_id::text)
+  and e.recipient_business_key is null;
+create index if not exists idx_growth_exposure_recipient_business
+  on growth_prospect_exposures(recipient_business_key,prospect_key,status);
