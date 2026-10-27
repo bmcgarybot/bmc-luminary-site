@@ -1,0 +1,43 @@
+name: Assistant Scottsdale New Business License Census
+
+on:
+  push:
+    paths:
+      - 'portfolio/automation/export-scottsdale-new-business-licenses.py'
+      - '.github/workflows/assistant-scottsdale-new-business-licenses.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install PDF table reader
+        run: python3 -m pip install --disable-pip-version-check pdfplumber
+
+      - name: Export Scottsdale 2026 weekly new-business licenses
+        run: |
+          python3 portfolio/automation/export-scottsdale-new-business-licenses.py             --date 2026-10-26             --year 2026             --output-dir portfolio/data
+
+      - name: Validate deterministic census builder
+        run: |
+          python3 portfolio/automation/build-assistant-research-seed.py             --data-dir portfolio/data             --output /tmp/assistant-research-seed.sql             --summary-json 2>/tmp/census-summary.json
+          cat /tmp/census-summary.json
+
+      - name: Commit Scottsdale City license artifact
+        run: |
+          git config user.name "BMC Assistant Census"
+          git config user.email "actions@users.noreply.github.com"
+          git add portfolio/data/assistant-research-bootstrap-2026-10-26-scottsdale-new-business-licenses-11.json
+          if git diff --cached --quiet; then
+            echo "No artifact changes."
+            exit 0
+          fi
+          git commit -m "Seed Scottsdale 2026 new business license census"
+          git push origin HEAD:master
