@@ -81,6 +81,7 @@ jobs:
           assert "growth_claim_token" in api and "one_click_sample_claimed" in api
           assert "growth_lock_exposure_allocator" in api and "growth_exposure_filter" in api
           assert "growth_record_exposures" in api and "GROWTH_FREE_DISTINCT_90D" in api
+          assert "approved_domains" in api and "growth_source_rights_review" in api
           assert "owner_template_preview_catalog" in api and "replay-all-email-templates-to-owner" in api
           assert "OWNER PREVIEW" in api and "count_sent" in api
           for table in ("growth_experiment_cells","growth_outreach_targets","growth_sample_requests","growth_sample_prospects","growth_order_prospects","growth_prospect_exposures","growth_prospect_suppressions","growth_source_rights_review"):
@@ -601,7 +602,13 @@ jobs:
               'vendor','CI Growth Market','pressure_washing','Pressure Washing','CI Pressure Wash Co',
               'https://ci-pressure.example.com','ci-pressure.example.com','ci-pressure@example.com','9285559999',
               true,'direct','direct_evidence',now(),'discovered',now()
-            ) on conflict do nothing;"
+            ) on conflict do nothing;
+
+            -- Only synthetic domains are marked redistribution-approved for this test.
+            insert into growth_source_rights_review(source_domain,status,basis,reviewed_at)
+            select 'ci-prospect-'||g||'.example.com','approved','synthetic CI test domain',now()
+            from generate_series(1,135) g
+            on conflict(source_domain) do update set status='approved',reviewed_at=now();"
 
           curl -fsS -X POST http://127.0.0.1:8000/api/admin/stage-growth-pressure-washing \
             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_growth_stage.json
