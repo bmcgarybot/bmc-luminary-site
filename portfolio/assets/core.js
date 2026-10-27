@@ -8,6 +8,7 @@
   (function(){
     const providerSide=/\/(providers|vendor-partner|provider-pilot|provider-pilot-activate|provider-response|provider-job-update|provider-login|provider-dashboard)\//.test(location.pathname);
     const navIn=document.querySelector(".nav .nav-in");
+    if(document.body.classList.contains("growth-seller-page")) return;
     if(!navIn || navIn.querySelector("[data-audience-switch]")) return;
     const tools=document.createElement("div");
     tools.className="nav-tools";
@@ -71,6 +72,20 @@
     markets.forEach(function(city){const o=document.createElement("option");o.value=city;o.textContent=city;sel.appendChild(o);});
     const other=document.createElement("option");other.value="Other Arizona";other.textContent="Other Arizona";sel.appendChild(other);
   });
+  // Prefill campaign landing forms without exposing email addresses in URLs.
+  const landingQuery=new URLSearchParams(location.search);
+  const prefillMap={market:"market",business:"business_name",target:"source_target_id"};
+  Object.entries(prefillMap).forEach(function([queryKey,fieldName]){
+    const value=landingQuery.get(queryKey);
+    if(!value)return;
+    document.querySelectorAll('[name="'+fieldName+'"]').forEach(function(field){
+      if(field.tagName==="SELECT"){
+        const option=[...field.options].find(o=>o.value===value);
+        if(option)field.value=value;
+      }else field.value=value;
+    });
+  });
+
   document.querySelectorAll("[data-year]").forEach(function(el){el.textContent=new Date().getFullYear();});
   document.querySelectorAll(".footer-in").forEach(function(el){
     if(el.querySelector("[data-bmc-legal-links]"))return;
@@ -129,7 +144,23 @@
         ? "We broke this into the right building jobs."
         : "We got your request.";
     let steps=[];
-    if(formType==="vendor_response"){
+    if(formType==="growth_snapshot"){
+      if(response.status==="sample_pending"){
+        title="We saved your target request.";
+        steps=[
+          "BMC will not pad a sample with weak records just to reach five.",
+          "This exact market needs an inventory check before the five can be sent.",
+          "You do not need to submit the form again."
+        ];
+      }else{
+        title="Your 5 commercial targets are ready.";
+        steps=[
+          "Use the five free targets and judge the fit for yourself.",
+          response.checkout_url?"If they match the work you want, the full pack is 100 total qualified prospects for $499.":"BMC is not offering the 100-prospect pack in this market until the reserve inventory clears the quality gate.",
+          "If a paid prospect later fails the published qualification standard, BMC replaces it."
+        ];
+      }
+    }else if(formType==="vendor_response"){
       if(response.status==="accepted"){
         title="Job accepted.";
         steps=[
@@ -231,6 +262,37 @@
     card.appendChild(heading);
     card.appendChild(message);
     card.appendChild(list);
+    if(formType==="growth_snapshot" && Array.isArray(response.sample) && response.sample.length){
+      const sampleWrap=document.createElement("div");
+      sampleWrap.className="growth-sample-results";
+      response.sample.forEach(function(row,index){
+        const item=document.createElement("div");
+        item.className="soft-panel";
+        const h=document.createElement("h4");
+        h.textContent=(index+1)+". "+(row.business_name||"Commercial prospect")+" · "+(row.fit_score||0)+"/100";
+        const why=document.createElement("p");
+        why.textContent=row.fit_reason||"Qualified commercial fit.";
+        const contact=document.createElement("p");
+        contact.textContent="Public contact route: "+(row.contact_route||"See source");
+        const angle=document.createElement("p");
+        angle.textContent="Suggested angle: "+(row.sales_angle||"Lead with the relevant commercial use case.");
+        item.append(h,why,contact,angle);
+        if(row.source_url && /^https?:\/\//i.test(row.source_url)){
+          const source=document.createElement("a");
+          source.href=row.source_url;source.target="_blank";source.rel="noopener";
+          source.textContent="View source";
+          item.appendChild(source);
+        }
+        sampleWrap.appendChild(item);
+      });
+      card.appendChild(sampleWrap);
+      if(response.checkout_url && /^https:\/\/buy\.stripe\.com\//i.test(response.checkout_url)){
+        const actions=document.createElement("div");actions.className="actions";
+        const checkout=document.createElement("a");checkout.className="btn btn-primary";
+        checkout.href=response.checkout_url;checkout.textContent="Get the full 100 for $499";
+        actions.appendChild(checkout);card.appendChild(actions);
+      }
+    }
     card.classList.add("show");
     card.scrollIntoView({behavior:"smooth",block:"center"});
   }
