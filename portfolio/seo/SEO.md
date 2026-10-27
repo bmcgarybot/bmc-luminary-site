@@ -30,6 +30,8 @@ Initial URL Inspection set:
 - `https://bmcservicenetwork.com/restaurant-equipment-repair/`
 - `https://bmcservicenetwork.com/auto-repair-shop/`
 - `https://bmcservicenetwork.com/growth-packs/`
+- `https://bmcservicenetwork.com/growth-packs/pressure-washing/` — first live Growth Intelligence niche
+- `https://bmcservicenetwork.com/growth-packs/commercial-cleaning/` — staged fallback/challenger niche
 - `https://bmcservicenetwork.com/market-expansion-pack/`
 
 The sitemap remains the discovery mechanism for the rest of the public pages. Keep private provider workflows, payment confirmations, synthetic tests, and other noindex pages out of it.
@@ -73,3 +75,12 @@ Track per URL:
 - lead conversion rate
 - vendor acceptance
 - revenue
+
+
+## Growth Intelligence SEO launch rule
+- The Growth hub is the canonical research-sales entry point.
+- Each live niche page must have a unique title, meta description, canonical URL, service-specific structured data, one clear free-sample CTA, and plain-language qualification disclosure.
+- Do not create hundreds of thin niche/city Growth pages. Open a niche page only when the qualification engine can honestly support the product.
+- First live niche: commercial pressure washing / exterior cleaning.
+- Search traffic is supplemental during the November revenue sprint; controlled B2B outreach is the primary acquisition channel.
+- Track the Growth funnel separately: landing visits -> free-five submissions -> samples delivered -> checkout -> paid order -> fulfillment -> repeat/refresh.
