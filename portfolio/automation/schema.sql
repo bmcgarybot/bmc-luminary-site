@@ -938,3 +938,112 @@ alter table market_inventory_progress alter column query_strategy_version set de
 
 
 
+
+
+-- GROWTH_INTELLIGENCE_V1
+-- Phase 1 revenue engine. Additive only: Service Network tables remain intact.
+create table if not exists growth_experiment_cells (
+  cell_key text primary key,
+  service_key text not null,
+  market_group text not null,
+  offer_version text not null default 'free5_to_499_v1',
+  message_version text not null default 'free5_v1',
+  sample_version text not null default 'qualified5_v1',
+  status text not null default 'exploring',
+  valid_sends integer not null default 0,
+  engagements integer not null default 0,
+  samples_requested integer not null default 0,
+  samples_delivered integer not null default 0,
+  paid_orders integer not null default 0,
+  revenue_cents integer not null default 0,
+  refunds_cents integer not null default 0,
+  next_review_at timestamptz,
+  started_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create table if not exists growth_outreach_targets (
+  target_id text primary key,
+  business_name text not null,
+  public_email text not null,
+  public_phone text,
+  website text,
+  source_url text,
+  market text not null,
+  service_key text not null,
+  experiment_cell text references growth_experiment_cells(cell_key) on delete set null,
+  source_kind text,
+  fit_score integer not null default 0,
+  status text not null default 'contactable',
+  source_data jsonb default '{}'::jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+create unique index if not exists uq_growth_target_email_service
+on growth_outreach_targets(lower(public_email),service_key);
+create index if not exists idx_growth_targets_cell_status
+on growth_outreach_targets(experiment_cell,status,fit_score desc);
+
+create table if not exists growth_sample_requests (
+  sample_id uuid primary key default gen_random_uuid(),
+  submission_id text not null unique,
+  business_name text not null,
+  contact_name text not null,
+  email text not null,
+  provider_service_key text not null,
+  market text not null,
+  service_area text,
+  ideal_customer text,
+  minimum_job text,
+  exclusions text,
+  experiment_cell text references growth_experiment_cells(cell_key) on delete set null,
+  source_target_id text references growth_outreach_targets(target_id) on delete set null,
+  status text not null default 'requested',
+  sample_payload jsonb default '[]'::jsonb,
+  sample_generated_at timestamptz,
+  sample_sent_at timestamptz,
+  nurture_step integer not null default 0,
+  next_nurture_at timestamptz,
+  converted_at timestamptz,
+  order_id uuid,
+  source_page text,
+  attribution jsonb default '{}'::jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+create index if not exists idx_growth_samples_nurture
+on growth_sample_requests(status,next_nurture_at,created_at);
+create index if not exists idx_growth_samples_email
+on growth_sample_requests(lower(email),provider_service_key,created_at desc);
+
+create table if not exists growth_sample_prospects (
+  sample_id uuid references growth_sample_requests(sample_id) on delete cascade,
+  candidate_id uuid references market_inventory_candidates(candidate_id) on delete set null,
+  business_name text not null,
+  market text not null,
+  category_key text,
+  category_label text,
+  fit_score integer not null,
+  grade text not null,
+  fit_reason text not null,
+  sales_angle text,
+  public_email text,
+  public_phone text,
+  source_url text,
+  source_domain text,
+  verification_status text,
+  delivered_at timestamptz default now(),
+  primary key(sample_id,business_name)
+);
+create index if not exists idx_growth_sample_prospects_score
+on growth_sample_prospects(sample_id,fit_score desc);
+
+alter table orders add column if not exists growth_sample_id uuid references growth_sample_requests(sample_id) on delete set null;
+create index if not exists idx_orders_growth_sample on orders(growth_sample_id);
+
+-- Backfill the FK now that orders and sample requests both exist.
+alter table growth_sample_requests
+  drop constraint if exists growth_sample_requests_order_id_fkey;
+alter table growth_sample_requests
+  add constraint growth_sample_requests_order_id_fkey
+  foreign key(order_id) references orders(order_id) on delete set null;
