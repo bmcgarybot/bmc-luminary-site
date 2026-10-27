@@ -28,8 +28,10 @@ jobs:
           ns=runpy.run_path("vps-gitops-relay.py",run_name="bmc_relay_ci")
           expected={
               "proof_readout","launch_audit","runtime_doctor","diagnostic_bundle","scheduler_status","search_quality_probe","research_refresh_status",
+              "growth_status","growth_launch_audit",
               "deploy_update","market_inventory_step","local_demand_step",
-              "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","inventory_closure_step","research_refresh_install","scheduler_start","scheduler_stop"
+              "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","inventory_closure_step","research_refresh_install","scheduler_start","scheduler_stop",
+              "growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_launch_enable","growth_launch_disable"
           }
           assert ns["ALLOWED_ACTIONS"] == expected, ns["ALLOWED_ACTIONS"]
           assert all("shell" not in x for x in ns["ALLOWED_ACTIONS"])
@@ -59,6 +61,32 @@ jobs:
           assert not dup, f"Duplicate service keys: {sorted(dup)}"
           assert not missing, f"Missing service fronts: {missing}"
           print(f"Validated {len(services)} registered services")
+          # GROWTH_LAUNCH_CONTRACT_V1
+          growth=(root/"growth-packs"/"index.html").read_text()
+          pressure=(root/"growth-packs"/"pressure-washing"/"index.html").read_text()
+          cleaning=(root/"growth-packs"/"commercial-cleaning"/"index.html").read_text()
+          core=(root/"assets"/"core.js").read_text()
+          sitemap=(root/"sitemap.xml").read_text()
+          schema=(root/"automation"/"schema.sql").read_text()
+          api=(root/"automation"/"api"/"app.py").read_text()
+          scheduler=(root/"automation"/"scheduler.sh").read_text()
+          assert "Show me 5 free targets" in growth
+          assert 'data-form-type="growth_snapshot"' in pressure
+          assert 'name="service_key" value="pressure_washing"' in pressure
+          assert 'data-form-type="growth_snapshot"' in cleaning
+          assert 'name="service_key" value="commercial_cleaning"' in cleaning
+          assert "/growth-packs/pressure-washing/" in sitemap
+          assert "response.sample" in core and "Get the full 100 for $499" in core
+          for table in ("growth_experiment_cells","growth_outreach_targets","growth_sample_requests","growth_sample_prospects","growth_order_prospects"):
+              assert f"create table if not exists {table}" in schema, table
+          for endpoint in ("/api/admin/stage-growth-pressure-washing","/api/admin/growth-status","/api/process-growth-health","/api/process-growth-nurture","/api/process-growth-fulfillment"):
+              assert endpoint in api, endpoint
+          assert "GROWTH_SAMPLE_MIN_RESERVE" in api
+          assert "growth_sample_id" in api
+          assert "post /api/process-growth-health" in scheduler
+          assert "post /api/process-growth-nurture" in scheduler
+          assert "post /api/process-growth-fulfillment" in scheduler
+
           import re
           allowed=set(s["service_key"] for s in services) | {"universal_request","vendor_partner","vendor_pilot_activation","vendor_response","job_update","facility_maintenance"}
           invalid=[]
@@ -370,7 +398,7 @@ jobs:
         run: |
           bash -n provision-cloud.sh bootstrap.sh start.sh stop.sh backup.sh runtime-doctor.sh deploy-update.sh \
             configure-cloudflare.sh verify-public-ingress.sh verify-backup.sh install-backup-timer.sh \
-            expand-source-native-markets.sh configure-stripe-webhook.sh drain-research-backlog.sh launch-readiness.sh \
+            expand-source-native-markets.sh configure-stripe-webhook.sh drain-research-backlog.sh launch-readiness.sh growth-launch-readiness.sh \
             stage-outreach-wave.sh install-vps-gitops-relay.sh research-source-refresh.sh \
             install-research-refresh-timers.sh research-refresh-status.sh
           sh -n scheduler.sh research-refresher-loop.sh
@@ -527,6 +555,9 @@ jobs:
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from information_schema.tables where table_name='public_opportunities';")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from information_schema.tables where table_name='local_demand_signals';")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from information_schema.tables where table_name='source_native_state';")" -eq 1
+          for growth_table in growth_experiment_cells growth_outreach_targets growth_sample_requests growth_sample_prospects growth_order_prospects; do
+            test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from information_schema.tables where table_name='$growth_table';")" -eq 1
+          done
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='vendor' and wave='pilot1';")" -eq 12
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='buyer' and wave='pilot1';")" -eq 7
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='buyer' and campaign='growth_pack_sales' and wave='growth1';")" -ge 1
@@ -694,6 +725,23 @@ jobs:
           assert data["ok"] is True
           assert data["enabled"] is False
           assert data["sent"] == 0
+          PY
+
+          curl -fsS -X POST http://127.0.0.1:8000/api/process-growth-health             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_growth_health.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_growth_health.json"))
+          assert data["ok"] is True
+          assert data["config_ready"] in (True,False)
+          assert "sample_reserve" in data
+          PY
+
+          curl -fsS -X POST http://127.0.0.1:8000/api/process-growth-nurture             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_growth_nurture.json
+          curl -fsS -X POST http://127.0.0.1:8000/api/process-growth-fulfillment             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_growth_fulfillment.json
+          python - <<'PY'
+          import json
+          assert json.load(open("/tmp/bmc_growth_nurture.json"))["ok"] is True
+          assert json.load(open("/tmp/bmc_growth_fulfillment.json"))["ok"] is True
           PY
 
           # Prove the bounded operator performs internal work while external actions remain impossible.
