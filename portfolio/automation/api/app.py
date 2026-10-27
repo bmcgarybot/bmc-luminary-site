@@ -3182,7 +3182,7 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
               await conn.execute("update tasks set status='exception',updated_at=now() where task_id=$1",row["task_id"])
               await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
                 values('growth_fulfillment_inventory','critical',$1,$2)""",
-                f"Paid Growth order {row['order_id']} cannot produce 100 unique qualified prospects without padding",
+                f"Paid Growth order {row['paid_order_id']} cannot produce 100 unique qualified prospects without padding",
                 "Review territory/ICP and contact the customer before changing scope or issuing a refund")
               exceptions+=1; continue
           final=[]
@@ -3204,7 +3204,7 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
               await conn.execute("update tasks set status='exception',updated_at=now() where task_id=$1",row["task_id"])
               await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
                 values('growth_fulfillment_qa','critical',$1,$2)""",
-                f"Growth order {row['order_id']} failed deterministic delivery QA",
+                f"Growth order {row['paid_order_id']} failed deterministic delivery QA",
                 f"QA count={qa_count} score={qa_scores} market={qa_market} unique={qa_unique} source={qa_sources}; do not send until fixed")
               exceptions+=1; continue
           await growth_record_exposures(conn,candidates[:100-len(sample_rows)],row["customer_email"],
@@ -3246,7 +3246,7 @@ BMC Luminary Ventures LLC
               await conn.execute("update tasks set status='exception',updated_at=now() where task_id=$1",row["task_id"])
               await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
                 values('growth_fulfillment_delivery_failure','critical',$1,$2)""",
-                f"Paid Growth order {row['order_id']} passed QA but email delivery failed",
+                f"Paid Growth order {row['paid_order_id']} passed QA but email delivery failed",
                 "Verify customer email/SMTP and resend the stored 100-row order deliverable")
               exceptions+=1; continue
           await conn.execute("""update growth_prospect_exposures set status='delivered',delivered_at=now()
