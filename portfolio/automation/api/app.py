@@ -2719,7 +2719,7 @@ async def growth_runtime_status(conn):
     samples=await conn.fetchval("select count(*) from growth_sample_requests")
     delivered=await conn.fetchval("select count(*) from growth_sample_requests where status in ('delivered','converted','fulfilled')")
     converted=await conn.fetchval("select count(*) from growth_sample_requests where converted_at is not null")
-    paid=await conn.fetchval("""select count(*),coalesce(sum(amount_cents),0) from orders
+    paid=await conn.fetchrow("""select count(*)::int as paid_orders,coalesce(sum(amount_cents),0)::bigint as revenue_cents from orders
       where product_key in ('growth_pack_starter','growth_pack_premium') and payment_status in ('paid','complete')""")
     open_errors=await conn.fetchval("""select count(*) from exceptions where status='open' and type like 'growth_%'""")
     smtp_ready=bool(SMTP_HOST and SMTP_USER and SMTP_PASSWORD and "CHANGE_ME" not in SMTP_HOST+SMTP_USER+SMTP_PASSWORD)
@@ -2731,7 +2731,7 @@ async def growth_runtime_status(conn):
       "config":{"smtp":smtp_ready,"imap":imap_ready,"postal":postal_ready,"payment_link":int(links or 0)>=1},
       "config_ready":config_ready,"staged_active":int(staged or 0),"sent":int(sent or 0),"replies":int(replies or 0),
       "samples_requested":int(samples or 0),"samples_delivered":int(delivered or 0),"converted_samples":int(converted or 0),
-      "paid_orders":int(paid[0] or 0),"revenue_cents":int(paid[1] or 0),"open_growth_exceptions":int(open_errors or 0)}
+      "paid_orders":int(paid["paid_orders"] or 0),"revenue_cents":int(paid["revenue_cents"] or 0),"open_growth_exceptions":int(open_errors or 0)}
 
 @app.post("/api/admin/stage-growth-pressure-washing")
 async def admin_stage_growth_pressure_washing(x_bmc_admin_key:str|None=Header(default=None)):
