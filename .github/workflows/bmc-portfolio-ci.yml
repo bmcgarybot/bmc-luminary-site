@@ -778,7 +778,7 @@ jobs:
           import concurrent.futures,json,urllib.request
           def sample(email,uid):
               payload={"submission_id":uid,"form_type":"growth_snapshot","service_key":"pressure_washing",
-                       "business_name":"Race Synthetic Contractor "+("A" if uid.endswith("-a") else "B" if uid.endswith("-b") else "A"),"contact_name":"CI Owner",
+                       "business_name":("Race Alternate Name" if uid.endswith("-d") else "Race Synthetic Contractor "+("A" if uid.endswith("-a") else "B" if uid.endswith("-b") else "A")),"contact_name":"CI Owner",
                        "email":email,"market":"CI Race Market","consent":"yes"}
               request=urllib.request.Request("http://127.0.0.1:8000/api/intake",
                 json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
@@ -798,6 +798,8 @@ jobs:
           assert {x["business_name"] for x in repeated["sample"]}==a,"Repeat click rotated delivered list"
           alias=sample("ci-race-alias@example.com","ci-race-sample-c")
           assert alias["status"]=="already_claimed" and alias["sample"]==[],alias
+          alias_by_email=sample("ci-race-a@example.com","ci-race-sample-d")
+          assert alias_by_email["status"]=="already_claimed" and alias_by_email["sample"]==[],alias_by_email
           print("Concurrency, rights, suppression and idempotency passed")
           PY
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct prospect_key) from growth_prospect_exposures where market='CI Race Market' and status='delivered';")" -eq 10
