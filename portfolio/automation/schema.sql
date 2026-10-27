@@ -1047,3 +1047,27 @@ alter table growth_sample_requests
 alter table growth_sample_requests
   add constraint growth_sample_requests_order_id_fkey
   foreign key(order_id) references orders(order_id) on delete set null;
+
+
+create table if not exists growth_order_prospects (
+  order_id uuid references orders(order_id) on delete cascade,
+  candidate_id uuid references market_inventory_candidates(candidate_id) on delete set null,
+  business_name text not null,
+  market text not null,
+  category_key text,
+  category_label text,
+  fit_score integer not null,
+  grade text not null,
+  fit_reason text not null,
+  sales_angle text,
+  public_email text,
+  public_phone text,
+  source_url text,
+  source_domain text,
+  verification_status text,
+  delivered_at timestamptz,
+  created_at timestamptz default now(),
+  primary key(order_id,business_name)
+);
+create index if not exists idx_growth_order_prospects_score
+on growth_order_prospects(order_id,fit_score desc);
