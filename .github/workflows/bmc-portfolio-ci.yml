@@ -481,6 +481,7 @@ jobs:
           assert row["service_key"] == "commercial_cleaning"
           assert "/provider-pilot-activate/?" in row["body"]
           assert "vendor_id=v_ci_stage" in row["body"]
+          assert "activation_token=" in row["body"]
           PY
 
           # Execute the production launch audit against the disposable stack in report mode.
@@ -940,20 +941,96 @@ jobs:
           import json
           data=json.load(open("/tmp/bmc_first_wave.json"))
           assert data["count"] == 19
-          provider=next(x for x in data["records"] if x["side"]=="vendor")
+          from urllib.parse import urlparse,parse_qs
+          provider=next(x for x in data["records"] if x["side"]=="vendor" and x["entity_id"]=="v_prescott_zebrascapes")
           assert "/provider-pilot-activate/?" in provider["activation_url"]
           assert "/provider-pilot-activate/?" in provider["body"]
+          assert "activation_token=" in provider["activation_url"]
+          assert "activation_token=" in provider["body"]
           assert "There is no fee to join." in provider["body"]
           assert "price and terms will be shown before you choose to participate" in provider["body"]
           assert "prove whether BMC is worth paying for" not in provider["body"]
           assert "/vendor-partner/" not in provider["body"]
+          token=parse_qs(urlparse(provider["activation_url"]).query)["activation_token"][0]
+          assert len(token)>60
+          open("/tmp/bmc_pilot_activation_token","w").write(token)
           PY
+          ACTIVATION_TOKEN="$(cat /tmp/bmc_pilot_activation_token)"
+
+          # A bare vendor_id or forged token must not be allowed to mutate an invited provider.
+          activation_code="$(curl -sS -o /tmp/bmc_bad_activation.json -w '%{http_code}' -X POST http://127.0.0.1:8000/api/intake \
+            -H 'Content-Type: application/json' \
+            -d '{"form_type":"vendor_pilot_activation","vendor_id":"v_prescott_zebrascapes","activation_token":"1.invalid","email":"info@zebrascapes.com","market":"Prescott","territory":"Prescott","services":"tree service","capacity":"3 new jobs per week","contact_name":"CI Test","pilot_terms":"accepted"}')"
+          test "$activation_code" = "403"
+
+          # Prove the public website provider application is one form, deduplicates repeat submits,
+          # enters the real review queue, and cannot be approved without routable service keys.
+          curl -fsS -X POST http://127.0.0.1:8000/api/intake \
+            -H 'Content-Type: application/json' \
+            -d '{"form_type":"vendor_partner","business_name":"CI Website Electric","business_url":"https://example.com/provider","contact_name":"Casey Test","email":"ci-web-applicant@example.com","phone":"9285550123","market":"Prescott","territory":"Prescott and Prescott Valley","services":"panel upgrades, EV chargers, and electrical service calls","minimum_job":"250","capacity":"2 jobs per week","credentials":"CI electrical credential placeholder","pilot_terms":"accepted"}' \
+            >/tmp/bmc_web_applicant_1.json
+          curl -fsS -X POST http://127.0.0.1:8000/api/intake \
+            -H 'Content-Type: application/json' \
+            -d '{"form_type":"vendor_partner","business_name":"CI Website Electric","business_url":"https://example.com/provider","contact_name":"Casey Test","email":"ci-web-applicant@example.com","phone":"9285550123","market":"Prescott","territory":"Prescott and Prescott Valley","services":"panel upgrades, EV chargers, and electrical service calls","minimum_job":"250","capacity":"2 jobs per week","credentials":"CI electrical credential placeholder","pilot_terms":"accepted"}' \
+            >/tmp/bmc_web_applicant_2.json
+          python - <<'PY'
+          import json
+          a=json.load(open("/tmp/bmc_web_applicant_1.json"))
+          b=json.load(open("/tmp/bmc_web_applicant_2.json"))
+          assert a["ok"] is True and b["ok"] is True
+          assert a["status"]=="pilot_pending_review" and b["status"]=="pilot_pending_review"
+          assert a["vendor_id"]==b["vendor_id"]
+          assert "done for now" in a["message"].lower()
+          open("/tmp/bmc_web_applicant_vid","w").write(a["vendor_id"])
+          PY
+          WEB_APP_VENDOR_ID="$(cat /tmp/bmc_web_applicant_vid)"
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from vendors where lower(business_name)='ci website electric' and lower(public_email)='ci-web-applicant@example.com';")" -eq 1
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from vendors where vendor_id='$WEB_APP_VENDOR_ID';")" = "pilot_pending_review"
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from exceptions where vendor_id='$WEB_APP_VENDOR_ID' and type='pilot_activation_review' and status='open';")" -eq 1
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from exceptions where vendor_id='$WEB_APP_VENDOR_ID' and type='vendor_application_review' and status='open';")" -eq 0
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from events where entity_type='vendor' and entity_id='$WEB_APP_VENDOR_ID' and event_type='pilot_activation_submitted' and payload->>'source'='website_application';")" -ge 1
+          curl -fsS http://127.0.0.1:8000/api/admin/pilot-reviews \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_web_applicant_reviews.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_web_applicant_reviews.json"))
+          vid=open("/tmp/bmc_web_applicant_vid").read().strip()
+          row=next(x for x in data["records"] if x["vendor_id"]==vid)
+          assert row["activation"]["source"]=="website_application"
+          assert "panel upgrades" in row["activation"]["services"]
+          PY
+          no_service_code="$(curl -sS -o /tmp/bmc_web_applicant_no_service.json -w '%{http_code}' -X POST http://127.0.0.1:8000/api/admin/approve-pilot \
+            -H 'Content-Type: application/json' \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" \
+            -d '{"vendor_id":"'"$WEB_APP_VENDOR_ID"'","confirm_credentials":true,"notes":"CI should block unroutable approval"}')"
+          test "$no_service_code" = "409"
+          grep -q 'Assign at least one routable provider service' /tmp/bmc_web_applicant_no_service.json
+          curl -fsS -X POST http://127.0.0.1:8000/api/admin/vendor-status \
+            -H 'Content-Type: application/json' \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" \
+            -d '{"vendor_id":"'"$WEB_APP_VENDOR_ID"'","status":"pilot_pending_review","services":["electrical_service"],"markets":["Prescott","Prescott Valley"]}' \
+            >/tmp/bmc_web_applicant_routing.json
+          curl -fsS -X POST http://127.0.0.1:8000/api/admin/approve-pilot \
+            -H 'Content-Type: application/json' \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" \
+            -d '{"vendor_id":"'"$WEB_APP_VENDOR_ID"'","confirm_credentials":true,"notes":"CI one-form website applicant approval"}' \
+            >/tmp/bmc_web_applicant_approved.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_web_applicant_approved.json"))
+          assert data["ok"] is True and data["status"]=="pilot"
+          PY
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            delete from vendor_portal_tokens where vendor_id='$WEB_APP_VENDOR_ID';
+            delete from events where entity_type='vendor' and entity_id='$WEB_APP_VENDOR_ID';
+            delete from exceptions where vendor_id='$WEB_APP_VENDOR_ID';
+            delete from vendors where vendor_id='$WEB_APP_VENDOR_ID';"
 
           # Prove a First Wave provider can submit against its existing record, stays unroutable,
           # appears in the private review queue, and only becomes pilot after BMC approval.
           curl -fsS -X POST http://127.0.0.1:8000/api/intake \
             -H 'Content-Type: application/json' \
-            -d '{"form_type":"vendor_pilot_activation","vendor_id":"v_prescott_zebrascapes","email":"info@zebrascapes.com","territory":"Prescott and surrounding Yavapai County","minimum_job":"500","capacity":"3 new jobs per week","credentials":"CI credential review","insurance":"CI insurance review","pilot_terms":"accepted"}' \
+            -d '{"form_type":"vendor_pilot_activation","vendor_id":"v_prescott_zebrascapes","activation_token":"'"$ACTIVATION_TOKEN"'","contact_name":"CI Test","email":"info@zebrascapes.com","market":"Prescott","territory":"Prescott and surrounding Yavapai County","services":"tree service and landscaping","minimum_job":"500","capacity":"3 new jobs per week","credentials":"CI credential review","insurance":"CI insurance review","pilot_terms":"accepted"}' \
             >/tmp/bmc_pilot_activation.json
           python - <<'PY'
           import json

@@ -9,6 +9,7 @@ NAME_RE=re.compile(r'\bname="([^"]+)"',re.I)
 CONTROL_RE=re.compile(r'<(?:input|select|textarea)\b[^>]*>',re.I)
 
 REQUIRED={
+  "vendor_partner":{"business_name","contact_name","email","market","services","capacity","pilot_terms"},
   "vendor_pilot_activation":{"contact_name","email","market","territory","services","capacity","pilot_terms"},
 }
 
@@ -16,7 +17,7 @@ SPECIAL={
   "universal_request":{"scope","market","consent"},
   "facility_maintenance":{"scope","market","consent"},
   "vendor_partner":{"business_name","market","pilot_terms"},
-  "vendor_pilot_activation":{"vendor_id","market","territory","services","capacity","pilot_terms"},
+  "vendor_pilot_activation":{"vendor_id","activation_token","market","territory","services","capacity","pilot_terms"},
   "vendor_response":{"lead_id","vendor_id","token","response"},
   "job_update":{"lead_id","vendor_id","token","job_status"},
 }

@@ -731,6 +731,33 @@ def provider_dashboard_url(token):
     return f"{PUBLIC_SITE_URL}/provider-dashboard/?token={urllib.parse.quote(clean(token))}"
 
 
+def vendor_activation_signature(vendor_id,email,expires_at):
+    if not ADMIN_KEY:
+        raise RuntimeError("BMC_ADMIN_KEY is required to sign provider activation links")
+    message=f"provider-onboarding|{clean(vendor_id)}|{clean(email).lower()}|{int(expires_at)}"
+    return hmac.new(ADMIN_KEY.encode("utf-8"),message.encode("utf-8"),hashlib.sha256).hexdigest()
+
+def issue_vendor_activation_token(vendor_id,email,hours=336):
+    expires_at=int(time.time())+int(hours)*3600
+    signature=vendor_activation_signature(vendor_id,email,expires_at)
+    return f"{expires_at}.{signature}"
+
+def verify_vendor_activation_token(vendor_id,email,token):
+    token=clean(token)
+    if not ADMIN_KEY or "." not in token:
+        return False
+    raw_exp,signature=token.split(".",1)
+    try:
+        expires_at=int(raw_exp)
+    except (TypeError,ValueError):
+        return False
+    now=int(time.time())
+    if expires_at < now-300 or expires_at > now+(60*24*3600):
+        return False
+    expected=vendor_activation_signature(vendor_id,email,expires_at)
+    return hmac.compare_digest(signature,expected)
+
+
 def classify_with_rules(text):
     t=clean(text).lower()
     rules=[
@@ -1472,6 +1499,7 @@ BMC Luminary Ventures LLC
     return {"ok":True,"status":"declined","message":"Declined. BMC recorded your response and is rerouting the request."}
 
 
+
 async def handle_vendor_pilot_activation(conn,p):
     vendor_id=clean(p.get("vendor_id"))
     if not vendor_id: raise HTTPException(400,"Vendor ID is required")
@@ -1479,9 +1507,17 @@ async def handle_vendor_pilot_activation(conn,p):
         raise HTTPException(400,"Provider pilot terms must be acknowledged")
     vendor=await conn.fetchrow("select * from vendors where vendor_id=$1",vendor_id)
     if not vendor: raise HTTPException(404,"Vendor record not found")
+    if not verify_vendor_activation_token(vendor_id,clean(vendor["public_email"]),p.get("activation_token")):
+        raise HTTPException(403,"This provider activation link is invalid or expired. Please use a fresh invitation.")
+    if vendor["status"]=="pilot_pending_review":
+        return {"ok":True,"status":"pilot_pending_review","vendor_id":vendor_id,
+          "message":"Your provider details are already waiting for review. You do not need to submit them again."}
+    if vendor["status"] not in ("prospect","applicant"):
+        raise HTTPException(409,"This provider record is already active or cannot use the invitation flow")
     email=clean(p.get("email")) or clean(vendor["public_email"])
     phone=clean(p.get("phone")) or clean(vendor["public_phone"])
     website=clean(p.get("business_url")) or clean(vendor["website"])
+    territory=clean(p.get("territory")) or clean(p.get("market"))
     await conn.execute("""update vendors set
       public_email=$2,public_phone=$3,website=$4,status='pilot_pending_review',
       territory_notes=coalesce(nullif($5,''),territory_notes),
@@ -1492,71 +1528,126 @@ async def handle_vendor_pilot_activation(conn,p):
       notes=concat_ws(E'\n',nullif(notes,''),$10::text),
       updated_at=now()
       where vendor_id=$1""",
-      vendor_id,email,phone,website,clean(p.get("territory")),clean(p.get("minimum_job")),
+      vendor_id,email,phone,website,territory,clean(p.get("minimum_job")),
       clean(p.get("capacity")),clean(p.get("credentials")),clean(p.get("insurance")),
-      "Pilot activation submitted: "+json.dumps({k:v for k,v in p.items() if k not in ("website",)}))
+      "Pilot activation submitted: "+json.dumps({k:v for k,v in p.items() if k not in ("website","activation_token")}))
     await conn.execute("""insert into exceptions(type,vendor_id,severity,summary,recommended_action)
-      values('pilot_activation_review',$1,'high',$2,$3)""",
+      select 'pilot_activation_review',$1,'high',$2,$3
+      where not exists (
+        select 1 from exceptions where vendor_id=$1 and type='pilot_activation_review' and status='open'
+      )""",
       vendor_id,f"Review pilot activation: {vendor['business_name']}",
-      "Verify pilot terms, territory, capacity, licensing/insurance where applicable; then move vendor to pilot if approved")
-    await event(conn,"vendor",vendor_id,"pilot_activation_submitted",p,vendor_id)
+      "Verify requested services, territory, capacity, licensing/insurance where applicable; assign routable service keys; then move vendor to pilot if approved")
+    await event(conn,"vendor",vendor_id,"pilot_activation_submitted",
+      {k:v for k,v in p.items() if k!="activation_token"},vendor_id)
     return {"ok":True,"status":"pilot_pending_review","vendor_id":vendor_id,
       "message":"Pilot details received. BMC will review the service, territory, capacity, and credentials before activating routing."}
 
+
 async def handle_vendor_application(conn,p):
-    business=clean(p.get("business_name")); market=clean(p.get("market"))
-    if not business or not market: raise HTTPException(400,"Business name and market required")
-    if clean(p.get("pilot_terms")).lower()!="accepted": raise HTTPException(400,"Provider pilot terms must be acknowledged")
-    vid=f"app_{slug(business)}_{uuid.uuid4().hex[:8]}"
-    await conn.execute("""insert into vendors(vendor_id,business_name,public_email,public_phone,website,status,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
-      values($1,$2,$3,$4,$5,'applicant',$6,$7,$8,$9,$10,$11)""",
-      vid,business,clean(p.get("email")),clean(p.get("phone")),clean(p.get("business_url")),
-      clean(p.get("territory")),clean(p.get("minimum_job")),clean(p.get("capacity")),
-      clean(p.get("credentials")),clean(p.get("insurance")),json.dumps(p))
-    await conn.execute("insert into vendor_markets(vendor_id,market) values($1,$2) on conflict do nothing",vid,market)
-    await conn.execute("insert into exceptions(type,vendor_id,severity,summary,recommended_action) values('vendor_application_review',$1,'normal',$2,$3)",
-                       vid,f"Review vendor application: {business}","Verify services, territory, licensing/insurance where applicable")
-    await event(conn,"vendor",vid,"application_received",p)
+    business=clean(p.get("business_name"))
+    market=clean(p.get("market"))
+    contact_name=clean(p.get("contact_name"))
     applicant_email=clean(p.get("email"))
-    if applicant_email:
-        body=f"""Hi {clean(p.get("contact_name")) or business},
+    services_text=clean(p.get("services"))
+    capacity=clean(p.get("capacity"))
+    if not business or not market or not contact_name or not applicant_email or not services_text or not capacity:
+        raise HTTPException(400,"Business name, contact name, email, market, requested work, and capacity are required")
+    if clean(p.get("pilot_terms")).lower()!="accepted":
+        raise HTTPException(400,"Provider pilot terms must be acknowledged")
+
+    existing=await conn.fetchrow("""select * from vendors
+      where lower(trim(business_name))=lower(trim($1))
+        and lower(trim(coalesce(public_email,'')))=lower(trim($2))
+        and status in ('applicant','pilot_pending_review','pilot','active','paused')
+      order by created_at desc limit 1""",business,applicant_email)
+
+    if existing and existing["status"] in ("pilot","active","paused"):
+        await event(conn,"vendor",existing["vendor_id"],"duplicate_application_existing_provider",
+          {"business_name":business,"email":applicant_email,"market":market})
+        return {"ok":True,"status":"already_registered","vendor_id":existing["vendor_id"],
+          "message":"This provider profile is already on file. Use Provider Login if you need a fresh dashboard link."}
+
+    territory=clean(p.get("territory")) or market
+    if existing:
+        vid=existing["vendor_id"]
+        await conn.execute("""update vendors set
+          business_name=$2,public_email=$3,public_phone=$4,website=$5,status='pilot_pending_review',
+          territory_notes=$6,minimum_job=$7,capacity=$8,license_notes=$9,insurance_notes=$10,
+          notes=concat_ws(E'\n',nullif(notes,''),$11::text),updated_at=now()
+          where vendor_id=$1""",
+          vid,business,applicant_email,clean(p.get("phone")),clean(p.get("business_url")),
+          territory,clean(p.get("minimum_job")),capacity,clean(p.get("credentials")),
+          clean(p.get("insurance")),"Website provider application resubmitted: "+json.dumps(p))
+        event_type="application_resubmitted"
+    else:
+        vid=f"app_{slug(business)}_{uuid.uuid4().hex[:8]}"
+        await conn.execute("""insert into vendors(vendor_id,business_name,public_email,public_phone,website,status,territory_notes,minimum_job,capacity,license_notes,insurance_notes,notes)
+          values($1,$2,$3,$4,$5,'pilot_pending_review',$6,$7,$8,$9,$10,$11)""",
+          vid,business,applicant_email,clean(p.get("phone")),clean(p.get("business_url")),
+          territory,clean(p.get("minimum_job")),capacity,clean(p.get("credentials")),
+          clean(p.get("insurance")),"Website provider application: "+json.dumps(p))
+        event_type="application_received"
+
+    await conn.execute("insert into vendor_markets(vendor_id,market) values($1,$2) on conflict do nothing",vid,market)
+    await conn.execute("""update exceptions set status='resolved',resolved_at=now(),
+      resolution='Superseded by one-step website provider review flow'
+      where vendor_id=$1 and type='vendor_application_review' and status='open'""",vid)
+    await conn.execute("""insert into exceptions(type,vendor_id,severity,summary,recommended_action)
+      select 'pilot_activation_review',$1,'high',$2,$3
+      where not exists (
+        select 1 from exceptions where vendor_id=$1 and type='pilot_activation_review' and status='open'
+      )""",
+      vid,f"Review provider application: {business}",
+      "Review requested services, assign at least one routable service key, verify territory/capacity and credentials where applicable, then approve the pilot if appropriate")
+
+    activation_payload=dict(p)
+    activation_payload["source"]="website_application"
+    await event(conn,"vendor",vid,event_type,activation_payload,"website_application")
+    await event(conn,"vendor",vid,"pilot_activation_submitted",activation_payload,"website_application")
+
+    body=f"""Hi {contact_name},
 
 We received your BMC provider application for {market}.
 
+You’re done for now. There is no second form to fill out.
+
 What happens next:
-1. We review the jobs and area you want.
+1. We review the jobs and area you selected.
 2. We check license or insurance details when the trade requires it.
-3. If the pilot is a fit, we confirm your provider status and you can start receiving matching requests.
+3. If approved, we email you a secure provider dashboard link.
 
 When a request comes in, you see the job details first. You can accept it or pass. Joining the pilot is free, and any future paid lead or territory terms will be shown before they apply.
 
 BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}
 """
-        html_body=workflow_email_html(
-          "We got your BMC provider application",
-          [
-            f"We received your application for {market}.",
-            "Next, we review the jobs and area you want and check license or insurance details when the trade requires it.",
-            "If the pilot is a fit, we confirm your provider status and you can start receiving matching requests.",
-            "When a request comes in, you see the job details first. You can accept it or pass.",
-            "Joining the pilot is free. Any future paid lead or territory terms will be shown before they apply."
-          ],
-          "Review the provider pilot terms",
-          f"{PUBLIC_SITE_URL}/provider-pilot/"
-        )
-        delivered=await send_mail(applicant_email,"We got your BMC provider application",body,html_body)
-        if delivered:
-            await event(conn,"vendor",vid,"application_receipt_sent",{"email":applicant_email})
-        else:
-            await conn.execute("""insert into exceptions(type,vendor_id,severity,summary,recommended_action)
-              values('vendor_application_receipt_delivery_failure',$1,'high',$2,$3)""",
-              vid,f"Provider application receipt could not be delivered: {business}",
-              "Verify transactional SMTP and applicant email; resend the application receipt after mail is healthy")
-            await event(conn,"vendor",vid,"application_receipt_delivery_failed",{"email":applicant_email})
-    return {"ok":True,"status":"application_received","vendor_id":vid,"message":"Application received. We’ll review the work and area you selected, then contact you if the pilot is a fit."}
-
-
+    html_body=workflow_email_html(
+      "We got your BMC provider application",
+      [
+        f"We received your application for {market}.",
+        "You’re done for now. There is no second form to fill out.",
+        "Next, we review the jobs and area you selected and check license or insurance details when the trade requires it.",
+        "If approved, we email you a secure provider dashboard link.",
+        "When a request comes in, you see the job details first. You can accept it or pass.",
+        "Joining the pilot is free. Any future paid lead or territory terms will be shown before they apply."
+      ]
+    )
+    delivered=await send_mail(applicant_email,"We got your BMC provider application",body,html_body)
+    if delivered:
+        await event(conn,"vendor",vid,"application_receipt_sent",{"email":applicant_email})
+    else:
+        await conn.execute("""insert into exceptions(type,vendor_id,severity,summary,recommended_action)
+          select 'vendor_application_receipt_delivery_failure',$1,'high',$2,$3
+          where not exists (
+            select 1 from exceptions where vendor_id=$1
+              and type='vendor_application_receipt_delivery_failure' and status='open'
+          )""",
+          vid,f"Provider application receipt could not be delivered: {business}",
+          "Verify transactional SMTP and applicant email; resend the application receipt after mail is healthy")
+        await event(conn,"vendor",vid,"application_receipt_delivery_failed",{"email":applicant_email})
+    return {"ok":True,"status":"pilot_pending_review","vendor_id":vid,
+      "message":"Application received. You’re done for now; BMC will review it and email you if we need anything else or when your provider dashboard is ready."}
 
 FACILITY_SERVICE_FIELDS={
     "need_commercial_cleaning":"commercial_cleaning",
@@ -2145,10 +2236,13 @@ Closing the loop helps BMC send work that fits your business.
 
 
 def pilot_activation_url(row):
+    vendor_id=clean(row["entity_id"])
+    public_email=clean(row.get("public_email") if hasattr(row,"get") else row["public_email"])
     params=urllib.parse.urlencode({
-      "vendor_id":clean(row["entity_id"]),
+      "vendor_id":vendor_id,
       "business_name":clean(row["business_name"]),
-      "market":clean(row["market"])
+      "market":clean(row["market"]),
+      "activation_token":issue_vendor_activation_token(vendor_id,public_email)
     })
     return f"{PILOT_ACTIVATION_URL}?{params}"
 
@@ -4491,6 +4585,12 @@ async def admin_approve_pilot(request:Request,x_bmc_admin_key:str|None=Header(de
                 raise HTTPException(409,"Provider pilot acceptance is not recorded")
             if not clean(vendor["territory_notes"]) or not clean(vendor["capacity"]):
                 raise HTTPException(409,"Provider territory and capacity must be recorded before pilot approval")
+            service_count=await conn.fetchval("select count(*) from vendor_services where vendor_id=$1",vid)
+            market_count=await conn.fetchval("select count(*) from vendor_markets where vendor_id=$1",vid)
+            if int(service_count or 0)<1:
+                raise HTTPException(409,"Assign at least one routable provider service before pilot approval")
+            if int(market_count or 0)<1:
+                raise HTTPException(409,"Assign at least one provider market before pilot approval")
             await conn.execute("update vendors set status='pilot',updated_at=now() where vendor_id=$1",vid)
             await conn.execute("""update exceptions set status='resolved',resolved_at=now(),resolution=$2
               where vendor_id=$1 and type='pilot_activation_review' and status='open'""",
