@@ -2690,6 +2690,21 @@ async def growth_claim_free_five(request:Request):
             raise HTTPException(404,"This free-five invitation is not active.")
         if not growth_claim_valid(target_id,target["public_email"],token):
             raise HTTPException(403,"This free-five link is invalid or expired.")
+        preview=str(p.get("preview") or "").lower() in ("1","true","yes")
+        if preview:
+            rows=await growth_qualified_candidates(
+              conn,target["service_key"],target["market"],limit=GROWTH_SAMPLE_MIN_RESERVE
+            )
+            if len(rows)<5:
+                return {"ok":True,"status":"sample_pending","sample_id":"owner-preview",
+                  "sample":[],"checkout_url":"","qualified_pool":len(rows),"preview":True,
+                  "message":"Owner preview: this market does not currently have five qualified rows."}
+            public_rows=growth_sample_public_rows(rows[:5])
+            return {"ok":True,"status":"sample_ready","sample_id":"owner-preview",
+              "sample":public_rows,
+              "checkout_url":"#owner-preview-checkout" if len(rows)>=GROWTH_SAMPLE_MIN_RESERVE else "",
+              "qualified_pool":len(rows),"preview":True,
+              "message":"Owner preview only — no customer sample, email, reply, or checkout was created."}
         submission_id="growth_claim_"+hashlib.sha256(target_id.encode("utf-8")).hexdigest()[:32]
         payload={
           "form_type":"growth_snapshot",
