@@ -2581,6 +2581,12 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
           case when coalesce(public_email,'')<>'' then 0 when coalesce(public_phone,'')<>'' then 1 else 2 end,
           coalesce(last_verified_at,last_seen_at,updated_at) desc nulls last
         limit $3""",market,categories,max(limit*4,500))
+    # Fail closed on commercial redistribution rights. Public visibility does
+    # not establish permission to package or resell the source material.
+    domains=list({clean(x["source_domain"]).lower().removeprefix("www.") for x in rows if clean(x["source_domain"])})
+    rights=await conn.fetch("""select lower(source_domain) as domain from growth_source_rights_review
+      where status='approved' and lower(source_domain)=any($1::text[])""",domains)
+    approved_domains={x["domain"] for x in rights}
     excluded_ids={str(x) for x in (exclude_ids or [])}
     excluded_names={clean(x).lower() for x in (exclude_names or [])}
     seen=set(); qualified=[]
@@ -2588,6 +2594,8 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
         r=dict(raw)
         host=clean(r.get("source_domain")).lower().removeprefix("www.")
         if any(host==d or host.endswith("."+d) for d in GROWTH_SOURCE_BLOCKLIST):
+            continue
+        if host not in approved_domains:
             continue
         cid=str(r.get("candidate_id") or "")
         name=clean(r.get("business_name"))
