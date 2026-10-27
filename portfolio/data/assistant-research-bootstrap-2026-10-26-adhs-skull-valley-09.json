@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-10-26T23:59:00Z",
+  "purpose": "Assistant-led Skull Valley buyer census from Arizona Department of Health Services licensed-facility records.",
+  "safety": "Inventory seed only. Does not promote buyers/vendors and does not stage or send outreach.",
+  "source": "https://services1.arcgis.com/mpVYz37anSdrK4d8/ArcGIS/rest/services/All_State_Licensed_Facilities_in_Arizona/FeatureServer/18",
+  "source_stats": {
+    "statewide_source_object_ids": 11555,
+    "statewide_downloaded_features": 11555,
+    "market_records": 1,
+    "by_category": {
+      "schools_education": 1
+    },
+    "by_facility_type": {
+      "Child Care Center": 1
+    }
+  },
+  "count": 1,
+  "records": [
+    {
+      "side": "buyer",
+      "market": "Skull Valley",
+      "category_key": "schools_education",
+      "category_label": "schools education childcare",
+      "business_name": "S.K.E.S.D.#15 - Skull Valley Elementary School",
+      "url": "https://services1.arcgis.com/mpVYz37anSdrK4d8/ArcGIS/rest/services/All_State_Licensed_Facilities_in_Arizona/FeatureServer/18/query?objectIds=9872&outFields=%2A&returnGeometry=false&f=pjson",
+      "domain": "services1.arcgis.com",
+      "phone": "9284423322",
+      "email": null,
+      "official": true,
+      "verified_date": "2026-10-26",
+      "address": "3150 Old Skull Valley Road",
+      "zip": "86338",
+      "facility_type": "Child Care Center",
+      "source_object_id": 9872,
+      "note": "Arizona Department of Health Services licensed-facility record | Child Care Center | address: 3150 Old Skull Valley Road, Skull Valley, AZ 86338"
+    }
+  ]
+}

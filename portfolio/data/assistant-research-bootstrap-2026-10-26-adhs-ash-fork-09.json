@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-10-26T23:59:00Z",
+  "purpose": "Assistant-led Ash Fork buyer census from Arizona Department of Health Services licensed-facility records.",
+  "safety": "Inventory seed only. Does not promote buyers/vendors and does not stage or send outreach.",
+  "source": "https://services1.arcgis.com/mpVYz37anSdrK4d8/ArcGIS/rest/services/All_State_Licensed_Facilities_in_Arizona/FeatureServer/18",
+  "source_stats": {
+    "statewide_source_object_ids": 11555,
+    "statewide_downloaded_features": 11555,
+    "market_records": 1,
+    "by_category": {
+      "schools_education": 1
+    },
+    "by_facility_type": {
+      "Child Care Center": 1
+    }
+  },
+  "count": 1,
+  "records": [
+    {
+      "side": "buyer",
+      "market": "Ash Fork",
+      "category_key": "schools_education",
+      "category_label": "schools education childcare",
+      "business_name": "N.A.C.O.G. - Ash Fork Head Start",
+      "url": "https://services1.arcgis.com/mpVYz37anSdrK4d8/ArcGIS/rest/services/All_State_Licensed_Facilities_in_Arizona/FeatureServer/18/query?objectIds=11006&outFields=%2A&returnGeometry=false&f=pjson",
+      "domain": "services1.arcgis.com",
+      "phone": "9286371027",
+      "email": null,
+      "official": true,
+      "verified_date": "2026-10-26",
+      "address": "450 Lewis Avenue",
+      "zip": "86320",
+      "facility_type": "Child Care Center",
+      "source_object_id": 11006,
+      "note": "Arizona Department of Health Services licensed-facility record | Child Care Center | address: 450 Lewis Avenue, Ash Fork, AZ 86320"
+    }
+  ]
+}

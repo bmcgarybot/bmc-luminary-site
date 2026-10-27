@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-10-26T23:59:00Z",
+  "purpose": "Assistant-led Mayer buyer census from Arizona Department of Health Services licensed-facility records.",
+  "safety": "Inventory seed only. Does not promote buyers/vendors and does not stage or send outreach.",
+  "source": "https://services1.arcgis.com/mpVYz37anSdrK4d8/ArcGIS/rest/services/All_State_Licensed_Facilities_in_Arizona/FeatureServer/18",
+  "source_stats": {
+    "statewide_source_object_ids": 11555,
+    "statewide_downloaded_features": 11555,
+    "market_records": 1,
+    "by_category": {
+      "therapy_behavioral": 1
+    },
+    "by_facility_type": {
+      "BEHAVIORAL HEALTH RESIDENTIAL FACILITY": 1
+    }
+  },
+  "count": 1,
+  "records": [
+    {
+      "side": "buyer",
+      "market": "Mayer",
+      "category_key": "therapy_behavioral",
+      "category_label": "therapy behavioral health",
+      "business_name": "BEST CARE BEHAVIORAL HOMES",
+      "url": "https://services1.arcgis.com/mpVYz37anSdrK4d8/ArcGIS/rest/services/All_State_Licensed_Facilities_in_Arizona/FeatureServer/18/query?objectIds=8558&outFields=%2A&returnGeometry=false&f=pjson",
+      "domain": "services1.arcgis.com",
+      "phone": "(602)675-1686",
+      "email": null,
+      "official": true,
+      "verified_date": "2026-10-26",
+      "address": "13190 EAST CENTRAL AVENUE",
+      "zip": "86333",
+      "facility_type": "BEHAVIORAL HEALTH RESIDENTIAL FACILITY",
+      "source_object_id": 8558,
+      "note": "Arizona Department of Health Services licensed-facility record | BEHAVIORAL HEALTH RESIDENTIAL FACILITY | address: 13190 EAST CENTRAL AVENUE, MAYER, AZ 86333"
+    }
+  ]
+}
