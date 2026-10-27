@@ -1,0 +1,27 @@
+{
+  "action": "scheduler_start",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-27T01:04:05.215066+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "f05ff6fcf2546de24edda14d58f367c61bb38092",
+  "git_commit_before": "f05ff6fcf2546de24edda14d58f367c61bb38092",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "0ed617da4ce2488e6d48f753322e26a5281d3f5e",
+  "request_id": "start-maintenance-scheduler-20261027T0103Z",
+  "request_sha256": "268ca55a4d1260260c7bb26954a25009d03884ddb7315be4a1c63a38b4b127bd",
+  "started_at": "2026-10-27T01:04:04.204730+00:00",
+  "status": "success",
+  "stderr": " Container bmc-ops_api-1 Running \n Container bmc-postgres-1 Running \n Container bmc-postgres-1 Waiting \n Container bmc-postgres-1 Healthy \n Container bmc-scheduler-1 Starting \n Container bmc-scheduler-1 Started \n",
+  "stdout": "",
+  "version": 1
+}
