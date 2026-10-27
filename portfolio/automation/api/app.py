@@ -1394,7 +1394,7 @@ async def handle_vendor_response(conn,p):
     if not all([lead_id,vendor_id,token,response]): raise HTTPException(400,"Missing response fields")
     if response not in ("accept","decline"): raise HTTPException(400,"Response must be accept or decline")
     row=await conn.fetchrow("""select lm.*,l.market,l.service_key,l.email,l.phone,l.customer_name,l.business_name,
-      l.preferred_contact,l.scope,l.urgency
+      l.preferred_contact,l.scope,l.urgency,l.raw_payload
       from lead_matches lm join leads l on l.lead_id=lm.lead_id
       where lm.lead_id=$1::uuid and lm.vendor_id=$2 and lm.response_token=$3""",lead_id,vendor_id,token)
     if not row: raise HTTPException(409,"Offer is invalid or expired")
@@ -1403,11 +1403,17 @@ async def handle_vendor_response(conn,p):
     customer_name=clean(row["customer_name"]) or "Customer"
     customer_email=clean(row["email"])
     customer_phone=clean(row["phone"])
+    raw_payload=row["raw_payload"] or {}
+    if isinstance(raw_payload,str):
+        try: raw_payload=json.loads(raw_payload)
+        except json.JSONDecodeError: raw_payload={}
+    property_address=clean(raw_payload.get("property_address")) if isinstance(raw_payload,dict) else ""
+    site_text=property_address or "Not provided"
 
     if current_status!="offered":
         if response=="accept" and current_status in ("accepted","contacted","estimate","won","lost"):
             return {"ok":True,"status":"accepted","idempotent":True,
-              "message":f"This request was already accepted. Contact: {customer_name}; email: {customer_email or 'not provided'}; phone: {customer_phone or 'not provided'}."}
+              "message":f"This request was already accepted. Site: {site_text}; contact: {customer_name}; email: {customer_email or 'not provided'}; phone: {customer_phone or 'not provided'}."}
         if response=="decline" and current_status=="declined":
             return {"ok":True,"status":"declined","idempotent":True,
               "message":"This request was already passed. BMC recorded your response and is rerouting it."}
@@ -1434,6 +1440,7 @@ Market: {row['market']}
 Service: {service_name}
 Customer: {customer_name}
 Business / property: {customer_business or 'Not provided'}
+Site address: {site_text}
 Email: {customer_email or 'Not provided'}
 Phone: {customer_phone or 'Not provided'}
 Preferred contact: {preferred or 'Not specified'}
@@ -1455,6 +1462,7 @@ BMC Luminary Ventures LLC
             f"Market: {row['market']}",
             f"Customer: {customer_name}",
             f"Business / property: {customer_business or 'Not provided'}",
+            f"Site address: {site_text}",
             f"Email: {customer_email or 'Not provided'}",
             f"Phone: {customer_phone or 'Not provided'}",
             f"Preferred contact: {preferred or 'Not specified'}",
@@ -1532,7 +1540,7 @@ BMC Luminary Ventures LLC
           "customer_match_email_delivered":customer_delivered
         },"system")
         return {"ok":True,"status":"accepted",
-          "message":f"Accepted. Contact: {customer_name}; email: {customer_email or 'not provided'}; phone: {customer_phone or 'not provided'}. BMC will continue outcome follow-up."}
+          "message":f"Accepted. Site: {site_text}; contact: {customer_name}; email: {customer_email or 'not provided'}; phone: {customer_phone or 'not provided'}. BMC will continue outcome follow-up."}
 
     await conn.execute("update lead_matches set status='declined',responded_at=now(),decline_reason=$2 where match_id=$1",row["match_id"],clean(p.get("notes")))
     await event(conn,"lead",row["lead_id"],"provider_declined",{"vendor_id":vendor_id,"reason":clean(p.get("notes"))},vendor_id)
@@ -1712,24 +1720,31 @@ FACILITY_SERVICE_FIELDS={
 
 async def handle_facility_lead(conn,p):
     market=clean(p.get("market")); consent=clean(p.get("consent")).lower()=="yes"
+    business_name=clean(p.get("business_name")); facility_type=clean(p.get("facility_type"))
+    property_address=clean(p.get("property_address")); scope=clean(p.get("scope"))
+    contact_name=clean(p.get("contact_name")); contact_email=clean(p.get("email"))
     if not market or not consent: raise HTTPException(400,"Market and consent are required")
+    if not all([business_name,facility_type,property_address,scope,contact_name,contact_email]):
+        raise HTTPException(400,"Building, building type, property address, details, contact name, and email are required")
+    if "@" not in contact_email:
+        raise HTTPException(400,"A valid contact email is required")
     requested=[sk for field,sk in FACILITY_SERVICE_FIELDS.items() if clean(p.get(field)).lower() in ("yes","on","true","1")]
     if not requested:
         raise HTTPException(400,"Choose at least one facility service category")
     submission_id=clean(p.get("submission_id")) or str(uuid.uuid4())
     existing=await conn.fetchrow("select lead_id,status from leads where submission_id=$1",submission_id)
     if existing:return {"ok":True,"status":existing["status"],"lead_id":str(existing["lead_id"]),"message":"Facility request already received."}
-    scope=clean(p.get("scope")); urgency=clean(p.get("timing")); facility_type=clean(p.get("facility_type"))
+    urgency=clean(p.get("timing"))
     customer_path=clean(p.get("customer_path")) or "keep_it_handled"
     score=(20 if p.get("email") or p.get("phone") else 0)+(20 if scope else 0)+40+(20 if urgency in ["ASAP","Urgent","Same day if possible"] else 0)
     parent_id=await conn.fetchval("""insert into leads(submission_id,form_type,market,service_key,service_type,customer_path,customer_name,business_name,email,phone,scope,urgency,source_page,consent,lead_score,status,raw_payload)
       values($1,'facility_maintenance',$2,'facility_maintenance',$3,$4,$5,$6,$7,$8,$9,$10,$11,true,$12,'split',$13::jsonb) returning lead_id""",
-      submission_id,market,facility_type,customer_path,clean(p.get("contact_name")),clean(p.get("business_name")),clean(p.get("email")),clean(p.get("phone")),scope,urgency,clean(p.get("page")),score,json.dumps(p))
-    await event(conn,"lead",parent_id,"facility_request_received",{"services":requested,"facility_type":facility_type})
+      submission_id,market,facility_type,customer_path,contact_name,business_name,contact_email,clean(p.get("phone")),scope,urgency,clean(p.get("page")),score,json.dumps(p))
+    await event(conn,"lead",parent_id,"facility_request_received",{"services":requested,"facility_type":facility_type,"property_address":property_address})
     for sk in requested:
         child_id=await conn.fetchval("""insert into leads(parent_lead_id,submission_id,form_type,market,service_key,service_type,customer_path,customer_name,business_name,email,phone,scope,urgency,source_page,consent,lead_score,status,raw_payload)
           values($1,$2,'facility_child',$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,true,$14,'received',$15::jsonb) returning lead_id""",
-          parent_id,f"{submission_id}:{sk}",market,sk,facility_type,customer_path,clean(p.get("contact_name")),clean(p.get("business_name")),clean(p.get("email")),clean(p.get("phone")),
+          parent_id,f"{submission_id}:{sk}",market,sk,facility_type,customer_path,contact_name,business_name,contact_email,clean(p.get("phone")),
           f"{facility_type}: {scope}",urgency,clean(p.get("page")),score,json.dumps(p))
         child=await conn.fetchrow("select * from leads where lead_id=$1",child_id)
         await event(conn,"lead",child_id,"facility_child_created",{"parent_lead_id":str(parent_id),"service_key":sk})
@@ -1738,9 +1753,12 @@ async def handle_facility_lead(conn,p):
         service_names=[]
         for sk in requested:
             service_names.append(await service_display_name(conn,sk))
-        facility_email=clean(p.get("email"))
+        facility_email=contact_email
         facility_delivered=await send_mail(facility_email,"We got your building request",
           f"""We received your building request in {market}.
+
+Property: {business_name}
+Site: {property_address}
 
 You asked for help with:
 - """+"\n- ".join(service_names)+f"""
@@ -4802,35 +4820,34 @@ async def admin_vendor_status(request:Request,x_bmc_admin_key:str|None=Header(de
     vid=clean(p.get("vendor_id")); status=clean(p.get("status"))
     if not vid or status not in ("prospect","applicant","pilot_pending_review","pilot","active","paused","suppressed"):
         raise HTTPException(400,"Invalid vendor/status")
-    services=p.get("services") or []; markets=p.get("markets") or []
+    services=list(dict.fromkeys(clean(x) for x in (p.get("services") or []) if clean(x)))
+    markets=list(dict.fromkeys(clean(x) for x in (p.get("markets") or []) if clean(x)))
     async with app.state.pool.acquire() as conn:
         async with conn.transaction():
-            found=await conn.fetchval("select 1 from vendors where vendor_id=$1",vid)
-            if not found: raise HTTPException(404,"Vendor not found")
+            vendor=await conn.fetchrow("select vendor_id,status from vendors where vendor_id=$1",vid)
+            if not vendor: raise HTTPException(404,"Vendor not found")
+            previous_status=clean(vendor["status"])
+            approved_states=("pilot","active","paused")
+            if status in ("pilot","active") and previous_status not in approved_states:
+                raise HTTPException(409,"Use the pilot approval review to activate a provider. Generic status updates cannot bypass approval.")
+            for sk in services:
+                if not await conn.fetchval("select 1 from services where service_key=$1 and is_active=true",sk):
+                    raise HTTPException(400,f"Unknown or inactive service key: {sk}")
             await conn.execute("update vendors set status=$2,updated_at=now() where vendor_id=$1",vid,status)
             if services:
                 await conn.execute("delete from vendor_services where vendor_id=$1",vid)
                 for sk in services:
-                    await conn.execute("insert into vendor_services(vendor_id,service_key) select $1,$2 where exists(select 1 from services where service_key=$2) on conflict do nothing",vid,clean(sk))
+                    await conn.execute("insert into vendor_services(vendor_id,service_key) values($1,$2) on conflict do nothing",vid,sk)
             if markets:
                 await conn.execute("delete from vendor_markets where vendor_id=$1",vid)
                 for m in markets:
-                    await conn.execute("insert into vendor_markets(vendor_id,market) values($1,$2) on conflict do nothing",vid,clean(m))
-            await event(conn,"vendor",vid,"status_updated",{"status":status,"services":services,"markets":markets},"admin")
-            if status=="pilot":
-                vendor=await conn.fetchrow("select business_name,public_email from vendors where vendor_id=$1",vid)
-                if vendor and clean(vendor["public_email"]):
-                    body=f"""Hi {vendor['business_name']},
-
-Your BMC provider profile is approved for the pilot.
-
-You will see matching job details before deciding whether to accept or pass. Joining the pilot is free, and passing does not create a charge. Any future paid terms will be shown before they apply.
-
-BMC Luminary Ventures LLC
-{BUSINESS_POSTAL_ADDRESS}
-"""
-                    await send_mail(clean(vendor["public_email"]),"You’re approved for the BMC provider pilot",body)
+                    await conn.execute("insert into vendor_markets(vendor_id,market) values($1,$2) on conflict do nothing",vid,m)
+            await event(conn,"vendor",vid,"status_updated",{
+              "previous_status":previous_status,"status":status,"services":services,"markets":markets
+            },"admin")
     return {"ok":True,"vendor_id":vid,"status":status}
+
+
 
 @app.post("/api/admin/classify-lead")
 async def admin_classify_lead(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
