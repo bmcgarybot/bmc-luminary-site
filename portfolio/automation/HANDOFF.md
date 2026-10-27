@@ -11063,3 +11063,27 @@ NEXT THREAD INSTRUCTIONS:
 Preserved assets: 75,098 strict unique researched census records, 21 markets, 54+ service categories; BMC Growth and Service Network original paths. Do not delete or archive away customer flows.
 
 At handoff all product prices are not necessarily implemented: $499 100 total Growth, $749 Premium; $299 Competitor, $699 Expansion, $149-249 refresh proposed; downsell $179 25 total/$79 10 more/$20 five more proposed. They need account/dedupe and fulfillment wiring before public offer.
+
+## 79. Controlled free-five overlap and service-search release checkpoint (2026-10-27)
+
+The owner clarified that different contractors' free-five samples **may overlap**, but no pair of five-prospect samples should contain more than two of the same prospects. Completely disjoint batches are not a requirement. Repeated request by the same recipient must return the identical saved five; never issue new freebies on retries.
+
+PR #5 safety branch: `safety/prospect-exposure-gates-20261027` (no merge or deployment at this checkpoint).
+
+Changes after prior handoff:
+- Free exposure default changed to two distinct free recipients within 90 days, while retaining shared free + paid caps, lifetime caps, suppression, and same-buyer exclusion.
+- Free-only per-prospect cooldown removed so that limited, deliberate overlap is possible.
+- Allocator evaluates all prior free-five disclosure batches in that service/market and will not select a batch with more than two overlaps against *any* previous batch. If insufficient inventory remains, respond with a pending-inventory exception rather than padded/repeated five. Allocation remains serialized in one transaction.
+- CI concurrency assertions now allow at most two overlaps rather than insisting on zero. Existing same-submission, same-business and suppression checks remain.
+- Free-five SMTP accounting now separates prepared, web-disclosed and email submission failed/accepted. A five returned in a webpage response is a real disclosure even if email fails. Replays reuse the same sample.
+- Fixed three paid fulfillment exception messages referring to unselected order_id column.
+- Expanded deterministic customer-language search by roughly 300 curated phrases and added 42 CI regression cases; common plumber/toilet terms now reach existing plumbing/backflow category, but general residential versus backflow specialist matching still needs a separate service/catalog review.
+- Common SMTP sender normalizes em/en dashes, including HTML emails, and the writing guide is at `CUSTOMER_LANGUAGE_AND_EMAIL_STYLE.md`. Owner exact-SHA email preview requirement is unchanged.
+- GitHub ↔ VPS relay was proven live at 2026-10-27 23:30 UTC using fresh proof, runtime and scheduler requests. VPS on tested master `95fc8acf691ad6517e1be3a17f8e27517a15ea9c`, all outreach switches off, healthy runtime.
+- Previous search CI failed on natural-language 'toilet is overflowing', fixed and subsequent CI for `981851230e793bfa9043a19d542e71b349554ce5` succeeded (workflow 40602364711).
+
+NEXT:
+1. Check the latest branch head and BMC Portfolio CI; do not assume a previous green applies to later commits.
+2. Ensure synthetic CI covers allowed two-overlap and forbidden three-overlap, and check historical backfill/idempotency.
+3. Do not enable outreach; do not deploy an unmerged PR.
+4. When all remaining release and owner gates are satisfied, merge through normal review and use tested-SHA VPS relay deployment with all outbound OFF; verify production SHA, database migrations, search, funnel, health; owner review of exact email preview is required before any emails.
