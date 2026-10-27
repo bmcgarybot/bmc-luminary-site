@@ -1,0 +1,57 @@
+name: Assistant Gap Market Trade Recovery
+
+on:
+  push:
+    paths:
+      - '.github/workflows/assistant-gap-market-trade-recovery.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Recover individually complete trades from previously blocked markets
+        shell: bash
+        run: |
+          set -u
+          markets=(
+            "Bullhead City"
+            "Chino Valley"
+            "Cottonwood"
+            "Kingman"
+          )
+          : > /tmp/recovery-summary.txt
+          for market in "${markets[@]}"; do
+            echo "===== $market ====="
+            rm -rf /tmp/gap-market
+            mkdir -p /tmp/gap-market
+            python3 portfolio/automation/export-homversa-census-artifacts.py               --market "$market"               --date 2026-10-26               --output-dir /tmp/gap-market               --continue-on-trade-error
+            cp /tmp/gap-market/assistant-research-bootstrap-*.json portfolio/data/
+            echo "$market: $(find /tmp/gap-market -name 'assistant-research-bootstrap-*.json' | wc -l) complete trade artifacts" >> /tmp/recovery-summary.txt
+          done
+          cat /tmp/recovery-summary.txt
+
+      - name: Validate deterministic census builder
+        run: |
+          python3 portfolio/automation/build-assistant-research-seed.py             --data-dir portfolio/data             --output /tmp/assistant-research-seed.sql             --summary-json 2>/tmp/census-summary.json
+          cat /tmp/census-summary.json
+
+      - name: Commit recovered complete trade artifacts
+        run: |
+          git config user.name "BMC Assistant Census"
+          git config user.email "actions@users.noreply.github.com"
+          git add             portfolio/data/assistant-research-bootstrap-2026-10-26-bullhead-city-licensed-full-*.json             portfolio/data/assistant-research-bootstrap-2026-10-26-chino-valley-licensed-full-*.json             portfolio/data/assistant-research-bootstrap-2026-10-26-cottonwood-licensed-full-*.json             portfolio/data/assistant-research-bootstrap-2026-10-26-kingman-licensed-full-*.json
+          if git diff --cached --quiet; then
+            echo "No recovered trade artifacts to commit."
+            exit 0
+          fi
+          git commit -m "Recover complete trade census for gap markets"
+          git pull --rebase origin master
+          git push origin HEAD:master
