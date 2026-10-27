@@ -8249,3 +8249,214 @@ Do not deploy merely because this checkpoint is green; Brett's current instructi
 ## Continuity sentence
 
 **The CMS problem from yesterday is now solved for census-building: the VPS crawler itself remains the blocked component, but assistant-controlled GitHub exporters successfully harvested official CMS hospitals, nursing homes, home health, hospice, dialysis, rehab, LTCH, FQHC, RHC, home-infusion, opioid-treatment and clinical-lab data. Federal NCES sources also replaced the blocked ADE school path and added public schools, district offices, private schools and postsecondary institutions. The repo artifact census now stands at 56,559 strict rows across 309 auditable JSON artifacts before this documentation commit; production remains the older 30,518-row f05ff6 deployment and outbound remains OFF.**
+
+
+---
+
+# 64. HUD MULTIFAMILY BUYER EXPANSION + POST-CMS CLEAN CHECKPOINT — 2026-10-26 21:00 ARIZONA
+
+This section continues Section 63 and records the next official-source buyer expansion.
+
+## Standing instruction remains unchanged
+
+The assistant continues building the initial BMC business universe. The VPS remains the maintenance/rescan/delta layer and must not be used as a substitute for the assistant-built initial census.
+
+All external outreach remains OFF.
+
+## Exact repository state before this documentation commit
+
+Current artifact/data head:
+- `c07951f383ef95bd811f192e081764bd286f8ea3`
+- message: **Seed official HUD multifamily buyer census**
+
+Deterministic artifact builder summary on that tree:
+- **310 assistant census JSON artifacts**
+- **57,853 raw evidence rows**
+- **1,185 strict duplicate rows collapsed**
+- **56,668 strict unique artifact seed rows**
+- **40,903 strict unique buyer rows**
+- **15,765 strict unique vendor rows**
+- **21 / 21 markets**
+
+Strict artifact rows by market:
+- Ash Fork: **124**
+- Bullhead City: **575**
+- Camp Verde: **311**
+- Chino Valley: **298**
+- Cordes Lakes: **80**
+- Cottonwood: **464**
+- Dewey-Humboldt: **433**
+- Flagstaff: **1,060**
+- Golden Valley: **158**
+- Kingman: **853**
+- Mayer: **193**
+- Phoenix: **11,840**
+- Prescott: **1,121**
+- Prescott Valley: **910**
+- Scottsdale: **3,670**
+- Sedona: **299**
+- Seligman: **141**
+- Skull Valley: **75**
+- Tucson: **33,854**
+- Williamson Valley: **43**
+- Winslow: **166**
+
+These are evidence/seed identities, not globally deduplicated legal businesses.
+
+## Previous combined clean CI checkpoint
+
+Section 63's full application checkpoint is proven green:
+
+- BMC Portfolio CI run **40445983245**
+- exact SHA: `595a51ff75146cd366464d71ce962b14a7fd08bb`
+- result: **SUCCESS**
+- expected artifact candidates: **56,559**
+- actual artifact candidates: **56,559**
+- artifact markets: **21 / 21**
+- inventory lanes: **1,260 / 1,260**
+- runtime core failures: **0**
+
+The HUD artifact described below was committed afterward by a workflow token, so it did not itself cascade-trigger another normal BMC Portfolio CI run. This Section 64 documentation commit is intentionally a normal assistant commit that should trigger the complete 56,668-row tree through BMC Portfolio CI.
+
+## Official HUD insured multifamily buyer census
+
+Exporter:
+- `portfolio/automation/export-hud-multifamily-census.py`
+
+Workflow:
+- `.github/workflows/assistant-hud-multifamily-census.yml`
+
+Successful workflow:
+- **40446125201**
+
+Workflow-generated artifact commit:
+- `c07951f383ef95bd811f192e081764bd286f8ea3`
+- message: **Seed official HUD multifamily buyer census**
+
+Official source:
+- U.S. Department of Housing and Urban Development
+- current HUD Insured Multifamily Properties open-data FeatureServer
+- Arizona filter applied at the official source: `STD_ST='AZ'`
+
+Source/result counts:
+- **199 Arizona HUD insured multifamily source rows**
+- **109 BMC-market property rows**
+
+The artifact preserves where HUD publishes them:
+- HUD property ID;
+- property name;
+- standardized address/city/ZIP;
+- on-site phone;
+- total unit count;
+- assisted unit count;
+- property category;
+- management agent organization;
+- management contact name;
+- management contact phone;
+- management contact email;
+- primary FHA number;
+- financing type.
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-hud-insured-multifamily-26.json`
+
+Classification:
+- side: buyer
+- category: property management / multifamily & apartment properties
+- `official=false`
+- `official_registry=true`
+- therefore `government_registry / government_record`
+
+This is a strategically useful buyer layer because multifamily/apartment properties can plausibly buy recurring or turnover:
+- commercial/residential cleaning;
+- HVAC;
+- plumbing;
+- electrical;
+- pest control;
+- landscaping;
+- flooring;
+- painting;
+- junk/turn services;
+- general building maintenance.
+
+## CMS status remains solved for assistant census-building
+
+Do not regress to calling CMS a blocker.
+
+The VPS-native CMS crawler remains the host-blocked component, but the assistant-controlled official-data path successfully harvested:
+- hospitals;
+- nursing homes;
+- home health;
+- hospice;
+- dialysis;
+- inpatient rehab;
+- long-term-care hospitals;
+- FQHCs;
+- rural health clinics;
+- home infusion;
+- opioid-treatment programs;
+- clinical laboratories.
+
+The clinical-lab source alone contributed:
+- **16,090 Arizona source rows**
+- **3,338 BMC-market official lab records** before cross-artifact strict dedupe.
+
+CMS should now be treated as an established assistant-controlled official census source, not an unresolved dependency on the VPS.
+
+## NCES/ADE status remains solved for assistant census-building
+
+The ADE spreadsheet is still blocked by 403, but federal NCES official sources successfully replaced that path.
+
+Current official NCES additions include:
+- **1,047** BMC-market public schools;
+- **347** school district administrative offices;
+- **147** private schools;
+- **62** postsecondary/vocational institutions.
+
+Do not spend the next thread repeatedly retrying the blocked ADE spreadsheet unless a materially different official endpoint is found.
+
+## Production distinction remains mandatory
+
+The **56,668-row repository census is NOT production-proven**.
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+
+All outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+Do not report 56,668 as live production data until an exact green census SHA is deliberately deployed and a new production proof is taken.
+
+## Immediate next work
+
+Continue assistant-led census expansion after this checkpoint.
+
+High-value next source directions:
+1. additional HUD property/facility layers where they add distinct buyer facilities rather than redundant attributes;
+2. county/municipal business-license, health-inspection and lodging/facility datasets;
+3. official chain/location directories for large commercial facilities;
+4. churches/nonprofits and public/community facilities in the smallest markets;
+5. direct rural service-territory verification for missing vendor categories;
+6. Phoenix buyer-side breadth despite its already-large health/education/property universe;
+7. Williamson Valley, Skull Valley and Cordes Lakes require special direct/service-territory research because literal-city government datasets remain sparse.
+
+## Required post-documentation validation
+
+This Section 64 normal commit must trigger BMC Portfolio CI over the full 310-artifact tree.
+
+Require:
+- BMC Portfolio CI success on the exact post-Section-64 master;
+- expected artifact candidates = **56,668**;
+- actual artifact candidates = **56,668**;
+- artifact markets = **21**;
+- inventory lanes = **1,260 / 1,260**;
+- runtime core failures = **0**.
+
+Do not deploy merely because that checkpoint is green; Brett's current direction is to keep fleshing out the initial universe.
+
+## Continuity sentence
+
+**The assistant-built repo census has now reached 56,668 strict artifact seed rows across 310 auditable JSON artifacts. CMS is no longer a census blocker: the VPS itself remains blocked from CMS, but assistant-controlled official exporters successfully harvested health/provider data including 3,338 BMC-market clinical-lab records. NCES replaced the blocked ADE school path with 1,603 official education-facility rows across public schools, district offices, private schools and postsecondary institutions. HUD has now added 109 official multifamily/apartment properties with management/contact fields where available. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
