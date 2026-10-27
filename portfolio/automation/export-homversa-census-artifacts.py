@@ -169,6 +169,23 @@ def parse_ranked(page_html):
         roc_match = ROC_RE.search(block)
         if roc_match:
             rows.append((name, roc_match.group(1)))
+
+    # Some pages render the rank number and linked company name as separate
+    # tokens in a way the numeric-token pass can miss. The company's anchor is
+    # always immediately before "On the ROC register since ..."; recover those
+    # ranked rows independently and let the caller deduplicate.
+    for i, token in enumerate(tokens):
+        if not token.lower().startswith("on the roc register since"):
+            continue
+        if i == 0:
+            continue
+        name = tokens[i - 1].strip()
+        if not name or len(name) > 220 or re.match(r"^\d+\.$", name):
+            continue
+        block = " ".join(tokens[i : min(len(tokens), i + 24)])
+        roc_match = ROC_RE.search(block)
+        if roc_match:
+            rows.append((name, roc_match.group(1)))
     return rows
 
 
