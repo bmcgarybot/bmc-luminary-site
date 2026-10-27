@@ -2815,6 +2815,38 @@ def growth_select_representative_sample(rows,recipient_key,count=5):
                 if len(selected)>=count:break
     return selected[:count]
 
+async def growth_select_rotated_sample(conn,rows,recipient_key,service_key,market,count=5):
+    """Allow up to two shared prospects with any other free-five batch.
+
+    All callers hold the global allocation advisory lock. Older deliveries
+    remain in the ledger; never reset or rotate the same customer's sample.
+    """
+    historical=await conn.fetch("""select delivery_ref, array_agg(distinct prospect_key) as keys
+        from growth_prospect_exposures
+        where delivery_kind='free' and service_key=$1 and lower(market)=lower($2)
+          and status in ('reserved','delivered')
+        group by delivery_ref""",service_key,market)
+    groups=[set(x["keys"]) for x in historical]
+    chosen=[]
+    # Prefer underused opportunities, with deterministic recipient-specific ties.
+    ranked=sorted(rows,key=lambda r:(
+      int(r.get("exposure_count_90d",0)),
+      int(r.get("exposure_count_lifetime",0)),
+      -int(r["fit_score"]),
+      hashlib.sha256((clean(recipient_key).lower()+"|"+growth_prospect_key(r)).encode()).hexdigest()
+    ))
+    for r in ranked:
+        if len(chosen)>=count:
+            break
+        key=growth_prospect_key(r)
+        current={growth_prospect_key(x) for x in chosen}
+        if key in current:
+            continue
+        if any(len((current|{key}) & group)>2 for group in groups):
+            continue
+        chosen.append(r)
+    return chosen if len(chosen)==count else []
+
 def growth_sample_public_rows(rows):
     out=[]
     for r in rows:
@@ -2909,7 +2941,14 @@ async def handle_growth_snapshot(conn,p):
           "qualified_pool":len(rows),
           "message":"We saved your request. This exact market needs a manual inventory check before we send five; BMC will not pad it with weak records."}
 
-    sample=growth_select_representative_sample(rows,email_addr)
+    sample=await growth_select_rotated_sample(conn,rows,email_addr,service_key,market)
+    if len(sample)<5:
+        await conn.execute("""update growth_sample_requests set status='inventory_exception',updated_at=now()
+          where sample_id=$1""",sample_id)
+        await event(conn,"growth_sample",sample_id,"rotation_inventory_exception",
+          {"service_key":service_key,"market":market,"qualified_pool":len(rows)})
+        return {"ok":True,"status":"sample_pending","sample_id":str(sample_id),
+          "message":"This market needs an inventory review before we can provide five distinct, fairly rotated prospects."}
     await growth_record_exposures(conn,sample,email_addr,service_key,"free","sample:"+str(sample_id),"reserved",
       growth_recipient_business_key(business))
     for r in sample:
