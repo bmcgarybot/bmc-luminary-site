@@ -672,7 +672,7 @@ jobs:
 
           curl -fsS -X POST http://127.0.0.1:8000/api/intake \
             -H 'Content-Type: application/json' \
-            -d '{"submission_id":"ci-growth-sample-1","form_type":"growth_snapshot","service_key":"pressure_washing","business_name":"CI Pressure Wash Co","contact_name":"CI Owner","email":"ci-owner@example.com","market":"CI Growth Market","ideal_customer":"restaurants","minimum_job":"500","consent":"yes","source_target_id":"inventory:'"$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select candidate_id from market_inventory_candidates where side='vendor' and public_email='ci-pressure@example.com' limit 1;")"'"}' \
+            -d '{"submission_id":"ci-growth-sample-1","form_type":"growth_snapshot","service_key":"pressure_washing","business_name":"CI Second Pressure Wash Company","contact_name":"CI Owner","email":"ci-owner@example.com","market":"CI Growth Market","ideal_customer":"restaurants","minimum_job":"500","consent":"yes","source_target_id":"inventory:'"$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select candidate_id from market_inventory_candidates where side='vendor' and public_email='ci-pressure@example.com' limit 1;")"'"}' \
             >/tmp/bmc_growth_sample.json
           python - <<'PY'
           import json
