@@ -3535,6 +3535,67 @@ Reply no if you do not want future outreach."""
         sent+=1
     return {"ok":True,"enabled":True,"sent":sent,"daily_limit":GROWTH_OUTREACH_DAILY_LIMIT,"wave":GROWTH_OUTREACH_WAVE}
 
+@app.post("/api/admin/replay-first-growth-email-to-owner")
+async def replay_first_growth_email_to_owner(x_bmc_admin_key:str|None=Header(default=None)):
+    if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY:
+        raise HTTPException(403,"Forbidden")
+    if OUTREACH_ENABLED or BUYER_OUTREACH_ENABLED or GROWTH_OUTREACH_ENABLED:
+        raise HTTPException(409,"All outbound campaign switches must remain OFF for owner replay testing.")
+    test_recipient="brett.coon2@gmail.com"
+    async with app.state.pool.acquire() as conn:
+        row=await conn.fetchrow("""select o.outreach_id,o.sent_at,o.subject,o.body,o.entity_id,
+            g.business_name,g.public_email,g.market,g.service_key,g.target_id
+          from outreach o join growth_outreach_targets g on g.target_id=o.entity_id
+          where o.entity_type='growth_customer' and o.campaign='growth_sales'
+            and o.wave=$1 and o.sequence_step=1 and o.sent_at is not null
+          order by o.sent_at asc,o.created_at asc
+          limit 1""",GROWTH_OUTREACH_WAVE)
+    if not row:
+        raise HTTPException(404,"No previously sent first-touch Growth email was found for the active Growth wave.")
+    service_key=clean(row["service_key"])
+    service_label=GROWTH_SERVICE_LABELS.get(service_key,service_key.replace("_"," "))
+    params=urllib.parse.urlencode({
+      "utm_source":"bmc_outreach","utm_medium":"email","utm_campaign":"growth_"+service_key,
+      "utm_content":row["target_id"],"target":row["target_id"],"market":row["market"],"business":row["business_name"]
+    })
+    landing=f"{PUBLIC_SITE_URL}{GROWTH_LANDING_PATHS.get(service_key,'/growth-packs/')}?{params}"
+    subject=clean(row["subject"])
+    body=str(row["body"] or "")
+    expected_subject=f"{row['market']}: 5 commercial accounts worth checking"
+    expected_body=f"""Hi {row['business_name']},
+
+I’m researching commercial accounts for {service_label} businesses in {row['market']}.
+
+Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the commercial work you want — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.
+
+Tell us the area and type of work you want:
+{landing}
+
+If the five look useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+Reply no if you do not want future outreach."""
+    if subject!=expected_subject or body!=expected_body:
+        raise HTTPException(409,"Stored first-touch copy no longer matches the deterministic production renderer; refusing an inexact replay.")
+    html_body=workflow_email_html(subject,[
+      f"BMC will research five real commercial targets for {service_label} in {row['market']} at no charge.",
+      "Each target includes a fit reason, public contact route, source, and suggested angle.",
+      "If the five are useful, the full 100-prospect pack is $499. There is no retainer and no sales call required."
+    ],"Show me 5 free targets",landing)
+    ok=await send_mail(test_recipient,subject,body,html_body)
+    return {
+      "ok":bool(ok),
+      "test_recipient":test_recipient,
+      "original_business":row["business_name"],
+      "original_recipient":row["public_email"],
+      "original_sent_at":row["sent_at"],
+      "subject":subject,
+      "stored_plain_text_exact_match":True,
+      "campaign_switches":{"provider":OUTREACH_ENABLED,"buyer":BUYER_OUTREACH_ENABLED,"growth":GROWTH_OUTREACH_ENABLED}
+    }
+
 def require_admin(key):
     if not ADMIN_KEY or key!=ADMIN_KEY:
         raise HTTPException(403,"Forbidden")
