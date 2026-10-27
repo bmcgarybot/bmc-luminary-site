@@ -17,7 +17,8 @@ dbq(){ docker compose --env-file "$ENV_FILE" exec -T postgres psql -v ON_ERROR_S
 
 echo "BMC Growth launch readiness"
 echo "==========================="
-echo "Commit: $(git rev-parse HEAD 2>/dev/null || echo unknown)"
+current_sha="$(git rev-parse HEAD 2>/dev/null || echo unknown)"
+echo "Commit: $current_sha"
 configured_wave="$(env_value GROWTH_OUTREACH_WAVE)"
 wave="$configured_wave"
 if [ -z "$wave" ] || [ "$wave" = "growth1" ]; then wave="growth-pressure-1"; fi
@@ -37,6 +38,13 @@ postal="$(env_value BUSINESS_POSTAL_ADDRESS)"
 if configured "$smtp_host" && configured "$smtp_user" && configured "$smtp_pass"; then pass "SMTP is configured"; else fail "SMTP is incomplete"; fi
 if [ "$imap_enabled" = "true" ] && configured "$imap_host" && configured "$imap_user" && configured "$imap_pass"; then pass "IMAP reply/opt-out monitoring is configured"; else fail "IMAP reply/opt-out monitoring is incomplete"; fi
 configured "$postal" && pass "Business postal address is configured" || fail "Business postal address is missing"
+
+owner_approved_sha="$(env_value GROWTH_OWNER_APPROVED_SHA)"
+if [ -n "$owner_approved_sha" ] && [ "$owner_approved_sha" = "$current_sha" ]; then
+  pass "Owner preview is approved for this exact deployed commit"
+else
+  fail "Owner preview is not approved for this exact deployed commit (approved=${owner_approved_sha:-none}, current=$current_sha)"
+fi
 
 for table in growth_experiment_cells growth_outreach_targets growth_sample_requests growth_sample_prospects growth_order_prospects; do
   exists="$(dbq "select count(*) from information_schema.tables where table_name='$table';")"
