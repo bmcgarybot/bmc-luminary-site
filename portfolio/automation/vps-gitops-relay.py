@@ -63,7 +63,7 @@ MUTATING_INTERNAL_ACTIONS = {
     "growth_stage_pressure_washing",
     "growth_stage_commercial_cleaning",
 }
-EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email"}
+EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email", "owner_replay_all_email_templates"}
 CONTROL_ACTIONS = {"growth_launch_disable", "growth_owner_preview_approve"}
 ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS
 
@@ -523,7 +523,18 @@ def execute(req: dict) -> dict:
     if action in MUTATING_INTERNAL_ACTIONS:
         metadata["outreach_gate"] = assert_outreach_off()
 
-    if action == "growth_owner_replay_email":
+    if action == "owner_replay_all_email_templates":
+        state=outreach_state()
+        if any(str(v).lower()!="false" for v in state.values()):
+            raise RelayError("All-template owner preview requires all campaign outbound switches OFF")
+        replay=admin_post("/api/admin/replay-all-email-templates-to-owner",timeout=300)
+        metadata["outreach_gate"]=state
+        metadata["preview_commit"]=current_sha()
+        stdout=json.dumps(replay,indent=2,default=str)
+        stderr=""
+        exit_code=0 if replay.get("ok") else 1
+
+    elif action == "growth_owner_replay_email":
         state=outreach_state()
         if any(str(v).lower()!="false" for v in state.values()):
             raise RelayError("Owner email replay requires all campaign outbound switches OFF")
