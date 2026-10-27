@@ -1,0 +1,46 @@
+name: Assistant NCES Institution Census Export
+
+on:
+  push:
+    paths:
+      - 'portfolio/automation/export-nces-institution-census.py'
+      - '.github/workflows/assistant-nces-institution-census.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Export NCES private postsecondary and district facilities
+        run: |
+          python3 portfolio/automation/export-nces-institution-census.py \
+            --date 2026-10-26 \
+            --output-dir portfolio/data
+
+      - name: Validate deterministic census builder
+        run: |
+          python3 portfolio/automation/build-assistant-research-seed.py \
+            --data-dir portfolio/data \
+            --output /tmp/assistant-research-seed.sql \
+            --summary-json 2>/tmp/census-summary.json
+          cat /tmp/census-summary.json
+
+      - name: Commit NCES government-registry artifacts
+        run: |
+          git config user.name "BMC Assistant Census"
+          git config user.email "actions@users.noreply.github.com"
+          git add portfolio/data/assistant-research-bootstrap-2026-10-26-nces-*-25.json
+          if git diff --cached --quiet; then
+            echo "No NCES institutional artifact changes."
+            exit 0
+          fi
+          git commit -m "Seed official NCES education facility census"
+          git pull --rebase origin master
+          git push origin HEAD:master
