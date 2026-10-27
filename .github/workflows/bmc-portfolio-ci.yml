@@ -77,9 +77,11 @@ jobs:
           assert 'name="service_key" value="commercial_cleaning"' in cleaning
           assert "/growth-packs/pressure-washing/" in sitemap
           assert "response.sample" in core and "Get the full 100 for $499" in core
+          assert "maybeClaimGrowthSample" in core and 'q.get("preview")==="1"' in core
+          assert "growth_claim_token" in api and "one_click_sample_claimed" in api
           for table in ("growth_experiment_cells","growth_outreach_targets","growth_sample_requests","growth_sample_prospects","growth_order_prospects"):
               assert f"create table if not exists {table}" in schema, table
-          for endpoint in ("/api/admin/stage-growth-pressure-washing","/api/admin/growth-status","/api/process-growth-health","/api/process-growth-nurture","/api/process-growth-fulfillment"):
+          for endpoint in ("/api/admin/stage-growth-pressure-washing","/api/admin/growth-status","/api/process-growth-health","/api/process-growth-nurture","/api/process-growth-fulfillment","/api/growth/claim-free-five"):
               assert endpoint in api, endpoint
           assert "GROWTH_SAMPLE_MIN_RESERVE" in api
           assert "SMTP_FROM_NAME" in api
