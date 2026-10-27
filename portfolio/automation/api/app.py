@@ -2596,10 +2596,10 @@ def growth_sales_angle(row,service_key):
 
 # Exposure-control policy: business research is not an interested service buyer.
 # Values are conservative experiment defaults, not legal safe harbors.
-GROWTH_FREE_DISTINCT_90D=1
+GROWTH_FREE_DISTINCT_90D=2
 GROWTH_ALL_DISTINCT_90D=3
 GROWTH_ALL_DISTINCT_LIFETIME=8
-GROWTH_FREE_COOLDOWN_DAYS=90
+GROWTH_FREE_COOLDOWN_DAYS=0
 GROWTH_PAID_COOLDOWN_DAYS=30
 
 def growth_prospect_key(row):
@@ -2670,7 +2670,7 @@ async def growth_exposure_filter(conn,rows,recipient_key="",delivery_kind="free"
             continue
         if delivery_kind=="free" and len(free90)>=GROWTH_FREE_DISTINCT_90D:
             continue
-        if latest and (now-latest).total_seconds()<cooldown*86400:
+        if cooldown and latest and (now-latest).total_seconds()<cooldown*86400:
             continue
         copy=dict(r)
         copy["exposure_count_90d"]=len(last90)
