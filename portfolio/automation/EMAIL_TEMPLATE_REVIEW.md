@@ -28,7 +28,7 @@ Hi {business_name},
 
 I found several {market} businesses that look like strong commercial prospects for {service_label}.
 
-Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the commercial work you want — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.
+Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the kind of commercial work your business does — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.
 
 Click once to see the five BMC already prepared for this invitation:
 {landing_url}
