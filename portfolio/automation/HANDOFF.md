@@ -8937,3 +8937,334 @@ Research implication:
 Commercial-buyer census expansion should explicitly pursue **parking-heavy and exterior-maintenance-heavy facilities**, not just generic businesses. Gas stations and convenience/fuel locations are now a priority buyer class because they can create power-washing, fuel-island, dumpster-pad, sweeping, striping, window and exterior-cleaning demand.
 
 This opportunity should also inform future vendor discovery: power-washing, commercial exterior cleaning, parking-lot sweeping, striping, and facility-maintenance vendors may be able to grow through BMC contract opportunities they would not normally prospect themselves.
+
+
+---
+
+# 67. WIC COMMERCIAL BUYERS + RURAL GAP FILL + PROVIDER TRUST REQUIREMENT — 2026-10-26 21:05 ARIZONA
+
+This section continues Sections 63–66 and supersedes the partial Section 67 notes above where there is any ambiguity.
+
+## Standing operating rule
+
+The assistant is still building the initial BMC business universe. The VPS remains the maintenance/delta layer after that initial universe exists.
+
+All external outreach remains OFF unless Brett explicitly approves it.
+
+## Exact clean data checkpoint before this handoff section
+
+The latest full application smoke test covering the WIC + rural-direct artifacts is:
+
+- data/artifact SHA: `405ad994602e2968eabcb67f03f74afe053a7691`
+- message: **Fill rural direct service territory gaps**
+- BMC Portfolio CI run: **40447696046**
+- result: **SUCCESS**
+- assistant artifacts: **314**
+- raw evidence rows: **73,779**
+- strict duplicate rows collapsed: **1,637**
+- strict unique artifact seed rows: **72,142**
+- strict buyer rows: **56,370**
+- strict vendor rows: **15,772**
+- markets: **21 / 21**
+- inventory lanes: **1,260 / 1,260**
+- smoke DB expected/actual: **72,142 / 72,142**
+- runtime core failures: **0**
+
+Strict artifact rows by market at this checkpoint:
+- Ash Fork: **138**
+- Bullhead City: **724**
+- Camp Verde: **382**
+- Chino Valley: **403**
+- Cordes Lakes: **86**
+- Cottonwood: **637**
+- Dewey-Humboldt: **488**
+- Flagstaff: **1,685**
+- Golden Valley: **193**
+- Kingman: **1,107**
+- Mayer: **226**
+- Phoenix: **18,490**
+- Prescott: **1,687**
+- Prescott Valley: **942**
+- Scottsdale: **5,971**
+- Sedona: **571**
+- Seligman: **155**
+- Skull Valley: **81**
+- Tucson: **37,904**
+- Williamson Valley: **46**
+- Winslow: **226**
+
+These remain evidence/seed identities, not globally deduplicated legal businesses.
+
+## Arizona WIC grocery / food-retail buyer layer
+
+Exporter:
+- `portfolio/automation/export-az-wic-vendor-census.py`
+
+Workflow:
+- `.github/workflows/assistant-az-wic-vendor-census.yml`
+
+Successful workflow:
+- **40447607595**
+
+Workflow artifact commit:
+- `01df21d7b3febf25fefc6ee43302b9a97d2af3fd`
+- message: **Seed official Arizona WIC grocery buyer census**
+
+Official source:
+- Arizona Department of Health Services WIC authorized-vendor list PDF
+
+Parsed source:
+- 538 table rows
+- 523 Arizona WIC-authorized vendor rows
+- **206 BMC-market grocery/food-retail facilities**
+
+BMC-market WIC rows:
+- Bullhead City 3
+- Camp Verde 1
+- Chino Valley 1
+- Cottonwood 4
+- Flagstaff 7
+- Kingman 5
+- Phoenix 94
+- Prescott 6
+- Prescott Valley 3
+- Scottsdale 14
+- Sedona 2
+- Tucson 64
+- Winslow 2
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-az-wic-authorized-vendors-30.json`
+
+Use as:
+- buyer
+- grocery / food retail
+- `official_registry=true`
+- government-registry evidence
+
+WIC authorization is evidence that the store is an authorized WIC retailer, not an ADHS endorsement of the store or of any contractor relationship.
+
+## Rural direct service-territory gap fill
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-direct-service-gaps-29.json`
+
+Commit:
+- `405ad994602e2968eabcb67f03f74afe053a7691`
+
+Seven direct first-party service-territory rows were added:
+
+Williamson Valley:
+- Morgan Tree Service — tree service / brush clearing
+- Desert First Cleaning — residential / turnover / small-office cleaning
+- Haul It Or Toss It — junk hauling / dumpsters / cleanouts
+
+Skull Valley:
+- HOAX Pest Control — pest / rodent control
+- Haul It Or Toss It — junk hauling / dumpster service
+
+Cordes Lakes:
+- Truly Nolen Prescott Valley branch — pest / termite / rodent / commercial pest control
+- Haul It Or Toss It — junk hauling / dumpster service
+
+These are company-owned pages that explicitly name the market or explicit service/trip area. Preserve them as `direct / direct_evidence`.
+
+## Commercial recurring-service agreement strategy
+
+Brett explicitly wants BMC to pursue commercial opportunities that go beyond one-time repair leads.
+
+Priority buyer/property types include:
+- gas stations and convenience stores;
+- parking-heavy facilities;
+- strip malls / shopping centers;
+- restaurants;
+- hotels;
+- multifamily;
+- medical/dental/therapy offices;
+- schools/churches;
+- banks;
+- grocery/pharmacy;
+- warehouses/fleet yards;
+- municipal/public facilities.
+
+Potential recurring services include:
+- parking-lot and sidewalk power washing;
+- fuel-island / pump-pad cleaning;
+- dumpster-pad degreasing;
+- oil / grease / gum removal;
+- lot sweeping;
+- striping / restriping;
+- exterior building washing;
+- window cleaning;
+- recurring janitorial/common-area cleaning;
+- junk/bulk removal;
+- grounds / seasonal property work.
+
+BMC's opportunity is not merely “find a contractor.” It can identify a facility that has no formal recurring scope, competitive quote, backup vendor or scheduled service and broker a qualified commercial service opportunity.
+
+Do not assume a facility has an unmet need merely because it has a parking lot or fuel pumps. Treat the service need as a prospecting hypothesis until qualified.
+
+This strategy should affect both sides of the census:
+- buyer research should identify parking/exterior-maintenance-heavy properties;
+- vendor research should explicitly include power-washing, exterior commercial cleaning, parking-lot sweeping, striping and facility-maintenance companies.
+
+## Arizona liquor-license source
+
+Arizona DLLC remains a high-value unresolved buyer source because it could expose:
+- restaurants;
+- bars;
+- hotels;
+- grocery/convenience stores;
+- clubs/event venues.
+
+The public license search exists, but the old bulk/current extraction paths remain inconsistent and some legacy search endpoints return 403. Do not claim statewide DLLC coverage until a clean extraction route is proven.
+
+## Provider-quality / BMC trust system — REQUIRED FUTURE DESIGN
+
+Brett explicitly raised the risk that a contractor could buy leads/packages, perform poor work, and damage BMC's reputation.
+
+At the same time, BMC must not exclude small local contractors merely because they have fewer online reviews.
+
+This must remain a future pre-scale requirement.
+
+### Principle: quality and confidence are separate
+
+Do not use raw Google review count as the quality score.
+
+A small provider with limited history can be genuinely excellent.
+
+Use:
+- **quality/trust** = what the evidence says about performance and safety;
+- **confidence** = how much reliable evidence exists.
+
+A low-evidence provider should be “new / lower confidence,” not automatically “low quality.”
+
+### Hard factual eligibility gates
+
+Before ordinary BMC customer work is sent, verify as applicable:
+- real business identity / contact;
+- active Arizona trade/professional license where legally required;
+- license suspension/revocation/discipline status;
+- insurance/bond evidence where required or represented;
+- category/service-area fit;
+- severe authoritative fraud/safety findings if present.
+
+Payment to BMC must never bypass these requirements.
+
+### External reputation evidence
+
+Potential future inputs:
+- Google Business reviews;
+- Facebook ratings/recommendations;
+- BBB complaint/rating information;
+- Yelp/category-specific sources;
+- Trustpilot where meaningful;
+- Nextdoor recommendations where lawfully/technically available;
+- Arizona ROC / regulator discipline;
+- business age / registration evidence.
+
+Do not violate platform terms or build the system around prohibited scraping. Prefer lawful APIs, licensed access and public evidence.
+
+No one review platform should control provider eligibility.
+
+### BMC's own verified performance should ultimately be strongest
+
+Once jobs flow through BMC, track:
+- lead response time;
+- accept/decline behavior;
+- show/no-show;
+- cancellations;
+- completion rate;
+- customer post-job feedback;
+- callbacks/rework;
+- refund/dispute rate;
+- documented property damage/safety complaints;
+- repeat-customer rate;
+- quote-to-invoice consistency;
+- communication reliability.
+
+This internal verified performance should eventually outweigh public review volume.
+
+### Fair path for small/new contractors
+
+Do not require a large review count.
+
+Possible provider lifecycle:
+1. **BMC Verified / New** — credentials checked, limited BMC history.
+2. **BMC Proven** — enough completed BMC jobs with healthy outcomes.
+3. **BMC Preferred** — sustained strong BMC performance plus clean current credential/reputation evidence.
+
+New providers can receive a limited first wave of jobs/leads to earn confidence rather than being blocked.
+
+### Suggested future trust model
+
+Do not expose one opaque star number alone.
+
+Keep distinct fields:
+- credential status;
+- quality/trust score;
+- evidence-confidence score;
+- BMC job-performance score;
+- review-source snapshots / timestamps.
+
+Use a Bayesian/Wilson-style confidence adjustment later so:
+- 5.0 from 2 reviews does not automatically outrank 4.9 from 500;
+- a contractor with 6 good reviews is not penalized simply for being small.
+
+### Commercial separation rule
+
+**Buying a BMC package, territory or leads must never improve trust/quality ranking.**
+
+Revenue and provider quality must remain separate systems.
+
+### Complaint / appeal workflow
+
+Future system should support:
+- serious-complaint temporary hold;
+- evidence collection;
+- provider response;
+- credential re-check;
+- customer follow-up;
+- reinstatement/removal;
+- correction/appeal for inaccurate external data.
+
+Prefer factual public badges such as:
+- “license verified [date]”
+- “BMC jobs completed”
+- “BMC performance history available”
+
+Avoid unsupported public labels like “bad contractor.”
+
+## Production distinction
+
+The **72,142-row repository census is not production**.
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- 30,518 active v7 production evidence rows
+
+Outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+## Immediate next work
+
+Continue assistant-led census construction.
+
+Priority next directions:
+1. gas stations / convenience stores and other parking/exterior-heavy buyers;
+2. parking lots / strip malls / shopping centers / fleet yards;
+3. power-washing, lot-sweeping, striping and commercial exterior-cleaning vendors;
+4. hotels/lodging;
+5. automotive/fleet;
+6. warehouses/manufacturing;
+7. grocery/pharmacy and professional offices;
+8. continued direct/service-territory vendor research in Williamson Valley, Skull Valley and Cordes Lakes;
+9. keep looking for a clean Arizona DLLC extraction path.
+
+Do not stop at arbitrary targets; census lanes remain open-ended.
+
+## Continuity sentence
+
+**The current clean assistant-built repo baseline is 72,142 strict artifact seed rows across 314 auditable JSON artifacts, proven by BMC Portfolio CI run 40447696046 with 72,142/72,142 smoke rows, 21/21 markets, 1,260/1,260 lanes and 0 runtime core failures. The newest work added 206 official Arizona WIC grocery/food-retail buyers and seven direct rural service-territory vendor records. Future design must add a provider trust/quality layer that protects BMC without unfairly excluding small contractors, and the commercial strategy now explicitly includes brokering recurring facility-service agreements such as parking-lot/fuel-island power washing, sweeping, striping and related exterior maintenance. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
