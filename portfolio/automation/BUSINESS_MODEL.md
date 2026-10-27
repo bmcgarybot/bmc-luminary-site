@@ -262,3 +262,34 @@ BMC should not rely on one acquisition channel. The bounded operator continuousl
 - Private daily brief: the intended owner workflow is a few short checks per day focused on exceptions, provider approvals/credential-sensitive service changes, actionable public contracts, and unusual operator tasks. Routine research and monitoring should continue without owner intervention.
 
 Outbound prospecting remains separately gated and OFF until explicitly approved. Public opportunity discovery and public-index research are read-only research activities.
+
+
+---
+
+## 2026-10-26 Phase sequencing update — Growth Intelligence first
+
+BMC is preserving the full Service Network and moving it to a **Phase 2 priority**, not deleting it.
+
+The active Phase 1 proof target is the Growth Intelligence money model documented in:
+
+- `portfolio/automation/GROWTH_INTELLIGENCE_MASTER_PLAN.md`
+
+Key change:
+- do not treat Growth as a generic "100 leads" list;
+- sell qualified commercial prospect research with evidence, fit, and removed research effort;
+- free five-prospect sample first;
+- $499 core pack;
+- premium as a sequential upgrade where practical;
+- downsell after a no;
+- continuity after fulfillment;
+- Service Network/live opportunities later.
+
+BMC will test multiple eligible service niches in parallel using controlled experiment cells rather than betting the company on one niche.
+
+The durable kill rule remains 100 well-targeted valid outreaches with a credible sample/offer and no meaningful interest, but niches first go through offline data-quality and smaller exploration stages.
+
+The frozen pre-pivot Service Network snapshot is:
+- branch: `archive/service-network-pre-growth-pivot-2026-10-26`
+- commit: `a6b8e46d01e02ec55a876861cc22529eb3ea6677`
+
+No Service Network code/data should be removed solely because of this sequencing change.
