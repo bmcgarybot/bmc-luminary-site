@@ -709,7 +709,7 @@ def workflow_email_html(title,body_lines,button_label=None,button_url=None,greet
     postal=html.escape(BUSINESS_POSTAL_ADDRESS) if BUSINESS_POSTAL_ADDRESS else ""
     optout=""
     if marketing:
-        optout="<p style='margin:10px 0 0;font-size:12px;line-height:1.5;color:#6b7280'>Reply <strong>no</strong> if you do not want future BMC outreach.</p>"
+        optout="<p style='margin:10px 0 0;font-size:12px;line-height:1.5;color:#6b7280'>This is a promotional email from BMC Service Network.<br>Reply <strong>no</strong> if you do not want future BMC outreach.</p>"
     footer_address=f"<br>{postal}" if postal else ""
     return f"""<!doctype html><html><body style='margin:0;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1f2937'><div style='max-width:620px;margin:0 auto;padding:28px 20px'><div style='padding:0'><p style='margin:0 0 22px;font-size:20px;line-height:1.3;font-weight:700'>{html.escape(clean(title))}</p>{hello}{rows}{button}<div style='border-top:1px solid #e5e7eb;margin-top:28px;padding-top:18px'><p style='margin:0;font-size:12px;line-height:1.5;color:#6b7280'>BMC Service Network<br>BMC Luminary Ventures LLC{footer_address}</p>{optout}</div></div></div></body></html>"""
 
@@ -3479,6 +3479,8 @@ Tell us the area and type of work you want:
 
 If the five look useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required.
 
+This is a promotional email from BMC Service Network.
+
 BMC Service Network
 BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}
@@ -3504,6 +3506,8 @@ You can tell BMC the service area and kinds of accounts you want here:
 {landing}
 
 The five are yours to use. You only pay if you decide you want the full 100-prospect pack.
+
+This is a promotional email from BMC Service Network.
 
 BMC Service Network
 BMC Luminary Ventures LLC
