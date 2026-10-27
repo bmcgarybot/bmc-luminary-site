@@ -1,12 +1,29 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,follow"><title>Order Received | BMC Luminary Ventures</title>
-<link rel="stylesheet" href="../assets/core.css?v=clarity-10"></head><body class="editorial-site">
-<nav class="nav"><div class="wrap nav-in"><a class="brand" href="../growth-packs/">BMC Research Products</a></div></nav>
-<header class="customer-hero"><div class="wrap"><div style="max-width:860px"><div class="editorial-kicker">Payment received</div><h1>Your BMC order is in.</h1><p class="hero-sub">Your payment is confirmed. If we still need any details to start your research, we’ll ask for them.</p><div class="actions"><a class="btn btn-primary" id="next" href="../request/">Add project details</a><a class="btn btn-secondary" href="../growth-packs/">Return to research products</a></div></div></div></header>
-<section class="editorial-section alt"><div class="wrap"><div class="soft-panel"><div class="editorial-intro"><div class="editorial-kicker">What happens next</div><h2>Make sure we have the details that matter.</h2><p>For research orders, tell us the market, service, ideal customer, and anything you want us to exclude. Keep your Stripe receipt for your records.</p></div></div></div></section>
-<footer><div class="wrap footer-in"><span>Order confirmation</span><span>© <span data-year></span> BMC Luminary Ventures LLC</span></div></footer>
-<script src="../assets/core.js?v=clarity-10"></script><script>
+<meta name="robots" content="noindex,follow"><title>Payment Received | BMC Growth Intelligence</title>
+<link rel="stylesheet" href="../assets/core.css?v=growth-launch-1"></head><body class="editorial-site growth-seller-page">
+<nav class="nav"><div class="wrap nav-in"><a class="brand" href="../growth-packs/">BMC Growth Intelligence</a></div></nav>
+<header class="customer-hero"><div class="wrap"><div style="max-width:860px"><div class="editorial-kicker">Payment received</div>
+<h1>Your BMC order is in.</h1>
+<p class="hero-sub" id="lead">If you bought from your free five-target snapshot, you are done — BMC already has the service, market, ideal customer, and exclusions you gave us. Stripe will link the payment to that request automatically.</p>
+<div class="actions"><a class="btn btn-primary" href="../growth-packs/" id="done">You’re done — return to Growth Intelligence</a><a class="btn btn-secondary" id="details" href="../growth-packs/">I paid without a free snapshot</a></div>
+</div></div></header>
+<section class="editorial-section alt"><div class="wrap"><div class="soft-panel">
+<div class="editorial-intro"><div class="editorial-kicker">What happens next</div><h2>No duplicate form.</h2>
+<p>For a Growth Pack purchased from a BMC free snapshot, the VPS links your Stripe checkout to the saved target profile, checks the qualified inventory again, builds the 100-prospect file, runs delivery QA, and emails the finished file to the Stripe email address.</p></div>
+<p><strong>Bought the Payment Link directly?</strong> Use the button above so BMC can collect the market and customer details it does not already have.</p>
+</div></div></section>
+<footer><div class="wrap footer-in"><span>BMC Growth Intelligence · BMC Luminary Ventures LLC</span><span>Payment confirmation</span></div></footer>
+<script src="../assets/core.js?v=growth-launch-1"></script><script>
 const q=new URLSearchParams(location.search),offer=q.get('offer')||'',sessionId=q.get('session_id')||'';
-const map={'growth_pack_starter':'../growth-packs/#order','growth_pack_premium':'../growth-packs/#order','competitor_intelligence_pack':'../competitor-intelligence/#request','market_expansion_pack':'../market-expansion-pack/#request'};
-if(map[offer]){const parts=map[offer].split('#'),params=new URLSearchParams();if(sessionId)params.set('session_id',sessionId);if(offer)params.set('offer',offer);document.getElementById('next').href=parts[0]+(params.toString()?'?'+params.toString():'')+(parts[1]?'#'+parts[1]:'');}
+const details=document.getElementById('details');
+const map={'growth_pack_starter':'../growth-packs/','growth_pack_premium':'../growth-packs/','competitor_intelligence_pack':'../competitor-intelligence/','market_expansion_pack':'../market-expansion-pack/'};
+if(map[offer]){
+  if(offer==='growth_pack_starter'||offer==='growth_pack_premium'){
+    const params=new URLSearchParams();if(sessionId)params.set('session_id',sessionId);if(offer)params.set('offer',offer);
+    details.href='../growth-packs/?'+params.toString();
+  }else{
+    details.href=map[offer];
+    document.getElementById('lead').textContent='Your payment is confirmed. Use the project-details button if BMC still needs the market or scope for this research product.';
+  }
+}
 </script></body></html>
