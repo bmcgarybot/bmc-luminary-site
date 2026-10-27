@@ -5399,3 +5399,203 @@ update market_inventory_progress p set official_candidates=(
  select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
  and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ),updated_at=now() where p.market='Scottsdale';
+
+
+-- Assistant-led verified Tucson batch 03 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','hvac_heat','Heating & Air','Done Rite Services - HVAC, Plumbing, & Electrical',
+ 'https://doneritesvcs.com/services/','doneritesvcs.com','Direct Tucson company site explicitly offers commercial and residential HVAC; Tucson address, 24/7 service and Arizona ROC license numbers published.','assistant verified research: Tucson Heating & Air',0,
+ null,'(520) 369-3966',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_verified_03","researched_at":"2026-10-27T00:13:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Tucson company site explicitly offers commercial and residential HVAC; Tucson address, 24/7 service and Arizona ROC license numbers published."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','backflow_plumbing','Backflow & Commercial Plumbing','Done Rite Services - HVAC, Plumbing, & Electrical',
+ 'https://doneritesvcs.com/services/','doneritesvcs.com','Direct Tucson company site explicitly offers commercial plumbing, drain, sewer, water-heater and gas services; licensed/bonded/insured.','assistant verified research: Tucson Backflow & Commercial Plumbing',0,
+ null,'(520) 369-3966',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_verified_03","researched_at":"2026-10-27T00:13:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Tucson company site explicitly offers commercial plumbing, drain, sewer, water-heater and gas services; licensed/bonded/insured."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','electrical_service','Electrician','Done Rite Services - HVAC, Plumbing, & Electrical',
+ 'https://doneritesvcs.com/services/','doneritesvcs.com','Direct Tucson company site explicitly offers commercial electrical, panel, rewiring and emergency electrician services; Arizona ROC licenses published.','assistant verified research: Tucson Electrician',0,
+ null,'(520) 369-3966',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_verified_03","researched_at":"2026-10-27T00:13:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Tucson company site explicitly offers commercial electrical, panel, rewiring and emergency electrician services; Arizona ROC licenses published."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','hvac_heat','Heating & Air','Hamstra Heating & Cooling, Inc.',
+ 'https://www.hamstrahvac.com/','hamstrahvac.com','Direct site identifies Tucson headquarters, residential and commercial HVAC service since 1983, and residential/commercial ROC licenses.','assistant verified research: Tucson Heating & Air',0,
+ null,'(520) 629-9833',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_verified_03","researched_at":"2026-10-27T00:13:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site identifies Tucson headquarters, residential and commercial HVAC service since 1983, and residential/commercial ROC licenses."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','backflow_plumbing','Backflow & Commercial Plumbing','Apperson Plumbing Service',
+ 'https://www.appersonplumbingservice.com/','appersonplumbingservice.com','Direct site states Tucson plumbing service since 1949, including commercial/home plumbing, emergency service and backflow testing.','assistant verified research: Tucson Backflow & Commercial Plumbing',0,
+ null,'(520) 623-8441',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_verified_03","researched_at":"2026-10-27T00:13:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site states Tucson plumbing service since 1949, including commercial/home plumbing, emergency service and backflow testing."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','fire_safety','Fire Safety & Extinguisher Service','Central Alarm, Inc.',
+ 'https://central-alarm.com/','central-alarm.com','Direct Tucson security/alarm company site; local Tucson branch, monitoring, guard/patrol and business protection services.','assistant verified research: Tucson Fire Safety & Extinguisher Service',0,
+ 'customercare@central-alarm.com','(520) 882-8142',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_verified_03","researched_at":"2026-10-27T00:13:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Tucson security/alarm company site; local Tucson branch, monitoring, guard/patrol and business protection services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Tucson','locksmith_access','Locks & Access Control','Central Alarm, Inc.',
+ 'https://central-alarm.com/','central-alarm.com','Direct Tucson security company site with system design, installation and monitoring; access/security facility-service candidate.','assistant verified research: Tucson Locks & Access Control',0,
+ 'customercare@central-alarm.com','(520) 882-8142',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_verified_03","researched_at":"2026-10-27T00:13:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct Tucson security company site with system design, installation and monitoring; access/security facility-service candidate."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','medical_centers','hospitals medical centers clinics','Tucson Medical Center',
+ 'https://tmctucson.tmcaz.com/en','tmcaz.com','Direct TMC site lists 5301 E Grant Rd, Tucson and identifies the nonprofit hospital and health system.','assistant verified research: Tucson hospitals medical centers clinics',0,
+ null,'(520) 327-5461',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_verified_03","researched_at":"2026-10-27T00:13:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct TMC site lists 5301 E Grant Rd, Tucson and identifies the nonprofit hospital and health system."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','medical_centers','hospitals medical centers clinics','Banner - University Medical Center Tucson Campus',
+ 'https://hsapps.azdhs.gov/ls/sod/Facility.aspx?FacId=MED0257','hsapps.azdhs.gov','Official Arizona Department of Health Services facility report shows active Tucson hospital license through December 23, 2026 and 649 beds.','assistant verified research: Tucson hospitals medical centers clinics',0,
+ null,'(520) 874-4189',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_verified_03","researched_at":"2026-10-27T00:13:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Arizona Department of Health Services facility report shows active Tucson hospital license through December 23, 2026 and 649 beds."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Tucson','public_facilities','government public facilities municipal buildings','City of Tucson',
+ 'https://www.tucsonaz.gov/','tucsonaz.gov','Official City of Tucson municipal website; public-facilities buyer.','assistant verified research: Tucson government public facilities municipal buildings',0,
+ null,'(520) 791-4201',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_tucson_verified_03","researched_at":"2026-10-27T00:13:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official City of Tucson municipal website; public-facilities buyer."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+), updated_at=now()
+where p.market='Tucson';
