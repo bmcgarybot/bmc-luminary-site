@@ -1125,7 +1125,12 @@ select lower(s.market)||':'||regexp_replace(lower(s.business_name),'[^a-z0-9]','
        coalesce(s.delivered_at,g.sample_generated_at,g.created_at)
 from growth_sample_prospects s
 join growth_sample_requests g on g.sample_id=s.sample_id
-where lower(g.email)<>'' 
+where lower(g.email)<>'' and not exists (
+  select 1 from growth_prospect_exposures e
+  where e.delivery_ref='sample:'||s.sample_id::text
+    and e.recipient_key=lower(g.email)
+    and e.prospect_key=lower(s.market)||':'||regexp_replace(lower(s.business_name),'[^a-z0-9]','','g')
+)
 on conflict(prospect_key,recipient_key,delivery_ref) do nothing;
 
 insert into growth_prospect_exposures(
@@ -1138,5 +1143,21 @@ select lower(p.market)||':'||regexp_replace(lower(p.business_name),'[^a-z0-9]','
 from growth_order_prospects p
 join orders o on o.order_id=p.order_id
 left join growth_sample_requests g on g.sample_id=o.growth_sample_id
-where lower(o.customer_email)<>'' and p.delivered_at is not null
+where lower(o.customer_email)<>'' and p.delivered_at is not null and not exists (
+  select 1 from growth_prospect_exposures e
+  where e.delivery_ref='order:'||p.order_id::text
+    and e.recipient_key=lower(o.customer_email)
+    and e.prospect_key=lower(p.market)||':'||regexp_replace(lower(p.business_name),'[^a-z0-9]','','g')
+)
 on conflict(prospect_key,recipient_key,delivery_ref) do nothing;
+
+
+-- Resolve contact-route saturation for historical rows whenever the raw candidate still exists.
+update growth_prospect_exposures e
+set contact_key=case
+    when coalesce(c.public_email,'')<>'' then 'email:'||lower(c.public_email)
+    when length(regexp_replace(coalesce(c.public_phone,''),'\D','','g'))>=10
+      then 'phone:'||right(regexp_replace(c.public_phone,'\D','','g'),10)
+    else null end
+from market_inventory_candidates c
+where e.candidate_id=c.candidate_id and e.contact_key is null;
