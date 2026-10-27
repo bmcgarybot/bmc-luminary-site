@@ -10946,3 +10946,31 @@ Do not mark the new template approved until Brett has received and inspected the
 - add DSN/bounce classification and suppression;
 - review every customer-facing template in `EMAIL_TEMPLATE_REVIEW.md`;
 - retire redundant legacy Growth paths before broad outreach.
+
+
+## 75. Growth one-click free-five funnel — merged, awaiting safe deployment (2026-10-27)
+
+Owner Gmail review of the revised first-touch exposed a conversion problem behind the email: the personalized **Show me 5 free targets** CTA still landed on the ordinary `growth_snapshot` form and asked the prospect to re-enter business/name/email/market/consent even though the outreach target already contained the business, public email, market, and service.
+
+Fix merged through PR #2:
+- merge commit before this handoff update: `719d43222a59abefa49bf4f666093fdda7b26699`
+- personalized Growth links now include a server-signed HMAC claim tied to `target_id + target email`; the email address is not exposed in the URL;
+- new `POST /api/growth/claim-free-five` verifies that the target exists, had a sent Growth outreach record, and has a valid claim;
+- a verified click reuses the existing `handle_growth_snapshot()` machinery, builds the five immediately, renders them on the landing page, emails the copy, and exposes the existing locked $499 checkout only when the reserve gate passes;
+- the normal form remains available for organic traffic and as failure fallback;
+- owner replay links carry `preview=1`, so Brett clicking a preview cannot create a real sample for the source prospect;
+- first-touch copy now says BMC **found** prospects instead of saying it is still researching them;
+- copy no longer pretends BMC knows the contractor's preferred account types before they provide that preference;
+- no outbound switch was enabled by this work.
+
+CI proof on PR head `48bb4859715787b0ecd3071173900dd99d4948b8`:
+- BMC Portfolio CI run `40550128385`: **PASS**;
+- new E2E test stages a synthetic emailed Growth target, signs the real claim, calls `/api/growth/claim-free-five`, and proves exactly five qualified prospects plus a Stripe checkout URL without submitting the normal form;
+- the pre-existing E2E continues through nurture, simulated paid order, deterministic QA, and exactly 100 unique in-market Growth fulfillment rows.
+
+Deployment/launch status:
+- **NOT deployed yet** at the time of this entry;
+- **NOT owner-approved for the new commit**;
+- `OUTREACH_ENABLED`, `BUYER_OUTREACH_ENABLED`, and `GROWTH_OUTREACH_ENABLED` must remain OFF;
+- three fresh read-only VPS relay requests submitted around 17:15Z did not produce result artifacts, and the hourly Revenue Watch independently reported the same missing-fresh-relay observation. Treat VPS state as unverified until the relay returns proof.
+- after a tested master SHA exists, deploy with all outbound OFF; then run Growth status/audit + scheduler/runtime proof; then replay the exact deployed first-touch to Brett; only explicit Gmail approval may set `GROWTH_OWNER_APPROVED_SHA` and permit a later controlled launch.
