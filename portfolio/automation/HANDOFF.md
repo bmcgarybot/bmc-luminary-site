@@ -10549,3 +10549,303 @@ Key implications:
 
 No Service Network assets were deleted. Archive branch remains:
 `archive/service-network-pre-growth-pivot-2026-10-26`
+
+
+---
+
+## 73. FIRST REVENUE LANE LIVE — PRESSURE WASHING GROWTH INTELLIGENCE — 2026-10-27
+
+This section is the authoritative next-thread checkpoint for the Growth Intelligence launch.
+
+### Preserve all prior Service Network work
+
+Do **not** delete, replace, or rebuild the Service Network assets merely because Growth Intelligence is the active revenue lane.
+
+Frozen pre-pivot recovery branch:
+- `archive/service-network-pre-growth-pivot-2026-10-26`
+
+Frozen checkpoint:
+- `a6b8e46d01e02ec55a876861cc22529eb3ea6677`
+
+The census, provider/facility flows, service matching, pages, research system, Stripe work, and other Service Network assets remain Phase 2 infrastructure.
+
+### Financial deadline
+
+Owner needs real non-test cash proof by **November 30, 2026**.
+
+Until then:
+- acquisition, conversion, paid fulfillment, deliverability, measurement, and customer feedback outrank feature expansion;
+- do not add material spend unless it directly supports those goals;
+- do not restart broad marketplace development while the Growth revenue test is active.
+
+### First live niche
+
+Active niche:
+- `pressure_washing`
+- public niche page: `/growth-packs/pressure-washing/`
+- experiment/outreach wave: `growth-pressure-1`
+
+Current offer path:
+1. targeted service business receives BMC Growth email;
+2. landing page asks for a free five-prospect Commercial Opportunity Snapshot;
+3. BMC returns five real qualified commercial prospects;
+4. the $499 100-prospect offer is only shown when the exact market has at least 125 passing prospects;
+5. Stripe checkout uses locked email + sample client reference;
+6. webhook attaches payment to the saved sample/ICP automatically;
+7. customer does **not** fill out the same project details again;
+8. VPS builds and QA-checks the 100-prospect CSV;
+9. fulfillment email sends only after deterministic QA passes;
+10. outcome feedback and later nurture/continuity can improve the model.
+
+### First outbound launch — completed
+
+The first real Growth launch action completed successfully.
+
+Relay result:
+- `growth-launch-pressure-20261027T1242Z`
+
+Initial result:
+- Growth lane enabled;
+- first live wave sent: **7**
+- daily cap: **10**
+- wave: `growth-pressure-1`
+- Service Network provider outreach: OFF
+- Service Network buyer outreach: OFF
+- post-enable Growth health: PASS
+- critical Growth exceptions: 0
+
+The seven first-touch records were subsequently preserved through a controlled pause/deploy/re-enable cycle.
+
+### Current production backend
+
+Production VPS backend commit:
+- `5e7e226501594348168865eeb86376b72e7d724e`
+
+CI proof:
+- BMC Portfolio CI run `40505623633` — SUCCESS
+- BMC Service Network Pages run `40505623650` — SUCCESS
+
+Hardening included:
+- critical Growth exceptions now fail closed;
+- `/api/process-growth-outreach` sends zero while a critical Growth exception is open;
+- `/api/process-growth-health` reports critical Growth exceptions;
+- runtime doctor understands intentional Growth-only launch mode instead of falsely requiring Growth to remain OFF.
+
+Controlled re-enable result:
+- relay: `growth-reenable-hardened-20261027T1248Z`
+- re-enable: SUCCESS
+- duplicate first-touch sends: **0**
+- staged active: 7
+- total sent: 7
+- Growth health: PASS
+- critical Growth exceptions: 0
+
+### Last confirmed Growth funnel state
+
+Last confirmed immediately after hardened re-enable:
+- `growth_enabled=true`
+- wave: `growth-pressure-1`
+- daily limit: 10
+- sample reserve: 125
+- staged active: 7
+- sent: 7
+- replies: 0
+- samples requested: 0
+- samples delivered: 0
+- converted samples: 0
+- paid orders: 0
+- revenue: $0
+- open Growth exceptions: 0
+
+This was an immediate post-launch snapshot. The next thread must read live state before assuming these counters are unchanged.
+
+### Last live runtime proof
+
+Relay:
+- `runtime-growth-live-20261027T1252Z`
+
+Result:
+- exit code 0
+- core failures: 0
+- warnings: 0
+- Growth-only launch health gate: PASS
+- provider outreach: OFF
+- buyer outreach: OFF
+- Growth outreach: ON
+- Docker/Compose: PASS
+- scheduler: PASS
+- Cloudflare Tunnel 2026.10.3: PASS
+- Ops API: PASS
+- Postgres: PASS
+- SMTP/IMAP launch config: PASS from Growth audit
+- Stripe payment mapping: PASS from Growth audit
+- Ollama/qwen3:1.7b: PASS
+- SearXNG/private research search: PASS
+
+The generic preflight may still show `live_intake_ready: BLOCKED` because no verified Service Network field provider is active. That is a **Phase 2 marketplace gate**, not a blocker for the live Growth Intelligence revenue lane.
+
+### Website / SEO / conversion state
+
+Verified from the VPS Growth launch audit:
+- live pressure-washing Growth landing page reachable;
+- free-five form present;
+- live Growth hub uses free-five-first conversion path;
+- sitemap contains the pressure-washing Growth niche;
+- public webhook ingress reachable and constrained;
+- live $499 Stripe Payment Link mapped;
+- SMTP configured;
+- IMAP reply/opt-out polling configured;
+- business postal address configured;
+- no open critical Growth exceptions.
+
+Public Growth page:
+- index/follow;
+- canonical URL;
+- meta description;
+- clear free-five CTA;
+- no claim that a researched prospect is actively shopping;
+- published qualification standard;
+- 125-record reserve rule;
+- qualification replacement guarantee;
+- $499 offer shown after proof, not as the first cold ask.
+
+Public legal pages were also cleaned after launch:
+- removed internal phrases such as “Operational launch draft”;
+- Terms now explain Growth Intelligence research, the qualification guarantee, source/contact expectations, and no revenue guarantee;
+- Privacy now explains Growth research, public business data, outreach suppression, and payment/order handling.
+
+Static/legal polish commits after the VPS backend deploy:
+- `0be996d60481cea8095ea25136e3fe0b0004f187` — Terms
+- `637b39c401014486609aeb4ac1f4848d7ce78ccf` — Privacy
+- `e6aa71a1a48a15f57c49bfd36480e285909a23da` — public-copy regression guard
+
+Validation for `e6aa71a...`:
+- BMC Portfolio CI `40506405755` — SUCCESS
+- BMC Service Network Pages `40506405663` — SUCCESS
+
+The VPS does not need a backend redeploy solely for these static/legal changes. Production backend remains intentionally pinned to the tested `5e7e226...` code until another backend change is approved and tested.
+
+### Stripe checkout reconciliation
+
+The free-five checkout URL uses:
+- `locked_prefilled_email`
+- `client_reference_id=growth_<sample uuid>`
+
+Stripe documents both Payment Link URL parameters for this purpose.
+
+Webhook behavior:
+- maps paid Growth product;
+- reads `client_reference_id`;
+- resolves the saved Growth sample;
+- falls back to recent same-email sample if necessary;
+- sets `growth_sample_id` on the paid order;
+- marks sample converted;
+- stops nurture;
+- creates `fulfill_growth_pack` task;
+- carries original service/market/ICP/minimum job/exclusions into fulfillment.
+
+There is no required second Growth intake after payment.
+
+### Growth fulfillment QA
+
+The production workflow is designed to refuse a bad 100-pack.
+
+Before sending:
+- exactly 100 prospects;
+- all scores >=65;
+- exact customer market;
+- unique business names;
+- source/contact route present;
+- prior BMC deliveries to the same customer excluded;
+- five free prospects included in the 100.
+
+If inventory cannot produce 100 honest qualified rows:
+- paid task becomes exception;
+- critical Growth exception is created;
+- pack is not sent;
+- Growth outbound fails closed while critical Growth exceptions remain.
+
+CI executes the complete synthetic path:
+free five -> reserve gate -> nurture -> simulated paid order -> 100 unique qualified rows -> fulfilled order.
+
+### Monitoring / “20-minute alarm” rule
+
+The owner asked active threads to check status/errors every ~20 minutes.
+
+There are two layers:
+
+**VPS internal layer**
+- scheduler loop: every 5 minutes;
+- Growth health + nurture + fulfillment + Growth outreach: every 3 loops = **every 15 minutes**;
+- this is intentionally more frequent than the requested 20-minute safety cadence.
+
+**ChatGPT external layer**
+- automation ID: `6adfa09139708191a3b81e13e9fbabba`
+- title: `BMC Revenue Watch`
+- cadence: hourly condition watch (ChatGPT automations do not support sub-hour frequency);
+- verifies relay/scheduler/API/tunnel/Growth health/SMTP-IMAP/Stripe/funnel/exceptions;
+- expects Growth may be ON;
+- requires Service Network provider/buyer outreach to remain OFF;
+- should report meaningful replies, samples, orders, revenue, or failures.
+
+During a long active build conversation, the assistant should additionally perform an explicit relay status/error check roughly every 20 minutes of active work rather than relying only on the hourly cloud automation.
+
+### First action in the next conversation
+
+Do this before changing code:
+
+1. Read this Section 73.
+2. Run Growth live status through the VPS relay.
+3. Run Growth launch audit or Growth health.
+4. Verify scheduler.
+5. Check:
+   - sent count;
+   - replies;
+   - opt-outs;
+   - free-five requests;
+   - samples delivered;
+   - Stripe paid orders/revenue;
+   - fulfillment tasks;
+   - open critical Growth exceptions.
+6. Verify `OUTREACH_ENABLED=false` and `BUYER_OUTREACH_ENABLED=false`.
+7. Do not resend the existing seven first-touch emails.
+
+### Immediate next work
+
+Do not redesign the company.
+
+Priority order:
+- watch first pressure-washing responses and free-five behavior;
+- expand the pressure-washing Growth-customer cohort toward 25 **without lowering qualification/contact quality**;
+- improve email/contact discovery for the remaining pressure-washing provider universe rather than padding with weak contacts;
+- keep an eye on deliverability/bounces and suppression;
+- once the first niche has enough signal—or while adding qualified contacts—prepare the already-built commercial-cleaning challenger as the second experiment;
+- preserve exact niche/market attribution;
+- move volume toward actual sample requests and paid orders;
+- do not let page views or database size substitute for revenue.
+
+Do not cold call.
+
+### Durable experiment rule
+
+Pressure washing is the first experiment, not a permanent identity.
+
+If a cell reaches 100 valid well-targeted outreaches with a credible free-five offer and produces no meaningful interest, pause/radically change that cell.
+
+If free samples are requested/used but no one buys:
+- diagnose offer/price/trust before increasing volume.
+
+If paid orders occur:
+- prioritize fulfillment quality;
+- collect outcome feedback;
+- scale the winning niche/market combination;
+- keep a small challenger/exploration allocation.
+
+### Key owner rule
+
+The owner should be an exception resolver, not the fulfillment worker.
+
+Normal path should remain:
+outreach -> free five -> checkout -> Stripe webhook -> paid task -> deterministic 100-pack QA -> delivery -> feedback.
+
+Do not create manual work for Brett unless a genuine exception, credential/dashboard action, or business decision requires it.
