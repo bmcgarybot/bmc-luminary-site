@@ -3689,6 +3689,200 @@ async def replay_first_growth_email_to_owner(x_bmc_admin_key:str|None=Header(def
       "campaign_switches":{"provider":OUTREACH_ENABLED,"buyer":BUYER_OUTREACH_ENABLED,"growth":GROWTH_OUTREACH_ENABLED}
     }
 
+
+def owner_template_preview_catalog():
+    """Representative rendered previews of every current email template/variant in EMAIL_TEMPLATE_REVIEW.md."""
+    market="Sedona"; business="TLC Window Cleaning and Pressure Washing"
+    service="commercial pressure washing / exterior cleaning"; contact="Taylor"
+    postal=BUSINESS_POSTAL_ADDRESS or "430 South Montezuma Street, Prescott, AZ 86301"
+    sample_targets=[
+      ("Sedona Pines Resort","Hotel / Lodging",92,"Large exterior surfaces and recurring guest-facing cleanliness needs.","Offer a property walk-through and recurring exterior-cleaning plan.","info@sedonapines.com","https://example.com/sedona-pines"),
+      ("Red Rock Retail Center","Retail / Shopping",88,"High-traffic storefronts and sidewalks benefit from scheduled exterior cleaning.","Lead with entrances, sidewalks, dumpster-pad and storefront cleaning.","928-555-0102","https://example.com/red-rock-retail"),
+      ("Oak Creek Apartments","Multifamily",86,"Shared walkways, breezeways and common areas create repeat cleaning opportunities.","Offer common-area and turnover exterior cleaning.","leasing@oakcreek.example","https://example.com/oak-creek"),
+      ("Sedona Auto Plaza","Auto / Fleet",83,"Customer-facing pavement and service areas need periodic degreasing and washing.","Lead with service-bay aprons, sidewalks and parking-area spot cleaning.","https://example.com/sedona-auto","https://example.com/sedona-auto"),
+      ("Canyon View Restaurant","Restaurant",81,"Patios, entries and grease-prone exterior areas are visible to customers.","Offer patio, entry and dumpster-pad cleaning around closed hours.","manager@canyonview.example","https://example.com/canyon-view"),
+    ]
+    landing="https://bmcservicenetwork.com/growth-packs/pressure-washing/?owner_preview=1"
+    checkout="https://buy.stripe.com/OWNER-PREVIEW-NOT-LIVE"
+    activation="https://bmcservicenetwork.com/provider-pilot-activate/?owner_preview=1"
+    portal="https://bmcservicenetwork.com/provider-dashboard/?owner_preview=1"
+    provider_response="https://bmcservicenetwork.com/provider-response/?owner_preview=1"
+    job_update="https://bmcservicenetwork.com/provider-job-update/?owner_preview=1"
+    entries=[]
+    def add(num,name,subject,greeting,lines,button=None,url=None,marketing=False):
+        entries.append({"num":num,"name":name,"subject":subject,"greeting":greeting,"lines":lines,"button":button,"url":url,"marketing":marketing})
+    add(1,"Growth cold first touch",f"{market}: 5 commercial accounts worth checking",f"Hi {business},",[
+      f"I found several {market} businesses that look like strong commercial prospects for {service}.",
+      "Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the kind of commercial work your business does — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.",
+      "If the five look useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required."
+    ],"Show me 5 free targets",landing,True)
+    add(2,"Growth cold follow-up",f"Re: 5 free commercial targets in {market}",f"Hi {business},",[
+      "One follow-up on the five free commercial targets.",
+      "Your invitation already knows the business, market, and service tied to this email. Click once to see the five.",
+      "The five are yours to use. You only pay if you decide you want the full 100-prospect pack."
+    ],"Show me the 5 targets",landing,True)
+    add(3,"Growth positive-reply response","Here’s the free 5-target form",None,[
+      "Thanks for the reply. Tell BMC the commercial work and area you want here:",
+      "We’ll research five real targets free."
+    ],"Open the free 5-target page",landing,False)
+    delivery_lines=[f"Here are five commercial targets for {business} in {market}."]
+    for i,(n,cat,score,why,angle,route,src) in enumerate(sample_targets,1):
+        delivery_lines.append(f"{i}. {n} — {cat} — fit {score}/100\nWhy it fits: {why}\nPublic contact route: {route}\nSuggested angle: {angle}\nSource: {src}")
+    delivery_lines += ["If these are the kinds of accounts you want, the $499 pack includes 100 total qualified commercial prospects built to the same standard.",
+      "Qualification guarantee: if a delivered prospect fails the published territory/activity/type/contact standard, BMC replaces it."]
+    add(4,"Growth free-five delivery",f"Your 5 commercial targets in {market}",f"Hi {contact},",delivery_lines,"Get the full 100 for $499",checkout,True)
+    add(5,"Growth nurture 1",f"Want the other 95 commercial targets in {market}?",f"Hi {contact},",[
+      f"You asked BMC for five commercial targets for {business} in {market}.",
+      "If those are the kinds of accounts you want, the full $499 Growth Pack gives you 100 total qualified commercial prospects built to the same standard — not a raw contact dump.",
+      "Qualification guarantee: wrong territory, inactive business, wrong property type, duplicate, or missing promised contact route gets replaced."
+    ],"Get the full 100 for $499",checkout,True)
+    add(6,"Growth nurture 2",f"Last note on the {market} commercial prospect pack",f"Hi {contact},",[
+      f"Last follow-up on the commercial targets BMC researched for {business}.",
+      "If you want the full 100-prospect pack, it is here.",
+      "If not, no problem — the five free targets are yours to use."
+    ],"Get the full 100",checkout,True)
+    add(7,"Paid Growth Pack delivery",f"Your BMC Growth Pack — 100 commercial prospects in {market}",f"Hi {contact},",[
+      "Your BMC Growth Pack is attached.",
+      f"It contains 100 qualified commercial prospects in {market} for {service}. The five free targets you already saw are included in the 100.",
+      "Every row passed BMC's territory, fit, contact/source, activity, score, and duplicate checks before delivery.",
+      "If any row was outside the agreed territory, inactive when delivered, the wrong business/property type, a duplicate BMC already sold you, or missing the promised contact route, reply and BMC will replace it.",
+      "Please tell us what happens as you work the list — interested, quote, won, lost, or bad fit. That feedback improves future packs.",
+      "OWNER PREVIEW: the live delivery includes BMC-Growth-Pack-Sedona.csv."
+    ],None,None,False)
+    add(8,"First-wave provider pilot — step 1",f"{market}: open to a few more pressure washing jobs?",f"Hi {business},",[
+      f"Are you open to a few more pressure washing jobs in {market} if you can see the job details before deciding?",
+      "BMC Service Network is opening a small provider pilot in Arizona. There is no fee to join.",
+      "You tell us where you work, the jobs you want, your minimum job size, and how much work you can take.",
+      "When a matching customer request comes in, you can review the job type, area, timing, and customer notes before deciding. If it fits, accept it. If it does not, pass. Passing does not create a charge.",
+      "During the pilot, some opportunities may be free or discounted. If BMC introduces paid leads or territory options later, the price and terms will be shown before you choose to participate.",
+      "No sales call is required."
+    ],"Join the pilot",activation,True)
+    add(9,"First-wave provider pilot — step 2",f"Re: more pressure washing work in {market}",f"Hi {business},",[
+      "Just following up once.",
+      f"If you want more pressure washing work in {market}, BMC lets you set the area, job types, minimum job size, and capacity you want. You see the customer request before deciding whether it fits.",
+      "There is no fee to join the pilot."
+    ],"Join the free pilot",activation,True)
+    add(10,"First-wave provider pilot — step 3",f"Closing this out: {market} pressure washing pilot",f"Hi {business},",[
+      "Last note from me.",
+      f"If you want to be considered for local pressure washing requests in {market}, you can join the free BMC pilot here.",
+      "If not, no action is needed and we will close this out."
+    ],"Join the free pilot",activation,True)
+    add(11,"General provider recruitment — step 1",f"{market}: want more pressure washing jobs?",f"Hi {business},",[
+      f"Are you open to more pressure washing work in {market}?",
+      "BMC Service Network is opening its provider network in Arizona. There is no fee to join.",
+      "You tell us where you work, what jobs you want, your minimum job size, and your capacity. When a matching customer request comes in, you review the job details first and decide whether to accept it or pass.",
+      "Some early opportunities may be free or discounted. If BMC introduces paid leads or territory options later, the price and terms will be shown before you choose to participate."
+    ],"Set your provider preferences",activation,True)
+    add(12,"General provider recruitment — step 2",f"Re: pressure washing work in {market}",f"Hi {business},",[
+      f"Following up once in case more pressure washing work in {market} would be useful.",
+      "Joining the BMC provider network is free. You set the jobs and area you want, your minimum job size, and your capacity, then review matching requests before accepting or passing."
+    ],"Open provider setup",activation,True)
+    add(13,"General provider recruitment — step 3",f"Last note: {market} pressure washing work",f"Hi {business},",[
+      "Last note from me.",
+      f"If you want BMC to consider your business for matching pressure washing requests in {market}, your provider setup link is here.",
+      "If not, no action is needed."
+    ],"Open provider setup",activation,True)
+    add(14,"Legacy Growth-Pack buyer campaign — step 1",f"5 free commercial targets for {business}",f"Hi {business},",[
+      "BMC is testing a simpler way for local service businesses to find commercial accounts.",
+      "Tell us the commercial work and area you want. We will research five real businesses that fit and send them free, including why each fits, a public contact route, and a practical outreach angle.",
+      "If the five are useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required."
+    ],"Start here","https://bmcservicenetwork.com/growth-packs/",True)
+    add(15,"Legacy Growth-Pack buyer campaign — step 2",f"Re: 5 free commercial targets for {business}",f"Hi {business},",[
+      "One follow-up: if you want BMC to show you five commercial accounts that fit the work you want, start here.",
+      "The five are free to use. You only pay if you later want the full 100-prospect pack."
+    ],"Get 5 free targets","https://bmcservicenetwork.com/growth-packs/",True)
+    add(16,"Facility/commercial buyer outreach — step 1",f"Too many building vendors to chase in {market}?",f"Hi Sedona Community Center,",[
+      "If one building problem keeps turning into another vendor search, BMC may be useful.",
+      "You can send one request with everything that needs attention: cleaning, repairs, grounds, HVAC, electrical, parking-lot work, and other building needs.",
+      "You do not need a monthly plan just to send the first request."
+    ],"Send the current problem","https://bmcservicenetwork.com/facility-help/",True)
+    add(17,"Facility/commercial buyer outreach — step 2",f"Re: building help in {market}",f"Hi Sedona Community Center,",[
+      "Just following up once.",
+      "If you have a building punch list, cleaning need, repair, or several small maintenance items sitting around, you can send them in one request here."
+    ],"Send your building request","https://bmcservicenetwork.com/facility-help/",True)
+    add(18,"Provider application receipt","We got your BMC provider application",f"Hi {contact},",[
+      f"We received your BMC provider application for {market}.",
+      "You’re done for now. There is no second form to fill out.",
+      "What happens next:\n1. We review the jobs and area you selected.\n2. We check license or insurance details when the trade requires it.\n3. If approved, we email you a secure provider dashboard link.",
+      "When a request comes in, you see the job details first. You can accept it or pass. Joining the pilot is free, and any future paid lead or territory terms will be shown before they apply."
+    ],None,None,False)
+    add(19,"Provider approval / dashboard ready","Your BMC provider dashboard is ready",f"Hi {business},",[
+      "You’re approved for the BMC provider pilot.",
+      "From the dashboard you can review new opportunities; accept or pass; see customer details after you accept; update estimates and job outcomes; and change your service area, minimum job, and capacity.",
+      "Joining the pilot itself is free. If a future lead or territory has a price, the terms will be shown before they apply.",
+      "This secure dashboard link expires on November 26, 2026. You can request a new one anytime from the provider login page."
+    ],"Open provider dashboard",portal,False)
+    add(20,"Provider login link","Your BMC provider login link",f"Hi {business},",[
+      "Use this secure link to open your BMC provider dashboard.",
+      "The link expires on November 26, 2026. If you did not request this, you can ignore this email."
+    ],"Open provider dashboard",portal,False)
+    add(21,"New service request to provider",f"New Pressure Washing request in {market}",None,[
+      "New BMC service request",
+      f"Market: {market}\nService: Pressure Washing\nTiming: Within 7 days\nScope: Clean exterior sidewalks, entry areas, and dumpster pad at a small commercial property.",
+      "Only accept if this fits your territory and current capacity."
+    ],"Accept or decline securely",provider_response,False)
+    add(22,"Provider accepted — customer details",f"Customer details: Pressure Washing in {market}",None,[
+      "You accepted this BMC request. Here are the customer details you need to follow up.",
+      f"Market: {market}\nService: Pressure Washing\nCustomer: Jordan Sample\nBusiness / property: Sample Sedona Market\nSite address: 123 Sample Rd, Sedona, AZ\nEmail: jordan@example.com\nPhone: 928-555-0199\nPreferred contact: Email\nTiming: Within 7 days",
+      "Scope:\nClean exterior sidewalks, entry areas, and dumpster pad.",
+      "Please contact the customer promptly. Customer information is provided only for this service request and should not be sold or used for unrelated marketing."
+    ],"Close the loop after contact",job_update,False)
+    add(23,"Customer — provider matched","Provider matched for your Pressure Washing request",None,[
+      "A provider accepted your BMC service request. Here is who will be following up with you.",
+      f"Provider: TLC Window Cleaning and Pressure Washing\nMarket: {market}\nService: Pressure Washing\nContact: 928-555-0110",
+      "The provider is an independent business and will communicate its own pricing, scope, scheduling, warranties, and job terms directly with you. BMC will follow the request through the estimate/outcome stage.",
+      "Reference: OWNER-PREVIEW-LEAD"
+    ],None,None,False)
+    add(24,"Building/facility request receipt","We got your building request",None,[
+      f"We received your building request in {market}.",
+      "Property: Sample Sedona Facility\nSite: 123 Sample Facility Way, Sedona, AZ",
+      "You asked for help with:\n- Commercial Cleaning\n- HVAC\n- Parking Lot / Exterior Cleaning",
+      "We’ll work through these items from the same request and follow up as the next steps become clear.",
+      "Reference: OWNER-PREVIEW-FACILITY"
+    ],None,None,False)
+    add(25,"General customer request receipt","BMC received your request",None,[
+      f"We received your request for Pressure Washing in {market}.",
+      "BMC is reviewing the request and will move it to the right next step.",
+      "Reference: OWNER-PREVIEW-CUSTOMER"
+    ],None,None,False)
+    add(26,"Provider job-outcome follow-up",f"Update BMC request: Pressure Washing in {market}",None,[
+      "Please update the outcome of the BMC request you accepted.",
+      f"Market: {market}\nService: Pressure Washing",
+      "Mark the job contacted, estimate sent, won, or lost.",
+      "Closing the loop helps BMC send work that fits your business."
+    ],"Update job outcome",job_update,False)
+    add(27,"Internal ops/watchdog alert","BMC WATCHDOG PREVIEW — runtime issue detected",None,[
+      "OWNER PREVIEW of the internal operational alert format.",
+      "Issue: Example service health check failed.",
+      "Status: attention required",
+      "Recommended action: Review the runtime doctor and latest exception details.",
+      "A recovery alert uses the same channel when the issue clears."
+    ],None,None,False)
+    return entries
+
+@app.post("/api/admin/replay-all-email-templates-to-owner")
+async def replay_all_email_templates_to_owner(x_bmc_admin_key:str|None=Header(default=None)):
+    if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY:
+        raise HTTPException(403,"Forbidden")
+    if OUTREACH_ENABLED or BUYER_OUTREACH_ENABLED or GROWTH_OUTREACH_ENABLED:
+        raise HTTPException(409,"All outbound campaign switches must remain OFF for owner preview testing.")
+    recipient="brett.coon2@gmail.com"
+    sent=[]; failed=[]
+    for item in owner_template_preview_catalog():
+        label=f"[OWNER PREVIEW {item['num']:02d}/27] {item['name']}"
+        subject=f"{label} — {item['subject']}"
+        html_body=workflow_email_html(
+          label,item["lines"],item.get("button"),item.get("url"),
+          greeting=item.get("greeting"),marketing=bool(item.get("marketing"))
+        )
+        body=(label+"\n\n"+(item.get("greeting") or "")+"\n\n"+"\n\n".join(item["lines"]))
+        if item.get("url"):
+            body+="\n\n"+item["url"]
+        body+=f"\n\nBMC Service Network\nBMC Luminary Ventures LLC\n{BUSINESS_POSTAL_ADDRESS}"
+        ok=await send_mail(recipient,subject,body,html_body)
+        (sent if ok else failed).append({"num":item["num"],"name":item["name"],"subject":subject})
+    return {"ok":not failed,"recipient":recipient,"sent":sent,"failed":failed,"count_sent":len(sent),"count_failed":len(failed)}
+
 def require_admin(key):
     if not ADMIN_KEY or key!=ADMIN_KEY:
         raise HTTPException(403,"Forbidden")
