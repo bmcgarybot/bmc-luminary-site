@@ -91,21 +91,38 @@ def market_for_city(city):
 
 def classify(place_type):
     p = clean(place_type).casefold()
-    if "gasoline" in p or "service station" in p or "fuel" in p:
+
+    # ADEQ uses "GAS FILLING STATION - COMMERCIAL" for the largest retail-fuel
+    # class and a separate fleet-fueling class. Keep those distinct so BMC can
+    # target exterior/fuel-island maintenance without burying them in generic
+    # commercial facilities.
+    if "gas filling station" in p and "fleet" in p:
+        return "auto_fleet", "Fleet Fueling Facilities"
+    if "gas filling station" in p or "gasoline" in p or "service station" in p:
         return "retail", "Gas Stations & Fuel Facilities"
-    if "garage" in p or "auto" in p or "vehicle" in p or "transport" in p or "airport" in p:
+    if "grocery store" in p or "convenience store" in p:
+        return "grocery", "Grocery & Convenience Stores"
+    if "fuel storage" in p or "lpg facility" in p:
+        return "warehouses_industrial", "Bulk Fuel & Industrial Facilities"
+    if "parking lot" in p or "parking garage" in p:
+        return "general_business", "Parking Lots & Garages"
+    if "hotel" in p or "motel" in p or "lodging" in p:
+        return "hotels_motels", "Hotels, Motels & Lodging"
+    if "medical" in p or "hospital" in p or "clinic" in p:
+        return "medical_centers", "Medical & Health Facilities"
+    if "garage" in p or "auto" in p or "vehicle" in p or "transport" in p or "airport" in p or "airplane hangar" in p or "equipment yard" in p:
         return "auto_fleet", "Automotive, Fleet & Transportation Facilities"
-    if "industrial" in p or "warehouse" in p or "manufactur" in p:
+    if "industrial" in p or "warehouse" in p or "manufactur" in p or "fabricator" in p or "machine shop" in p or "cement plant" in p:
         return "warehouses_industrial", "Industrial, Warehouse & Manufacturing Facilities"
     if "school" in p or "educational" in p or "college" in p or "university" in p:
         return "schools_education", "Schools & Education Facilities"
     if "church" in p or "synagogue" in p or "temple" in p or "mosque" in p:
         return "churches_nonprofits", "Churches & Religious Facilities"
-    if "public office" in p or "government" in p or "municipal" in p:
+    if "public office" in p or "government" in p or "municipal" in p or "fire station" in p or "police station" in p or "post office" in p or "public works" in p:
         return "public_facilities", "Public & Government Facilities"
-    if "apartment" in p or "townhouse" in p or "housing" in p:
+    if "apartment" in p or "townhouse" in p or "housing" in p or "mobile/manufactured home park" in p:
         return "property_management", "Multifamily & Property Facilities"
-    if "commercial" in p or "retail" in p:
+    if "commercial" in p or "retail" in p or "business park" in p:
         return "general_business", "Commercial Facilities"
     return "general_business", "Commercial & Institutional Facilities"
 
