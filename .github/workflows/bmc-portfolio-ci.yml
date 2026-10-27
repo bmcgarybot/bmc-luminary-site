@@ -749,7 +749,7 @@ jobs:
             )
             select 'buyer','CI Race Market','restaurants','Restaurants','Race Prospect '||g,
               'https://ci-race-'||g||'.example.com','ci-race-'||g||'.example.com',
-              '928555'||lpad(g::text,4,'0'),true,'direct','direct_evidence',now(),'discovered',now()
+              '480999'||lpad(g::text,4,'0'),true,'direct','direct_evidence',now(),'discovered',now()
             from generate_series(1,30) g
             on conflict do nothing;
             insert into growth_source_rights_review(source_domain,status,basis,reviewed_at)
