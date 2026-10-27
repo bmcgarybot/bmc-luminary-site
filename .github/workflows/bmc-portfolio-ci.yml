@@ -79,9 +79,11 @@ jobs:
           assert "response.sample" in core and "Get the full 100 for $499" in core
           assert "maybeClaimGrowthSample" in core and 'preview:q.get("preview")||""' in core
           assert "growth_claim_token" in api and "one_click_sample_claimed" in api
+          assert "growth_lock_exposure_allocator" in api and "growth_exposure_filter" in api
+          assert "growth_record_exposures" in api and "GROWTH_FREE_DISTINCT_90D" in api
           assert "owner_template_preview_catalog" in api and "replay-all-email-templates-to-owner" in api
           assert "OWNER PREVIEW" in api and "count_sent" in api
-          for table in ("growth_experiment_cells","growth_outreach_targets","growth_sample_requests","growth_sample_prospects","growth_order_prospects"):
+          for table in ("growth_experiment_cells","growth_outreach_targets","growth_sample_requests","growth_sample_prospects","growth_order_prospects","growth_prospect_exposures","growth_prospect_suppressions","growth_source_rights_review"):
               assert f"create table if not exists {table}" in schema, table
           for endpoint in ("/api/admin/stage-growth-pressure-washing","/api/admin/growth-status","/api/process-growth-health","/api/process-growth-nurture","/api/process-growth-fulfillment","/api/growth/claim-free-five"):
               assert endpoint in api, endpoint
