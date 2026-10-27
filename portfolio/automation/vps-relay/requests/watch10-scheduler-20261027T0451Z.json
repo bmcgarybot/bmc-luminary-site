@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "watch10-scheduler-20261027T0451Z",
+  "action": "scheduler_status",
+  "allow_external_actions": false,
+  "created_at": "2026-10-27T04:51:00Z",
+  "expires_at": "2026-10-27T05:51:00Z",
+  "args": {}
+}
