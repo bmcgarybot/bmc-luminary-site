@@ -8684,3 +8684,191 @@ Do not deploy merely because this checkpoint is green. Brett's current instructi
 ## Continuity sentence
 
 **The assistant-built repository census has reached 71,444 strict artifact seed rows across 311 auditable JSON artifacts. The IRS Arizona EO Business Master File added 15,227 official nonprofit/exempt-organization evidence rows, of which 14,776 were new strict identities after cross-artifact dedupe. CMS is no longer a census blocker, NCES replaced the blocked ADE source, HUD added multifamily buyers, production remains the older 30,518-row f05ff6 deployment, and all outbound remains OFF.**
+
+
+---
+
+# 66. FDIC FINANCIAL-BRANCH BUYER CENSUS — 2026-10-26 21:20 ARIZONA
+
+This section continues Sections 63–65.
+
+## Standing rule
+
+The assistant continues building the initial BMC business universe. The VPS remains the maintenance/rescan/delta layer. All external outreach remains OFF.
+
+## Exact artifact/data head before this documentation commit
+
+Current master:
+- `55acd0737418f118879b7ace63f15166054085aa`
+- message: **Seed official FDIC bank branch buyer census**
+
+Deterministic census summary on that tree:
+- **312 assistant census JSON artifacts**
+- **73,566 raw evidence rows**
+- **1,637 strict duplicate rows collapsed**
+- **71,929 strict unique artifact seed rows**
+- **56,164 strict unique buyer rows**
+- **15,765 strict unique vendor rows**
+- **21 / 21 markets**
+
+Strict artifact rows by market:
+- Ash Fork: **138**
+- Bullhead City: **721**
+- Camp Verde: **381**
+- Chino Valley: **402**
+- Cordes Lakes: **84**
+- Cottonwood: **633**
+- Dewey-Humboldt: **488**
+- Flagstaff: **1,678**
+- Golden Valley: **193**
+- Kingman: **1,102**
+- Mayer: **226**
+- Phoenix: **18,396**
+- Prescott: **1,681**
+- Prescott Valley: **939**
+- Scottsdale: **5,957**
+- Sedona: **569**
+- Seligman: **155**
+- Skull Valley: **79**
+- Tucson: **37,840**
+- Williamson Valley: **43**
+- Winslow: **224**
+
+These are evidence/seed identities, not globally deduplicated legal businesses.
+
+## Previous clean IRS checkpoint
+
+Section 65's complete application checkpoint is proven green:
+- BMC Portfolio CI run **40446476492**
+- exact SHA: `7df3ff5928d5d98a31f2f779a057de7ff594dfdd`
+- result: **SUCCESS**
+- expected artifact candidates: **71,444**
+- actual artifact candidates: **71,444**
+- artifact markets: **21 / 21**
+- inventory lanes: **1,260 / 1,260**
+- runtime core failures: **0**
+
+The FDIC artifact was committed afterward by workflow token, so this Section 66 normal commit is intentionally used to trigger BMC Portfolio CI over the complete 71,929-row tree.
+
+## Official FDIC bank branch/location census
+
+Exporter:
+- `portfolio/automation/export-fdic-branch-census.py`
+
+Workflow:
+- `.github/workflows/assistant-fdic-branch-census.yml`
+
+Successful workflow:
+- **40446560057**
+
+Workflow artifact commit:
+- `55acd0737418f118879b7ace63f15166054085aa`
+- message: **Seed official FDIC bank branch buyer census**
+
+Official source:
+- Federal Deposit Insurance Corporation BankFind Suite
+- `/banks/locations` public API
+- Arizona filter applied at FDIC source: `STALP:AZ`
+
+Source/result counts:
+- **977 current Arizona FDIC location rows returned**
+- **486 BMC-market bank branch/office records**
+
+BMC-market FDIC branch counts:
+- Bullhead City: **9**
+- Camp Verde: **2**
+- Chino Valley: **2**
+- Cottonwood: **5**
+- Dewey-Humboldt: **1**
+- Flagstaff: **14**
+- Kingman: **10**
+- Mayer: **1**
+- Phoenix: **198**
+- Prescott: **15**
+- Prescott Valley: **9**
+- Scottsdale: **101**
+- Sedona: **8**
+- Tucson: **109**
+- Winslow: **2**
+
+No FDIC branch from this source mapped literally to the other configured markets. That is a source-specific zero, not evidence that those markets contain no other financial/service businesses.
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-fdic-bank-branches-28.json`
+
+Classification:
+- side: buyer
+- category: `insurance_professional`
+- label: **Banks & Financial Offices**
+- `official=false`
+- `official_registry=true`
+- therefore `government_registry / government_record`
+
+Where FDIC provides them, records preserve:
+- bank/institution name;
+- office/branch name;
+- street address/city/ZIP;
+- FDIC certificate number;
+- office number;
+- establishment date;
+- bank class;
+- regulator;
+- institution website.
+
+The source is branch/location level, so this adds physical facilities rather than merely bank headquarters or brand names.
+
+## NCUA note
+
+NCUA was investigated as the obvious companion source for credit-union branches.
+
+Current public NCUA quarterly data remains useful for credit-union institutions, but the historical public **Credit Union Branch Information** table is retired. NCUA FOIA logs also show branch-location dataset requests that ended for fee-related reasons.
+
+Do not invent exhaustive branch coverage from headquarters-only NCUA data. Continue looking for a genuinely free current branch-level source before adding a credit-union branch census.
+
+## Production distinction remains mandatory
+
+The **71,929-row repository census is NOT production-proven**.
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+
+All outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+Do not report 71,929 as live production data until an exact green census SHA is deliberately deployed and a fresh production proof is taken.
+
+## Immediate next work
+
+Continue assistant-led census expansion after this checkpoint.
+
+High-value remaining directions include:
+- free current credit-union office/branch sources if found;
+- additional HUD/property layers that represent distinct facilities;
+- county/municipal business-license and inspection datasets;
+- hotel/lodging and chain-location sources;
+- automotive/fleet, warehouses/manufacturing, grocery/pharmacy and professional-office buyers;
+- direct rural vendor service-territory verification;
+- Williamson Valley, Skull Valley and Cordes Lakes direct/community research.
+
+Do not confuse a large federal-registry footprint with a complete commercial universe.
+
+## Required post-documentation validation
+
+This Section 66 normal commit must trigger full BMC Portfolio CI over the 312-artifact tree.
+
+Require:
+- BMC Portfolio CI success on the exact post-Section-66 master;
+- expected artifact candidates = **71,929**;
+- actual artifact candidates = **71,929**;
+- artifact markets = **21**;
+- inventory lanes = **1,260 / 1,260**;
+- runtime core failures = **0**.
+
+Do not deploy merely because that checkpoint is green. Brett's current direction remains to continue fleshing out the initial list.
+
+## Continuity sentence
+
+**The assistant-built repo census now stands at 71,929 strict artifact seed rows across 312 auditable JSON artifacts. The CMS blockage was routed around successfully, NCES replaced the blocked ADE school source, HUD added multifamily properties, IRS added 15,227 exempt-organization buyer records, and FDIC added 486 current bank branch/office facilities. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
