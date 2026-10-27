@@ -8460,3 +8460,227 @@ Do not deploy merely because that checkpoint is green; Brett's current direction
 ## Continuity sentence
 
 **The assistant-built repo census has now reached 56,668 strict artifact seed rows across 310 auditable JSON artifacts. CMS is no longer a census blocker: the VPS itself remains blocked from CMS, but assistant-controlled official exporters successfully harvested health/provider data including 3,338 BMC-market clinical-lab records. NCES replaced the blocked ADE school path with 1,603 official education-facility rows across public schools, district offices, private schools and postsecondary institutions. HUD has now added 109 official multifamily/apartment properties with management/contact fields where available. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
+
+
+---
+
+# 65. IRS EXEMPT-ORGANIZATION BUYER CENSUS — 2026-10-26 21:10 ARIZONA
+
+This section continues Sections 63–64.
+
+## Standing rule
+
+The assistant continues building the initial BMC business universe. The VPS remains the maintenance/rescan/delta layer. Do not hand initial census construction back to the VPS.
+
+All external outreach remains OFF.
+
+## Exact artifact/data head before this documentation commit
+
+Current master:
+- `d482d5214a2da9251c90750105df4866a57024be`
+- message: **Seed official IRS exempt organization buyer census**
+
+Deterministic census summary on that tree:
+- **311 assistant census JSON artifacts**
+- **73,080 raw evidence rows**
+- **1,636 strict duplicate rows collapsed**
+- **71,444 strict unique artifact seed rows**
+- **55,679 strict unique buyer rows**
+- **15,765 strict unique vendor rows**
+- **21 / 21 markets**
+
+Strict artifact rows by market:
+- Ash Fork: **138**
+- Bullhead City: **712**
+- Camp Verde: **379**
+- Chino Valley: **400**
+- Cordes Lakes: **84**
+- Cottonwood: **628**
+- Dewey-Humboldt: **487**
+- Flagstaff: **1,664**
+- Golden Valley: **193**
+- Kingman: **1,092**
+- Mayer: **225**
+- Phoenix: **18,198**
+- Prescott: **1,666**
+- Prescott Valley: **930**
+- Scottsdale: **5,856**
+- Sedona: **561**
+- Seligman: **155**
+- Skull Valley: **79**
+- Tucson: **37,732**
+- Williamson Valley: **43**
+- Winslow: **222**
+
+These are evidence/seed identities, not globally deduplicated legal businesses.
+
+Compared with Section 64's green HUD checkpoint:
+- strict rows: **56,668 -> 71,444** (**+14,776**)
+- raw rows: **57,853 -> 73,080** (**+15,227**)
+- artifacts: **310 -> 311**
+- strict buyer rows: **40,903 -> 55,679** (**+14,776**)
+- strict vendor rows unchanged: **15,765**
+
+The difference between 15,227 new IRS artifact rows and 14,776 new strict identities reflects cross-artifact corroboration/overlap. Preserve it.
+
+## Official IRS EO Business Master File census
+
+Exporter:
+- `portfolio/automation/export-irs-eo-bmf-census.py`
+
+Workflow:
+- `.github/workflows/assistant-irs-eo-bmf-census.yml`
+
+Successful workflow:
+- **40446360385**
+
+Workflow artifact commit:
+- `d482d5214a2da9251c90750105df4866a57024be`
+- message: **Seed official IRS exempt organization buyer census**
+
+Official source:
+- Internal Revenue Service Exempt Organizations Business Master File Extract
+- Arizona state CSV: `https://www.irs.gov/pub/irs-soi/eo_az.csv`
+- current IRS posting used in this pass: **2026-10-13**
+
+IRS describes the EO BMF as:
+- cumulative;
+- based on IRS Business Master File data;
+- containing the most recent information IRS has for organizations that received recognition of tax-exempt status;
+- organized by filing/headquarters state.
+
+Important limitation preserved in every artifact note:
+- the filing/headquarters address does **not** by itself prove an organization operates outside that address;
+- churches and other organizations not required to apply for recognition can be absent from the BMF.
+
+Source result:
+- **31,700 Arizona EO BMF rows**
+- **15,227 BMC-market rows**
+- **15 status-25 terminating-private-foundation rows excluded**
+
+BMC-market category classification based on IRS NTEE/foundation/filing data:
+- churches/nonprofits/general exempt organizations: **12,110**
+- schools/education nonprofits: **1,704**
+- health/medical nonprofits: **855**
+- therapy/mental-health/crisis nonprofits: **291**
+- housing/shelter nonprofits: **267**
+
+BMC-market rows by filing-address market:
+- Ash Fork: **14**
+- Bullhead City: **138**
+- Camp Verde: **68**
+- Chino Valley: **102**
+- Cordes Lakes: **4**
+- Cottonwood: **165**
+- Dewey-Humboldt: **54**
+- Flagstaff: **611**
+- Golden Valley: **35**
+- Kingman: **241**
+- Mayer: **32**
+- Phoenix: **6,565**
+- Prescott: **557**
+- Prescott Valley: **20**
+- Scottsdale: **2,228**
+- Sedona: **269**
+- Seligman: **14**
+- Skull Valley: **4**
+- Tucson: **4,050**
+- Winslow: **56**
+
+No EO BMF filing-address record in this pass mapped literally to Williamson Valley; continue direct/community-address research there.
+
+## IRS evidence preserved per record
+
+Where present, the artifact preserves:
+- EIN;
+- primary organization name;
+- filing address;
+- IRS subsection code;
+- exempt-organization status code;
+- foundation code;
+- NTEE code/classification;
+- deductibility code;
+- ruling date;
+- latest tax period;
+- asset amount;
+- income amount;
+- Form 990 revenue amount;
+- in-care-of name;
+- secondary/sort name.
+
+Status semantics used:
+- 01 = unconditional exemption;
+- 02 = conditional exemption;
+- 12 = section 4947(a)(2) trust;
+- 25 = organization terminating private-foundation status.
+
+Status 25 was excluded rather than treated as a current buyer identity.
+
+The artifact uses:
+- `official=false`
+- `official_registry=true`
+- therefore `government_registry / government_record`
+
+No IRS record was promoted to direct-site evidence merely because the organization is federally registered.
+
+## Previous green checkpoint
+
+The post-HUD normal application checkpoint is independently proven:
+- BMC Portfolio CI run **40446264501**
+- exact SHA: `fae09701e16f26c718a0a894a15ccb45b9526091`
+- result: **SUCCESS**
+- expected artifact candidates: **56,668**
+- actual artifact candidates: **56,668**
+- artifact markets: **21 / 21**
+- inventory lanes: **1,260 / 1,260**
+- runtime core failures: **0**
+
+The IRS artifact was committed afterward by workflow token, so this Section 65 normal documentation commit is intentionally used to trigger BMC Portfolio CI across the complete 71,444-row tree.
+
+## Production distinction remains mandatory
+
+The **71,444-row repository census is NOT production-proven**.
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+
+All outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+Do not report 71,444 as live production data until an exact green census SHA is deliberately deployed and a fresh production proof is taken.
+
+## Next work
+
+Continue assistant-led research.
+
+The IRS pass materially strengthens churches/nonprofits/community organizations, but it does not eliminate the need for:
+- direct church/community-site verification;
+- organizations omitted because they never applied for IRS recognition;
+- Williamson Valley community/facility research;
+- additional property/apartment layers;
+- county/municipal food/lodging/business license datasets;
+- direct rural service-territory provider evidence;
+- buyer-side commercial facilities such as hotels, grocery, pharmacy, automotive/fleet, warehouses, manufacturing, insurance/professional offices and entertainment.
+
+Do not mistake a large federal registry count for a complete commercial universe.
+
+## Required post-documentation validation
+
+This Section 65 normal commit must trigger full BMC Portfolio CI over the 311-artifact tree.
+
+Require:
+- BMC Portfolio CI success on the exact post-Section-65 master;
+- expected artifact candidates = **71,444**;
+- actual artifact candidates = **71,444**;
+- artifact markets = **21**;
+- inventory lanes = **1,260 / 1,260**;
+- runtime core failures = **0**.
+
+Do not deploy merely because this checkpoint is green. Brett's current instruction is to keep fleshing out the list.
+
+## Continuity sentence
+
+**The assistant-built repository census has reached 71,444 strict artifact seed rows across 311 auditable JSON artifacts. The IRS Arizona EO Business Master File added 15,227 official nonprofit/exempt-organization evidence rows, of which 14,776 were new strict identities after cross-artifact dedupe. CMS is no longer a census blocker, NCES replaced the blocked ADE source, HUD added multifamily buyers, production remains the older 30,518-row f05ff6 deployment, and all outbound remains OFF.**
