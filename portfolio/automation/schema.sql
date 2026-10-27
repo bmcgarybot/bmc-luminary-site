@@ -1071,3 +1071,41 @@ create table if not exists growth_order_prospects (
 );
 create index if not exists idx_growth_order_prospects_score
 on growth_order_prospects(order_id,fit_score desc);
+
+
+-- Prospect distribution is distinct from prospect quality. These tables are append/audit-oriented.
+-- A canonical identity is based on normalized market + business name pending entity resolution.
+-- Branch/property contact-route and source-rights audits remain separate launch gates.
+create table if not exists growth_prospect_suppressions (
+  prospect_key text primary key,
+  reason text not null,
+  source text not null default 'owner_review',
+  created_at timestamptz not null default now(),
+  reviewed_at timestamptz,
+  lifted_at timestamptz
+);
+create table if not exists growth_prospect_exposures (
+  exposure_id bigserial primary key,
+  prospect_key text not null,
+  recipient_key text not null,
+  service_key text not null,
+  market text not null,
+  candidate_id uuid,
+  delivery_kind text not null check(delivery_kind in ('free','paid')),
+  delivery_ref text not null,
+  status text not null default 'reserved' check(status in ('reserved','delivered','void')),
+  created_at timestamptz not null default now(),
+  delivered_at timestamptz,
+  unique(prospect_key,recipient_key,delivery_ref)
+);
+create index if not exists idx_growth_exposure_key_status_time
+  on growth_prospect_exposures(prospect_key,status,created_at desc);
+create index if not exists idx_growth_exposure_recipient
+  on growth_prospect_exposures(recipient_key,prospect_key,status);
+-- Preserves future source-rights approvals as explicit per-source decisions.
+create table if not exists growth_source_rights_review (
+  source_domain text primary key,
+  status text not null default 'unreviewed' check(status in ('unreviewed','approved','blocked')),
+  basis text,
+  reviewed_at timestamptz
+);
