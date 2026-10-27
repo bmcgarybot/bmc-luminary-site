@@ -1,0 +1,79 @@
+name: Assistant Remaining Markets Licensed Trade Census
+
+on:
+  push:
+    paths:
+      - '.github/workflows/assistant-remaining-markets-trade-census.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Export complete licensed-trade census for remaining BMC markets
+        shell: bash
+        run: |
+          set -u
+          markets=(
+            "Ash Fork"
+            "Bullhead City"
+            "Camp Verde"
+            "Chino Valley"
+            "Cordes Lakes"
+            "Cottonwood"
+            "Dewey-Humboldt"
+            "Flagstaff"
+            "Golden Valley"
+            "Kingman"
+            "Mayer"
+            "Prescott"
+            "Prescott Valley"
+            "Sedona"
+            "Seligman"
+            "Skull Valley"
+            "Williamson Valley"
+            "Winslow"
+          )
+          : > /tmp/completed-markets.txt
+          : > /tmp/failed-markets.txt
+          for market in "${markets[@]}"; do
+            echo "===== $market ====="
+            rm -rf /tmp/market-census
+            mkdir -p /tmp/market-census
+            if python3 portfolio/automation/export-homversa-census-artifacts.py               --market "$market"               --date 2026-10-26               --output-dir /tmp/market-census; then
+              cp /tmp/market-census/assistant-research-bootstrap-*.json portfolio/data/
+              echo "$market" >> /tmp/completed-markets.txt
+            else
+              echo "$market" >> /tmp/failed-markets.txt
+              echo "::warning::$market did not complete its exhaustive Homversa pass; no partial files were copied."
+            fi
+          done
+          echo "Completed markets:"
+          cat /tmp/completed-markets.txt || true
+          echo "Failed/unsupported markets:"
+          cat /tmp/failed-markets.txt || true
+          test -s /tmp/completed-markets.txt
+
+      - name: Validate deterministic census builder
+        run: |
+          python3 portfolio/automation/build-assistant-research-seed.py             --data-dir portfolio/data             --output /tmp/assistant-research-seed.sql             --summary-json 2>/tmp/census-summary.json
+          cat /tmp/census-summary.json
+
+      - name: Commit complete-market artifacts only
+        run: |
+          git config user.name "BMC Assistant Census"
+          git config user.email "actions@users.noreply.github.com"
+          git add portfolio/data/assistant-research-bootstrap-2026-10-26-*-licensed-full-*.json
+          if git diff --cached --quiet; then
+            echo "No new complete-market artifacts."
+            exit 0
+          fi
+          git commit -m "Expand licensed trade census across remaining markets"
+          git push origin HEAD:master
