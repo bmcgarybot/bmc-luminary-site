@@ -3087,6 +3087,29 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
             where lower(po.customer_email)=lower($1) and po.order_id<>$2""",row["customer_email"],row["paid_order_id"])
           prior_names={x["name"] for x in prior}
           sample_rows=await conn.fetch("""select * from growth_sample_prospects where sample_id=$1 order by fit_score desc,business_name""",row["growth_sample_id"])
+          # A source licence, business objection, or shared-contact suppression may
+          # have changed after the free sample was shown. Never re-distribute those
+          # records in the paid pack without a fresh eligibility check.
+          bad_sample=await conn.fetchval("""select count(*) from growth_sample_prospects p
+            left join growth_source_rights_review rights
+              on lower(rights.source_domain)=lower(p.source_domain) and rights.status='approved'
+            where p.sample_id=$1 and (
+              rights.source_domain is null
+              or exists(select 1 from growth_prospect_suppressions sup
+                where sup.lifted_at is null and sup.prospect_key in (
+                  lower(p.market)||':'||regexp_replace(lower(p.business_name),'[^a-z0-9]','','g'),
+                  'email:'||lower(coalesce(p.public_email,'')),
+                  'phone:'||right(regexp_replace(coalesce(p.public_phone,''),'\\D','','g'),10)
+                ))
+            )""",row["growth_sample_id"])
+          if bad_sample:
+              await conn.execute("update tasks set status='exception',updated_at=now() where task_id=$1",row["task_id"])
+              await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+                values('growth_paid_sample_reapproval','critical',$1,$2)""",
+                f"Growth order {row['paid_order_id']} contains {bad_sample} sample record(s) now suppressed or source-rights-unapproved",
+                "Replace the unsafe sample record(s) with audited permitted prospects and confirm changed contents with the customer before delivery")
+              exceptions+=1
+              continue
           sample_ids={str(x["candidate_id"]) for x in sample_rows if x["candidate_id"]}
           sample_names={clean(x["business_name"]).lower() for x in sample_rows}
           candidates=await growth_qualified_candidates(conn,row["provider_service_key"],row["market"],row["ideal_customer"],row["exclusions"],
