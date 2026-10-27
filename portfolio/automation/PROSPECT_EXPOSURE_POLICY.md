@@ -58,3 +58,6 @@ Status: **NOT APPROVED FOR PRODUCTION**. Branch safety/prospect-exposure-gates-2
 - Google Maps Platform content restrictions: https://cloud.google.com/maps-platform/terms
 
 These links are compliance starting points, not a legal opinion. This draft does not authorize prospect redistribution.
+
+## Scope decision, 2026-10-27
+The owner explicitly deprioritized source-licensing checks for the current exposure-control development. Source-rights review remains a separate legal/business follow-up; the selector and launch readiness now focus on duplicate-exposure, objections, and allocation controls. This decision is **not** a legal opinion or permission to redistribute data contrary to its terms. No campaign is authorized by this change.
