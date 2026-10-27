@@ -2636,7 +2636,7 @@ async def handle_growth_snapshot(conn,p):
     else:
         flat.append("This market does not yet have the 125-prospect reserve BMC requires before selling a 100-prospect pack. We will not pad a paid pack with weaker rows.")
     flat.extend(["","Qualification guarantee: if a delivered prospect fails the published territory/activity/type/contact standard, BMC replaces it.","Reply no at any time to stop follow-up."])
-    body=f"Hi {contact},\n\nHere are five commercial targets for {business} in {market}.\n\n"+"\n".join(flat)+f"\n\nBMC Luminary Ventures LLC\n{BUSINESS_POSTAL_ADDRESS}"
+    body=f"Hi {contact},\n\nHere are five commercial targets for {business} in {market}.\n\n"+"\n".join(flat)+f"\n\nThis is a promotional email from BMC Service Network.\n\nBMC Service Network\nBMC Luminary Ventures LLC\n{BUSINESS_POSTAL_ADDRESS}"
     html_body=workflow_email_html("Your 5 commercial targets",[
       f"Here are five commercial targets for {business} in {market}.",
       *[f"{i}. {x['business_name']} · {x['category']} · fit {x['fit_score']}/100\n{x['fit_reason']}\nContact: {x['contact_route']}" for i,x in enumerate(public_rows,1)],
