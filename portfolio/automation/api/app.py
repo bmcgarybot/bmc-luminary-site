@@ -1812,7 +1812,12 @@ async def handle_lead(conn,p):
     submission_id=clean(p.get("submission_id")) or str(uuid.uuid4())
     existing=await conn.fetchrow("select lead_id,status from leads where submission_id=$1",submission_id)
     if existing:
-        return {"ok":True,"status":existing["status"],"lead_id":str(existing["lead_id"]),"message":"Request already received."}
+        existing_status=clean(existing["status"])
+        public_status=existing_status
+        if existing_status=="awaiting_payment":
+            public_status="payment_verification_pending" if clean(p.get("stripe_session_id")) else "payment_required"
+        return {"ok":True,"status":public_status,"lead_id":str(existing["lead_id"]),
+          "message":"Request already received. You do not need to submit it again."}
 
     urgency=clean(p.get("timing") or p.get("urgency"))
     score=(20 if p.get("email") or p.get("phone") else 0)+(20 if scope else 0)+20+20+(20 if urgency in ["ASAP","Urgent","Same day if possible"] else 0)
@@ -1833,19 +1838,66 @@ async def handle_lead(conn,p):
     })
 
     order_id=None
+    paid_order=False
+    linked_product_key=None
     stripe_session_id=clean(p.get("stripe_session_id"))
+    offer_key=clean(p.get("offer_key"))
+    product_payment_required=False
+    if fulfillment_mode=="internal_delivery" and service_key!="unclassified":
+        product_payment_required=bool(await conn.fetchval(
+          "select 1 from products where service_key=$1 and active=true limit 1",service_key))
+
+    if offer_key:
+        offer_product=await conn.fetchrow(
+          "select product_key,service_key from products where product_key=$1 and active=true",offer_key)
+        if not offer_product:
+            raise HTTPException(400,"Unknown or inactive product offer")
+        if clean(offer_product["service_key"])!=service_key:
+            raise HTTPException(409,"The selected product does not match this intake form")
+
     if stripe_session_id:
-        order=await conn.fetchrow("""select order_id,payment_status from orders
+        order=await conn.fetchrow("""select order_id,payment_status,product_key,customer_email from orders
           where stripe_checkout_session_id=$1""",stripe_session_id)
         if order:
             order_id=order["order_id"]
-            order_status="ready_for_fulfillment" if clean(order["payment_status"]) in ("paid","complete") else "intake_received"
+            linked_product_key=clean(order["product_key"])
+            order_service=await conn.fetchval(
+              "select service_key from products where product_key=$1",linked_product_key) if linked_product_key else None
+            if order_service and clean(order_service)!=service_key:
+                raise HTTPException(409,"This paid order belongs to a different BMC product")
+            if offer_key and linked_product_key and offer_key!=linked_product_key:
+                raise HTTPException(409,"The checkout offer does not match this paid order")
+            order_email=clean(order["customer_email"]).lower()
+            intake_email=clean(p.get("email")).lower()
+            if order_email and intake_email and order_email!=intake_email:
+                raise HTTPException(409,"Use the same email address that was used for this Stripe order")
+            paid_order=bool(linked_product_key) and clean(order["payment_status"]) in ("paid","complete")
+            order_status="ready_for_fulfillment" if paid_order else "intake_received"
             await conn.execute("""update orders set intake_submission_id=$2,lead_id=$3,status=$4,updated_at=now()
               where order_id=$1""",order_id,submission_id,lead_id,order_status)
-            await event(conn,"order",order_id,"intake_linked",{"lead_id":str(lead_id),"submission_id":submission_id})
+            await conn.execute("""update tasks set status='completed',updated_at=now(),
+              payload=payload || $2::jsonb
+              where order_id=$1 and task_type='collect_paid_order_intake'
+                and status in ('open','queued','assigned','in_progress')""",
+              order_id,json.dumps({"resolved_by":"customer_intake","lead_id":str(lead_id)}))
+            await event(conn,"order",order_id,"intake_linked",{
+              "lead_id":str(lead_id),"submission_id":submission_id,"paid":paid_order
+            })
+
+    if product_payment_required and not paid_order:
+        await conn.execute("update leads set status='awaiting_payment',updated_at=now() where lead_id=$1",lead_id)
 
     if p.get("email"):
-        workflow_text="We’re looking for the right participating provider now." if fulfillment_mode=="provider_match" else "BMC is reviewing the request and will move it to the right next step."
+        if fulfillment_mode=="provider_match":
+            workflow_text="We’re looking for the right participating provider now."
+        elif product_payment_required and paid_order:
+            workflow_text="Your paid order is linked to these project details and is ready for the fulfillment queue."
+        elif product_payment_required and stripe_session_id:
+            workflow_text="We saved your project details. Stripe payment confirmation is still being linked; you do not need to submit again."
+        elif product_payment_required:
+            workflow_text="We saved your project details. Research starts after a paid order is linked to this request."
+        else:
+            workflow_text="BMC is reviewing the request and will move it to the right next step."
         receipt_service_name=(clean(service["display_name"]) if service else service_key.replace("_"," ").title())
         receipt_body=f"We received your request for {receipt_service_name} in {market}.\n\n{workflow_text}\n\nReference: {lead_id}\nBMC Luminary Ventures LLC"
         receipt_html=workflow_email_html("BMC received your request",[
@@ -1898,10 +1950,27 @@ async def handle_lead(conn,p):
       "facility_split":"facility_triage"
     }.get(fulfillment_mode,"internal_review")
     summary=f"{display_name}: {clean(p.get('business_name')) or clean(p.get('contact_name')) or 'customer'} in {market}"
-    task_id=await conn.fetchval("""insert into tasks(lead_id,order_id,service_key,task_type,status,priority,summary,payload)
-      values($1,$2,$3,$4,'open',$5,$6,$7::jsonb) returning task_id""",
-      lead_id,order_id,service_key,task_type,"high" if urgency in ["ASAP","Urgent","Same day if possible"] else "normal",summary,json.dumps(p))
-    await event(conn,"task",task_id,"created",{"lead_id":str(lead_id),"service_key":service_key,"fulfillment_mode":fulfillment_mode})
+    task_status="open"
+    if product_payment_required and not paid_order:
+        task_status="blocked"
+        summary="Await payment: "+summary
+    task_id=await conn.fetchval("""insert into tasks(lead_id,order_id,service_key,task_type,status,priority,owner,summary,payload)
+      values($1,$2,$3,$4,$5,$6,'bmc_operator',$7,$8::jsonb) returning task_id""",
+      lead_id,order_id,service_key,task_type,task_status,
+      "high" if urgency in ["ASAP","Urgent","Same day if possible"] else "normal",summary,json.dumps(p))
+    await event(conn,"task",task_id,"created",{
+      "lead_id":str(lead_id),"service_key":service_key,"fulfillment_mode":fulfillment_mode,
+      "payment_required":product_payment_required,"paid_order":paid_order,"task_status":task_status
+    })
+    if product_payment_required and not paid_order:
+        if stripe_session_id:
+            response_status="payment_verification_pending"
+            message="We saved your project details. We’re linking the Stripe payment confirmation now; you do not need to submit again."
+        else:
+            response_status="payment_required"
+            message="We saved your project details. Research will start after you complete the paid order for this product."
+        return {"ok":True,"status":response_status,"lead_id":str(lead_id),"task_id":str(task_id),
+          "service_key":service_key,"service_name":display_name,"message":message}
     return {"ok":True,"status":"internal_queue","lead_id":str(lead_id),"task_id":str(task_id),
       "service_key":service_key,"service_name":display_name,
       "message":f"We matched this to {display_name}. BMC has queued the next step."}
@@ -4942,6 +5011,12 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
           values($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb)""",
           event_id,event_type,object_id,product_key,customer_email,amount,currency,status,json.dumps(evt))
 
+        if event_type in ("checkout.session.completed","checkout.session.async_payment_succeeded") and not product_key:
+            await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+              values('payment_product_unresolved','critical',$1,$2)""",
+              f"Stripe payment {object_id or event_id} could not be mapped to a BMC product",
+              "Review the Stripe Payment Link/price mapping before fulfilling or refunding this order")
+
         if event_type in ("checkout.session.completed","checkout.session.async_payment_succeeded"):
             mode=clean(obj.get("mode"))
             paid=status in ("paid","complete") or event_type=="checkout.session.async_payment_succeeded"
@@ -4959,18 +5034,42 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
                   returning order_id""",
                   product_key,object_id,payment_intent_id,customer_email,amount,currency,status,json.dumps(obj))
                 service_key=await conn.fetchval("select service_key from products where product_key=$1",product_key) if product_key else None
+                recent=None
                 if customer_email and service_key:
                     recent=await conn.fetchrow("""select l.lead_id,l.submission_id
                       from leads l
-                      where lower(l.email)=lower($1) and l.service_key=$2 and l.status='internal_queue'
+                      where lower(l.email)=lower($1) and l.service_key=$2
+                        and l.status in ('internal_queue','awaiting_payment')
                         and l.submitted_at>=now()-interval '7 days'
                         and not exists(select 1 from orders o where o.lead_id=l.lead_id and o.order_id<>$3)
                       order by l.submitted_at desc limit 1""",customer_email,service_key,order_id)
-                    if recent:
-                        await conn.execute("""update orders set lead_id=$2,intake_submission_id=$3,status='ready_for_fulfillment',updated_at=now()
-                          where order_id=$1""",order_id,recent["lead_id"],recent["submission_id"])
-                        await conn.execute("update tasks set order_id=$2,updated_at=now() where lead_id=$1 and order_id is null",recent["lead_id"],order_id)
-                        await event(conn,"order",order_id,"intake_auto_linked",{"lead_id":str(recent["lead_id"]),"submission_id":recent["submission_id"]},"stripe")
+                if recent:
+                    await conn.execute("""update orders set lead_id=$2,intake_submission_id=$3,status='ready_for_fulfillment',updated_at=now()
+                      where order_id=$1""",order_id,recent["lead_id"],recent["submission_id"])
+                    await conn.execute("update leads set status='internal_queue',updated_at=now() where lead_id=$1",recent["lead_id"])
+                    await conn.execute("""update tasks set order_id=$2,status='open',owner='bmc_operator',
+                      task_type='fulfill_internal_product',
+                      summary=regexp_replace(coalesce(summary,''),'^Await payment: ',''),
+                      updated_at=now()
+                      where lead_id=$1 and order_id is null
+                        and task_type='fulfill_internal_product'
+                        and status in ('blocked','open','queued','assigned')""",recent["lead_id"],order_id)
+                    await event(conn,"order",order_id,"intake_auto_linked",{
+                      "lead_id":str(recent["lead_id"]),"submission_id":recent["submission_id"]
+                    },"stripe")
+                elif service_key:
+                    product_name=await conn.fetchval("select display_name from products where product_key=$1",product_key)
+                    await conn.execute("""insert into tasks(order_id,service_key,task_type,status,priority,owner,summary,payload)
+                      select $1,$2,'collect_paid_order_intake','open','high','bmc_operator',$3,$4::jsonb
+                      where not exists (
+                        select 1 from tasks where order_id=$1 and task_type='collect_paid_order_intake'
+                          and status in ('open','queued','assigned','in_progress')
+                      )""",order_id,service_key,
+                      f"Paid order needs project details: {product_name or product_key}",
+                      json.dumps({"customer_email":customer_email,"product_key":product_key,"stripe_session_id":object_id}))
+                    await event(conn,"order",order_id,"paid_intake_needed",{
+                      "product_key":product_key,"email":customer_email
+                    },"stripe")
                 await event(conn,"order",order_id,"paid",{"product_key":product_key,"amount_cents":amount,"email":customer_email},"stripe")
                 await event(conn,"payment",event_id,"payment_received",{"product_key":product_key,"amount_cents":amount,"email":customer_email,"order_id":str(order_id)},"stripe")
         elif event_type=="invoice.paid":

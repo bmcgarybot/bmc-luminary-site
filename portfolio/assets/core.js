@@ -177,6 +177,20 @@
         "BMC understood the service, but an active provider was not available automatically.",
         "The request is flagged for the next available option instead of disappearing into a dead end."
       ];
+    }else if(response.status==="payment_required"){
+      title="Project details saved.";
+      steps=[
+        "Your project details are safely on file.",
+        "Research has not started yet because this is a paid BMC product.",
+        "Complete the matching checkout and BMC will move the paid order into fulfillment."
+      ];
+    }else if(response.status==="payment_verification_pending"){
+      title="Project details saved.";
+      steps=[
+        "You do not need to submit this form again.",
+        "BMC is linking the Stripe payment confirmation to these project details.",
+        "Once the paid order is confirmed, it moves into the fulfillment queue automatically."
+      ];
     }else if(response.status==="internal_queue"){
       steps=[
         "BMC has the request and the service it belongs to.",

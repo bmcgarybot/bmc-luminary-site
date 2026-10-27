@@ -7,6 +7,6 @@
 <footer><div class="wrap footer-in"><span>Order confirmation</span><span>© <span data-year></span> BMC Luminary Ventures LLC</span></div></footer>
 <script src="../assets/core.js?v=clarity-10"></script><script>
 const q=new URLSearchParams(location.search),offer=q.get('offer')||'',sessionId=q.get('session_id')||'';
-const map={'growth-pack':'../growth-packs/#order','growth-pack-premium':'../growth-packs/#order','competitor-intelligence':'../competitor-intelligence/#request','market-expansion':'../market-expansion-pack/#request'};
+const map={'growth_pack_starter':'../growth-packs/#order','growth_pack_premium':'../growth-packs/#order','competitor_intelligence_pack':'../competitor-intelligence/#request','market_expansion_pack':'../market-expansion-pack/#request'};
 if(map[offer]){const parts=map[offer].split('#'),params=new URLSearchParams();if(sessionId)params.set('session_id',sessionId);if(offer)params.set('offer',offer);document.getElementById('next').href=parts[0]+(params.toString()?'?'+params.toString():'')+(parts[1]?'#'+parts[1]:'');}
 </script></body></html>
