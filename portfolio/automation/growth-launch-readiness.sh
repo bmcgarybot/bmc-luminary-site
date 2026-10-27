@@ -18,7 +18,13 @@ dbq(){ docker compose --env-file "$ENV_FILE" exec -T postgres psql -v ON_ERROR_S
 echo "BMC Growth launch readiness"
 echo "==========================="
 echo "Commit: $(git rev-parse HEAD 2>/dev/null || echo unknown)"
-echo "Selected wave: ${GROWTH_OUTREACH_WAVE:-$(env_value GROWTH_OUTREACH_WAVE)}"
+configured_wave="$(env_value GROWTH_OUTREACH_WAVE)"
+wave="$configured_wave"
+if [ -z "$wave" ] || [ "$wave" = "growth1" ]; then wave="growth-pressure-1"; fi
+echo "Selected launch wave: $wave"
+if [ -n "$configured_wave" ] && [ "$configured_wave" != "$wave" ]; then
+  warn "Legacy Growth wave '$configured_wave' will migrate to '$wave' when launch is enabled"
+fi
 echo
 
 vendor="$(env_value OUTREACH_ENABLED)"; buyer="$(env_value BUYER_OUTREACH_ENABLED)"; growth="$(env_value GROWTH_OUTREACH_ENABLED)"
@@ -38,9 +44,7 @@ for table in growth_experiment_cells growth_outreach_targets growth_sample_reque
 done
 
 product="$(dbq "select count(*) from products where product_key='growth_pack_starter' and active=true and amount_cents=49900 and coalesce(payment_link_url,'')<>'';")"
-[ "$product" -eq 1 ] && pass "Live $499 Growth Pack payment link is mapped" || fail "Live $499 Growth Pack mapping is not ready"
-
-wave="$(env_value GROWTH_OUTREACH_WAVE)"; wave="${wave:-growth-pressure-1}"
+[ "$product" -eq 1 ] && pass "Live \$499 Growth Pack payment link is mapped" || fail "Live \$499 Growth Pack mapping is not ready"
 staged="$(dbq "select count(*) from outreach where entity_type='growth_customer' and campaign='growth_sales' and wave='$wave' and status in ('queued','sent') and opt_out=false;")"
 printf '  active staged Growth targets: %s\n' "$staged"
 [ "$staged" -gt 0 ] && pass "Selected Growth wave has contactable staged targets" || fail "No staged targets exist for selected Growth wave"
