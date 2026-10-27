@@ -2790,6 +2790,7 @@ async def handle_growth_snapshot(conn,p):
           "Review the exact territory/ICP. Do not pad the free sample with weak records.")
         await event(conn,"growth_sample",sample_id,"inventory_exception",{"service_key":service_key,"market":market,"qualified":len(rows)})
         return {"ok":True,"status":"sample_pending","sample_id":str(sample_id),
+          "qualified_pool":len(rows),
           "message":"We saved your request. This exact market needs a manual inventory check before we send five; BMC will not pad it with weak records."}
 
     sample=growth_select_representative_sample(rows,email_addr)
