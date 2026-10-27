@@ -1109,3 +1109,34 @@ create table if not exists growth_source_rights_review (
   basis text,
   reviewed_at timestamptz
 );
+
+alter table growth_prospect_exposures add column if not exists contact_key text;
+create index if not exists idx_growth_exposure_contact_status_time on growth_prospect_exposures(contact_key,status,created_at desc);
+
+-- Historical distributions must participate in exposure caps; never start at zero.
+-- The historical canonical key is approximate, and unresolved collisions fail to audit.
+insert into growth_prospect_exposures(
+  prospect_key,recipient_key,service_key,market,candidate_id,delivery_kind,delivery_ref,status,delivered_at,created_at
+)
+select lower(s.market)||':'||regexp_replace(lower(s.business_name),'[^a-z0-9]','','g'),
+       lower(g.email),g.provider_service_key,s.market,s.candidate_id,
+       'free','historical-sample:'||s.sample_id::text,'delivered',
+       coalesce(s.delivered_at,g.sample_generated_at,g.created_at),
+       coalesce(s.delivered_at,g.sample_generated_at,g.created_at)
+from growth_sample_prospects s
+join growth_sample_requests g on g.sample_id=s.sample_id
+where lower(g.email)<>'' 
+on conflict(prospect_key,recipient_key,delivery_ref) do nothing;
+
+insert into growth_prospect_exposures(
+  prospect_key,recipient_key,service_key,market,candidate_id,delivery_kind,delivery_ref,status,delivered_at,created_at
+)
+select lower(p.market)||':'||regexp_replace(lower(p.business_name),'[^a-z0-9]','','g'),
+       lower(o.customer_email),coalesce(g.provider_service_key,'unknown'),p.market,p.candidate_id,
+       'paid','historical-order:'||p.order_id::text,'delivered',
+       coalesce(p.delivered_at,p.created_at),coalesce(p.delivered_at,p.created_at)
+from growth_order_prospects p
+join orders o on o.order_id=p.order_id
+left join growth_sample_requests g on g.sample_id=o.growth_sample_id
+where lower(o.customer_email)<>'' and p.delivered_at is not null
+on conflict(prospect_key,recipient_key,delivery_ref) do nothing;
