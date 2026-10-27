@@ -10422,3 +10422,102 @@ Do not turn outbound on as part of that audit.
 ### Continuity sentence
 
 **Newest fully green research checkpoint: 75,098 strict unique seed rows across 327 auditable artifacts, with 59,289 buyer rows and 15,809 vendor rows, proven by BMC Portfolio CI 40450885806 at commit ec0f66c93618d3c06458877514a8c603380d939c; all 21 markets and all 1,260 deep inventory lanes remain covered with zero runtime core failures. The newest manual expansion added HOA/community and multifamily portfolio buyers, supportive/transitional/affordable housing operators, Prescott/Phoenix structured parking, and additional Phoenix/Tucson housing operators. The owner’s live fake-provider signup proved public intake + database + SMTP can work but exposed a severe loop: the receipt email sends the applicant to pilot terms whose CTA sends them back to the original application. The intended activation page already exists but currently trusts a bare vendor_id, and repeat applications can create duplicate applicant records. Next major work is a full end-to-end public website/lead workflow audit before any outreach is enabled. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
+
+
+---
+
+## 71. GROWTH INTELLIGENCE PHASE 1 + PRESERVATION SNAPSHOT — 2026-10-26
+
+Owner asked for the new Growth Intelligence direction to be fully planned in Git without deleting days of Service Network work/research.
+
+### Preservation completed
+
+Created branch:
+- `archive/service-network-pre-growth-pivot-2026-10-26`
+
+Pinned to proven pre-pivot checkpoint:
+- `a6b8e46d01e02ec55a876861cc22529eb3ea6677`
+
+This preserves:
+- 75K+ census/research assets;
+- all service pages/market pages;
+- provider/facility workflows;
+- Stripe/payment work;
+- matching/routing;
+- research automation;
+- CI/runtime controls.
+
+Nothing was deleted or dismantled.
+
+### New authoritative Phase 1 plan
+
+Added:
+- `portfolio/automation/GROWTH_INTELLIGENCE_MASTER_PLAN.md`
+
+Decision:
+- Growth Intelligence becomes Phase 1 proof target;
+- Service Network becomes preserved Phase 2 priority;
+- BMC tests multiple eligible niches in parallel rather than betting only on pressure washing or another single niche.
+
+Core money model:
+- free 5 qualified commercial prospects;
+- $499 100-prospect Growth Pack;
+- sequential premium upgrade;
+- smaller downsell only after a no;
+- recurring fresh-prospect continuity after fulfillment;
+- live Service Network opportunities/territories later.
+
+### Qualification rule
+
+Growth Packs are **qualified commercial prospects**, not implied active buyers.
+
+Hard gates include:
+- active/current;
+- geography;
+- ICP/property fit;
+- service-use evidence;
+- public business contactability;
+- freshness;
+- dedupe;
+- truthful intent wording.
+
+Initial score:
+- service/ICP fit 25;
+- geography 15;
+- applicable-use evidence 20;
+- contactability 15;
+- active verification 10;
+- account/recurring value 10;
+- freshness/novelty 5.
+
+A = 80-100; B = 65-79; below 65 is not delivered. Hard gates override score.
+
+### Autonomous niche tournament
+
+Yes, the VPS should test many eligible service niches.
+
+Pattern:
+1. offline inventory/sample audit;
+2. 25-outreach exploration cells;
+3. one material challenger variation for weak cells;
+4. advance promising cells toward 100 valid targeted outreaches;
+5. durable kill/change rule at 100 with no meaningful interest;
+6. allocate later volume roughly 70% winners / 20% challengers / 10% exploration;
+7. keep exact niche + market attribution;
+8. retest paused cells after material data/offer/season change.
+
+Do not launch every niche blindly before sender/sample/qualification gates work.
+
+### Next engineering task
+
+Build **qualification + experiment engine** before another broad public-site redesign:
+- deterministic scoring;
+- evidence fields;
+- reserve inventory calculation;
+- sample generator;
+- niche-market experiment state;
+- pause/promote/retest logic;
+- synthetic journey;
+- outcome feedback.
+
+Outbound remains OFF until the Growth-specific launch gates in the master plan are satisfied.
