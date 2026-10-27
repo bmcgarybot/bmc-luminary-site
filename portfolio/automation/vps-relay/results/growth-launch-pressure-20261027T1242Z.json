@@ -1,0 +1,30 @@
+{
+  "action": "growth_launch_enable",
+  "allow_external_actions": true,
+  "completed_at": "2026-10-27T12:39:06.395568+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "4a41050185b4da229c36c2f40c02d093c26c7031",
+  "git_commit_before": "4a41050185b4da229c36c2f40c02d093c26c7031",
+  "host": "vps-5675821a",
+  "metadata": {
+    "first_send": {
+      "daily_limit": 10,
+      "enabled": true,
+      "ok": true,
+      "sent": 7,
+      "wave": "growth-pressure-1"
+    },
+    "prelaunch_audit": "BMC Growth launch readiness\n===========================\nCommit: 4a41050185b4da229c36c2f40c02d093c26c7031\nSelected launch wave: growth-pressure-1\n\nPASS  Service-Network provider outreach remains OFF\nPASS  Service-Network buyer outreach remains OFF\nPASS  SMTP is configured\nPASS  IMAP reply/opt-out monitoring is configured\nPASS  Business postal address is configured\nPASS  Database table growth_experiment_cells is deployed\nPASS  Database table growth_outreach_targets is deployed\nPASS  Database table growth_sample_requests is deployed\nPASS  Database table growth_sample_prospects is deployed\nPASS  Database table growth_order_prospects is deployed\nPASS  Live $499 Growth Pack payment link is mapped\n  active staged Growth targets: 7\nPASS  Selected Growth wave has contactable staged targets\nPASS  Staged Growth targets pass email/fit floor\nPASS  No open critical Growth exceptions\nPASS  Private Growth status endpoint is healthy\nGrowth status:\n  growth_enabled: False\n  wave: growth1\n  daily_limit: 10\n  sample_reserve: 125\n  staged_active: 0\n  sent: 0\n  replies: 0\n  samples_requested: 0\n  samples_delivered: 0\n  paid_orders: 0\n  revenue_cents: 0\n  open_growth_exceptions: 0\nPASS  Live pressure-washing Growth landing page is reachable and has the free-five form\nPASS  Live Growth hub uses the free-five conversion path\nPASS  Public sitemap contains the first Growth niche\nPASS  Public webhook ingress is constrained and reachable\n\nGrowth audit summary: blockers=0 warnings=0\nGrowth lane is ready. Enabling outbound still requires the explicit Growth launch action.\n"
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "ee936b69e30ff0271a780c0a4b7a5738c8081254",
+  "request_id": "growth-launch-pressure-20261027T1242Z",
+  "request_sha256": "7e2dce09aa227b348af1373da6ff1b2825e4748cbbbed60a4eb53a41e1655111",
+  "started_at": "2026-10-27T12:38:40.377064+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"enabled\": true,\n  \"first_send\": {\n    \"ok\": true,\n    \"enabled\": true,\n    \"sent\": 7,\n    \"daily_limit\": 10,\n    \"wave\": \"growth-pressure-1\"\n  },\n  \"growth_health\": {\n    \"ok\": true,\n    \"growth_enabled\": true,\n    \"wave\": \"growth-pressure-1\",\n    \"daily_limit\": 10,\n    \"sample_reserve\": 125,\n    \"config\": {\n      \"smtp\": true,\n      \"imap\": true,\n      \"postal\": true,\n      \"payment_link\": true\n    },\n    \"config_ready\": true,\n    \"staged_active\": 7,\n    \"sent\": 0,\n    \"replies\": 0,\n    \"samples_requested\": 0,\n    \"samples_delivered\": 0,\n    \"converted_samples\": 0,\n    \"paid_orders\": 0,\n    \"revenue_cents\": 0,\n    \"open_growth_exceptions\": 0,\n    \"health_ok\": true,\n    \"problems\": []\n  }\n}",
+  "version": 1
+}
