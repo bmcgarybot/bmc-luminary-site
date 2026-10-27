@@ -297,6 +297,36 @@
     card.scrollIntoView({behavior:"smooth",block:"center"});
   }
 
+  async function maybeClaimGrowthSample(){
+    const q=new URLSearchParams(location.search);
+    const target=q.get("target"),claim=q.get("claim");
+    if(!target||!claim||q.get("preview")==="1")return;
+    const form=document.querySelector('form[data-form-type="growth_snapshot"]');
+    if(!form)return;
+    const note=form.querySelector("[data-form-notice]");
+    const pageEndpoint=document.querySelector('meta[name="bmc-webhook"]')?.content||GLOBAL_WEBHOOK;
+    const endpoint=pageEndpoint.replace(/\/api\/intake(?:\?.*)?$/,"/api/growth/claim-free-five");
+    const payload={target_id:target,claim:claim,page:location.href,referrer:document.referrer||""};
+    ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(function(k){if(q.get(k))payload[k]=q.get(k)});
+    if(note){note.textContent="Building your 5 researched commercial targets…";note.classList.add("show");}
+    try{
+      const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
+      const r=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload),signal:controller.signal});
+      clearTimeout(timer);
+      if(!r.ok)throw new Error("Claim returned "+r.status);
+      const response=await r.json();
+      showSubmissionSuccess(form,response);
+      [...form.children].forEach(function(el){if(!el.matches("[data-success-card]"))el.hidden=true;});
+    }catch(err){
+      console.error(err);
+      if(note){
+        note.textContent="We couldn't load the one-click sample automatically. Your invitation details are still saved below, so you can use the form without starting from scratch.";
+        note.classList.add("show");
+      }
+    }
+  }
+  maybeClaimGrowthSample();
+
   document.querySelectorAll("form[data-bmc-form]").forEach(function(form){
     form.addEventListener("submit",async function(e){
       e.preventDefault();
