@@ -156,3 +156,54 @@ House cleaning was specifically called out by the user as a bad/old experience a
 - Old page/template remnants are considered a bug, not an acceptable transitional state.
 - Stripe account existence/integration should be verified before assuming payment plumbing is complete.
 - Strategy changes should be written back into this file so future chats inherit the latest decisions.
+
+
+---
+
+## Current strategic phase — 2026-10-26
+
+The project has moved into **Phase 1: BMC Growth Intelligence validation**.
+
+This is a sequencing change, not a deletion/rebrand of the Service Network.
+
+Authoritative plan:
+- `portfolio/automation/GROWTH_INTELLIGENCE_MASTER_PLAN.md`
+
+Preservation snapshot:
+- `archive/service-network-pre-growth-pivot-2026-10-26`
+- base commit `a6b8e46d01e02ec55a876861cc22529eb3ea6677`
+
+### Active priority
+
+Build and prove:
+- deterministic qualified-commercial-prospect scoring;
+- hard evidence/contactability/freshness gates;
+- five-prospect free sample;
+- $499 paid pack fulfillment;
+- niche/market experiment tracking;
+- autonomous pause/promote/retest rules;
+- outcome feedback;
+- exception-based operation.
+
+### Parallel niche rule
+
+Do not force one niche to carry the company.
+
+Eligible commercial-service niches may be tested in parallel, first offline and then with bounded live outreach. Keep metrics separated by niche and geographic cell. Use controlled explore/exploit allocation rather than blasting every niche equally.
+
+### Preserved priority
+
+Provider marketplace, facility intake, matching, territory monetization, Vendor Desk, and other Service Network workflows remain intact as Phase 2. They can later become more valuable when BMC has real demand and outcome history.
+
+### Current outbound rule
+
+Do not enable Growth, buyer, or provider outreach merely because the strategy document exists.
+
+Growth outreach requires:
+- qualification engine QA;
+- sample generation;
+- experiment tracking;
+- sender/postal/opt-out/bounce/reply handling;
+- bounded daily limits.
+
+Service Network outbound can remain OFF while Growth is tested.
