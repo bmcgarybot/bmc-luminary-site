@@ -1,0 +1,21 @@
+{
+  "action": "research_refresh_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-27T09:25:11.855781+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "4a41050185b4da229c36c2f40c02d093c26c7031",
+  "git_commit_before": "4a41050185b4da229c36c2f40c02d093c26c7031",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "014707f4cca5944cb2d6baeba1dd80c56f0eb8b4",
+  "request_id": "watch13-refresh-20261027T0923Z",
+  "request_sha256": "9c3e432a4782876cb1423aed0c6fa7b660be23e8b4e802250be67cfbe34187be",
+  "started_at": "2026-10-27T09:25:11.386048+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "BMC Docker research refresher\nNAME                       IMAGE                                                                     COMMAND                  SERVICE              CREATED       STATUS       PORTS\nbmc-research_refresher-1   sha256:04f65c569ee341ef9a65740a8741cd2ececf38abc79016bcd6ee1fe70393acfe   \"/bin/sh /app/resear\u2026\"   research_refresher   4 hours ago   Up 4 hours   \n\nRefresh source state:\ndirectory_graph|success|started=|success=2026-10-26 22:16:17.444639+00|failure=\nlicensed_trades|success|started=|success=2026-10-26 22:25:59.981811+00|failure=\n\nRecent refresher log:\nresearch_refresher-1  | [research-refresher] continuous public-source refresh service started\n",
+  "version": 1
+}
