@@ -47,7 +47,7 @@ LOCAL_RESULTS = STATE_DIR / "results"
 RESEARCH_SCHEDULE_FILE = STATE_DIR / "research-refresh-schedule.json"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status"}
+READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
     "market_inventory_step",
@@ -60,14 +60,20 @@ MUTATING_INTERNAL_ACTIONS = {
     "research_refresh_install",
     "scheduler_start",
     "scheduler_stop",
+    "growth_stage_pressure_washing",
+    "growth_stage_commercial_cleaning",
 }
-ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS
+EXTERNAL_ACTIONS = {"growth_launch_enable"}
+CONTROL_ACTIONS = {"growth_launch_disable"}
+ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS
 
 API_ACTIONS = {
     "market_inventory_step": "/api/process-market-inventory",
     "local_demand_step": "/api/process-local-demand-signals",
     "public_opportunities_step": "/api/process-public-opportunities",
     "source_native_step": "/api/process-source-native-research",
+    "growth_stage_pressure_washing": "/api/admin/stage-growth-pressure-washing",
+    "growth_stage_commercial_cleaning": "/api/admin/stage-growth-commercial-cleaning",
 }
 
 
@@ -127,6 +133,30 @@ def parse_env_file(path: Path) -> dict[str, str]:
 
 def app_env() -> dict[str, str]:
     return parse_env_file(AUTOMATION / ENV_FILE)
+
+
+def set_env_values(values: dict[str, str]):
+    path = AUTOMATION / ENV_FILE
+    if not path.exists():
+        raise RelayError(f"Application env file does not exist: {path}")
+    lines = path.read_text(errors="replace").splitlines()
+    found = set()
+    out = []
+    for raw in lines:
+        if "=" in raw and not raw.lstrip().startswith("#"):
+            key = raw.split("=", 1)[0].strip()
+            if key in values:
+                out.append(f"{key}={values[key]}")
+                found.add(key)
+                continue
+        out.append(raw)
+    for key, value in values.items():
+        if key not in found:
+            out.append(f"{key}={value}")
+    tmp = path.with_suffix(path.suffix + ".relay.tmp")
+    tmp.write_text("\n".join(out).rstrip() + "\n")
+    os.chmod(tmp, path.stat().st_mode)
+    tmp.replace(path)
 
 
 def outreach_state() -> dict[str, str]:
@@ -398,8 +428,12 @@ def validate_request(req: dict):
     action = str(req.get("action") or "")
     if action not in ALLOWED_ACTIONS:
         raise RelayError(f"Action is not allowlisted: {action!r}")
-    if req.get("allow_external_actions") is not False:
-        raise RelayError("Every request must explicitly set allow_external_actions=false")
+    allow_external=req.get("allow_external_actions")
+    if action in EXTERNAL_ACTIONS:
+        if allow_external is not True:
+            raise RelayError("External Growth launch action requires allow_external_actions=true")
+    elif allow_external is not False:
+        raise RelayError("Non-launch requests must explicitly set allow_external_actions=false")
     created_at = parse_time(str(req.get("created_at") or ""))
     age = (datetime.now(timezone.utc) - created_at).total_seconds()
     if age < -300:
@@ -489,7 +523,62 @@ def execute(req: dict) -> dict:
     if action in MUTATING_INTERNAL_ACTIONS:
         metadata["outreach_gate"] = assert_outreach_off()
 
-    if action == "proof_readout":
+    if action == "growth_launch_enable":
+        state=outreach_state()
+        if str(state.get("OUTREACH_ENABLED","")).lower()!="false" or str(state.get("BUYER_OUTREACH_ENABLED","")).lower()!="false":
+            raise RelayError("Growth-only launch requires provider and buyer Service-Network outreach to remain OFF")
+        if str(state.get("GROWTH_OUTREACH_ENABLED","false")).lower()=="true":
+            raise RelayError("Growth outreach is already enabled; refusing duplicate launch")
+        audit=run(["bash","./growth-launch-readiness.sh",ENV_FILE,"strict"],timeout=300)
+        metadata["prelaunch_audit"]=redact(audit.stdout)
+        if audit.returncode!=0:
+            raise RelayError("Growth launch readiness failed; outbound was not enabled")
+        set_env_values({
+          "GROWTH_OUTREACH_ENABLED":"true",
+          "GROWTH_OUTREACH_DAILY_LIMIT":"10",
+          "GROWTH_OUTREACH_WAVE":"growth-pressure-1",
+          "GROWTH_SAMPLE_MIN_RESERVE":"125",
+          "GROWTH_AUTO_FULFILL_ENABLED":"true",
+        })
+        restart=run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api","scheduler","webhook_proxy"],timeout=300)
+        if restart.returncode!=0:
+            set_env_values({"GROWTH_OUTREACH_ENABLED":"false"})
+            raise RelayError("Growth launch container restart failed; switch restored OFF")
+        healthy=False
+        for _ in range(30):
+            health=run(["curl","-fsS","http://127.0.0.1:8000/health"],timeout=10)
+            if health.returncode==0:
+                healthy=True; break
+            time.sleep(1)
+        if not healthy:
+            set_env_values({"GROWTH_OUTREACH_ENABLED":"false"})
+            run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api","scheduler","webhook_proxy"],timeout=300)
+            raise RelayError("Growth launch API health failed; switch restored OFF")
+        health_status=admin_post("/api/process-growth-health",timeout=120)
+        if not health_status.get("health_ok",False):
+            set_env_values({"GROWTH_OUTREACH_ENABLED":"false"})
+            run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api","scheduler","webhook_proxy"],timeout=300)
+            raise RelayError(f"Growth health gate failed after enable; switch restored OFF: {health_status.get('problems')}")
+        first_send=admin_post("/api/process-growth-outreach",timeout=180)
+        metadata["first_send"]=first_send
+        stdout=json.dumps({"enabled":True,"first_send":first_send,"growth_health":health_status},indent=2,default=str)
+        stderr=""; exit_code=0
+
+    elif action == "growth_launch_disable":
+        set_env_values({"GROWTH_OUTREACH_ENABLED":"false"})
+        cp=run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api","scheduler","webhook_proxy"],timeout=300)
+        stdout,stderr,exit_code=cp.stdout,cp.stderr,cp.returncode
+        metadata["outreach_after"]=outreach_state()
+
+    elif action == "growth_launch_audit":
+        cp=run(["bash","./growth-launch-readiness.sh",ENV_FILE,"report"],timeout=300)
+        stdout,stderr,exit_code=cp.stdout,cp.stderr,cp.returncode
+
+    elif action == "growth_status":
+        status=admin_post("/api/admin/growth-status",timeout=120)
+        stdout=json.dumps(status,indent=2,default=str);stderr="";exit_code=0
+
+    elif action == "proof_readout":
         cp = run(["bash", "./production-proof-readout.sh", ENV_FILE], timeout=600)
         stdout, stderr, exit_code = cp.stdout, cp.stderr, cp.returncode
 
@@ -647,7 +736,7 @@ def execute(req: dict) -> dict:
         "request_sha256": hashlib.sha256(
             json.dumps({k: v for k, v in req.items() if not k.startswith("_")}, sort_keys=True).encode()
         ).hexdigest(),
-        "allow_external_actions": False,
+        "allow_external_actions": bool(req.get("allow_external_actions")),
         "metadata": metadata,
         "stdout": redact(stdout),
         "stderr": redact(stderr),
@@ -668,7 +757,7 @@ def failed_result(req: dict | None, request_id: str, exc: Exception) -> dict:
         "relay_branch": RELAY_BRANCH,
         "git_commit_before": current_sha(),
         "git_commit_after": current_sha(),
-        "allow_external_actions": False,
+        "allow_external_actions": bool((req or {}).get("allow_external_actions")),
         "error": redact(str(exc)),
     }
 
