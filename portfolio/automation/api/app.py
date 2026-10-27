@@ -2659,6 +2659,39 @@ def growth_claim_valid(target_id,email_addr,token):
     expected=growth_claim_token(target_id,email_addr)
     return bool(expected and clean(token) and hmac.compare_digest(expected,clean(token)))
 
+def growth_select_representative_sample(rows,recipient_key,count=5):
+    """Pick a quality-distribution sample, not the five highest fit scores.
+
+    Percentile positions 10/30/50/70/90 cover the usable pool; stable tie
+    breaking and category preference prevent repeatable top-five hot spots.
+    """
+    if len(rows)<count:
+        return []
+    ordered=sorted(rows,key=lambda r:(
+      -int(r["fit_score"]),
+      hashlib.sha256((clean(recipient_key).lower()+"|"+growth_prospect_key(r)).encode()).hexdigest()
+    ))
+    positions=[round((len(ordered)-1)*p) for p in (0.10,0.30,0.50,0.70,0.90)]
+    selected=[]; used=set(); categories=set()
+    for pos in positions[:count]:
+        choices=sorted(range(len(ordered)),key=lambda i:(
+          0 if clean(ordered[i].get("category_key")) not in categories else 1,
+          abs(i-pos),i
+        ))
+        idx=next((i for i in choices if growth_prospect_key(ordered[i]) not in used),None)
+        if idx is None:
+            break
+        r=ordered[idx]
+        selected.append(r)
+        used.add(growth_prospect_key(r))
+        categories.add(clean(r.get("category_key")))
+    if len(selected)<count:
+        for r in ordered:
+            if growth_prospect_key(r) not in used:
+                selected.append(r);used.add(growth_prospect_key(r))
+                if len(selected)>=count:break
+    return selected[:count]
+
 def growth_sample_public_rows(rows):
     out=[]
     for r in rows:
@@ -2737,7 +2770,7 @@ async def handle_growth_snapshot(conn,p):
         return {"ok":True,"status":"sample_pending","sample_id":str(sample_id),
           "message":"We saved your request. This exact market needs a manual inventory check before we send five; BMC will not pad it with weak records."}
 
-    sample=rows[:5]
+    sample=growth_select_representative_sample(rows,email_addr)
     await growth_record_exposures(conn,sample,email_addr,service_key,"free","sample:"+str(sample_id),"delivered")
     for r in sample:
         await conn.execute("""insert into growth_sample_prospects(
@@ -2820,7 +2853,7 @@ async def growth_claim_free_five(request:Request):
                 return {"ok":True,"status":"sample_pending","sample_id":"owner-preview",
                   "sample":[],"checkout_url":"","qualified_pool":len(rows),"preview":True,
                   "message":"Owner preview: this market does not currently have five qualified rows."}
-            public_rows=growth_sample_public_rows(rows[:5])
+            public_rows=growth_sample_public_rows(growth_select_representative_sample(rows,target["public_email"]))
             return {"ok":True,"status":"sample_ready","sample_id":"owner-preview",
               "sample":public_rows,
               "checkout_url":"#owner-preview-checkout" if len(rows)>=GROWTH_SAMPLE_MIN_RESERVE else "",
