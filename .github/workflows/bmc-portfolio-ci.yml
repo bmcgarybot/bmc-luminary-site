@@ -739,6 +739,50 @@ jobs:
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from orders where customer_email='ci-owner@example.com' order by created_at desc limit 1;")" = "fulfilled"
 
 
+          # PROSPECT_EXPOSURE_CONCURRENCY_V1: no two simultaneous free requests can see
+          # the same reserved five, even when they start at the same instant.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            insert into market_inventory_candidates(
+              side,market,category_key,category_label,business_name,source_url,source_domain,
+              public_phone,official_site,source_tier,verification_status,last_verified_at,status,last_seen_at
+            )
+            select 'buyer','CI Race Market','restaurants','Restaurants','Race Prospect '||g,
+              'https://ci-race-'||g||'.example.com','ci-race-'||g||'.example.com',
+              '928555'||lpad(g::text,4,'0'),true,'direct','direct_evidence',now(),'discovered',now()
+            from generate_series(1,30) g
+            on conflict do nothing;
+            insert into growth_source_rights_review(source_domain,status,basis,reviewed_at)
+            select 'ci-race-'||g||'.example.com','approved','synthetic CI test domain',now()
+            from generate_series(1,29) g
+            on conflict(source_domain) do update set status='approved';
+            insert into growth_prospect_suppressions(prospect_key,reason,source)
+            values('ci race market:raceprospect1','CI objection','ci') on conflict do nothing;"
+          python - <<'PY'
+          import concurrent.futures,json,urllib.request
+          def sample(email,uid):
+              payload={"submission_id":uid,"form_type":"growth_snapshot","service_key":"pressure_washing",
+                       "business_name":"Race Synthetic Contractor","contact_name":"CI Owner",
+                       "email":email,"market":"CI Race Market","consent":"yes"}
+              request=urllib.request.Request("http://127.0.0.1:8000/api/intake",
+                json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
+              with urllib.request.urlopen(request,timeout=90) as response:
+                  return json.load(response)
+          with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+              futures=[pool.submit(sample,"ci-race-a@example.com","ci-race-sample-a"),
+                       pool.submit(sample,"ci-race-b@example.com","ci-race-sample-b")]
+              first,second=[f.result() for f in futures]
+          assert first["status"]=="sample_ready" and second["status"]=="sample_ready",(first,second)
+          a={x["business_name"] for x in first["sample"]}
+          b={x["business_name"] for x in second["sample"]}
+          assert len(a)==5 and len(b)==5 and not (a&b),(a,b)
+          assert "Race Prospect 1" not in (a|b),(a,b)
+          assert "Race Prospect 30" not in (a|b),(a,b)
+          repeated=sample("ci-race-a@example.com","ci-race-sample-a")
+          assert {x["business_name"] for x in repeated["sample"]}==a,"Repeat click rotated delivered list"
+          print("Concurrency, rights, suppression and idempotency passed")
+          PY
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct prospect_key) from growth_prospect_exposures where market='CI Race Market' and status='delivered';")" -eq 10
+
           # Exact real-world search regressions from manual QA.
           curl -fsS -X POST http://127.0.0.1:8000/api/service-search \
             -H 'Content-Type: application/json' \
