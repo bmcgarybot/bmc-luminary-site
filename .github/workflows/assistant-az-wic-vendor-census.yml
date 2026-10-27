@@ -1,0 +1,49 @@
+name: Assistant Arizona WIC Vendor Census Export
+
+on:
+  push:
+    paths:
+      - 'portfolio/automation/export-az-wic-vendor-census.py'
+      - '.github/workflows/assistant-az-wic-vendor-census.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install PDF parser
+        run: python3 -m pip install --quiet pdfplumber
+
+      - name: Export Arizona WIC authorized vendors for BMC markets
+        run: |
+          python3 portfolio/automation/export-az-wic-vendor-census.py \
+            --date 2026-10-26 \
+            --output-dir portfolio/data
+
+      - name: Validate deterministic census builder
+        run: |
+          python3 portfolio/automation/build-assistant-research-seed.py \
+            --data-dir portfolio/data \
+            --output /tmp/assistant-research-seed.sql \
+            --summary-json 2>/tmp/census-summary.json
+          cat /tmp/census-summary.json
+
+      - name: Commit WIC government-registry artifact
+        run: |
+          git config user.name "BMC Assistant Census"
+          git config user.email "actions@users.noreply.github.com"
+          git add portfolio/data/assistant-research-bootstrap-2026-10-26-az-wic-authorized-vendors-30.json
+          if git diff --cached --quiet; then
+            echo "No WIC artifact changes."
+            exit 0
+          fi
+          git commit -m "Seed official Arizona WIC grocery buyer census"
+          git pull --rebase origin master
+          git push origin HEAD:master
