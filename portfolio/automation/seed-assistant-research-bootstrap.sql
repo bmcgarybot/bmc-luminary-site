@@ -5164,3 +5164,238 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ), updated_at=now()
 where p.market='Tucson';
+
+
+-- Assistant-led verified Scottsdale batch 03 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','hvac_heat','Heating & Air','Mazon''s Air Conditioning & Heating Inc.',
+ 'https://www.mazonac.com/','mazonac.com','Direct company site says family-owned Scottsdale HVAC/plumbing contractor operating locally since 1970 and serving Scottsdale.','assistant verified research: Scottsdale Heating & Air',0,
+ null,'(480) 969-0029',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_verified_03","researched_at":"2026-10-27T01:43:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct company site says family-owned Scottsdale HVAC/plumbing contractor operating locally since 1970 and serving Scottsdale."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','backflow_plumbing','Backflow & Commercial Plumbing','Mazon''s Air Conditioning & Heating Inc.',
+ 'https://www.mazonac.com/','mazonac.com','Direct company site explicitly offers plumbing diagnosis, maintenance, repair and installation and lists Scottsdale service.','assistant verified research: Scottsdale Backflow & Commercial Plumbing',0,
+ null,'(480) 969-0029',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_verified_03","researched_at":"2026-10-27T01:43:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct company site explicitly offers plumbing diagnosis, maintenance, repair and installation and lists Scottsdale service."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'vendor','Scottsdale','landscaping','Landscaping & Yard Cleanup','Landscape Resources Co',
+ 'https://www.landscape-resources.com/','landscape-resources.com','Direct site lists Scottsdale office at 14807 N 73rd St Unit 101 and nearly 40 years of Phoenix-area landscape design/build work.','assistant verified research: Scottsdale Landscaping & Yard Cleanup',0,
+ null,'480-991-5571',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_verified_03","researched_at":"2026-10-27T01:43:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct site lists Scottsdale office at 14807 N 73rd St Unit 101 and nearly 40 years of Phoenix-area landscape design/build work."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','warehouses_industrial','warehouses industrial businesses distribution centers','Axon Enterprise - Scottsdale Headquarters',
+ 'https://www.axon.com/careers','axon.com','Official Axon site lists global headquarters at 17800 N 85th St, Scottsdale.','assistant verified research: Scottsdale warehouses industrial businesses distribution centers',0,
+ null,null,true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_verified_03","researched_at":"2026-10-27T01:43:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Axon site lists global headquarters at 17800 N 85th St, Scottsdale."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','Mayo Clinic - Scottsdale Campus',
+ 'https://www.mayoclinic.org/patient-visitor-guide/arizona/campus-buildings-maps/mayo-clinic-building-scottsdale','mayoclinic.org','Official Mayo Clinic page lists Scottsdale campus at 13400 E Shea Blvd with outpatient surgery, diagnostics, laboratory, imaging, pharmacy and related facilities.','assistant verified research: Scottsdale hospitals medical centers clinics',0,
+ null,'480-301-8000',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_verified_03","researched_at":"2026-10-27T01:43:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Mayo Clinic page lists Scottsdale campus at 13400 E Shea Blvd with outpatient surgery, diagnostics, laboratory, imaging, pharmacy and related facilities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','HonorHealth Scottsdale Shea Medical Center',
+ 'https://www.honorhealth.com/locations/hospitals/scottsdale-shea-medical-center','honorhealth.com','Official hospital site lists 9003 E Shea Blvd; 24/7 hospital with 434 beds and major inpatient/outpatient services.','assistant verified research: Scottsdale hospitals medical centers clinics',0,
+ null,'480-323-3000',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_verified_03","researched_at":"2026-10-27T01:43:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official hospital site lists 9003 E Shea Blvd; 24/7 hospital with 434 beds and major inpatient/outpatient services."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','HonorHealth Scottsdale Osborn Medical Center',
+ 'https://hsapps.azdhs.gov/ls/sod/Facility.aspx?FacId=MED0235','hsapps.azdhs.gov','Official Arizona licensing record shows active 325-bed short-term hospital at 7400 E Osborn Rd, Scottsdale through April 30, 2027.','assistant verified research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 882-4004',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_verified_03","researched_at":"2026-10-27T01:43:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Arizona licensing record shows active 325-bed short-term hospital at 7400 E Osborn Rd, Scottsdale through April 30, 2027."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','medical_centers','hospitals medical centers clinics','HonorHealth Scottsdale Thompson Peak Medical Center',
+ 'https://hsapps.azdhs.gov/ls/sod/Facility.aspx?FacId=MED3513','hsapps.azdhs.gov','Official Arizona licensing record shows active 120-bed short-term hospital at 7400 E Thompson Peak Pkwy, Scottsdale through September 30, 2027.','assistant verified research: Scottsdale hospitals medical centers clinics',0,
+ null,'(480) 324-7001',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_verified_03","researched_at":"2026-10-27T01:43:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Arizona licensing record shows active 120-bed short-term hospital at 7400 E Thompson Peak Pkwy, Scottsdale through September 30, 2027."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','Fairmont Scottsdale Princess',
+ 'https://www.scottsdaleprincess.com/','scottsdaleprincess.com','Direct resort site lists 7575 E Princess Dr, Scottsdale with lodging, six pools, spa, multiple dining venues, golf and event operations.','assistant verified research: Scottsdale hotels motels lodging',0,
+ 'scottsdale@fairmont.com','480-585-4848',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_verified_03","researched_at":"2026-10-27T01:43:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct resort site lists 7575 E Princess Dr, Scottsdale with lodging, six pools, spa, multiple dining venues, golf and event operations."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','hotels_motels','hotels motels lodging','Hotel Valley Ho',
+ 'https://hotelvalleyho.com/contact/','hotelvalleyho.com','Direct hotel site lists 6850 E Main St, Scottsdale with lodging, spa, pools, restaurant and meeting/event facilities.','assistant verified research: Scottsdale hotels motels lodging',0,
+ 'hello@hotelvalleyho.com','(480) 376-2600',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_verified_03","researched_at":"2026-10-27T01:43:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct hotel site lists 6850 E Main St, Scottsdale with lodging, spa, pools, restaurant and meeting/event facilities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','schools','schools charter schools private schools','Scottsdale Unified School District #48',
+ 'https://www.susd.org/','susd.org','Official district site states SUSD operates 27 physical campuses, serves about 20,000 students and employs about 3,000 people.','assistant verified research: Scottsdale schools charter schools private schools',0,
+ null,null,true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_verified_03","researched_at":"2026-10-27T01:43:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official district site states SUSD operates 27 physical campuses, serves about 20,000 students and employs about 3,000 people."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,
+ source_tier,verification_status,last_verified_at,status,query_strategy_version,evidence
+) values (
+ 'buyer','Scottsdale','public_facilities','government public facilities municipal buildings','Scottsdale Airport',
+ 'https://www.scottsdaleaz.gov/scottsdale-airport','scottsdaleaz.gov','Official city site lists Scottsdale Airport at 15000 N Airport Dr; airport operations are 24/7 and the city maintains airport facilities.','assistant verified research: Scottsdale government public facilities municipal buildings',0,
+ null,'480-312-2321',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_web_research_2026_10_26_scottsdale_verified_03","researched_at":"2026-10-27T01:43:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official city site lists Scottsdale Airport at 15000 N Airport Dr; airport operations are 24/7 and the city maintains airport facilities."}'::jsonb
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ source_domain=excluded.source_domain,snippet=excluded.snippet,search_query=excluded.search_query,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=true,source_tier='direct',verification_status='direct_evidence',last_verified_at=now(),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,updated_at=now();
+
+update market_inventory_progress p set official_candidates=(
+ select count(*) from market_inventory_candidates c where c.side=p.side and c.market=p.market
+ and c.category_key=p.category_key and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+),updated_at=now() where p.market='Scottsdale';
