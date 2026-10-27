@@ -12,7 +12,7 @@ REQUIRED={
   "facility_maintenance":{"business_name","facility_type","property_address","scope","market","contact_name","email","consent"},
   "vendor_partner":{"business_name","contact_name","email","market","services","capacity","pilot_terms"},
   "vendor_pilot_activation":{"contact_name","email","market","territory","services","capacity","pilot_terms"},
-  "growth_snapshot":{"business_name","contact_name","email","market","service_key","consent"},
+  "growth_snapshot":{"business_name","contact_name","email","market","consent"},
 }
 
 SPECIAL={
