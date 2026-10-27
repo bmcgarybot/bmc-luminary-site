@@ -12,6 +12,7 @@ REQUIRED={
   "facility_maintenance":{"business_name","facility_type","property_address","scope","market","contact_name","email","consent"},
   "vendor_partner":{"business_name","contact_name","email","market","services","capacity","pilot_terms"},
   "vendor_pilot_activation":{"contact_name","email","market","territory","services","capacity","pilot_terms"},
+  "growth_snapshot":{"business_name","contact_name","email","market","service_key","consent"},
 }
 
 SPECIAL={
@@ -21,6 +22,7 @@ SPECIAL={
   "vendor_pilot_activation":{"vendor_id","activation_token","market","territory","services","capacity","pilot_terms"},
   "vendor_response":{"lead_id","vendor_id","token","response"},
   "job_update":{"lead_id","vendor_id","token","job_status"},
+  "growth_snapshot":{"business_name","contact_name","email","market","service_key","consent"},
 }
 
 def main()->int:
@@ -45,7 +47,7 @@ def main()->int:
                 failures.append(f"{path.relative_to(ROOT)} [{form_type}] fields must be required: {', '.join(missing_required)}")
             if form_type=="facility_maintenance" and not any(n.startswith("need_") for n in names):
                 failures.append(f"{path.relative_to(ROOT)} [facility_maintenance] has no need_* service choices")
-            if form_type not in ("vendor_response","job_update","vendor_pilot_activation","vendor_partner") and "scope" not in names:
+            if form_type not in ("vendor_response","job_update","vendor_pilot_activation","vendor_partner","growth_snapshot") and "scope" not in names:
                 failures.append(f"{path.relative_to(ROOT)} [{form_type}] missing scope/details field")
     core=(ROOT / "assets/core.js").read_text(errors="ignore")
     if "mailto:" in core or "location.href=\"mailto:" in core:
