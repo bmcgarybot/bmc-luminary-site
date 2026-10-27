@@ -1,38 +1,61 @@
 # BMC Current Handoff — 2026-10-27
 
-Read **Section 73** at the end of `portfolio/automation/HANDOFF.md` before changing BMC.
+Read the newest section at the end of `portfolio/automation/HANDOFF.md` before changing BMC.
 
-Current production facts:
-- Growth Intelligence pressure-washing lane is LIVE.
-- Wave: `growth-pressure-1`.
-- First-touch emails sent: **7**.
-- Production backend commit: `5e7e226501594348168865eeb86376b72e7d724e`.
-- Growth health: PASS at last check.
-- Critical Growth exceptions: 0 at last check.
-- Service Network provider outreach: OFF.
-- Service Network buyer outreach: OFF.
-- Growth outreach: ON.
-- VPS Growth health/nurture/fulfillment/outreach cycle: every **15 minutes**.
-- External ChatGPT watch: `BMC Revenue Watch`, automation `6adfa09139708191a3b81e13e9fbabba`, hourly.
-- Archive branch preserving pre-pivot Service Network: `archive/service-network-pre-growth-pivot-2026-10-26`.
-- November 30, 2026 is the revenue-proof deadline.
+## Current production safety state
 
-First action next thread: query live Growth status + health + scheduler before writing code. Do not resend the seven first touches and do not delete Service Network assets.
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+- Do **not** send follow-ups to the seven pressure-washing contacts.
+- Do **not** launch another niche.
+- Do **not** describe the seven as verified deliveries. The defensible wording is: **seven SMTP submissions returned success and were recorded as sent by the old application logic**.
+- Owner review remains mandatory before any customer-facing outreach resumes.
 
-For the complete state, read Section 73 of `HANDOFF.md`.
+## Email incident and proof
 
-Known verification item before scaling: independently verify SPF/DKIM/DMARC and DSN/bounce suppression. SMTP/IMAP and the first seven sends are proven, but DNS authentication was not independently queried in this thread.
+The first Growth launch used seven valuable real businesses before the email experience was owner-tested. The old HTML alternative was materially shorter than the plain-text version, omitted the greeting/postal address/opt-out in the HTML view, and displayed an ugly raw tracking URL fallback.
 
-## USER REVIEW GATE — 2026-10-27
+A production-path replay was then sent to `brett.coon2@gmail.com` from the same BMC SMTP account using the first real Growth target row (TLC Window Cleaning and Pressure Washing). Brett supplied a Gmail screenshot proving that the replay reached Gmail and showing the actual HTML experience.
 
-Brett explicitly questioned whether the first seven Growth emails were actually delivered because the Namecheap Private Email Sent folder is empty, and requested a copy of every email template before further outreach.
+The replay proved the BMC SMTP path can deliver to Gmail, but it does **not** prove that each of the original seven reached its recipient.
 
-RULE UNTIL BRETT EXPLICITLY APPROVES THE COPY:
-- Keep `GROWTH_OUTREACH_ENABLED=false`.
-- Keep `OUTREACH_ENABLED=false`.
-- Keep `BUYER_OUTREACH_ENABLED=false`.
-- Do not send follow-ups to the seven pressure-washing targets.
-- Do not launch another niche.
-- Review `portfolio/automation/EMAIL_TEMPLATE_REVIEW.md` with Brett first.
+## Permanent email release rule
 
-Important mail-state clarification: `send_mail()` submits via SMTP with `aiosmtplib.send()` but does not append a copy to an IMAP Sent folder. The seven Growth rows were marked sent because SMTP submission returned without exception; this does not independently prove recipient delivery or inbox placement.
+No prospect/customer-facing email may go live unless all of these are true:
+
+1. The exact deployed code/template is sent first to Brett's test Gmail through the same production `send_mail()` path.
+2. Brett visually reviews the rendered Gmail message and explicitly approves it.
+3. Production stores `GROWTH_OWNER_APPROVED_SHA` equal to the exact deployed git SHA.
+4. `growth-launch-readiness.sh` must block if the approved SHA does not equal the current deployed SHA.
+5. Any email/template code deploy invalidates the previous approval automatically.
+6. All campaign switches remain OFF during preview testing.
+
+## Current email hardening in master
+
+The current email hardening work:
+- uses display sender `BMC Service Network <contact@bmcservicenetwork.com>`;
+- adds explicit Date and Message-ID headers;
+- uses one deterministic Growth renderer for both live sending and owner preview;
+- keeps the Growth greeting and core offer in HTML;
+- includes the business postal address and visible opt-out in marketing HTML;
+- removes the visible raw tracking-URL fallback;
+- uses a simpler business-email layout instead of the oversized promotional card;
+- adds exact-commit owner approval gating to Growth launch readiness.
+
+Before deploying, require green BMC Portfolio CI. Deploy only the exact green master SHA while preserving all outbound switches OFF. Then send the revised Growth first-touch to Brett's Gmail. Do not approve the SHA until Brett explicitly says the rendered message is acceptable.
+
+## Template review
+
+Review `portfolio/automation/EMAIL_TEMPLATE_REVIEW.md` before any other outbound lane is enabled. Growth 1–7, provider recruitment, and facility/buyer outreach all require owner review.
+
+## Deliverability work still open
+
+Before scaling materially:
+- independently verify SPF;
+- independently verify DKIM;
+- independently verify DMARC;
+- add stronger SMTP submission/audit state and bounce/DSN suppression;
+- stop treating a boolean SMTP return as verified delivery.
+
+The active ChatGPT monitor is `BMC Revenue Watch` (automation `6adfa09139708191a3b81e13e9fbabba`).
