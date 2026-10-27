@@ -1388,14 +1388,31 @@ Only accept if this fits your territory and current capacity.
     await event(conn,"lead",lead["lead_id"],"provider_offered",{"vendor_id":vendor["vendor_id"]})
     return vendor
 
+
 async def handle_vendor_response(conn,p):
     lead_id=clean(p.get("lead_id")); vendor_id=clean(p.get("vendor_id")); token=clean(p.get("token")); response=clean(p.get("response"))
     if not all([lead_id,vendor_id,token,response]): raise HTTPException(400,"Missing response fields")
+    if response not in ("accept","decline"): raise HTTPException(400,"Response must be accept or decline")
     row=await conn.fetchrow("""select lm.*,l.market,l.service_key,l.email,l.phone,l.customer_name,l.business_name,
       l.preferred_contact,l.scope,l.urgency
       from lead_matches lm join leads l on l.lead_id=lm.lead_id
-      where lm.lead_id=$1::uuid and lm.vendor_id=$2 and lm.response_token=$3 and lm.status='offered'""",lead_id,vendor_id,token)
-    if not row: raise HTTPException(409,"Offer is invalid, expired, or already answered")
+      where lm.lead_id=$1::uuid and lm.vendor_id=$2 and lm.response_token=$3""",lead_id,vendor_id,token)
+    if not row: raise HTTPException(409,"Offer is invalid or expired")
+
+    current_status=clean(row["status"])
+    customer_name=clean(row["customer_name"]) or "Customer"
+    customer_email=clean(row["email"])
+    customer_phone=clean(row["phone"])
+
+    if current_status!="offered":
+        if response=="accept" and current_status in ("accepted","contacted","estimate","won","lost"):
+            return {"ok":True,"status":"accepted","idempotent":True,
+              "message":f"This request was already accepted. Contact: {customer_name}; email: {customer_email or 'not provided'}; phone: {customer_phone or 'not provided'}."}
+        if response=="decline" and current_status=="declined":
+            return {"ok":True,"status":"declined","idempotent":True,
+              "message":"This request was already passed. BMC recorded your response and is rerouting it."}
+        raise HTTPException(409,"Offer is expired, already closed, or has a different recorded response")
+
     if response=="accept":
         service_name=await service_display_name(conn,row["service_key"])
         vendor=await conn.fetchrow("""select vendor_id,business_name,public_email,public_phone,website
@@ -1406,10 +1423,7 @@ async def handle_vendor_response(conn,p):
         await event(conn,"lead",row["lead_id"],"provider_accepted",{"vendor_id":vendor_id},vendor_id)
 
         job_link=f"{PUBLIC_SITE_URL}/provider-job-update/?lead_id={row['lead_id']}&vendor_id={vendor_id}&token={token}"
-        customer_name=clean(row["customer_name"]) or "Customer"
         customer_business=clean(row["business_name"])
-        customer_email=clean(row["email"])
-        customer_phone=clean(row["phone"])
         preferred=clean(row["preferred_contact"])
         scope=clean(row["scope"])
         urgency=clean(row["urgency"])
@@ -1451,13 +1465,26 @@ BMC Luminary Ventures LLC
           "Update job status",
           job_link
         )
-        await send_mail(vendor["public_email"],f"Customer details: {service_name} in {row['market']}",provider_body,provider_html)
+        provider_delivered=await send_mail(vendor["public_email"],f"Customer details: {service_name} in {row['market']}",provider_body,provider_html)
+        if provider_delivered:
+            await event(conn,"lead",row["lead_id"],"provider_contact_email_sent",{"vendor_id":vendor_id},"system")
+        else:
+            await conn.execute("""insert into exceptions(type,lead_id,vendor_id,severity,summary,recommended_action)
+              select 'provider_contact_delivery_failure',$1,$2,'high',$3,$4
+              where not exists (
+                select 1 from exceptions where lead_id=$1 and vendor_id=$2
+                  and type='provider_contact_delivery_failure' and status='open'
+              )""",row["lead_id"],vendor_id,
+              f"Provider accepted but customer-detail email could not be delivered to {vendor['business_name']}",
+              "Verify provider email/SMTP and make sure the provider receives the accepted request details")
+            await event(conn,"lead",row["lead_id"],"provider_contact_email_failed",{"vendor_id":vendor_id},"system")
 
         provider_contact=[]
         if clean(vendor["public_phone"]): provider_contact.append(f"Phone: {clean(vendor['public_phone'])}")
         if clean(vendor["public_email"]): provider_contact.append(f"Email: {clean(vendor['public_email'])}")
         if clean(vendor["website"]): provider_contact.append(f"Website: {clean(vendor['website'])}")
         contact_block="\n".join(provider_contact) or "The provider will contact you using the details in your request."
+        customer_delivered=None
         if customer_email:
             customer_body=f"""A provider accepted your BMC service request. Here is who will be following up with you.
 
@@ -1483,21 +1510,35 @@ BMC Luminary Ventures LLC
                 f"Reference: {row['lead_id']}"
               ]
             )
-            await send_mail(customer_email,f"Provider matched for your {service_name} request",customer_body,customer_html)
+            customer_delivered=await send_mail(customer_email,f"Provider matched for your {service_name} request",customer_body,customer_html)
+            if customer_delivered:
+                await event(conn,"lead",row["lead_id"],"customer_match_email_sent",{"vendor_id":vendor_id},"system")
+            else:
+                await conn.execute("""insert into exceptions(type,lead_id,vendor_id,severity,summary,recommended_action)
+                  select 'customer_match_delivery_failure',$1,$2,'high',$3,$4
+                  where not exists (
+                    select 1 from exceptions where lead_id=$1
+                      and type='customer_match_delivery_failure' and status='open'
+                  )""",row["lead_id"],vendor_id,
+                  f"Customer match email could not be delivered for {service_name} in {row['market']}",
+                  "Verify customer email/SMTP and make sure the customer knows which provider accepted")
+                await event(conn,"lead",row["lead_id"],"customer_match_email_failed",{"vendor_id":vendor_id},"system")
 
         await event(conn,"lead",row["lead_id"],"contact_released",{
           "vendor_id":vendor_id,
           "customer_email_released":bool(customer_email),
-          "customer_phone_released":bool(customer_phone)
+          "customer_phone_released":bool(customer_phone),
+          "provider_email_delivered":bool(provider_delivered),
+          "customer_match_email_delivered":customer_delivered
         },"system")
-        return {"ok":True,"status":"accepted","message":f"Accepted. Contact: {customer_name}; email: {customer_email or 'not provided'}; phone: {customer_phone or 'not provided'}. BMC will continue outcome follow-up."}
+        return {"ok":True,"status":"accepted",
+          "message":f"Accepted. Contact: {customer_name}; email: {customer_email or 'not provided'}; phone: {customer_phone or 'not provided'}. BMC will continue outcome follow-up."}
 
     await conn.execute("update lead_matches set status='declined',responded_at=now(),decline_reason=$2 where match_id=$1",row["match_id"],clean(p.get("notes")))
     await event(conn,"lead",row["lead_id"],"provider_declined",{"vendor_id":vendor_id,"reason":clean(p.get("notes"))},vendor_id)
     lead=await conn.fetchrow("select * from leads where lead_id=$1",row["lead_id"])
     await offer_next(conn,lead)
     return {"ok":True,"status":"declined","message":"Declined. BMC recorded your response and is rerouting the request."}
-
 
 
 async def handle_vendor_pilot_activation(conn,p):
@@ -1697,7 +1738,8 @@ async def handle_facility_lead(conn,p):
         service_names=[]
         for sk in requested:
             service_names.append(await service_display_name(conn,sk))
-        await send_mail(clean(p.get("email")),"We got your building request",
+        facility_email=clean(p.get("email"))
+        facility_delivered=await send_mail(facility_email,"We got your building request",
           f"""We received your building request in {market}.
 
 You asked for help with:
@@ -1707,6 +1749,18 @@ We’ll work through these items from the same request and follow up as the next
 
 Reference: {parent_id}
 BMC Luminary Ventures LLC""")
+        if facility_delivered:
+            await event(conn,"lead",parent_id,"facility_receipt_sent",{"email":facility_email},"system")
+        else:
+            await conn.execute("""insert into exceptions(type,lead_id,severity,summary,recommended_action)
+              select 'facility_receipt_delivery_failure',$1,'high',$2,$3
+              where not exists (
+                select 1 from exceptions where lead_id=$1
+                  and type='facility_receipt_delivery_failure' and status='open'
+              )""",parent_id,
+              f"Building-request receipt could not be delivered in {market}",
+              "Verify transactional SMTP/customer email and make sure the facility contact receives confirmation")
+            await event(conn,"lead",parent_id,"facility_receipt_delivery_failed",{"email":facility_email},"system")
     return {"ok":True,"status":"split","lead_id":str(parent_id),"child_requests":len(requested),
       "service_names":service_names if p.get("email") else [await service_display_name(conn,sk) for sk in requested],
       "message":f"Got it. We received {len(requested)} building needs and will work through them from this request."}
@@ -1799,7 +1853,20 @@ async def handle_lead(conn,p):
           workflow_text,
           f"Reference: {lead_id}"
         ])
-        await send_mail(clean(p.get("email")),"BMC received your request",receipt_body,receipt_html)
+        receipt_email=clean(p.get("email"))
+        receipt_delivered=await send_mail(receipt_email,"BMC received your request",receipt_body,receipt_html)
+        if receipt_delivered:
+            await event(conn,"lead",lead_id,"customer_receipt_sent",{"email":receipt_email},"system")
+        else:
+            await conn.execute("""insert into exceptions(type,lead_id,severity,summary,recommended_action)
+              select 'customer_receipt_delivery_failure',$1,'high',$2,$3
+              where not exists (
+                select 1 from exceptions where lead_id=$1
+                  and type='customer_receipt_delivery_failure' and status='open'
+              )""",lead_id,
+              f"Customer receipt could not be delivered for {receipt_service_name} in {market}",
+              "Verify transactional SMTP/customer email and make sure the customer receives the request confirmation")
+            await event(conn,"lead",lead_id,"customer_receipt_delivery_failed",{"email":receipt_email},"system")
 
     if service_key=="unclassified":
         await conn.execute("""insert into exceptions(type,lead_id,severity,summary,recommended_action)
@@ -1840,15 +1907,23 @@ async def handle_lead(conn,p):
       "message":f"We matched this to {display_name}. BMC has queued the next step."}
 
 
+
 async def handle_job_update(conn,p):
     lead_id=clean(p.get("lead_id")); vendor_id=clean(p.get("vendor_id")); token=clean(p.get("token")); status=clean(p.get("job_status"))
     if not all([lead_id,vendor_id,token,status]): raise HTTPException(400,"Missing job update fields")
     if status not in ("contacted","estimate","won","lost"): raise HTTPException(400,"Invalid job status")
     row=await conn.fetchrow("""select lm.*,l.market,l.service_key,l.email,l.customer_name
       from lead_matches lm join leads l on l.lead_id=lm.lead_id
-      where lm.lead_id=$1::uuid and lm.vendor_id=$2 and lm.response_token=$3
-        and lm.status in ('accepted','contacted','estimate')""",lead_id,vendor_id,token)
-    if not row: raise HTTPException(409,"Job link is invalid or this match is already closed")
+      where lm.lead_id=$1::uuid and lm.vendor_id=$2 and lm.response_token=$3""",lead_id,vendor_id,token)
+    if not row: raise HTTPException(409,"Job link is invalid")
+    current_status=clean(row["status"])
+    if current_status in ("won","lost"):
+        if current_status==status:
+            return {"ok":True,"status":status,"idempotent":True,
+              "message":"This final job status was already recorded. No duplicate update was created."}
+        raise HTTPException(409,"This match is already closed with a different final status")
+    if current_status not in ("accepted","contacted","estimate"):
+        raise HTTPException(409,"Job link is not active for updates")
     amount=clean(p.get("quoted_amount"))
     cents=None
     if amount:
@@ -1869,6 +1944,7 @@ async def handle_job_update(conn,p):
         await conn.execute("update leads set status='lost',updated_at=now() where lead_id=$1",row["lead_id"])
     await event(conn,"lead",row["lead_id"],"job_"+status,{"vendor_id":vendor_id,"quoted_amount_cents":cents,"notes":notes},vendor_id)
     return {"ok":True,"status":status,"message":"Job status recorded. Thank you for closing the loop with BMC."}
+
 
 RELATED_SERVICE_KEYS={
   "restaurant_equipment":["restaurant_repair","restaurant_maintenance","equipment_quotes"],
@@ -4634,7 +4710,20 @@ BMC Luminary Ventures LLC
               "Open provider dashboard",
               portal_link
             )
-            await send_mail(clean(vendor["public_email"]),"Your BMC provider dashboard is ready",body,html_body)
+            approval_email=clean(vendor["public_email"])
+            approval_delivered=await send_mail(approval_email,"Your BMC provider dashboard is ready",body,html_body)
+            if approval_delivered:
+                await event(conn,"vendor",vid,"pilot_approval_email_sent",{"email":approval_email},"system")
+            else:
+                await conn.execute("""insert into exceptions(type,vendor_id,severity,summary,recommended_action)
+                  select 'provider_approval_delivery_failure',$1,'high',$2,$3
+                  where not exists (
+                    select 1 from exceptions where vendor_id=$1
+                      and type='provider_approval_delivery_failure' and status='open'
+                  )""",vid,
+                  f"Approved provider dashboard email could not be delivered: {vendor['business_name']}",
+                  "Verify provider email/SMTP and issue a fresh provider dashboard link")
+                await event(conn,"vendor",vid,"pilot_approval_email_failed",{"email":approval_email},"system")
     return {"ok":True,"vendor_id":vid,"status":"pilot","message":"Provider approved for the pilot. Approval email sent when an email address is available."}
 
 @app.post("/api/admin/vendor-status")

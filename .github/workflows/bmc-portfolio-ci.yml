@@ -94,6 +94,21 @@ jobs:
       - name: Validate public form contracts
         run: python portfolio/automation/validate-form-contracts.py
 
+      - name: Validate public form retry and rendering safety
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          core=Path("portfolio/assets/core.js").read_text()
+          assert "form.dataset.submissionId" in core
+          assert "data.submission_id=form.dataset.submissionId" in core
+          assert "delete form.dataset.submissionId" in core
+          assert "controller.abort(),15000" in core
+          assert "card.replaceChildren()" in core
+          assert "message.textContent=response.message" in core
+          assert 'card.innerHTML="<h3>"' not in core
+          assert 'sessionStorage.setItem("bmc_pending_submission",JSON.stringify(data))' not in core
+          PY
+
       - name: Validate services SEO crawlability
         working-directory: portfolio
         run: |
@@ -1020,6 +1035,7 @@ jobs:
           data=json.load(open("/tmp/bmc_web_applicant_approved.json"))
           assert data["ok"] is True and data["status"]=="pilot"
           PY
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from events where entity_type='vendor' and entity_id='$WEB_APP_VENDOR_ID' and event_type='pilot_approval_email_sent';")" -eq 1
           docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
             delete from vendor_portal_tokens where vendor_id='$WEB_APP_VENDOR_ID';
             delete from events where entity_type='vendor' and entity_id='$WEB_APP_VENDOR_ID';
@@ -1144,6 +1160,11 @@ jobs:
           PY
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from leads where submission_id='ci-smoke-lead';")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select customer_path from leads where submission_id='ci-smoke-lead';")" = "fix_or_handle_job"
+          curl -fsS -X POST http://127.0.0.1:8000/api/intake \
+            -H 'Content-Type: application/json' \
+            -d '{"submission_id":"ci-smoke-lead","form_type":"tree_service","market":"Prescott","scope":"CI smoke test: tree removal request","timing":"Within 7 days","consent":"yes"}' \
+            >/tmp/bmc_intake_retry.json
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from leads where submission_id='ci-smoke-lead';")" -eq 1
 
           # Prove one building request can split into several service jobs.
           curl -fsS -X POST http://127.0.0.1:8000/api/intake \
@@ -1159,6 +1180,7 @@ jobs:
           PY
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from leads where parent_lead_id=(select lead_id from leads where submission_id='ci-facility-request');")" -eq 3
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from leads where parent_lead_id=(select lead_id from leads where submission_id='ci-facility-request') and customer_path='keep_it_handled';")" -eq 3
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from events where entity_type='lead' and entity_id=(select lead_id::text from leads where submission_id='ci-facility-request') and event_type='facility_receipt_sent';")" -eq 1
 
           # Prove a real provider match can be accepted and releases the contact handoff event.
           docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "update vendors set status='pilot' where vendor_id='v_prescott_tree_morgan';"
@@ -1187,6 +1209,42 @@ jobs:
           cat /tmp/bmc_accept.json
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from leads where lead_id='$MATCH_LEAD_ID'::uuid;")" = "provider_accepted"
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from events where entity_type='lead' and entity_id='$MATCH_LEAD_ID' and event_type='contact_released';")" -eq 1
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select coalesce((payload->>'provider_email_delivered')::boolean,false) and coalesce((payload->>'customer_match_email_delivered')::boolean,false) from events where entity_type='lead' and entity_id='$MATCH_LEAD_ID' and event_type='contact_released' order by occurred_at desc limit 1;")" = "t"
+
+          # A lost browser response must not make an already accepted offer fail on retry.
+          curl -fsS -X POST http://127.0.0.1:8000/api/intake \
+            -H 'Content-Type: application/json' \
+            --data-binary @/tmp/bmc_vendor_response.json \
+            >/tmp/bmc_accept_retry.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_accept_retry.json"))
+          assert data["ok"] is True
+          assert data["status"] == "accepted"
+          assert data["idempotent"] is True
+          PY
+
+          python - <<'PY' >/tmp/bmc_job_won.json
+          import json, os
+          print(json.dumps({
+            "form_type":"job_update",
+            "lead_id":os.environ["MATCH_LEAD_ID"],
+            "vendor_id":"v_prescott_tree_morgan",
+            "token":os.environ["MATCH_TOKEN"],
+            "job_status":"won",
+            "quoted_amount":"1200"
+          }))
+          PY
+          curl -fsS -X POST http://127.0.0.1:8000/api/intake -H 'Content-Type: application/json' --data-binary @/tmp/bmc_job_won.json >/tmp/bmc_job_won_1.json
+          curl -fsS -X POST http://127.0.0.1:8000/api/intake -H 'Content-Type: application/json' --data-binary @/tmp/bmc_job_won.json >/tmp/bmc_job_won_2.json
+          python - <<'PY'
+          import json
+          first=json.load(open("/tmp/bmc_job_won_1.json"))
+          second=json.load(open("/tmp/bmc_job_won_2.json"))
+          assert first["ok"] is True and first["status"]=="won"
+          assert second["ok"] is True and second["status"]=="won" and second["idempotent"] is True
+          PY
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from events where entity_type='lead' and entity_id='$MATCH_LEAD_ID' and event_type='job_won';")" -eq 1
           # Prove BMC-delivered products create internal work, not provider matches.
           curl -fsS -X POST http://127.0.0.1:8000/api/intake \
             -H 'Content-Type: application/json' \

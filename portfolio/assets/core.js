@@ -99,7 +99,10 @@
     data.customer_path=form.dataset.customerPath||data.customer_path||(
       document.body.classList.contains("service-page")?"fix_or_handle_job":""
     );
-    data.submission_id=(crypto.randomUUID?crypto.randomUUID():("sub_"+Date.now()+"_"+Math.random().toString(36).slice(2)));
+    if(!form.dataset.submissionId){
+      form.dataset.submissionId=(crypto.randomUUID?crypto.randomUUID():("sub_"+Date.now()+"_"+Math.random().toString(36).slice(2)));
+    }
+    data.submission_id=form.dataset.submissionId;
     data.page=location.href;data.path=location.pathname;data.referrer=document.referrer||"";
     const q=new URLSearchParams(location.search);
     ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(k=>{if(q.get(k))data[k]=q.get(k)});
@@ -119,13 +122,51 @@
       if(note && note.parentNode)note.parentNode.insertBefore(card,note.nextSibling);
       else form.appendChild(card);
     }
-    const title=response.service_name
+    const formType=form.dataset.formType||"";
+    let title=response.service_name
       ? "We matched this to "+response.service_name+"."
       : response.status==="split"
         ? "We broke this into the right building jobs."
         : "We got your request.";
     let steps=[];
-    if(response.status==="provider_offered"){
+    if(formType==="vendor_response"){
+      if(response.status==="accepted"){
+        title="Job accepted.";
+        steps=[
+          "Use the customer details in the confirmation above to follow up promptly.",
+          "The customer is also being told which provider accepted the request.",
+          "Use the secure job-update link to mark contacted, estimate, won, or lost."
+        ];
+      }else{
+        title="Request passed.";
+        steps=[
+          "BMC saved your response.",
+          "We’ll try the next matching provider when one is available.",
+          "Passing does not hurt your provider account."
+        ];
+      }
+    }else if(formType==="job_update"){
+      title="Job update saved.";
+      steps=[
+        "BMC recorded the latest stage you reported.",
+        "You can use the same secure link again while the job is still moving forward.",
+        "A won or lost update closes this match."
+      ];
+    }else if(formType==="vendor_partner"){
+      title="Application received.";
+      steps=[
+        "You’re done for now. There is no second application to fill out.",
+        "BMC will review the jobs, area, capacity, and credentials you submitted.",
+        "If approved, you’ll receive a secure provider dashboard link by email."
+      ];
+    }else if(formType==="vendor_pilot_activation"){
+      title="Pilot details received.";
+      steps=[
+        "BMC will review the work, area, capacity, and credentials you submitted.",
+        "You do not need to submit this form again.",
+        "If approved, you’ll receive a secure provider dashboard link by email."
+      ];
+    }else if(response.status==="provider_offered"){
       steps=[
         "A matching provider can review the job details.",
         "If they accept, you’ll get their business contact information and they’ll get the contact details you submitted.",
@@ -162,7 +203,20 @@
         "You do not need to submit the same request again."
       ];
     }
-    card.innerHTML="<h3>"+title+"</h3><p>"+(response.message||"Your request is in.")+"</p><ol>"+steps.map(x=>"<li>"+x+"</li>").join("")+"</ol>";
+    card.replaceChildren();
+    const heading=document.createElement("h3");
+    heading.textContent=title;
+    const message=document.createElement("p");
+    message.textContent=response.message||"Your request is in.";
+    const list=document.createElement("ol");
+    steps.forEach(function(step){
+      const item=document.createElement("li");
+      item.textContent=step;
+      list.appendChild(item);
+    });
+    card.appendChild(heading);
+    card.appendChild(message);
+    card.appendChild(list);
     card.classList.add("show");
     card.scrollIntoView({behavior:"smooth",block:"center"});
   }
@@ -176,7 +230,7 @@
       const endpoint=form.dataset.endpoint||((pageEndpoint&&!pageEndpoint.includes("REPLACE_ME"))?pageEndpoint:GLOBAL_WEBHOOK);
       if(button){button.disabled=true;button.textContent="Sending…";}
       try{
-        const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),5000);
+        const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
         const r=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data),signal:controller.signal});
         clearTimeout(timer);
         if(!r.ok)throw new Error("Webhook returned "+r.status);
@@ -184,9 +238,10 @@
         if(note){note.textContent=response.message||"We got your request.";note.classList.add("show");}
         showSubmissionSuccess(form,response);
         form.reset();
+        delete form.dataset.submissionId;
+        try{sessionStorage.removeItem("bmc_pending_submission");}catch(_){};
       }catch(err){
         console.error(err);
-        try{sessionStorage.setItem("bmc_pending_submission",JSON.stringify(data));}catch(_){}
         if(note){
           note.textContent="We couldn't send this request automatically. Your entries are still here. Please try again in a moment. If it keeps failing, use the contact link in the site footer.";
           note.classList.add("show");
