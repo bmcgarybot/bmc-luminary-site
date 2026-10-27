@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "scheduler-growth-prelaunch-20261027T0555Z",
+  "action": "scheduler_status",
+  "created_at": "2026-10-27T05:55:00Z",
+  "expires_at": "2026-10-28T05:55:00Z",
+  "allow_external_actions": false,
+  "args": {}
+}
