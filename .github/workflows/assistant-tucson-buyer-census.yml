@@ -1,0 +1,40 @@
+name: Assistant Tucson Buyer Census Export
+
+on:
+  push:
+    paths:
+      - 'portfolio/automation/export-tucson-buyer-census.py'
+      - '.github/workflows/assistant-tucson-buyer-census.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Export official Tucson buyer census artifacts
+        run: |
+          python3 portfolio/automation/export-tucson-buyer-census.py             --date 2026-10-26             --output-dir portfolio/data
+
+      - name: Validate deterministic census builder
+        run: |
+          python3 portfolio/automation/build-assistant-research-seed.py             --data-dir portfolio/data             --output /tmp/assistant-research-seed.sql             --summary-json 2>/tmp/census-summary.json
+          cat /tmp/census-summary.json
+
+      - name: Commit Tucson official-source artifacts
+        run: |
+          git config user.name "BMC Assistant Census"
+          git config user.email "actions@users.noreply.github.com"
+          git add             portfolio/data/assistant-research-bootstrap-2026-10-26-tucson-official-businesses-06.json             portfolio/data/assistant-research-bootstrap-2026-10-26-tucson-adhs-facilities-07.json
+          if git diff --cached --quiet; then
+            echo "No artifact changes."
+            exit 0
+          fi
+          git commit -m "Seed official Tucson buyer facility census"
+          git push origin HEAD:master
