@@ -37,4 +37,5 @@ jobs:
             exit 0
           fi
           git commit -m "Seed official Phoenix liquor buyer census"
+          git pull --rebase origin master
           git push origin HEAD:master
