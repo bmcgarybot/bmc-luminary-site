@@ -207,3 +207,17 @@ Growth outreach requires:
 - bounded daily limits.
 
 Service Network outbound can remain OFF while Growth is tested.
+
+
+## Revenue deadline added — 2026-10-26
+
+BMC now has a hard operating constraint: show **real non-test revenue by November 30, 2026**.
+
+Until that date:
+- optimize for cash proof, not feature count;
+- do not add material spend unless directly tied to acquisition, checkout, fulfillment, deliverability/compliance, or required measurement;
+- Growth Intelligence qualification/sample/experiment engine outranks marketplace polish;
+- run bounded multi-niche tests and move volume toward actual payers;
+- preserve all Service Network assets as Phase 2.
+
+See `portfolio/automation/GROWTH_INTELLIGENCE_MASTER_PLAN.md`, section 24.
