@@ -6056,3 +6056,356 @@ The current master has advanced beyond that SHA. Verify current master + CI and 
 10. Continue adding public source families and direct verification feeds.
 11. Never revert to capped “target met = stop” semantics.
 
+
+
+## 58. MANUAL-FIRST STATEWIDE CENSUS HANDOFF — 2026-10-26 17:31 ARIZONA
+
+This section is the authoritative continuation point for the next conversation. It supersedes older instructions that put VPS crawling/deployment ahead of the assistant-led initial census.
+
+### Brett's explicit operating rule
+
+The initial business census must be built out by the assistant through research first.
+
+The VPS is **not** the substitute for the initial census.
+
+Correct division of labor:
+1. assistant manually/research-source builds the largest practical initial list across all 21 markets and all useful buyer/vendor categories;
+2. direct/official/license evidence upgrades the strongest records;
+3. keep expanding source families and categories until obvious market gaps are gone;
+4. only after that initial census is materially built does the VPS become the maintenance layer for:
+   - recurring refresh;
+   - new-business detection;
+   - closure detection;
+   - contact refresh;
+   - verification upgrades;
+   - delta discovery.
+
+Do not revert to "the crawler can find the rest later" as an excuse to stop the assistant-led build.
+
+Do not treat numeric targets as terminal completion. All markets remain open-ended.
+
+### Current repository head
+
+Latest observed master when this section was written:
+- `2cbf2be65c360ec0d41010d117108da35644ae67`
+- message: **Seed 9 Williamson Valley facility census records**
+
+The repo contains all of the manual census work described below.
+
+### What has been built manually since the 15K production bootstrap
+
+The original production proof before this manual expansion showed:
+- 15,185 active v7 inventory candidates;
+- most were directory/discovery evidence from the first large WhereOrg import.
+
+After Brett clarified that the assistant must build the census first rather than relying on the VPS to discover the initial universe, the assistant began explicit market-by-market batches.
+
+From explicit seeded commit counts, the new manual/research-source work accounts for **at least 7,879 seeded evidence rows across all 21 markets**.
+
+IMPORTANT:
+- 7,879 is an evidence-row count, **not a distinct-business count**.
+- A single company can legitimately appear in multiple service categories.
+- A later direct/verified record can coexist with earlier directory evidence for the same business.
+- License records can represent the same company under more than one classification.
+- The final distinct-company count must be obtained from the business-level rollup/audit view, not by summing raw evidence rows.
+
+### Explicit per-market manual seed accounting
+
+The following counts are from named seed commits and are safe as evidence-row accounting:
+
+- Prescott: 185 buyer + 147 vendor + 20 verified = **352**
+- Prescott Valley: 111 buyer + 106 vendor + 14 verified = **231**
+- Chino Valley: 89 buyer + 61 vendor + 10 verified = **160**
+- Dewey-Humboldt: 122 census + 116 category + 10 verified + 121 business + 38 agriculture/storage = **407**
+- Mayer: **132**
+- Cordes Lakes: **62**
+- Williamson Valley: 19 rural + 9 facility = **28**, plus the earlier direct/corroborated Williamson Valley seed already present in the repo
+- Ash Fork: **99**
+- Seligman: **115**
+- Skull Valley: **58**
+- Camp Verde: 155 broad + 16 verified = **171**
+- Cottonwood: 112 broad + 15 verified = **127**
+- Sedona: 116 broad + 15 verified = **131**
+- Flagstaff: 155 buyer + 46 vendor + 14 verified = **215**
+- Winslow: 80 broad + 11 verified = **91**
+- Kingman: 132 broad + 51 verified + 68 trade + 61 buyer = **312**
+- Golden Valley: **84**
+- Bullhead City: 139 buyer + 64 trade + 14 verified = **217**
+- Phoenix: 115 hospitality/retail + 135 health/professional + 74 industrial/public + 272 licensed vendors + 14 verified = **610**
+- Scottsdale: 156 buyer + 28 vendor + 291 licensed vendor + 12 verified = **487**
+- Tucson: explicit seeded batches total **3,790** evidence rows; see Tucson detail below.
+
+Total of the explicit counts above: **7,879** evidence rows, before adding the earlier Williamson direct/corroborated seed and before counting other pre-existing assistant bootstrap evidence.
+
+### Tucson is no longer a sample
+
+Tucson received a much deeper licensed-trade enumeration.
+
+Explicit seeded Tucson work:
+- 156 buyer census
+- 29 vendor census
+- 10 verified
+- 20 specialized vendor
+- 327 electrical licenses
+- 312 plumbing licenses
+- 358 HVAC licenses
+- 85 low-voltage + insulation licenses
+- 29 septic + well licenses
+- 136 concrete + fence + paving licenses
+- 81 pool licenses
+- 201 landscaping licenses
+- 192 roofing licenses
+- 183 masonry + drywall + tile licenses
+- 80 flooring licenses
+- 99 glass + stucco licenses
+- 330 painter + carpentry licenses
+- general contractor batches: 310 + 300 + 300 + 252
+
+Explicit Tucson seeded evidence total: **3,790**.
+
+Do not reduce Tucson back to a tiny sample. Continue with buyer-side categories/direct-site verification where useful, but the vendor universe has been materially enumerated.
+
+### Scottsdale state
+
+Seeded Scottsdale evidence currently includes:
+- 156 buyer records
+- 28 vendor records
+- 291 licensed vendor records
+- 12 verified/direct records
+
+That is **487 seeded evidence rows** from the explicit seeded batches.
+
+Important orphan/cleanup artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-scottsdale-batch-01.json`
+- commit `346579cf3ba2e1e9396fa9e3585dbd2395bf7ed3`
+- JSON count: **149**
+- purpose: metro-scale hospitality, health, professional, property and service-vendor census.
+
+There is no correspondingly named "Seed 149 Scottsdale census records" commit.
+Instead, separate 156-buyer and 28-vendor seed commits exist.
+
+NEXT INSTANCE MUST:
+1. compare this 149-record JSON against the seeded Scottsdale records;
+2. preserve/add unique records;
+3. do not double-insert obvious duplicates;
+4. do not simply assume the 149 were loaded.
+
+### Phoenix state
+
+Phoenix explicit manual/curated seeded evidence:
+- 115 hospitality/retail
+- 135 health/professional
+- 74 industrial/public
+- 272 licensed vendors
+- 14 verified/direct
+
+Total: **610** evidence rows.
+
+Phoenix still merits continued expansion because of its size. Do not mistake 610 evidence rows for an exhaustive Phoenix business census.
+
+### Regional/rural state
+
+The rural and regional markets are no longer empty placeholders.
+
+Examples:
+- Kingman: 312 explicit rows
+- Dewey-Humboldt: 407 explicit rows
+- Prescott: 352
+- Prescott Valley: 231
+- Bullhead City: 217
+- Flagstaff: 215
+- Camp Verde: 171
+- Chino Valley: 160
+- Mayer: 132
+- Sedona: 131
+- Cottonwood: 127
+- Seligman: 115
+- Ash Fork: 99
+- Winslow: 91
+- Golden Valley: 84
+- Cordes Lakes: 62
+- Skull Valley: 58
+- Williamson Valley: 28 new explicit rows plus earlier direct/corroborated research.
+
+The next assistant should still research gaps. "Has a batch" does not mean "complete forever."
+
+### Source/evidence philosophy
+
+Keep the layered evidence model:
+
+Discovery evidence:
+- chamber/business directories
+- municipal/economic-development directories
+- local directories
+- broad public listings
+- tourism directories
+- public business lists
+
+Direct/verified evidence:
+- official business site
+- government site
+- school/district site
+- official hospital/provider source
+- current license/registry data
+- credible direct service-area page
+- official hotel/chain property page
+
+Do not promote a directory hit to verified merely because it exists.
+
+Preserve multi-source evidence rather than throwing away corroboration.
+
+### Critical safety rule
+
+All outbound switches must remain OFF during census work:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+Manual census seeding:
+- must not send;
+- must not stage outreach;
+- must not auto-approve providers;
+- must not mutate payment credentials.
+
+### Production vs repository distinction
+
+Do not claim the 7,879 manual evidence rows are in production yet.
+
+Last proven production checkpoint in the handoff was the 15,185 active-v7 proof after the first bulk directory bootstrap.
+
+The new manual census rows are definitely committed/seeded in the repository, but the latest master is **not currently green**, so production deployment of this entire expanded seed has not been proven.
+
+This distinction is mandatory in user updates.
+
+### Current CI blocker
+
+Latest checked CI:
+- run: **40426359834**
+- SHA: `2cbf2be65c360ec0d41010d117108da35644ae67`
+- result: **failure**
+- failing job: `validate`
+- failing step: **Boot database and API smoke test**
+
+Important: this is NOT a broad database/API collapse.
+
+The failing run proved:
+- PostgreSQL initialized;
+- migrations/seeds executed without a SQL fatal error;
+- Ops API built and started;
+- health returned 200;
+- admin/preflight endpoints returned 200;
+- service-search calls returned 200;
+- provider funnel / launch-cell calls returned 200;
+- public opportunities call returned 200;
+- local-demand call returned 200;
+- local-demand coverage call returned 200;
+- `runtime-doctor.sh .env.ci` reported:
+  - **Core failures: 0**
+  - warnings only.
+
+The shell step then exited 1.
+
+From the API request sequence, the failure occurs **after the local-demand coverage assertions and before the CI ever calls `/api/admin/market-inventory-coverage`**.
+
+Therefore the likely failing boundary is one of the shell inventory assertions immediately before that endpoint:
+- expected vs actual `market_inventory_progress` lane count;
+- original assistant bootstrap source count;
+- original bootstrap distinct-market count;
+- Williamson bootstrap source count;
+- distinct inventory-market count.
+
+Do not waste time re-debugging Postgres startup or API health.
+
+Correct next CI action:
+1. instrument/echo each of those inventory assertion values;
+2. identify the first mismatching test;
+3. decide whether the application state is wrong or the old CI expectation is stale after the census expansion;
+4. fix the minimum correct thing;
+5. require green CI before deployment.
+
+Do NOT weaken a valid safety or integrity assertion merely to get green.
+
+### Continuous maintenance architecture state
+
+The repo also contains the continuous maintenance layer:
+- open-ended inventory cycles;
+- no "target reached = permanently stop";
+- closure audit and closure metadata;
+- directory pagination/category traversal;
+- licensed-trade importer;
+- Docker-managed `research_refresher`;
+- database-backed refresh cadence;
+- VPS GitOps relay with allowlisted actions.
+
+But Brett's priority remains:
+**initial census first, VPS maintenance second.**
+
+Do not get distracted into rebuilding the maintenance architecture unless it blocks safe census deployment.
+
+### Existing production bootstrap context
+
+Earlier production proof:
+- initial all-market WhereOrg import inserted/updated 9,519 classified discovery candidates;
+- production proof then showed 15,185 active v7 candidates.
+
+The new manual 7,879-row expansion should be thought of as:
+- targeted census enrichment;
+- better rural/regional coverage;
+- much deeper licensed-trade coverage;
+- more buyer/facility categories;
+- more direct verification.
+
+It is additive to the earlier production discovery universe, but overlap must be deduplicated at entity/business level.
+
+### Business-level dedupe/audit work already exists
+
+During the census build, repo commits added business-level inventory rollup/audit surfaces.
+
+Use them after the seed is green/deployed to answer:
+- how many distinct businesses, not evidence rows?
+- where do multiple categories point to the same business?
+- where do directory + official-site evidence corroborate the same entity?
+- which names/phones/addresses are likely duplicates?
+- which records are closed?
+- which direct evidence should supersede weaker discovery evidence for ranking while preserving provenance?
+
+Do not delete evidence just to make the raw row number smaller.
+
+### Immediate next-conversation checklist
+
+The next assistant should start here, in this order:
+
+1. **Read this section first.**
+2. Confirm current master has not advanced beyond `2cbf2be...`.
+3. Check the newest CI run; if still failing at the same smoke-test boundary, instrument the inventory assertions and fix that regression.
+4. Audit the orphan 149-record Scottsdale JSON against the seeded Scottsdale rows and seed unique records only.
+5. Audit for any other JSON census artifacts that were committed but never appended to `seed-assistant-research-bootstrap.sql`.
+6. Continue assistant-led manual census expansion, especially:
+   - Phoenix buyer/vendor categories still underrepresented for its size;
+   - Scottsdale buyer/vendor/direct verification expansion;
+   - Tucson buyer-side/institutional/commercial-facility expansion after the huge licensed-vendor build;
+   - Williamson Valley facilities/service-territory evidence;
+   - any obvious category gaps discovered in rural/regional markets.
+7. Keep direct/official verification passes running behind broad census passes.
+8. Do **not** declare the initial census "finished" merely because all 21 markets have rows.
+9. Once CI is green, deploy the exact green master through the safe relay with all outbound switches OFF.
+10. Run production migrations/seeds and capture fresh production proof.
+11. Use business-level rollup to report actual distinct-business counts by:
+    - market;
+    - buyer/vendor side;
+    - category;
+    - verification tier;
+    - active/closed status.
+12. Only after the manual initial census is materially exhausted should the VPS refresher become the primary ongoing discovery mechanism.
+
+### What to tell Brett in the next chat
+
+The truthful short version:
+
+- The assistant-led census has expanded across all 21 markets.
+- Explicit new manual/curated seed commits account for at least **7,879 evidence rows**, with Tucson alone at about **3,790**.
+- These are not all distinct businesses because multi-category/license/direct-evidence overlap is intentional.
+- The repository work is intact.
+- The newest master is not yet deployable because CI is failing in a narrow inventory smoke-test assertion after the database/API have already proven healthy.
+- Fix that assertion regression first, then continue census expansion and deploy/prove actual distinct production counts.
+- The VPS remains the future maintenance layer, not the substitute for the assistant-built initial census.
