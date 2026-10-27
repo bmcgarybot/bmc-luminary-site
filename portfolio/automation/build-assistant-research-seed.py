@@ -43,7 +43,8 @@ def record_key(record):
 
 def rank(record):
     return (
-        3 if record.get("official") else 0,
+        4 if record.get("official") else 0,
+        3 if record.get("official_registry") else 0,
         2 if record.get("roc_license") else 0,
         1 if record.get("verified_date") else 0,
         1 if record.get("email") else 0,
@@ -56,6 +57,7 @@ def merged_record(entries):
     records = [entry["record"] for entry in entries]
     best = max(records, key=rank).copy()
     best["official"] = any(bool(r.get("official")) for r in records)
+    best["official_registry"] = any(bool(r.get("official_registry")) for r in records)
     for field in ("email", "phone", "domain", "roc_license", "trade", "verified_date"):
         if not best.get(field):
             best[field] = next((r.get(field) for r in records if r.get(field)), None)
@@ -99,11 +101,22 @@ def load_artifacts(data_dir):
 def render_row(entries):
     r = merged_record(entries)
     official = bool(r.get("official"))
+    official_registry = bool(r.get("official_registry"))
     licensed = bool(r.get("roc_license"))
-    source_tier = "direct" if official else ("registry_derived" if licensed else "directory")
-    verification_status = "direct_evidence" if official else ("credential_corroborated" if licensed else "discovery")
+    source_tier = (
+        "direct" if official
+        else "government_registry" if official_registry
+        else "registry_derived" if licensed
+        else "directory"
+    )
+    verification_status = (
+        "direct_evidence" if official
+        else "government_record" if official_registry
+        else "credential_corroborated" if licensed
+        else "discovery"
+    )
     dates = r.get("researched_dates") or []
-    verified_date = r.get("verified_date") or (max(dates) if official and dates else None)
+    verified_date = r.get("verified_date") or (max(dates) if (official or official_registry) and dates else None)
     domain = r.get("domain") or (urlparse(r["url"]).netloc.lower() or None)
     note = r.get("note") or "Assistant-led census evidence"
     evidence = {
@@ -115,6 +128,8 @@ def render_row(entries):
         "verification_status": verification_status,
         "researched_by": "assistant_manual_census",
     }
+    if official_registry:
+        evidence["official_registry"] = True
     for field in ("roc_license", "trade", "verified_date"):
         if r.get(field):
             evidence[field] = r[field]
