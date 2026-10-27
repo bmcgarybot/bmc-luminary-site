@@ -2642,10 +2642,10 @@ async def handle_growth_snapshot(conn,p):
       *[f"{i}. {x['business_name']} · {x['category']} · fit {x['fit_score']}/100\n{x['fit_reason']}\nContact: {x['contact_route']}" for i,x in enumerate(public_rows,1)],
       "If these fit the work you want, the full pack is 100 total qualified prospects for $499." if checkout else "BMC is not offering the 100-prospect pack in this exact market until the reserve inventory clears our quality gate.",
       "Qualification guarantee: wrong territory, inactive business, wrong property type, duplicate, or missing promised contact route gets replaced."
-    ],"Get the full 100 for $499",checkout) if checkout else workflow_email_html("Your 5 commercial targets",[
+    ],"Get the full 100 for $499",checkout,greeting=f"Hi {contact},",marketing=True) if checkout else workflow_email_html("Your 5 commercial targets",[
       f"Here are five commercial targets for {business} in {market}.",
       *[f"{i}. {x['business_name']} · {x['category']} · fit {x['fit_score']}/100\n{x['fit_reason']}" for i,x in enumerate(public_rows,1)]
-    ])
+    ],greeting=f"Hi {contact},",marketing=True)
     delivered=await send_mail(email_addr,f"Your 5 commercial targets in {market}",body,html_body)
     if not delivered:
         await conn.execute("""update growth_sample_requests set status='delivery_error',next_nurture_at=null,updated_at=now()
@@ -2825,6 +2825,8 @@ If those are the kinds of accounts you want, the full $499 Growth Pack gives you
 
 Qualification guarantee: wrong territory, inactive business, wrong property type, duplicate, or missing promised contact route gets replaced.
 
+This is a promotional email from BMC Service Network.
+
 BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}
 
@@ -2840,6 +2842,8 @@ If you want the full 100-prospect pack, it is here:
 
 If not, no problem — the five free targets are yours to use.
 
+This is a promotional email from BMC Service Network.
+
 BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}
 
@@ -2848,7 +2852,7 @@ Reply no to stop future BMC outreach."""
           "BMC already researched your five free commercial targets.",
           "The full $499 pack contains 100 total qualified prospects built to the same published standard.",
           "There is no retainer and no sales call required."
-        ],"Get the full 100 for $499",checkout))
+        ],"Get the full 100 for $499",checkout,greeting=f"Hi {row['contact_name']},",marketing=True))
         if ok:
             next_at=None if step>=2 else datetime.now(timezone.utc)+timedelta(days=3)
             await conn.execute("""update growth_sample_requests set nurture_step=$2,next_nurture_at=$3,
