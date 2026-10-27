@@ -71,7 +71,7 @@ TRADE_MAP = {
 
 TRADE_LINK_RE = re.compile(r"^/az/([a-z0-9-]+)/([a-z0-9-]+)/?$", re.I)
 ROC_RE = re.compile(r"ROC(?:\s+License)?\s*#?\s*(\d{5,8})", re.I)
-REST_ROC_RE = re.compile(r"^(.{2,220}?)\s*-\s*ROC\s*#(\d{5,8})\s*$", re.I)
+REST_ROC_RE = re.compile(r"^\s*(.+?)\s*-\s*ROC\s*#\s*([0-9]+)\s*$", re.I)
 DATE_RE = re.compile(r"(?:Checked as of|Verified)\s+([A-Z][a-z]+\s+\d{1,2},\s+20\d{2})", re.I)
 COUNT_RE = re.compile(r"Homversa lists\s+([\d,]+)\s+", re.I)
 
