@@ -636,6 +636,10 @@ jobs:
           PY
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from growth_sample_requests where source_target_id='$CI_GROWTH_TARGET' and submission_id like 'growth_claim_%';")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='growth_customer' and entity_id='$CI_GROWTH_TARGET' and reply_type='sample_requested';")" -eq 1
+          # Restore the synthetic send marker so the existing outbound-safety invariant remains meaningful later in this job.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            update outreach set status='queued',sequence_step=0,sent_at=null,next_followup_at=now()
+            where entity_type='growth_customer' and entity_id='$CI_GROWTH_TARGET' and campaign='growth_sales';"
 
           curl -fsS -X POST http://127.0.0.1:8000/api/intake \
             -H 'Content-Type: application/json' \
