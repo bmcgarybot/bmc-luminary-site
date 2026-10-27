@@ -2470,7 +2470,98 @@ def growth_sales_angle(row,service_key):
     }
     return angles.get(category,"Lead with dependable commercial cleaning, a clear scope, and an easy quote process.")
 
-async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",exclusions="",limit=400,exclude_ids=None,exclude_names=None):
+# Exposure-control policy: business research is not an interested service buyer.
+# Values are conservative experiment defaults, not legal safe harbors.
+GROWTH_FREE_DISTINCT_90D=1
+GROWTH_ALL_DISTINCT_90D=3
+GROWTH_ALL_DISTINCT_LIFETIME=8
+GROWTH_FREE_COOLDOWN_DAYS=90
+GROWTH_PAID_COOLDOWN_DAYS=30
+
+def growth_prospect_key(row):
+    name=re.sub(r"[^a-z0-9]+","",clean(row.get("business_name")).lower())
+    return clean(row.get("market")).lower()+":"+name if name else ""
+
+def growth_contact_key(row):
+    email_addr=clean(row.get("public_email")).lower()
+    if email_addr:
+        return "email:"+email_addr
+    phone=re.sub(r"\D+","",clean(row.get("public_phone")))
+    if len(phone)>=10:
+        return "phone:"+phone[-10:]
+    return ""
+
+async def growth_lock_exposure_allocator(conn):
+    # Serialize selections across all niches to avoid two concurrent transactions
+    # distributing the same limited inventory. Scoped locks are future optimization.
+    await conn.execute("select pg_advisory_xact_lock(20261027, 5182)")
+
+async def growth_exposure_filter(conn,rows,recipient_key="",delivery_kind="free"):
+    if not rows:
+        return []
+    keys=list({growth_prospect_key(r) for r in rows if growth_prospect_key(r)})
+    contacts=list({growth_contact_key(r) for r in rows if growth_contact_key(r)})
+    suppressed=await conn.fetch("""select prospect_key from growth_prospect_suppressions
+      where lifted_at is null and (prospect_key=any($1::text[]) or prospect_key=any($2::text[]))""",keys,contacts)
+    blocked={r["prospect_key"] for r in suppressed}
+    exposures=await conn.fetch("""select prospect_key,contact_key,recipient_key,delivery_kind,created_at
+      from growth_prospect_exposures
+      where status in ('reserved','delivered')
+        and (prospect_key=any($1::text[]) or contact_key=any($2::text[]))""",keys,contacts)
+    by_key={}
+    for r in exposures:
+        # Same contact inbox or phone shared by different sites gets a joint exposure budget.
+        for k in {clean(r["prospect_key"]),clean(r["contact_key"])}:
+            if k:
+                by_key.setdefault(k,[]).append(r)
+    now=datetime.now(timezone.utc)
+    result=[]
+    recipient_key=clean(recipient_key).lower()
+    for r in rows:
+        key=growth_prospect_key(r); contact=growth_contact_key(r)
+        if not key or key in blocked or (contact and contact in blocked):
+            continue
+        history={}
+        for e in by_key.get(key,[])+by_key.get(contact,[]):
+            # Deduplicate rows discovered by both business identity and contact identity.
+            identity=(e["recipient_key"],e["prospect_key"],e["created_at"],e["delivery_kind"])
+            history[identity]=e
+        entries=list(history.values())
+        if recipient_key and any(clean(e["recipient_key"]).lower()==recipient_key for e in entries):
+            continue
+        lifetime=len({clean(e["recipient_key"]).lower() for e in entries})
+        last90={clean(e["recipient_key"]).lower() for e in entries if (now-e["created_at"]).days<90}
+        free90={clean(e["recipient_key"]).lower() for e in entries
+          if e["delivery_kind"]=="free" and (now-e["created_at"]).days<90}
+        latest=max((e["created_at"] for e in entries),default=None)
+        cooldown=GROWTH_FREE_COOLDOWN_DAYS if delivery_kind=="free" else GROWTH_PAID_COOLDOWN_DAYS
+        if lifetime>=GROWTH_ALL_DISTINCT_LIFETIME or len(last90)>=GROWTH_ALL_DISTINCT_90D:
+            continue
+        if delivery_kind=="free" and len(free90)>=GROWTH_FREE_DISTINCT_90D:
+            continue
+        if latest and (now-latest).total_seconds()<cooldown*86400:
+            continue
+        copy=dict(r)
+        copy["exposure_count_90d"]=len(last90)
+        copy["exposure_count_lifetime"]=lifetime
+        result.append(copy)
+    return result
+
+async def growth_record_exposures(conn,rows,recipient_key,service_key,delivery_kind,delivery_ref,status):
+    for r in rows:
+        key=growth_prospect_key(r)
+        if not key:
+            raise RuntimeError("A selected prospect has no canonical exposure key")
+        await conn.execute("""insert into growth_prospect_exposures(
+          prospect_key,contact_key,recipient_key,service_key,market,candidate_id,
+          delivery_kind,delivery_ref,status,delivered_at)
+          values($1,$2,$3,$4,$5,$6,$7,$8,$9,
+            case when $9='delivered' then now() else null end)
+          on conflict(prospect_key,recipient_key,delivery_ref) do nothing""",
+          key,growth_contact_key(r),clean(recipient_key).lower(),service_key,clean(r.get("market")),
+          r.get("candidate_id"),delivery_kind,delivery_ref,status)
+
+async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",exclusions="",limit=400,exclude_ids=None,exclude_names=None,recipient_key="",delivery_kind="free"):
     categories=growth_selected_categories(service_key,ideal_customer,exclusions)
     if service_key not in GROWTH_SERVICE_LABELS or not categories:
         return []
@@ -2514,8 +2605,27 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
         r["fit_reason"]=growth_fit_reason(r,service_key)
         r["sales_angle"]=growth_sales_angle(r,service_key)
         qualified.append(r)
-    qualified.sort(key=lambda x:(-int(x["fit_score"]),clean(x.get("business_name")).lower()))
-    return qualified[:limit]
+    qualified=await growth_exposure_filter(conn,qualified,recipient_key,delivery_kind)
+    # Representative distribution: low exposure first, then category diversity,
+    # then stable recipient/prospect hash within comparable score bands.
+    qualified.sort(key=lambda x:(
+      int(x.get("exposure_count_90d",0)),
+      int(x.get("exposure_count_lifetime",0)),
+      -int(x["fit_score"])//10,
+      hashlib.sha256((clean(recipient_key).lower()+"|"+growth_prospect_key(x)).encode()).hexdigest()
+    ))
+    picked=[]; selected_categories=set()
+    # First pass avoids five businesses in the same property category.
+    for x in qualified:
+        cat=clean(x.get("category_key"))
+        if cat in selected_categories:
+            continue
+        picked.append(x); selected_categories.add(cat)
+        if len(picked)>=limit: break
+    if len(picked)<limit:
+        used={growth_prospect_key(x) for x in picked}
+        picked.extend(x for x in qualified if growth_prospect_key(x) not in used)
+    return picked[:limit]
 
 def growth_checkout_url(base_url,email,sample_id,service_key):
     if not base_url:
@@ -2605,7 +2715,9 @@ async def handle_growth_snapshot(conn,p):
         await conn.execute("""update outreach set status='sample_requested',replied_at=coalesce(replied_at,now()),reply_type='sample_requested'
           where entity_type='growth_customer' and entity_id=$1 and campaign='growth_sales'""",target_id)
 
-    rows=await growth_qualified_candidates(conn,service_key,market,clean(p.get("ideal_customer")),clean(p.get("exclusions")),limit=GROWTH_SAMPLE_MIN_RESERVE)
+    await growth_lock_exposure_allocator(conn)
+    rows=await growth_qualified_candidates(conn,service_key,market,clean(p.get("ideal_customer")),clean(p.get("exclusions")),
+      limit=GROWTH_SAMPLE_MIN_RESERVE,recipient_key=email_addr,delivery_kind="free")
     if len(rows)<5:
         await conn.execute("""update growth_sample_requests set status='inventory_exception',updated_at=now()
           where sample_id=$1""",sample_id)
@@ -2618,6 +2730,7 @@ async def handle_growth_snapshot(conn,p):
           "message":"We saved your request. This exact market needs a manual inventory check before we send five; BMC will not pad it with weak records."}
 
     sample=rows[:5]
+    await growth_record_exposures(conn,sample,email_addr,service_key,"free","sample:"+str(sample_id),"delivered")
     for r in sample:
         await conn.execute("""insert into growth_sample_prospects(
           sample_id,candidate_id,business_name,market,category_key,category_label,fit_score,grade,fit_reason,sales_angle,
@@ -2960,6 +3073,7 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
         order by t.created_at limit 5""")
       for row in tasks:
         async with conn.transaction():
+          await growth_lock_exposure_allocator(conn)
           prior=await conn.fetch("""select distinct lower(gop.business_name) name
             from growth_order_prospects gop join orders po on po.order_id=gop.order_id
             where lower(po.customer_email)=lower($1) and po.order_id<>$2""",row["customer_email"],row["paid_order_id"])
@@ -2968,7 +3082,8 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
           sample_ids={str(x["candidate_id"]) for x in sample_rows if x["candidate_id"]}
           sample_names={clean(x["business_name"]).lower() for x in sample_rows}
           candidates=await growth_qualified_candidates(conn,row["provider_service_key"],row["market"],row["ideal_customer"],row["exclusions"],
-            limit=GROWTH_SAMPLE_MIN_RESERVE+100,exclude_ids=sample_ids,exclude_names=prior_names|sample_names)
+            limit=GROWTH_SAMPLE_MIN_RESERVE+100,exclude_ids=sample_ids,exclude_names=prior_names|sample_names,
+            recipient_key=row["customer_email"],delivery_kind="paid")
           if len(candidates)+len(sample_rows)<100:
               await conn.execute("update tasks set status='exception',updated_at=now() where task_id=$1",row["task_id"])
               await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
@@ -2998,6 +3113,8 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
                 f"Growth order {row['order_id']} failed deterministic delivery QA",
                 f"QA count={qa_count} score={qa_scores} market={qa_market} unique={qa_unique} source={qa_sources}; do not send until fixed")
               exceptions+=1; continue
+          await growth_record_exposures(conn,candidates[:100-len(sample_rows)],row["customer_email"],
+            row["provider_service_key"],"paid","order:"+str(row["paid_order_id"]),"reserved")
           for x in final:
               await conn.execute("""insert into growth_order_prospects(
                 order_id,candidate_id,business_name,market,category_key,category_label,fit_score,grade,fit_reason,sales_angle,
@@ -3037,6 +3154,8 @@ BMC Luminary Ventures LLC
                 f"Paid Growth order {row['order_id']} passed QA but email delivery failed",
                 "Verify customer email/SMTP and resend the stored 100-row order deliverable")
               exceptions+=1; continue
+          await conn.execute("""update growth_prospect_exposures set status='delivered',delivered_at=now()
+            where delivery_ref=$1 and status='reserved'""","order:"+str(row["paid_order_id"]))
           await conn.execute("update growth_order_prospects set delivered_at=now() where order_id=$1",row["paid_order_id"])
           await conn.execute("update tasks set status='completed',updated_at=now() where task_id=$1",row["task_id"])
           await conn.execute("update orders set status='fulfilled',updated_at=now() where order_id=$1",row["paid_order_id"])
