@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "growth-hardening-deploy-20261027T1245Z",
+  "action": "deploy_update",
+  "created_at": "2026-10-27T12:45:00Z",
+  "expires_at": "2026-10-27T13:45:00Z",
+  "allow_external_actions": false,
+  "required_ci_sha": "5e7e226501594348168865eeb86376b72e7d724e",
+  "args": {}
+}
