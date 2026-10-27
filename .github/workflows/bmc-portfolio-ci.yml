@@ -31,7 +31,7 @@ jobs:
               "growth_status","growth_launch_audit",
               "deploy_update","market_inventory_step","local_demand_step",
               "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","inventory_closure_step","research_refresh_install","scheduler_start","scheduler_stop",
-              "growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_launch_enable","growth_launch_disable","growth_owner_replay_email"
+              "growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_launch_enable","growth_launch_disable","growth_owner_replay_email","growth_owner_preview_approve"
           }
           assert ns["ALLOWED_ACTIONS"] == expected, ns["ALLOWED_ACTIONS"]
           assert all("shell" not in x for x in ns["ALLOWED_ACTIONS"])
@@ -82,6 +82,14 @@ jobs:
           for endpoint in ("/api/admin/stage-growth-pressure-washing","/api/admin/growth-status","/api/process-growth-health","/api/process-growth-nurture","/api/process-growth-fulfillment"):
               assert endpoint in api, endpoint
           assert "GROWTH_SAMPLE_MIN_RESERVE" in api
+          assert "SMTP_FROM_NAME" in api
+          assert "def growth_outreach_message" in api
+          assert "Reply <strong>no</strong>" in api
+          assert "copy and paste this link" not in api
+          readiness=(root/"automation"/"growth-launch-readiness.sh").read_text()
+          env_example=(root/"automation"/".env.example").read_text()
+          assert "GROWTH_OWNER_APPROVED_SHA" in readiness
+          assert "GROWTH_OWNER_APPROVED_SHA=" in env_example
           assert "growth_sample_id" in api
           assert "post /api/process-growth-health" in scheduler
           assert "post /api/process-growth-nurture" in scheduler
