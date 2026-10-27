@@ -44,7 +44,7 @@ MARKETS = [
     "Winslow",
 ]
 
-USER_AGENT = "BMC-Service-Network-Assistant-Research/1.0 (+https://bmcservicenetwork.com)"
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
 
 
 def clean(value):
@@ -64,7 +64,9 @@ def download(url):
         url,
         headers={
             "User-Agent": USER_AGENT,
-            "Accept": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,*/*",
+            "Accept": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/octet-stream;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Referer": "https://www.azed.gov/finance/local-education-agencies",
         },
     )
     with urllib.request.urlopen(req, timeout=90) as response:
