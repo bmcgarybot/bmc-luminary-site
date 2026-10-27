@@ -16,7 +16,7 @@ Status: **NOT APPROVED FOR PRODUCTION**. Branch safety/prospect-exposure-gates-2
 - **Buyer identity**: first version uses normalized email; account-level identity resolution must be added before scaling.
 
 ## Proposed conservative distribution defaults (NOT legal safe harbors)
-- Free sample: at most 1 distinct free recipient per 90 days; 90-day per-prospect cooldown.
+- Free sample: at most 2 distinct free recipients per prospect per 90 days. Different recipients' five-prospect batches may overlap, but by no more than 2 prospects for any pair of batches within the same service and market. No free-only cooldown; other lifetime and 90-day limits still apply.
 - Other distributions: no more than 3 distinct recipient businesses per prospect in any 90-day period, no more than 8 lifetime; 30-day cooldown.
 - All product lines must count in a shared ledger.
 - Existing five within a paid 100 are not a *new* exposure to the same buyer.
@@ -38,7 +38,7 @@ Status: **NOT APPROVED FOR PRODUCTION**. Branch safety/prospect-exposure-gates-2
 - Legal counsel should review customer terms, source-rights policy, suppression handling, TCPA/state rules, and lead-sales representations before broad launch.
 
 ## Production release checklist
-1. CI test: synthetic samples to different accounts do not repeat; counts update, no duplicate repeated click.
+1. CI test: different accounts may have limited overlap (maximum two shared prospects per pair of batches), never identical five; repeated click returns the original five and does not add exposures.
 2. CI test: concurrency on same market; no cap breach.
 3. CI test: free + paid + micro + refresh share the same exposure ledger.
 4. CI test: caps and cooldowns, suppression and shared contact routes, underfill, refunds/failed deliveries.
@@ -61,3 +61,6 @@ These links are compliance starting points, not a legal opinion. This draft does
 
 ## Scope decision, 2026-10-27
 The owner explicitly deprioritized source-licensing checks for the current exposure-control development. Source-rights review remains a separate legal/business follow-up; the selector and launch readiness now focus on duplicate-exposure, objections, and allocation controls. This decision is **not** a legal opinion or permission to redistribute data contrary to its terms. No campaign is authorized by this change.
+
+## Delivery-state clarification
+SMTP acceptance is not verified inbox delivery. A sample returned in the HTTP response is disclosed even if its email attempt fails. Count that disclosure in the ledger, preserve the same five on retries, and record SMTP success or failure separately. The shared email sender replaces em dash and en dash characters to match the owner's writing style; it does not replace a genuine pre-launch email review.
