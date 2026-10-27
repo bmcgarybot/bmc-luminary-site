@@ -1,6 +1,11 @@
 name: BMC Service Network Pages
 
 on:
+  push:
+    branches: ["master"]
+    paths:
+      - "portfolio/**"
+      - ".github/workflows/bmc-service-network-pages.yml"
   workflow_dispatch:
 
 permissions:
