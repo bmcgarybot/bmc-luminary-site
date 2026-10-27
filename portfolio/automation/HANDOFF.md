@@ -8872,3 +8872,68 @@ Do not deploy merely because that checkpoint is green. Brett's current direction
 ## Continuity sentence
 
 **The assistant-built repo census now stands at 71,929 strict artifact seed rows across 312 auditable JSON artifacts. The CMS blockage was routed around successfully, NCES replaced the blocked ADE school source, HUD added multifamily properties, IRS added 15,227 exempt-organization buyer records, and FDIC added 486 current bank branch/office facilities. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
+
+
+### Commercial recurring-facility agreement opportunity — added by Brett during Section 67 work
+
+Brett explicitly identified another core BMC opportunity that must remain in continuity:
+
+**BMC should not think only in terms of one-time repair leads. It should also identify businesses/facilities that may benefit from recurring service agreements that they have never formally sourced.**
+
+Examples:
+- gas stations / convenience stores;
+- parking lots and parking-heavy commercial properties;
+- strip malls / retail centers;
+- restaurants;
+- hotels;
+- apartment / multifamily properties;
+- medical/dental/therapy offices;
+- schools/churches;
+- banks;
+- grocery/pharmacy;
+- warehouses / fleet yards;
+- municipal/public facilities.
+
+High-value recurring exterior/facility service opportunities include:
+- parking-lot power washing;
+- sidewalk / storefront pressure washing;
+- fuel-island and pump-pad cleaning;
+- dumpster-pad degreasing;
+- restaurant grease/oil cleanup;
+- gum removal;
+- curb / loading-zone cleaning;
+- parking-lot sweeping;
+- parking-lot striping / restriping;
+- exterior building washing;
+- window cleaning;
+- trash / junk / bulk-item removal;
+- seasonal grounds / snow / defensible-space service where appropriate;
+- recurring janitorial / common-area cleaning.
+
+Strategic principle:
+
+A buyer may already “know a guy,” but that does not mean it has:
+- a written recurring scope;
+- competitive pricing;
+- backup coverage;
+- scheduled preventive service;
+- a qualified second vendor;
+- an auditable service agreement.
+
+BMC can create value by identifying the unmet/under-formalized need and brokering a qualified recurring commercial opportunity.
+
+Potential BMC commercial model to preserve for later design:
+1. Research facility and likely service need.
+2. Qualify whether there is an actual recurring service gap / contract opportunity.
+3. Present a clear scoped opportunity to suitable local providers.
+4. Provider pays for the qualified opportunity / accepted lead under the normal model, or BMC later uses a legally reviewed success/referral/contract-origination fee where permitted.
+5. Buyer gets a real business agreement rather than a random one-off contractor list.
+6. BMC tracks performance so renewal / replacement opportunities become recurring network value.
+
+Important: do not make unsupported claims that a facility needs a service merely because it has a parking lot or fuel pumps. Treat these as prospecting hypotheses until buyer need is qualified.
+
+Research implication:
+
+Commercial-buyer census expansion should explicitly pursue **parking-heavy and exterior-maintenance-heavy facilities**, not just generic businesses. Gas stations and convenience/fuel locations are now a priority buyer class because they can create power-washing, fuel-island, dumpster-pad, sweeping, striping, window and exterior-cleaning demand.
+
+This opportunity should also inform future vendor discovery: power-washing, commercial exterior cleaning, parking-lot sweeping, striping, and facility-maintenance vendors may be able to grow through BMC contract opportunities they would not normally prospect themselves.
