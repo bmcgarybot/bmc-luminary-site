@@ -750,3 +750,229 @@ set official_candidates=(
    and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
 ),updated_at=now()
 where p.market='Williamson Valley';
+
+
+-- Assistant-led Williamson Valley facility census batch 03 (2026-10-26)
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,source_tier,
+ verification_status,last_verified_at,status,query_strategy_version,evidence,first_seen_at,last_seen_at
+) values (
+ 'buyer','Williamson Valley','grocery','grocery stores supermarkets markets','Old Stage Stop',
+ 'https://www.loc8nearme.com/arizona/prescott/old-stage-stop/2270218/','loc8nearme.com','Current 2026 listing identifies active convenience store/gas station at 4155 W Outer Loop Rd at Williamson Valley Road, open daily 6 AM-8 PM with deli and retail operations.','assistant Williamson Valley facility census',0,
+ null,'(928) 445-7699',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_williamson_valley_2026_10_26_batch_03","researched_at":"2026-10-27T01:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current 2026 listing identifies active convenience store/gas station at 4155 W Outer Loop Rd at Williamson Valley Road, open daily 6 AM-8 PM with deli and retail operations."}'::jsonb,now(),now()
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ snippet=excluded.snippet,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,source_tier,
+ verification_status,last_verified_at,status,query_strategy_version,evidence,first_seen_at,last_seen_at
+) values (
+ 'buyer','Williamson Valley','restaurants','restaurants','Tomato Happy Hour',
+ 'https://www.americanappetite.com/city/prescott/az/','americanappetite.com','Current Prescott food-business directory places Tomato Happy Hour at 4155 W Outer Loop Rd / Williamson Valley, operating from the Stage Stop Friday-Sunday.','assistant Williamson Valley facility census',0,
+ 'kathleen@tomatohappyhour.com','(830) 265-0756',false,
+ 'secondary','discovery',null,'discovered',7,'{"bootstrap_source":"assistant_williamson_valley_2026_10_26_batch_03","researched_at":"2026-10-27T01:52:00Z","source_quality":"discovery_only","verification_status":"discovery","note":"Current Prescott food-business directory places Tomato Happy Hour at 4155 W Outer Loop Rd / Williamson Valley, operating from the Stage Stop Friday-Sunday."}'::jsonb,now(),now()
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ snippet=excluded.snippet,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,source_tier,
+ verification_status,last_verified_at,status,query_strategy_version,evidence,first_seen_at,last_seen_at
+) values (
+ 'buyer','Williamson Valley','general_business','other local businesses','Williamson Valley Community Organization',
+ 'https://williamsonvalley.org/','williamsonvalley.org','Direct active Williamson Valley Community Organization site; IRS-qualified 501(c)(3) serving corridor residents and property owners with ongoing water, transportation and community programs.','assistant Williamson Valley facility census',0,
+ 'contact2@williamsonvalley.org',null,true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_williamson_valley_2026_10_26_batch_03","researched_at":"2026-10-27T01:52:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct active Williamson Valley Community Organization site; IRS-qualified 501(c)(3) serving corridor residents and property owners with ongoing water, transportation and community programs."}'::jsonb,now(),now()
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ snippet=excluded.snippet,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,source_tier,
+ verification_status,last_verified_at,status,query_strategy_version,evidence,first_seen_at,last_seen_at
+) values (
+ 'buyer','Williamson Valley','public_facilities','government public facilities municipal buildings','Yavapai County Sheriff''s Office - Williamson Valley Substation',
+ 'https://www.ycsoaz.gov/I-Want-To/Services/Request-Public-Records','ycsoaz.gov','Official Yavapai County Sheriff''s Office page lists Williamson Valley Substation at 4155 W Outer Loop Rd, Suite B, Prescott 86305.','assistant Williamson Valley facility census',0,
+ null,'(928) 771-3277',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_williamson_valley_2026_10_26_batch_03","researched_at":"2026-10-27T01:52:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Official Yavapai County Sheriff''s Office page lists Williamson Valley Substation at 4155 W Outer Loop Rd, Suite B, Prescott 86305."}'::jsonb,now(),now()
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ snippet=excluded.snippet,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,source_tier,
+ verification_status,last_verified_at,status,query_strategy_version,evidence,first_seen_at,last_seen_at
+) values (
+ 'buyer','Williamson Valley','public_facilities','government public facilities municipal buildings','Granite Oaks Water Users Association',
+ 'https://gowaterusers.com/','gowaterusers.com','Direct active nonprofit water utility site with 2026 board schedule; serves Royal Oaks, Granite Oaks and Granite Oaks Estates and maintains water-system infrastructure.','assistant Williamson Valley facility census',0,
+ null,'(928) 445-0551',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_williamson_valley_2026_10_26_batch_03","researched_at":"2026-10-27T01:52:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct active nonprofit water utility site with 2026 board schedule; serves Royal Oaks, Granite Oaks and Granite Oaks Estates and maintains water-system infrastructure."}'::jsonb,now(),now()
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ snippet=excluded.snippet,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,source_tier,
+ verification_status,last_verified_at,status,query_strategy_version,evidence,first_seen_at,last_seen_at
+) values (
+ 'buyer','Williamson Valley','public_facilities','government public facilities municipal buildings','Inscription Canyon Ranch Water Users Association',
+ 'https://icwc.info/water-conservation-measures/','icwc.info','Direct water-company site states ICRWUA supplies potable water to Inscription Canyon Ranch, Talking Rock Ranch, The Preserve, Whispering Canyons and Talking Rock Golf Course and maintains multiple water facilities.','assistant Williamson Valley facility census',0,
+ null,'(928) 445-5606',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_williamson_valley_2026_10_26_batch_03","researched_at":"2026-10-27T01:52:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct water-company site states ICRWUA supplies potable water to Inscription Canyon Ranch, Talking Rock Ranch, The Preserve, Whispering Canyons and Talking Rock Golf Course and maintains multiple water facilities."}'::jsonb,now(),now()
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ snippet=excluded.snippet,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,source_tier,
+ verification_status,last_verified_at,status,query_strategy_version,evidence,first_seen_at,last_seen_at
+) values (
+ 'buyer','Williamson Valley','property_management','property management companies apartment communities','Talking Rock Ranch Homeowners Association',
+ 'https://talkingrockranchhoa.com/','talkingrockranchhoa.com','Direct active HOA site for 3,600-acre master-planned Talking Rock Ranch community at 15075 N Talking Rock Ranch Rd with clubhouse, golf, fitness, pool, trails and other maintained amenities.','assistant Williamson Valley facility census',0,
+ null,'(928) 776-4479',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_williamson_valley_2026_10_26_batch_03","researched_at":"2026-10-27T01:52:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct active HOA site for 3,600-acre master-planned Talking Rock Ranch community at 15075 N Talking Rock Ranch Rd with clubhouse, golf, fitness, pool, trails and other maintained amenities."}'::jsonb,now(),now()
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ snippet=excluded.snippet,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,source_tier,
+ verification_status,last_verified_at,status,query_strategy_version,evidence,first_seen_at,last_seen_at
+) values (
+ 'buyer','Williamson Valley','property_management','property management companies apartment communities','TDH Investments - Williamson Valley Lots',
+ 'https://www.tdhaz.com/storage-lots','tdhaz.com','Direct property-owner site lists Williamson Valley lots near 11725 N Williamson Valley Ranch Rd and states TDH owns/manages commercial and residential property with in-house construction/maintenance capability.','assistant Williamson Valley facility census',0,
+ null,'(928) 833-4834',true,
+ 'direct','direct_evidence',now(),'discovered',7,'{"bootstrap_source":"assistant_williamson_valley_2026_10_26_batch_03","researched_at":"2026-10-27T01:52:00Z","source_quality":"direct_market_evidence","verification_status":"direct_evidence","note":"Direct property-owner site lists Williamson Valley lots near 11725 N Williamson Valley Ranch Rd and states TDH owns/manages commercial and residential property with in-house construction/maintenance capability."}'::jsonb,now(),now()
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ snippet=excluded.snippet,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+insert into market_inventory_candidates(
+ side,market,category_key,category_label,business_name,source_url,source_domain,
+ snippet,search_query,page_no,public_email,public_phone,official_site,source_tier,
+ verification_status,last_verified_at,status,query_strategy_version,evidence,first_seen_at,last_seen_at
+) values (
+ 'buyer','Williamson Valley','property_management','property management companies apartment communities','Trinity Legacy Investments LLC',
+ 'https://www.uscorpdirectory.com/az/prescott/trinity-legacy-investments-llc','uscorpdirectory.com','ACC-derived active/in-good-standing company at 7625 N Williamson Valley Rd; business type specifically listed as Real Estate And Rental And Leasing.','assistant Williamson Valley facility census',0,
+ null,null,false,
+ 'secondary','corroborated',now(),'discovered',7,'{"bootstrap_source":"assistant_williamson_valley_2026_10_26_batch_03","researched_at":"2026-10-27T01:52:00Z","source_quality":"corroborated_registry_evidence","verification_status":"corroborated","note":"ACC-derived active/in-good-standing company at 7625 N Williamson Valley Rd; business type specifically listed as Real Estate And Rental And Leasing."}'::jsonb,now(),now()
+)
+on conflict(side,market,category_key,source_url,business_name) do update set
+ snippet=excluded.snippet,
+ public_email=coalesce(excluded.public_email,market_inventory_candidates.public_email),
+ public_phone=coalesce(excluded.public_phone,market_inventory_candidates.public_phone),
+ official_site=excluded.official_site,
+ source_tier=excluded.source_tier,
+ verification_status=excluded.verification_status,
+ last_verified_at=coalesce(excluded.last_verified_at,market_inventory_candidates.last_verified_at),
+ status=case when market_inventory_candidates.status='closed' then 'closed' else 'discovered' end,
+ last_seen_at=now(),
+ query_strategy_version=excluded.query_strategy_version,
+ evidence=market_inventory_candidates.evidence || excluded.evidence,
+ updated_at=now();
+
+update market_inventory_progress p
+set official_candidates=(
+ select count(*) from market_inventory_candidates c
+ where c.side=p.side and c.market=p.market and c.category_key=p.category_key
+   and c.status='discovered' and c.query_strategy_version=7 and c.official_site=true
+),updated_at=now()
+where p.market='Williamson Valley';
