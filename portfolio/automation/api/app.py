@@ -794,7 +794,7 @@ SERVICE_SEARCH_SYNONYMS={
    "plumber","plumbers","plumbing","plumbing repair","plumbing service",
    "leaking pipe","leaky pipe","burst pipe","broken pipe","pipe leak","water leak",
    "leaking faucet","dripping faucet","clogged drain","blocked drain","sink clogged",
-   "toilet clogged","toilet overflowing","running toilet","toilet repair",
+   "toilet clogged","toilet overflowing","toilet is overflowing","running toilet","toilet repair",
    "water heater repair","water heater leaking","hot water heater","no hot water",
    "sewer line repair","sewer backup","sewage backup","drain cleaning",
    "leak detection","slab leak","sump pump","water pressure problem",
