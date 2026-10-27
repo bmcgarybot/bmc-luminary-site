@@ -2753,7 +2753,7 @@ async def handle_growth_snapshot(conn,p):
         return {"ok":True,"status":"already_claimed","sample":[],
           "checkout_url":"","message":"BMC has already prepared a free sample for this business and territory. Use the original invitation or contact BMC to review the account."}
 
-    target_id=clean(p.get("source_target_id"))
+    target_id=clean(p.get("source_target_id")) or None
     if target_id and not await conn.fetchval("select 1 from growth_outreach_targets where target_id=$1",target_id):
         target_id=None
     cell=f"{service_key}:{market}"
