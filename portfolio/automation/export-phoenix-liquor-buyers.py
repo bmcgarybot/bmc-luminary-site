@@ -87,7 +87,6 @@ def main():
             "where": "1=1",
             "outFields": "*",
             "returnGeometry": "false",
-            "orderByFields": "ESRI_OID ASC",
             "resultOffset": str(offset),
             "resultRecordCount": str(page_size),
             "f": "json",
