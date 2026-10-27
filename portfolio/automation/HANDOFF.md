@@ -7556,3 +7556,301 @@ When a deployment checkpoint is chosen:
 ## Final continuity sentence
 
 **The assistant-led census has grown from 14,434 strict artifact rows at the prior handoff to 51,344 strict unique artifact rows across 286 auditable JSON artifacts and all 21 markets. Tucson buyer coverage is now massive via City + ADHS government registries, Scottsdale and many secondary markets gained deep licensed-trade coverage, gap-market trades were recovered without weakening completeness gates, and the three weakest rural markets received new direct company service-territory evidence. Production is still the older 30,518-row f05ff6 proof, all outreach remains OFF, and the next thread should keep digging into businesses rather than handing the initial census build to the VPS.**
+
+
+---
+
+# 62. RURAL DIRECT/OFFICIAL + MOHAVE COUNTY BUYER EXPANSION — 2026-10-26 20:10 ARIZONA
+
+This section continues Section 61 and records the next assistant-led census pass. The standing rule remains unchanged:
+
+**The assistant is still building the initial business universe. The VPS is the maintenance/rescan/delta layer, not the substitute for this initial census.**
+
+All outbound remains OFF. No provider/buyer contact was performed.
+
+## Exact green repository checkpoint
+
+Latest census/data commit:
+- `9543faff796f871aec46eccea5b2dfa28bebef28`
+- message: **Add direct Highway Hotdog census evidence**
+
+Green BMC Portfolio CI:
+- run **40442435635**
+- result: **SUCCESS**
+- exact SHA: `9543faff796f871aec46eccea5b2dfa28bebef28`
+
+Deterministic artifact census on that exact SHA:
+- **290 assistant census JSON artifacts**
+- **52,238 raw evidence rows**
+- **823 strict duplicate rows collapsed**
+- **51,415 strict unique artifact seed rows**
+- **35,650 strict unique buyer rows**
+- **15,765 strict unique vendor rows**
+- **21 / 21 markets**
+- **1,260 / 1,260 inventory lanes**
+- smoke DB expected artifact candidates: **51,415**
+- smoke DB actual artifact candidates: **51,415**
+- runtime doctor core failures: **0**
+
+CI reported 10 warnings in its disposable stack because external production services/secrets are intentionally absent there. This does not represent production runtime health.
+
+Compared with Section 61:
+- raw evidence: **52,167 -> 52,238** (**+71**)
+- strict artifact seed rows: **51,344 -> 51,415** (**+71**)
+- artifacts: **286 -> 290** (**+4**)
+
+The strict duplicate-collapse count remained 823, meaning this pass added 71 new strict artifact identities rather than padding the strict count with duplicate identities.
+
+## Updated strict artifact rows by market
+
+Current strict-unique artifact rows:
+
+- Ash Fork: **118** (+5)
+- Bullhead City: **480**
+- Camp Verde: **287**
+- Chino Valley: **277**
+- Cordes Lakes: **79** (+2)
+- Cottonwood: **383**
+- Dewey-Humboldt: **427**
+- Flagstaff: **893**
+- Golden Valley: **149** (+27)
+- Kingman: **753**
+- Mayer: **182** (+17)
+- Phoenix: **9,558**
+- Prescott: **926**
+- Prescott Valley: **818**
+- Scottsdale: **2,974**
+- Sedona: **262**
+- Seligman: **136** (+12)
+- Skull Valley: **72** (+1)
+- Tucson: **32,467**
+- Williamson Valley: **43** (+1)
+- Winslow: **131** (+6)
+
+These remain evidence/seed identities, **not globally deduplicated legal businesses**.
+
+## New artifact: rural direct/official batch 14
+
+Commit:
+- `c7782394e859ef3e70ec517683a7be56ae2486b0`
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-direct-official-batch-14.json`
+
+Adds **30 direct-company or official-government evidence rows** across the thinnest markets.
+
+Buyer/facility upgrades include examples such as:
+- Ash Fork Joint Unified School District #31;
+- Ash Fork Public Library;
+- Ash Fork Volunteer Fire District;
+- Canyon's Edge Route 66 Motel;
+- Seligman Volunteer Fire District;
+- Cordes Lakes Public Library;
+- Mayer Domestic Water Improvement District;
+- Mayer Volunteer Fire District;
+- Mayer Community Church;
+- Mission Church;
+- Creekside Lodge and Cabins;
+- Williamson Valley Fire District;
+- Golden Valley Fire District;
+- E.A.G.L.E. Academy;
+- Black Mountain Elementary / Golden Valley Middle School;
+- Winslow Christian School;
+- First Baptist Church Winslow;
+- The Winslow hotel.
+
+Direct vendor/service-territory upgrades include:
+- AZ Super Plumber -> Skull Valley;
+- Manor Plumbing -> Cordes Lakes and Mayer;
+- Nichols Plumbing, Electrical & HVAC -> Mayer plumbing/electrical/HVAC;
+- R.E.D. Plumbing -> Mayer;
+- S&M Electric -> Mayer;
+- ACE Cooling, Heating, Plumbing and Electrical -> Mayer plumbing/electrical/HVAC;
+- Miller's Water Works -> Winslow.
+
+Existing direct evidence was checked before adding records. Known already-direct entities such as Skull Valley School, Skull Valley Bible Church, Williamson Valley Community Organization, Williamson Valley Ranch Road Association, Winslow Unified School District and La Posada were not needlessly re-added as new direct identities.
+
+## New artifact: Seligman direct-site upgrade batch 15
+
+Initial commit:
+- `d1e5085b8f11df6b9811c057d35dac1d220e5bf7`
+
+Final update:
+- `9543faff796f871aec46eccea5b2dfa28bebef28`
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-seligman-direct-upgrade-15.json`
+
+Current count: **10 direct-site records**.
+
+Direct evidence added/upgraded for:
+- Roadkill Cafe / O.K. Saloon;
+- Historic Route 66 Motel;
+- Historic Route 66 General Store;
+- Historic Route 66 General Store & Hardware Store;
+- Route 66 Auto & Towing;
+- The Aztec Motel & Creative Space;
+- The Postcard Motel;
+- Canyon Lodge Motel;
+- Seligman / Route 66 KOA Journey;
+- Highway Hotdog.
+
+Highway Hotdog is especially useful as a current 2026 validation:
+- its own live website confirms the Seligman restaurant;
+- Yavapai County's January 2026 Board record approved its Series 12 restaurant liquor-license application.
+
+The broad Seligman Chamber data already existed in earlier artifacts, so this pass deliberately focused on first-party/direct upgrades instead of duplicating the same Chamber discovery evidence.
+
+## New artifact: direct rural chain facilities batch 16
+
+Commit:
+- `7ac8eda5d793f77c7f68c3c7f86c9d47ecffc6be`
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-chain-direct-16.json`
+
+Adds **8 direct first-party chain-location buyer records**:
+- Family Dollar - Ash Fork;
+- Family Dollar - Golden Valley;
+- two Family Dollar locations in Mayer;
+- Family Dollar - Seligman;
+- Family Dollar - Winslow;
+- Love's Travel Stop #722 - Mayer;
+- Love's Travel Stop #971 - Winslow.
+
+These use the chains' own location directories and therefore remain `direct / direct_evidence`, not generic directory discovery.
+
+## New artifact: Golden Valley Mohave County food-facility census batch 17
+
+Commit:
+- `cc997739226d8086147dc8b3788c8baeecc69cd3`
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-golden-valley-mohave-food-inspections-17.json`
+
+Adds **23 official Mohave County government-registry buyer/facility records** from 2026 Department of Public Health food-safety inspection reports.
+
+The pass retained one useful/latest 2026 government evidence row per establishment rather than treating every monthly reinspection as a new business.
+
+Facilities include:
+- American Legion Post 22;
+- Black Mountain Elementary;
+- Castle Rock Ranch;
+- Family Dollar #24767;
+- Grasshopper Junction Deli;
+- Gus's Fresh Jerky;
+- Hwy 68 IL Cafe;
+- Maverik #376;
+- Off Road Diner;
+- Outpost Inc.;
+- Sonic - Golden Valley;
+- Subway #50193;
+- El Rancho - Golden Valley;
+- Great American Pizza;
+- VFW Post #2555;
+- The Mother Road Coffee Bus;
+- The Johnson's American and Salvadorean Cuisine;
+- Tropical Snow Shack;
+- The Best Ass Coffee;
+- Golden Oyster-GV;
+- Cactus Cone Co;
+- Love's Travel Stop food/RV facility;
+- Veradan Oasis LLC.
+
+Provenance semantics are preserved:
+- these rows are **government_registry / government_record**;
+- they are not mislabeled as direct company websites.
+
+This pass materially improved Golden Valley from **122 to 149 strict artifact rows**.
+
+## County/state source leads and blockers found during this pass
+
+### Yavapai County food/health inspection facilities
+
+Yavapai County's official Environmental Health material confirms it regulates/inspects broad buyer classes such as:
+- eating/drinking establishments;
+- retail markets/groceries;
+- schools;
+- childcare;
+- assisted living;
+- hospital food operations;
+- hotels/motels;
+- mobile food;
+- camps;
+- pools;
+- other food/facility categories.
+
+However, the current public facility-results portal routes through HealthSpace and returned **403** through this research path.
+
+Do not claim an extracted Yavapai County facility census from that portal unless a different accessible official endpoint is found.
+
+### Navajo County / Winslow facility inspections
+
+Navajo County's official Environmental Health page confirms oversight of:
+- food establishments;
+- retail food;
+- bars/lounges;
+- school food/sanitation;
+- hotels/motels;
+- trailer parks;
+- pools/spas;
+- camps;
+- temporary/mobile food;
+- related regulated facilities.
+
+Its linked public inspection portal also returned **403** through this research path.
+
+Keep it as a source lead. Do not fabricate or call it an extracted Winslow facility census.
+
+### Arizona Department of Liquor Licenses and Control
+
+Arizona DLLC's official public license lookup and state documentation expose a potentially high-leverage statewide buyer source.
+
+The state's license-master specification includes fields such as:
+- license/status;
+- business name;
+- business address;
+- city/state/ZIP;
+- business phone;
+- owner/licensee;
+- issued/expiration/status dates;
+- county;
+- license type.
+
+The older documented bulk `master.csv` path now returns 404, while the current public license search remains available.
+
+This is a promising next source family for statewide restaurant/bar/hotel/grocery/liquor-facility enumeration, but **no current bulk DLLC artifact has been harvested yet**. Validate a current free official extraction path before counting anything.
+
+## Production distinction remains mandatory
+
+The **51,415-row repository census is NOT deployed to production**.
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+
+All outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+Do not say 51,415 rows are live until an exact green census SHA is deliberately deployed and a new production proof is taken.
+
+## Next work
+
+Continue assistant-led census research rather than waiting for the VPS.
+
+Priority order:
+1. continue thin-market buyer/facility enumeration using direct/official sources;
+2. pursue a current free Arizona DLLC extraction route because it could add a large statewide first-party buyer layer;
+3. continue direct-site upgrades for weak rural discovery rows;
+4. look for county/municipal permit, inspection, school, lodging, food, public-facility and business-license datasets that can be filtered by the 21 BMC markets;
+5. keep Phoenix buyer-side expansion moving because its size still justifies much deeper census work;
+6. preserve source tiers exactly;
+7. do not weaken completeness/quality gates to inflate counts;
+8. do not contact providers/buyers or enable outbound;
+9. continue updating this HANDOFF near the end of substantial work.
+
+## Continuity sentence
+
+**The clean repository census is now 51,415 strict artifact seed rows across 290 auditable JSON artifacts. This pass added 71 new strict evidence identities, concentrating on direct/official evidence in the thinnest rural markets and a 23-facility Mohave County government census for Golden Valley. Production is still the older 30,518-row f05ff6 deployment, all outbound remains OFF, and the assistant must keep building the initial universe while the VPS remains the maintenance layer.**
