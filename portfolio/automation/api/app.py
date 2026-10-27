@@ -2859,7 +2859,7 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
         return {"ok":True,"enabled":False,"fulfilled":0}
     fulfilled=0; exceptions=0
     async with app.state.pool.acquire() as conn:
-      tasks=await conn.fetch("""select t.task_id,t.order_id,o.customer_email,o.growth_sample_id,g.*
+      tasks=await conn.fetch("""select t.task_id,t.order_id as paid_order_id,o.customer_email,o.growth_sample_id,g.*
         from tasks t join orders o on o.order_id=t.order_id
         join growth_sample_requests g on g.sample_id=o.growth_sample_id
         where t.task_type='fulfill_growth_pack' and t.status in ('open','queued')
@@ -2869,7 +2869,7 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
         async with conn.transaction():
           prior=await conn.fetch("""select distinct lower(gop.business_name) name
             from growth_order_prospects gop join orders po on po.order_id=gop.order_id
-            where lower(po.customer_email)=lower($1) and po.order_id<>$2""",row["customer_email"],row["order_id"])
+            where lower(po.customer_email)=lower($1) and po.order_id<>$2""",row["customer_email"],row["paid_order_id"])
           prior_names={x["name"] for x in prior}
           sample_rows=await conn.fetch("""select * from growth_sample_prospects where sample_id=$1 order by fit_score desc,business_name""",row["growth_sample_id"])
           sample_ids={str(x["candidate_id"]) for x in sample_rows if x["candidate_id"]}
@@ -2912,7 +2912,7 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
                 values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
                 on conflict(order_id,business_name) do update set fit_score=excluded.fit_score,grade=excluded.grade,
                   fit_reason=excluded.fit_reason,sales_angle=excluded.sales_angle""",
-                row["order_id"],x.get("candidate_id"),x["business_name"],x["market"],x["category_key"],x["category_label"],
+                row["paid_order_id"],x.get("candidate_id"),x["business_name"],x["market"],x["category_key"],x["category_label"],
                 int(x["fit_score"]),x["grade"],x["fit_reason"],x["sales_angle"],x.get("public_email"),x.get("public_phone"),
                 x["source_url"],x.get("source_domain"),x.get("verification_status"))
           attachment=growth_csv_bytes(final)
@@ -2944,11 +2944,11 @@ BMC Luminary Ventures LLC
                 f"Paid Growth order {row['order_id']} passed QA but email delivery failed",
                 "Verify customer email/SMTP and resend the stored 100-row order deliverable")
               exceptions+=1; continue
-          await conn.execute("update growth_order_prospects set delivered_at=now() where order_id=$1",row["order_id"])
+          await conn.execute("update growth_order_prospects set delivered_at=now() where order_id=$1",row["paid_order_id"])
           await conn.execute("update tasks set status='completed',updated_at=now() where task_id=$1",row["task_id"])
-          await conn.execute("update orders set status='fulfilled',updated_at=now() where order_id=$1",row["order_id"])
+          await conn.execute("update orders set status='fulfilled',updated_at=now() where order_id=$1",row["paid_order_id"])
           await conn.execute("update growth_sample_requests set status='fulfilled',updated_at=now() where sample_id=$1",row["growth_sample_id"])
-          await event(conn,"order",row["order_id"],"growth_pack_fulfilled",{"prospects":100,"market":row["market"],"qa":{"count":qa_count,"score":qa_scores,"market":qa_market,"unique":qa_unique,"source":qa_sources}})
+          await event(conn,"order",row["paid_order_id"],"growth_pack_fulfilled",{"prospects":100,"market":row["market"],"qa":{"count":qa_count,"score":qa_scores,"market":qa_market,"unique":qa_unique,"source":qa_sources}})
           fulfilled+=1
     return {"ok":True,"enabled":True,"fulfilled":fulfilled,"exceptions":exceptions}
 
