@@ -190,22 +190,27 @@ def parse_ranked(page_html):
 
 
 def parse_all_list(page_html):
+    # Prefer visible text tokens. The A-to-Z page has nested list containers,
+    # so regexing raw <li> blocks can accidentally merge the page heading and
+    # the first contractor into one false "company" row.
     rows = []
-    for item in re.finditer(r"<li[^>]*>(.*?)</li>", page_html, re.I | re.S):
-        visible = unescape(re.sub(r"<[^>]+>", " ", item.group(1)))
-        visible = " ".join(visible.split())
-        match = REST_ROC_RE.match(visible)
-        if match:
-            rows.append((match.group(1).strip(" -*"), match.group(2)))
-    if rows:
-        return rows
-
     parser = Tokens()
     parser.feed(page_html)
     parser.close()
     for token in parser.tokens:
         match = REST_ROC_RE.match(token)
         if match:
+            rows.append((match.group(1).strip(" -*"), match.group(2)))
+    if rows:
+        return rows
+
+    # Conservative fallback for a future markup variant where the company/ROC
+    # text is split by inline tags and therefore not emitted as one token.
+    for item in re.finditer(r"<li[^>]*>(.*?)</li>", page_html, re.I | re.S):
+        visible = unescape(re.sub(r"<[^>]+>", " ", item.group(1)))
+        visible = " ".join(visible.split())
+        match = REST_ROC_RE.match(visible)
+        if match and len(match.group(1)) <= 220:
             rows.append((match.group(1).strip(" -*"), match.group(2)))
     return rows
 
