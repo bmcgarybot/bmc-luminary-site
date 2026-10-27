@@ -10998,3 +10998,33 @@ Release rule:
 - after the exact deployed owner preview is sent, **do not make another master/documentation commit before Brett's approval**, because approval is SHA-bound;
 - keep provider, buyer, and Growth outbound OFF until Brett explicitly approves the exact deployed Gmail preview;
 - after approval, set `GROWTH_OWNER_APPROVED_SHA` only for that deployed SHA, rerun the strict Growth audit, and use a controlled Growth-only launch while Service-Network provider/buyer outreach remains OFF.
+
+
+## Section 77 — Prospect Exposure / Source Rights Safety Branch (Oct 27, 2026)
+**NOT MERGED / NOT DEPLOYED / NO OUTREACH AUTHORIZED.**
+PR #5: https://github.com/bmcgarybot/bmc-luminary-site/pull/5
+Branch: safety/prospect-exposure-gates-20261027
+Policy: portfolio/automation/PROSPECT_EXPOSURE_POLICY.md
+
+User directive: Systems scale, feelings fail. Never repeatedly give the same top five commercial businesses to every contractor.
+
+### Code work on isolated branch
+- Shared exposure ledger and historical free/paid delivery backfill, with business and recipient identities plus contact-route grouping.
+- Prospect objection/suppression table; business name normalization and email-alias anti-abuse gate.
+- Conservative proposed per-prospect caps: free once per 90 days; all recipients max 3 per 90 days and 8 lifetime; 90-day free and 30-day paid cooldown.
+- Transactional advisory-lock allocation; paid extra prospects reserved before delivery; repeat submissions reuse original batch.
+- Free sample uses deterministic score-percentile sampling instead of first/top five.
+- Separate source-rights review with default FAIL-CLOSED for unapproved domains; launch readiness requires source-approved staged market reserve.
+- Before fulfilling paid order, recheck whether previously free sample prospect has been suppressed or lost rights.
+- Synthetic CI tests cover rotation, distinct accounts, concurrent claims, suppression, source rights, and duplicate requests.
+
+### Remaining launch gates
+1. Verify CI green and inspect database/API integration output.
+2. Audit real-census source licences, provenance and redistribution rights. Public visibility alone is not a licence.
+3. Audit canonical business, property, parent and shared-contact identity collisions before scaling.
+4. Audit all 21 markets after rights, quality and exposure filters; no padded packs.
+5. Extend same ledger to any future Micro, Starter, Refresh and other product exports.
+6. Have qualified legal review of outreach and buyer research terms, opt-outs, rights and Arizona calling rules.
+7. Exact-SHA BMC SMTP owner preview and explicit approval before any live Growth outreach.
+
+Do not merge or deploy merely because source code exists. Keep all provider, buyer and Growth outbound switches OFF. Preserve old network and research census.
