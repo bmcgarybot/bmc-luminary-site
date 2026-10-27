@@ -11028,3 +11028,5 @@ User directive: Systems scale, feelings fail. Never repeatedly give the same top
 7. Exact-SHA BMC SMTP owner preview and explicit approval before any live Growth outreach.
 
 Do not merge or deploy merely because source code exists. Keep all provider, buyer and Growth outbound switches OFF. Preserve old network and research census.
+
+Section 77 scope update: Owner deprioritized source-rights checks for this build. Source reviews remain separately documented, but growth candidate selection and launch-readiness source-rights gate were removed from this PR. Exposure caps, history, objections, and deterministic rotation remain enforced. Do not confuse this with approval of the provenance of any record.
