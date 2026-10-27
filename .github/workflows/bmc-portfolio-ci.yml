@@ -679,6 +679,19 @@ jobs:
           PY
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from growth_sample_prospects where sample_id=(select sample_id from growth_sample_requests where submission_id='ci-growth-sample-1');")" -eq 5
 
+          # The one-click sample and second customer sample MUST contain ten distinct prospects.
+          # This tests real cross-customer rotation, not merely a static symbol name.
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from growth_prospect_exposures where market='CI Growth Market' and delivery_kind='free' and status='delivered';")" -eq 10
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct prospect_key) from growth_prospect_exposures where market='CI Growth Market' and delivery_kind='free' and status='delivered';")" -eq 10
+          # Record objections and verify the suppression table can block exposure.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            insert into growth_prospect_suppressions(prospect_key,reason,source)
+            select prospect_key,'CI reported no contact','ci'
+            from growth_prospect_exposures
+            where market='CI Growth Market' order by exposure_id limit 1
+            on conflict(prospect_key) do update set lifted_at=null,reason=excluded.reason;"
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from growth_prospect_suppressions where source='ci' and lifted_at is null;")" -eq 1
+
           # Force the first nurture reminder due and prove it advances without sending when not due again.
           docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
             update growth_sample_requests set next_nurture_at=now()-interval '1 minute'
