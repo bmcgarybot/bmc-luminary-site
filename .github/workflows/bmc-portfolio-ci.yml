@@ -77,7 +77,7 @@ jobs:
           assert 'name="service_key" value="commercial_cleaning"' in cleaning
           assert "/growth-packs/pressure-washing/" in sitemap
           assert "response.sample" in core and "Get the full 100 for $499" in core
-          assert "maybeClaimGrowthSample" in core and 'q.get("preview")==="1"' in core
+          assert "maybeClaimGrowthSample" in core and 'preview:q.get("preview")||""' in core
           assert "growth_claim_token" in api and "one_click_sample_claimed" in api
           for table in ("growth_experiment_cells","growth_outreach_targets","growth_sample_requests","growth_sample_prospects","growth_order_prospects"):
               assert f"create table if not exists {table}" in schema, table
@@ -621,6 +621,23 @@ jobs:
           print(hmac.new(os.environ["BMC_ADMIN_KEY"].encode(),payload,hashlib.sha256).hexdigest()[:40])
           PY
           )"
+          # Owner preview must render the same five-target experience without mutating the prospect or creating a sample.
+          curl -fsS -X POST http://127.0.0.1:8000/api/growth/claim-free-five \
+            -H 'Content-Type: application/json' \
+            -d '{"target_id":"'"$CI_GROWTH_TARGET"'","claim":"'"$CI_GROWTH_CLAIM"'","preview":"1","utm_source":"owner_preview"}' \
+            >/tmp/bmc_growth_owner_preview.json
+          python - <<'PY'
+          import json
+          d=json.load(open("/tmp/bmc_growth_owner_preview.json"))
+          assert d["ok"] is True and d["status"] == "sample_ready", d
+          assert d["preview"] is True, d
+          assert d["sample_id"] == "owner-preview", d
+          assert len(d["sample"]) == 5, d
+          assert d["checkout_url"] == "#owner-preview-checkout", d
+          PY
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from growth_sample_requests where source_target_id='$CI_GROWTH_TARGET';")" -eq 0
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='growth_customer' and entity_id='$CI_GROWTH_TARGET' and status='sent' and reply_type is null;")" -eq 1
+
           curl -fsS -X POST http://127.0.0.1:8000/api/growth/claim-free-five \
             -H 'Content-Type: application/json' \
             -d '{"target_id":"'"$CI_GROWTH_TARGET"'","claim":"'"$CI_GROWTH_CLAIM"'","utm_source":"ci_email"}' \

@@ -10974,3 +10974,27 @@ Deployment/launch status:
 - `OUTREACH_ENABLED`, `BUYER_OUTREACH_ENABLED`, and `GROWTH_OUTREACH_ENABLED` must remain OFF;
 - three fresh read-only VPS relay requests submitted around 17:15Z did not produce result artifacts, and the hourly Revenue Watch independently reported the same missing-fresh-relay observation. Treat VPS state as unverified until the relay returns proof.
 - after a tested master SHA exists, deploy with all outbound OFF; then run Growth status/audit + scheduler/runtime proof; then replay the exact deployed first-touch to Brett; only explicit Gmail approval may set `GROWTH_OWNER_APPROVED_SHA` and permit a later controlled launch.
+
+
+## 76. Owner click-preview must mirror the real one-click path without customer side effects (2026-10-27)
+
+After deploying the first one-click Growth fix, the production owner replay correctly included `preview=1`. That protected TLC from an accidental owner click, but the frontend originally interpreted `preview=1` by skipping auto-claim entirely, which would make Brett see the fallback form and falsely look like the duplicate-form bug still existed.
+
+This release fixes that QA gap:
+- owner replay still uses the exact signed target claim plus `preview=1`;
+- `core.js` now calls the same signed claim endpoint for owner previews;
+- `/api/growth/claim-free-five` recognizes preview mode and selects the same qualified five read-only;
+- owner preview does **not** insert a `growth_sample_request`, email the target, mark a reply, mutate target/outreach status, create nurture, or create a real Stripe sample reference;
+- the preview page still renders the same five-target cards and a visually matching $499 CTA using a non-purchasing preview anchor;
+- the real prospect link (no `preview=1`) continues through the actual sample/email/nurture/checkout path.
+
+CI now explicitly proves both branches:
+1. owner preview returns five and leaves sample/outreach state untouched;
+2. real signed claim returns five, records the sample request, marks engagement, and exposes the live Stripe checkout;
+3. the existing paid E2E still fulfills exactly 100 unique qualified in-market prospects.
+
+Release rule:
+- merge/deploy this section and code together;
+- after the exact deployed owner preview is sent, **do not make another master/documentation commit before Brett's approval**, because approval is SHA-bound;
+- keep provider, buyer, and Growth outbound OFF until Brett explicitly approves the exact deployed Gmail preview;
+- after approval, set `GROWTH_OWNER_APPROVED_SHA` only for that deployed SHA, rerun the strict Growth audit, and use a controlled Growth-only launch while Service-Network provider/buyer outreach remains OFF.
