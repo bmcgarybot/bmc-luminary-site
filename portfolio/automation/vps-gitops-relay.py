@@ -63,7 +63,7 @@ MUTATING_INTERNAL_ACTIONS = {
     "growth_stage_pressure_washing",
     "growth_stage_commercial_cleaning",
 }
-EXTERNAL_ACTIONS = {"growth_launch_enable"}
+EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email"}
 CONTROL_ACTIONS = {"growth_launch_disable"}
 ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS
 
@@ -523,7 +523,17 @@ def execute(req: dict) -> dict:
     if action in MUTATING_INTERNAL_ACTIONS:
         metadata["outreach_gate"] = assert_outreach_off()
 
-    if action == "growth_launch_enable":
+    if action == "growth_owner_replay_email":
+        state=outreach_state()
+        if any(str(v).lower()!="false" for v in state.values()):
+            raise RelayError("Owner email replay requires all campaign outbound switches OFF")
+        replay=admin_post("/api/admin/replay-first-growth-email-to-owner",timeout=120)
+        metadata["outreach_gate"]=state
+        stdout=json.dumps(replay,indent=2,default=str)
+        stderr=""
+        exit_code=0 if replay.get("ok") else 1
+
+    elif action == "growth_launch_enable":
         state=outreach_state()
         if str(state.get("OUTREACH_ENABLED","")).lower()!="false" or str(state.get("BUYER_OUTREACH_ENABLED","")).lower()!="false":
             raise RelayError("Growth-only launch requires provider and buyer Service-Network outreach to remain OFF")
