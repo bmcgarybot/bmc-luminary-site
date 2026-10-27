@@ -2739,6 +2739,20 @@ async def handle_growth_snapshot(conn,p):
         return {"ok":True,"status":clean(existing["status"]),"sample_id":str(existing["sample_id"]),
           "sample":payload,"checkout_url":checkout,"message":"Your commercial opportunity snapshot is already saved."}
 
+    # A different submission/email must not unlock another free five for the
+    # same named contractor. This is anti-abuse only, not account authentication.
+    # Do not reveal prior contact/sample details to an unverified requester.
+    prior_business_claim=await conn.fetchval("""select sample_id
+      from growth_sample_requests
+      where lower(market)=lower($1) and provider_service_key=$2
+        and regexp_replace(lower(business_name),'[^a-z0-9]','','g')=$3
+        and status in ('delivered','fulfilled','delivery_error')
+      order by created_at desc limit 1""",
+      market,service_key,re.sub(r"[^a-z0-9]+","",business.lower()))
+    if prior_business_claim:
+        return {"ok":True,"status":"already_claimed","sample":[],
+          "checkout_url":"","message":"BMC has already prepared a free sample for this business and territory. Use the original invitation or contact BMC to review the account."}
+
     target_id=clean(p.get("source_target_id"))
     if target_id and not await conn.fetchval("select 1 from growth_outreach_targets where target_id=$1",target_id):
         target_id=None
