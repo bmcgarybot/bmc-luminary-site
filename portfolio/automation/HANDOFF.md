@@ -10849,3 +10849,23 @@ Normal path should remain:
 outreach -> free five -> checkout -> Stripe webhook -> paid task -> deterministic 100-pack QA -> delivery -> feedback.
 
 Do not create manual work for Brett unless a genuine exception, credential/dashboard action, or business decision requires it.
+
+
+### Known deliverability verification item
+
+Do not overstate email verification.
+
+Proven:
+- SMTP is configured;
+- IMAP is configured;
+- Growth audit passes sender/postal/reply infrastructure;
+- first seven Growth messages were accepted by the configured SMTP send path;
+- reply/opt-out polling exists.
+
+Not independently proven in this thread:
+- public SPF record;
+- public DKIM record;
+- public DMARC record;
+- end-to-end DSN/bounce suppression behavior.
+
+Before materially increasing outbound volume, verify domain authentication and bounce handling. This should not block observing the already-launched seven-contact pressure-washing test, but it should be closed before scaling the tournament.
