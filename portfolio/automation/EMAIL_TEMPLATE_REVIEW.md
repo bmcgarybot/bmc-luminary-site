@@ -592,17 +592,30 @@ The watchdog also uses the SMTP account for internal BMC operational alerts when
 
 ---
 
-## Shared HTML wrapper
+## HTML VERSION — IMPORTANT REVIEW ITEM
 
-Where an HTML version exists, BMC currently uses one shared HTML wrapper:
-- white card on a light background;
-- subject repeated as heading;
-- same core text as the plain-text version;
-- optional blue CTA button;
-- raw-link fallback below the button;
-- footer: `BMC Service Network · BMC Luminary Ventures LLC`.
+The HTML alternative is **not always identical to the plain-text body**. Most modern email clients prefer the HTML alternative, so this matters for what a recipient likely sees.
 
-The plain-text copy above is the wording that should be reviewed first.
+For the Growth cold first-touch, the current HTML-visible copy is:
+
+**Heading:** `{market}: 5 commercial accounts worth checking`
+
+BMC will research five real commercial targets for {service_label} in {market} at no charge.
+
+Each target includes a fit reason, public contact route, source, and suggested angle.
+
+If the five are useful, the full 100-prospect pack is $499. There is no retainer and no sales call required.
+
+**Button:** `Show me 5 free targets`
+
+Then a raw-link fallback and footer:
+`BMC Service Network · BMC Luminary Ventures LLC`
+
+The current Growth cold HTML version does **not** include the postal address or the plain-text `Reply no if you do not want future outreach` line. Because HTML-capable clients normally display the HTML part, this should be corrected before any additional unsolicited Growth outreach.
+
+The Growth nurture HTML versions are similarly condensed and should be reviewed for the same footer/opt-out treatment.
+
+Other HTML transactional messages also use the shared wrapper. Marketing and transactional templates should be distinguished before broad launch.
 
 ---
 
