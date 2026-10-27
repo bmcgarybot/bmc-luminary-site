@@ -9595,3 +9595,383 @@ Also preserve opportunity tags/hypotheses where they make future lead packages m
 ## Continuity sentence
 
 **The newest fully green repository checkpoint is 74,954 strict artifact seed rows across 316 auditable JSON artifacts, proven by BMC Portfolio CI run 40448250129 with 21/21 markets, 1,260/1,260 lanes and 0 runtime core failures. The newest commercial expansion added 2,831 official ADEQ active UST facilities—including 1,087 commercial gas stations, 97 fleet fueling sites, 218 auto-repair sites and 152 equipment yards—and nine direct rural commercial exterior-service vendor records. ADEQ records now carry qualified-service hypotheses for power washing, fuel-island cleaning, sweeping, striping, window cleaning and related recurring facility services. The provider trust requirement from Section 67 remains mandatory. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
+
+---
+
+## Section 69 — Property managers, recovery housing, garages, casinos, retail centers + provider-flow finding
+
+Updated: 2026-10-26 late evening Arizona time
+
+This section continues Section 68. Assistant-led census expansion remains the immediate work. Do not mistake the research census for production, and do not turn outbound on.
+
+### New fully green census checkpoint
+
+BMC Portfolio CI run:
+- **40450028535**
+- result: **SUCCESS**
+- commit proven: `a52d464f5db41acfb8525bba5f311906a2ee9771`
+
+Strict assistant census at this proven point:
+- **321 artifacts**
+- **76,699 raw artifact rows**
+- **1,673 exact strict duplicates collapsed**
+- **75,026 strict unique seed rows**
+- **59,217 buyer rows**
+- **15,809 vendor rows**
+- **21/21 markets**
+- **1,260/1,260 deep inventory lanes**
+- **0 runtime core failures**
+
+This supersedes the Section 68 74,954-row / 316-artifact checkpoint.
+
+Two later research commits are newer than this fully proven checkpoint and have CI in progress as this handoff section is written:
+- `fac86350868a719b0e410aa39fce405d3973f3e2` — direct property-management expansion
+- `4fdd0b4ffddfdd19e9f914a19f36d34c7bd60d0b` — shopping-center management buyers
+
+When continuing, check their CI first and use the newest green strict count rather than estimating.
+
+### Rural commercial-maintenance provider expansion
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-statewide-commercial-maintenance-vendors-33.json`
+
+Commit:
+- `cbf128c5308242ea721c5aa6759ff2ab5b3c5a4d`
+- CI **40449349553 SUCCESS**
+
+Added **28 provider-market records** across:
+- Williamson Valley
+- Mayer
+- Cordes Lakes
+- Skull Valley
+
+Providers include:
+- J & B Striping LLC
+- Maurer Sealing & Striping
+- Dirty's Power Washing and Cleaning Services, LLC
+- PowerWash Pro
+- WCD Enterprises LLC
+- Bio-Janitorial Service Inc
+- The DM Caldwell Corporation
+
+Evidence standard:
+- direct company statewide Arizona service claims; or
+- active Arizona State Procurement Office statewide/all-region or rural janitorial contract evidence.
+
+Important:
+- state contract evidence proves capability/coverage evidence, not private-market availability;
+- statewide service claims still require mobilization/minimum-job qualification before routing;
+- no provider is promoted or trust-ranked merely because it appears here.
+
+### Mayer-area commercial facility gap fill
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-mayer-commercial-facility-gap-fill-34.json`
+
+Commit:
+- `7c06941823e23f8af1e0a2e4e32a16db07a776b4`
+- CI **40449382276 SUCCESS**
+
+Three direct-site buyer facilities:
+- Bumble Bee Ranch Adventures
+- Arcosanti
+- Mayer RV Storage
+
+Each carries property-appropriate recurring-maintenance hypotheses such as:
+- exterior cleaning;
+- sweeping;
+- striping;
+- windows;
+- event/facility cleanup;
+- entry/gate/grounds maintenance.
+
+All opportunity tags remain **needs qualification**.
+
+### Property-management buyer lane
+
+Owner explicitly requested:
+- Rent Right-style property managers;
+- BloomTree-style management companies;
+- property firms found through Zillow/Apartments.com and similar portals;
+- out-of-area managers who may need local workers;
+- apartment / multifamily / portfolio managers.
+
+Strategic interpretation:
+**A property manager is an aggregated buyer account.**
+One relationship can represent many recurring maintenance decisions across homes, apartments, HOAs, commercial properties or mixed portfolios.
+
+Do not pitch these companies as if BMC is trying to replace all of their preferred vendors.
+The stronger offer hypothesis is:
+- overflow vendor coverage;
+- emergency/local gap coverage;
+- turnover/make-ready help;
+- local contractor sourcing in markets where they lack depth;
+- a single BMC intake/coordination layer when their normal vendor is unavailable;
+- recurring exterior/common-area work for larger properties.
+
+Relevant artifacts/commits:
+
+`portfolio/data/assistant-research-bootstrap-2026-10-26-property-management-vendor-coordination-buyers-35.json`
+- commit `b76122c8567ee9d7e87a6d801722ea54aff8be16`
+- CI **40449672142 SUCCESS**
+- **17 buyer-market records**
+- examples: 480 Realty & Property Management, Far West Realty & Property Management, Rosenbaum Realty Group, Hello Home, CR Property Services, Arizona Commercial Real Estate, Abodia Properties.
+
+`portfolio/data/assistant-research-bootstrap-2026-10-26-property-management-portfolio-buyers-35.json`
+- commit `c5bcfd972bef6267bacce7f568420f1421b7ca5d`
+- CI **40449955949 SUCCESS**
+- **14 buyer-market evidence records**
+- adds/strengthens Fortress Property Management, CR Property Services, Rosenbaum, 480 Realty and multi-market coverage.
+
+`portfolio/data/assistant-research-bootstrap-2026-10-26-property-management-direct-expansion-37.json`
+- commit `fac86350868a719b0e410aa39fce405d3973f3e2`
+- **11 buyer-market records**
+- CI was still in progress when this section was written.
+- includes Property Pros Realty, Hello Home, Sedona Verde Valley Property Management, AZ Realty & Rentals and Bear Creek Real Estate & Property Management.
+- AZ Realty & Rentals is especially important because its direct site explicitly lists Phoenix, Scottsdale, Tucson, Sedona, Prescott and Flagstaff.
+
+Discovery rule:
+- Zillow, Apartments.com, Realtor.com, rental portals and similar sources are useful **discovery sources**.
+- They must not auto-promote a management company into a trusted/current BMC buyer record by themselves.
+- Prefer direct management-company site, current management portal, current portfolio page, professional registry or other direct/authoritative confirmation.
+
+Future data-quality improvement:
+- strict artifact deduplication currently collapses exact key duplicates, but the same company can remain as multiple evidence rows if source URLs differ.
+- preserve useful multi-source evidence but eventually add a business/entity rollup so BMC can distinguish **evidence rows** from **unique companies/accounts**.
+
+### Recovery / sober-living / residential-treatment buyer lane
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-recovery-garage-casino-buyers-36.json`
+
+Commit:
+- `a52d464f5db41acfb8525bba5f311906a2ee9771`
+- CI **40450028535 SUCCESS**
+
+Recovery/sober-living additions include:
+- Royal Life Centers at Chapter 5 — Prescott
+- Miracle Recovery — Prescott Valley
+- Regency Recovery & Wellness Center — Prescott
+- Prescott Recovery Center — Prescott
+- Sustony Sober Living LLC — Prescott Valley
+
+Clarification:
+- **Chapter 5 is a local Royal Life Centers residential treatment facility**, not a housing program category.
+- Treat rehab, sober-living and transitional/supportive housing as separate facility-buyer lanes.
+
+Opportunity hypotheses:
+- janitorial / housekeeping;
+- floors / carpet;
+- laundry/linen where applicable;
+- plumbing/HVAC/electrical;
+- landscaping;
+- pest control;
+- windows / pressure washing;
+- junk / bulk-item / turnover cleanup.
+
+Do not assume these facilities need a new vendor merely because they operate residential programs.
+
+### Structured parking / garage lane
+
+Same artifact/commit as above.
+
+Added official/current structured-parking targets:
+- Tucson Centro Garage
+- Tucson Pennington Street Garage
+- Tucson City-State Garage
+- Tucson Library Garage
+- Tucson Depot Plaza Garage
+- Scottsdale Civic Center Parking Garage
+
+Opportunity hypotheses:
+- sweeping;
+- litter removal;
+- oil/grease cleanup;
+- pressure washing;
+- stairwell/elevator-lobby cleaning;
+- striping / curb / ADA / directional markings;
+- lighting/electrical;
+- graffiti removal;
+- drain/wash-down maintenance.
+
+Municipal procurement rules apply. These are buyer targets for qualification, not normal cold-commercial accounts.
+
+### Casino / gaming facility lane
+
+Same artifact/commit as above.
+
+New non-duplicate casino/gaming facility records include:
+- Bucky's Casino — Prescott
+- Yavapai Casino — Prescott
+- Twin Arrows Casino — Flagstaff
+- Casino Arizona — Scottsdale
+- Casino Del Sol — Tucson
+- Casino of the Sun — Tucson
+- Desert Diamond Casino - Tucson — Tucson
+
+Cliff Castle and Talking Stick already existed elsewhere in the census and were not duplicated here.
+
+Source basis:
+- current Arizona Department of Gaming facility information and direct/current facility evidence.
+
+Opportunity hypotheses:
+- large-lot sweeping / striping;
+- sidewalks / entrances / loading areas;
+- windows;
+- dumpster/grease areas;
+- janitorial / floor care;
+- landscaping;
+- signage/lighting;
+- HVAC/plumbing/electrical;
+- pest/waste services.
+
+Respect tribal sovereignty, procurement, insurance, credential and vendor-registration requirements.
+
+### Shopping-center / retail property-management lane
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-shopping-center-management-buyers-38.json`
+
+Commit:
+- `4fdd0b4ffddfdd19e9f914a19f36d34c7bd60d0b`
+- **11 current/direct retail-property records**
+- CI was still in progress when this section was written.
+
+New centers:
+- The Promenade Scottsdale
+- Depot Marketplace — Prescott
+- Glassford Hill Marketplace North — Prescott Valley
+- Grand Canyon Crossing — Phoenix
+- Sheridan Square — Phoenix
+- Huntington Square — Phoenix
+- Mesa Vista Marketplace — Phoenix
+- Sun City Promenade — Phoenix
+- Cortaro Crossings — Tucson
+- Plaza 22 — Tucson
+- Cañada Crossroads — Tucson
+
+This is a high-value buyer lane because centralized property management can control:
+- parking;
+- common areas;
+- storefront/sidewalk standards;
+- landscaping;
+- lighting/signs;
+- janitorial;
+- recurring exterior maintenance.
+
+A single center/management-company relationship may create repeated work across many tenants and service categories.
+
+### Provider fake-join workflow test — important UX defect
+
+Owner personally submitted a fake provider application through the public BMC provider form.
+
+Observed behavior:
+1. the initial provider application was accepted;
+2. an email was received;
+3. the email CTA sent the applicant to the Provider Pilot Terms page;
+4. that page's primary CTAs send the person back to `/providers/#apply`;
+5. the applicant is effectively asked to start the join process again.
+
+This is a **bad loop** and must be fixed before serious provider recruitment.
+
+Current code confirms:
+- public provider form posts `form_type=vendor_partner` to `https://hooks.bmcservicenetwork.com/api/intake`;
+- backend `handle_vendor_application()` creates an applicant vendor record, market record, review exception and `application_received` event;
+- a separate `/provider-pilot-activate/` flow and `handle_vendor_pilot_activation()` already exist;
+- however, the ordinary applicant receipt email currently links to `/provider-pilot/` terms rather than a continuation/activation URL;
+- `/provider-pilot/` then links back to the original application;
+- the activation form itself repeats multiple fields already captured by the initial application.
+
+Desired future behavior after the census/research push:
+- application is submitted **once**;
+- BMC persists the applicant record;
+- email CTA continues that exact record using a secure/tokenized link;
+- continuation page is prefilled from stored application data;
+- ask only for missing/changed activation details (capacity, precise services, credentials, insurance, territory/minimums as needed);
+- show a clear status/next step;
+- never send the applicant back to a blank duplicate application.
+
+### Receipt-delivery audit fix already committed
+
+Commit:
+- `0b230ffe3b98f43ef43c128142d525ada19508da`
+- message: **Audit provider application receipt delivery**
+- CI **40450063138 SUCCESS**
+
+Before this fix:
+- `handle_vendor_application()` called `send_mail()` but discarded the return value;
+- a provider application could be stored successfully while receipt delivery silently failed.
+
+After this fix:
+- successful receipt delivery logs `application_receipt_sent`;
+- failed receipt delivery creates a high-severity `vendor_application_receipt_delivery_failure` exception;
+- failure also logs `application_receipt_delivery_failed`.
+
+This does **not** fix the duplicate/looping activation UX. It only makes receipt delivery auditable.
+
+### Mandatory post-research website/workflow audit
+
+Owner explicitly requested that once the major research census is complete, BMC perform an in-depth review of **all website lead capture and engagement workflows**.
+
+Do not limit that review to provider signup.
+
+Audit end-to-end:
+- customer service request forms;
+- facility-maintenance request;
+- provider application;
+- provider pilot/activation;
+- provider login/dashboard;
+- provider accept/pass;
+- provider job updates;
+- customer matched-provider notifications;
+- Growth Pack purchase/intake;
+- buyer/facility outreach landing paths;
+- Stripe checkout/webhook/order linkage;
+- email receipts and follow-ups;
+- exception handling;
+- duplicate submissions/idempotency;
+- mobile UX;
+- every CTA after an email;
+- every success/failure state;
+- every place where the user is asked to re-enter information already stored.
+
+Goal:
+**No dead ends, no loops, no duplicate forms, no unclear “what happens next,” and no silent email failures.**
+
+### Immediate research continuation
+
+Continue census building before the full workflow audit.
+
+High-value lanes now:
+1. more property-management and apartment/multifamily portfolio operators;
+2. HOA/community-management companies;
+3. supportive/transitional/sober-living housing and residential facilities;
+4. more shopping-center/strip-mall ownership and management portfolios;
+5. parking structures and large paved commercial facilities;
+6. casinos/gaming/resort properties;
+7. warehouses/distribution/manufacturing/fleet yards;
+8. hotels/resorts;
+9. commercial power washing / sweeping / striping / window / janitorial providers;
+10. thin rural service-territory coverage;
+11. keep ADOT dealer data and DLLC as unresolved high-value sources without blocking productive work.
+
+Preserve the Section 67 provider-trust requirement:
+**paying BMC can never buy a better quality/trust rank.**
+
+### Production distinction remains mandatory
+
+Research census is still **not production**.
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+
+Outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+### Continuity sentence
+
+**The newest fully proven checkpoint at the time Section 69 was written is 75,026 strict research seed rows across 321 artifacts, green in BMC Portfolio CI 40450028535 with 21/21 markets, 1,260/1,260 lanes and zero runtime core failures. The newest expansion adds aggregated property-manager buyers, recovery/sober-living facilities, structured parking garages, casinos, rural statewide commercial-maintenance vendors and centrally managed shopping centers. Two later census commits (fac8635 and 4fdd0b4) were still in CI and should be checked first in the next continuation. The owner's fake provider signup proved the initial application/email path works but exposed a severe UX loop: the receipt email goes to pilot terms, whose CTA sends the applicant back to the original application. After the census push, perform a full end-to-end website/lead workflow audit. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
+
