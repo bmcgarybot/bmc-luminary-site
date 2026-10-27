@@ -2786,7 +2786,7 @@ async def handle_growth_snapshot(conn,p):
           "message":"We saved your request. This exact market needs a manual inventory check before we send five; BMC will not pad it with weak records."}
 
     sample=growth_select_representative_sample(rows,email_addr)
-    await growth_record_exposures(conn,sample,email_addr,service_key,"free","sample:"+str(sample_id),"delivered",
+    await growth_record_exposures(conn,sample,email_addr,service_key,"free","sample:"+str(sample_id),"reserved",
       growth_recipient_business_key(business))
     for r in sample:
         await conn.execute("""insert into growth_sample_prospects(
@@ -2801,11 +2801,11 @@ async def handle_growth_snapshot(conn,p):
     checkout=""
     if len(rows)>=GROWTH_SAMPLE_MIN_RESERVE:
         checkout=await growth_sample_checkout(conn,email_addr,sample_id,service_key)
-    await conn.execute("""update growth_sample_requests set status='delivered',sample_payload=$2::jsonb,
-      sample_generated_at=now(),sample_sent_at=now(),next_nurture_at=now()+interval '2 days',updated_at=now()
+    # Prepare the immutable sample before SMTP. SMTP acceptance is not final inbox
+    # delivery; reserve the same five while submission is pending.
+    await conn.execute("""update growth_sample_requests set status='prepared',sample_payload=$2::jsonb,
+      sample_generated_at=now(),sample_sent_at=null,next_nurture_at=null,updated_at=now()
       where sample_id=$1""",sample_id,json.dumps(public_rows))
-    await conn.execute("""update growth_experiment_cells set samples_delivered=samples_delivered+1,updated_at=now()
-      where cell_key=$1""",cell)
 
     flat=[]
     for idx,x in enumerate(public_rows,1):
@@ -2827,17 +2827,33 @@ async def handle_growth_snapshot(conn,p):
       f"Here are five commercial targets for {business} in {market}.",
       *[f"{i}. {x['business_name']} · {x['category']} · fit {x['fit_score']}/100\n{x['fit_reason']}" for i,x in enumerate(public_rows,1)]
     ],greeting=f"Hi {contact},",marketing=True)
-    delivered=await send_mail(email_addr,f"Your 5 commercial targets in {market}",body,html_body)
-    if not delivered:
-        await conn.execute("""update growth_sample_requests set status='delivery_error',next_nurture_at=null,updated_at=now()
+    submitted=await send_mail(email_addr,f"Your 5 commercial targets in {market}",body,html_body)
+    # Both response branches disclose the five prospects IN THE HTTP RESPONSE,
+    # regardless of whether SMTP accepted the email. Never release or rotate
+    # these five on an email failure: that would leak a second set on retry.
+    await conn.execute("""update growth_prospect_exposures
+      set status='delivered',delivered_at=now()
+      where delivery_ref=$1 and status='reserved'""","sample:"+str(sample_id))
+    await conn.execute("""update growth_experiment_cells
+      set samples_delivered=samples_delivered+1,updated_at=now()
+      where cell_key=$1""",cell)
+    if not submitted:
+        await conn.execute("""update growth_sample_requests
+          set status='delivery_error',sample_sent_at=null,next_nurture_at=null,updated_at=now()
           where sample_id=$1""",sample_id)
         await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
           values('growth_sample_delivery_failure','high',$1,$2)""",
-          f"Could not email Growth sample {sample_id} to {email_addr}","Verify SMTP/address and resend the saved sample")
-        await event(conn,"growth_sample",sample_id,"delivery_failed",{"email":email_addr})
+          f"SMTP did not accept Growth sample {sample_id} for {email_addr}",
+          "Keep the five disclosed prospects reserved for this customer; retry emailing the saved sample only")
+        await event(conn,"growth_sample",sample_id,"web_disclosed_email_failed",{"email":email_addr,"smtp_accepted":False})
         return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"sample":public_rows,
           "checkout_url":checkout,"message":"Your five targets are ready on this page, but the email copy needs a delivery retry."}
-    await event(conn,"growth_sample",sample_id,"delivered",{"email":email_addr,"service_key":service_key,"market":market,"qualified_pool":len(rows)})
+    await conn.execute("""update growth_sample_requests
+      set status='delivered',sample_sent_at=now(),next_nurture_at=now()+interval '2 days',updated_at=now()
+      where sample_id=$1""",sample_id)
+    await event(conn,"growth_sample",sample_id,"web_disclosed_smtp_accepted",
+      {"email":email_addr,"service_key":service_key,"market":market,"qualified_pool":len(rows),
+       "smtp_accepted":True,"inbox_delivery_verified":False})
     return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"sample":public_rows,
       "checkout_url":checkout,"qualified_pool":len(rows),
       "message":"Your five commercial targets are ready. We also emailed a copy so you can use them later."}
