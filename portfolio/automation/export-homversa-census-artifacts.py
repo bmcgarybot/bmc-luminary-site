@@ -264,11 +264,16 @@ def records_for_trade(market, trade, main_url, delay):
     rows = list(dedup.values())
 
     if len(rows) != claimed_count:
+        ranked_set={(name.casefold(),roc) for name,roc in ranked_rows}
+        main_set={(name.casefold(),roc) for name,roc in main_list_rows}
+        all_set={(name.casefold(),roc) for name,roc in all_rows}
+        main_only=sorted(main_set-all_set-ranked_set)
+        all_only=sorted(all_set-main_set-ranked_set)
         raise RuntimeError(
             f"{trade}: completeness failure: page claims {claimed_count} verified companies, "
             f"but parser recovered {len(rows)} unique company/license pairs; "
             f"ranked_raw={len(ranked_rows)} main_list_raw={len(main_list_rows)} all_raw={len(all_rows)} "
-            f"ranked={ranked_rows!r}"
+            f"main_only={main_only!r} all_only={all_only!r}"
         )
 
     category_key, category_label = TRADE_MAP.get(
