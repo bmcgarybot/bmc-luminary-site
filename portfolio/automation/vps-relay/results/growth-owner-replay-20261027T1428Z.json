@@ -1,0 +1,27 @@
+{
+  "action": "growth_owner_replay_email",
+  "allow_external_actions": true,
+  "completed_at": "2026-10-27T14:30:13.686693+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "00cdbe2bd151a0bfdf014d5b378b652b61b933ad",
+  "git_commit_before": "00cdbe2bd151a0bfdf014d5b378b652b61b933ad",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "96664fcd2342f651984639097d195185709f80a4",
+  "request_id": "growth-owner-replay-20261027T1428Z",
+  "request_sha256": "532c4666b28af93015ec1c76b5b5f72b7b361ace27590bc8223067eda8e17318",
+  "started_at": "2026-10-27T14:30:12.177731+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"ok\": true,\n  \"test_recipient\": \"brett.coon2@gmail.com\",\n  \"original_business\": \"TLC Window Cleaning and Pressure Washing\",\n  \"original_recipient\": \"windowcleaningtlc@gmail.com\",\n  \"original_sent_at\": \"2026-10-27T12:38:57.856305+00:00\",\n  \"subject\": \"Sedona: 5 commercial accounts worth checking\",\n  \"stored_plain_text_exact_match\": true,\n  \"campaign_switches\": {\n    \"provider\": false,\n    \"buyer\": false,\n    \"growth\": false\n  }\n}",
+  "version": 1
+}
