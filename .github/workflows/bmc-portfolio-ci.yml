@@ -77,9 +77,11 @@ jobs:
           assert 'name="service_key" value="commercial_cleaning"' in cleaning
           assert "/growth-packs/pressure-washing/" in sitemap
           assert "response.sample" in core and "Get the full 100 for $499" in core
+          assert "maybeClaimGrowthSample" in core and 'q.get("preview")==="1"' in core
+          assert "growth_claim_token" in api and "one_click_sample_claimed" in api
           for table in ("growth_experiment_cells","growth_outreach_targets","growth_sample_requests","growth_sample_prospects","growth_order_prospects"):
               assert f"create table if not exists {table}" in schema, table
-          for endpoint in ("/api/admin/stage-growth-pressure-washing","/api/admin/growth-status","/api/process-growth-health","/api/process-growth-nurture","/api/process-growth-fulfillment"):
+          for endpoint in ("/api/admin/stage-growth-pressure-washing","/api/admin/growth-status","/api/process-growth-health","/api/process-growth-nurture","/api/process-growth-fulfillment","/api/growth/claim-free-five"):
               assert endpoint in api, endpoint
           assert "GROWTH_SAMPLE_MIN_RESERVE" in api
           assert "SMTP_FROM_NAME" in api
@@ -606,6 +608,38 @@ jobs:
           assert d["staged"] >= 1, d
           assert d["qualified_pool_by_market"]["CI Growth Market"] >= 125, d
           PY
+
+          # Prove the cold-email CTA can reuse known target data instead of sending the prospect through the form again.
+          export CI_GROWTH_TARGET="$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select target_id from growth_outreach_targets where public_email='ci-pressure@example.com' limit 1;")"
+          test -n "$CI_GROWTH_TARGET"
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            update outreach set status='sent',sequence_step=1,sent_at=now()
+            where entity_type='growth_customer' and entity_id='$CI_GROWTH_TARGET' and campaign='growth_sales';"
+          export CI_GROWTH_CLAIM="$(python - <<'PY'
+          import hashlib,hmac,os
+          payload=f"{os.environ['CI_GROWTH_TARGET']}\nci-pressure@example.com".encode()
+          print(hmac.new(os.environ["BMC_ADMIN_KEY"].encode(),payload,hashlib.sha256).hexdigest()[:40])
+          PY
+          )"
+          curl -fsS -X POST http://127.0.0.1:8000/api/growth/claim-free-five \
+            -H 'Content-Type: application/json' \
+            -d '{"target_id":"'"$CI_GROWTH_TARGET"'","claim":"'"$CI_GROWTH_CLAIM"'","utm_source":"ci_email"}' \
+            >/tmp/bmc_growth_one_click.json
+          python - <<'PY'
+          import json
+          d=json.load(open("/tmp/bmc_growth_one_click.json"))
+          assert d["ok"] is True
+          assert d["status"] == "sample_ready", d
+          assert len(d["sample"]) == 5, d
+          assert d["qualified_pool"] >= 125, d
+          assert "buy.stripe.com" in d["checkout_url"], d
+          PY
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from growth_sample_requests where source_target_id='$CI_GROWTH_TARGET' and submission_id like 'growth_claim_%';")" -eq 1
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='growth_customer' and entity_id='$CI_GROWTH_TARGET' and reply_type='sample_requested';")" -eq 1
+          # Restore the synthetic send marker so the existing outbound-safety invariant remains meaningful later in this job.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            update outreach set status='queued',sequence_step=0,sent_at=null,next_followup_at=now()
+            where entity_type='growth_customer' and entity_id='$CI_GROWTH_TARGET' and campaign='growth_sales';"
 
           curl -fsS -X POST http://127.0.0.1:8000/api/intake \
             -H 'Content-Type: application/json' \

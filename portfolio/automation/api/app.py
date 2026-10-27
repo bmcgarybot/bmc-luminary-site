@@ -2530,6 +2530,17 @@ def growth_checkout_url(base_url,email,sample_id,service_key):
     })
     return base_url+sep+params
 
+def growth_claim_token(target_id,email_addr):
+    """Sign a one-click free-five claim without exposing the recipient email in the URL."""
+    if not ADMIN_KEY:
+        return ""
+    payload=f"{clean(target_id)}\n{clean(email_addr).lower()}".encode("utf-8")
+    return hmac.new(ADMIN_KEY.encode("utf-8"),payload,hashlib.sha256).hexdigest()[:40]
+
+def growth_claim_valid(target_id,email_addr,token):
+    expected=growth_claim_token(target_id,email_addr)
+    return bool(expected and clean(token) and hmac.compare_digest(expected,clean(token)))
+
 def growth_sample_public_rows(rows):
     out=[]
     for r in rows:
@@ -2660,6 +2671,48 @@ async def handle_growth_snapshot(conn,p):
     return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"sample":public_rows,
       "checkout_url":checkout,"qualified_pool":len(rows),
       "message":"Your five commercial targets are ready. We also emailed a copy so you can use them later."}
+
+@app.post("/api/growth/claim-free-five")
+async def growth_claim_free_five(request:Request):
+    """Turn a signed outreach click into the free-five sample without asking for known details again."""
+    p=await request.json()
+    target_id=clean(p.get("target_id") or p.get("target"))
+    token=clean(p.get("claim"))
+    if not target_id or not token:
+        raise HTTPException(400,"This free-five link is incomplete.")
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        target=await conn.fetchrow("""select g.target_id,g.business_name,g.public_email,g.market,g.service_key,
+            exists(select 1 from outreach o where o.entity_type='growth_customer' and o.entity_id=g.target_id
+              and o.campaign='growth_sales' and o.sent_at is not null) as was_sent
+          from growth_outreach_targets g where g.target_id=$1""",target_id)
+        if not target or not target["was_sent"]:
+            raise HTTPException(404,"This free-five invitation is not active.")
+        if not growth_claim_valid(target_id,target["public_email"],token):
+            raise HTTPException(403,"This free-five link is invalid or expired.")
+        submission_id="growth_claim_"+hashlib.sha256(target_id.encode("utf-8")).hexdigest()[:32]
+        payload={
+          "form_type":"growth_snapshot",
+          "submission_id":submission_id,
+          "service_key":target["service_key"],
+          "source_target_id":target_id,
+          "business_name":target["business_name"],
+          "contact_name":target["business_name"],
+          "email":target["public_email"],
+          "market":target["market"],
+          "consent":"yes",
+          "page":clean(p.get("page")),
+          "referrer":clean(p.get("referrer")),
+          "utm_source":clean(p.get("utm_source")) or "bmc_outreach",
+          "utm_medium":clean(p.get("utm_medium")) or "email",
+          "utm_campaign":clean(p.get("utm_campaign")) or ("growth_"+clean(target["service_key"])),
+          "utm_content":clean(p.get("utm_content")) or target_id
+        }
+        result=await handle_growth_snapshot(conn,payload)
+        await event(conn,"growth_customer",target_id,"one_click_sample_claimed",{
+          "service_key":target["service_key"],"market":target["market"],"sample_id":result.get("sample_id")
+        },"growth_funnel")
+        return result
 
 async def stage_growth_service(conn,service_key,max_targets=25):
     if service_key not in GROWTH_SERVICE_LABELS:
@@ -3460,13 +3513,18 @@ async def process_buyer_outreach(x_bmc_admin_key:str|None=Header(default=None)):
     return {"ok":True,"enabled":True,"sent":sent,"daily_limit":BUYER_OUTREACH_DAILY_LIMIT}
 
 
-def growth_outreach_message(row,step):
+def growth_outreach_message(row,step,owner_preview=False):
     service_key=clean(row["service_key"])
     service_label=GROWTH_SERVICE_LABELS.get(service_key,service_key.replace("_"," "))
-    params=urllib.parse.urlencode({
+    claim=growth_claim_token(row["target_id"],row["public_email"])
+    query={
       "utm_source":"bmc_outreach","utm_medium":"email","utm_campaign":"growth_"+service_key,
-      "utm_content":row["target_id"],"target":row["target_id"],"market":row["market"],"business":row["business_name"]
-    })
+      "utm_content":row["target_id"],"target":row["target_id"],"market":row["market"],"business":row["business_name"],
+      "claim":claim
+    }
+    if owner_preview:
+        query["preview"]="1"
+    params=urllib.parse.urlencode(query)
     landing=f"{PUBLIC_SITE_URL}{GROWTH_LANDING_PATHS.get(service_key,'/growth-packs/')}?{params}"
     business=clean(row["business_name"])
     market=clean(row["market"])
@@ -3474,14 +3532,14 @@ def growth_outreach_message(row,step):
         subject=f"{market}: 5 commercial accounts worth checking"
         body=f"""Hi {business},
 
-I’m researching commercial accounts for {service_label} businesses in {market}.
+I found several {market} businesses that look like strong commercial prospects for {service_label}.
 
-Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the commercial work you want — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.
+Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the kind of commercial work your business does — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.
 
-Tell us the area and type of work you want:
+Click once to see the five BMC already prepared for this invitation:
 {landing}
 
-If the five look useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required.
+You do not need to re-enter your business, email, market, or service. If the five look useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required.
 
 This is a promotional email from BMC Service Network.
 
@@ -3493,8 +3551,8 @@ Reply no if you do not want future outreach."""
         html_body=workflow_email_html(
           subject,
           [
-            f"I’m researching commercial accounts for {service_label} businesses in {market}.",
-            "Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the commercial work you want — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.",
+            f"I found several {market} businesses that look like strong commercial prospects for {service_label}.",
+            "Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the kind of commercial work your business does — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.",
             "If the five look useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required."
           ],
           "Show me 5 free targets",landing,
@@ -3506,7 +3564,7 @@ Reply no if you do not want future outreach."""
 
 One follow-up on the five free commercial targets.
 
-You can tell BMC the service area and kinds of accounts you want here:
+Your invitation already knows the business, market, and service tied to this email. Click once to see the five:
 {landing}
 
 The five are yours to use. You only pay if you decide you want the full 100-prospect pack.
@@ -3522,7 +3580,7 @@ Reply no if you do not want future outreach."""
           subject,
           [
             "One follow-up on the five free commercial targets.",
-            "You can tell BMC the service area and kinds of accounts you want using the button below.",
+            "Your invitation already knows the business, market, and service tied to this email. Click once to see the five.",
             "The five are yours to use. You only pay if you decide you want the full 100-prospect pack."
           ],
           "Show me 5 free targets",landing,
@@ -3602,7 +3660,7 @@ async def replay_first_growth_email_to_owner(x_bmc_admin_key:str|None=Header(def
           limit 1""",GROWTH_OUTREACH_WAVE)
     if not row:
         raise HTTPException(404,"No Growth target row exists to render for owner preview.")
-    service_key,subject,body,html_body,landing=growth_outreach_message(row,1)
+    service_key,subject,body,html_body,landing=growth_outreach_message(row,1,owner_preview=True)
     ok=await send_mail(test_recipient,subject,body,html_body)
     return {
       "ok":bool(ok),
