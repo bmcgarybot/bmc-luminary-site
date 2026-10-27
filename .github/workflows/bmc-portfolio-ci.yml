@@ -31,7 +31,7 @@ jobs:
               "growth_status","growth_launch_audit",
               "deploy_update","market_inventory_step","local_demand_step",
               "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","inventory_closure_step","research_refresh_install","scheduler_start","scheduler_stop",
-              "growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_launch_enable","growth_launch_disable"
+              "growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_launch_enable","growth_launch_disable","growth_owner_replay_email"
           }
           assert ns["ALLOWED_ACTIONS"] == expected, ns["ALLOWED_ACTIONS"]
           assert all("shell" not in x for x in ns["ALLOWED_ACTIONS"])
