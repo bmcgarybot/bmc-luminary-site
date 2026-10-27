@@ -64,7 +64,7 @@ MUTATING_INTERNAL_ACTIONS = {
     "growth_stage_commercial_cleaning",
 }
 EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email"}
-CONTROL_ACTIONS = {"growth_launch_disable"}
+CONTROL_ACTIONS = {"growth_launch_disable", "growth_owner_preview_approve"}
 ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS
 
 API_ACTIONS = {
@@ -529,9 +529,22 @@ def execute(req: dict) -> dict:
             raise RelayError("Owner email replay requires all campaign outbound switches OFF")
         replay=admin_post("/api/admin/replay-first-growth-email-to-owner",timeout=120)
         metadata["outreach_gate"]=state
+        metadata["preview_commit"]=current_sha()
         stdout=json.dumps(replay,indent=2,default=str)
         stderr=""
         exit_code=0 if replay.get("ok") else 1
+
+    elif action == "growth_owner_preview_approve":
+        state=assert_outreach_off()
+        sha=current_sha()
+        if not re.fullmatch(r"[0-9a-f]{40}",sha):
+            raise RelayError("Cannot approve owner preview because current git SHA is invalid")
+        set_env_values({"GROWTH_OWNER_APPROVED_SHA":sha})
+        metadata["outreach_gate"]=state
+        metadata["approved_sha"]=sha
+        stdout=json.dumps({"ok":True,"approved_sha":sha,"message":"Owner preview approved for this exact deployed commit only."},indent=2)
+        stderr=""
+        exit_code=0
 
     elif action == "growth_launch_enable":
         state=outreach_state()
