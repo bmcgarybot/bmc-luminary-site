@@ -6712,3 +6712,359 @@ Do not:
 The most important continuity fact is now:
 
 **The census research is safe in auditable JSON artifacts, the deterministic builder prevents stale-SQL data loss, repaired production is healthy at 24,176 active v7 evidence rows, and Phoenix has just received a new 98-row direct buyer batch plus an exhaustive 6,568-row licensed-trade artifact expansion awaiting the next green exact-master deploy.**
+
+
+---
+
+# 60. GO-LIVE / VPS-LIFTING CHECKPOINT — 2026-10-26 18:05 ARIZONA
+
+This section is the newest continuation checkpoint and should be read after section 59.
+
+## Brett's concern / priority
+
+Brett explicitly said he has limited confidence in the VPS as the builder of the initial database and wants the assistant doing the heavy lifting to create a strong base first.
+
+That remains the correct operating rule.
+
+He also wants this business to become the low-involvement, high-margin operating model inspired by **Chris Koerner**, specifically:
+- Chris Koerner
+- "I Let AI Make and Save Me Money for 6 Weeks (Here's What Worked)"
+
+Do not lose that strategic reference.
+
+The intended lesson is not "passive income with no validation."
+It is to compress repetitive labor with agents/automation:
+- research;
+- vendor discovery;
+- buyer/prospect discovery;
+- quote gathering;
+- follow-up;
+- routing;
+- reminders;
+- comparison/organization;
+while preserving human approval for consequential commercial actions.
+
+## Exact current assistant artifact census
+
+BMC Portfolio CI run:
+- **40429808037**
+- SHA: \`f05ff6fcf2546de24edda14d58f367c61bb38092\`
+- result: **SUCCESS**
+
+Artifact builder summary:
+- **97 assistant census JSON artifacts**
+- **14,915 raw evidence rows**
+- **481 strict duplicate rows collapsed**
+- **14,434 strict unique generated seed rows**
+- all **21 markets**
+- raw buyer rows: **3,001**
+- raw vendor rows: **11,914**
+- strict unique buyer rows: **2,977**
+- strict unique vendor rows: **11,457**
+
+Phoenix artifact census:
+- raw rows: **7,276**
+- strict unique rows: **7,026**
+
+Tucson artifact census:
+- raw rows: **3,990**
+- strict unique rows: **3,790**
+
+CI smoke database proof:
+- expected artifact candidates: 14,434
+- actual artifact candidates: 14,434
+- expected markets: 21
+- actual markets: 21
+- expected inventory lanes: 1,260
+- actual inventory lanes: 1,260
+- runtime doctor core failures: 0
+
+## Latest production deploy is proven
+
+Deploy request:
+- \`deploy-phoenix-full-census-20261027T0101Z\`
+
+Result:
+- **SUCCESS**
+- exact deployed SHA: \`f05ff6fcf2546de24edda14d58f367c61bb38092\`
+- CI proof: run **40429808037**
+- generated census rows loaded: **14,434**
+- production runtime doctor:
+  - core failures: **0**
+  - warnings: **0**
+
+Outbound remained OFF:
+- \`OUTREACH_ENABLED=false\`
+- \`BUYER_OUTREACH_ENABLED=false\`
+- \`GROWTH_OUTREACH_ENABLED=false\`
+
+## Latest production business census proof
+
+Proof request:
+- \`proof-phoenix-full-census-20261027T0102Z\`
+
+Result:
+- **SUCCESS**
+- proof timestamp: 2026-10-27T01:02:49Z
+- production SHA: \`f05ff6fcf2546de24edda14d58f367c61bb38092\`
+
+Current active v7 production evidence:
+- **30,518 active evidence rows**
+- **0 closed v7 rows**
+- **566 official/direct rows**
+- **11,077 registry-derived / credential-corroborated rows**
+- **18,762 directory/discovery rows**
+- active phone-ready candidate rows: **17,485**
+- active email-ready candidate rows: **81**
+
+This supersedes:
+- old 15,185 production checkpoint;
+- intermediate 24,176 checkpoint.
+
+### Phoenix production after exhaustive expansion
+
+Phoenix buyer:
+- evidence rows: **1,501**
+- normalized businesses: **1,402**
+- direct rows: **104**
+
+Phoenix vendor:
+- evidence rows: **7,197**
+- normalized businesses: **6,537**
+- direct rows: **8**
+
+Combined Phoenix market/side production:
+- evidence rows: **8,698**
+- normalized business entries by side: **7,939**
+
+Important:
+- buyer/vendor normalization is within market+side;
+- do not claim 7,939 globally unique legal entities without a cross-side/entity audit.
+
+The new 98 direct grocery/pharmacy facilities are now live:
+- grocery category production rows rose to 165 / 143 normalized businesses statewide;
+- pharmacy category production rows rose to 97 / 80 normalized businesses statewide.
+
+## How much lifting the VPS was doing BEFORE this checkpoint
+
+At the proof immediately before re-enabling the internal scheduler:
+- deep inventory lanes: 1,260
+- untouched: 1,240
+- in progress: 20
+- completed full scan cycles: 0
+- local-demand lanes: 315
+- touched: 30
+- untouched: 285
+
+Therefore Brett's lack of confidence in the VPS as the *initial census builder* was justified.
+
+The VPS was reliably doing:
+- PostgreSQL / production state;
+- Ops API;
+- Cloudflare ingress;
+- SearXNG/private search;
+- n8n hosting;
+- safe exact-SHA deploys;
+- migrations;
+- runtime doctor/proof;
+- bulk research refresher;
+- GitOps relay;
+but it had not yet done enough lane coverage to be trusted as the initial business universe.
+
+## Scheduler is NOW running safely
+
+After the 30,518-row production proof, the internal maintenance scheduler safety was rechecked.
+
+\`scheduler.sh\` runs:
+- expired-offer handling;
+- internal agent cycle;
+- legacy research processing;
+- market inventory cycles;
+- followups;
+- reply processing;
+- public procurement checks;
+- local-demand checks;
+- closure audits;
+- source-native research;
+- outreach endpoints.
+
+Crucial safety property:
+the outreach endpoints return zero sends while their global switches are OFF.
+CI explicitly asserts these guards.
+
+Scheduler start request:
+- \`start-maintenance-scheduler-20261027T0103Z\`
+
+Result:
+- **SUCCESS**
+- all three outbound switches were confirmed false by the relay safety gate.
+
+Scheduler status request:
+- \`zz-scheduler-status-20261027T0103Z\`
+
+Result:
+- **SUCCESS**
+- \`bmc-scheduler-1\` is UP.
+
+This is the intended transition:
+- assistant continues building/enriching the initial universe;
+- VPS is now allowed to maintain, rescan, detect closures/new deltas, process internal cycles, and work the maintenance queues;
+- VPS still must not be used as an excuse to stop assistant-led census expansion.
+
+## Current launch/readiness state
+
+Production technical readiness is strong:
+- outreach infrastructure: READY
+- payment infrastructure: READY
+- intelligent search: READY
+- live site/intake infrastructure exists
+- SMTP configured
+- IMAP reply/opt-out monitoring configured
+- business postal address configured
+- Stripe webhook configured
+- 4 active products with payment links
+- provider activation page live
+- public webhook ingress constrained/reachable
+
+However:
+- verified pilot/active providers: **0**
+- buyer service outreach must remain OFF
+- bulk outbound remains OFF
+- public local-demand and deep inventory maintenance scans have not yet completed first full cycles.
+
+The software's runtime intake gate says:
+- activate at least one real verified pilot provider.
+
+Brett's safer commercial standard should be stronger than the bare minimum:
+- recruit/verify **3–5 real providers** in the first Prescott/Prescott Valley launch cell so a decline/unavailable provider does not break the customer promise.
+
+Existing controlled provider pilot cohort:
+- **12 provider records** in \`pilot1\`
+
+Existing controlled buyer pilot cohort:
+- **7 buyer records** in \`pilot1\`
+
+All outreach remains unsent:
+- outreach total: 121
+- sent: 0
+- replied: 0
+- queued unsent: 121
+
+Recommended first provider candidate remains:
+- \`v_prescott_americancrown\` — American Crown Commercial Cleaning
+- public email: donna@americancrowncc.com
+- broad Yavapai service territory
+- commercial cleaning / windows / pressure washing / hood-exhaust / venue cleaning evidence
+
+Fallback:
+- \`v_prescott_windowwranglers\` — Window Wranglers
+
+Other First Wave candidates are already seeded.
+
+Do not contact them automatically without Brett approving the external outreach action.
+
+## Go-live interpretation
+
+Do NOT wait for every Arizona business to be discovered before testing the business.
+
+Distinguish three states:
+
+### 1. Technical live
+This is effectively achieved:
+- site;
+- intake;
+- API;
+- payments;
+- email/reply infrastructure;
+- provider portal/activation;
+- routing engine;
+- production database;
+- safe deploy/backup foundations.
+
+### 2. Controlled commercial soft launch
+This is the next meaningful milestone.
+
+Before buyer service outreach:
+1. get 3–5 real provider activations in the first launch cell;
+2. manually approve credentials/service/territory/capacity as applicable;
+3. prove one real service request can:
+   - enter;
+   - classify;
+   - route;
+   - be accepted/passed;
+   - reroute if needed;
+   - release contacts correctly;
+   - produce a trackable outcome;
+4. keep acquisition wave small;
+5. then use the 7-buyer pilot cohort.
+
+The software's formal minimum is one provider; the operational recommendation is 3–5 for redundancy.
+
+### 3. Scaled low-involvement business
+This only becomes credible after real conversion/economic data exist.
+
+The intended automation ladder remains:
+- $0–$1K revenue: AI assists, human reviews consequential output;
+- $1K–$5K: n8n operates routine workflow/follow-up/delivery;
+- $5K–$15K: exception-based operations;
+- $15K+: portfolio operator model.
+
+Do not promise Brett passive profit before the pilot proves:
+- provider acceptance;
+- buyer response;
+- close rate;
+- willingness to pay;
+- lead/territory/research-product economics.
+
+But the architecture now supports testing that model without another major rebuild.
+
+## Revenue model continuity
+
+The approximate **$8,333/month** figure is the monthly run rate for a six-figure annual business, not one magic bulk-lead package.
+
+Original revenue engines remain:
+- $299 Competitor Intelligence
+- $499 Local Growth Pack
+- $699 Market Expansion Pack
+- $749 Premium Growth Pack
+- accepted qualified lead fees (examples modeled around $75–$100)
+- possible territory arrangements (example modeling around $1,000/month)
+- $49–$149-ish concierge/continuity concepts after value is proven
+- quote/procurement sourcing fees
+- recurring prospect refresh ($149–$249 concept after proof)
+- permitted referral/marketing economics
+
+Original first-$5K examples remain documented in \`BUSINESS_MODEL.md\`.
+
+Because Brett has already invested heavily across ventures, avoid recommending new paid software/ads/large spend before the first controlled provider/buyer/revenue proof. Use the existing stack and database first.
+
+## Immediate next internal work
+
+Continue without waiting for VPS discovery to build the base:
+
+1. Keep assistant-led census expansion going, now prioritizing buyer/institutional/direct evidence rather than more Phoenix licensed-vendor enumeration.
+2. Tucson buyer side is an obvious target.
+   - City of Tucson publishes a current 10/01/2026 quarterly cumulative active business-license CSV (~4 MB) with DBA, NAICS, address, city/state/ZIP and phone.
+   - Arizona Department of Health Services public facility search currently exposes thousands of Tucson licensed facilities.
+   - These are promising first-party buyer census sources.
+3. Continue direct verification/contact enrichment for high-value provider candidates.
+4. Let the now-running VPS scheduler work maintenance cycles in parallel.
+5. Measure whether inventory/local-demand touched-lane counts begin increasing.
+6. Do not enable bulk outbound.
+7. The next external/commercial action requiring Brett approval is controlled provider recruitment / invitation.
+
+## Handoff discipline
+
+Brett specifically asked that \`portfolio/automation/HANDOFF.md\` be updated near the end of substantial work responses so a new conversation can resume if the thread fills up.
+
+Continue doing that.
+
+## Current production vs repository distinction
+
+Production is exactly proven at:
+- \`f05ff6fcf2546de24edda14d58f367c61bb38092\`
+
+This section itself will create a newer documentation-only master commit after the production proof.
+
+Do not imply production has that later docs-only SHA unless it is deployed.
+The census/data/code content being described above **is** already production-proven at \`f05ff6fc...\`.
