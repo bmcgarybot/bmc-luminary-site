@@ -232,7 +232,9 @@ def page_metadata(main_html):
 def records_for_trade(market, trade, main_url, delay):
     main_html = fetch(main_url)
     claimed_count, verified_date = page_metadata(main_html)
-    rows = parse_ranked(main_html)
+    ranked_rows = parse_ranked(main_html)
+    rows = list(ranked_rows)
+    all_rows = []
 
     if claimed_count is None:
         raise RuntimeError(f"{trade}: could not parse claimed count from {main_url}")
@@ -241,7 +243,8 @@ def records_for_trade(market, trade, main_url, delay):
         all_url = main_url.rstrip("/") + "/all"
         try:
             all_html = fetch(all_url)
-            rows.extend(parse_all_list(all_html))
+            all_rows = parse_all_list(all_html)
+            rows.extend(all_rows)
         except Exception as exc:
             raise RuntimeError(f"{trade}: failed complete A-to-Z page {all_url}: {exc}") from exc
         if delay:
@@ -255,7 +258,9 @@ def records_for_trade(market, trade, main_url, delay):
     if len(rows) != claimed_count:
         raise RuntimeError(
             f"{trade}: completeness failure: page claims {claimed_count} verified companies, "
-            f"but parser recovered {len(rows)} unique company/license pairs"
+            f"but parser recovered {len(rows)} unique company/license pairs; "
+            f"ranked_raw={len(ranked_rows)} all_raw={len(all_rows)} "
+            f"ranked={ranked_rows!r}"
         )
 
     category_key, category_label = TRADE_MAP.get(
