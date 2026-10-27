@@ -3536,10 +3536,10 @@ I found several {market} businesses that look like strong commercial prospects f
 
 Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the commercial work you want — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.
 
-Tell us the area and type of work you want:
+Click once to see the five BMC already prepared for this invitation:
 {landing}
 
-If the five look useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required.
+You do not need to re-enter your business, email, market, or service. If the five look useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required.
 
 This is a promotional email from BMC Service Network.
 
@@ -3564,7 +3564,7 @@ Reply no if you do not want future outreach."""
 
 One follow-up on the five free commercial targets.
 
-You can tell BMC the service area and kinds of accounts you want here:
+Your invitation already knows the business, market, and service tied to this email. Click once to see the five:
 {landing}
 
 The five are yours to use. You only pay if you decide you want the full 100-prospect pack.
@@ -3580,7 +3580,7 @@ Reply no if you do not want future outreach."""
           subject,
           [
             "One follow-up on the five free commercial targets.",
-            "You can tell BMC the service area and kinds of accounts you want using the button below.",
+            "Your invitation already knows the business, market, and service tied to this email. Click once to see the five.",
             "The five are yours to use. You only pay if you decide you want the full 100-prospect pack."
           ],
           "Show me 5 free targets",landing,
