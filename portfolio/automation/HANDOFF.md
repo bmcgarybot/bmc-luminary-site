@@ -9975,3 +9975,450 @@ Outbound remains OFF:
 
 **The newest fully proven checkpoint at the time Section 69 was written is 75,026 strict research seed rows across 321 artifacts, green in BMC Portfolio CI 40450028535 with 21/21 markets, 1,260/1,260 lanes and zero runtime core failures. The newest expansion adds aggregated property-manager buyers, recovery/sober-living facilities, structured parking garages, casinos, rural statewide commercial-maintenance vendors and centrally managed shopping centers. Two later census commits (fac8635 and 4fdd0b4) were still in CI and should be checked first in the next continuation. The owner's fake provider signup proved the initial application/email path works but exposed a severe UX loop: the receipt email goes to pilot terms, whose CTA sends the applicant back to the original application. After the census push, perform a full end-to-end website/lead workflow audit. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
 
+
+
+## Section 70 — HOA/multifamily portfolios, supportive housing, Prescott/Phoenix garages + live provider-funnel defect
+
+Updated: 2026-10-26 late evening Arizona time
+
+This section supersedes the Section 69 census checkpoint. The manual assistant-led commercial-buyer expansion in this thread is complete enough to shift the **next major work block** toward an end-to-end public website/lead workflow audit. Research itself remains open-ended and should continue to be maintained/expanded later; do not interpret this as “the census can never grow again.”
+
+### New fully green research checkpoint
+
+Newest BMC Portfolio CI:
+- **40450885806**
+- result: **SUCCESS**
+- proven commit: `ec0f66c93618d3c06458877514a8c603380d939c`
+
+Strict assistant census:
+- **327 artifacts**
+- **76,771 raw artifact rows**
+- **1,673 exact strict duplicates collapsed**
+- **75,098 strict unique seed rows**
+- **59,289 buyer rows**
+- **15,809 vendor rows**
+- **21/21 markets**
+- **1,260/1,260 deep inventory lanes**
+- **0 runtime core failures**
+
+This supersedes:
+- Section 69: 75,026 strict rows / 321 artifacts
+- shopping-center checkpoint: 75,048 / 323
+- HOA/multifamily checkpoint: 75,074 / 324
+- Northern AZ supportive-housing checkpoint: 75,086 / 325
+- Prescott/Phoenix parking-garage checkpoint: 75,092 / 326
+
+### HOA / community-association / multifamily portfolio buyers
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-hoa-multifamily-portfolio-buyers-39.json`
+
+Commit:
+- `30fcbd7177ead129f5a1d4e19d5d659fb5ae7a32`
+- BMC Portfolio CI **40450609828 SUCCESS**
+- **26 buyer-market records**
+
+Important aggregated buyer accounts now include:
+- HOAMCO — Prescott, Scottsdale, Flagstaff, Sedona, Bullhead City, Tucson
+- FirstService Residential Arizona — Phoenix, Scottsdale, Tucson
+- Associa Arizona — Scottsdale, Tucson
+- Tri-City Property Management Services — Prescott, Phoenix, Flagstaff/Coconino service territory
+- Cadden Community Management — Tucson, Phoenix
+- Trestle Management Group — greater Phoenix
+- P.B. Bell — Phoenix, Scottsdale, Prescott Valley, Cottonwood, Sedona
+- Chamberlin + Associates — Phoenix, Tucson
+- Mark-Taylor — Phoenix, Scottsdale
+
+Why these are strategically important:
+- these are **aggregated buyers**, not single buildings;
+- one relationship can represent many HOAs, apartment communities or properties;
+- several directly describe formal vendor-management workflows.
+
+Especially strong buying-signal evidence:
+- Tri-City says it is **always looking for new vendors**, requires vendor onboarding, and says it finds bids for client projects;
+- Trestle describes a preferred-vendor program that evaluates vendors, solicits bids, awards contracts and monitors work;
+- Cadden uses portfolio-wide vendor compliance and says approved vendors can gain exposure across the management firm’s portfolio;
+- FirstService says it assists with vendor RFPs/job specifications and coordinates staff, subcontractors and vendors;
+- Associa exposes a “partner with us” path for service providers;
+- P.B. Bell says its renovations/maintenance operation includes vendor coordination.
+
+BMC offer hypothesis:
+**Do not ask managers to replace every preferred vendor. Sell supplemental local depth.**
+Best positioning:
+- overflow coverage;
+- emergency gaps;
+- specialty-trade sourcing;
+- turnover/make-ready;
+- remote/out-of-area local contractor sourcing;
+- competitive bid sourcing when requested;
+- recurring exterior/common-area services.
+
+### Northern Arizona supportive / transitional / affordable housing operator expansion
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-supportive-transitional-housing-buyers-40.json`
+
+Commit:
+- `b41c39310c600b20d48897720c34b44f669f68fd`
+- BMC Portfolio CI **40450719064 SUCCESS**
+- checkpoint after commit: **75,086 strict rows / 325 artifacts**
+- **12 facility/operator records**
+
+Added/strengthened:
+- Prescott Area Shelter Services (PASS)
+- Agape House of Prescott — Prescott + Prescott Valley
+- Coalition for Compassion and Justice (CCJ)
+- Stepping Stones Agencies
+- NAZCARE Hope House
+- NAZCARE New Hope House
+- Yavapai Territorial Gospel Rescue Mission
+- Housing Solutions of Northern Arizona — Flagstaff
+- Housing Solutions / Oak Wash Homes — Cottonwood
+- Flagstaff Shelter Services
+- Verde Valley Sanctuary
+
+Important privacy rule added:
+**Never collect, store, publish or expose confidential shelter addresses.**
+Use public organization-level contacts and public facilities only.
+
+These organizations are buyer candidates because they operate buildings/housing portfolios that can require:
+- janitorial;
+- floors/carpet/laundry-area maintenance;
+- HVAC/plumbing/electrical/fire safety;
+- landscaping/exterior work;
+- pest/waste;
+- windows/pressure washing;
+- turnover/make-ready;
+- parking/lighting.
+
+Do not infer need from resident vulnerability and do not market based on protected/sensitive resident circumstances.
+
+### Prescott + Phoenix structured parking completion
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-prescott-phoenix-parking-garages-41.json`
+
+Commit:
+- `abe39e13a2bbee4e12b9b320b219c2c1b1afa136`
+- BMC Portfolio CI **40450760418 SUCCESS**
+- checkpoint after commit: **75,092 strict rows / 326 artifacts**
+- **6 new garage records**
+
+Added:
+- Garage on Granite — Prescott
+- Phoenix Convention Center West Garage
+- Phoenix Convention Center North Garage
+- Phoenix Convention Center East Garage
+- Phoenix Convention Center Heritage Garage
+- Phoenix Convention Center Regency Garage
+
+Official Phoenix material says the Convention Center operates/manages about 4,500 downtown parking spaces across its garage system.
+
+Opportunity hypotheses:
+- sweeping;
+- oil/grease cleanup;
+- wash-down / pressure washing;
+- stairwell/elevator-lobby cleaning;
+- striping / curb / ADA / directional markings;
+- lighting/electrical;
+- graffiti removal;
+- drains;
+- signage/wayfinding.
+
+Municipal procurement/incumbent-contract rules apply.
+
+### Phoenix + Tucson supportive-housing operator completion
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-phoenix-tucson-supportive-housing-buyers-42.json`
+
+Commit:
+- `ec0f66c93618d3c06458877514a8c603380d939c`
+- BMC Portfolio CI **40450885806 SUCCESS**
+- this is the **75,098 / 327** checkpoint
+- **6 operator-level buyer records**
+
+Added:
+- Native American Connections — Phoenix
+- UMOM New Day Centers / Helping Hands Housing Services — Phoenix
+- Central Arizona Shelter Services (CASS) — Phoenix
+- The Primavera Foundation — Tucson
+- Old Pueblo Community Services — Tucson
+- Gospel Rescue Mission — Tucson
+
+Notable scale/current-source facts:
+- Native American Connections says it has developed, owns and manages about **1,000 units** of affordable/supportive/youth housing;
+- UMOM says its housing subsidiary has built **1,000+ units** in the Valley; UMOM also states the affordable properties are managed by **Biltmore Properties**, so purchasing authority must be qualified between owner/operator/manager;
+- CASS operates multiple Phoenix shelter facilities;
+- Primavera and OPCS operate multiple Tucson housing/supportive-housing programs.
+
+### Real-world provider signup test — initial intake worked, but the funnel is broken
+
+The owner personally submitted a fake BMC provider application through the public site and received the provider application email.
+
+That proves at least one real public path successfully traversed:
+- public `/providers/#apply` form;
+- `form_type=vendor_partner`;
+- `https://hooks.bmcservicenetwork.com/api/intake`;
+- backend `handle_vendor_application()`;
+- database applicant creation;
+- transactional SMTP receipt delivery.
+
+This is stronger evidence than code inspection alone.
+
+However the actual UX after receipt is poor:
+
+Current path:
+1. provider submits `/providers/#apply`;
+2. backend creates an `app_<slug>_<uuid8>` vendor with status `applicant`;
+3. receipt email button says **“Review the provider pilot terms”**;
+4. email button links to **`/provider-pilot/`**;
+5. `/provider-pilot/` primary CTA links back to **`/providers/#apply`**;
+6. provider is effectively asked to fill out the application again.
+
+The owner experienced this exact loop in the live site.
+
+### Existing intended activation path already exists
+
+There is already a separate:
+- `/provider-pilot-activate/`
+
+It submits:
+- `form_type=vendor_pilot_activation`
+- hidden `vendor_id`
+- territory
+- markets/services
+- capacity
+- minimum job
+- credentials/insurance
+- pilot terms
+
+Backend already has:
+- `handle_vendor_pilot_activation()`
+
+That handler:
+- requires `vendor_id`;
+- requires pilot terms acknowledgement;
+- loads the existing vendor;
+- updates provider operating details;
+- creates a review exception;
+- logs `pilot_activation_submitted`;
+- leaves final activation under review.
+
+So the system already has most of the intended second-step flow; it is just not connected correctly from the receipt/approval path.
+
+### Do NOT “fix” the loop by merely putting vendor_id in a public URL
+
+Important security/workflow issue discovered during tracing:
+
+The current activation form trusts a hidden `vendor_id`.
+`handle_vendor_pilot_activation()` does **not** currently validate a one-time activation token.
+
+Therefore the future fix should use a:
+- one-time signed activation token; or
+- short-lived provider onboarding token tied to vendor_id/email/application state.
+
+Do **not** simply change the receipt link to:
+`/provider-pilot-activate/?vendor_id=...`
+and call the workflow finished.
+
+The activation endpoint should verify the onboarding token before allowing record changes.
+
+### Duplicate-application risk is real
+
+Current `handle_vendor_application()` always creates a new ID:
+- `app_<business-slug>_<random uuid8>`
+
+The `vendors` table has:
+- primary key on `vendor_id`
+- **no unique constraint on normalized email/business/domain**
+
+Therefore repeated submissions of the same application can create duplicate applicant records.
+
+Because the current receipt loop sends applicants back to the application, this is not theoretical.
+
+Future workflow audit must add application idempotency/deduplication, likely using some combination of:
+- normalized business name;
+- email;
+- phone/domain;
+- submission id/idempotency key;
+- recent-application window;
+- explicit “continue existing application” behavior.
+
+Do not use a simplistic global unique-email constraint because one business may legitimately have multiple contacts and one contact may represent multiple businesses.
+
+### Provider receipt delivery audit patch is green
+
+Commit:
+- `0b230ffe3b98f43ef43c128142d525ada19508da`
+- message: **Audit provider application receipt delivery**
+- BMC Portfolio CI **40450063138 SUCCESS**
+
+Before this patch:
+- `handle_vendor_application()` called `send_mail()` and ignored the boolean result.
+
+Now:
+- successful receipt delivery logs `application_receipt_sent`;
+- failed delivery creates a high-severity `vendor_application_receipt_delivery_failure` exception;
+- failure logs `application_receipt_delivery_failed`.
+
+This does not fix the UX loop; it makes receipt delivery observable.
+
+### Required next major work block: full public workflow / lead-capture audit
+
+The owner explicitly requested that after the manual research push, BMC review **all website workflows in depth** for capturing website leads and engagement.
+
+Do this before turning outreach on.
+
+Audit must be real end-to-end behavior, not only static HTML/code checks.
+
+At minimum test:
+
+1. Provider acquisition
+- provider landing page;
+- application;
+- receipt;
+- terms;
+- secure activation;
+- review/approval;
+- provider login;
+- dashboard;
+- availability/settings;
+- request offer;
+- accept/pass;
+- job update;
+- outcome tracking.
+
+2. Customer service-request acquisition
+- every major service landing page;
+- generic/universal request;
+- service-search / AI-assisted classification;
+- confirmation state;
+- email receipt;
+- provider-match state;
+- exception/no-provider state;
+- customer/provider contact release.
+
+3. Facility-management buyer flow
+- multi-service facility request;
+- child-request splitting;
+- each requested service routing;
+- buyer receipt;
+- no-provider handling;
+- recurring facility-account follow-up.
+
+4. Growth Pack / paid product flow
+- offer page;
+- checkout;
+- Stripe webhook;
+- payment status;
+- intake linking;
+- fulfillment queue;
+- receipt/delivery;
+- duplicate payment/idempotency handling.
+
+5. Email and CTA continuity
+For every transactional email:
+- every button must lead to the correct **next** step;
+- no CTA may restart a completed step;
+- state/context must survive the click;
+- expired/used links need understandable recovery;
+- no dead pages/loops.
+
+6. Form idempotency / deduplication
+- double-click;
+- refresh/resubmit;
+- browser back;
+- duplicate webhook;
+- same email/business repeat signup;
+- same customer request repeat.
+
+7. Analytics/engagement capture
+After functional correctness:
+- source page;
+- service/city landing page;
+- referral/UTM-like attribution where appropriate;
+- conversion step;
+- abandoned-step visibility where privacy-appropriate;
+- do not add invasive tracking merely for vanity metrics.
+
+8. Mobile and plain-language UX
+- verify all major funnels on narrow/mobile layouts;
+- keep public copy at the owner’s preferred plain 6th–8th grade reading level;
+- remove internal/meta language.
+
+Current static form validation only confirms field contracts.
+It does **not** prove the sequence makes sense to a human.
+The owner’s live fake signup demonstrated why synthetic + human-flow testing is necessary.
+
+### Sales implication from this expansion
+
+There is a credible first-sale path in the new census.
+
+Strongest near-term buyer hypothesis:
+**property managers / HOA managers needing supplemental vendor coverage.**
+
+Why:
+- several explicitly seek/onboard vendors;
+- they already solicit bids and coordinate maintenance;
+- they can represent many properties;
+- BMC can begin as overflow/local-gap coverage rather than demanding exclusivity.
+
+Strongest provider-side packaged-data hypothesis:
+- gas stations / fuel sites;
+- fleet/equipment yards;
+- shopping centers;
+- parking garages;
+- property-management portfolios;
+- multifamily communities;
+- hotels/resorts;
+- recurring exterior-cleaning/sweeping/striping opportunities.
+
+BMC can eventually sell a pressure-washing / sweeping / striping / commercial-cleaning provider something closer to:
+“qualified recurring-commercial targets by property type and territory”
+rather than a generic business list.
+
+Do not begin outbound until the website/workflow audit and launch gates are actually ready.
+
+### Provider trust requirement remains mandatory
+
+Keep Section 67 rule:
+
+**Paying BMC can never improve a provider’s quality/trust ranking.**
+
+Quality and evidence-confidence remain separate.
+Small contractors must not be excluded merely for having fewer public reviews.
+
+### Production distinction remains mandatory
+
+Research census is **not production**.
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+
+Outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+### Immediate continuation instruction
+
+The assistant-led census has now covered the owner’s newest requested buyer lanes:
+- property managers / multi-property managers;
+- HOA/community managers;
+- multifamily portfolio managers;
+- rehab/recovery/supportive/transitional housing operators;
+- parking garages;
+- casinos;
+- shopping centers/strip malls;
+- commercial cleaning/exterior opportunities;
+- rural commercial provider gaps.
+
+Research should remain open-ended and future source additions are still welcome, but the **next major work block should now be the end-to-end public website + lead workflow audit**, starting with the provider application/activation loop discovered by the owner.
+
+Do not turn outbound on as part of that audit.
+
+### Continuity sentence
+
+**Newest fully green research checkpoint: 75,098 strict unique seed rows across 327 auditable artifacts, with 59,289 buyer rows and 15,809 vendor rows, proven by BMC Portfolio CI 40450885806 at commit ec0f66c93618d3c06458877514a8c603380d939c; all 21 markets and all 1,260 deep inventory lanes remain covered with zero runtime core failures. The newest manual expansion added HOA/community and multifamily portfolio buyers, supportive/transitional/affordable housing operators, Prescott/Phoenix structured parking, and additional Phoenix/Tucson housing operators. The owner’s live fake-provider signup proved public intake + database + SMTP can work but exposed a severe loop: the receipt email sends the applicant to pilot terms whose CTA sends them back to the original application. The intended activation page already exists but currently trusts a bare vendor_id, and repeat applications can create duplicate applicant records. Next major work is a full end-to-end public website/lead workflow audit before any outreach is enabled. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
