@@ -76,4 +76,5 @@ jobs:
             exit 0
           fi
           git commit -m "Expand licensed trade census across remaining markets"
+          git pull --rebase origin master
           git push origin HEAD:master
