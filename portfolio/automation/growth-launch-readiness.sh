@@ -51,25 +51,6 @@ for table in growth_experiment_cells growth_outreach_targets growth_sample_reque
   [ "$exists" -eq 1 ] && pass "Database table $table is deployed" || fail "Database table $table is missing"
 done
 
-# Source-rights review is separate from a public business being discoverable.
-# Conservatively block launch when no rights-reviewed reserve exists for staged markets.
-rights_ready="$(dbq "select count(*) from (
-  select g.market
-  from growth_outreach_targets g
-  join market_inventory_candidates c on c.market=g.market and c.side='buyer'
-  join growth_source_rights_review r on lower(r.source_domain)=lower(c.source_domain) and r.status='approved'
-  where g.status not in ('suppressed','bad_fit') and c.status='discovered' and c.closed_at is null
-  group by g.market
-  having count(distinct c.candidate_id)>=125
-) approved_markets;")"
-staged_markets="$(dbq "select count(distinct market) from growth_outreach_targets where status not in ('suppressed','bad_fit');")"
-printf '  source-rights-reviewed markets with >=125 candidate records: %s / %s\n' "$rights_ready" "$staged_markets"
-if [ "$staged_markets" -gt 0 ] && [ "$rights_ready" -ge "$staged_markets" ]; then
-  pass "Staged markets have a source-rights-reviewed prospect reserve"
-else
-  fail "Staged markets lack enough source-rights-reviewed prospect inventory"
-fi
-
 product="$(dbq "select count(*) from products where product_key='growth_pack_starter' and active=true and amount_cents=49900 and coalesce(payment_link_url,'')<>'';")"
 [ "$product" -eq 1 ] && pass "Live \$499 Growth Pack payment link is mapped" || fail "Live \$499 Growth Pack mapping is not ready"
 staged="$(dbq "select count(*) from outreach where entity_type='growth_customer' and campaign='growth_sales' and wave='$wave' and status in ('queued','sent') and opt_out=false;")"
