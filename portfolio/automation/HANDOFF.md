@@ -7068,3 +7068,491 @@ This section itself will create a newer documentation-only master commit after t
 
 Do not imply production has that later docs-only SHA unless it is deployed.
 The census/data/code content being described above **is** already production-proven at \`f05ff6fc...\`.
+
+
+---
+
+# 61. ASSISTANT-LED CENSUS EXPANSION HANDOFF — 2026-10-26 19:20 ARIZONA
+
+This is the newest authoritative continuation section. Read it after sections 59–60.
+
+## Brett's standing instruction
+
+Do **not** hand the initial business-universe build off to the VPS.
+
+The assistant is still responsible for doing the heavy research/building work needed to create a strong initial census across:
+- all 21 markets;
+- buyer/business/facility categories;
+- provider/vendor/service categories;
+- rural and metro markets;
+- official/direct evidence where available;
+- open-ended coverage rather than stopping when an arbitrary target is met.
+
+The VPS is the maintenance layer:
+- rescan;
+- find newly appearing businesses;
+- closure detection;
+- refresh;
+- local-demand monitoring;
+- public-opportunity monitoring;
+- queue processing.
+
+It must not be used as an excuse to stop assistant-led census expansion.
+
+All external outreach remains OFF unless Brett explicitly approves it.
+
+## Current repository census: exact green checkpoint
+
+Current master:
+- `a425e3d1723acaff90fd8d85e1faf287587f7d69`
+- commit message: **Add direct rural service-territory provider census**
+
+Green BMC Portfolio CI:
+- run **40436685691**
+- result: **SUCCESS**
+- exact SHA: `a425e3d1723acaff90fd8d85e1faf287587f7d69`
+
+Deterministic artifact builder summary on that exact SHA:
+- **286 assistant census JSON artifacts**
+- **52,167 raw evidence rows**
+- **823 strict duplicate rows collapsed**
+- **51,344 strict unique seed rows**
+- **21/21 markets**
+- raw buyer rows: **35,616**
+- raw vendor rows: **16,551**
+- strict unique buyer rows: **35,592**
+- strict unique vendor rows: **15,752**
+
+CI smoke proof:
+- expected artifact candidates: **51,344**
+- actual artifact candidates: **51,344**
+- expected artifact markets: **21**
+- actual artifact markets: **21**
+- inventory lanes: **1,260 / 1,260**
+- progress markets: **21**
+- core runtime failures: **0**
+
+CI runtime-doctor warnings are expected in the disposable CI stack because external services/secrets are intentionally absent there. Do not confuse those CI-only warnings with production health.
+
+## Exact current per-market artifact counts
+
+Raw / strict-unique artifact rows:
+
+- Ash Fork: **114 / 113**
+- Bullhead City: **480 / 480**
+- Camp Verde: **288 / 287**
+- Chino Valley: **278 / 277**
+- Cordes Lakes: **77 / 77**
+- Cottonwood: **383 / 383**
+- Dewey-Humboldt: **428 / 427**
+- Flagstaff: **893 / 893**
+- Golden Valley: **122 / 122**
+- Kingman: **753 / 753**
+- Mayer: **166 / 165**
+- Phoenix: **9,808 / 9,558**
+- Prescott: **1,023 / 926**
+- Prescott Valley: **818 / 818**
+- Scottsdale: **3,242 / 2,974**
+- Sedona: **262 / 262**
+- Seligman: **125 / 124**
+- Skull Valley: **73 / 71**
+- Tucson: **32,667 / 32,467**
+- Williamson Valley: **42 / 42**
+- Winslow: **125 / 125**
+
+These are evidence/seed rows under the strict artifact identity key, not globally deduplicated legal entities.
+
+## Critical production distinction
+
+The **51,344-row repository census is NOT yet deployed to production**.
+
+Latest production proof remains the older exact deployment:
+- production SHA: `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- active production v7 evidence rows: **30,518**
+- all three outbound switches OFF.
+
+Do not report 51,344 as live production data until the exact green census SHA is deployed and a new production proof is taken.
+
+Brett's priority is still census-building, so it is acceptable to keep researching before the next deployment checkpoint.
+
+## Major work completed after section 60
+
+### 1. Tucson buyer universe was expanded from a shallow sample to official first-party registries
+
+New exporter:
+- `portfolio/automation/export-tucson-buyer-census.py`
+- workflow: `.github/workflows/assistant-tucson-buyer-census.yml`
+
+Sources:
+- City of Tucson current active business-license GIS layer;
+- Arizona Department of Health Services licensed-facility ArcGIS layer.
+
+Successful Tucson export produced:
+- **27,079** City of Tucson current business-license records after Tucson filtering;
+- **1,598** Tucson ADHS licensed facilities;
+- **28,677 new official-government evidence rows** in that pass.
+
+City category examples from the successful export:
+- auto/fleet: 1,372
+- churches/nonprofits: 42
+- entertainment venues: 608
+- general business: 9,446
+- grocery: 143
+- hotels/motels: 146
+- insurance/professional: 2,133
+- medical centers: 1,217
+- pharmacy: 79
+- property management: 3,494
+- public facilities: 20
+- restaurants: 1,835
+- retail: 3,900
+- schools/education: 382
+- therapy/behavioral: 303
+- warehouses/industrial: 1,959
+
+ADHS Tucson categories:
+- medical centers/care facilities: 715
+- schools/childcare: 417
+- therapy/behavioral: 448
+- general business: 18
+
+The current Tucson artifact total is now:
+- **32,667 raw**
+- **32,467 strict unique**
+
+### 2. Government registry evidence was separated from direct business-site evidence
+
+This semantic correction is important.
+
+Current builder behavior:
+- `official=true` -> `source_tier=direct`, `verification_status=direct_evidence`, `official_site=true`
+- `official_registry=true` -> `source_tier=government_registry`, `verification_status=government_record`, `official_site=false`
+- ROC/credential evidence without direct site -> `registry_derived / credential_corroborated`
+- ordinary discovery -> `directory / discovery`
+
+Government datasets such as:
+- Tucson City business licenses;
+- ADHS licensed facilities;
+- Scottsdale City weekly license reports;
+- future ADE/AZROC government exports
+
+must **not** be mislabeled as direct company websites.
+
+Relevant semantic commit:
+- `d22a0a3be69517187dddbf0af5baa623b6bb0909`
+
+The affected exporters/artifacts were regenerated after this fix.
+
+### 3. ADHS official facility census expanded across the rest of the footprint
+
+Exporter:
+- `portfolio/automation/export-adhs-market-census.py`
+- workflow: `.github/workflows/assistant-adhs-market-census.yml`
+
+Successful ADHS additions outside Tucson:
+- **3,839 official government facility rows**
+
+Major market counts:
+- Phoenix: 2,532
+- Scottsdale: 571
+- Flagstaff: 174
+- Prescott: 131
+- Prescott Valley: 112
+- Kingman: 84
+- Bullhead City: 79
+- Cottonwood: 75
+- Winslow: 19
+- Sedona: 18
+- Chino Valley: 14
+- Dewey-Humboldt: 12
+- Camp Verde: 11
+- Golden Valley: 4
+- Ash Fork: 1
+- Mayer: 1
+- Skull Valley: 1
+
+No ADHS facility rows were found for some tiny markets; do not treat that as complete business coverage.
+
+### 4. Scottsdale vendor census is now much deeper
+
+Exhaustive completeness-checked Homversa/ROC-backed trade export:
+- **1,964 raw trade evidence rows**
+- **19 trade pages**
+- every committed trade matched the published count exactly.
+
+Major Scottsdale trade counts:
+- general contractors: 1,035
+- electricians: 138
+- pool contractors: 102
+- HVAC: 94
+- landscaping: 91
+- plumbers: 90
+- low voltage: 86
+- painters: 66
+- carpentry: 63
+- roofers: 45
+- flooring: 34
+- tile: 32
+- glass: 27
+- concrete: 15
+- stucco: 14
+- drywall: 11
+- masonry: 9
+- fence: 8
+- insulation: 4
+
+### 5. Scottsdale recent new-business license layer is now captured
+
+Exporter:
+- `portfolio/automation/export-scottsdale-new-business-licenses.py`
+- workflow: `.github/workflows/assistant-scottsdale-new-business-licenses.yml`
+
+The City/library source is a **rolling recent archive**, not a full 2026 archive.
+
+Currently retained reports parsed:
+- 2026-08-30
+- 2026-09-06
+- 2026-09-13
+- 2026-09-20
+- 2026-09-27
+- 2026-10-04
+- 2026-10-11
+- 2026-10-18
+
+Result:
+- **99 unique recent City-issued license rows**
+
+Do not describe this as a full-year Scottsdale license census.
+
+### 6. Remaining-market licensed-trade sweep substantially expanded the rural/secondary markets
+
+The exhaustive trade exporter was run across the non-Phoenix/non-Scottsdale/non-Tucson markets.
+
+First pass successfully completed full market exports for:
+- Ash Fork
+- Camp Verde
+- Dewey-Humboldt
+- Flagstaff
+- Golden Valley
+- Mayer
+- Prescott
+- Prescott Valley
+- Sedona
+- Seligman
+- Winslow
+
+Markets blocked by one or more source-count inconsistencies were **not** partially copied during that first pass.
+
+A second recovery workflow was then built:
+- `.github/workflows/assistant-gap-market-trade-recovery.yml`
+
+It uses `--continue-on-trade-error` so an individually complete trade can be committed while a mismatched trade remains excluded.
+
+Recovered complete trade artifacts:
+- Bullhead City: **15**
+- Chino Valley: **14**
+- Cottonwood: **14**
+- Kingman: **17**
+
+Known source/count mismatches intentionally left uncommitted include examples such as:
+- Bullhead City masonry: source claims 7, parser sees 8 unique company/license pairs;
+- Chino Valley general contractors: source claims 77, parser sees 78;
+- Cottonwood painters: source claims 14, parser sees 15;
+- Kingman tile: source claims 4, parser sees 5.
+
+Do not weaken the completeness gate simply to include those rows.
+Resolve the source discrepancy or use a better source.
+
+After gap recovery, artifact census reached:
+- 285 artifacts
+- 52,140 raw rows
+- 51,317 strict unique rows
+
+### 7. Direct rural service-territory evidence was added for the three weakest service markets
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-direct-service-territory-13.json`
+
+Adds:
+- **27 direct company-site vendor/service-territory evidence rows**
+
+Markets:
+- Cordes Lakes
+- Skull Valley
+- Williamson Valley
+
+Examples of direct providers/service areas include:
+- R.E.D. Plumbing
+- Nichols Plumbing, Electrical & HVAC
+- Assurance Electrical Services
+- PumpWorks
+- S&M Electric
+- Pur Solar and Electrical
+- R Bar J Contracting
+- Liberty Plumbing
+- Goettl's High Desert Mechanical
+- Mountain Air
+- Thompson's Steamway
+- Prescott Spray Foam
+- Cordes Lakes Hardware
+
+This is true `official=true` direct business-site evidence and therefore correctly counts as direct evidence.
+
+This final addition moved the census from:
+- **51,317** strict unique
+to
+- **51,344** strict unique.
+
+## Failed/rejected source work that must not be mistaken for completed census
+
+### Arizona Department of Education school spreadsheet
+
+Exporter/workflow exist:
+- `portfolio/automation/export-ade-school-census.py`
+- `.github/workflows/assistant-ade-school-census.yml`
+
+The official ADE FY2027 spreadsheet URL returns:
+- **HTTP 403 Forbidden** from GitHub Actions.
+
+Latest retry still failed.
+
+No ADE school artifact is currently committed from this exporter.
+
+Do not claim statewide ADE school coverage from it.
+
+A future thread can:
+- find a public alternate ADE endpoint/API;
+- use an official district/school directory source;
+- or manually/directly enumerate school sites from official district sources.
+
+### Arizona ROC direct active-contractor exporter
+
+Exporter/workflow were added:
+- `portfolio/automation/export-azroc-active-census.py`
+- corresponding workflow
+
+The official ROC source currently returns:
+- **HTTP 403 Forbidden** from GitHub Actions.
+
+No artifact from this direct AZROC exporter landed.
+
+The existing Homversa rows retain ROC numbers and are still registry-derived secondary evidence, not first-party ROC API evidence.
+
+### Phoenix liquor-license location layer
+
+Exporter/workflow exist:
+- `portfolio/automation/export-phoenix-liquor-buyers.py`
+- corresponding workflow
+
+The Phoenix ArcGIS layer accepts some metadata/count calls but rejects the full feature query with:
+- ArcGIS **400 Failed to execute query**
+
+No Phoenix liquor artifact has landed.
+
+Do not count it.
+
+### Scottsdale STR false lead was rejected
+
+A map layer that initially looked like a Scottsdale short-term-rental source was discovered to actually describe **Lyons, Colorado** data last edited years earlier.
+
+It was rejected and never added to the census.
+
+This is a useful quality-control precedent:
+- reject geographically wrong datasets even when search/result naming looks promising.
+
+### Arizona Corporation Commission bulk database
+
+The ACC does not provide a free convenient bulk active-entity export for this use.
+Paid extraction options were identified, including substantial fees.
+
+Do not spend Brett's money on that database without explicit approval.
+Continue using free official/local/direct sources first.
+
+## Workflow race protection
+
+Multiple assistant census workflows can push artifact commits close together.
+
+A real non-fast-forward race occurred during this thread:
+- an export built valid artifacts;
+- another commit reached master first;
+- the artifact push was rejected.
+
+The active artifact workflows were updated to use:
+- commit;
+- `git pull --rebase origin master`;
+- push.
+
+Continue using race-safe pushes for future assistant-controlled exporters.
+
+Do not count workflow-generated artifacts until they are confirmed on current master.
+
+## What the next conversation should do
+
+The next thread should **continue research immediately**. Do not restart the architecture discussion.
+
+Recommended next order:
+
+1. Treat `a425e3d...` / CI run 40436685691 as the clean repository baseline.
+2. Keep the assistant as the initial-universe builder.
+3. Prioritize the remaining thin markets:
+   - Williamson Valley: 42 strict rows
+   - Skull Valley: 71
+   - Cordes Lakes: 77
+   - Ash Fork: 113
+   - Golden Valley: 122
+   - Seligman: 124
+   - Winslow: 125
+   - Mayer: 165
+4. Continue direct service-territory/provider research for those rural markets, especially categories with little or no direct evidence.
+5. Continue buyer/facility census work outside Tucson:
+   - municipal business-license datasets;
+   - county/municipal facility lists;
+   - schools/districts;
+   - churches/nonprofits;
+   - hotels/lodging;
+   - restaurants;
+   - grocery/pharmacy;
+   - hospitals/clinics/dental/behavioral;
+   - senior living/group homes/childcare;
+   - property management/apartments/HOAs;
+   - retail;
+   - industrial/warehouse/manufacturing;
+   - insurance/professional offices;
+   - government/public facilities;
+   - entertainment/theaters;
+   - automotive/fleet.
+6. For Phoenix, buyer-side breadth still deserves work despite the 2,532 ADHS facilities and prior grocery/pharmacy batch.
+7. Do not spend much time repeatedly retrying ADE/AZROC/Phoenix-liquor blocked endpoints unless a materially different access path is found.
+8. Keep all evidence provenance intact and preserve source distinctions:
+   - direct site;
+   - government registry;
+   - ROC-backed secondary registry;
+   - directory/discovery.
+9. Do not delete overlapping evidence just to reduce counts.
+10. Do not call raw/strict rows globally unique businesses without a business/entity rollup.
+11. Keep all outbound switches OFF.
+12. Do not contact providers or buyers without Brett's approval.
+13. Continue updating this HANDOFF.md near the end of substantial work.
+
+## Current production/runtime continuity
+
+Latest proven production remains:
+- exact SHA `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+- outbound OFF
+- scheduler previously restarted safely for internal maintenance
+- research refresher running at the last production proof
+- runtime doctor at that production proof: 0 failures / 0 warnings
+
+The larger 51,344-row census is repository/CI-proven but not production-proven yet.
+
+When a deployment checkpoint is chosen:
+1. require a green exact master SHA;
+2. deploy through the safe VPS relay;
+3. keep all outbound false;
+4. take a fresh production proof;
+5. report evidence rows and normalized business counts separately.
+
+## Final continuity sentence
+
+**The assistant-led census has grown from 14,434 strict artifact rows at the prior handoff to 51,344 strict unique artifact rows across 286 auditable JSON artifacts and all 21 markets. Tucson buyer coverage is now massive via City + ADHS government registries, Scottsdale and many secondary markets gained deep licensed-trade coverage, gap-market trades were recovered without weakening completeness gates, and the three weakest rural markets received new direct company service-territory evidence. Production is still the older 30,518-row f05ff6 proof, all outreach remains OFF, and the next thread should keep digging into businesses rather than handing the initial census build to the VPS.**
