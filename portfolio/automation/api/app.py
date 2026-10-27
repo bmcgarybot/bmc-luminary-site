@@ -2544,7 +2544,10 @@ async def handle_growth_snapshot(conn,p):
     submission_id=clean(p.get("submission_id")) or str(uuid.uuid4())
     existing=await conn.fetchrow("select * from growth_sample_requests where submission_id=$1",submission_id)
     if existing:
-        payload=json_dict({"x":existing["sample_payload"]}).get("x") if isinstance(existing["sample_payload"],str) else existing["sample_payload"]
+        payload=existing["sample_payload"]
+        if isinstance(payload,str):
+            try: payload=json.loads(payload)
+            except json.JSONDecodeError: payload=[]
         payload=payload if isinstance(payload,list) else []
         checkout=await growth_sample_checkout(conn,email_addr,existing["sample_id"],service_key)
         return {"ok":True,"status":clean(existing["status"]),"sample_id":str(existing["sample_id"]),
@@ -2606,11 +2609,6 @@ async def handle_growth_snapshot(conn,p):
     await conn.execute("""update growth_experiment_cells set samples_delivered=samples_delivered+1,updated_at=now()
       where cell_key=$1""",cell)
 
-    lines=[f"{x['business_name']} — {x['category']} — fit {x['fit_score']}/100",
-           f"Why it fits: {x['fit_reason']}",
-           f"Public contact route: {x['contact_route']}",
-           f"Suggested angle: {x['sales_angle']}",
-           f"Source: {x['source_url']}" ] for x in public_rows
     flat=[]
     for idx,x in enumerate(public_rows,1):
         flat.extend([f"{idx}. {x['business_name']} — {x['category']} — fit {x['fit_score']}/100",
