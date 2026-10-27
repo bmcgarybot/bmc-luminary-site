@@ -2,7 +2,7 @@
   "researched_at": "2026-10-26",
   "purpose": "Assistant-led direct-site verification and buyer/vendor upgrade pass for Seligman, replacing weak directory-only confidence with current first-party evidence where available.",
   "safety": "Inventory seed only. Does not promote buyers/vendors and does not stage or send outreach.",
-  "count": 9,
+  "count": 10,
   "records": [
     {
       "side": "buyer",
@@ -129,6 +129,20 @@
       "official": true,
       "verified_date": "2026-10-26",
       "note": "Direct KOA property page; campground/cabins at 21305 I-40 Business Loop, Seligman, open year-round."
+    },
+    {
+      "side": "buyer",
+      "market": "Seligman",
+      "category_key": "restaurants",
+      "category_label": "Restaurants",
+      "business_name": "Highway Hotdog",
+      "url": "https://highwayhotdog.com/",
+      "domain": "highwayhotdog.com",
+      "phone": "928-899-9552",
+      "email": "highwayhotdog66@gmail.com",
+      "official": true,
+      "verified_date": "2026-10-26",
+      "note": "Direct current business site confirms Highway Hotdog at 22395 W Old Highway 66, Seligman; Yavapai County approved its Series 12 restaurant liquor-license application in January 2026."
     }
   ]
 }
