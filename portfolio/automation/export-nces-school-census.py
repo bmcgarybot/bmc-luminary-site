@@ -121,9 +121,17 @@ def object_id_field(meta):
 def all_features(chunk_size=500):
     meta = request_json(LAYER, {"f": "json"})
     oid_field = object_id_field(meta)
+    # Filter at the ArcGIS service instead of downloading the entire national
+    # school universe. Layer 0 exposes a postal state abbreviation field.
+    state_query_field = find_field(
+        meta,
+        ("STABR",),
+        ("postal", "state", "abbreviation"),
+    )
+    where = f"{state_query_field}='AZ'"
     ids = request_json(
         QUERY,
-        {"where": "1=1", "returnIdsOnly": "true", "f": "json"},
+        {"where": where, "returnIdsOnly": "true", "f": "json"},
         post=True,
     ).get("objectIds") or []
     ids = sorted(ids)
