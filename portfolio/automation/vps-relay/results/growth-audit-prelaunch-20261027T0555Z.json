@@ -1,0 +1,21 @@
+{
+  "action": "growth_launch_audit",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-27T05:56:09.177062+00:00",
+  "exit_code": 1,
+  "git_branch_before": "master",
+  "git_commit_after": "a70bf71abdc769f44a7143a513210057493dbea8",
+  "git_commit_before": "a70bf71abdc769f44a7143a513210057493dbea8",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "46540203150519002bc45be3708208bde2159d79",
+  "request_id": "growth-audit-prelaunch-20261027T0555Z",
+  "request_sha256": "9a73951cc2e3d779be8a507cc47d345ed36069fff1cf242eac2e9e48dafd5df8",
+  "started_at": "2026-10-27T05:56:08.039710+00:00",
+  "status": "failed",
+  "stderr": "./growth-launch-readiness.sh: line 41: $4: unbound variable\n",
+  "stdout": "BMC Growth launch readiness\n===========================\nCommit: a70bf71abdc769f44a7143a513210057493dbea8\nSelected wave: \n\nPASS  Service-Network provider outreach remains OFF\nPASS  Service-Network buyer outreach remains OFF\nPASS  SMTP is configured\nPASS  IMAP reply/opt-out monitoring is configured\nPASS  Business postal address is configured\nPASS  Database table growth_experiment_cells is deployed\nPASS  Database table growth_outreach_targets is deployed\nPASS  Database table growth_sample_requests is deployed\nPASS  Database table growth_sample_prospects is deployed\nPASS  Database table growth_order_prospects is deployed\n",
+  "version": 1
+}
