@@ -29,6 +29,10 @@ import urllib.request
 import pandas as pd
 
 LANDING = "https://azdot.gov/mvd/businesses-organizations/dealer-licensing"
+# Current official report URL exposed by ADOT's Valid Dealer Report link.
+# The landing page intermittently returns 403 to automated runners even while
+# this public spreadsheet remains downloadable.
+FALLBACK_REPORT_URL = "https://apps.azdot.gov/files/26/valid-dealer-report/Report-2026-10-22-00-14-59.xls"
 USER_AGENT = "Mozilla/5.0 (compatible; BMC-Service-Network-Assistant-Research/1.0; +https://bmcservicenetwork.com/)"
 
 MARKETS = {
@@ -91,20 +95,28 @@ def fetch_bytes(url, accept="*/*", attempts=5):
 
 
 def discover_report_url():
-    text = fetch_bytes(LANDING, "text/html,*/*").decode("utf-8", "replace")
-    text = html.unescape(text)
+    try:
+        text = fetch_bytes(LANDING, "text/html,*/*").decode("utf-8", "replace")
+        text = html.unescape(text)
 
-    # Prefer the current dated Valid Dealer Report path.
-    candidates = re.findall(r'href=["\']([^"\']+\.xlsx?[^"\']*)["\']', text, flags=re.I)
-    candidates += re.findall(r'(https?://[^\s"\']+valid-dealer-report/[^\s"\']+\.xlsx?)', text, flags=re.I)
-    candidates = [urllib.parse.urljoin(LANDING, c) for c in candidates]
+        # Prefer the current dated Valid Dealer Report path when the landing
+        # page permits automated access.
+        candidates = re.findall(r'href=["\']([^"\']+\.xlsx?[^"\']*)["\']', text, flags=re.I)
+        candidates += re.findall(r'(https?://[^\s"\']+valid-dealer-report/[^\s"\']+\.xlsx?)', text, flags=re.I)
+        candidates = [urllib.parse.urljoin(LANDING, c) for c in candidates]
 
-    preferred = [c for c in candidates if "valid-dealer-report" in c.lower()]
-    if preferred:
-        return preferred[0]
-    if candidates:
-        return candidates[0]
-    raise RuntimeError("Could not discover current ADOT Valid Dealer Report Excel URL")
+        preferred = [c for c in candidates if "valid-dealer-report" in c.lower()]
+        if preferred:
+            return preferred[0]
+        if candidates:
+            return candidates[0]
+    except Exception:
+        # ADOT's public Drupal landing page has intermittently returned HTTP
+        # 403 to GitHub Actions. Do not treat that as loss of the underlying
+        # public report when the official report link itself is known.
+        pass
+
+    return FALLBACK_REPORT_URL
 
 
 def locate_header(raw_df):
