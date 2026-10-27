@@ -1,0 +1,74 @@
+{
+  "researched_at": "2026-10-26T22:08:00-07:00",
+  "purpose": "Assistant-led direct-site commercial buyer gap fill for Mayer-area lodging, event and vehicle-storage properties with recurring exterior/facility-maintenance potential.",
+  "safety": "Inventory seed only. Opportunity tags are hypotheses, not claims of current need. Does not stage or send outreach.",
+  "count": 3,
+  "records": [
+    {
+      "side": "buyer",
+      "market": "Mayer",
+      "category_key": "hotels_motels",
+      "category_label": "hotels motels lodging",
+      "business_name": "Bumble Bee Ranch Adventures",
+      "url": "https://www.bumblebeeranch.com/",
+      "domain": "bumblebeeranch.com",
+      "phone": "623-694-1165",
+      "email": "Kelly@bumblebeeranch.com",
+      "official": true,
+      "verified_date": "2026-10-26",
+      "commercial_service_hypotheses": [
+        "parking-area sweeping and cleanup around guest/event traffic",
+        "exterior hardscape pressure washing",
+        "commercial window cleaning",
+        "event/venue janitorial and post-event cleanup",
+        "parking-area striping or pavement maintenance where applicable"
+      ],
+      "opportunity_qualification_required": true,
+      "note": "Direct company site identifies a 180-acre working guest ranch/event center with camping, RV hookups, guest accommodations and group events up to 300 people. Recurring exterior/facility needs are hypotheses and must be qualified."
+    },
+    {
+      "side": "buyer",
+      "market": "Mayer",
+      "category_key": "hotels_motels",
+      "category_label": "hotels motels lodging",
+      "business_name": "Arcosanti",
+      "url": "https://arcosanti.org/visit/",
+      "domain": "arcosanti.org",
+      "phone": "928-632-7135",
+      "email": null,
+      "official": true,
+      "verified_date": "2026-10-26",
+      "commercial_service_hypotheses": [
+        "guest-area and event-space janitorial support",
+        "commercial window cleaning",
+        "walkway/hardscape exterior cleaning",
+        "parking and arrival-area sweeping",
+        "event cleanup and facility-maintenance support"
+      ],
+      "opportunity_qualification_required": true,
+      "note": "Direct Arcosanti site confirms overnight guest rooms, tours, private events and an 860+ acre property at 13555 S Cross L Road, Mayer. Service opportunities are prospecting hypotheses only."
+    },
+    {
+      "side": "buyer",
+      "market": "Mayer",
+      "category_key": "warehouses_industrial",
+      "category_label": "warehouses industrial businesses distribution centers",
+      "business_name": "Mayer RV Storage",
+      "url": "https://www.mayerrvstorage.com/",
+      "domain": "mayerrvstorage.com",
+      "phone": "928-920-8544",
+      "email": "mayerrvstorage@gmail.com",
+      "official": true,
+      "verified_date": "2026-10-26",
+      "commercial_service_hypotheses": [
+        "lot sweeping and debris removal",
+        "parking/storage-space striping or numbering",
+        "pressure washing of entries and hardscape",
+        "dust and grounds-maintenance support",
+        "gate/entry-area facility maintenance"
+      ],
+      "opportunity_qualification_required": true,
+      "note": "Direct company site confirms an active secure RV/storage facility at 10510 S State Route 69, Mayer with gated access and outdoor vehicle storage. Exterior-maintenance needs must be qualified."
+    }
+  ]
+}
