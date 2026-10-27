@@ -88,7 +88,7 @@ jobs:
           assert "post /api/process-growth-fulfillment" in scheduler
 
           import re
-          allowed=set(s["service_key"] for s in services) | {"universal_request","vendor_partner","vendor_pilot_activation","vendor_response","job_update","facility_maintenance"}
+          allowed=set(s["service_key"] for s in services) | {"universal_request","vendor_partner","vendor_pilot_activation","vendor_response","job_update","facility_maintenance","growth_snapshot"}
           invalid=[]
           forms=0
           for html in root.rglob("*.html"):
