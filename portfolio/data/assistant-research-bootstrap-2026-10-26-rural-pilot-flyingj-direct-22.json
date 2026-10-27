@@ -1,0 +1,50 @@
+{
+  "researched_at": "2026-10-26",
+  "purpose": "Assistant-led direct travel-stop buyer census for thin BMC markets using current first-party Pilot/Flying J location pages.",
+  "safety": "Inventory seed only. Does not promote buyers/vendors and does not stage or send outreach.",
+  "count": 3,
+  "records": [
+    {
+      "side": "buyer",
+      "market": "Ash Fork",
+      "category_key": "retail",
+      "category_label": "Retail / Travel Stop",
+      "business_name": "ONE9 Travel Center #484",
+      "url": "https://locations.pilotflyingj.com/us/az/ash-fork/43-w-park-ave",
+      "domain": "locations.pilotflyingj.com",
+      "phone": "928-754-1285",
+      "email": null,
+      "official": true,
+      "verified_date": "2026-10-26",
+      "note": "Direct Pilot/Flying J location page confirms the 24-hour ONE9 Travel Center at 43 W Park Ave, Ash Fork, with fuel lanes, parking, showers, EV charging and food ordering."
+    },
+    {
+      "side": "buyer",
+      "market": "Winslow",
+      "category_key": "retail",
+      "category_label": "Retail / Travel Stop",
+      "business_name": "ONE9 Dealer #1362",
+      "url": "https://locations.pilotflyingj.com/us/az/winslow",
+      "domain": "locations.pilotflyingj.com",
+      "phone": "928-248-2070",
+      "email": null,
+      "official": true,
+      "verified_date": "2026-10-26",
+      "note": "Direct Pilot/Flying J Winslow directory confirms the 24-hour ONE9 Dealer at 2201 N Park Dr, Winslow."
+    },
+    {
+      "side": "buyer",
+      "market": "Winslow",
+      "category_key": "retail",
+      "category_label": "Retail / Travel Stop",
+      "business_name": "Flying J Travel Center #612",
+      "url": "https://locations.pilotflyingj.com/us/az/winslow/400-transcon-ln",
+      "domain": "locations.pilotflyingj.com",
+      "phone": "928-289-2081",
+      "email": null,
+      "official": true,
+      "verified_date": "2026-10-26",
+      "note": "Direct Pilot/Flying J location page confirms the 24-hour travel center at 400 Transcon Ln, Winslow, with restaurants, 12 fuel lanes, 146 public parking spaces, showers, laundry and truck care."
+    }
+  ]
+}
