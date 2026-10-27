@@ -53,6 +53,24 @@ DATASETS = {
         "category_label": "Hospice Providers",
         "minimum_az_rows": 100,
     },
+    "dialysis": {
+        "id": "23ew-n7w9",
+        "title": "Dialysis Facility - Listing by Facility",
+        "category_label": "Dialysis Centers",
+        "minimum_az_rows": 50,
+    },
+    "inpatient_rehab": {
+        "id": "7t8x-u3ir",
+        "title": "Inpatient Rehabilitation Facility - General Information",
+        "category_label": "Inpatient Rehabilitation Facilities",
+        "minimum_az_rows": 10,
+    },
+    "long_term_care_hospitals": {
+        "id": "azum-44iv",
+        "title": "Long-Term Care Hospital - General Information",
+        "category_label": "Long-Term Care Hospitals",
+        "minimum_az_rows": 3,
+    },
 }
 
 MARKETS = {
@@ -191,7 +209,7 @@ def record_from_row(dataset_key: str, spec: dict, row: dict, verified_date: str)
     zipcode = field(row, "ZIP Code", "Zip")
     county = field(row, "County/Parish", "County")
     phone = field(row, "Telephone Number", "Phone Number", "Phone")
-    ownership = field(row, "Ownership Type", "Type of Ownership", "Hospital Ownership")
+    ownership = field(row, "Ownership Type", "Type of Ownership", "Hospital Ownership", "Profit or Non-Profit")
     certification_date = field(
         row,
         "Certification Date",
