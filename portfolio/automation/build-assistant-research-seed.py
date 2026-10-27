@@ -138,6 +138,16 @@ def build_sql(data_dir):
     ]
     raw_count = sum(count for _, count in artifact_stats)
     markets = sorted({key[1] for key in grouped})
+    raw_by_market = {}
+    unique_by_market = {}
+    raw_by_side = {"buyer": 0, "vendor": 0}
+    unique_by_side = {"buyer": 0, "vendor": 0}
+    for key, entries in grouped.items():
+        side, market = key[0], key[1]
+        raw_by_market[market] = raw_by_market.get(market, 0) + len(entries)
+        unique_by_market[market] = unique_by_market.get(market, 0) + 1
+        raw_by_side[side] = raw_by_side.get(side, 0) + len(entries)
+        unique_by_side[side] = unique_by_side.get(side, 0) + 1
     out = []
     out.append("-- GENERATED FILE. Source of truth: portfolio/data/assistant-research-bootstrap-*.json")
     out.append("-- Regenerate with: python3 build-assistant-research-seed.py --output seed-assistant-research-bootstrap.generated.sql")
@@ -183,6 +193,10 @@ def build_sql(data_dir):
         "unique_rows": len(rows),
         "duplicate_rows_collapsed": raw_count - len(rows),
         "markets": markets,
+        "raw_by_market": dict(sorted(raw_by_market.items())),
+        "unique_by_market": dict(sorted(unique_by_market.items())),
+        "raw_by_side": raw_by_side,
+        "unique_by_side": unique_by_side,
     }
 
 
