@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "deploy-growth-audit-fix-20261027T0600Z",
+  "action": "deploy_update",
+  "created_at": "2026-10-27T06:00:00Z",
+  "expires_at": "2026-10-28T06:00:00Z",
+  "allow_external_actions": false,
+  "required_ci_sha": "4a41050185b4da229c36c2f40c02d093c26c7031",
+  "args": {}
+}
