@@ -20,3 +20,5 @@ Current production facts:
 First action next thread: query live Growth status + health + scheduler before writing code. Do not resend the seven first touches and do not delete Service Network assets.
 
 For the complete state, read Section 73 of `HANDOFF.md`.
+
+Known verification item before scaling: independently verify SPF/DKIM/DMARC and DSN/bounce suppression. SMTP/IMAP and the first seven sends are proven, but DNS authentication was not independently queried in this thread.
