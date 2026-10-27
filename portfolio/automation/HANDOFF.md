@@ -10521,3 +10521,31 @@ Build **qualification + experiment engine** before another broad public-site red
 - outcome feedback.
 
 Outbound remains OFF until the Growth-specific launch gates in the master plan are satisfied.
+
+
+---
+
+## 72. NOVEMBER 30 REVENUE DEADLINE — 2026-10-26
+
+Owner disclosed a material financial constraint: BMC needs to show real cash payoff by **November 30, 2026**.
+
+This is now a project-level priority.
+
+November is a **revenue-validation sprint**, not a broad build month.
+
+Authoritative rules were added to:
+- `portfolio/automation/GROWTH_INTELLIGENCE_MASTER_PLAN.md`
+
+Key implications:
+- no major new feature work unless it directly improves acquisition, checkout, fulfillment, deliverability/compliance, or measurement;
+- Growth qualification/sample/experiment engine is the immediate engineering priority;
+- test multiple niches in parallel using bounded cells;
+- move capacity toward niches that produce real paid orders;
+- pause losers early rather than burning the month;
+- first paid orders receive human QA, then repeated QA rules become automation;
+- scoreboard is real Stripe revenue and fulfilled orders, not research/database size or theoretical lead value;
+- preferred November target is roughly $2K-$5K gross collected, but this is a target, not a guarantee;
+- if hundreds of valid targeted contacts across properly executed niche tests produce no meaningful paid demand, stop treating the current Growth offer as validated and redeploy preserved assets.
+
+No Service Network assets were deleted. Archive branch remains:
+`archive/service-network-pre-growth-pivot-2026-10-26`
