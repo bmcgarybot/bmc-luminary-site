@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "owner-replay-one-click-growth-20261027T1733Z",
+  "action": "growth_owner_replay_email",
+  "created_at": "2026-10-27T17:33:00Z",
+  "expires_at": "2026-10-28T17:33:00Z",
+  "allow_external_actions": true,
+  "args": {}
+}
