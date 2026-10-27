@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "deploy-phoenix-full-census-20261027T0101Z",
+  "action": "deploy_update",
+  "allow_external_actions": false,
+  "created_at": "2026-10-27T01:01:00Z",
+  "expires_at": "2026-10-28T01:01:00Z",
+  "required_ci_sha": "f05ff6fcf2546de24edda14d58f367c61bb38092",
+  "args": {}
+}
