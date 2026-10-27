@@ -10869,3 +10869,80 @@ Not independently proven in this thread:
 - end-to-end DSN/bounce suppression behavior.
 
 Before materially increasing outbound volume, verify domain authentication and bounce handling. This should not block observing the already-launched seven-contact pressure-washing test, but it should be closed before scaling the tournament.
+
+
+---
+
+## Section 74 — Email launch incident, owner-preview gate, and corrected mail state (2026-10-27)
+
+### What went wrong
+
+The first live Growth action used seven real pressure-washing/exterior-cleaning businesses before the exact customer-facing email was tested in Brett's Gmail. The application treated a successful return from `aiosmtplib.send()` as `sent`, but that only proves the SMTP submission call returned without exception. It does not prove recipient inbox placement or final delivery.
+
+The HTML alternative also differed materially from the longer plain-text version. Gmail displayed the HTML version, which:
+- omitted the personalized greeting;
+- omitted the postal address and opt-out text;
+- used a large promotional-card presentation;
+- showed the long tracked URL as a visible fallback;
+- gave a weaker first impression than the intended plain-text copy.
+
+This is now treated as a launch-process failure, not as acceptable experimentation.
+
+### Exact production-path replay proof
+
+A one-shot owner replay endpoint was deployed while all three outbound campaign switches remained OFF.
+
+The system selected the first real recorded Growth send:
+- business: TLC Window Cleaning and Pressure Washing;
+- original recipient: `windowcleaningtlc@gmail.com`;
+- original recorded submission time: 2026-10-27T12:38:57.856305Z;
+- subject: `Sedona: 5 commercial accounts worth checking`.
+
+It rebuilt the same first-touch message and sent it through the same production `send_mail()` path with only the recipient changed to `brett.coon2@gmail.com`.
+
+Relay result `growth-owner-replay-20261027T1428Z` returned success with all outbound switches false. Brett then supplied a Gmail screenshot showing the message actually arrived at 7:30 AM Arizona time. This proves the BMC SMTP path can reach Gmail and proves what the old HTML looked like. It does **not** independently prove that each original recipient received its message.
+
+### Correct wording for the original seven
+
+Do not say "seven delivered."
+
+Use:
+**Seven Growth SMTP submissions returned success and the old application logic recorded them as sent. Final delivery/inbox placement for the seven is not independently verified.**
+
+### Permanent release gate
+
+From this incident forward:
+
+1. Customer-facing outreach code/templates must be deployed with all outbound switches OFF.
+2. The exact deployed template must be sent first to Brett's Gmail through the same production mail path.
+3. Brett must inspect the actual rendered message and explicitly approve it.
+4. Production stores the exact approved deployed SHA in `GROWTH_OWNER_APPROVED_SHA`.
+5. Growth launch readiness blocks unless `GROWTH_OWNER_APPROVED_SHA == git rev-parse HEAD`.
+6. Any subsequent code/template deployment invalidates approval and forces another owner preview.
+7. Only after approval may one controlled real prospect be sent, inspected for errors/bounces, and then a capped batch considered.
+
+### Current email hardening
+
+Master now contains changes intended to:
+- show sender as `BMC Service Network <contact@bmcservicenetwork.com>`;
+- add Date and Message-ID headers;
+- use a single deterministic Growth renderer for live and owner-preview sends;
+- include greeting and full core offer in HTML;
+- include postal address and visible opt-out in marketing HTML;
+- remove the visible raw tracking URL fallback;
+- use a simpler normal-business-email layout;
+- keep all campaign switches OFF during owner preview;
+- add an exact-commit owner approval control and launch-readiness block.
+
+Do not mark the new template approved until Brett has received and inspected the revised Gmail preview.
+
+### Still open before scaling
+
+- verify public SPF;
+- verify DKIM;
+- verify DMARC and alignment;
+- improve SMTP/audit logging beyond a boolean;
+- add Sent-folder/audit persistence;
+- add DSN/bounce classification and suppression;
+- review every customer-facing template in `EMAIL_TEMPLATE_REVIEW.md`;
+- retire redundant legacy Growth paths before broad outreach.
