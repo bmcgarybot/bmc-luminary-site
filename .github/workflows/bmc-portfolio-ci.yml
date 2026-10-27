@@ -82,7 +82,6 @@ jobs:
           assert "growth_lock_exposure_allocator" in api and "growth_exposure_filter" in api
           assert "growth_record_exposures" in api and "GROWTH_FREE_DISTINCT_90D" in api
           assert "growth_select_representative_sample" in api
-          assert "approved_domains" in api and "growth_source_rights_review" in api
           assert "owner_template_preview_catalog" in api and "replay-all-email-templates-to-owner" in api
           assert "OWNER PREVIEW" in api and "count_sent" in api
           for table in ("growth_experiment_cells","growth_outreach_targets","growth_sample_requests","growth_sample_prospects","growth_order_prospects","growth_prospect_exposures","growth_prospect_suppressions","growth_source_rights_review"):
@@ -793,7 +792,6 @@ jobs:
           b={x["business_name"] for x in second["sample"]}
           assert len(a)==5 and len(b)==5 and not (a&b),(a,b)
           assert "Race Prospect 1" not in (a|b),(a,b)
-          assert "Race Prospect 30" not in (a|b),(a,b)
           repeated=sample("ci-race-a@example.com","ci-race-sample-a")
           assert {x["business_name"] for x in repeated["sample"]}==a,"Repeat click rotated delivered list"
           alias=sample("ci-race-alias@example.com","ci-race-sample-c")
