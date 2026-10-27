@@ -1,0 +1,22 @@
+{
+  "researched_at": "2026-10-26",
+  "purpose": "Assistant-led direct federal-facility buyer evidence for a thin rural BMC market.",
+  "safety": "Inventory seed only. Does not promote buyers/vendors and does not stage or send outreach.",
+  "count": 1,
+  "records": [
+    {
+      "side": "buyer",
+      "market": "Skull Valley",
+      "category_key": "public_facilities",
+      "category_label": "Public & Government Facilities",
+      "business_name": "Skull Valley Post Office",
+      "url": "https://tools.usps.com/locations/details/1381790",
+      "domain": "tools.usps.com",
+      "phone": "928-442-3410",
+      "email": null,
+      "official": true,
+      "verified_date": "2026-10-26",
+      "note": "Direct USPS location page confirms the staffed Skull Valley Post Office at 3085 S Iron Springs Rd, Skull Valley, AZ 86338."
+    }
+  ]
+}
