@@ -1,0 +1,35 @@
+name: Assistant Census Artifact Export
+
+on:
+  push:
+    paths:
+      - 'portfolio/automation/export-homversa-census-artifacts.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Export complete Phoenix licensed-trade census artifacts
+        run: |
+          python3 portfolio/automation/export-homversa-census-artifacts.py \
+            --market Phoenix \
+            --date 2026-10-26 \
+            --output-dir portfolio/data
+      - name: Commit research artifacts
+        run: |
+          git config user.name "BMC Assistant Census"
+          git config user.email "actions@users.noreply.github.com"
+          git add portfolio/data/assistant-research-bootstrap-2026-10-26-phoenix-licensed-full-*.json
+          if git diff --cached --quiet; then
+            echo "No artifact changes."
+            exit 0
+          fi
+          git commit -m "Seed full Phoenix licensed trade census"
+          git push origin HEAD:master
