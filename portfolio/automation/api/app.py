@@ -2763,12 +2763,16 @@ async def process_growth_health(x_bmc_admin_key:str|None=Header(default=None)):
           problems.append("Growth outreach is enabled but SMTP/IMAP/postal/payment configuration is incomplete")
       if GROWTH_OUTREACH_ENABLED and status["staged_active"]<1:
           problems.append("Growth outreach is enabled but there are no active staged targets in the selected wave")
+      critical=await conn.fetchval("""select count(*) from exceptions
+        where status='open' and severity='critical' and type like 'growth_%' and type<>'growth_health'""")
+      if GROWTH_OUTREACH_ENABLED and int(critical or 0)>0:
+          problems.append(f"{int(critical or 0)} critical Growth exception(s) are open")
       for problem in problems:
           await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
             select 'growth_health','critical',$1,$2
             where not exists(select 1 from exceptions where type='growth_health' and status='open' and summary=$1)""",
             problem,"Pause Growth outreach or repair the reported launch gate before sending more")
-      return {**status,"health_ok":not problems,"problems":problems}
+      return {**status,"health_ok":not problems,"problems":problems,"critical_growth_exceptions":int(critical or 0)}
 
 @app.post("/api/process-growth-nurture")
 async def process_growth_nurture(x_bmc_admin_key:str|None=Header(default=None)):
@@ -3446,6 +3450,11 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
         raise HTTPException(409,"IMAP reply/opt-out handling must be configured before Growth outreach can send.")
     sent=0
     async with app.state.pool.acquire() as conn:
+      critical=await conn.fetchval("""select count(*) from exceptions
+        where status='open' and severity='critical' and type like 'growth_%'""")
+      if int(critical or 0)>0:
+        return {"ok":True,"enabled":True,"sent":0,"blocked":True,
+          "message":f"Growth outreach paused by {int(critical or 0)} open critical Growth exception(s)."}
       already=await conn.fetchval("""select count(*) from outreach where entity_type='growth_customer'
         and campaign='growth_sales' and sent_at>=date_trunc('day',now())""")
       allowance=max(0,GROWTH_OUTREACH_DAILY_LIMIT-int(already or 0))
