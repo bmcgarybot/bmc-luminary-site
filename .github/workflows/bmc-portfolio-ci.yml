@@ -836,6 +836,59 @@ jobs:
           asyncio.run(check())
           PY
 
+          # Natural-language service search regression coverage.
+          docker compose --env-file .env.ci exec -T ops_api python - <<'PY'
+          from app import classify_with_rules
+          cases=[
+            ("need a plumber","backflow_plumbing"),
+            ("my toilet is overflowing","backflow_plumbing"),
+            ("leaking pipe","backflow_plumbing"),
+            ("electrician near me","electrical_service"),
+            ("breaker keeps tripping","electrical_service"),
+            ("furnace repair","hvac_heat"),
+            ("air conditioner not cooling","hvac_heat"),
+            ("clean my house","residential_cleaning"),
+            ("office cleaning","commercial_cleaning"),
+            ("remove a dead tree","tree_service"),
+            ("sprinkler repair","landscaping"),
+            ("haul away old couch","junk_hauling"),
+            ("fix my fryer","restaurant_equipment"),
+            ("walk in cooler","restaurant_repair"),
+            ("commercial ice maker","ice_machine"),
+            ("restaurant hood cleaning","hood_exhaust"),
+            ("grease trap","grease_drain"),
+            ("need a tow truck","towing_roadside"),
+            ("flat tire","mobile_tire_battery"),
+            ("cracked windshield","auto_glass"),
+            ("mobile mechanic","vehicle_services"),
+            ("brake repair","auto_repair_shop"),
+            ("termite treatment","pest_control"),
+            ("pressure washing","pressure_washing"),
+            ("wash windows","window_cleaning"),
+            ("strip and wax","floor_carpet"),
+            ("parking lot striping","parking_lot"),
+            ("rekey my house","locksmith_access"),
+            ("fire extinguisher","fire_safety"),
+            ("septic pumping","rural_property"),
+            ("pool pump","pool_desert_property"),
+            ("airbnb turnover","str_property_care"),
+            ("snow removal","snow_service"),
+            ("garage door repair","garage_door"),
+            ("dog poop pickup","pet_waste"),
+            ("dog walker","pet_sitting"),
+            ("mobile groomer","mobile_pet_grooming"),
+            ("stage my house","home_staging"),
+            ("prepare home for sale","realtor_listing_prep"),
+            ("facility maintenance","facility_maintenance"),
+            ("store sign repair","sign_lighting"),
+            ("dryer vent cleaning","duct_vent"),
+          ]
+          for phrase,expected in cases:
+              result=classify_with_rules(phrase)
+              assert result and result["service_key"]==expected,(phrase,result,expected)
+          print("PASS",len(cases),"natural-language searches")
+          PY
+
           # Exact real-world search regressions from manual QA.
           curl -fsS -X POST http://127.0.0.1:8000/api/service-search \
             -H 'Content-Type: application/json' \
