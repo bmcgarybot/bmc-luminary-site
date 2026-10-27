@@ -1,0 +1,49 @@
+name: Assistant ADOT Valid Dealer Census Export
+
+on:
+  push:
+    paths:
+      - 'portfolio/automation/export-adot-valid-dealer-census.py'
+      - '.github/workflows/assistant-adot-valid-dealer-census.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Excel parser
+        run: python3 -m pip install --quiet pandas xlrd
+
+      - name: Export current ADOT valid dealers for BMC markets
+        run: |
+          python3 portfolio/automation/export-adot-valid-dealer-census.py \
+            --date 2026-10-26 \
+            --output-dir portfolio/data
+
+      - name: Validate deterministic census builder
+        run: |
+          python3 portfolio/automation/build-assistant-research-seed.py \
+            --data-dir portfolio/data \
+            --output /tmp/assistant-research-seed.sql \
+            --summary-json 2>/tmp/census-summary.json
+          cat /tmp/census-summary.json
+
+      - name: Commit ADOT government-registry artifact
+        run: |
+          git config user.name "BMC Assistant Census"
+          git config user.email "actions@users.noreply.github.com"
+          git add portfolio/data/assistant-research-bootstrap-2026-10-26-adot-valid-dealers-33.json
+          if git diff --cached --quiet; then
+            echo "No ADOT valid-dealer artifact changes."
+            exit 0
+          fi
+          git commit -m "Seed ADOT valid dealer commercial buyer census"
+          git pull --rebase origin master
+          git push origin HEAD:master
