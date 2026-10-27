@@ -11030,3 +11030,36 @@ User directive: Systems scale, feelings fail. Never repeatedly give the same top
 Do not merge or deploy merely because source code exists. Keep all provider, buyer and Growth outbound switches OFF. Preserve old network and research census.
 
 Section 77 scope update: Owner deprioritized source-rights checks for this build. Source reviews remain separately documented, but growth candidate selection and launch-readiness source-rights gate were removed from this PR. Exposure caps, history, objections, and deterministic rotation remain enforced. Do not confuse this with approval of the provenance of any record.
+
+
+## Section 78 — End-of-thread verified handoff (Oct 27, 2026)
+USER REQUEST: deliver handoff immediately; user strongly prioritizes deterministic exposure rotation, fairness and autonomous fulfillment. They requested deprioritizing source-licensing research because they believe provenance cannot be proven. Do not endorse evasion or delete safeguards; source-rights gate presently FAILS CLOSED and must be treated as a separate policy issue to resolve before public commercial launches.
+
+Code branch: safety/prospect-exposure-gates-20261027; open PR #5: https://github.com/bmcgarybot/bmc-luminary-site/pull/5
+Latest VERIFIED CI checkpoint before this handoff: PR head e0ca55b08e037e5778d072b7d38ed6dda25b30e5 ; GitHub Actions 40597040775 (PR) and 40597037303 (push) both SUCCESS. Verify CI again after this handoff-only commit.
+PR is NOT merged, VPS is NOT deployed. No production outreach was enabled.
+
+Changes on safety branch:
+1. Shared growth_prospect_exposures ledger for free and paid distribution, historical backfill, suppression, recipient business and shared contact keys.
+2. Free five now chosen across fit percentiles rather than repeatedly using top five; repeat clicks reuse saved selection.
+3. Exposure limits (proposed policy): max 1 distinct free recipient per 90d; 3 recipients total/90d; 8 lifetime; 90d free cooldown/30d paid cooldown.
+4. All sample allocation in advisory-locked transaction; paid reservation in transaction; paid fulfillment checks source rights, suppression, score and count.
+5. Repeated free claims blocked across email and normalized business name in same service/market.
+6. Unapproved commercial redistribution domains filtered using growth_source_rights_review (unknown fails closed), with launch reserve audit.
+7. CI full integration includes concurrent requests, distinct synthetic contact numbers, same-business/email alternate claims, source unapproval, suppression, sample-to-paid 100 deliverable and no repeat sample exposure.
+8. CI initially uncovered invalid empty source_target_id foreign key; fixed by storing NULL. Synthetic phone collision proved shared phone blocking works; changed fixtures, not caps.
+9. Full policy and residual risks in portfolio/automation/PROSPECT_EXPOSURE_POLICY.md; Section 77 in this handoff also documents initial design.
+
+NEXT THREAD INSTRUCTIONS:
+- Confirm PR #5 current head, CI, contents; re-check any race between master and branch before merge.
+- Audit lingering reliability risks: historical backfill idempotency and shared-contact normalization; status reserved vs delivered on SMTP failure (sample exposures currently marked delivered before SMTP success); canonical parent/property business resolution; verification of rights by individual source/evidence, rather than approving domain blanket.
+- CRITICAL: The policy now fails closed until rights-reviewed candidate inventory exists; this was deliberate safety, but user's main concern is exposure rotation. Avoid allowing provenance disputes to derail exposure work. Don't evade or advise concealing sources.
+- Audit Growth paid-customer no-repeat handling and tests for micro/starter/refresh packs, which remain conceptual, not all wired.
+- Evaluate all 21 markets after caps for sufficient inventory and honest packaging.
+- Keep every outbound switch FALSE (OUTREACH_ENABLED, BUYER_OUTREACH_ENABLED, GROWTH_OUTREACH_ENABLED); preserve signed-click path, exact SHA owner preview gating, website and legacy Service Network branch.
+- User values <10 min/day owner workload, no repeated intake, one obvious next step and ethical repeat sales.
+- Never claim PR branch equals live production or Green CI equals permission to launch.
+
+Preserved assets: 75,098 strict unique researched census records, 21 markets, 54+ service categories; BMC Growth and Service Network original paths. Do not delete or archive away customer flows.
+
+At handoff all product prices are not necessarily implemented: $499 100 total Growth, $749 Premium; $299 Competitor, $699 Expansion, $149-249 refresh proposed; downsell $179 25 total/$79 10 more/$20 five more proposed. They need account/dedupe and fulfillment wiring before public offer.
