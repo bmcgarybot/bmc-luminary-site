@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Chino Valley",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/chino-valley/drywall-contractors",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Chino Valley",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "M C Drywall And Demolition LLC",
+      "url": "https://homversa.com/az/chino-valley/drywall-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "226972",
+      "trade": "drywall-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #226972 | registry-derived Chino Valley drywall-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Chino Valley",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Ryan Drywall LLC",
+      "url": "https://homversa.com/az/chino-valley/drywall-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "226956",
+      "trade": "drywall-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #226956 | registry-derived Chino Valley drywall-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Chino Valley",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Right Angle Acoustics LLC",
+      "url": "https://homversa.com/az/chino-valley/drywall-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "343554",
+      "trade": "drywall-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #343554 | registry-derived Chino Valley drywall-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}

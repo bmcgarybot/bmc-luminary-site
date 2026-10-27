@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Cottonwood",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/cottonwood/low-voltage-contractors",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Cottonwood",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Wired Up Systems LLC",
+      "url": "https://homversa.com/az/cottonwood/low-voltage-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "226632",
+      "trade": "low-voltage-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #226632 | registry-derived Cottonwood low-voltage-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Cottonwood",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Technically Integrated Inc.",
+      "url": "https://homversa.com/az/cottonwood/low-voltage-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "263909",
+      "trade": "low-voltage-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #263909 | registry-derived Cottonwood low-voltage-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Cottonwood",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Resolute Technology LLC",
+      "url": "https://homversa.com/az/cottonwood/low-voltage-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "356589",
+      "trade": "low-voltage-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #356589 | registry-derived Cottonwood low-voltage-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}

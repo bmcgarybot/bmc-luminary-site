@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Bullhead City",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/bullhead-city/flooring-contractors",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Bullhead City",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Riviera Floor Covering Inc.",
+      "url": "https://homversa.com/az/bullhead-city/flooring-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "101537",
+      "trade": "flooring-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #101537 | registry-derived Bullhead City flooring-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Bullhead City",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Frontline Stc Inc.",
+      "url": "https://homversa.com/az/bullhead-city/flooring-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "341993",
+      "trade": "flooring-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #341993 | registry-derived Bullhead City flooring-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Bullhead City",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "67 Industries LLC",
+      "url": "https://homversa.com/az/bullhead-city/flooring-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "356679",
+      "trade": "flooring-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #356679 | registry-derived Bullhead City flooring-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}

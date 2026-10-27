@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Cottonwood",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/cottonwood/pool-contractors",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Cottonwood",
+      "category_key": "pool_desert_property",
+      "category_label": "Pool & Outdoor Property Care",
+      "business_name": "High Desert Pool And Spa LLC",
+      "url": "https://homversa.com/az/cottonwood/pool-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "160961",
+      "trade": "pool-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #160961 | registry-derived Cottonwood pool-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Cottonwood",
+      "category_key": "pool_desert_property",
+      "category_label": "Pool & Outdoor Property Care",
+      "business_name": "Jim Midkiff Pools",
+      "url": "https://homversa.com/az/cottonwood/pool-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "337012",
+      "trade": "pool-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #337012 | registry-derived Cottonwood pool-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Cottonwood",
+      "category_key": "pool_desert_property",
+      "category_label": "Pool & Outdoor Property Care",
+      "business_name": "Living Landscapes Az LLC",
+      "url": "https://homversa.com/az/cottonwood/pool-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "366782",
+      "trade": "pool-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #366782 | registry-derived Cottonwood pool-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}

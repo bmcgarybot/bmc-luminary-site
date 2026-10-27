@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Bullhead City",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/bullhead-city/glass-contractors",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Bullhead City",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Picture Perfect Glass & Mirrors",
+      "url": "https://homversa.com/az/bullhead-city/glass-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "352695",
+      "trade": "glass-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #352695 | registry-derived Bullhead City glass-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Bullhead City",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Tri-State Glass",
+      "url": "https://homversa.com/az/bullhead-city/glass-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "356334",
+      "trade": "glass-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #356334 | registry-derived Bullhead City glass-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Bullhead City",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Francos Glass LLC",
+      "url": "https://homversa.com/az/bullhead-city/glass-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "362732",
+      "trade": "glass-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #362732 | registry-derived Bullhead City glass-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}

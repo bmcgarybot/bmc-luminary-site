@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Kingman",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/kingman/well-drilling-contractors",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Kingman",
+      "category_key": "rural_property",
+      "category_label": "Septic, Grading & Wells",
+      "business_name": "Briner Drilling Inc.",
+      "url": "https://homversa.com/az/kingman/well-drilling-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "092904",
+      "trade": "well-drilling-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #092904 | registry-derived Kingman well-drilling-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Kingman",
+      "category_key": "rural_property",
+      "category_label": "Septic, Grading & Wells",
+      "business_name": "Brown Drilling",
+      "url": "https://homversa.com/az/kingman/well-drilling-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "230768",
+      "trade": "well-drilling-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #230768 | registry-derived Kingman well-drilling-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Kingman",
+      "category_key": "rural_property",
+      "category_label": "Septic, Grading & Wells",
+      "business_name": "Mohave Well Service Inc.",
+      "url": "https://homversa.com/az/kingman/well-drilling-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "335489",
+      "trade": "well-drilling-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #335489 | registry-derived Kingman well-drilling-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}

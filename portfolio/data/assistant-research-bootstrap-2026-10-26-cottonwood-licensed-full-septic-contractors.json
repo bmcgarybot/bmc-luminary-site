@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Cottonwood",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/cottonwood/septic-contractors",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Cottonwood",
+      "category_key": "rural_property",
+      "category_label": "Septic, Grading & Wells",
+      "business_name": "Septic Service Excavation LLC",
+      "url": "https://homversa.com/az/cottonwood/septic-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "310180",
+      "trade": "septic-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #310180 | registry-derived Cottonwood septic-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Cottonwood",
+      "category_key": "rural_property",
+      "category_label": "Septic, Grading & Wells",
+      "business_name": "Advanced Septic Service LLC",
+      "url": "https://homversa.com/az/cottonwood/septic-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "336542",
+      "trade": "septic-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #336542 | registry-derived Cottonwood septic-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Cottonwood",
+      "category_key": "rural_property",
+      "category_label": "Septic, Grading & Wells",
+      "business_name": "Nichols Mechanical LLC",
+      "url": "https://homversa.com/az/cottonwood/septic-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "368067",
+      "trade": "septic-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #368067 | registry-derived Cottonwood septic-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}
