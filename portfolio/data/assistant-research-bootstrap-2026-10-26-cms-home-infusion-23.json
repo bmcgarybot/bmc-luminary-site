@@ -1,0 +1,69 @@
+{
+  "generated_at": "2026-10-26T23:59:00Z",
+  "purpose": "Assistant-led BMC-market buyer census from official CMS Home Infusion Therapy Providers data.",
+  "safety": "Inventory seed only. Does not promote buyers/vendors and does not stage or send outreach.",
+  "source": "https://data.cms.gov/data-api/v1/dataset/31f25ab6-2fe3-4bad-ac5a-90635ed79935/data-viewer",
+  "source_catalog": "https://data.cms.gov/data.json",
+  "source_stats": {
+    "series_title": "Home Infusion Therapy Providers",
+    "latest_version_uuid": "31f25ab6-2fe3-4bad-ac5a-90635ed79935",
+    "latest_version_title": "Home Infusion Therapy Providers : 2026-10-20",
+    "catalog_modified": "2026-10-20",
+    "source_rows": 1724,
+    "arizona_rows": 10,
+    "bmc_market_rows": 2,
+    "by_market": {
+      "Flagstaff": 1,
+      "Phoenix": 1
+    }
+  },
+  "count": 2,
+  "records": [
+    {
+      "side": "buyer",
+      "market": "Flagstaff",
+      "category_key": "medical_centers",
+      "category_label": "Home Infusion Therapy Providers",
+      "business_name": "SOLEO HEALTH INC",
+      "url": "https://data.cms.gov/data-api/v1/dataset/31f25ab6-2fe3-4bad-ac5a-90635ed79935/data-viewer",
+      "domain": "data.cms.gov",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "official_registry": true,
+      "verified_date": "2026-10-26",
+      "address": null,
+      "zip": "86001-3125",
+      "cms_dataset": "home_infusion",
+      "cms_dataset_title": "Home Infusion Therapy Providers",
+      "cms_dataset_version_id": "31f25ab6-2fe3-4bad-ac5a-90635ed79935",
+      "npi": null,
+      "cms_ccn": null,
+      "cms_enrollment_id": "O20201216003032",
+      "note": "Centers for Medicare & Medicaid Services (CMS) Home Infusion Therapy Providers government record | enrollment O20201216003032"
+    },
+    {
+      "side": "buyer",
+      "market": "Phoenix",
+      "category_key": "medical_centers",
+      "category_label": "Home Infusion Therapy Providers",
+      "business_name": "GRAND CANYON HOME HEALTH CAR",
+      "url": "https://data.cms.gov/data-api/v1/dataset/31f25ab6-2fe3-4bad-ac5a-90635ed79935/data-viewer",
+      "domain": "data.cms.gov",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "official_registry": true,
+      "verified_date": "2026-10-26",
+      "address": null,
+      "zip": "85029-4730",
+      "cms_dataset": "home_infusion",
+      "cms_dataset_title": "Home Infusion Therapy Providers",
+      "cms_dataset_version_id": "31f25ab6-2fe3-4bad-ac5a-90635ed79935",
+      "npi": null,
+      "cms_ccn": null,
+      "cms_enrollment_id": "O20240328002376",
+      "note": "Centers for Medicare & Medicaid Services (CMS) Home Infusion Therapy Providers government record | enrollment O20240328002376"
+    }
+  ]
+}
