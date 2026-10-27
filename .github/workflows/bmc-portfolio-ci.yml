@@ -566,6 +566,95 @@ jobs:
           # Prove First Wave provider copy uses the dedicated existing-vendor activation path.
           export BMC_ADMIN_KEY="$(grep '^BMC_ADMIN_KEY=' .env.ci | cut -d= -f2-)"
 
+          # CI_GROWTH_E2E_V1 — prove free sample -> reserve gate -> nurture -> paid fulfillment.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            insert into market_inventory_candidates(
+              side,market,category_key,category_label,business_name,source_url,source_domain,public_phone,
+              official_site,source_tier,verification_status,last_verified_at,status,last_seen_at
+            )
+            select 'buyer','CI Growth Market','restaurants','Restaurants',
+              'CI Commercial Prospect '||g,
+              'https://ci-prospect-'||g||'.example.com','ci-prospect-'||g||'.example.com',
+              '928555'||lpad(g::text,4,'0'),true,'direct','direct_evidence',now(),'discovered',now()
+            from generate_series(1,135) g
+            on conflict do nothing;
+
+            insert into market_inventory_candidates(
+              side,market,category_key,category_label,business_name,source_url,source_domain,public_email,public_phone,
+              official_site,source_tier,verification_status,last_verified_at,status,last_seen_at
+            ) values(
+              'vendor','CI Growth Market','pressure_washing','Pressure Washing','CI Pressure Wash Co',
+              'https://ci-pressure.example.com','ci-pressure.example.com','ci-pressure@example.com','9285559999',
+              true,'direct','direct_evidence',now(),'discovered',now()
+            ) on conflict do nothing;"
+
+          curl -fsS -X POST http://127.0.0.1:8000/api/admin/stage-growth-pressure-washing \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_growth_stage.json
+          python - <<'PY'
+          import json
+          d=json.load(open("/tmp/bmc_growth_stage.json"))
+          assert d["ok"] is True
+          assert d["staged"] >= 1, d
+          assert d["qualified_pool_by_market"]["CI Growth Market"] >= 125, d
+          PY
+
+          curl -fsS -X POST http://127.0.0.1:8000/api/intake \
+            -H 'Content-Type: application/json' \
+            -d '{"submission_id":"ci-growth-sample-1","form_type":"growth_snapshot","service_key":"pressure_washing","business_name":"CI Pressure Wash Co","contact_name":"CI Owner","email":"ci-owner@example.com","market":"CI Growth Market","ideal_customer":"restaurants","minimum_job":"500","consent":"yes","source_target_id":"inventory:'"$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select candidate_id from market_inventory_candidates where side='vendor' and public_email='ci-pressure@example.com' limit 1;")"'"}' \
+            >/tmp/bmc_growth_sample.json
+          python - <<'PY'
+          import json
+          d=json.load(open("/tmp/bmc_growth_sample.json"))
+          assert d["ok"] is True
+          assert d["status"] == "sample_ready", d
+          assert len(d["sample"]) == 5, d
+          assert d["qualified_pool"] >= 125, d
+          assert "buy.stripe.com" in d["checkout_url"], d
+          assert "client_reference_id=growth_" in d["checkout_url"], d
+          assert all(x["fit_score"] >= 65 for x in d["sample"]), d
+          PY
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from growth_sample_prospects where sample_id=(select sample_id from growth_sample_requests where submission_id='ci-growth-sample-1');")" -eq 5
+
+          # Force the first nurture reminder due and prove it advances without sending when not due again.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            update growth_sample_requests set next_nurture_at=now()-interval '1 minute'
+            where submission_id='ci-growth-sample-1';"
+          curl -fsS -X POST http://127.0.0.1:8000/api/process-growth-nurture \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_growth_nurture_e2e.json
+          python - <<'PY'
+          import json
+          d=json.load(open("/tmp/bmc_growth_nurture_e2e.json"))
+          assert d["ok"] is True and d["sent"] == 1, d
+          PY
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select nurture_step from growth_sample_requests where submission_id='ci-growth-sample-1';")" -eq 1
+
+          # Simulate a paid, already-linked order. The fulfillment endpoint must build exactly
+          # 100 unique, in-market, score-passing rows and complete the order automatically.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            with s as (select sample_id,email from growth_sample_requests where submission_id='ci-growth-sample-1'),
+            o as (
+              insert into orders(product_key,customer_email,amount_cents,currency,payment_status,status,growth_sample_id)
+              select 'growth_pack_starter',email,49900,'usd','paid','ready_for_fulfillment',sample_id from s
+              returning order_id,growth_sample_id
+            )
+            insert into tasks(order_id,service_key,task_type,status,priority,owner,summary,payload)
+            select order_id,'growth_pack','fulfill_growth_pack','open','high','bmc_operator','CI Growth fulfillment',
+              jsonb_build_object('growth_sample_id',growth_sample_id) from o;"
+          curl -fsS -X POST http://127.0.0.1:8000/api/process-growth-fulfillment \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_growth_fulfill_e2e.json
+          python - <<'PY'
+          import json
+          d=json.load(open("/tmp/bmc_growth_fulfill_e2e.json"))
+          assert d["ok"] is True
+          assert d["fulfilled"] == 1, d
+          assert d["exceptions"] == 0, d
+          PY
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from growth_order_prospects where order_id=(select order_id from orders where customer_email='ci-owner@example.com' order by created_at desc limit 1);")" -eq 100
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct lower(business_name)) from growth_order_prospects where order_id=(select order_id from orders where customer_email='ci-owner@example.com' order by created_at desc limit 1);")" -eq 100
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from growth_order_prospects where order_id=(select order_id from orders where customer_email='ci-owner@example.com' order by created_at desc limit 1) and (fit_score<65 or market<>'CI Growth Market');")" -eq 0
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from orders where customer_email='ci-owner@example.com' order by created_at desc limit 1;")" = "fulfilled"
+
+
           # Exact real-world search regressions from manual QA.
           curl -fsS -X POST http://127.0.0.1:8000/api/service-search \
             -H 'Content-Type: application/json' \
