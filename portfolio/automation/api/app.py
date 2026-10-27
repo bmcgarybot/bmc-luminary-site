@@ -1545,7 +1545,15 @@ BMC Luminary Ventures LLC
           "Review the provider pilot terms",
           f"{PUBLIC_SITE_URL}/provider-pilot/"
         )
-        await send_mail(applicant_email,"We got your BMC provider application",body,html_body)
+        delivered=await send_mail(applicant_email,"We got your BMC provider application",body,html_body)
+        if delivered:
+            await event(conn,"vendor",vid,"application_receipt_sent",{"email":applicant_email})
+        else:
+            await conn.execute("""insert into exceptions(type,vendor_id,severity,summary,recommended_action)
+              values('vendor_application_receipt_delivery_failure',$1,'high',$2,$3)""",
+              vid,f"Provider application receipt could not be delivered: {business}",
+              "Verify transactional SMTP and applicant email; resend the application receipt after mail is healthy")
+            await event(conn,"vendor",vid,"application_receipt_delivery_failed",{"email":applicant_email})
     return {"ok":True,"status":"application_received","vendor_id":vid,"message":"Application received. We’ll review the work and area you selected, then contact you if the pilot is a fit."}
 
 
