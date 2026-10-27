@@ -300,13 +300,13 @@
   async function maybeClaimGrowthSample(){
     const q=new URLSearchParams(location.search);
     const target=q.get("target"),claim=q.get("claim");
-    if(!target||!claim||q.get("preview")==="1")return;
+    if(!target||!claim)return;
     const form=document.querySelector('form[data-form-type="growth_snapshot"]');
     if(!form)return;
     const note=form.querySelector("[data-form-notice]");
     const pageEndpoint=document.querySelector('meta[name="bmc-webhook"]')?.content||GLOBAL_WEBHOOK;
     const endpoint=pageEndpoint.replace(/\/api\/intake(?:\?.*)?$/,"/api/growth/claim-free-five");
-    const payload={target_id:target,claim:claim,page:location.href,referrer:document.referrer||""};
+    const payload={target_id:target,claim:claim,preview:q.get("preview")||"",page:location.href,referrer:document.referrer||""};
     ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(function(k){if(q.get(k))payload[k]=q.get(k)});
     if(note){note.textContent="Building your 5 researched commercial targets…";note.classList.add("show");}
     try{
