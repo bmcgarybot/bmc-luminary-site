@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Ash Fork",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/ash-fork/general-contractors",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Ash Fork",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "David Reyes Construction",
+      "url": "https://homversa.com/az/ash-fork/general-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "289986",
+      "trade": "general-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #289986 | registry-derived Ash Fork general-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Ash Fork",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Olive Branch Construction LLC",
+      "url": "https://homversa.com/az/ash-fork/general-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "334166",
+      "trade": "general-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #334166 | registry-derived Ash Fork general-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Ash Fork",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "We Build Houses Inc.",
+      "url": "https://homversa.com/az/ash-fork/general-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "364170",
+      "trade": "general-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #364170 | registry-derived Ash Fork general-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}

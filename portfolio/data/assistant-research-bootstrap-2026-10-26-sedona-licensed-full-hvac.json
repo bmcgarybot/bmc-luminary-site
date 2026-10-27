@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Sedona",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/sedona/hvac",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Sedona",
+      "category_key": "hvac_heat",
+      "category_label": "Heating & Air",
+      "business_name": "S O S Express Group LLC",
+      "url": "https://homversa.com/az/sedona/hvac",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "181101",
+      "trade": "hvac",
+      "verified_date": "2026-09-21",
+      "note": "ROC #181101 | registry-derived Sedona hvac listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Sedona",
+      "category_key": "hvac_heat",
+      "category_label": "Heating & Air",
+      "business_name": "Mike Reed Air Conditioning And Heating Inc.",
+      "url": "https://homversa.com/az/sedona/hvac",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "262309",
+      "trade": "hvac",
+      "verified_date": "2026-09-21",
+      "note": "ROC #262309 | registry-derived Sedona hvac listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Sedona",
+      "category_key": "hvac_heat",
+      "category_label": "Heating & Air",
+      "business_name": "Air Craft LLC",
+      "url": "https://homversa.com/az/sedona/hvac",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "338765",
+      "trade": "hvac",
+      "verified_date": "2026-09-21",
+      "note": "ROC #338765 | registry-derived Sedona hvac listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}

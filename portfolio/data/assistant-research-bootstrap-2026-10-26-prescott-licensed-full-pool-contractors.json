@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Prescott",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/prescott/pool-contractors",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Prescott",
+      "category_key": "pool_desert_property",
+      "category_label": "Pool & Outdoor Property Care",
+      "business_name": "Champagne Pools LLC",
+      "url": "https://homversa.com/az/prescott/pool-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "265510",
+      "trade": "pool-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #265510 | registry-derived Prescott pool-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Prescott",
+      "category_key": "pool_desert_property",
+      "category_label": "Pool & Outdoor Property Care",
+      "business_name": "Pristine Aquatic Consultants LLC",
+      "url": "https://homversa.com/az/prescott/pool-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "316759",
+      "trade": "pool-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #316759 | registry-derived Prescott pool-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Prescott",
+      "category_key": "pool_desert_property",
+      "category_label": "Pool & Outdoor Property Care",
+      "business_name": "Canyon Lux Outdoors LLC",
+      "url": "https://homversa.com/az/prescott/pool-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "363111",
+      "trade": "pool-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #363111 | registry-derived Prescott pool-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}

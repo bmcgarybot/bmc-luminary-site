@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Dewey-Humboldt",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/dewey-humboldt/general-contractors",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Dewey-Humboldt",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "A Swollen Thumb Contracting Corporation",
+      "url": "https://homversa.com/az/dewey-humboldt/general-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "136890",
+      "trade": "general-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #136890 | registry-derived Dewey-Humboldt general-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Dewey-Humboldt",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Dunbyus Development Company Inc.",
+      "url": "https://homversa.com/az/dewey-humboldt/general-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "140524",
+      "trade": "general-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #140524 | registry-derived Dewey-Humboldt general-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Dewey-Humboldt",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Morales Construction LLC",
+      "url": "https://homversa.com/az/dewey-humboldt/general-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "367868",
+      "trade": "general-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #367868 | registry-derived Dewey-Humboldt general-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}

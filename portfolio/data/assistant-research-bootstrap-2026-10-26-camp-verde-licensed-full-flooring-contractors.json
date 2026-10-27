@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Camp Verde",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/camp-verde/flooring-contractors",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Camp Verde",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Diamond Creek Flooring LLC",
+      "url": "https://homversa.com/az/camp-verde/flooring-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "231390",
+      "trade": "flooring-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #231390 | registry-derived Camp Verde flooring-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Camp Verde",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Majestic Flooring LLC",
+      "url": "https://homversa.com/az/camp-verde/flooring-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "284077",
+      "trade": "flooring-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #284077 | registry-derived Camp Verde flooring-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Camp Verde",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Rick Windes Wood Floors LLC",
+      "url": "https://homversa.com/az/camp-verde/flooring-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "335468",
+      "trade": "flooring-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #335468 | registry-derived Camp Verde flooring-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}

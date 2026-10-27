@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Mayer",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/mayer/electricians",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Mayer",
+      "category_key": "electrical_service",
+      "category_label": "Electrician",
+      "business_name": "Pat Electric LLC",
+      "url": "https://homversa.com/az/mayer/electricians",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "246423",
+      "trade": "electricians",
+      "verified_date": "2026-09-21",
+      "note": "ROC #246423 | registry-derived Mayer electricians listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Mayer",
+      "category_key": "electrical_service",
+      "category_label": "Electrician",
+      "business_name": "Jrae Electric LLC",
+      "url": "https://homversa.com/az/mayer/electricians",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "328513",
+      "trade": "electricians",
+      "verified_date": "2026-09-21",
+      "note": "ROC #328513 | registry-derived Mayer electricians listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Mayer",
+      "category_key": "electrical_service",
+      "category_label": "Electrician",
+      "business_name": "Ridgeline Electrical LLC",
+      "url": "https://homversa.com/az/mayer/electricians",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "362082",
+      "trade": "electricians",
+      "verified_date": "2026-09-21",
+      "note": "ROC #362082 | registry-derived Mayer electricians listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}

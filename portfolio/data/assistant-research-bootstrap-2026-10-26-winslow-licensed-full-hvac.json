@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Winslow",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/winslow/hvac",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Winslow",
+      "category_key": "hvac_heat",
+      "category_label": "Heating & Air",
+      "business_name": "A Z E Electrical Contractors LLC",
+      "url": "https://homversa.com/az/winslow/hvac",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "318507",
+      "trade": "hvac",
+      "verified_date": "2026-09-21",
+      "note": "ROC #318507 | registry-derived Winslow hvac listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Winslow",
+      "category_key": "hvac_heat",
+      "category_label": "Heating & Air",
+      "business_name": "Northern Arizona Electric",
+      "url": "https://homversa.com/az/winslow/hvac",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "323094",
+      "trade": "hvac",
+      "verified_date": "2026-09-21",
+      "note": "ROC #323094 | registry-derived Winslow hvac listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Winslow",
+      "category_key": "hvac_heat",
+      "category_label": "Heating & Air",
+      "business_name": "Definite Air LLC",
+      "url": "https://homversa.com/az/winslow/hvac",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "355243",
+      "trade": "hvac",
+      "verified_date": "2026-09-21",
+      "note": "ROC #355243 | registry-derived Winslow hvac listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Mayer",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/mayer/plumbers",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Mayer",
+      "category_key": "backflow_plumbing",
+      "category_label": "Backflow & Commercial Plumbing",
+      "business_name": "Premier Solutions International LLC",
+      "url": "https://homversa.com/az/mayer/plumbers",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "331810",
+      "trade": "plumbers",
+      "verified_date": "2026-09-21",
+      "note": "ROC #331810 | registry-derived Mayer plumbers listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Mayer",
+      "category_key": "backflow_plumbing",
+      "category_label": "Backflow & Commercial Plumbing",
+      "business_name": "Manor Plumbing LLC",
+      "url": "https://homversa.com/az/mayer/plumbers",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "345926",
+      "trade": "plumbers",
+      "verified_date": "2026-09-21",
+      "note": "ROC #345926 | registry-derived Mayer plumbers listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Mayer",
+      "category_key": "backflow_plumbing",
+      "category_label": "Backflow & Commercial Plumbing",
+      "business_name": "Brs Plumbing Solutions LLC",
+      "url": "https://homversa.com/az/mayer/plumbers",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "355594",
+      "trade": "plumbers",
+      "verified_date": "2026-09-21",
+      "note": "ROC #355594 | registry-derived Mayer plumbers listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}

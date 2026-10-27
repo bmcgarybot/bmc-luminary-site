@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Sedona",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/sedona/carpentry-contractors",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Sedona",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "The Wood Joint",
+      "url": "https://homversa.com/az/sedona/carpentry-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "100510",
+      "trade": "carpentry-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #100510 | registry-derived Sedona carpentry-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Sedona",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Extraordinaire Woodworks LLC",
+      "url": "https://homversa.com/az/sedona/carpentry-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "200106",
+      "trade": "carpentry-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #200106 | registry-derived Sedona carpentry-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Sedona",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Jfk Cabinetry Inc.",
+      "url": "https://homversa.com/az/sedona/carpentry-contractors",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "348957",
+      "trade": "carpentry-contractors",
+      "verified_date": "2026-09-21",
+      "note": "ROC #348957 | registry-derived Sedona carpentry-contractors listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}

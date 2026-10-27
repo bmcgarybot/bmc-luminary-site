@@ -1,0 +1,60 @@
+{
+  "researched_at": "2026-10-26T17:55:00-07:00",
+  "market": "Camp Verde",
+  "purpose": "Assistant-led exhaustive licensed-trade census from published A-to-Z Arizona ROC-derived license evidence.",
+  "source": "https://homversa.com/az/camp-verde/painters",
+  "source_method": "Homversa city/trade page plus complete /all A-to-Z page; every row retains the published Arizona ROC license number.",
+  "verified_date": "2026-09-21",
+  "claimed_count": 3,
+  "count": 3,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Camp Verde",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "J & S Painting LLC",
+      "url": "https://homversa.com/az/camp-verde/painters",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "294095",
+      "trade": "painters",
+      "verified_date": "2026-09-21",
+      "note": "ROC #294095 | registry-derived Camp Verde painters listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Camp Verde",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Salas Painting LLC",
+      "url": "https://homversa.com/az/camp-verde/painters",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "347930",
+      "trade": "painters",
+      "verified_date": "2026-09-21",
+      "note": "ROC #347930 | registry-derived Camp Verde painters listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    },
+    {
+      "side": "vendor",
+      "market": "Camp Verde",
+      "category_key": "facility_maintenance",
+      "category_label": "Building Maintenance Help",
+      "business_name": "Northern Az Paint LLC",
+      "url": "https://homversa.com/az/camp-verde/painters",
+      "domain": "homversa.com",
+      "phone": null,
+      "email": null,
+      "official": false,
+      "roc_license": "351780",
+      "trade": "painters",
+      "verified_date": "2026-09-21",
+      "note": "ROC #351780 | registry-derived Camp Verde painters listing; Homversa reports current Arizona ROC credential verified 2026-09-21"
+    }
+  ]
+}
