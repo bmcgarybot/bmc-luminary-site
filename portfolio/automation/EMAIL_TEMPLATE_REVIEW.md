@@ -26,12 +26,14 @@ The templates below are the current plain-text customer/prospect/provider-facing
 
 Hi {business_name},
 
-I’m researching commercial accounts for {service_label} businesses in {market}.
+I found several {market} businesses that look like strong commercial prospects for {service_label}.
 
 Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the commercial work you want — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.
 
-Tell us the area and type of work you want:
+Click once to see the five BMC already prepared for this invitation:
 {landing_url}
+
+The link uses the business, market, and service already tied to this outreach, so you do not have to re-enter them.
 
 If the five look useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required.
 
