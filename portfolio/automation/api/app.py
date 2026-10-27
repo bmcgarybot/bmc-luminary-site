@@ -43,7 +43,9 @@ BUYER_OUTREACH_DAILY_LIMIT=env_int("BUYER_OUTREACH_DAILY_LIMIT",15)
 BUYER_OUTREACH_WAVE=os.getenv("BUYER_OUTREACH_WAVE","pilot1").strip() or "pilot1"
 GROWTH_OUTREACH_ENABLED=os.getenv("GROWTH_OUTREACH_ENABLED","false").lower()=="true"
 GROWTH_OUTREACH_DAILY_LIMIT=env_int("GROWTH_OUTREACH_DAILY_LIMIT",10)
-GROWTH_OUTREACH_WAVE=os.getenv("GROWTH_OUTREACH_WAVE","growth1").strip() or "growth1"
+GROWTH_OUTREACH_WAVE=os.getenv("GROWTH_OUTREACH_WAVE","growth-pressure-1").strip() or "growth-pressure-1"
+GROWTH_SAMPLE_MIN_RESERVE=max(100,env_int("GROWTH_SAMPLE_MIN_RESERVE",125))
+GROWTH_AUTO_FULFILL_ENABLED=os.getenv("GROWTH_AUTO_FULFILL_ENABLED","true").lower()=="true"
 BUSINESS_POSTAL_ADDRESS=os.getenv("BUSINESS_POSTAL_ADDRESS","").strip()
 PARTNER_URL=f"{PUBLIC_SITE_URL}/providers/"
 PILOT_ACTIVATION_URL=f"{PUBLIC_SITE_URL}/provider-pilot-activate/"
@@ -618,7 +620,7 @@ async def startup():
 async def shutdown():
     await app.state.pool.close()
 
-async def send_mail(to,subject,body,html_body=None):
+async def send_mail(to,subject,body,html_body=None,attachments=None):
     if not to: return False
     if SMTP_DRY_RUN: return True
     if not SMTP_HOST or "CHANGE_ME" in SMTP_HOST: return False
@@ -626,6 +628,9 @@ async def send_mail(to,subject,body,html_body=None):
         msg=EmailMessage(); msg["From"]=SMTP_FROM; msg["To"]=to; msg["Subject"]=subject; msg.set_content(body)
         if html_body:
             msg.add_alternative(html_body,subtype="html")
+        for attachment in (attachments or []):
+            filename,data,maintype,subtype=attachment
+            msg.add_attachment(data,maintype=maintype,subtype=subtype,filename=filename)
         await aiosmtplib.send(msg,hostname=SMTP_HOST,port=SMTP_PORT,username=SMTP_USER or None,
             password=SMTP_PASSWORD or None,start_tls=SMTP_STARTTLS)
         return True
@@ -2323,6 +2328,633 @@ async def health():
         await conn.fetchval("select 1")
     return {"ok":True,"service":"bmc-ops-api"}
 
+
+# GROWTH_INTELLIGENCE_RUNTIME_V1
+GROWTH_SERVICE_LABELS={
+  "pressure_washing":"commercial pressure washing / exterior cleaning",
+  "commercial_cleaning":"commercial cleaning / janitorial"
+}
+GROWTH_LANDING_PATHS={
+  "pressure_washing":"/growth-packs/pressure-washing/",
+  "commercial_cleaning":"/growth-packs/commercial-cleaning/"
+}
+GROWTH_WAVES={
+  "pressure_washing":"growth-pressure-1",
+  "commercial_cleaning":"growth-cleaning-1"
+}
+GROWTH_BUYER_CATEGORIES={
+  "pressure_washing":[
+    "auto_dealers","auto_fleet","churches","grocery","gyms_fitness","hotels_motels",
+    "medical_centers","property_management","public_facilities","restaurants","retail",
+    "schools","schools_education","theaters_entertainment","warehouses_industrial"
+  ],
+  "commercial_cleaning":[
+    "churches","dental","grocery","gyms_fitness","hotels_motels","insurance_professional",
+    "medical_centers","pharmacies","pharmacy","property_management","public_facilities",
+    "retail","schools","schools_education","senior_daycare","theaters_entertainment",
+    "therapy_behavioral","warehouses_industrial"
+  ]
+}
+GROWTH_HIGH_VALUE_CATEGORIES={
+  "pressure_washing":{"auto_dealers","auto_fleet","grocery","hotels_motels","property_management","restaurants","retail","warehouses_industrial"},
+  "commercial_cleaning":{"grocery","hotels_motels","medical_centers","property_management","schools","schools_education","senior_daycare","warehouses_industrial"}
+}
+GROWTH_SOURCE_BLOCKLIST=("booking.com","tripadvisor.com","kayak.com","hotels.com","expedia.com","facebook.com","nextdoor.com")
+
+def growth_category_terms(category):
+    mapping={
+      "auto_dealers":["dealer","dealership","auto"],
+      "auto_fleet":["fleet","transport","trucking"],
+      "churches":["church","worship","religious"],
+      "dental":["dental","dentist","orthodont"],
+      "grocery":["grocery","market","supermarket"],
+      "gyms_fitness":["gym","fitness","recreation"],
+      "hotels_motels":["hotel","motel","lodging","resort"],
+      "insurance_professional":["insurance","office","professional"],
+      "medical_centers":["hospital","medical","clinic","health"],
+      "pharmacies":["pharmacy","drug store"],"pharmacy":["pharmacy","drug store"],
+      "property_management":["property manager","property management","apartment","multifamily","hoa"],
+      "public_facilities":["government","public","municipal","city","county"],
+      "restaurants":["restaurant","food service","cafe","dining"],
+      "retail":["retail","store","shopping"],
+      "schools":["school","education","campus"],"schools_education":["school","education","childcare","campus"],
+      "senior_daycare":["senior","assisted","daycare","childcare"],
+      "theaters_entertainment":["theater","cinema","entertainment","venue"],
+      "therapy_behavioral":["therapy","behavioral","counseling"],
+      "warehouses_industrial":["warehouse","industrial","distribution","manufacturing"]
+    }
+    return mapping.get(category,[category.replace("_"," ")])
+
+def growth_selected_categories(service_key,ideal_customer="",exclusions=""):
+    base=list(GROWTH_BUYER_CATEGORIES.get(service_key,[]))
+    ideal=clean(ideal_customer).lower()
+    excluded=clean(exclusions).lower()
+    if ideal:
+        explicit=[cat for cat in base if any(term in ideal for term in growth_category_terms(cat))]
+        if explicit:
+            base=explicit
+    if excluded:
+        filtered=[cat for cat in base if not any(term in excluded for term in growth_category_terms(cat))]
+        if filtered:
+            base=filtered
+    return base
+
+def growth_candidate_score(row,service_key):
+    r=dict(row)
+    category=clean(r.get("category_key"))
+    score=25 if category in GROWTH_HIGH_VALUE_CATEGORIES.get(service_key,set()) else 22
+    score+=15  # exact market is required by query
+    tier=clean(r.get("source_tier")).lower()
+    verify=clean(r.get("verification_status")).lower()
+    direct=bool(r.get("official_site")) or tier in ("direct","government","government_registry") or verify in ("direct_evidence","government_record")
+    corroborated=tier in ("registry_derived","secondary") or verify in ("credential_corroborated","corroborated")
+    score+=20 if direct else (15 if corroborated else 10)
+    if clean(r.get("public_email")): score+=15
+    elif clean(r.get("public_phone")): score+=13
+    elif bool(r.get("official_site")) and clean(r.get("source_url")): score+=10
+    score+=10  # active/discovered and not closed is required
+    score+=10 if category in GROWTH_HIGH_VALUE_CATEGORIES.get(service_key,set()) else 7
+    seen=r.get("last_verified_at") or r.get("last_seen_at") or r.get("updated_at")
+    if seen and getattr(seen,"tzinfo",None) is None:
+        seen=seen.replace(tzinfo=timezone.utc)
+    if seen and datetime.now(timezone.utc)-seen <= timedelta(days=90):
+        score+=5
+    return min(100,int(score))
+
+def growth_fit_reason(row,service_key):
+    label=clean(row.get("category_label")) or clean(row.get("category_key")).replace("_"," ")
+    market=clean(row.get("market"))
+    if service_key=="pressure_washing":
+        return f"{label} in {market}; this property type can have exterior, pedestrian, parking, loading, or waste-area surfaces that may need recurring or project cleaning."
+    return f"{label} in {market}; this business type commonly operates customer, staff, office, public, or facility space that may need recurring or project cleaning."
+
+def growth_sales_angle(row,service_key):
+    category=clean(row.get("category_key"))
+    if service_key=="pressure_washing":
+        angles={
+          "auto_dealers":"Lead with clean customer-facing concrete, vehicle-display areas, and scheduled exterior upkeep.",
+          "auto_fleet":"Lead with fleet-yard, shop-front, and recurring exterior cleaning where applicable.",
+          "grocery":"Lead with sidewalks, entrances, cart/traffic areas, and scheduled exterior upkeep.",
+          "hotels_motels":"Lead with guest-facing entrances, walkways, pool/exterior areas, and recurring appearance standards.",
+          "property_management":"Lead with one vendor for multiple properties, common areas, turns, and overflow exterior work.",
+          "restaurants":"Lead with entrances, patios, drive-thru/walkway areas, and dumpster-pad cleaning where applicable.",
+          "retail":"Lead with storefront, sidewalk, entrance, and shopping-area appearance.",
+          "warehouses_industrial":"Lead with loading, yard, entry, and high-traffic hard-surface cleaning where applicable."
+        }
+        return angles.get(category,"Lead with a specific exterior-cleaning use case and offer a simple site walk or quote.")
+    angles={
+      "medical_centers":"Lead with reliable recurring service, clear scope, and minimal disruption to staff and patients.",
+      "property_management":"Lead with multi-property coverage, turns, common areas, and overflow janitorial capacity.",
+      "schools":"Lead with scheduled cleaning around occupancy and high-traffic common areas.",
+      "schools_education":"Lead with scheduled cleaning around occupancy and high-traffic common areas.",
+      "hotels_motels":"Lead with guest-facing cleanliness, recurring schedules, and overflow/deep-clean capacity.",
+      "warehouses_industrial":"Lead with offices, break rooms, restrooms, and scheduled facility cleaning.",
+      "grocery":"Lead with recurring high-traffic cleaning and dependable off-hours scheduling."
+    }
+    return angles.get(category,"Lead with dependable commercial cleaning, a clear scope, and an easy quote process.")
+
+async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",exclusions="",limit=400,exclude_ids=None,exclude_names=None):
+    categories=growth_selected_categories(service_key,ideal_customer,exclusions)
+    if service_key not in GROWTH_SERVICE_LABELS or not categories:
+        return []
+    rows=await conn.fetch("""select candidate_id,market,category_key,category_label,business_name,source_url,source_domain,
+          public_email,public_phone,official_site,source_tier,verification_status,last_verified_at,last_seen_at,updated_at
+        from market_inventory_candidates
+        where side='buyer' and market=$1 and category_key=any($2::text[])
+          and status='discovered' and closed_at is null
+          and coalesce(business_name,'')<>''
+          and coalesce(source_url,'')<>''
+          and (
+            coalesce(public_email,'')<>'' or coalesce(public_phone,'')<>'' or official_site=true
+          )
+        order by
+          case when verification_status in ('direct_evidence','government_record') then 0
+               when verification_status in ('credential_corroborated','corroborated') then 1 else 2 end,
+          case when coalesce(public_email,'')<>'' then 0 when coalesce(public_phone,'')<>'' then 1 else 2 end,
+          coalesce(last_verified_at,last_seen_at,updated_at) desc nulls last
+        limit $3""",market,categories,max(limit*4,500))
+    excluded_ids={str(x) for x in (exclude_ids or [])}
+    excluded_names={clean(x).lower() for x in (exclude_names or [])}
+    seen=set(); qualified=[]
+    for raw in rows:
+        r=dict(raw)
+        host=clean(r.get("source_domain")).lower().removeprefix("www.")
+        if any(host==d or host.endswith("."+d) for d in GROWTH_SOURCE_BLOCKLIST):
+            continue
+        cid=str(r.get("candidate_id") or "")
+        name=clean(r.get("business_name"))
+        key=re.sub(r"[^a-z0-9]+","",name.lower())
+        if not key or key in seen or cid in excluded_ids or name.lower() in excluded_names:
+            continue
+        if not (clean(r.get("public_email")) or clean(r.get("public_phone")) or bool(r.get("official_site"))):
+            continue
+        score=growth_candidate_score(r,service_key)
+        if score<65:
+            continue
+        seen.add(key)
+        r["fit_score"]=score
+        r["grade"]="A" if score>=80 else "B"
+        r["fit_reason"]=growth_fit_reason(r,service_key)
+        r["sales_angle"]=growth_sales_angle(r,service_key)
+        qualified.append(r)
+    qualified.sort(key=lambda x:(-int(x["fit_score"]),clean(x.get("business_name")).lower()))
+    return qualified[:limit]
+
+def growth_checkout_url(base_url,email,sample_id,service_key):
+    if not base_url:
+        return ""
+    sep="&" if "?" in base_url else "?"
+    params=urllib.parse.urlencode({
+      "locked_prefilled_email":email,
+      "client_reference_id":"growth_"+sample_id.hex,
+      "utm_source":"bmc_growth_sample",
+      "utm_medium":"email",
+      "utm_campaign":service_key
+    })
+    return base_url+sep+params
+
+def growth_sample_public_rows(rows):
+    out=[]
+    for r in rows:
+        contact=clean(r.get("public_email")) or clean(r.get("public_phone")) or clean(r.get("source_url"))
+        out.append({
+          "business_name":clean(r.get("business_name")),"market":clean(r.get("market")),
+          "category":clean(r.get("category_label")) or clean(r.get("category_key")).replace("_"," ").title(),
+          "fit_score":int(r.get("fit_score") or 0),"grade":clean(r.get("grade")),
+          "fit_reason":clean(r.get("fit_reason")),"sales_angle":clean(r.get("sales_angle")),
+          "contact_route":contact,"source_url":clean(r.get("source_url"))
+        })
+    return out
+
+async def growth_sample_checkout(conn,email,sample_id,service_key):
+    base=await conn.fetchval("""select payment_link_url from products
+      where product_key='growth_pack_starter' and active=true""")
+    return growth_checkout_url(clean(base),email,sample_id,service_key)
+
+async def handle_growth_snapshot(conn,p):
+    service_key=clean(p.get("service_key") or p.get("provider_service_key"))
+    if service_key not in GROWTH_SERVICE_LABELS:
+        raise HTTPException(400,"This free commercial-opportunity snapshot is not active for that service yet")
+    market=clean(p.get("market")); business=clean(p.get("business_name")); contact=clean(p.get("contact_name"))
+    email_addr=clean(p.get("email")).lower(); consent=clean(p.get("consent")).lower()=="yes"
+    if not all([market,business,contact,email_addr]) or not consent:
+        raise HTTPException(400,"Business, name, email, market, and consent are required")
+    if "@" not in email_addr:
+        raise HTTPException(400,"A valid business email is required")
+    submission_id=clean(p.get("submission_id")) or str(uuid.uuid4())
+    existing=await conn.fetchrow("select * from growth_sample_requests where submission_id=$1",submission_id)
+    if existing:
+        payload=json_dict({"x":existing["sample_payload"]}).get("x") if isinstance(existing["sample_payload"],str) else existing["sample_payload"]
+        payload=payload if isinstance(payload,list) else []
+        checkout=await growth_sample_checkout(conn,email_addr,existing["sample_id"],service_key)
+        return {"ok":True,"status":clean(existing["status"]),"sample_id":str(existing["sample_id"]),
+          "sample":payload,"checkout_url":checkout,"message":"Your commercial opportunity snapshot is already saved."}
+
+    target_id=clean(p.get("source_target_id"))
+    if target_id and not await conn.fetchval("select 1 from growth_outreach_targets where target_id=$1",target_id):
+        target_id=None
+    cell=f"{service_key}:{market}"
+    await conn.execute("""insert into growth_experiment_cells(cell_key,service_key,market_group,status,next_review_at)
+      values($1,$2,$3,'exploring',now()+interval '7 days')
+      on conflict(cell_key) do update set updated_at=now()""",cell,service_key,market)
+    attribution={k:clean(p.get(k)) for k in ("utm_source","utm_medium","utm_campaign","utm_content","utm_term","referrer") if clean(p.get(k))}
+    sample_id=await conn.fetchval("""insert into growth_sample_requests(
+        submission_id,business_name,contact_name,email,provider_service_key,market,service_area,
+        ideal_customer,minimum_job,exclusions,experiment_cell,source_target_id,status,source_page,attribution)
+      values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,'requested',$13,$14::jsonb)
+      returning sample_id""",
+      submission_id,business,contact,email_addr,service_key,market,clean(p.get("service_area") or p.get("radius")),
+      clean(p.get("ideal_customer")),clean(p.get("minimum_job")),clean(p.get("exclusions")),cell,target_id,
+      clean(p.get("page")),json.dumps(attribution))
+    await conn.execute("""update growth_experiment_cells
+      set samples_requested=samples_requested+1,engagements=engagements+1,updated_at=now()
+      where cell_key=$1""",cell)
+    if target_id:
+        await conn.execute("update growth_outreach_targets set status='sample_requested',updated_at=now() where target_id=$1",target_id)
+        await conn.execute("""update outreach set status='sample_requested',replied_at=coalesce(replied_at,now()),reply_type='sample_requested'
+          where entity_type='growth_customer' and entity_id=$1 and campaign='growth_sales'""",target_id)
+
+    rows=await growth_qualified_candidates(conn,service_key,market,clean(p.get("ideal_customer")),clean(p.get("exclusions")),limit=GROWTH_SAMPLE_MIN_RESERVE)
+    if len(rows)<5:
+        await conn.execute("""update growth_sample_requests set status='inventory_exception',updated_at=now()
+          where sample_id=$1""",sample_id)
+        await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+          values('growth_sample_inventory','high',$1,$2)""",
+          f"Growth sample {sample_id} has only {len(rows)} qualified prospects for {service_key} in {market}",
+          "Review the exact territory/ICP. Do not pad the free sample with weak records.")
+        await event(conn,"growth_sample",sample_id,"inventory_exception",{"service_key":service_key,"market":market,"qualified":len(rows)})
+        return {"ok":True,"status":"sample_pending","sample_id":str(sample_id),
+          "message":"We saved your request. This exact market needs a manual inventory check before we send five; BMC will not pad it with weak records."}
+
+    sample=rows[:5]
+    for r in sample:
+        await conn.execute("""insert into growth_sample_prospects(
+          sample_id,candidate_id,business_name,market,category_key,category_label,fit_score,grade,fit_reason,sales_angle,
+          public_email,public_phone,source_url,source_domain,verification_status)
+          values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
+          on conflict(sample_id,business_name) do nothing""",
+          sample_id,r["candidate_id"],r["business_name"],r["market"],r["category_key"],r["category_label"],
+          r["fit_score"],r["grade"],r["fit_reason"],r["sales_angle"],r["public_email"],r["public_phone"],
+          r["source_url"],r["source_domain"],r["verification_status"])
+    public_rows=growth_sample_public_rows(sample)
+    checkout=""
+    if len(rows)>=GROWTH_SAMPLE_MIN_RESERVE:
+        checkout=await growth_sample_checkout(conn,email_addr,sample_id,service_key)
+    await conn.execute("""update growth_sample_requests set status='delivered',sample_payload=$2::jsonb,
+      sample_generated_at=now(),sample_sent_at=now(),next_nurture_at=now()+interval '2 days',updated_at=now()
+      where sample_id=$1""",sample_id,json.dumps(public_rows))
+    await conn.execute("""update growth_experiment_cells set samples_delivered=samples_delivered+1,updated_at=now()
+      where cell_key=$1""",cell)
+
+    lines=[f"{x['business_name']} — {x['category']} — fit {x['fit_score']}/100",
+           f"Why it fits: {x['fit_reason']}",
+           f"Public contact route: {x['contact_route']}",
+           f"Suggested angle: {x['sales_angle']}",
+           f"Source: {x['source_url']}" ] for x in public_rows
+    flat=[]
+    for idx,x in enumerate(public_rows,1):
+        flat.extend([f"{idx}. {x['business_name']} — {x['category']} — fit {x['fit_score']}/100",
+          f"Why it fits: {x['fit_reason']}",f"Public contact route: {x['contact_route']}",
+          f"Suggested angle: {x['sales_angle']}",f"Source: {x['source_url']}",""])
+    if checkout:
+        flat.extend(["If these are the kinds of accounts you want, the $499 pack includes 100 total qualified commercial prospects built to the same standard.",checkout])
+    else:
+        flat.append("This market does not yet have the 125-prospect reserve BMC requires before selling a 100-prospect pack. We will not pad a paid pack with weaker rows.")
+    flat.extend(["","Qualification guarantee: if a delivered prospect fails the published territory/activity/type/contact standard, BMC replaces it.","Reply no at any time to stop follow-up."])
+    body=f"Hi {contact},\n\nHere are five commercial targets for {business} in {market}.\n\n"+"\n".join(flat)+f"\n\nBMC Luminary Ventures LLC\n{BUSINESS_POSTAL_ADDRESS}"
+    html_body=workflow_email_html("Your 5 commercial targets",[
+      f"Here are five commercial targets for {business} in {market}.",
+      *[f"{i}. {x['business_name']} · {x['category']} · fit {x['fit_score']}/100\n{x['fit_reason']}\nContact: {x['contact_route']}" for i,x in enumerate(public_rows,1)],
+      "If these fit the work you want, the full pack is 100 total qualified prospects for $499." if checkout else "BMC is not offering the 100-prospect pack in this exact market until the reserve inventory clears our quality gate.",
+      "Qualification guarantee: wrong territory, inactive business, wrong property type, duplicate, or missing promised contact route gets replaced."
+    ],"Get the full 100 for $499",checkout) if checkout else workflow_email_html("Your 5 commercial targets",[
+      f"Here are five commercial targets for {business} in {market}.",
+      *[f"{i}. {x['business_name']} · {x['category']} · fit {x['fit_score']}/100\n{x['fit_reason']}" for i,x in enumerate(public_rows,1)]
+    ])
+    delivered=await send_mail(email_addr,f"Your 5 commercial targets in {market}",body,html_body)
+    if not delivered:
+        await conn.execute("""update growth_sample_requests set status='delivery_error',next_nurture_at=null,updated_at=now()
+          where sample_id=$1""",sample_id)
+        await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+          values('growth_sample_delivery_failure','high',$1,$2)""",
+          f"Could not email Growth sample {sample_id} to {email_addr}","Verify SMTP/address and resend the saved sample")
+        await event(conn,"growth_sample",sample_id,"delivery_failed",{"email":email_addr})
+        return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"sample":public_rows,
+          "checkout_url":checkout,"message":"Your five targets are ready on this page, but the email copy needs a delivery retry."}
+    await event(conn,"growth_sample",sample_id,"delivered",{"email":email_addr,"service_key":service_key,"market":market,"qualified_pool":len(rows)})
+    return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"sample":public_rows,
+      "checkout_url":checkout,"qualified_pool":len(rows),
+      "message":"Your five commercial targets are ready. We also emailed a copy so you can use them later."}
+
+async def stage_growth_service(conn,service_key,max_targets=25):
+    if service_key not in GROWTH_SERVICE_LABELS:
+        raise HTTPException(400,"Unsupported Growth exploration service")
+    candidates=[]
+    normalized=await conn.fetch("""select 'vendor:'||v.vendor_id as target_id,v.business_name,lower(v.public_email) public_email,
+          v.public_phone,v.website,v.source_url,vm.market,'normalized_vendor' source_kind,
+          greatest(65,least(100,coalesce(v.quality_score,75)::int)) fit_score,
+          jsonb_build_object('vendor_id',v.vendor_id,'quality_score',v.quality_score) source_data
+        from vendors v
+        join vendor_services vs on vs.vendor_id=v.vendor_id and vs.service_key=$1
+        join vendor_markets vm on vm.vendor_id=v.vendor_id
+        where v.status='prospect' and coalesce(v.public_email,'')<>''
+          and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(v.public_email))
+        order by coalesce(v.quality_score,75) desc,v.business_name""",service_key)
+    candidates.extend(dict(x) for x in normalized)
+    inventory=await conn.fetch("""select 'inventory:'||candidate_id::text as target_id,business_name,lower(public_email) public_email,
+          public_phone,null::text website,source_url,market,'deep_inventory' source_kind,
+          case when verification_status in ('direct_evidence','government_record','credential_corroborated') then 80 else 70 end fit_score,
+          jsonb_build_object('candidate_id',candidate_id,'source_tier',source_tier,'verification_status',verification_status) source_data
+        from market_inventory_candidates
+        where side='vendor' and category_key=$1 and status='discovered' and closed_at is null
+          and coalesce(public_email,'')<>''
+          and verification_status not in ('discovery')
+          and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(public_email))
+        order by case when verification_status='direct_evidence' then 0 else 1 end,
+          coalesce(last_verified_at,last_seen_at,updated_at) desc nulls last""",service_key)
+    candidates.extend(dict(x) for x in inventory)
+    pool_cache={}; staged=0; skipped_inventory=0; seen_emails=set()
+    wave=GROWTH_WAVES[service_key]
+    for row in candidates:
+        email_addr=clean(row.get("public_email")).lower(); market=clean(row.get("market"))
+        if not email_addr or email_addr in seen_emails or not market:
+            continue
+        seen_emails.add(email_addr)
+        if market not in pool_cache:
+            pool_cache[market]=len(await growth_qualified_candidates(conn,service_key,market,limit=GROWTH_SAMPLE_MIN_RESERVE))
+        if pool_cache[market]<GROWTH_SAMPLE_MIN_RESERVE:
+            skipped_inventory+=1
+            continue
+        cell=f"{service_key}:{market}"
+        await conn.execute("""insert into growth_experiment_cells(cell_key,service_key,market_group,status,next_review_at)
+          values($1,$2,$3,'exploring',now()+interval '7 days')
+          on conflict(cell_key) do update set updated_at=now()""",cell,service_key,market)
+        await conn.execute("""insert into growth_outreach_targets(
+          target_id,business_name,public_email,public_phone,website,source_url,market,service_key,experiment_cell,source_kind,fit_score,source_data)
+          values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12::jsonb)
+          on conflict(target_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,
+            public_phone=excluded.public_phone,website=excluded.website,source_url=excluded.source_url,market=excluded.market,
+            service_key=excluded.service_key,experiment_cell=excluded.experiment_cell,source_kind=excluded.source_kind,
+            fit_score=excluded.fit_score,source_data=excluded.source_data,updated_at=now()""",
+          row["target_id"],row["business_name"],email_addr,row.get("public_phone"),row.get("website"),row.get("source_url"),
+          market,service_key,cell,row["source_kind"],int(row["fit_score"]),json.dumps(row.get("source_data") or {}))
+        inserted=await conn.fetchval("""insert into outreach(entity_type,entity_id,campaign,wave,channel,sequence_step,status,next_followup_at,opt_out,target_market,target_service_key)
+          select 'growth_customer',$1,'growth_sales',$2,'email',0,'queued',now(),false,$3,$4
+          where not exists(select 1 from outreach where entity_type='growth_customer' and entity_id=$1 and campaign='growth_sales' and wave=$2)
+          returning outreach_id""",row["target_id"],wave,market,service_key)
+        if inserted:
+            staged+=1
+        if staged>=max_targets:
+            break
+    return {"service_key":service_key,"wave":wave,"staged":staged,"email_candidates":len(seen_emails),
+      "skipped_insufficient_buyer_inventory":skipped_inventory,"qualified_pool_by_market":pool_cache}
+
+async def growth_runtime_status(conn):
+    links=await conn.fetchval("""select count(*) from products where product_key='growth_pack_starter' and active=true
+      and coalesce(payment_link_url,'')<>''""")
+    staged=await conn.fetchval("""select count(*) from outreach where entity_type='growth_customer'
+      and campaign='growth_sales' and wave=$1 and status in ('queued','sent') and opt_out=false""",GROWTH_OUTREACH_WAVE)
+    sent=await conn.fetchval("""select count(*) from outreach where entity_type='growth_customer'
+      and campaign='growth_sales' and sent_at is not null""")
+    replies=await conn.fetchval("""select count(*) from outreach where entity_type='growth_customer'
+      and campaign='growth_sales' and replied_at is not null""")
+    samples=await conn.fetchval("select count(*) from growth_sample_requests")
+    delivered=await conn.fetchval("select count(*) from growth_sample_requests where status in ('delivered','converted','fulfilled')")
+    converted=await conn.fetchval("select count(*) from growth_sample_requests where converted_at is not null")
+    paid=await conn.fetchval("""select count(*),coalesce(sum(amount_cents),0) from orders
+      where product_key in ('growth_pack_starter','growth_pack_premium') and payment_status in ('paid','complete')""")
+    open_errors=await conn.fetchval("""select count(*) from exceptions where status='open' and type like 'growth_%'""")
+    smtp_ready=bool(SMTP_HOST and SMTP_USER and SMTP_PASSWORD and "CHANGE_ME" not in SMTP_HOST+SMTP_USER+SMTP_PASSWORD)
+    imap_ready=bool(IMAP_ENABLED and IMAP_HOST and IMAP_USER and IMAP_PASSWORD)
+    postal_ready=bool(BUSINESS_POSTAL_ADDRESS and "CHANGE_ME" not in BUSINESS_POSTAL_ADDRESS)
+    config_ready=smtp_ready and imap_ready and postal_ready and int(links or 0)>=1
+    return {"ok":True,"growth_enabled":GROWTH_OUTREACH_ENABLED,"wave":GROWTH_OUTREACH_WAVE,
+      "daily_limit":GROWTH_OUTREACH_DAILY_LIMIT,"sample_reserve":GROWTH_SAMPLE_MIN_RESERVE,
+      "config":{"smtp":smtp_ready,"imap":imap_ready,"postal":postal_ready,"payment_link":int(links or 0)>=1},
+      "config_ready":config_ready,"staged_active":int(staged or 0),"sent":int(sent or 0),"replies":int(replies or 0),
+      "samples_requested":int(samples or 0),"samples_delivered":int(delivered or 0),"converted_samples":int(converted or 0),
+      "paid_orders":int(paid[0] or 0),"revenue_cents":int(paid[1] or 0),"open_growth_exceptions":int(open_errors or 0)}
+
+@app.post("/api/admin/stage-growth-pressure-washing")
+async def admin_stage_growth_pressure_washing(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        return {"ok":True,**(await stage_growth_service(conn,"pressure_washing",25))}
+
+@app.post("/api/admin/stage-growth-commercial-cleaning")
+async def admin_stage_growth_commercial_cleaning(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        return {"ok":True,**(await stage_growth_service(conn,"commercial_cleaning",25))}
+
+@app.post("/api/admin/growth-status")
+async def admin_growth_status_post(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    async with app.state.pool.acquire() as conn:
+        return await growth_runtime_status(conn)
+
+@app.post("/api/process-growth-health")
+async def process_growth_health(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    async with app.state.pool.acquire() as conn:
+      status=await growth_runtime_status(conn)
+      problems=[]
+      if GROWTH_OUTREACH_ENABLED and not status["config_ready"]:
+          problems.append("Growth outreach is enabled but SMTP/IMAP/postal/payment configuration is incomplete")
+      if GROWTH_OUTREACH_ENABLED and status["staged_active"]<1:
+          problems.append("Growth outreach is enabled but there are no active staged targets in the selected wave")
+      for problem in problems:
+          await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+            select 'growth_health','critical',$1,$2
+            where not exists(select 1 from exceptions where type='growth_health' and status='open' and summary=$1)""",
+            problem,"Pause Growth outreach or repair the reported launch gate before sending more")
+      return {**status,"health_ok":not problems,"problems":problems}
+
+@app.post("/api/process-growth-nurture")
+async def process_growth_nurture(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    sent=0; converted=0
+    async with app.state.pool.acquire() as conn:
+      rows=await conn.fetch("""select * from growth_sample_requests
+        where status='delivered' and converted_at is null and next_nurture_at is not null and next_nurture_at<=now()
+          and nurture_step<2
+          and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(growth_sample_requests.email))
+        order by next_nurture_at limit 25""")
+      for row in rows:
+        paid=await conn.fetchrow("""select order_id from orders where lower(customer_email)=lower($1)
+          and product_key in ('growth_pack_starter','growth_pack_premium') and payment_status in ('paid','complete')
+          and created_at>= $2 order by created_at desc limit 1""",row["email"],row["created_at"])
+        if paid:
+            await conn.execute("""update growth_sample_requests set status='converted',converted_at=coalesce(converted_at,now()),
+              order_id=$2,next_nurture_at=null,updated_at=now() where sample_id=$1""",row["sample_id"],paid["order_id"])
+            converted+=1; continue
+        checkout=await growth_sample_checkout(conn,row["email"],row["sample_id"],row["provider_service_key"])
+        if not checkout:
+            continue
+        step=int(row["nurture_step"] or 0)+1
+        if step==1:
+            subject=f"Want the other 95 commercial targets in {row['market']}?"
+            body=f"""Hi {row['contact_name']},
+
+You asked BMC for five commercial targets for {row['business_name']} in {row['market']}.
+
+If those are the kinds of accounts you want, the full $499 Growth Pack gives you 100 total qualified commercial prospects built to the same standard — not a raw contact dump.
+
+{checkout}
+
+Qualification guarantee: wrong territory, inactive business, wrong property type, duplicate, or missing promised contact route gets replaced.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+Reply no if you do not want another follow-up."""
+        else:
+            subject=f"Last note on the {row['market']} commercial prospect pack"
+            body=f"""Hi {row['contact_name']},
+
+Last follow-up on the commercial targets BMC researched for {row['business_name']}.
+
+If you want the full 100-prospect pack, it is here:
+{checkout}
+
+If not, no problem — the five free targets are yours to use.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+Reply no to stop future BMC outreach."""
+        ok=await send_mail(row["email"],subject,body,workflow_email_html(subject,[
+          "BMC already researched your five free commercial targets.",
+          "The full $499 pack contains 100 total qualified prospects built to the same published standard.",
+          "There is no retainer and no sales call required."
+        ],"Get the full 100 for $499",checkout))
+        if ok:
+            next_at=None if step>=2 else datetime.now(timezone.utc)+timedelta(days=3)
+            await conn.execute("""update growth_sample_requests set nurture_step=$2,next_nurture_at=$3,
+              status=case when $2>=2 then 'nurture_complete' else status end,updated_at=now() where sample_id=$1""",
+              row["sample_id"],step,next_at)
+            await event(conn,"growth_sample",row["sample_id"],"nurture_sent",{"step":step,"email":row["email"]})
+            sent+=1
+        else:
+            await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+              select 'growth_nurture_delivery_failure','high',$1,$2
+              where not exists(select 1 from exceptions where type='growth_nurture_delivery_failure' and status='open' and summary=$1)""",
+              f"Growth nurture email failed for sample {row['sample_id']}","Verify SMTP/address before the next nurture attempt")
+    return {"ok":True,"sent":sent,"converted_without_followup":converted}
+
+def growth_csv_bytes(rows):
+    out=io.StringIO()
+    writer=csv.writer(out)
+    writer.writerow(["Priority","Fit score","Business","Market","Type","Why it fits","Public email","Public phone","Source","Suggested outreach angle","Verification"])
+    for r in rows:
+        writer.writerow([r["grade"],r["fit_score"],r["business_name"],r["market"],r["category_label"],
+          r["fit_reason"],clean(r.get("public_email")),clean(r.get("public_phone")),r["source_url"],
+          r["sales_angle"],clean(r.get("verification_status"))])
+    return out.getvalue().encode("utf-8-sig")
+
+@app.post("/api/process-growth-fulfillment")
+async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    if not GROWTH_AUTO_FULFILL_ENABLED:
+        return {"ok":True,"enabled":False,"fulfilled":0}
+    fulfilled=0; exceptions=0
+    async with app.state.pool.acquire() as conn:
+      tasks=await conn.fetch("""select t.task_id,t.order_id,o.customer_email,o.growth_sample_id,g.*
+        from tasks t join orders o on o.order_id=t.order_id
+        join growth_sample_requests g on g.sample_id=o.growth_sample_id
+        where t.task_type='fulfill_growth_pack' and t.status in ('open','queued')
+          and o.payment_status in ('paid','complete')
+        order by t.created_at limit 5""")
+      for row in tasks:
+        async with conn.transaction():
+          prior=await conn.fetch("""select distinct lower(gop.business_name) name
+            from growth_order_prospects gop join orders po on po.order_id=gop.order_id
+            where lower(po.customer_email)=lower($1) and po.order_id<>$2""",row["customer_email"],row["order_id"])
+          prior_names={x["name"] for x in prior}
+          sample_rows=await conn.fetch("""select * from growth_sample_prospects where sample_id=$1 order by fit_score desc,business_name""",row["growth_sample_id"])
+          sample_ids={str(x["candidate_id"]) for x in sample_rows if x["candidate_id"]}
+          sample_names={clean(x["business_name"]).lower() for x in sample_rows}
+          candidates=await growth_qualified_candidates(conn,row["provider_service_key"],row["market"],row["ideal_customer"],row["exclusions"],
+            limit=GROWTH_SAMPLE_MIN_RESERVE+100,exclude_ids=sample_ids,exclude_names=prior_names|sample_names)
+          if len(candidates)+len(sample_rows)<100:
+              await conn.execute("update tasks set status='exception',updated_at=now() where task_id=$1",row["task_id"])
+              await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+                values('growth_fulfillment_inventory','critical',$1,$2)""",
+                f"Paid Growth order {row['order_id']} cannot produce 100 unique qualified prospects without padding",
+                "Review territory/ICP and contact the customer before changing scope or issuing a refund")
+              exceptions+=1; continue
+          final=[]
+          for s in sample_rows:
+              final.append({"candidate_id":s["candidate_id"],"business_name":s["business_name"],"market":s["market"],
+                "category_key":s["category_key"],"category_label":s["category_label"],"fit_score":s["fit_score"],
+                "grade":s["grade"],"fit_reason":s["fit_reason"],"sales_angle":s["sales_angle"],
+                "public_email":s["public_email"],"public_phone":s["public_phone"],"source_url":s["source_url"],
+                "source_domain":s["source_domain"],"verification_status":s["verification_status"]})
+          final.extend(candidates[:100-len(final)])
+          # Four deterministic QA gates before customer delivery.
+          qa_count=len(final)==100
+          qa_scores=all(int(x["fit_score"])>=65 for x in final)
+          qa_market=all(clean(x["market"])==clean(row["market"]) for x in final)
+          keys=[re.sub(r"[^a-z0-9]+","",clean(x["business_name"]).lower()) for x in final]
+          qa_unique=len(keys)==len(set(keys))
+          qa_sources=all(clean(x.get("source_url")) and (clean(x.get("public_email")) or clean(x.get("public_phone")) or clean(x.get("source_url"))) for x in final)
+          if not all([qa_count,qa_scores,qa_market,qa_unique,qa_sources]):
+              await conn.execute("update tasks set status='exception',updated_at=now() where task_id=$1",row["task_id"])
+              await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+                values('growth_fulfillment_qa','critical',$1,$2)""",
+                f"Growth order {row['order_id']} failed deterministic delivery QA",
+                f"QA count={qa_count} score={qa_scores} market={qa_market} unique={qa_unique} source={qa_sources}; do not send until fixed")
+              exceptions+=1; continue
+          for x in final:
+              await conn.execute("""insert into growth_order_prospects(
+                order_id,candidate_id,business_name,market,category_key,category_label,fit_score,grade,fit_reason,sales_angle,
+                public_email,public_phone,source_url,source_domain,verification_status)
+                values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
+                on conflict(order_id,business_name) do update set fit_score=excluded.fit_score,grade=excluded.grade,
+                  fit_reason=excluded.fit_reason,sales_angle=excluded.sales_angle""",
+                row["order_id"],x.get("candidate_id"),x["business_name"],x["market"],x["category_key"],x["category_label"],
+                int(x["fit_score"]),x["grade"],x["fit_reason"],x["sales_angle"],x.get("public_email"),x.get("public_phone"),
+                x["source_url"],x.get("source_domain"),x.get("verification_status"))
+          attachment=growth_csv_bytes(final)
+          subject=f"Your BMC Growth Pack — 100 commercial prospects in {row['market']}"
+          body=f"""Hi {row['contact_name']},
+
+Your BMC Growth Pack is attached.
+
+It contains 100 qualified commercial prospects in {row['market']} for {GROWTH_SERVICE_LABELS.get(row['provider_service_key'],row['provider_service_key'])}. The five free targets you already saw are included in the 100.
+
+Every row passed BMC's territory, fit, contact/source, activity, score, and duplicate checks before delivery.
+
+If any row was outside the agreed territory, inactive when delivered, the wrong business/property type, a duplicate BMC already sold you, or missing the promised contact route, reply and BMC will replace it.
+
+Please tell us what happens as you work the list — interested, quote, won, lost, or bad fit. That feedback improves future packs.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}"""
+          ok=await send_mail(row["customer_email"],subject,body,workflow_email_html(subject,[
+            "Your 100-prospect Growth Pack is attached as a CSV you can open in Excel, Google Sheets, or Numbers.",
+            "The five free targets are included in the 100.",
+            "Every row passed BMC's territory, fit, contact/source, activity, score, and duplicate checks.",
+            "Reply with bad-fit rows and the reason. Qualifying mistakes are replaced."
+          ]),[(f"BMC-Growth-Pack-{row['market'].replace(' ','-')}.csv",attachment,"text","csv")])
+          if not ok:
+              await conn.execute("update tasks set status='exception',updated_at=now() where task_id=$1",row["task_id"])
+              await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+                values('growth_fulfillment_delivery_failure','critical',$1,$2)""",
+                f"Paid Growth order {row['order_id']} passed QA but email delivery failed",
+                "Verify customer email/SMTP and resend the stored 100-row order deliverable")
+              exceptions+=1; continue
+          await conn.execute("update growth_order_prospects set delivered_at=now() where order_id=$1",row["order_id"])
+          await conn.execute("update tasks set status='completed',updated_at=now() where task_id=$1",row["task_id"])
+          await conn.execute("update orders set status='fulfilled',updated_at=now() where order_id=$1",row["order_id"])
+          await conn.execute("update growth_sample_requests set status='fulfilled',updated_at=now() where sample_id=$1",row["growth_sample_id"])
+          await event(conn,"order",row["order_id"],"growth_pack_fulfilled",{"prospects":100,"market":row["market"],"qa":{"count":qa_count,"score":qa_scores,"market":qa_market,"unique":qa_unique,"source":qa_sources}})
+          fulfilled+=1
+    return {"ok":True,"enabled":True,"fulfilled":fulfilled,"exceptions":exceptions}
+
+
 @app.post("/api/intake")
 async def intake(request:Request):
     p=await request.json()
@@ -2334,6 +2966,7 @@ async def intake(request:Request):
             if ft=="vendor_pilot_activation": return await handle_vendor_pilot_activation(conn,p)
             if ft=="vendor_partner": return await handle_vendor_application(conn,p)
             if ft=="facility_maintenance": return await handle_facility_lead(conn,p)
+            if ft=="growth_snapshot": return await handle_growth_snapshot(conn,p)
             return await handle_lead(conn,p)
 
 @app.post("/api/process-expired")
@@ -2689,34 +3322,33 @@ def buyer_outreach_copy(row,step):
     likely=clean(row["likely_services"]).replace("|",", ")
     campaign=clean(row["campaign"])
     if campaign=="growth_pack_sales":
-        sample=f"{PUBLIC_SITE_URL}/growth-packs/sample/"
+        landing=f"{PUBLIC_SITE_URL}/growth-packs/"
         if step==1:
-            subject=f"100 researched local prospects for {business}"
+            subject=f"5 free commercial targets for {business}"
             body=f"""Hi {business},
 
-I’m reaching out because BMC is testing a simple prospect-research product for local service businesses.
+BMC is testing a simpler way for local service businesses to find commercial accounts.
 
-The $499 Local Growth Pack includes 100 researched prospects in the market you want to sell into, with public business contact paths, fit/priority notes, and an outreach angle for each prospect. The $749 Premium version adds deeper competitor analysis and a more developed outreach plan.
+Tell us the commercial work and area you want. We will research five real businesses that fit and send them free, including why each fits, a public contact route, and a practical outreach angle.
 
-You can see the offer and a sample deliverable here:
+Start here:
 {landing}
-Sample:
-{sample}
 
-There is no retainer and no sales call required.
+If the five are useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required.
 
 BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}
 
 Reply no if you do not want future outreach."""
         else:
-            subject=f"Re: local prospect research for {business}"
+            subject=f"Re: 5 free commercial targets for {business}"
             body=f"""Hi {business},
 
-Following up once on the BMC Local Growth Pack. If prospect research is taking time away from selling or fulfillment, the pack is designed to hand you a prioritized list you can work immediately.
+One follow-up: if you want BMC to show you five commercial accounts that fit the work you want, start here:
 
-Offer + sample:
 {landing}
+
+The five are free to use. You only pay if you later want the full 100-prospect pack.
 
 BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}
@@ -2809,39 +3441,92 @@ async def process_buyer_outreach(x_bmc_admin_key:str|None=Header(default=None)):
 async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None)):
     if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY: raise HTTPException(403,"Forbidden")
     if not GROWTH_OUTREACH_ENABLED:
-        return {"ok":True,"enabled":False,"sent":0,"message":"Growth Pack outreach is disabled."}
+        return {"ok":True,"enabled":False,"sent":0,"message":"Growth outreach is disabled."}
     if not BUSINESS_POSTAL_ADDRESS or "CHANGE_ME" in BUSINESS_POSTAL_ADDRESS:
-        raise HTTPException(409,"BUSINESS_POSTAL_ADDRESS must be configured before Growth Pack outreach can send.")
+        raise HTTPException(409,"BUSINESS_POSTAL_ADDRESS must be configured before Growth outreach can send.")
+    if not (IMAP_ENABLED and IMAP_HOST and IMAP_USER and IMAP_PASSWORD):
+        raise HTTPException(409,"IMAP reply/opt-out handling must be configured before Growth outreach can send.")
     sent=0
     async with app.state.pool.acquire() as conn:
-      already=await conn.fetchval("""select count(*) from outreach
-        where entity_type='buyer' and campaign='growth_pack_sales'
-          and sent_at>=date_trunc('day',now())""")
+      already=await conn.fetchval("""select count(*) from outreach where entity_type='growth_customer'
+        and campaign='growth_sales' and sent_at>=date_trunc('day',now())""")
       allowance=max(0,GROWTH_OUTREACH_DAILY_LIMIT-int(already or 0))
       if allowance<=0:
-        return {"ok":True,"enabled":True,"sent":0,"message":"Growth Pack daily outreach limit reached."}
-      rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,
-          b.business_name,b.public_email,b.market,b.buyer_type,b.campaign,b.likely_services
-        from outreach o join buyers b on b.buyer_id=o.entity_id
-        where o.entity_type='buyer' and o.campaign='growth_pack_sales' and o.wave=$2 and o.opt_out=false
-          and b.public_email is not null and b.public_email<>''
+        return {"ok":True,"enabled":True,"sent":0,"message":"Growth daily outreach limit reached."}
+      rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,o.target_market,o.target_service_key,
+          g.business_name,g.public_email,g.market,g.service_key,g.target_id,g.experiment_cell
+        from outreach o join growth_outreach_targets g on g.target_id=o.entity_id
+        join growth_experiment_cells e on e.cell_key=g.experiment_cell
+        where o.entity_type='growth_customer' and o.campaign='growth_sales' and o.wave=$2 and o.opt_out=false
+          and g.status not in ('suppressed','bad_fit') and e.status in ('exploring','winner','challenger')
           and (o.status='queued' or (o.status='sent' and o.next_followup_at<=now() and o.sequence_step<2))
-          and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(b.public_email))
-        order by case when b.priority='A' then 0 else 1 end,coalesce(o.next_followup_at,o.created_at) asc
+          and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(g.public_email))
+        order by case when o.status='queued' then 0 else 1 end,g.fit_score desc,coalesce(o.next_followup_at,o.created_at) asc
         limit $1""",allowance,GROWTH_OUTREACH_WAVE)
       for row in rows:
         step=1 if row["status"]=="queued" else 2
-        subject,body=buyer_outreach_copy(row,step)
-        ok=await send_mail(row["public_email"],subject,body)
-        if not ok: continue
+        service_key=clean(row["service_key"])
+        service_label=GROWTH_SERVICE_LABELS.get(service_key,service_key.replace("_"," "))
+        params=urllib.parse.urlencode({
+          "utm_source":"bmc_outreach","utm_medium":"email","utm_campaign":"growth_"+service_key,
+          "utm_content":row["target_id"],"target":row["target_id"],"market":row["market"],"business":row["business_name"]
+        })
+        landing=f"{PUBLIC_SITE_URL}{GROWTH_LANDING_PATHS.get(service_key,'/growth-packs/')}?{params}"
+        if step==1:
+            subject=f"{row['market']}: 5 commercial accounts worth checking"
+            body=f"""Hi {row['business_name']},
+
+I’m researching commercial accounts for {service_label} businesses in {row['market']}.
+
+Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the commercial work you want — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.
+
+Tell us the area and type of work you want:
+{landing}
+
+If the five look useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+Reply no if you do not want future outreach."""
+        else:
+            subject=f"Re: 5 free commercial targets in {row['market']}"
+            body=f"""Hi {row['business_name']},
+
+One follow-up on the five free commercial targets.
+
+You can tell BMC the service area and kinds of accounts you want here:
+{landing}
+
+The five are yours to use. You only pay if you decide you want the full 100-prospect pack.
+
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+Reply no if you do not want future outreach."""
+        ok=await send_mail(row["public_email"],subject,body,workflow_email_html(subject,[
+          f"BMC will research five real commercial targets for {service_label} in {row['market']} at no charge.",
+          "Each target includes a fit reason, public contact route, source, and suggested angle.",
+          "If the five are useful, the full 100-prospect pack is $499. There is no retainer and no sales call required."
+        ],"Show me 5 free targets",landing))
+        if not ok:
+            await conn.execute("update outreach set status='delivery_error' where outreach_id=$1",row["outreach_id"])
+            await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+              values('growth_outreach_delivery_failure','high',$1,$2)""",
+              f"Growth outreach email failed for {row['business_name']} ({row['public_email']})",
+              "Check SMTP/address before retrying this target")
+            continue
         status="completed" if step>=2 else "sent"
-        next_at=datetime.now(timezone.utc)+timedelta(days=5)
+        next_at=None if step>=2 else datetime.now(timezone.utc)+timedelta(days=4)
         await conn.execute("""update outreach set sequence_step=$2,status=$3,subject=$4,body=$5,sent_at=now(),
           next_followup_at=$6 where outreach_id=$1""",row["outreach_id"],step,status,subject,body,next_at)
-        await event(conn,"buyer",row["entity_id"],"outreach_sent",{"campaign":"growth_pack_sales","step":step,"email":row["public_email"]})
+        await conn.execute("update growth_outreach_targets set status='contacted',updated_at=now() where target_id=$1",row["target_id"])
+        if step==1:
+            await conn.execute("""update growth_experiment_cells set valid_sends=valid_sends+1,updated_at=now()
+              where cell_key=$1""",row["experiment_cell"])
+        await event(conn,"growth_customer",row["target_id"],"outreach_sent",{"campaign":"growth_sales","step":step,"email":row["public_email"],"service_key":service_key})
         sent+=1
-    return {"ok":True,"enabled":True,"sent":sent,"daily_limit":GROWTH_OUTREACH_DAILY_LIMIT}
-
+    return {"ok":True,"enabled":True,"sent":sent,"daily_limit":GROWTH_OUTREACH_DAILY_LIMIT,"wave":GROWTH_OUTREACH_WAVE}
 
 def require_admin(key):
     if not ADMIN_KEY or key!=ADMIN_KEY:
@@ -4908,7 +5593,7 @@ def reply_text(msg):
 def classify_reply_text(body):
     t=(body or "").lower()
     optout=["unsubscribe","remove me","stop emailing","stop email","do not contact","don't contact","no thanks","not interested","take me off"]
-    positive=["interested","tell me more","send me","sign me up","sounds good","let's talk","lets talk","yes please","call me"]
+    positive=["interested","tell me more","send me","sign me up","sounds good","let's talk","lets talk","yes please","call me","send the 5","send the five","free five","free 5","sample"]
     if any(x in t for x in optout): return "opt_out"
     if any(x in t for x in positive): return "positive"
     return "other"
@@ -4939,17 +5624,38 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                   from outreach o
                   where (o.entity_type='vendor' and o.entity_id in (select vendor_id from vendors where lower(public_email)=lower($1)))
                      or (o.entity_type='buyer' and o.entity_id in (select buyer_id from buyers where lower(public_email)=lower($1)))
+                     or (o.entity_type='growth_customer' and o.entity_id in (select target_id from growth_outreach_targets where lower(public_email)=lower($1)))
                   order by o.created_at desc limit 1""",sender)
+                sample=await conn.fetchrow("""select sample_id from growth_sample_requests where lower(email)=lower($1)
+                  order by created_at desc limit 1""",sender)
                 processed+=1
-                if not row: continue
+                if not row and not sample:
+                    box.store(mid,"+FLAGS","\\Seen")
+                    continue
                 body=reply_text(msg); classification=classify_reply_text(body)
-                await conn.execute("""update outreach set replied_at=now(),reply_type=$2,
-                  status=case when $2='opt_out' then 'suppressed' else 'replied' end,
-                  opt_out=case when $2='opt_out' then true else opt_out end
-                  where outreach_id=$1""",row["outreach_id"],classification)
+                if row:
+                    await conn.execute("""update outreach set replied_at=now(),reply_type=$2,
+                      status=case when $2='opt_out' then 'suppressed' else 'replied' end,
+                      opt_out=case when $2='opt_out' then true else opt_out end
+                      where outreach_id=$1""",row["outreach_id"],classification)
+                    await event(conn,row["entity_type"],row["entity_id"],"outreach_reply",{"classification":classification,"email":sender})
+                    if row["entity_type"]=="growth_customer":
+                        target=await conn.fetchrow("select * from growth_outreach_targets where target_id=$1",row["entity_id"])
+                        if target and classification=="positive":
+                            await conn.execute("update growth_outreach_targets set status='engaged',updated_at=now() where target_id=$1",row["entity_id"])
+                            await conn.execute("""update growth_experiment_cells set engagements=engagements+1,updated_at=now()
+                              where cell_key=$1""",target["experiment_cell"])
+                            params=urllib.parse.urlencode({"utm_source":"bmc_reply","utm_medium":"email","utm_campaign":"growth_"+target["service_key"],
+                              "target":target["target_id"],"market":target["market"],"business":target["business_name"]})
+                            landing=f"{PUBLIC_SITE_URL}{GROWTH_LANDING_PATHS.get(target['service_key'],'/growth-packs/')}?{params}"
+                            await send_mail(sender,"Here’s the free 5-target form",
+                              f"Thanks for the reply. Tell BMC the commercial work and area you want here:\n\n{landing}\n\nWe’ll research five real targets free.\n\nBMC Luminary Ventures LLC\n{BUSINESS_POSTAL_ADDRESS}")
                 if classification=="opt_out":
                     await conn.execute("insert into outreach_suppressions(email,reason,source) values($1,'reply opt-out','imap') on conflict(email) do nothing",sender)
-                await event(conn,row["entity_type"],row["entity_id"],"outreach_reply",{"classification":classification,"email":sender})
+                    await conn.execute("""update growth_sample_requests set status='suppressed',next_nurture_at=null,updated_at=now()
+                      where lower(email)=lower($1) and converted_at is null""",sender)
+                elif sample:
+                    await event(conn,"growth_sample",sample["sample_id"],"reply_received",{"classification":classification,"email":sender})
                 box.store(mid,"+FLAGS","\\Seen"); matched+=1
     finally:
         try: box.logout()
@@ -5051,6 +5757,34 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
                   returning order_id""",
                   product_key,object_id,payment_intent_id,customer_email,amount,currency,status,json.dumps(obj))
                 service_key=await conn.fetchval("select service_key from products where product_key=$1",product_key) if product_key else None
+                growth_sample=None
+                if product_key in ("growth_pack_starter","growth_pack_premium"):
+                    client_ref=clean(obj.get("client_reference_id"))
+                    if client_ref.startswith("growth_"):
+                        try:
+                            sample_uuid=uuid.UUID(hex=client_ref.removeprefix("growth_"))
+                            growth_sample=await conn.fetchrow("select * from growth_sample_requests where sample_id=$1",sample_uuid)
+                        except (ValueError,TypeError):
+                            growth_sample=None
+                    if not growth_sample and customer_email:
+                        growth_sample=await conn.fetchrow("""select * from growth_sample_requests
+                          where lower(email)=lower($1) and converted_at is null and created_at>=now()-interval '30 days'
+                          order by created_at desc limit 1""",customer_email)
+                    if growth_sample:
+                        await conn.execute("""update orders set growth_sample_id=$2,status='ready_for_fulfillment',updated_at=now()
+                          where order_id=$1""",order_id,growth_sample["sample_id"])
+                        await conn.execute("""update growth_sample_requests set status='converted',converted_at=now(),order_id=$2,
+                          next_nurture_at=null,updated_at=now() where sample_id=$1""",growth_sample["sample_id"],order_id)
+                        await conn.execute("""insert into tasks(order_id,service_key,task_type,status,priority,owner,summary,payload)
+                          select $1,'growth_pack','fulfill_growth_pack','open','high','bmc_operator',$2,$3::jsonb
+                          where not exists(select 1 from tasks where order_id=$1 and task_type='fulfill_growth_pack')""",
+                          order_id,f"Fulfill paid Growth Pack for {growth_sample['business_name']} in {growth_sample['market']}",
+                          json.dumps({"growth_sample_id":str(growth_sample["sample_id"]),"service_key":growth_sample["provider_service_key"],
+                            "market":growth_sample["market"],"ideal_customer":growth_sample["ideal_customer"],
+                            "minimum_job":growth_sample["minimum_job"],"exclusions":growth_sample["exclusions"]}))
+                        await conn.execute("""update growth_experiment_cells set paid_orders=paid_orders+1,revenue_cents=revenue_cents+$2,updated_at=now()
+                          where cell_key=$1""",growth_sample["experiment_cell"],amount)
+                        await event(conn,"growth_sample",growth_sample["sample_id"],"paid",{"order_id":str(order_id),"product_key":product_key,"amount_cents":amount},"stripe")
                 recent=None
                 if customer_email and service_key:
                     recent=await conn.fetchrow("""select l.lead_id,l.submission_id
@@ -5060,7 +5794,9 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
                         and l.submitted_at>=now()-interval '7 days'
                         and not exists(select 1 from orders o where o.lead_id=l.lead_id and o.order_id<>$3)
                       order by l.submitted_at desc limit 1""",customer_email,service_key,order_id)
-                if recent:
+                if growth_sample:
+                    pass
+                elif recent:
                     await conn.execute("""update orders set lead_id=$2,intake_submission_id=$3,status='ready_for_fulfillment',updated_at=now()
                       where order_id=$1""",order_id,recent["lead_id"],recent["submission_id"])
                     await conn.execute("update leads set status='internal_queue',updated_at=now() where lead_id=$1",recent["lead_id"])
