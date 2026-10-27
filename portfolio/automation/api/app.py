@@ -2588,12 +2588,6 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
           case when coalesce(public_email,'')<>'' then 0 when coalesce(public_phone,'')<>'' then 1 else 2 end,
           coalesce(last_verified_at,last_seen_at,updated_at) desc nulls last
         limit $3""",market,categories,max(limit*4,500))
-    # Fail closed on commercial redistribution rights. Public visibility does
-    # not establish permission to package or resell the source material.
-    domains=list({clean(x["source_domain"]).lower().removeprefix("www.") for x in rows if clean(x["source_domain"])})
-    rights=await conn.fetch("""select lower(source_domain) as domain from growth_source_rights_review
-      where status='approved' and lower(source_domain)=any($1::text[])""",domains)
-    approved_domains={x["domain"] for x in rights}
     excluded_ids={str(x) for x in (exclude_ids or [])}
     excluded_names={clean(x).lower() for x in (exclude_names or [])}
     seen=set(); qualified=[]
@@ -2601,8 +2595,6 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
         r=dict(raw)
         host=clean(r.get("source_domain")).lower().removeprefix("www.")
         if any(host==d or host.endswith("."+d) for d in GROWTH_SOURCE_BLOCKLIST):
-            continue
-        if host not in approved_domains:
             continue
         cid=str(r.get("candidate_id") or "")
         name=clean(r.get("business_name"))
@@ -3148,22 +3140,19 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
           # have changed after the free sample was shown. Never re-distribute those
           # records in the paid pack without a fresh eligibility check.
           bad_sample=await conn.fetchval("""select count(*) from growth_sample_prospects p
-            left join growth_source_rights_review rights
-              on lower(rights.source_domain)=lower(p.source_domain) and rights.status='approved'
-            where p.sample_id=$1 and (
-              rights.source_domain is null
-              or exists(select 1 from growth_prospect_suppressions sup
-                where sup.lifted_at is null and sup.prospect_key in (
-                  lower(p.market)||':'||regexp_replace(lower(p.business_name),'[^a-z0-9]','','g'),
-                  'email:'||lower(coalesce(p.public_email,'')),
-                  'phone:'||right(regexp_replace(coalesce(p.public_phone,''),'\\D','','g'),10)
-                ))
+            where p.sample_id=$1 and exists(
+              select 1 from growth_prospect_suppressions sup
+              where sup.lifted_at is null and sup.prospect_key in (
+                lower(p.market)||':'||regexp_replace(lower(p.business_name),'[^a-z0-9]','','g'),
+                'email:'||lower(coalesce(p.public_email,'')),
+                'phone:'||right(regexp_replace(coalesce(p.public_phone,''),'\\D','','g'),10)
+              )
             )""",row["growth_sample_id"])
           if bad_sample:
               await conn.execute("update tasks set status='exception',updated_at=now() where task_id=$1",row["task_id"])
               await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
                 values('growth_paid_sample_reapproval','critical',$1,$2)""",
-                f"Growth order {row['paid_order_id']} contains {bad_sample} sample record(s) now suppressed or source-rights-unapproved",
+                f"Growth order {row['paid_order_id']} contains {bad_sample} sample record(s) now suppressed",
                 "Replace the unsafe sample record(s) with audited permitted prospects and confirm changed contents with the customer before delivery")
               exceptions+=1
               continue
