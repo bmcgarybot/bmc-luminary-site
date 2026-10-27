@@ -85,6 +85,7 @@ jobs:
           assert "SMTP_FROM_NAME" in api
           assert "def growth_outreach_message" in api
           assert "Reply <strong>no</strong>" in api
+          assert "This is a promotional email from BMC Service Network." in api
           assert "copy and paste this link" not in api
           readiness=(root/"automation"/"growth-launch-readiness.sh").read_text()
           env_example=(root/"automation"/".env.example").read_text()
