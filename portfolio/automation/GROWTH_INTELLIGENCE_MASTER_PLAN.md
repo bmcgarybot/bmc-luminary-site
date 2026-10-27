@@ -887,3 +887,105 @@ Until Phase 1 proves paid demand:
 > Do not add major features because they sound useful. Build only what improves qualification, engagement, purchase, fulfillment, feedback, or experiment reliability.
 
 The next major engineering task is the **qualification + experiment engine**, not another public-site redesign and not more marketplace complexity.
+
+
+## 24. End-of-November revenue survival constraint
+
+Owner has a real financial deadline: BMC needs to show **actual cash payoff by November 30, 2026**.
+
+This changes priority.
+
+November is not a feature month. It is a **revenue-validation month**.
+
+The scoreboard is not:
+- number of records collected;
+- number of pages built;
+- number of AI agents running;
+- theoretical lead value;
+- CI sophistication;
+- research backlog size.
+
+The scoreboard is:
+- engaged Growth prospects;
+- free samples consumed;
+- paid orders;
+- gross cash collected;
+- fulfilled orders;
+- repeat/upgrade/continuity behavior.
+
+### Spending rule through November 30
+
+Do not add material recurring software, ads, hardware, domains, or outside services unless they directly improve:
+1. acquisition;
+2. checkout;
+3. fulfillment quality;
+4. deliverability/compliance; or
+5. measurement required to decide whether the offer works.
+
+Use the VPS, existing census, current Stripe account, existing domain, current email stack, and existing code first.
+
+### Revenue sprint milestones
+
+These are operating targets, not guarantees.
+
+**Gate A — qualification ready**
+- deterministic hard gates + scoring work on real records;
+- sample generator can create honest five-prospect outputs;
+- multi-niche offline audit identifies viable experiment cells.
+
+**Gate B — first live exploration**
+- Growth-only outbound safety is ready;
+- launch multiple small niche cells in parallel;
+- no Service Network outbound required.
+
+**Gate C — first real payment**
+- the system must drive a real stranger from outreach/sample to Stripe;
+- first paid order receives strong human QA;
+- fulfillment is measured and outcome feedback requested.
+
+**Gate D — repeatable proof**
+- multiple paid orders and/or a repeat/upgrade signal;
+- winner cells receive more traffic;
+- losers are paused automatically.
+
+### Hard decision rules during November
+
+Do not wait until November 30 to discover failure.
+
+- If a niche cannot produce a high-quality free sample offline, do not market it.
+- If a niche gets no meaningful engagement after an initial bounded batch, run one material challenger and then move on.
+- If a niche reaches 100 valid well-targeted outreaches with a credible sample/offer and no meaningful interest, pause/radically change that niche.
+- If samples are being consumed but nobody buys, change offer/price/trust/pack positioning before increasing volume.
+- If paid orders appear but fulfillment quality is weak, stop scaling and fix qualification.
+- If one niche pays, immediately move more capacity toward it while keeping a small exploration budget alive.
+
+### November business target
+
+The minimum proof BMC needs is **real non-test Stripe revenue from the Growth path**.
+
+The preferred outcome by November 30 is:
+- several paying Growth customers;
+- evidence of a winning niche/market cell;
+- a fulfillment process the VPS can mostly run;
+- enough economics to decide whether to scale into December.
+
+A stronger target is approximately **$2,000-$5,000 gross collected in November**, but this is a target, not a promise.
+
+If BMC generates no meaningful paid demand after properly executed multi-niche tests with good data, deliverability, credible samples, and hundreds of valid targeted contacts, treat that as evidence to stop pouring time/money into the current Growth offer and redeploy the preserved Service Network/data assets into the next validated model.
+
+### Koerner/Hormozi interpretation
+
+The Chris Koerner agentic-business concept is being used for one thing BMC genuinely needs:
+**compress the labor of research, outreach, follow-up, quote/prospect collection, and repetitive execution.**
+
+It is not treated as proof that an AI agent automatically creates income.
+
+Hormozi's framework remains the economic discipline:
+- compelling offer;
+- big fast value;
+- engaged leads;
+- correct next offer;
+- cash economics;
+- continuity after value is proven.
+
+BMC must convert automation into money, not merely activity.
