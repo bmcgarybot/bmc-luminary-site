@@ -107,7 +107,22 @@ jobs:
       - name: Validate assistant directory bootstrap
         working-directory: portfolio/automation
         run: |
-          python3 -m py_compile assistant-directory-bootstrap.py assistant-homversa-bootstrap.py
+          python3 -m py_compile assistant-directory-bootstrap.py assistant-homversa-bootstrap.py build-assistant-research-seed.py
+          python3 build-assistant-research-seed.py --output /tmp/bmc-assistant-census-seed.sql --summary-json 2>/tmp/bmc-assistant-census-summary.json
+          cat /tmp/bmc-assistant-census-summary.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          summary=json.load(open("/tmp/bmc-assistant-census-summary.json"))
+          assert summary["artifacts"] >= 74, summary
+          assert summary["raw_rows"] >= 7879, summary
+          assert len(summary["markets"]) == 21, summary
+          assert summary["unique_rows"] > 0, summary
+          assert set(summary["raw_by_side"]) == {"buyer","vendor"}, summary
+          seed=Path("/tmp/bmc-assistant-census-seed.sql").read_text()
+          assert "artifact_files" in seed
+          assert "on conflict(side,market,category_key,source_url,business_name)" in seed
+          PY
           python3 - <<'PY'
           import importlib.util
           from pathlib import Path
@@ -390,9 +405,15 @@ jobs:
           done
           test "$ready" -ge 3
 
-          for file in schema.sql seed-services.sql seed-vendors.sql seed-buyers.sql seed-outreach.sql seed-buyer-outreach.sql seed-growth-pack-sales.sql seed-first-wave.sql seed-products.sql seed-research.sql seed-research-sources.sql seed-research-scale.sql seed-assistant-research-bootstrap.sql seed-assistant-williamson-bootstrap.sql; do
+          python3 build-assistant-research-seed.py --output /tmp/bmc-assistant-census-seed.sql --summary-json 2>/tmp/bmc-assistant-census-summary.json
+          echo "assistant census artifact summary:"
+          cat /tmp/bmc-assistant-census-summary.json
+
+          for file in schema.sql seed-services.sql seed-vendors.sql seed-buyers.sql seed-outreach.sql seed-buyer-outreach.sql seed-growth-pack-sales.sql seed-first-wave.sql seed-products.sql seed-research.sql seed-research-sources.sql seed-research-scale.sql; do
             docker compose --env-file .env.ci exec -T postgres psql -v ON_ERROR_STOP=1 -U bmc_automation -d bmc_portfolio < "$file"
           done
+          docker compose --env-file .env.ci exec -T postgres psql -v ON_ERROR_STOP=1 -U bmc_automation -d bmc_portfolio < /tmp/bmc-assistant-census-seed.sql
+          docker compose --env-file .env.ci exec -T postgres psql -v ON_ERROR_STOP=1 -U bmc_automation -d bmc_portfolio < seed-assistant-williamson-bootstrap.sql
 
           docker compose --env-file .env.ci up -d --build ops_api
           for i in $(seq 1 30); do
@@ -597,14 +618,21 @@ jobs:
           PY
 
           # Deep inventory lanes must exist for every market and every active
-          # provider-match service plus all 18 explicit buyer categories.
+          # provider-match service plus all 19 explicit buyer categories.
           EXPECTED_INVENTORY="$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select 21*(count(*)+19) from services where is_active=true and fulfillment_mode='provider_match';")"
           ACTUAL_INVENTORY="$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from market_inventory_progress;")"
+          EXPECTED_ARTIFACT_CANDIDATES="$(python3 -c 'import json; print(json.load(open("/tmp/bmc-assistant-census-summary.json"))["unique_rows"])')"
+          EXPECTED_ARTIFACT_MARKETS="$(python3 -c 'import json; print(len(json.load(open("/tmp/bmc-assistant-census-summary.json"))["markets"]))')"
+          ACTUAL_ARTIFACT_CANDIDATES="$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from market_inventory_candidates where evidence ? 'artifact_files';")"
+          ACTUAL_ARTIFACT_MARKETS="$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct market) from market_inventory_candidates where evidence ? 'artifact_files';")"
+          WILLIAMSON_CANDIDATES="$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from market_inventory_candidates where evidence->>'bootstrap_source'='assistant_williamson_valley_2026_10_26';")"
+          PROGRESS_MARKETS="$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct market) from market_inventory_progress;")"
+          echo "inventory assertion checkpoint: expected_lanes=$EXPECTED_INVENTORY actual_lanes=$ACTUAL_INVENTORY expected_artifact_candidates=$EXPECTED_ARTIFACT_CANDIDATES actual_artifact_candidates=$ACTUAL_ARTIFACT_CANDIDATES expected_artifact_markets=$EXPECTED_ARTIFACT_MARKETS actual_artifact_markets=$ACTUAL_ARTIFACT_MARKETS williamson=$WILLIAMSON_CANDIDATES progress_markets=$PROGRESS_MARKETS"
           test "$ACTUAL_INVENTORY" -eq "$EXPECTED_INVENTORY"
-          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from market_inventory_candidates where evidence->>'bootstrap_source'='assistant_web_research_2026_10_26_batch_01';")" -ge 45
-          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct market) from market_inventory_candidates where evidence->>'bootstrap_source'='assistant_web_research_2026_10_26_batch_01';")" -ge 8
-          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from market_inventory_candidates where evidence->>'bootstrap_source'='assistant_williamson_valley_2026_10_26';")" -ge 10
-          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct market) from market_inventory_progress;")" -eq 21
+          test "$ACTUAL_ARTIFACT_CANDIDATES" -eq "$EXPECTED_ARTIFACT_CANDIDATES"
+          test "$ACTUAL_ARTIFACT_MARKETS" -eq "$EXPECTED_ARTIFACT_MARKETS"
+          test "$WILLIAMSON_CANDIDATES" -ge 10
+          test "$PROGRESS_MARKETS" -eq 21
           curl -fsS http://127.0.0.1:8000/api/admin/market-inventory-coverage             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_inventory_coverage.json
           python - <<'PY'
           import json
