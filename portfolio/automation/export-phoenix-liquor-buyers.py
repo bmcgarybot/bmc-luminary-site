@@ -72,22 +72,37 @@ def main():
     parser.add_argument("--output-dir", type=Path, required=True)
     args = parser.parse_args()
 
-    ids = sorted(req(QUERY, {
-        "where": "1=1", "returnIdsOnly": "true", "f": "json"
-    }).get("objectIds") or [])
-    if len(ids) < 500:
-        raise RuntimeError(f"Phoenix liquor-license layer unexpectedly small: {len(ids)} IDs")
+    count_payload = req(QUERY, {
+        "where": "1=1", "returnCountOnly": "true", "f": "json"
+    })
+    source_count = int(count_payload.get("count") or 0)
+    if source_count < 500:
+        raise RuntimeError(f"Phoenix liquor-license layer unexpectedly small: {source_count} rows")
 
     features = []
-    for start in range(0, len(ids), 800):
-        chunk = ids[start:start+800]
+    offset = 0
+    page_size = 1000
+    while offset < source_count:
         payload = req(QUERY, {
-            "objectIds": ",".join(str(x) for x in chunk),
+            "where": "1=1",
             "outFields": "*",
             "returnGeometry": "false",
+            "orderByFields": "ESRI_OID ASC",
+            "resultOffset": str(offset),
+            "resultRecordCount": str(page_size),
             "f": "json",
         })
-        features.extend(payload.get("features") or [])
+        page = payload.get("features") or []
+        if not page:
+            break
+        features.extend(page)
+        offset += len(page)
+        if len(page) < page_size:
+            break
+    if len(features) != source_count:
+        raise RuntimeError(
+            f"Phoenix liquor pagination completeness failure: source count {source_count}, downloaded {len(features)}"
+        )
 
     records = []
     for feature in features:
@@ -155,7 +170,7 @@ def main():
         "safety": "Inventory seed only. Does not promote buyers/vendors and does not stage or send outreach.",
         "source": LAYER,
         "source_stats": {
-            "source_object_ids": len(ids),
+            "source_count": source_count,
             "downloaded_features": len(features),
             "included_records": len(records),
             "by_category": dict(sorted(Counter(r["category_key"] for r in records).items())),
