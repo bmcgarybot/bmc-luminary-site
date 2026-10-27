@@ -7854,3 +7854,398 @@ Priority order:
 ## Continuity sentence
 
 **The clean repository census is now 51,415 strict artifact seed rows across 290 auditable JSON artifacts. This pass added 71 new strict evidence identities, concentrating on direct/official evidence in the thinnest rural markets and a 23-facility Mohave County government census for Golden Valley. Production is still the older 30,518-row f05ff6 deployment, all outbound remains OFF, and the assistant must keep building the initial universe while the VPS remains the maintenance layer.**
+
+
+---
+
+# 63. CMS BLOCKER ROUTED AROUND + FEDERAL HEALTH/EDUCATION EXPANSION — 2026-10-26 20:50 ARIZONA
+
+This is the newest authoritative continuation section after Sections 61–62.
+
+## Brett's standing operating rule remains unchanged
+
+**The assistant is still building the initial business universe. Do not hand initial census construction to the VPS.**
+
+The VPS remains the maintenance layer for:
+- recurring rescans;
+- new-business discovery;
+- closure detection;
+- refresh;
+- local-demand monitoring;
+- opportunity monitoring;
+- internal queue processing.
+
+All external outreach remains OFF unless Brett explicitly approves it.
+
+## Exact repository census before this documentation commit
+
+Current artifact/data head immediately before this Section 63 documentation update:
+- `656b569892e33e995b81cab22be1ebb8963759a7`
+- message: **Seed official NCES education facility census**
+
+Deterministic builder summary on that tree:
+- **309 assistant census JSON artifacts**
+- **57,744 raw evidence rows**
+- **1,185 strict duplicate rows collapsed**
+- **56,559 strict unique artifact seed rows**
+- **40,794 strict unique buyer rows**
+- **15,765 strict unique vendor rows**
+- **21 / 21 markets**
+
+Latest strict-unique artifact rows by market:
+- Ash Fork: **124**
+- Bullhead City: **574**
+- Camp Verde: **310**
+- Chino Valley: **298**
+- Cordes Lakes: **80**
+- Cottonwood: **458**
+- Dewey-Humboldt: **433**
+- Flagstaff: **1,054**
+- Golden Valley: **158**
+- Kingman: **853**
+- Mayer: **193**
+- Phoenix: **11,791**
+- Prescott: **1,116**
+- Prescott Valley: **908**
+- Scottsdale: **3,660**
+- Sedona: **297**
+- Seligman: **141**
+- Skull Valley: **75**
+- Tucson: **33,828**
+- Williamson Valley: **43**
+- Winslow: **165**
+
+These are evidence/seed identities under the deterministic artifact key, **not globally deduplicated legal businesses**.
+
+Compared with the Section 62 checkpoint:
+- strict rows: **51,415 -> 56,559** (**+5,144**)
+- raw rows: **52,238 -> 57,744** (**+5,506**)
+- artifacts: **290 -> 309** (**+19**)
+
+The raw/strict difference increased because the new official datasets can corroborate businesses/facilities already represented elsewhere and because some official source rows represent multiple program/provider identities. Preserve that provenance; do not delete it merely to shrink counts.
+
+## CMS issue from the prior day: status is now clear
+
+The original problem was real:
+- the VPS/CMS source-native crawler received HTTP 403 responses from CMS;
+- repeated VPS retries were not a reliable path;
+- the old crawler should still be considered **host-blocked for CMS** unless separately proven otherwise.
+
+However, **CMS is no longer a blocker for the assistant-built initial census**.
+
+The assistant built GitHub Actions exporters that access the same official CMS public sources outside the VPS path, validate the source counts, filter to Arizona/BMC markets, create auditable government-registry JSON artifacts, validate the deterministic census builder, and only then commit results.
+
+Correct interpretation:
+
+**The VPS CMS crawler itself was not fixed; the assistant successfully routed around the VPS 403 and harvested the official CMS data through a separate controlled path.**
+
+Do not regress to waiting for the VPS to fetch CMS before building the census.
+
+## CMS Care Compare / provider-facility census
+
+New exporter:
+- `portfolio/automation/export-cms-market-census.py`
+
+Workflow:
+- `.github/workflows/assistant-cms-market-census.yml`
+
+The exporter resolves each current official bulk CSV from the stable CMS dataset metadata IDs rather than hard-coding changing distribution filenames.
+
+Current official source families and BMC-market rows:
+- hospitals: **48**
+- nursing homes: **71**
+- home health agencies: **98**
+- hospice providers: **149**
+- dialysis centers: **53**
+- inpatient rehabilitation facilities: **14**
+- long-term-care hospitals: **4**
+
+Combined:
+- **437 official CMS buyer/facility rows** in BMC markets.
+
+Relevant stable dataset IDs:
+- hospitals: `xubh-q36u`
+- nursing homes: `4pq5-n9py`
+- home health: `6jpm-sxkc`
+- hospice: `yc9t-dgbk`
+- dialysis: `23ew-n7w9`
+- inpatient rehab: `7t8x-u3ir`
+- long-term-care hospitals: `azum-44iv`
+
+Successful expanded CMS workflow:
+- run **40444626310**
+
+Workflow artifact commit:
+- `a7aa1ac68c60135249dedcee7d3d033056779520`
+- message: **Seed official CMS buyer facility census**
+
+All of these records use:
+- `official=false`
+- `official_registry=true`
+
+Therefore the builder correctly classifies them as:
+- `government_registry / government_record`
+
+They are not mislabeled as direct business websites.
+
+## Additional CMS provider-enrollment clinic census
+
+New exporter:
+- `portfolio/automation/export-cms-enrollment-clinic-census.py`
+
+Workflow:
+- `.github/workflows/assistant-cms-enrollment-clinic-census.yml`
+
+The exporter resolves the latest versioned CMS catalog entries instead of hard-coding quarterly file URLs.
+
+Successful workflow:
+- run **40445270587**
+
+Combined BMC-market rows:
+- Federally Qualified Health Center enrollments: **82**
+- opioid-treatment program providers: **30**
+- rural health clinic enrollments: **3**
+- home-infusion therapy providers: **2**
+
+Combined:
+- **117 official CMS enrollment/clinic rows**
+
+The source totals proved that the exporter was filtering a much broader official Arizona universe:
+- FQHC: 190 Arizona source rows / 11,166 national source rows
+- opioid treatment: 46 Arizona / 1,578 national
+- rural health clinic: 57 Arizona / 5,626 national
+- home infusion: 10 Arizona / 1,724 national
+
+These are additive first-party government evidence for outpatient, clinic and behavioral-health buyers.
+
+## CMS clinical-laboratory census
+
+New exporter:
+- `portfolio/automation/export-cms-clinical-lab-census.py`
+
+Workflow:
+- `.github/workflows/assistant-cms-clinical-lab-census.yml`
+
+Important implementation detail:
+- the official CMS clinical-lab source contains roughly 676,000 national rows;
+- the exporter does **not** brute-force the national file;
+- it uses the CMS Data API filter `STATE_CD=AZ` before paging;
+- then it filters Arizona rows to the configured BMC markets;
+- it excludes explicitly terminated program rows where the termination code clearly indicates termination;
+- sanity gates prevent a tiny/implausible result from landing.
+
+Successful workflow:
+- run **40445751650**
+
+Official CMS source result:
+- **16,090 Arizona clinical-lab rows**
+- **3,338 BMC-market clinical-lab records** after exporter filtering/dedupe
+
+The deterministic cross-artifact builder collapsed additional strict overlaps with existing census evidence, which is why the strict census increased by fewer than 3,338 rows.
+
+Workflow artifact commit:
+- short commit shown in Actions: `87a4113`
+- message: **Seed official CMS clinical lab census**
+
+The current CMS public source documents:
+- Provider of Services File - Clinical Laboratories;
+- latest available version used in this run: Q1 2026;
+- provider/facility demographics, address, provider number, CLIA information and testing characteristics.
+
+## Direct rural chain/facility additions during the same pass
+
+### Dollar General
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-dollar-general-direct-19.json`
+
+Commit:
+- `6b2e036702c2459d203d824b7c3b87f956b223cb`
+
+Adds current direct first-party locations in:
+- Cordes Lakes;
+- Golden Valley (two locations represented in the first-party directory);
+- Winslow;
+- Chino Valley;
+- Camp Verde (two locations).
+
+Green CI:
+- run **40444724107**
+
+### Skull Valley USPS
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-skull-valley-usps-direct-20.json`
+
+Commit:
+- `05a87d47afb5806d503defcba86356048f5e8682`
+
+Adds the direct USPS Skull Valley Post Office facility:
+- 3085 S Iron Springs Rd
+- public USPS phone preserved.
+
+Green CI:
+- run **40444764342**
+
+### Pilot / Flying J
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-pilot-flyingj-direct-22.json`
+
+Commit:
+- `63c90c28a57d3304cc52be0ef325de3ded7044f4`
+
+Adds direct first-party travel-stop facilities:
+- ONE9 Travel Center #484 — Ash Fork
+- ONE9 Dealer #1362 — Winslow
+- Flying J Travel Center #612 — Winslow
+
+Green CI:
+- run **40445039109**
+
+These are valuable buyer facilities because they are large, maintenance-heavy commercial properties, not merely low-value directory names.
+
+## ADE school blocker routed around with federal NCES data
+
+The Arizona Department of Education spreadsheet remains blocked by HTTP 403 from GitHub Actions.
+
+Instead of repeatedly retrying the same blocked ADE URL, the assistant found an official federal source:
+- National Center for Education Statistics (NCES)
+- U.S. Department of Education
+- Common Core of Data / EDGE public-school location layer
+- official ArcGIS FeatureServer hosted on `services1.arcgis.com`
+
+The initial NCES endpoints exposed their own quirks:
+- the `nces.ed.gov` ArcGIS endpoint failed GitHub Python TLS certificate verification;
+- an advertised ArcGIS Hub bulk CSV URL returned HTTP 400;
+- the official ArcGIS FeatureServer worked after correcting the current schema field mapping to `STATE`, `CITY`, `NAME`, `NCESSCH`, `STREET`, and `ZIP`.
+
+Do not disable TLS verification or weaken source checks; the official ArcGIS-hosted FeatureServer solved the issue cleanly.
+
+## NCES public-school census
+
+Exporter:
+- `portfolio/automation/export-nces-school-census.py`
+
+Workflow:
+- `.github/workflows/assistant-nces-school-census.yml`
+
+Successful workflow:
+- run **40445522347**
+
+Official source:
+- **2,633 Arizona current public-school locations**
+- **1,047 BMC-market public-school facility rows**
+
+BMC-market public-school rows include:
+- Ash Fork 4
+- Bullhead City 14
+- Camp Verde 8
+- Chino Valley 7
+- Cottonwood 14
+- Dewey-Humboldt 2
+- Flagstaff 40
+- Golden Valley 1
+- Kingman 20
+- Mayer 4
+- Phoenix 476
+- Prescott 20
+- Prescott Valley 19
+- Scottsdale 64
+- Sedona 6
+- Seligman 3
+- Skull Valley 1
+- Tucson 334
+- Winslow 10
+
+No school in this federal layer mapped literally to Cordes Lakes or Williamson Valley by city field; do not treat that as evidence those communities lack school-related buyer facilities.
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-nces-public-schools-21.json`
+
+Workflow artifact commit:
+- `e11dd14be136c90707d25a0a1781be0557565be4`
+- message: **Seed official NCES public school census**
+
+## Additional NCES education-facility census
+
+The assistant then expanded beyond individual public schools.
+
+Exporter:
+- `portfolio/automation/export-nces-institution-census.py`
+
+Workflow:
+- `.github/workflows/assistant-nces-institution-census.yml`
+
+Successful workflow:
+- run **40445853517**
+
+Official BMC-market rows:
+- school district administrative offices: **347**
+- private schools: **147**
+- postsecondary / college / university / technical-vocational institutions: **62**
+
+Combined:
+- **556 additional official education-facility rows**
+
+Arizona source universes:
+- district offices: **775 Arizona source rows**
+- private schools: **307 Arizona source rows**
+- postsecondary: **131 Arizona source rows**
+
+Workflow artifact commit:
+- `656b569892e33e995b81cab22be1ebb8963759a7`
+- message: **Seed official NCES education facility census**
+
+This broadens the education buyer universe from school buildings alone to:
+- district administrative offices;
+- private schools;
+- colleges/universities;
+- technical and vocational institutions.
+
+## Production distinction remains mandatory
+
+**None of this 56,559-row repository census is production-proven yet.**
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+
+All outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+Do not report 56,559 as live production data until an exact green census SHA is deliberately deployed and a new production proof is taken.
+
+## What the next work should do
+
+Continue assistant-led census construction.
+
+High-value next source families include:
+1. additional official CMS/provider datasets where they represent distinct facilities rather than duplicate measures;
+2. municipal/county business-license and inspection datasets;
+3. official chain/store/hotel/travel-stop location directories;
+4. official school/district/postsecondary sources where geography still has gaps;
+5. churches/nonprofits and public/community facilities in the smallest markets;
+6. direct service-territory verification for rural vendor categories;
+7. Phoenix buyer-side breadth, which remains worthy of continued work despite large health/education additions.
+
+Keep Williamson Valley, Skull Valley and Cordes Lakes under special scrutiny because their literal-city official datasets remain naturally sparse and often require service-territory/community-address research.
+
+## Immediate validation requirement after this documentation commit
+
+This Section 63 documentation commit is a normal assistant GitHub commit and should trigger BMC Portfolio CI over the complete artifact tree.
+
+Before treating **56,559** as the next clean repository baseline:
+1. require BMC Portfolio CI success on the exact post-handoff master;
+2. confirm deterministic builder expected artifact candidates = smoke DB actual artifact candidates;
+3. confirm 21/21 markets;
+4. confirm 1,260/1,260 inventory lanes;
+5. confirm runtime core failures remain 0.
+
+Do not deploy merely because this checkpoint is green; Brett's current instruction is to continue fleshing out the initial list.
+
+## Continuity sentence
+
+**The CMS problem from yesterday is now solved for census-building: the VPS crawler itself remains the blocked component, but assistant-controlled GitHub exporters successfully harvested official CMS hospitals, nursing homes, home health, hospice, dialysis, rehab, LTCH, FQHC, RHC, home-infusion, opioid-treatment and clinical-lab data. Federal NCES sources also replaced the blocked ADE school path and added public schools, district offices, private schools and postsecondary institutions. The repo artifact census now stands at 56,559 strict rows across 309 auditable JSON artifacts before this documentation commit; production remains the older 30,518-row f05ff6 deployment and outbound remains OFF.**
