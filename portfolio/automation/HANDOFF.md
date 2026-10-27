@@ -6409,3 +6409,306 @@ The truthful short version:
 - The newest master is not yet deployable because CI is failing in a narrow inventory smoke-test assertion after the database/API have already proven healthy.
 - Fix that assertion regression first, then continue census expansion and deploy/prove actual distinct production counts.
 - The VPS remains the future maintenance layer, not the substitute for the assistant-built initial census.
+
+
+---
+
+# 59. CENSUS RECOVERY + PHOENIX EXHAUSTIVE EXPANSION — 2026-10-26 17:59 ARIZONA
+
+## Brett's governing instruction remains unchanged
+
+**BUILD THE INITIAL BUSINESS DATABASE THROUGH ASSISTANT-LED RESEARCH FIRST. THE VPS IS THE MAINTENANCE LAYER AFTERWARD.**
+
+Do not revert to "the VPS will discover the rest later" as a reason to stop the assistant-led initial census.
+
+Correct sequence remains:
+
+**Assistant-built census -> direct/official/license evidence -> entity dedupe/audit -> green CI -> exact tested deploy -> production proof -> continued assistant gap-filling -> VPS maintenance/delta discovery.**
+
+## Major integrity issue found and repaired
+
+The prior handoff said the large manual census was present in the repository but CI was failing in a narrow inventory assertion.
+
+Investigation found a more important underlying integrity problem:
+
+- \`portfolio/automation/seed-assistant-research-bootstrap.sql\` had been repeatedly overwritten by stale snapshots during the rapid census build.
+- The newest aggregate SQL file contained only the four Tucson general-contractor batches (1,162 rows), even though the individual JSON research artifacts were still intact.
+- The research itself was **not lost**.
+- The committed JSON artifacts under \`portfolio/data/assistant-research-bootstrap-*.json\` were the durable source of truth.
+
+This was repaired by adding:
+
+- \`portfolio/automation/build-assistant-research-seed.py\`
+- deterministic artifact-to-SQL census generation;
+- strict identity dedupe on \`side + market + category_key + source_url + business_name\`;
+- preservation of artifact/source provenance in \`evidence\`;
+- direct evidence / registry-derived evidence classification;
+- production migration now builds the census seed from the JSON artifacts every deploy instead of trusting the stale giant SQL snapshot.
+
+Important commits:
+- \`e70ef8dd371184de178f32e102f13cf0ce910bed\` — initial deterministic census builder
+- \`e697fbb1717c92d818c37bde4d92f8055f5a8ff8\` — coverage summaries by market/side
+- \`c24409814977e435b11d3173113b6f1a47245a3e\` — migrations seed from committed artifacts
+- \`7b5980953080e41b127579ecde7f46f9abd6e9cd\` — CI proves census artifacts and instruments inventory assertions
+
+## CI regression is fixed
+
+Green BMC Portfolio CI:
+- run: **40427994871**
+- tested SHA: \`7b5980953080e41b127579ecde7f46f9abd6e9cd\`
+- conclusion: **success**
+
+That run proved:
+- 74 census JSON artifacts;
+- 8,249 raw artifact evidence rows;
+- 8,018 strict unique generated seed rows;
+- all 21 markets represented;
+- 2,903 buyer raw rows;
+- 5,346 vendor raw rows;
+- 1,260 / 1,260 expected inventory lanes;
+- 8,018 / 8,018 artifact candidates loaded in smoke-test Postgres;
+- 21 / 21 artifact markets;
+- 21 / 21 progress markets;
+- runtime doctor: **Core failures: 0**.
+
+The old silent CI assertions were replaced with explicit printed values and artifact-derived expectations.
+
+## Scottsdale orphan artifact audit is resolved
+
+The previously suspicious file:
+\`portfolio/data/assistant-research-bootstrap-2026-10-26-scottsdale-batch-01.json\`
+
+contains 149 rows:
+- 121 buyer
+- 28 vendor
+
+Compared with the later Scottsdale files:
+- 19 rows were strict identity duplicates;
+- 60 rows overlapped at normalized business-entity level;
+- **89 rows represented business entities not present in the later Scottsdale batches**.
+
+Because the deterministic seed builder now consumes **all** committed assistant census artifacts and collapses strict duplicates, this artifact is no longer orphaned or at risk of being ignored.
+
+Do not manually re-add it to the old aggregate SQL file.
+
+## Production deployment of repaired census is proven
+
+Exact tested production deployment request:
+- \`deploy-census-artifact-repair-20261027T0043Z\`
+
+Production result:
+- status: **success**
+- exact deployed SHA: \`7b5980953080e41b127579ecde7f46f9abd6e9cd\`
+- CI proof: run **40427994871**
+- production host: \`vps-5675821a\`
+- all outbound switches remained OFF:
+  - \`OUTREACH_ENABLED=false\`
+  - \`BUYER_OUTREACH_ENABLED=false\`
+  - \`GROWTH_OUTREACH_ENABLED=false\`
+- migration generated and loaded 8,018 strict artifact seed rows;
+- production runtime doctor finished:
+  - **Core failures: 0**
+  - **warnings: 0**
+
+## Fresh production proof after repaired census
+
+Proof request:
+- \`proof-census-artifact-repair-20261027T0046Z\`
+
+Proof timestamp:
+- 2026-10-27T00:47:49Z
+
+Production inventory:
+- **24,176 active v7 evidence rows**
+- 0 closed v7 rows at that proof
+- 468 official/direct candidate rows
+- evidence tiers included:
+  - direct/direct_evidence: 466
+  - registry_derived/credential_corroborated: 4,583
+  - directory/discovery: 19,012
+  - other smaller corroborated/government/discovery tiers
+- candidate phone-ready active v7: 17,388
+- candidate email-ready active v7: 81
+- outreach sent: **0**
+- outreach replied: **0**
+
+This supersedes the old 15,185 active-v7 production checkpoint.
+
+Production is healthy, but outbound launch is intentionally still blocked because no verified provider is active and the continuous inventory/local-demand lane scans are not yet complete. That is separate from census database health.
+
+## Production market snapshot before the newest Phoenix expansion
+
+At the 00:47 production proof, Phoenix had:
+- buyer evidence rows: **1,403**
+- normalized buyer businesses: **1,306**
+- vendor evidence rows: **953**
+- normalized vendor businesses: **912**
+
+So Phoenix production at that checkpoint was:
+- **2,356 active evidence rows**
+- **2,218 normalized market/side business entries**
+
+This snapshot does **not** yet include the newest 98-location Phoenix grocery/pharmacy batch or the exhaustive 6,568-row Phoenix licensed-trade export described below.
+
+## Phoenix buyer expansion added after that production proof
+
+Commit:
+- \`6e0edbbd4167ad354536fe0c38a9869c113c3671\`
+
+Artifact:
+- \`portfolio/data/assistant-research-bootstrap-2026-10-26-phoenix-grocery-pharmacy-06.json\`
+
+Adds **98 direct/official Phoenix buyer facilities**:
+- 45 pharmacies
+- 53 grocery stores
+
+Sources are official chain/location pages for:
+- CVS
+- Walgreens
+- Fry's Food Stores
+- Safeway
+- Sprouts Farmers Market
+
+The prior explicit Phoenix artifact set had zero rows in the dedicated grocery and pharmacy categories, so this filled a real category gap rather than padding an already-dense category.
+
+CI for that commit:
+- run **40428633775**
+- conclusion: **success**
+
+## Phoenix licensed-vendor census is now exhaustive across the published trade pages
+
+The old Phoenix explicit vendor sample was only about 280 rows.
+
+A new assistant-controlled exhaustive exporter was built:
+- \`portfolio/automation/export-homversa-census-artifacts.py\`
+- workflow: \`.github/workflows/assistant-census-artifact-export.yml\`
+
+The exporter:
+- discovers every published Phoenix licensed trade page;
+- reads the published source count;
+- parses ranked + full A-to-Z license listings;
+- preserves company name, ROC license number, trade, verification date and source page;
+- **refuses to commit a trade if parsed count != published count**.
+
+Several source-layout edge cases were found during development.
+The completeness gate stopped bad parses at 373/374 and 375/374 plumbing instead of accepting them.
+The parser was corrected rather than weakening the gate.
+
+Successful exhaustive export:
+- workflow run: **40429651742**
+- result: **success**
+- artifact commit: \`fb5090a1d8aa2b70457ad6ea57301c6dd5b4f488\`
+- 22 new Phoenix licensed-trade JSON files
+- **6,568 raw licensed evidence rows**
+- every trade matched its published source count exactly
+
+Trade counts:
+- plumbers: 374
+- roofers: 240
+- electricians: 522
+- HVAC: 639
+- insulation contractors: 52
+- low-voltage contractors: 183
+- septic contractors: 13
+- well-drilling contractors: 6
+- general contractors: 1,954
+- concrete contractors: 146
+- painters: 384
+- drywall contractors: 203
+- flooring contractors: 286
+- masonry contractors: 65
+- tile contractors: 184
+- glass contractors: 111
+- carpentry contractors: 403
+- stucco contractors: 142
+- pool contractors: 242
+- landscaping: 341
+- fence contractors: 48
+- paving contractors: 30
+
+These are evidence rows, not necessarily 6,568 distinct companies.
+A company can hold multiple classifications and can appear in multiple service categories.
+Use the business rollup after deployment for distinct-company reporting.
+
+## Current artifact census scale before this handoff commit
+
+Before the Phoenix additions:
+- 74 artifact files
+- 8,249 raw artifact rows
+- 8,018 strict unique seed rows
+
+Added since:
+- 98 Phoenix grocery/pharmacy direct rows
+- 6,568 Phoenix licensed-trade rows across 22 files
+
+Therefore the repository now has at least:
+- **97 assistant census JSON artifacts**
+- **14,915 raw artifact evidence rows before strict dedupe**
+
+Do **not** assume 14,915 strict unique seed rows.
+The old Phoenix vendor sample intentionally overlaps the new exhaustive licensed pages.
+The deterministic builder will compute the exact strict unique count in the next normal CI run.
+
+## Important CI behavior after the artifact exporter
+
+The \`fb5090a1...\` artifact commit was pushed by GitHub Actions using its workflow token.
+
+GitHub intentionally does not cascade-trigger another workflow from that token, so the BMC Portfolio CI did not automatically run on \`fb5090a1...\`.
+
+A normal human/assistant GitHub commit after that artifact commit is required to trigger BMC Portfolio CI over the complete 97-artifact tree.
+
+This handoff update is intentionally serving that purpose.
+
+Before any next production deploy:
+1. wait for the new BMC Portfolio CI run on the post-handoff master;
+2. inspect the artifact census summary;
+3. confirm all 21 markets;
+4. confirm the exact strict unique seed count equals smoke-test loaded artifact candidates;
+5. require green CI;
+6. deploy the **exact green master** through the safe VPS relay;
+7. keep all outbound switches OFF;
+8. take a fresh production proof;
+9. report Phoenix and statewide evidence rows vs normalized businesses.
+
+## Current master immediately before this handoff update
+
+\`fb5090a1d8aa2b70457ad6ea57301c6dd5b4f488\`
+
+Message:
+**Seed full Phoenix licensed trade census**
+
+## What NOT to do next
+
+Do not:
+- rebuild the crawler/refresher;
+- go back to the stale giant SQL file as census source of truth;
+- delete overlapping evidence merely to make row counts smaller;
+- declare 6,568 Phoenix trade rows to be 6,568 distinct companies;
+- deploy a non-green or non-exact SHA;
+- turn on outreach;
+- restart Phoenix vendor discovery from tiny hand-picked samples.
+
+## Next work, in order
+
+1. Let the normal BMC CI triggered by this handoff commit validate the complete 97-artifact census.
+2. Read the new builder summary and record:
+   - raw artifact rows;
+   - strict unique seed rows;
+   - buyer/vendor rows;
+   - per-market raw and strict-unique counts.
+3. If green, deploy exact master and run production proof.
+4. Get the new Phoenix business-level rollup after the 98 buyer + 6,568 licensed trade expansion.
+5. Continue **assistant-led** census gap filling, especially:
+   - Phoenix buyer facilities beyond grocery/pharmacy;
+   - Phoenix direct-site verification/contact enrichment;
+   - Scottsdale continued buyer/direct evidence expansion;
+   - Tucson buyer-side facilities/institutions/healthcare/hospitality/commercial properties;
+   - Williamson Valley direct facilities/service-territory evidence;
+   - obvious weak rural categories.
+6. Preserve the separation:
+   - assistant = initial universe builder;
+   - VPS = continuous refresh/new-business/closure maintenance after initial build.
+
+The most important continuity fact is now:
+
+**The census research is safe in auditable JSON artifacts, the deterministic builder prevents stale-SQL data loss, repaired production is healthy at 24,176 active v7 evidence rows, and Phoenix has just received a new 98-row direct buyer batch plus an exhaustive 6,568-row licensed-trade artifact expansion awaiting the next green exact-master deploy.**
