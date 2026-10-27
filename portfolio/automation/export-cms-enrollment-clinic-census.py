@@ -126,11 +126,16 @@ def extract_uuid(value):
 
 def resolve_latest(catalog, exact_title):
     entries = dataset_entries(catalog)
-    candidates = [row for row in entries if clean(row.get("title")) == exact_title]
+    candidates = []
+    prefix = exact_title + " :"
+    for row in entries:
+        title = clean(row.get("title"))
+        if title == exact_title or title.startswith(prefix):
+            candidates.append(row)
     if not candidates:
         raise RuntimeError(f"CMS catalog title not found: {exact_title}")
 
-    # Prefer the DatasetSeries record whose 'last' pointer resolves to the newest version.
+    # Prefer a DatasetSeries-style record when a current 'last' pointer exists.
     for row in candidates:
         last = row.get("last")
         if isinstance(last, dict):
@@ -142,11 +147,21 @@ def resolve_latest(catalog, exact_title):
             if uuid:
                 return uuid, row, {}
 
-    # Fall back to a direct dataset identifier if the catalog exposes only one current item.
-    for row in reversed(candidates):
+    # data.cms.gov/data.json commonly exposes each dated version as its own
+    # dataset title (for example "Rural Health Clinic Enrollments : 2026-07-01").
+    # Select the newest dated/modified item rather than requiring a bare series row.
+    def candidate_sort_key(row):
+        title = clean(row.get("title"))
+        title_date = title.rsplit(" : ", 1)[-1] if " : " in title else ""
+        return (clean(row.get("modified")), title_date, title)
+
+    for row in sorted(candidates, key=candidate_sort_key, reverse=True):
         uuid = extract_uuid(row.get("@id") or row.get("identifier"))
         if uuid:
-            return uuid, row, {}
+            return uuid, row, {
+                "title": row.get("title"),
+                "modified": row.get("modified"),
+            }
     raise RuntimeError(f"Could not resolve latest UUID for CMS catalog title: {exact_title}")
 
 
