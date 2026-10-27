@@ -316,6 +316,11 @@ def main():
     parser.add_argument("--date", required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--delay", type=float, default=0.15)
+    parser.add_argument(
+        "--continue-on-trade-error",
+        action="store_true",
+        help="Preserve individually complete trade artifacts even when another trade page fails its completeness gate.",
+    )
     args = parser.parse_args()
 
     slug = MARKETS[args.market]
@@ -333,12 +338,20 @@ def main():
         "raw_trade_rows": 0,
         "trades": {},
         "files": [],
+        "failed_trades": {},
     }
 
     for trade, main_url in trades:
-        rows, claimed_count, verified_date = records_for_trade(
-            args.market, trade, main_url, args.delay
-        )
+        try:
+            rows, claimed_count, verified_date = records_for_trade(
+                args.market, trade, main_url, args.delay
+            )
+        except Exception as exc:
+            if not args.continue_on_trade_error:
+                raise
+            summary["failed_trades"][trade] = str(exc)
+            print(f"FAILED {trade}: {exc}")
+            continue
         payload = {
             "researched_at": f"{args.date}T17:55:00-07:00",
             "market": args.market,
@@ -369,6 +382,8 @@ def main():
         if args.delay:
             time.sleep(args.delay)
 
+    if not summary["files"]:
+        raise SystemExit(f"No complete trade artifacts recovered for {args.market}")
     print(json.dumps(summary, indent=2))
 
 
