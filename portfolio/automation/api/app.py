@@ -2745,10 +2745,10 @@ async def handle_growth_snapshot(conn,p):
     prior_business_claim=await conn.fetchval("""select sample_id
       from growth_sample_requests
       where lower(market)=lower($1) and provider_service_key=$2
-        and regexp_replace(lower(business_name),'[^a-z0-9]','','g')=$3
+        and (regexp_replace(lower(business_name),'[^a-z0-9]','','g')=$3 or lower(email)=$4)
         and status in ('delivered','fulfilled','delivery_error')
       order by created_at desc limit 1""",
-      market,service_key,re.sub(r"[^a-z0-9]+","",business.lower()))
+      market,service_key,re.sub(r"[^a-z0-9]+","",business.lower()),email_addr)
     if prior_business_claim:
         return {"ok":True,"status":"already_claimed","sample":[],
           "checkout_url":"","message":"BMC has already prepared a free sample for this business and territory. Use the original invitation or contact BMC to review the account."}
