@@ -1,0 +1,41 @@
+name: Assistant AZ ROC Active Contractor Census
+
+on:
+  push:
+    paths:
+      - 'portfolio/automation/export-azroc-active-census.py'
+      - '.github/workflows/assistant-azroc-active-census.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Export official AZ ROC current active contractor census
+        run: |
+          python3 portfolio/automation/export-azroc-active-census.py             --date 2026-10-26             --output-dir portfolio/data
+
+      - name: Validate deterministic census builder
+        run: |
+          python3 portfolio/automation/build-assistant-research-seed.py             --data-dir portfolio/data             --output /tmp/assistant-research-seed.sql             --summary-json 2>/tmp/census-summary.json
+          cat /tmp/census-summary.json
+
+      - name: Commit official AZ ROC market artifacts
+        run: |
+          git config user.name "BMC Assistant Census"
+          git config user.email "actions@users.noreply.github.com"
+          git add portfolio/data/assistant-research-bootstrap-2026-10-26-azroc-active-*-12.json
+          if git diff --cached --quiet; then
+            echo "No artifact changes."
+            exit 0
+          fi
+          git commit -m "Seed official AZ ROC active contractor census"
+          git pull --rebase origin master
+          git push origin HEAD:master
