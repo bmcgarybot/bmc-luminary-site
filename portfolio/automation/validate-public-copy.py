@@ -18,6 +18,8 @@ KEY_PAGES = (
     "request/index.html",
     "how-it-works/index.html",
     "providers/index.html",
+    "privacy/index.html",
+    "terms/index.html",
 )
 FORBIDDEN_VISIBLE_PHRASES = (
     "bmc categorizes",
@@ -37,6 +39,9 @@ FORBIDDEN_VISIBLE_PHRASES = (
     "start with the need, not the vendor search",
     "no perfect category or diagnosis required",
     "what can start here",
+    "operational launch draft",
+    "operational draft for bmc launch",
+    "counsel review should be added",
 )
 
 
