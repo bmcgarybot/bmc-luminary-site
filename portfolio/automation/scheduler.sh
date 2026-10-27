@@ -17,6 +17,12 @@ while true; do
   if [ $((i % 3)) -eq 0 ]; then
     post /api/agent-cycle
     post /api/process-research 240
+    # Revenue lane watchdog: every 15 minutes. These endpoints are safe no-ops
+    # while Growth outreach is disabled.
+    post /api/process-growth-health
+    post /api/process-growth-nurture
+    post /api/process-growth-fulfillment 240
+    post /api/process-growth-outreach
   fi
 
   if [ $((i % 2)) -eq 0 ]; then
@@ -35,7 +41,6 @@ while true; do
     post /api/process-public-opportunities 240
     post /api/process-outreach
     post /api/process-buyer-outreach
-    post /api/process-growth-outreach
   fi
 
   if [ $((i % 6)) -eq 0 ]; then
