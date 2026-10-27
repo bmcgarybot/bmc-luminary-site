@@ -1960,12 +1960,22 @@
       "category_key": "property_management",
       "category_label": "property management companies apartment communities",
       "business_name": "Rent Right / Home Right Real Estate Solutions",
-      "url": "https://web.prescott.org/directory/results/directions.aspx?listingid=1741",
-      "domain": "web.prescott.org",
+      "url": "https://www.rentrightproperties.com/",
+      "domain": "rentrightproperties.com",
       "phone": "(928) 771-0308",
-      "email": null,
-      "official": false,
-      "note": "Current Prescott property-management, real-estate or apartment-community candidate."
+      "email": "info@rentrightproperties.com",
+      "official": true,
+      "note": "Direct company site confirms full-service Prescott/Quad Cities property management, 24/7 maintenance intake, vendor access to managed homes, maintenance oversight, and preventive-maintenance coordination. Strong multi-property buyer/account candidate; exact vendor onboarding requirements must be qualified.",
+      "verified_date": "2026-10-26",
+      "commercial_service_hypotheses": [
+        "turnover cleaning and make-ready vendor coordination",
+        "locksmith/rekey work between residents",
+        "HVAC/plumbing/electrical maintenance dispatch",
+        "landscaping and exterior cleanup",
+        "dryer-vent and preventive-maintenance services",
+        "roof, garage-door and water-heater service coordination"
+      ],
+      "opportunity_qualification_required": true
     },
     {
       "side": "buyer",
@@ -1998,13 +2008,25 @@
       "market": "Prescott",
       "category_key": "property_management",
       "category_label": "property management companies apartment communities",
-      "business_name": "BloomTree Realty",
-      "url": "https://web.prescott.org/v12/directory/index.aspx",
-      "domain": "web.prescott.org",
-      "phone": "(928) 443-8800",
+      "business_name": "BloomTree Rental Solutions",
+      "url": "https://centralazpropertymanagement.com/contact-us/",
+      "domain": "centralazpropertymanagement.com",
+      "phone": "(928) 848-6084",
       "email": null,
-      "official": false,
-      "note": "Current Prescott property-management, real-estate or apartment-community candidate."
+      "official": true,
+      "note": "Direct BloomTree site confirms residential rentals, commercial leasing and property-management services from its Prescott office. Treat as a multi-property vendor-coordination prospect; specific portfolio size and vendor onboarding process still need qualification.",
+      "aliases": [
+        "BloomTree Realty"
+      ],
+      "verified_date": "2026-10-26",
+      "commercial_service_hypotheses": [
+        "residential turnover and make-ready services",
+        "commercial tenant/building maintenance coordination",
+        "cleaning, landscaping and exterior maintenance",
+        "locksmith and access-control service",
+        "trade-contractor sourcing for managed properties"
+      ],
+      "opportunity_qualification_required": true
     },
     {
       "side": "buyer",
@@ -2409,5 +2431,6 @@
       "official": false,
       "note": "Current Prescott church/religious facility."
     }
-  ]
+  ],
+  "researched_at": "2026-10-26T22:32:00-07:00"
 }
