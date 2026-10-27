@@ -1,7 +1,7 @@
 import os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, urllib.error, hmac, hashlib, time, html, random, csv, io
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
-from email.utils import parseaddr
+from email.utils import parseaddr, formataddr, make_msgid, format_datetime
 import asyncpg
 import aiosmtplib
 from fastapi import FastAPI, Request, Header, HTTPException
@@ -33,6 +33,7 @@ SMTP_PORT=env_int("SMTP_PORT",587)
 SMTP_USER=os.getenv("SMTP_USER","")
 SMTP_PASSWORD=os.getenv("SMTP_PASSWORD","")
 SMTP_FROM=os.getenv("SMTP_FROM",SMTP_USER or "contact@bmcservicenetwork.com")
+SMTP_FROM_NAME=os.getenv("SMTP_FROM_NAME","BMC Service Network").strip() or "BMC Service Network"
 SMTP_STARTTLS=os.getenv("SMTP_STARTTLS","true").lower()=="true"
 SMTP_DRY_RUN=os.getenv("SMTP_DRY_RUN","false").lower()=="true"
 OUTREACH_ENABLED=os.getenv("OUTREACH_ENABLED","false").lower()=="true"
@@ -625,7 +626,14 @@ async def send_mail(to,subject,body,html_body=None,attachments=None):
     if SMTP_DRY_RUN: return True
     if not SMTP_HOST or "CHANGE_ME" in SMTP_HOST: return False
     try:
-        msg=EmailMessage(); msg["From"]=SMTP_FROM; msg["To"]=to; msg["Subject"]=subject; msg.set_content(body)
+        msg=EmailMessage()
+        msg["From"]=formataddr((SMTP_FROM_NAME,SMTP_FROM))
+        msg["To"]=to
+        msg["Subject"]=subject
+        msg["Date"]=format_datetime(datetime.now(timezone.utc))
+        from_domain=SMTP_FROM.rsplit("@",1)[-1] if "@" in SMTP_FROM else None
+        msg["Message-ID"]=make_msgid(domain=from_domain)
+        msg.set_content(body)
         if html_body:
             msg.add_alternative(html_body,subtype="html")
         for attachment in (attachments or []):
@@ -686,15 +694,24 @@ def research_auto_promote_eligible(result,contact,authoritative_source,rank):
         return False
     return True
 
-def workflow_email_html(title,body_lines,button_label=None,button_url=None):
-    rows="".join(f"<p style='margin:0 0 14px;line-height:1.55'>{html.escape(clean(line)).replace(chr(10),'<br>')}</p>" for line in body_lines if clean(line))
+def workflow_email_html(title,body_lines,button_label=None,button_url=None,greeting=None,marketing=False):
+    rows="".join(
+      f"<p style='margin:0 0 16px;line-height:1.58;font-size:15px'>{html.escape(clean(line)).replace(chr(10),'<br>')}</p>"
+      for line in body_lines if clean(line)
+    )
+    hello=""
+    if clean(greeting):
+        hello=f"<p style='margin:0 0 18px;line-height:1.58;font-size:15px'>{html.escape(clean(greeting))}</p>"
     button=""
-    fallback=""
     if button_label and button_url:
         safe_url=html.escape(clean(button_url),quote=True)
-        button=f"<p style='margin:24px 0'><a href='{safe_url}' style='display:inline-block;background:#1557d6;color:#fff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px'>{html.escape(clean(button_label))}</a></p>"
-        fallback=f"<p style='margin:18px 0 0;font-size:12px;color:#666;line-height:1.45'>If the button does not work, copy and paste this link:<br><span style='word-break:break-all'>{safe_url}</span></p>"
-    return f"""<!doctype html><html><body style='margin:0;background:#f5f7fa;font-family:Arial,sans-serif;color:#1f2937'><div style='max-width:620px;margin:0 auto;padding:28px 16px'><div style='background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:28px'><h1 style='font-size:24px;margin:0 0 22px'>{html.escape(clean(title))}</h1>{rows}{button}{fallback}<p style='margin:28px 0 0;font-size:12px;color:#6b7280'>BMC Service Network · BMC Luminary Ventures LLC</p></div></div></body></html>"""
+        button=f"<p style='margin:22px 0 24px'><a href='{safe_url}' style='display:inline-block;background:#1557d6;color:#fff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:7px'>{html.escape(clean(button_label))}</a></p>"
+    postal=html.escape(BUSINESS_POSTAL_ADDRESS) if BUSINESS_POSTAL_ADDRESS else ""
+    optout=""
+    if marketing:
+        optout="<p style='margin:10px 0 0;font-size:12px;line-height:1.5;color:#6b7280'>Reply <strong>no</strong> if you do not want future BMC outreach.</p>"
+    footer_address=f"<br>{postal}" if postal else ""
+    return f"""<!doctype html><html><body style='margin:0;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1f2937'><div style='max-width:620px;margin:0 auto;padding:28px 20px'><div style='padding:0'><p style='margin:0 0 22px;font-size:20px;line-height:1.3;font-weight:700'>{html.escape(clean(title))}</p>{hello}{rows}{button}<div style='border-top:1px solid #e5e7eb;margin-top:28px;padding-top:18px'><p style='margin:0;font-size:12px;line-height:1.5;color:#6b7280'>BMC Service Network<br>BMC Luminary Ventures LLC{footer_address}</p>{optout}</div></div></div></body></html>"""
 
 async def service_display_name(conn,service_key):
     row=await conn.fetchrow("select display_name from services where service_key=$1",service_key)
@@ -3439,6 +3456,73 @@ async def process_buyer_outreach(x_bmc_admin_key:str|None=Header(default=None)):
     return {"ok":True,"enabled":True,"sent":sent,"daily_limit":BUYER_OUTREACH_DAILY_LIMIT}
 
 
+def growth_outreach_message(row,step):
+    service_key=clean(row["service_key"])
+    service_label=GROWTH_SERVICE_LABELS.get(service_key,service_key.replace("_"," "))
+    params=urllib.parse.urlencode({
+      "utm_source":"bmc_outreach","utm_medium":"email","utm_campaign":"growth_"+service_key,
+      "utm_content":row["target_id"],"target":row["target_id"],"market":row["market"],"business":row["business_name"]
+    })
+    landing=f"{PUBLIC_SITE_URL}{GROWTH_LANDING_PATHS.get(service_key,'/growth-packs/')}?{params}"
+    business=clean(row["business_name"])
+    market=clean(row["market"])
+    if step==1:
+        subject=f"{market}: 5 commercial accounts worth checking"
+        body=f"""Hi {business},
+
+I’m researching commercial accounts for {service_label} businesses in {market}.
+
+Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the commercial work you want — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.
+
+Tell us the area and type of work you want:
+{landing}
+
+If the five look useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required.
+
+BMC Service Network
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+Reply no if you do not want future outreach."""
+        html_body=workflow_email_html(
+          subject,
+          [
+            f"I’m researching commercial accounts for {service_label} businesses in {market}.",
+            "Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the commercial work you want — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.",
+            "If the five look useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required."
+          ],
+          "Show me 5 free targets",landing,
+          greeting=f"Hi {business},",marketing=True
+        )
+    else:
+        subject=f"Re: 5 free commercial targets in {market}"
+        body=f"""Hi {business},
+
+One follow-up on the five free commercial targets.
+
+You can tell BMC the service area and kinds of accounts you want here:
+{landing}
+
+The five are yours to use. You only pay if you decide you want the full 100-prospect pack.
+
+BMC Service Network
+BMC Luminary Ventures LLC
+{BUSINESS_POSTAL_ADDRESS}
+
+Reply no if you do not want future outreach."""
+        html_body=workflow_email_html(
+          subject,
+          [
+            "One follow-up on the five free commercial targets.",
+            "You can tell BMC the service area and kinds of accounts you want using the button below.",
+            "The five are yours to use. You only pay if you decide you want the full 100-prospect pack."
+          ],
+          "Show me 5 free targets",landing,
+          greeting=f"Hi {business},",marketing=True
+        )
+    return service_key,subject,body,html_body,landing
+
+
 @app.post("/api/process-growth-outreach")
 async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None)):
     if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY: raise HTTPException(403,"Forbidden")
@@ -3472,50 +3556,8 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
         limit $1""",allowance,GROWTH_OUTREACH_WAVE)
       for row in rows:
         step=1 if row["status"]=="queued" else 2
-        service_key=clean(row["service_key"])
-        service_label=GROWTH_SERVICE_LABELS.get(service_key,service_key.replace("_"," "))
-        params=urllib.parse.urlencode({
-          "utm_source":"bmc_outreach","utm_medium":"email","utm_campaign":"growth_"+service_key,
-          "utm_content":row["target_id"],"target":row["target_id"],"market":row["market"],"business":row["business_name"]
-        })
-        landing=f"{PUBLIC_SITE_URL}{GROWTH_LANDING_PATHS.get(service_key,'/growth-packs/')}?{params}"
-        if step==1:
-            subject=f"{row['market']}: 5 commercial accounts worth checking"
-            body=f"""Hi {row['business_name']},
-
-I’m researching commercial accounts for {service_label} businesses in {row['market']}.
-
-Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the commercial work you want — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.
-
-Tell us the area and type of work you want:
-{landing}
-
-If the five look useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required.
-
-BMC Luminary Ventures LLC
-{BUSINESS_POSTAL_ADDRESS}
-
-Reply no if you do not want future outreach."""
-        else:
-            subject=f"Re: 5 free commercial targets in {row['market']}"
-            body=f"""Hi {row['business_name']},
-
-One follow-up on the five free commercial targets.
-
-You can tell BMC the service area and kinds of accounts you want here:
-{landing}
-
-The five are yours to use. You only pay if you decide you want the full 100-prospect pack.
-
-BMC Luminary Ventures LLC
-{BUSINESS_POSTAL_ADDRESS}
-
-Reply no if you do not want future outreach."""
-        ok=await send_mail(row["public_email"],subject,body,workflow_email_html(subject,[
-          f"BMC will research five real commercial targets for {service_label} in {row['market']} at no charge.",
-          "Each target includes a fit reason, public contact route, source, and suggested angle.",
-          "If the five are useful, the full 100-prospect pack is $499. There is no retainer and no sales call required."
-        ],"Show me 5 free targets",landing))
+        service_key,subject,body,html_body,landing=growth_outreach_message(row,step)
+        ok=await send_mail(row["public_email"],subject,body,html_body)
         if not ok:
             await conn.execute("update outreach set status='delivery_error' where outreach_id=$1",row["outreach_id"])
             await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
@@ -3540,59 +3582,29 @@ async def replay_first_growth_email_to_owner(x_bmc_admin_key:str|None=Header(def
     if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY:
         raise HTTPException(403,"Forbidden")
     if OUTREACH_ENABLED or BUYER_OUTREACH_ENABLED or GROWTH_OUTREACH_ENABLED:
-        raise HTTPException(409,"All outbound campaign switches must remain OFF for owner replay testing.")
+        raise HTTPException(409,"All outbound campaign switches must remain OFF for owner preview testing.")
     test_recipient="brett.coon2@gmail.com"
     async with app.state.pool.acquire() as conn:
-        row=await conn.fetchrow("""select o.outreach_id,o.sent_at,o.subject,o.body,o.entity_id,
+        row=await conn.fetchrow("""select o.outreach_id,o.sent_at,o.entity_id,
             g.business_name,g.public_email,g.market,g.service_key,g.target_id
           from outreach o join growth_outreach_targets g on g.target_id=o.entity_id
           where o.entity_type='growth_customer' and o.campaign='growth_sales'
-            and o.wave=$1 and o.sequence_step=1 and o.sent_at is not null
+            and o.wave=$1 and o.sent_at is not null
           order by o.sent_at asc,o.created_at asc
           limit 1""",GROWTH_OUTREACH_WAVE)
     if not row:
-        raise HTTPException(404,"No previously sent first-touch Growth email was found for the active Growth wave.")
-    service_key=clean(row["service_key"])
-    service_label=GROWTH_SERVICE_LABELS.get(service_key,service_key.replace("_"," "))
-    params=urllib.parse.urlencode({
-      "utm_source":"bmc_outreach","utm_medium":"email","utm_campaign":"growth_"+service_key,
-      "utm_content":row["target_id"],"target":row["target_id"],"market":row["market"],"business":row["business_name"]
-    })
-    landing=f"{PUBLIC_SITE_URL}{GROWTH_LANDING_PATHS.get(service_key,'/growth-packs/')}?{params}"
-    subject=clean(row["subject"])
-    body=str(row["body"] or "")
-    expected_subject=f"{row['market']}: 5 commercial accounts worth checking"
-    expected_body=f"""Hi {row['business_name']},
-
-I’m researching commercial accounts for {service_label} businesses in {row['market']}.
-
-Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the commercial work you want — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.
-
-Tell us the area and type of work you want:
-{landing}
-
-If the five look useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required.
-
-BMC Luminary Ventures LLC
-{BUSINESS_POSTAL_ADDRESS}
-
-Reply no if you do not want future outreach."""
-    if subject!=expected_subject or body!=expected_body:
-        raise HTTPException(409,"Stored first-touch copy no longer matches the deterministic production renderer; refusing an inexact replay.")
-    html_body=workflow_email_html(subject,[
-      f"BMC will research five real commercial targets for {service_label} in {row['market']} at no charge.",
-      "Each target includes a fit reason, public contact route, source, and suggested angle.",
-      "If the five are useful, the full 100-prospect pack is $499. There is no retainer and no sales call required."
-    ],"Show me 5 free targets",landing)
+        raise HTTPException(404,"No Growth target row exists to render for owner preview.")
+    service_key,subject,body,html_body,landing=growth_outreach_message(row,1)
     ok=await send_mail(test_recipient,subject,body,html_body)
     return {
       "ok":bool(ok),
       "test_recipient":test_recipient,
-      "original_business":row["business_name"],
-      "original_recipient":row["public_email"],
-      "original_sent_at":row["sent_at"],
+      "source_business":row["business_name"],
+      "source_original_recipient":row["public_email"],
+      "source_original_sent_at":row["sent_at"],
       "subject":subject,
-      "stored_plain_text_exact_match":True,
+      "landing_url":landing,
+      "template":"current_growth_first_touch",
       "campaign_switches":{"provider":OUTREACH_ENABLED,"buyer":BUYER_OUTREACH_ENABLED,"growth":GROWTH_OUTREACH_ENABLED}
     }
 
