@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "watch14-proof-20261027T1235Z",
+  "action": "proof_readout",
+  "created_at": "2026-10-27T12:35:41Z",
+  "expires_at": "2026-10-27T13:35:41Z",
+  "allow_external_actions": false,
+  "args": {}
+}
