@@ -1,0 +1,40 @@
+name: Assistant ADHS Market Census Export
+
+on:
+  push:
+    paths:
+      - 'portfolio/automation/export-adhs-market-census.py'
+      - '.github/workflows/assistant-adhs-market-census.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Export ADHS licensed-facility census for BMC markets
+        run: |
+          python3 portfolio/automation/export-adhs-market-census.py             --date 2026-10-26             --output-dir portfolio/data
+
+      - name: Validate deterministic census builder
+        run: |
+          python3 portfolio/automation/build-assistant-research-seed.py             --data-dir portfolio/data             --output /tmp/assistant-research-seed.sql             --summary-json 2>/tmp/census-summary.json
+          cat /tmp/census-summary.json
+
+      - name: Commit ADHS market artifacts
+        run: |
+          git config user.name "BMC Assistant Census"
+          git config user.email "actions@users.noreply.github.com"
+          git add portfolio/data/assistant-research-bootstrap-2026-10-26-adhs-*-09.json
+          if git diff --cached --quiet; then
+            echo "No artifact changes."
+            exit 0
+          fi
+          git commit -m "Seed official ADHS buyer census across markets"
+          git push origin HEAD:master
