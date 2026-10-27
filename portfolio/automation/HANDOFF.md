@@ -9268,3 +9268,330 @@ Do not stop at arbitrary targets; census lanes remain open-ended.
 ## Continuity sentence
 
 **The current clean assistant-built repo baseline is 72,142 strict artifact seed rows across 314 auditable JSON artifacts, proven by BMC Portfolio CI run 40447696046 with 72,142/72,142 smoke rows, 21/21 markets, 1,260/1,260 lanes and 0 runtime core failures. The newest work added 206 official Arizona WIC grocery/food-retail buyers and seven direct rural service-territory vendor records. Future design must add a provider trust/quality layer that protects BMC without unfairly excluding small contractors, and the commercial strategy now explicitly includes brokering recurring facility-service agreements such as parking-lot/fuel-island power washing, sweeping, striping and related exterior maintenance. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
+
+
+---
+
+# 68. GAS-STATION / PARKING-LOT COMMERCIAL BUYERS + EXTERIOR-SERVICE MATCHING — 2026-10-26 21:20 ARIZONA
+
+This section continues Section 67 and is the newest handoff checkpoint.
+
+## Brett's newest commercial strategy instruction
+
+Brett explicitly wants BMC to treat parking-heavy and exterior-maintenance-heavy facilities as recurring commercial-opportunity targets, not merely generic business names.
+
+Examples:
+- gas stations / convenience stores;
+- fuel islands / pump pads;
+- dealership lots;
+- fleet yards;
+- equipment yards;
+- strip malls / shopping centers;
+- grocery/pharmacy lots;
+- restaurants;
+- hotels;
+- schools/churches;
+- medical offices;
+- apartment/multifamily properties;
+- banks/professional offices;
+- public facilities.
+
+Core insight:
+
+**Many facilities already “know a guy,” but BMC can create value by brokering a formal recurring service agreement with a documented scope, pricing cadence, backup coverage and accountable provider relationship.**
+
+Potential recurring agreement scopes:
+- parking-lot sweeping;
+- parking-lot pressure washing;
+- sidewalk / storefront pressure washing;
+- fuel-island / pump-pad washing;
+- dumpster-pad degreasing;
+- oil / grease / gum removal;
+- parking-lot striping / restriping;
+- exterior building washing;
+- commercial window cleaning;
+- fleet/equipment washing;
+- recurring janitorial/common-area cleaning;
+- seasonal property cleanup.
+
+This should become a major B2B lead-product strategy, especially for power-washing, sweeping, striping, commercial-cleaning and facility-maintenance providers.
+
+Do not claim a business needs a service merely because its property type suggests it. Treat these as **service-opportunity hypotheses that require qualification**.
+
+## Exact latest fully green census checkpoint
+
+Latest fully proven application checkpoint before the opportunity-tag-only regeneration:
+
+- data/artifact SHA: `7954d72a6135b338c661e5e74c891c98491408f7`
+- BMC Portfolio CI run: **40448250129**
+- result: **SUCCESS**
+- assistant artifacts: **316**
+- raw evidence rows: **76,619**
+- strict duplicate rows collapsed: **1,665**
+- strict unique artifact seed rows: **74,954**
+- strict buyer rows: **59,173**
+- strict vendor rows: **15,781**
+- markets: **21 / 21**
+- inventory lanes: **1,260 / 1,260**
+- runtime core failures: **0**
+
+Strict market counts at that checkpoint:
+- Ash Fork: **148**
+- Bullhead City: **770**
+- Camp Verde: **398**
+- Chino Valley: **413**
+- Cordes Lakes: **87**
+- Cottonwood: **660**
+- Dewey-Humboldt: **494**
+- Flagstaff: **1,821**
+- Golden Valley: **199**
+- Kingman: **1,201**
+- Mayer: **238**
+- Phoenix: **19,935**
+- Prescott: **1,766**
+- Prescott Valley: **966**
+- Scottsdale: **6,153**
+- Sedona: **588**
+- Seligman: **161**
+- Skull Valley: **83**
+- Tucson: **38,561**
+- Williamson Valley: **50**
+- Winslow: **262**
+
+These remain evidence/seed identities, not globally deduplicated legal businesses.
+
+Compared with Section 67:
+- strict rows: **72,142 -> 74,954** (**+2,812**)
+- raw rows: **73,779 -> 76,619** (**+2,840**)
+- strict buyers: **56,370 -> 59,173** (**+2,803**)
+- strict vendors: **15,772 -> 15,781** (**+9**)
+
+The +2,840 raw rows are exactly:
+- **2,831 ADEQ active UST commercial facilities**
+- **9 direct rural commercial exterior-service vendor records**
+
+Cross-artifact overlap caused the strict increase to be slightly smaller.
+
+## ADEQ active UST commercial-facility buyer census
+
+Exporter:
+- `portfolio/automation/export-adeq-ust-facility-census.py`
+
+Workflow:
+- `.github/workflows/assistant-adeq-ust-facility-census.yml`
+
+Official source:
+- Arizona Department of Environmental Quality active Underground Storage Tank facility layer
+- source is regenerated daily
+- active Arizona source facilities: **5,773**
+- BMC-market records: **2,831**
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-adeq-active-ust-facilities-31.json`
+
+Key BMC-market facility categories:
+- retail / fuel facilities: **1,184**
+- general commercial facilities: **790**
+- automotive / fleet: **488**
+- warehouse / industrial: **136**
+- public facilities: **77**
+- schools / education: **57**
+- grocery / convenience: **43**
+- medical: **40**
+- property management: **7**
+- hotels / lodging: **5**
+- churches / nonprofits: **4**
+
+Especially important ADEQ place types:
+- **1,087 GAS FILLING STATION - COMMERCIAL**
+- **97 GASOLINE FILLING STATION - FLEET**
+- **43 GROCERY STORE/CONVENIENCE STORE**
+- **218 AUTO/VEHICLE REPAIR FACILITY**
+- **152 EQUIPMENT YARD**
+- **264 COMMERCIAL PROPERTY**
+- **19 BULK FUEL STORAGE**
+- plus airports, hangars, industrial plants, warehouses, golf courses, business parks, medical facilities, public facilities and other pavement/exterior-heavy sites.
+
+BMC-market ADEQ facility counts:
+- Ash Fork 10
+- Bullhead City 46
+- Camp Verde 16
+- Chino Valley 10
+- Cottonwood 23
+- Dewey-Humboldt 6
+- Flagstaff 136
+- Golden Valley 6
+- Kingman 94
+- Mayer 9
+- Phoenix 1,465
+- Prescott 79
+- Prescott Valley 24
+- Scottsdale 183
+- Sedona 17
+- Seligman 6
+- Skull Valley 1
+- Tucson 664
+- Winslow 36
+
+No literal-city ADEQ UST record mapped to Cordes Lakes or Williamson Valley in this source. Continue direct/service-territory research there.
+
+## Commercial-service opportunity tags added
+
+Commit:
+- `e4069f59c0389d92b69f212bea92f3f95e5facbd`
+- message: **Tag ADEQ commercial service opportunities**
+
+Regeneration workflow:
+- **40448613514**
+- result: **SUCCESS**
+
+Workflow-generated artifact head after the tag regeneration:
+- `c8ca721ff18842ac604922322b0b8c3764890915`
+- message: **Seed ADEQ active UST commercial buyer census**
+
+The ADEQ exporter now adds:
+- `commercial_service_hypotheses`
+- `opportunity_qualification_required=true`
+
+Examples:
+
+Gas stations / retail fuel:
+- fuel-island / pump-pad pressure washing;
+- sidewalk/storefront pressure washing;
+- dumpster-pad degreasing;
+- parking-lot sweeping;
+- parking-lot striping/restriping;
+- commercial window cleaning.
+
+Fleet / equipment / automotive:
+- fleet/equipment washing;
+- oil/grease stain cleanup;
+- yard/lot sweeping;
+- striping;
+- exterior washing.
+
+Retail/grocery:
+- storefront/sidewalk washing;
+- dumpster-pad cleaning;
+- sweeping;
+- striping;
+- window cleaning.
+
+Hotels, multifamily, medical, industrial, public and school facilities receive property-appropriate recurring-service hypotheses as well.
+
+These tags are **prospecting hypotheses, not proof of need**.
+
+This is strategically important because BMC can eventually sell a provider something materially better than a generic list:
+- “Arizona gas stations likely worth qualifying for recurring fuel-island/lot cleaning”
+- “fleet/equipment yards for washing + sweeping”
+- “retail properties for exterior cleaning + striping”
+rather than simply a CSV of business names.
+
+## Rural commercial exterior-service vendor expansion
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-commercial-exterior-vendors-32.json`
+
+Commit:
+- `0cf21f581cb4145316271e30331e0538abb962be`
+
+Nine direct first-party vendor/service-territory records:
+
+Williamson Valley:
+- A&B Gutters & Glass — commercial pressure washing
+- Prescott Pressure Washing — exterior/storefront + fleet washing
+- Platinum Edge Services — commercial/fleet pressure washing + window cleaning
+- Prescott Asphalt Paving — paving / sealcoat / crack repair / striping
+
+Mayer:
+- Prescott Pressure Washing
+- Platinum Edge Services
+- Prescott Asphalt Paving
+
+Cordes Lakes:
+- Platinum Edge Services — commercial/fleet exterior service
+
+Skull Valley:
+- Prescott Asphalt Paving — lot paving / striping / maintenance
+
+Notable provider-quality evidence already exposed by direct sites:
+- Platinum Edge advertises **$2M general liability** and says it can provide COI, W-9 and vendor-onboarding documentation.
+
+Do not promote that as BMC-verified insurance until independently verified at onboarding; preserve it as provider-claimed direct-site evidence.
+
+## ADOT valid-dealer commercial buyer source — currently blocked
+
+ADOT's official Dealer Licensing page exposes a **Valid Dealer Report**, updated every Tuesday and Thursday.
+
+Current public report discovered by the assistant:
+- `https://apps.azdot.gov/files/26/valid-dealer-report/Report-2026-10-22-00-14-59.xls`
+
+This would be a useful automotive/dealership buyer layer because dealerships have:
+- large paved lots;
+- storefront glass;
+- vehicle inventory;
+- service bays;
+- fleet/detailing needs;
+- recurring striping/sweeping/exterior-cleaning opportunity.
+
+However:
+- ADOT landing page returns HTTP 403 to GitHub Actions;
+- the direct XLS currently also returns HTTP 403 to GitHub Actions;
+- assistant container download did not provide a usable alternate extraction path.
+
+Workflow failures:
+- **40448400556**
+- **40448586845**
+
+Do not weaken source-validation checks and do not fabricate the dealer artifact.
+
+Keep ADOT as a high-value unresolved source; continue with other productive sources until a clean extraction path is found.
+
+## Provider trust requirement remains active
+
+Section 67 contains the full future trust-system requirement.
+
+Key rule remains:
+
+**A provider's payment to BMC must never improve its trust/quality ranking.**
+
+Quality and confidence remain separate:
+- quality = credentials/safety/performance evidence;
+- confidence = quantity/reliability of evidence.
+
+Small contractors must have a fair path into BMC through credential verification and limited/probationary BMC work history rather than being excluded for low review counts.
+
+## Production distinction
+
+The 74,954-row repository census is **not production**.
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+
+Outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+## Immediate next work
+
+Continue assistant-led census building.
+
+Priority:
+1. more parking-heavy commercial buyers;
+2. shopping centers / strip malls;
+3. dealerships / automotive service / fleet yards;
+4. warehouses / manufacturing / distribution;
+5. hotels/lodging;
+6. grocery/pharmacy;
+7. direct commercial power-washing / sweeping / striping / window-cleaning vendors;
+8. recurring janitorial/facility-maintenance vendors;
+9. continued rural service-territory coverage for Cordes Lakes, Skull Valley and Williamson Valley;
+10. keep DLLC and ADOT as unresolved high-value official sources without letting them block productive work.
+
+Also preserve opportunity tags/hypotheses where they make future lead packages more actionable.
+
+## Continuity sentence
+
+**The newest fully green repository checkpoint is 74,954 strict artifact seed rows across 316 auditable JSON artifacts, proven by BMC Portfolio CI run 40448250129 with 21/21 markets, 1,260/1,260 lanes and 0 runtime core failures. The newest commercial expansion added 2,831 official ADEQ active UST facilities—including 1,087 commercial gas stations, 97 fleet fueling sites, 218 auto-repair sites and 152 equipment yards—and nine direct rural commercial exterior-service vendor records. ADEQ records now carry qualified-service hypotheses for power washing, fuel-island cleaning, sweeping, striping, window cleaning and related recurring facility services. The provider trust requirement from Section 67 remains mandatory. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
