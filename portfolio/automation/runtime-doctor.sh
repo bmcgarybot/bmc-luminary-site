@@ -98,8 +98,10 @@ GROWTH_OUTREACH_EFFECTIVE="$(env_value GROWTH_OUTREACH_ENABLED)"
 GROWTH_OUTREACH_EFFECTIVE="${GROWTH_OUTREACH_EFFECTIVE:-false}"
 if [ "$GROWTH_OUTREACH_EFFECTIVE" = "false" ]; then
   pass "Growth Pack outreach global switch is OFF"
+elif [ "$GROWTH_OUTREACH_EFFECTIVE" = "true" ] && [ "$(env_value OUTREACH_ENABLED)" = "false" ] && [ "$(env_value BUYER_OUTREACH_ENABLED)" = "false" ]; then
+  pass "Growth Pack outreach is ON in isolated Growth-only launch mode"
 else
-  fail "GROWTH_OUTREACH_ENABLED must remain false until BMC explicitly launches outreach"
+  fail "Growth outreach configuration is unsafe; provider/buyer outreach must remain OFF"
 fi
 
 if [ "$(env_value OUTREACH_WAVE)" = "pilot1" ] && [ "$(env_value BUYER_OUTREACH_WAVE)" = "pilot1" ]; then
@@ -232,6 +234,23 @@ else:
 PY
   else
     fail "Private admin preflight endpoint failed"
+  fi
+
+  if [ "$GROWTH_OUTREACH_EFFECTIVE" = "true" ]; then
+    if curl -fsS -X POST http://127.0.0.1:8000/api/process-growth-health -H "X-BMC-Admin-Key: $ADMIN_KEY" >/tmp/bmc_runtime_growth_health.json 2>/dev/null; then
+      if python3 - <<'PY'
+import json
+d=json.load(open("/tmp/bmc_runtime_growth_health.json"))
+raise SystemExit(0 if d.get("health_ok") is True else 1)
+PY
+      then
+        pass "Growth-only launch health gate is OK"
+      else
+        fail "Growth-only launch health gate reports a blocking problem"
+      fi
+    else
+      fail "Growth-only launch health endpoint failed"
+    fi
   fi
 
   if curl -fsS http://127.0.0.1:8000/api/admin/agent-status -H "X-BMC-Admin-Key: $ADMIN_KEY" >/tmp/bmc_runtime_agent.json 2>/dev/null; then
