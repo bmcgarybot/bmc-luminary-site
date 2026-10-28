@@ -1877,13 +1877,7 @@ async def handle_facility_lead(conn,p):
     requested=[sk for field,sk in FACILITY_SERVICE_FIELDS.items() if clean(p.get(field)).lower() in ("yes","on","true","1")]
     if not requested:
         raise HTTPException(400,"Choose at least one facility service category")
-    business_phone=clean(p.get("business_phone"))[:40]
-    business_site_host=growth_business_site_host(p.get("business_website"))
-    phone_key=growth_business_phone_key(business_phone)
     submission_id=clean(p.get("submission_id")) or str(uuid.uuid4())
-    # Serialize the identity check AND the prospect allocation, not just the
-    # selection. Otherwise simultaneous aliases can both pass the claim gate.
-    await growth_lock_exposure_allocator(conn)
     existing=await conn.fetchrow("select lead_id,status from leads where submission_id=$1",submission_id)
     if existing:return {"ok":True,"status":existing["status"],"lead_id":str(existing["lead_id"]),"message":"Facility request already received."}
     urgency=clean(p.get("timing"))
@@ -2995,7 +2989,12 @@ async def handle_growth_snapshot(conn,p):
         raise HTTPException(400,"Business, name, email, market, and consent are required")
     if "@" not in email_addr:
         raise HTTPException(400,"A valid business email is required")
+    business_phone=clean(p.get("business_phone"))[:40]
+    business_site_host=growth_business_site_host(p.get("business_website"))
+    phone_key=growth_business_phone_key(business_phone)
     submission_id=clean(p.get("submission_id")) or str(uuid.uuid4())
+    # Both identity and allocation must be protected by the same transaction lock.
+    await growth_lock_exposure_allocator(conn)
     existing=await conn.fetchrow("select * from growth_sample_requests where submission_id=$1",submission_id)
     if existing:
         payload=existing["sample_payload"]
