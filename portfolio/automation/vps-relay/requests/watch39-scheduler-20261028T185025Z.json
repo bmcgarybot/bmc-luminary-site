@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "watch39-scheduler-20261028T185025Z",
+  "action": "scheduler_status",
+  "created_at": "2026-10-28T18:50:25Z",
+  "expires_at": "2026-10-28T20:50:25Z",
+  "allow_external_actions": false,
+  "args": {}
+}
