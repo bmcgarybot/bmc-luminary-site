@@ -28,7 +28,7 @@ jobs:
           ns=runpy.run_path("vps-gitops-relay.py",run_name="bmc_relay_ci")
           expected={
               "proof_readout","launch_audit","runtime_doctor","diagnostic_bundle","scheduler_status","search_quality_probe","research_refresh_status",
-              "growth_status","growth_launch_audit",
+              "growth_status","growth_launch_audit","operator_snapshot",
               "deploy_update","market_inventory_step","local_demand_step",
               "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","inventory_closure_step","research_refresh_install","scheduler_start","scheduler_stop",
               "growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_launch_enable","growth_launch_disable","growth_owner_replay_email","owner_replay_all_email_templates","growth_owner_preview_approve"
@@ -40,7 +40,7 @@ jobs:
           grep -q 'allow_external_actions' vps-gitops-relay.py
           ! grep -q 'shell=True' vps-gitops-relay.py
 
-      - name: Validate service registry and fronts
+      - name: Validate read-only operator console\n        run: |\n          python3 -m py_compile portfolio/automation/operator-console.py\n          python3 portfolio/automation/test-operator-console.py\n\n      - name: Validate service registry and fronts
         run: |
           python - <<'PY'
           import json, pathlib, sys
