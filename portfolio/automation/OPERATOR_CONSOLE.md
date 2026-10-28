@@ -37,3 +37,22 @@ The values above are synthetic examples **not live production data**. Missing fl
 Before a live dashboard: integrate the existing read-only GitHub/VPS relay with an authenticated private view; prove scheduler health, backup/restore, fulfillment idempotency, no duplicate forms, daily queue limits, saturation controls, payment-to-order correlation and alerts; test a complete synthetic purchase without live checkout or external mail. Keep all outbound disabled.
 
 Do not merge PR #5, turn on outbound, or deploy on behalf of this console prototype.
+
+
+## Live relay implementation (in safety branch, not deployed)
+A new `operator_snapshot` **read-only** action is registered in `vps-gitops-relay.py`. The VPS obtains its current deployed SHA, the exact three outbound switches, running service names, local API health, and a whitelisted collection of Growth metrics from its private API. It returns only a sanitized aggregate JSON object in `stdout` of an ordinary relay result. The console now accepts that result envelope, verifies that the action succeeded with external actions disabled, and checks the reported deployed SHA agrees with the relay envelope. Tests run in BMC Portfolio CI.
+
+Example request for the existing authenticated/private relay workflow (not a public endpoint):
+```json
+{
+  "version":1,
+  "request_id":"operator-snapshot-20261028-001",
+  "action":"operator_snapshot",
+  "args":{},
+  "allow_external_actions":false,
+  "created_at":"2026-10-28T19:00:00Z"
+}
+```
+Actual requests require current timestamps and the existing relay request transport. Never publish raw status results that might contain identifying information. The branch has **not yet been deployed** to the VPS, so the live relay does not yet support this new action. For now, the owner console can read any genuine successful `operator_snapshot` result file exported from the private relay; no new terminal commands for the owner are required.
+
+Before owner-facing activation, review the existing `growth-status` private API schema: missing fields are deliberately shown as unavailable, not zero. Build authenticated private UI only after the schema mapping and incident response gates are verified.
