@@ -2907,8 +2907,16 @@ async def handle_growth_snapshot(conn,p):
         and (
           regexp_replace(lower(business_name),'[^a-z0-9]','','g')=$3
           or lower(email)=$4
-          or regexp_replace(
-            regexp_replace(lower(business_name),'([[:space:][:punct:]]+(llc|ltd|inc|incorporated|corp|corporation|company|co|pllc))+[[:space:][:punct:]]*
+          or regexp_replace(lower(business_name),'[^a-z0-9]','','g') =
+             any($5::text[])
+        )
+        and status not in ('cancelled','rejected')
+      order by created_at desc limit 1""",
+      market,service_key,re.sub(r"[^a-z0-9]+","",business.lower()),email_addr,
+      [growth_normalized_contractor_name(business),
+       growth_normalized_contractor_name(business)+"llc",
+       growth_normalized_contractor_name(business)+"inc",
+       growth_normalized_contractor_name(business)+"corp"])
     if prior_business_claim:
         return {"ok":True,"status":"already_claimed","sample":[],
           "checkout_url":"","message":"BMC has already prepared a free sample for this business and territory. Use the original invitation or contact BMC to review the account."}
