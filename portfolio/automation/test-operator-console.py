@@ -13,6 +13,7 @@ NOW=dt.datetime(2026,10,28,19,0,tzinfo=dt.timezone.utc)
 def fixture():
     return {"observed_at":"2026-10-28T18:45:00Z","deployed_sha":"a"*40,
       "runtime_healthy":True,"scheduler_healthy":True,"api_healthy":True,
+      "owner_launch_hold_active":True,
       "outreach_switches":{k:False for k in console.SWITCHES},
       "growth":{k:0 for k in console.METRICS}}
 class Tests(unittest.TestCase):
@@ -20,6 +21,9 @@ class Tests(unittest.TestCase):
         r=console.assess(fixture(),NOW)
         self.assertEqual(r["status"],"HEALTHY / OUTREACH OFF")
         self.assertFalse(r["marketing_authorized"])
+    def test_launch_hold_must_be_active(self):
+        x=fixture();x["owner_launch_hold_active"]=False
+        self.assertEqual(console.assess(x,NOW)["status"],"REVIEW")
     def test_stale(self):
         x=fixture();x["observed_at"]="2026-10-27T18:45:00Z"
         self.assertIn("Snapshot stale",console.assess(x,NOW)["issues"])
