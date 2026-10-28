@@ -35,6 +35,12 @@ jobs:
           }
           assert ns["ALLOWED_ACTIONS"] == expected, ns["ALLOWED_ACTIONS"]
           assert all("shell" not in x for x in ns["ALLOWED_ACTIONS"])
+          assert "operator_snapshot" in ns["READ_ONLY_ACTIONS"]
+          assert "operator_snapshot" not in ns["EXTERNAL_ACTIONS"]
+          relay_source=open("vps-gitops-relay.py").read()
+          assert 'app_env().get("BMC_OWNER_LAUNCH_HOLD","true")' in relay_source
+          readiness_source=open("growth-launch-readiness.sh").read()
+          assert 'Owner launch hold is active (default safe)' in readiness_source
           assert ns["RELAY_BRANCH"] == "vps-relay"
           PY
           grep -q 'allow_external_actions' vps-gitops-relay.py
