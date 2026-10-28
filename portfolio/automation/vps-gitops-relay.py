@@ -47,7 +47,7 @@ LOCAL_RESULTS = STATE_DIR / "results"
 RESEARCH_SCHEDULE_FILE = STATE_DIR / "research-refresh-schedule.json"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit"}
+READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
     "market_inventory_step",
@@ -607,6 +607,34 @@ def execute(req: dict) -> dict:
     elif action == "growth_launch_audit":
         cp=run(["bash","./growth-launch-readiness.sh",ENV_FILE,"report"],timeout=300)
         stdout,stderr,exit_code=cp.stdout,cp.stderr,cp.returncode
+
+    elif action == "operator_snapshot":
+        # Only aggregate, whitelist-derived data. No credentials or prospect records.
+        flags=outreach_state()
+        health=run(["docker","compose","--env-file",ENV_FILE,"ps","--status","running","--services"],timeout=40)
+        running=set(health.stdout.splitlines()) if health.returncode==0 else set()
+        api_health=run(["curl","--silent","--show-error","--fail","--max-time","10","http://127.0.0.1:8000/health"],timeout=15)
+        metrics={}
+        health_error=None
+        try:
+            raw=admin_post("/api/admin/growth-status",timeout=30)
+            if not isinstance(raw,dict): raise ValueError("Invalid Growth status response")
+            for k in ("paid_orders","revenue_cents","samples_requested","samples_delivered","replies","open_growth_exceptions","staged_active"):
+                value=raw.get(k)
+                metrics[k]=value if type(value) is int and value>=0 else None
+        except Exception:
+            health_error="Growth status unavailable"
+            metrics={k:None for k in ("paid_orders","revenue_cents","samples_requested","samples_delivered","replies","open_growth_exceptions","staged_active")}
+        snapshot={
+          "observed_at":now_iso(),"deployed_sha":current_sha(),
+          "runtime_healthy":health.returncode==0 and all(k in running for k in ("postgres","ops_api","scheduler")),
+          "scheduler_healthy":health.returncode==0 and "scheduler" in running,
+          "api_healthy":api_health.returncode==0,
+          "outreach_switches":{k:str(flags.get(k,"")).strip().lower()=="false" if str(flags.get(k,"")).strip().lower() in ("true","false") else None for k in ("OUTREACH_ENABLED","BUYER_OUTREACH_ENABLED","GROWTH_OUTREACH_ENABLED")},
+          "growth":metrics,"health_error":health_error}
+        stdout=json.dumps(snapshot,indent=2)
+        stderr=""
+        exit_code=0
 
     elif action == "growth_status":
         status=admin_post("/api/admin/growth-status",timeout=120)
