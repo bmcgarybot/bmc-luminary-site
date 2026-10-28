@@ -105,6 +105,15 @@
     // Plain HTML service links are present for crawlers and no-JS visitors.
     // Once the registry loads, replace them with the same registry-driven UI.
     root.innerHTML='';
+    // Plumbing request is a customer intake path, not a claim that a plumber
+    // has been activated in BMC's vendor network. Keep it visible after the
+    // directory re-renders from services.json.
+    const plumbingSection=document.createElement('section');
+    plumbingSection.className='venture-family';
+    plumbingSection.id='plumbing-help';
+    plumbingSection.innerHTML='<div class="family-head"><div><h2>Plumbing help</h2><p>Leaks, toilets, pipes, drains, and water heaters.</p></div></div>'
+      +'<div class="venture-grid"><a class="venture-card" href="../request/?problem=I%20need%20a%20plumber"><div class="venture-name">Request a plumber</div><div class="venture-offer">Tell us what needs fixing. We will check if a suitable provider is available.</div><div class="venture-link">Describe the job</div></a></div>';
+    root.appendChild(plumbingSection);
     const groups={};familyOrder.forEach(f=>groups[f]=[]);
     services.forEach(s=>groups[familyFor(s.service_key)].push(s));
 
@@ -131,6 +140,12 @@
       initialQuery:incoming,
       onResults:function(matches,q){
         if(!q){count.textContent='Search by job, problem, or service.';tellMore.href='../request/';return;}
+        if(/\\bplumb(?:er|ers|ing)?\\b|\\btoilet\\b|\\b(?:pipe|water heater|sewer)\\b/i.test(q)){
+          count.textContent='Plumbing request available. We will check for a suitable provider.';
+          results.hidden=false;
+          results.innerHTML='<div class="finder-result-head"><div><div class="editorial-kicker">PLUMBING HELP</div><h2>Need a plumber?</h2><p>We can take your request and check for a suitable provider. No plumber has been confirmed yet.</p></div></div><a class="btn btn-primary" href="../request/?problem='+encodeURIComponent(q)+'">Request plumbing help</a>';
+          return;
+        }
         count.textContent=matches.length?(matches.length+' likely option'+(matches.length===1?'':'s')+' found.'):'No exact match yet. We’ll still give you a way forward.';
         tellMore.href='../request/?problem='+encodeURIComponent(q);
       }
