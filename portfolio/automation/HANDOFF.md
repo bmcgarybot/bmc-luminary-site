@@ -11112,3 +11112,97 @@ Release requirements:
 4. The exact deployed live email template must be sent through production path to owner's existing test inbox and visually approved before ever setting `GROWTH_OWNER_APPROVED_SHA` or enabling any campaign.
 5. A simulated CI paid transaction and Stripe product existence are NOT a real $499 sale. Do not claim revenue until an actual successful verified order/payment and 100-pack delivery.
 6. Before launch, independently verify contact legitimacy and abuse throttling; soft identity matches may remain in manual review and no extra sample should be disclosed.
+
+
+## 81. Owner-controlled operator console prototype (2026-10-28)
+Owner directive: **NO LIVE CUSTOMER OUTREACH until the owner personally approves quality, plan, operational workload, and deployed email previews.** Keep OUTREACH_ENABLED, BUYER_OUTREACH_ENABLED, GROWTH_OUTREACH_ENABLED OFF. Build and test safely, including a private dashboard/terminal that the owner can inspect in under ten minutes per day. Owner wants the VPS to do ongoing work automatically with small manual intervention, but the system must be observable and fail closed.
+
+New isolated development branch: `safety/operator-console-20261028` (created from PR #5 head `330923128207062e66b494c7c730a0f2b861de17`). NO PRODUCTION RELEASE OR EMAIL AUTHORIZED.
+- `portfolio/automation/operator-console.py`: read-only snapshot monitor; stale evidence, unavailable metric fields, unconfirmed outbound OFF, unhealthy runtime and missing deployment SHA force REVIEW; never grants marketing authorization.
+- `portfolio/automation/test-operator-console.py`: synthetic tests for stale evidence, failed switches, missing revenue, exceptions, ignored secrets.
+- `portfolio/automation/OPERATOR_CONSOLE.md`: sanitized JSON contract and instructions.
+- It currently consumes a sanitized local JSON file, **not** a connected live VPS data feed or browser dashboard. Never imply otherwise. This is a first part of operational observability, not a finished owner portal.
+
+Next engineering work: integrate read-only signed/authenticated VPS relay snapshot to a private owner dashboard, prove real monitoring (scheduler, queue, runtime, deployment SHA, funnel counts, verified Stripe orders and exceptions), test synthetic checkout-to-100 fulfillment and error/restart behavior, add automation alerting and backup proof. Do not leak relay payloads or customer personal data into public GitHub. PR #5 remains separately unmerged until release gates are satisfied; preserve existing full research census and Service Network. Do not write or approve campaign mail on behalf of the owner.
+
+
+## Section 82 — Read-only VPS operator snapshot integration (2026-10-28)
+After owner insisted on execution rather than another future worklist, development continued on PR #6 (draft, safety branch). Changes:
+- `vps-gitops-relay.py` allowlists `operator_snapshot` under READ_ONLY_ACTIONS; it reads Docker running services, private API health, the three local outbound switches, deployed SHA and whitelisted aggregate Growth numbers. No customer email sent, no launch action and no secrets intentionally included.
+- `operator-console.py` accepts sanitized snapshots or genuine relay result envelopes, checks action, status, exit_code, non-external action and reported SHA consistency, fails closed for stale/unknown/unsafe data.
+- `test-operator-console.py` includes 10 synthetic tests covering healthy reporting, staleness, missing/on outreach, unknown revenue, exceptions, secret stripping, relay action shape and mismatched SHA.
+- BMC Portfolio CI validates the new read-only allowlist and executes console tests.
+- `OPERATOR_CONSOLE.md` explains the relay request contract and clearly distinguishes branch code from VPS deployment.
+- This is an isolated development branch. It does not mean the VPS is updated or live metrics have been verified. Continue with safe CI and relay verification before release. Do not touch PR #5 or merge into master until quality and data policy release review. All outbound remains disabled.
+
+
+## Section 83 — Owner HOLD, dashboard HTML, fresh read-only VPS checks (2026-10-28)
+Owner directive reconfirmed: do not send live customers or prospects any messages until owner approves offer quality, full plan, low-touch operation, and previews. Development work proceeded on safety branch PR #6, not production:
+- `operator-console.py --html <private-file.html>` now generates an escaped, script-free, local status dashboard from sanitized relay JSON. It is not automatically refreshed or deployed.
+- `vps-gitops-relay.py` adds independent `BMC_OWNER_LAUNCH_HOLD` fail-closed gate for `growth_launch_enable`. Defaults to active if missing, separate from email template SHA approval. `.env.example` now sets the hold true; strict `growth-launch-readiness.sh` blocks until explicitly false.
+- CI checks the read-only classification of `operator_snapshot`, independent launch hold, and now 12 console unit test scenarios.
+- Read-only existing VPS relay requests submitted (request IDs `owner-readonly-20261028-proof_readout-1222`, `owner-readonly-20261028-growth_status-1222`); result artifacts were not yet available when first checked. Do not claim VPS metrics from them until returned.
+- Keep PR #5 and PR #6 unmapped to live production; all provider, buyer and Growth outreach controls OFF. No actual live customer marketing sent.
+
+Important follow-up: Owner hold requires manual configuration change on VPS only after explicit user approval; do not silently set it false. Finish real relay proof, CI validation, synthetic full funnel, private access control and durable low-maintenance monitoring.
+
+
+## Section 84 — Operator relay synthetic test and exact owner hold observability (Oct 28, 2026)
+More development on draft PR #6:
+- New `test-operator-relay.py`: five fully mocked tests of the new VPS read-only `operator_snapshot` action. No Docker/API/network/GitHub writes in test. CI now invokes these tests.
+- Operator status requires `owner_launch_hold_active=true` and displays it explicitly; absence or false alerts. Updated console test fixture and additional hold test.
+- `operator_snapshot` now reads the three campaign flags directly from local .env and marks omitted flags unknown, rather than relying on relay helper defaults; continues to emit only aggregate, whitelisted fields.
+- PR #6 is currently draft/mergeable against PR #5 and NOT deployed; no customer outreach authorized.
+- Two existing read-only relay checks were queued at 19:22 UTC, but result files had not appeared in first several checks. Do not claim live VPS proof until result artifacts actually exist.
+- No new CI success was verified for the latest PR #6 HEAD at the time of this entry (workflow query returned no runs). All newly added tests remain pending CI proof. Do not conflate PR #5's earlier green tests with PR #6.
+
+
+## Section 85 — Operator monitoring repair (2026-10-28)
+
+Engineering continues on draft PR #6 only. No merge, production deployment, email, launch approval or campaign configuration change was performed.
+
+Found and fixed three defects in the previous unverified checkpoint:
+- GitHub Actions YAML contained literal backslash-n text in the console step; the workflow failed before creating any jobs. Restored actual YAML line breaks.
+- HTML renderer was missing a concatenation operator, preventing the console module from importing.
+- Snapshot booleans were inverted: a false campaign flag was reported as true and an enabled flag as false. Corrected conversion; added coverage for enabled flags in all three lanes and malformed flag values remaining unknown.
+
+The HTML escaping test previously injected into an invalid SHA that assessment intentionally discarded. It now injects into displayed timestamp data, checking actual escaping without weakening SHA rejection.
+
+Local validation: workflow YAML parsed; exact relay-validation and operator-console workflow steps executed successfully; 13 console and 7 relay tests passed; git diff whitespace checks passed. Fresh GitHub CI for this commit still must be checked. Local tests do not establish production health, capacity, recovery or end-to-end payment fulfillment.
+
+Remaining: obtain green full CI, verify real private snapshot integration and field semantics, full funnel/error/restart and capacity checks, historical exposure/identity audit and real inventory QA. Preserve the seven historic SMTP submissions as previously contacted prospects, not dead leads or verified deliveries. Keep all outreach OFF and owner hold active; no owner email approval is implied.
+
+Additional monitoring hardening in the same repair: HTTP success alone no longer counts as API health; /health must return valid JSON with ok=true. Core runtime health includes this API check. Added mocked failures for invalid/unhealthy API responses, missing scheduler, Docker failure, unavailable metrics, and actual relay-envelope-to-console integration for enabled/disabled outreach. All 24 local tests pass (13 console + 11 relay). Full GitHub CI is still the release authority.
+
+
+## Section 86 — Connected private monitor release candidate (2026-10-28)
+
+Owner explicitly requested continued execution without stopping at each checkpoint. PR #6 continues safely; no merge, deployment or outreach authorized by these changes.
+
+Added operator-monitor.py: locally invokes only read-only operator_snapshot, collects every 60 seconds, binds HTTP to 127.0.0.1:8765, rejects nonlocal Host headers, serves only escaped HTML and sanitized JSON, no-cache responses and 30-second refresh. Requires SSH forwarding for remote owner access; no public route. Collection errors retain last-known metrics with REVIEW, startup is unknown, five-minute stale threshold is evaluated at every read. No mailbox polling, GitHub upload, external mail or configuration action.
+
+Added optional install-operator-monitor.sh with unprivileged systemd service, process restart, 256 MB memory limit and 25% CPU quota. Not run. Seven new tests include real local HTTP requests and collection-failure/recovery checks. Together with previous 24 tests, all 31 local monitoring tests pass. CI runs the new suite and shell syntax check. Exact-head GitHub CI must still be verified.
+
+Previous repair commit 63457a8d5a077652e80287cc287be8c49888042e passed full CI in both runs 40761873281 and 40761863976, including synthetic database/funnel/fulfillment integration. This does not prove production integration or real revenue.
+
+Remaining release boundary: PR #6 depends on unmerged PR #5. Do not silently merge/deploy either. Finish production-specific inventory/identity/exposure review and release review before an owner-approved tested-SHA rollout with all outreach OFF. Resource limits are not a load test; VPS capacity/restart/restore and private SSH integration remain unverified until authorized release. Seven original contacts remain previously contacted prospects, not dead leads.
+
+
+## Section 87 — Owner hold enforced inside campaign workers (2026-10-28)
+
+Release review found the previous hold only guarded relay launch/readiness; the API campaign workers could bypass it, and Growth nurture had no campaign hold at all. Added fail-closed BMC_OWNER_LAUNCH_HOLD (default true, only explicit false releases) to provider outreach, buyer outreach, Growth outreach and Growth nurture after authentication and before database/mail work. Compose passes this hold to the running API. Transactional intake/payment/fulfillment and owner-preview behavior are unchanged by this campaign-only gate. No customer mail was sent.
+
+Growth status now exposes the API process's effective hold and all three effective campaign switches. Operator snapshots require API hold confirmation and agreement between local .env and running API switches; legacy/missing/drifting runtime fields remain unknown and cannot show healthy/outreach-off. This prevents edited .env values being mistaken for the configuration of a still-running old container.
+
+Added four campaign hold tests executing the real extracted worker functions with DB-access traps: all four block before database/mail, authentication still applies, missing/malformed hold stays blocked, releasing hold does not enable disabled campaigns. Relay tests also cover API hold absent/released and effective flag drift. Total local monitoring/hold tests: 38 (13 console, 14 relay, 7 monitor, 4 hold). Full CI must be verified for the final head.
+
+CI releases the hold only in its temporary synthetic .env.ci while SMTP_DRY_RUN=true so existing nurture integration exercises real behavior without sending mail. Production .env is never modified by that fixture.
+
+
+## Section 88 — Qualification filter corrections and production recheck (2026-10-28)
+
+During release review, excluding every permitted buyer category incorrectly restored the original categories. Removed that fallback: an empty allowed set returns no candidates, never ignores the buyer's exclusions. Also found stale/missing verification dates could still achieve high scores. New candidate qualification requires an actual last_verified_at datetime within 90 days (future dates beyond five-minute clock tolerance rejected); search refresh or row edits alone no longer prove freshness. These gates affect newly selected candidates; this is not a claim that every historical saved sample or every census row is independently audited.
+
+Added three tests executing production qualification functions on synthetic records: all-category exclusion returns no candidates/no query, stale/missing/future records fail even at score 100, and exact freshness boundary checks. All 41 local tests pass across console/relay/monitor/hold/qualification suites. Full CI for final head is still required.
+
+Read existing watch41 proof: runtime completed 2026-10-28T20:42:07Z, production remains 95fc8acf691ad6517e1be3a17f8e27517a15ea9c, all campaigns OFF, runtime zero failures/warnings. Growth status at 20:41:50Z: seven prior SMTP submissions, zero replies/samples/orders/revenue, zero open Growth exceptions. No live configuration or production code changed by this work.

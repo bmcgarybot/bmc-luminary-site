@@ -28,17 +28,34 @@ jobs:
           ns=runpy.run_path("vps-gitops-relay.py",run_name="bmc_relay_ci")
           expected={
               "proof_readout","launch_audit","runtime_doctor","diagnostic_bundle","scheduler_status","search_quality_probe","research_refresh_status",
-              "growth_status","growth_launch_audit",
+              "growth_status","growth_launch_audit","operator_snapshot",
               "deploy_update","market_inventory_step","local_demand_step",
               "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","inventory_closure_step","research_refresh_install","scheduler_start","scheduler_stop",
               "growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_launch_enable","growth_launch_disable","growth_owner_replay_email","owner_replay_all_email_templates","growth_owner_preview_approve"
           }
           assert ns["ALLOWED_ACTIONS"] == expected, ns["ALLOWED_ACTIONS"]
           assert all("shell" not in x for x in ns["ALLOWED_ACTIONS"])
+          assert "operator_snapshot" in ns["READ_ONLY_ACTIONS"]
+          assert "operator_snapshot" not in ns["EXTERNAL_ACTIONS"]
+          relay_source=open("vps-gitops-relay.py").read()
+          assert 'app_env().get("BMC_OWNER_LAUNCH_HOLD","true")' in relay_source
+          readiness_source=open("growth-launch-readiness.sh").read()
+          assert 'Owner launch hold is active (default safe)' in readiness_source
           assert ns["RELAY_BRANCH"] == "vps-relay"
           PY
           grep -q 'allow_external_actions' vps-gitops-relay.py
           ! grep -q 'shell=True' vps-gitops-relay.py
+
+      - name: Validate read-only operator console
+        run: |
+          python3 -m py_compile portfolio/automation/operator-console.py
+          python3 portfolio/automation/test-operator-console.py
+          python3 portfolio/automation/test-operator-relay.py
+          python3 -m py_compile portfolio/automation/operator-monitor.py
+          python3 portfolio/automation/test-operator-monitor.py
+          python3 portfolio/automation/test-campaign-owner-hold.py
+          python3 portfolio/automation/test-growth-qualification-gates.py
+          bash -n portfolio/automation/install-operator-monitor.sh
 
       - name: Validate service registry and fronts
         run: |
@@ -444,6 +461,9 @@ jobs:
         working-directory: portfolio/automation
         run: |
           cp .env.example .env.ci
+          # Synthetic-only fixture: exercise nurture under dry-run SMTP. This is
+          # not a production release or owner approval.
+          sed -i 's/^BMC_OWNER_LAUNCH_HOLD=.*/BMC_OWNER_LAUNCH_HOLD=false/' .env.ci
           sed -i 's/^SMTP_DRY_RUN=.*/SMTP_DRY_RUN=true/' .env.ci
           sed -i 's#^STRIPE_WEBHOOK_SECRET=.*#STRIPE_WEBHOOK_SECRET=whsec_ci_test#' .env.ci
           sed -i 's#^BMC_ADMIN_KEY=.*#BMC_ADMIN_KEY=ci_admin_key#' .env.ci

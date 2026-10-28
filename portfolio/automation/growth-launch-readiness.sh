@@ -17,6 +17,8 @@ dbq(){ docker compose --env-file "$ENV_FILE" exec -T postgres psql -v ON_ERROR_S
 
 echo "BMC Growth launch readiness"
 echo "==========================="
+owner_hold="$(env_value BMC_OWNER_LAUNCH_HOLD)"
+[ "$owner_hold" = "false" ] && pass "Owner launch hold explicitly released" || fail "Owner launch hold is active (default safe)"
 current_sha="$(git rev-parse HEAD 2>/dev/null || echo unknown)"
 echo "Commit: $current_sha"
 configured_wave="$(env_value GROWTH_OUTREACH_WAVE)"

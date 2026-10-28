@@ -47,7 +47,7 @@ LOCAL_RESULTS = STATE_DIR / "results"
 RESEARCH_SCHEDULE_FILE = STATE_DIR / "research-refresh-schedule.json"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit"}
+READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
     "market_inventory_step",
@@ -558,6 +558,10 @@ def execute(req: dict) -> dict:
         exit_code=0
 
     elif action == "growth_launch_enable":
+        # Separate owner-controlled hold: technical/email approval never authorizes launch.
+        # Only an explicit manual VPS configuration change after owner review may release it.
+        if app_env().get("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="false":
+            raise RelayError("OWNER LAUNCH HOLD: no customer outreach authorized")
         state=outreach_state()
         if str(state.get("OUTREACH_ENABLED","")).lower()!="false" or str(state.get("BUYER_OUTREACH_ENABLED","")).lower()!="false":
             raise RelayError("Growth-only launch requires provider and buyer Service-Network outreach to remain OFF")
@@ -607,6 +611,49 @@ def execute(req: dict) -> dict:
     elif action == "growth_launch_audit":
         cp=run(["bash","./growth-launch-readiness.sh",ENV_FILE,"report"],timeout=300)
         stdout,stderr,exit_code=cp.stdout,cp.stderr,cp.returncode
+
+    elif action == "operator_snapshot":
+        # Only aggregate, whitelist-derived data. No credentials or prospect records.
+        raw_env=app_env()
+        flags={key:raw_env.get(key) for key in ("OUTREACH_ENABLED","BUYER_OUTREACH_ENABLED","GROWTH_OUTREACH_ENABLED")}
+        health=run(["docker","compose","--env-file",ENV_FILE,"ps","--status","running","--services"],timeout=40)
+        running=set(health.stdout.splitlines()) if health.returncode==0 else set()
+        api_health=run(["curl","--silent","--show-error","--fail","--max-time","10","http://127.0.0.1:8000/health"],timeout=15)
+        try:
+            health_body=json.loads(api_health.stdout)
+            api_healthy=api_health.returncode==0 and isinstance(health_body,dict) and health_body.get("ok") is True
+        except (ValueError,TypeError):
+            api_healthy=False
+        metrics={}
+        raw={}
+        health_error=None
+        try:
+            raw=admin_post("/api/admin/growth-status",timeout=30)
+            if not isinstance(raw,dict): raise ValueError("Invalid Growth status response")
+            for k in ("paid_orders","revenue_cents","samples_requested","samples_delivered","replies","open_growth_exceptions","staged_active"):
+                value=raw.get(k)
+                metrics[k]=value if type(value) is int and value>=0 else None
+        except Exception:
+            health_error="Growth status unavailable"
+            metrics={k:None for k in ("paid_orders","revenue_cents","samples_requested","samples_delivered","replies","open_growth_exceptions","staged_active")}
+        effective_flags=raw.get("outreach_switches",{}) if isinstance(raw,dict) else {}
+        if not isinstance(effective_flags,dict): effective_flags={}
+        confirmed_flags={}
+        for key,value in flags.items():
+            normalized=str(value).strip().lower()
+            effective=effective_flags.get(key)
+            confirmed_flags[key]=(normalized=="true") if normalized in ("true","false") and type(effective) is bool and effective==(normalized=="true") else None
+        snapshot={
+          "observed_at":now_iso(),"deployed_sha":current_sha(),
+          "owner_launch_hold_active":raw_env.get("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="false" and isinstance(raw,dict) and raw.get("owner_launch_hold_active") is True,
+          "runtime_healthy":api_healthy and health.returncode==0 and all(k in running for k in ("postgres","ops_api","scheduler")),
+          "scheduler_healthy":health.returncode==0 and "scheduler" in running,
+          "api_healthy":api_healthy,
+          "outreach_switches":confirmed_flags,
+          "growth":metrics,"health_error":health_error}
+        stdout=json.dumps(snapshot,indent=2)
+        stderr=""
+        exit_code=0
 
     elif action == "growth_status":
         status=admin_post("/api/admin/growth-status",timeout=120)
