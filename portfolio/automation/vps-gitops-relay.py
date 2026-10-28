@@ -558,6 +558,10 @@ def execute(req: dict) -> dict:
         exit_code=0
 
     elif action == "growth_launch_enable":
+        # Separate owner-controlled hold: technical/email approval never authorizes launch.
+        # Only an explicit manual VPS configuration change after owner review may release it.
+        if app_env().get("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="false":
+            raise RelayError("OWNER LAUNCH HOLD: no customer outreach authorized")
         state=outreach_state()
         if str(state.get("OUTREACH_ENABLED","")).lower()!="false" or str(state.get("BUYER_OUTREACH_ENABLED","")).lower()!="false":
             raise RelayError("Growth-only launch requires provider and buyer Service-Network outreach to remain OFF")
