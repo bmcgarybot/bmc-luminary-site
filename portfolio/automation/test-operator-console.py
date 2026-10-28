@@ -52,6 +52,14 @@ class Tests(unittest.TestCase):
         with self.assertRaises(ValueError):
             console.decode_snapshot({"action":"growth_launch_enable","status":"success","exit_code":0})
 
+    def test_html_escapes_untrusted_data(self):
+        x=fixture();x["deployed_sha"]="<script>"+"a"*40
+        rendered=console.render_html(console.assess(x,NOW))
+        self.assertNotIn("<script>",rendered)
+        self.assertIn("&lt;script&gt;",rendered)
+    def test_html_marketing_never_authorized(self):
+        rendered=console.render_html(console.assess(fixture(),NOW))
+        self.assertIn("Never authorizes marketing",rendered)
     def test_secret_ignored(self):
         x=fixture();x["SMTP_PASSWORD"]="dont-publish-this"
         self.assertNotIn("dont-publish-this",str(console.assess(x,NOW)))
