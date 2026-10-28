@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "held-release-z-deploy-20261028T210601Z",
+  "action": "deploy_update",
+  "required_ci_sha": "3a53e61e03de963ce48cfa3bc533411dd3cc259b",
+  "created_at": "2026-10-28T21:06:01.391Z",
+  "expires_at": "2026-10-28T23:06:01.391Z",
+  "allow_external_actions": false,
+  "args": {}
+}
