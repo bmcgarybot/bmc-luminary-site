@@ -145,7 +145,13 @@
         : "We got your request.";
     let steps=[];
     if(formType==="growth_snapshot"){
-      if(response.status==="sample_pending"){
+      if(response.status==="verify_email"){
+        title="Check your business email.";
+        steps=["Open the BMC confirmation link we just sent.","Your five prospects appear after you verify the address.","You won't need to fill out this form again."];
+      }else if(response.status==="already_claimed"||response.status==="verification_needed"){
+        title="We need to check this business.";
+        steps=["A free sample may already exist for these business details.","We won't release another five without verifying ownership.","Contact BMC if this is a separate business or location."];
+      }else if(response.status==="sample_pending"){
         title="We saved your target request.";
         steps=[
           "BMC will not pad a sample with weak records just to reach five.",
@@ -326,6 +332,34 @@
     }
   }
   maybeClaimGrowthSample();
+  async function maybeVerifyGrowthEmail(){
+    const q=new URLSearchParams(location.search);
+    const verifyId=q.get("verify_id"),verifyToken=q.get("verify_token");
+    if(!verifyId||!verifyToken)return;
+    const form=document.querySelector('form[data-form-type="growth_snapshot"]');
+    if(!form)return;
+    const notice=form.querySelector("[data-form-notice]");
+    const base=document.querySelector('meta[name="bmc-webhook"]')?.content||GLOBAL_WEBHOOK;
+    const endpoint=base.replace(/\/api\/intake(?:\?.*)?$/,"/api/growth/verify-email");
+    if(notice){notice.textContent="Confirming your email and preparing the five prospects...";notice.classList.add("show");}
+    try{
+      const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
+      const r=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({verify_id:verifyId,verify_token:verifyToken}),signal:controller.signal});
+      clearTimeout(timer);
+      if(!r.ok)throw new Error("Verification returned "+r.status);
+      const response=await r.json();
+      showSubmissionSuccess(form,response);
+      [...form.children].forEach(function(el){if(!el.matches("[data-success-card]"))el.hidden=true;});
+      history.replaceState(null,"",location.pathname);
+    }catch(err){
+      console.error(err);
+      if(notice){notice.textContent="This confirmation link could not be used. If it expired, submit the request again for a new link.";notice.classList.add("show");}
+    }
+  }
+  maybeVerifyGrowthEmail();
+
+
 
   document.querySelectorAll("form[data-bmc-form]").forEach(function(form){
     form.addEventListener("submit",async function(e){
