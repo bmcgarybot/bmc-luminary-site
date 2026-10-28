@@ -930,3 +930,33 @@ footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-s
   .growth-sheet-toolbar{align-items:flex-start;flex-direction:column}
   .growth-priority-key{gap:10px 16px}
 }
+
+/* Mobile conversion cleanup. Keep the real forms visible, not hidden by duplicate CTAs. */
+.mobile-quick-search{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:12px 0 8px}
+.mobile-quick-search span{font-size:.8rem;color:#606b72}
+.mobile-quick-search button{font:inherit;font-size:.79rem;font-weight:700;color:#243238;background:#fffdf8;border:1px solid #cfc7bd;border-radius:999px;padding:8px 12px;cursor:pointer}
+.mobile-quick-search button:focus-visible{outline:3px solid #77638d;outline-offset:2px}
+@media(max-width:600px){
+  body.editorial-site{padding-bottom:18px}
+  .mobile-sticky-cta{display:none!important}
+  .editorial-site .nav-in{min-height:56px;padding:8px 0;gap:7px}
+  .editorial-site .brand{font-size:clamp(.92rem,4vw,1.08rem);max-width:100%;white-space:normal;line-height:1.12}
+  .customer-hero{padding:17px 0 30px}
+  .customer-hero .editorial-kicker{font-size:.65rem;margin-bottom:10px}
+  .customer-hero h1{font-size:clamp(2.35rem,10vw,3.2rem);line-height:1.02;letter-spacing:-.045em;margin-bottom:13px}
+  .customer-hero .hero-sub{font-size:1rem;line-height:1.43;margin-bottom:17px}
+  .customer-hero .editorial-hero-grid{gap:18px}
+  .hero-problem-form{padding:8px;gap:7px;margin-top:12px}
+  .hero-problem-form input{min-height:46px;font-size:16px}
+  .hero-problem-form .btn{min-height:47px}
+  .customer-hero .customer-proof{gap:8px;margin-top:13px}
+  .customer-hero .customer-proof span{font-size:.76rem}
+  .customer-hero .hero-photo{min-height:200px;max-height:250px}
+  .customer-hero .hero-photo-card{padding:10px 12px}
+  .customer-hero .hero-photo-card span{display:none}
+  .editorial-section{padding:38px 0}
+  .provider-funnel .customer-hero .actions{gap:8px;margin-top:16px}
+  .provider-funnel .customer-hero .actions .btn{min-height:48px}
+  .provider-funnel .customer-hero .actions .btn-secondary{font-size:.88rem}
+  .provider-funnel .customer-hero .hero-photo{min-height:180px;max-height:220px}
+}

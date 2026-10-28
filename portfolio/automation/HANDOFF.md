@@ -10998,3 +10998,220 @@ Release rule:
 - after the exact deployed owner preview is sent, **do not make another master/documentation commit before Brett's approval**, because approval is SHA-bound;
 - keep provider, buyer, and Growth outbound OFF until Brett explicitly approves the exact deployed Gmail preview;
 - after approval, set `GROWTH_OWNER_APPROVED_SHA` only for that deployed SHA, rerun the strict Growth audit, and use a controlled Growth-only launch while Service-Network provider/buyer outreach remains OFF.
+
+
+## Section 77 — Prospect Exposure / Source Rights Safety Branch (Oct 27, 2026)
+**NOT MERGED / NOT DEPLOYED / NO OUTREACH AUTHORIZED.**
+PR #5: https://github.com/bmcgarybot/bmc-luminary-site/pull/5
+Branch: safety/prospect-exposure-gates-20261027
+Policy: portfolio/automation/PROSPECT_EXPOSURE_POLICY.md
+
+User directive: Systems scale, feelings fail. Never repeatedly give the same top five commercial businesses to every contractor.
+
+### Code work on isolated branch
+- Shared exposure ledger and historical free/paid delivery backfill, with business and recipient identities plus contact-route grouping.
+- Prospect objection/suppression table; business name normalization and email-alias anti-abuse gate.
+- Conservative proposed per-prospect caps: free once per 90 days; all recipients max 3 per 90 days and 8 lifetime; 90-day free and 30-day paid cooldown.
+- Transactional advisory-lock allocation; paid extra prospects reserved before delivery; repeat submissions reuse original batch.
+- Free sample uses deterministic score-percentile sampling instead of first/top five.
+- Separate source-rights review with default FAIL-CLOSED for unapproved domains; launch readiness requires source-approved staged market reserve.
+- Before fulfilling paid order, recheck whether previously free sample prospect has been suppressed or lost rights.
+- Synthetic CI tests cover rotation, distinct accounts, concurrent claims, suppression, source rights, and duplicate requests.
+
+### Remaining launch gates
+1. Verify CI green and inspect database/API integration output.
+2. Audit real-census source licences, provenance and redistribution rights. Public visibility alone is not a licence.
+3. Audit canonical business, property, parent and shared-contact identity collisions before scaling.
+4. Audit all 21 markets after rights, quality and exposure filters; no padded packs.
+5. Extend same ledger to any future Micro, Starter, Refresh and other product exports.
+6. Have qualified legal review of outreach and buyer research terms, opt-outs, rights and Arizona calling rules.
+7. Exact-SHA BMC SMTP owner preview and explicit approval before any live Growth outreach.
+
+Do not merge or deploy merely because source code exists. Keep all provider, buyer and Growth outbound switches OFF. Preserve old network and research census.
+
+Section 77 scope update: Owner deprioritized source-rights checks for this build. Source reviews remain separately documented, but growth candidate selection and launch-readiness source-rights gate were removed from this PR. Exposure caps, history, objections, and deterministic rotation remain enforced. Do not confuse this with approval of the provenance of any record.
+
+
+## Section 78 — End-of-thread verified handoff (Oct 27, 2026)
+USER REQUEST: deliver handoff immediately; user strongly prioritizes deterministic exposure rotation, fairness and autonomous fulfillment. They requested deprioritizing source-licensing research because they believe provenance cannot be proven. Do not endorse evasion or delete safeguards; source-rights gate presently FAILS CLOSED and must be treated as a separate policy issue to resolve before public commercial launches.
+
+Code branch: safety/prospect-exposure-gates-20261027; open PR #5: https://github.com/bmcgarybot/bmc-luminary-site/pull/5
+Latest VERIFIED CI checkpoint before this handoff: PR head e0ca55b08e037e5778d072b7d38ed6dda25b30e5 ; GitHub Actions 40597040775 (PR) and 40597037303 (push) both SUCCESS. Verify CI again after this handoff-only commit.
+PR is NOT merged, VPS is NOT deployed. No production outreach was enabled.
+
+Changes on safety branch:
+1. Shared growth_prospect_exposures ledger for free and paid distribution, historical backfill, suppression, recipient business and shared contact keys.
+2. Free five now chosen across fit percentiles rather than repeatedly using top five; repeat clicks reuse saved selection.
+3. Exposure limits (proposed policy): max 1 distinct free recipient per 90d; 3 recipients total/90d; 8 lifetime; 90d free cooldown/30d paid cooldown.
+4. All sample allocation in advisory-locked transaction; paid reservation in transaction; paid fulfillment checks source rights, suppression, score and count.
+5. Repeated free claims blocked across email and normalized business name in same service/market.
+6. Unapproved commercial redistribution domains filtered using growth_source_rights_review (unknown fails closed), with launch reserve audit.
+7. CI full integration includes concurrent requests, distinct synthetic contact numbers, same-business/email alternate claims, source unapproval, suppression, sample-to-paid 100 deliverable and no repeat sample exposure.
+8. CI initially uncovered invalid empty source_target_id foreign key; fixed by storing NULL. Synthetic phone collision proved shared phone blocking works; changed fixtures, not caps.
+9. Full policy and residual risks in portfolio/automation/PROSPECT_EXPOSURE_POLICY.md; Section 77 in this handoff also documents initial design.
+
+NEXT THREAD INSTRUCTIONS:
+- Confirm PR #5 current head, CI, contents; re-check any race between master and branch before merge.
+- Audit lingering reliability risks: historical backfill idempotency and shared-contact normalization; status reserved vs delivered on SMTP failure (sample exposures currently marked delivered before SMTP success); canonical parent/property business resolution; verification of rights by individual source/evidence, rather than approving domain blanket.
+- CRITICAL: The policy now fails closed until rights-reviewed candidate inventory exists; this was deliberate safety, but user's main concern is exposure rotation. Avoid allowing provenance disputes to derail exposure work. Don't evade or advise concealing sources.
+- Audit Growth paid-customer no-repeat handling and tests for micro/starter/refresh packs, which remain conceptual, not all wired.
+- Evaluate all 21 markets after caps for sufficient inventory and honest packaging.
+- Keep every outbound switch FALSE (OUTREACH_ENABLED, BUYER_OUTREACH_ENABLED, GROWTH_OUTREACH_ENABLED); preserve signed-click path, exact SHA owner preview gating, website and legacy Service Network branch.
+- User values <10 min/day owner workload, no repeated intake, one obvious next step and ethical repeat sales.
+- Never claim PR branch equals live production or Green CI equals permission to launch.
+
+Preserved assets: 75,098 strict unique researched census records, 21 markets, 54+ service categories; BMC Growth and Service Network original paths. Do not delete or archive away customer flows.
+
+At handoff all product prices are not necessarily implemented: $499 100 total Growth, $749 Premium; $299 Competitor, $699 Expansion, $149-249 refresh proposed; downsell $179 25 total/$79 10 more/$20 five more proposed. They need account/dedupe and fulfillment wiring before public offer.
+
+## 79. Controlled free-five overlap and service-search release checkpoint (2026-10-27)
+
+The owner clarified that different contractors' free-five samples **may overlap**, but no pair of five-prospect samples should contain more than two of the same prospects. Completely disjoint batches are not a requirement. Repeated request by the same recipient must return the identical saved five; never issue new freebies on retries.
+
+PR #5 safety branch: `safety/prospect-exposure-gates-20261027` (no merge or deployment at this checkpoint).
+
+Changes after prior handoff:
+- Free exposure default changed to two distinct free recipients within 90 days, while retaining shared free + paid caps, lifetime caps, suppression, and same-buyer exclusion.
+- Free-only per-prospect cooldown removed so that limited, deliberate overlap is possible.
+- Allocator evaluates all prior free-five disclosure batches in that service/market and will not select a batch with more than two overlaps against *any* previous batch. If insufficient inventory remains, respond with a pending-inventory exception rather than padded/repeated five. Allocation remains serialized in one transaction.
+- CI concurrency assertions now allow at most two overlaps rather than insisting on zero. Existing same-submission, same-business and suppression checks remain.
+- Free-five SMTP accounting now separates prepared, web-disclosed and email submission failed/accepted. A five returned in a webpage response is a real disclosure even if email fails. Replays reuse the same sample.
+- Fixed three paid fulfillment exception messages referring to unselected order_id column.
+- Expanded deterministic customer-language search by roughly 300 curated phrases and added 42 CI regression cases; common plumber/toilet terms now reach existing plumbing/backflow category, but general residential versus backflow specialist matching still needs a separate service/catalog review.
+- Common SMTP sender normalizes em/en dashes, including HTML emails, and the writing guide is at `CUSTOMER_LANGUAGE_AND_EMAIL_STYLE.md`. Owner exact-SHA email preview requirement is unchanged.
+- GitHub ↔ VPS relay was proven live at 2026-10-27 23:30 UTC using fresh proof, runtime and scheduler requests. VPS on tested master `95fc8acf691ad6517e1be3a17f8e27517a15ea9c`, all outreach switches off, healthy runtime.
+- Previous search CI failed on natural-language 'toilet is overflowing', fixed and subsequent CI for `981851230e793bfa9043a19d542e71b349554ce5` succeeded (workflow 40602364711).
+
+NEXT:
+1. Check the latest branch head and BMC Portfolio CI; do not assume a previous green applies to later commits.
+2. Ensure synthetic CI covers allowed two-overlap and forbidden three-overlap, and check historical backfill/idempotency.
+3. Do not enable outreach; do not deploy an unmerged PR.
+4. When all remaining release and owner gates are satisfied, merge through normal review and use tested-SHA VPS relay deployment with all outbound OFF; verify production SHA, database migrations, search, funnel, health; owner review of exact email preview is required before any emails.
+
+
+## 80. Verified Growth claim, owner-protected release and public gateway (2026-10-28)
+
+Development remains on PR #5 safety branch `safety/prospect-exposure-gates-20261027`. All outreach switches remain OFF and no new customer-facing campaign may be enabled without exact deployed-SHA owner Gmail preview approval.
+
+Engineering implemented:
+- Business duplicate gates and the global free-sample allocation are in the same transaction lock, covering pending requests and same email/named contractor aliases. Common LLC/Inc/Corp suffixes are normalized. Optional self-reported business phone and website are stored. A website or phone match is held as `verification_needed` rather than assumed to prove ownership; original sample contents are never revealed to an unverified alternate email.
+- Cold public free-five intake sends an expiring 48h signed email ownership link before revealing five prospects. `growth_email_verifications` stores an immutable request, status, expiry; `/api/growth/verify-email` redeems it on the same landing page and returns the allocated sample. Signed existing BMC outreach claim retains one-click route without a second form. Site HTML and shared JS updated, with cache versions.
+- Free samples rotate with at most two overlaps between any pair, shared per-prospect saturation caps and one-claim-per-contractor behavior. Replaying a verified link returns the saved five.
+- Public Nginx gateway fixed to permit only POST/OPTIONS on `/api/service-search`, `/api/growth/claim-free-five`, `/api/growth/verify-email`, alongside the preexisting intake and Stripe webhook. Admin endpoints remain private. `verify-public-ingress.sh` validates new routes and no admin access.
+- Nurture now excludes people with a recorded Growth outreach reply, plus existing opt-outs/suppressions and paid orders. Common SMTP MIME normalizes em/en dashes in subject, plain text and HTML, with CI regression.
+- Added CI for invalid email verification tokens, concurrent aliases, shared-domain hold, free-five saturation and idempotency, paid-order simulated 100 qualified prospect fulfillment, nurture stopping after reply, source inventory and Nginx endpoint allowlist.
+- Merged current master into PR branch with dual-parent commit `ca8f3d5758b77d71260f8fd6c8c4195369c8cf70`, preserving image overhaul and public plumber search. GitHub reports PR mergeable.
+- Live Stripe API verified the active starter product `growth_pack_starter` is exactly $499 (one-time, 49900 cents); premium $749, competitor $299, expansion $699. This does not prove sales.
+- Fresh read-only VPS relay 2026-10-28 16:44 UTC succeeded for proof/runtime/Growth status/scheduler. VPS still running older `95fc8acf691ad6517e1be3a17f8e27517a15ea9c`; all three outreach switches false, zero Growth orders, zero samples and zero recorded replies. Scheduler/API healthy; seven old SMTP submissions remain recorded but not independently verified as recipient delivery.
+- Latest confirmed green combined branch CI before writing this section: `b68bbc496967720a791b96877d00c234f5508a77`, workflow runs `40729219223` and `40729208681`, both success.
+
+Release requirements:
+1. Verify latest CI on THIS handoff commit, not previous green head.
+2. Confirm no new merge conflicts with master; merge PR #5 only when latest CI green and no unresolved release failures.
+3. Use exact green tested master SHA through existing VPS GitOps relay to deploy, all outreach OFF. Migrations are additive; `deploy-update.sh` recreates API and public webhook proxy (required for new routes). Verify live SHA, schema, Nginx public search/claim/verify, Stripe, scheduler, health and customer form path; do not enable outreach.
+4. The exact deployed live email template must be sent through production path to owner's existing test inbox and visually approved before ever setting `GROWTH_OWNER_APPROVED_SHA` or enabling any campaign.
+5. A simulated CI paid transaction and Stripe product existence are NOT a real $499 sale. Do not claim revenue until an actual successful verified order/payment and 100-pack delivery.
+6. Before launch, independently verify contact legitimacy and abuse throttling; soft identity matches may remain in manual review and no extra sample should be disclosed.
+
+
+## 81. Owner-controlled operator console prototype (2026-10-28)
+Owner directive: **NO LIVE CUSTOMER OUTREACH until the owner personally approves quality, plan, operational workload, and deployed email previews.** Keep OUTREACH_ENABLED, BUYER_OUTREACH_ENABLED, GROWTH_OUTREACH_ENABLED OFF. Build and test safely, including a private dashboard/terminal that the owner can inspect in under ten minutes per day. Owner wants the VPS to do ongoing work automatically with small manual intervention, but the system must be observable and fail closed.
+
+New isolated development branch: `safety/operator-console-20261028` (created from PR #5 head `330923128207062e66b494c7c730a0f2b861de17`). NO PRODUCTION RELEASE OR EMAIL AUTHORIZED.
+- `portfolio/automation/operator-console.py`: read-only snapshot monitor; stale evidence, unavailable metric fields, unconfirmed outbound OFF, unhealthy runtime and missing deployment SHA force REVIEW; never grants marketing authorization.
+- `portfolio/automation/test-operator-console.py`: synthetic tests for stale evidence, failed switches, missing revenue, exceptions, ignored secrets.
+- `portfolio/automation/OPERATOR_CONSOLE.md`: sanitized JSON contract and instructions.
+- It currently consumes a sanitized local JSON file, **not** a connected live VPS data feed or browser dashboard. Never imply otherwise. This is a first part of operational observability, not a finished owner portal.
+
+Next engineering work: integrate read-only signed/authenticated VPS relay snapshot to a private owner dashboard, prove real monitoring (scheduler, queue, runtime, deployment SHA, funnel counts, verified Stripe orders and exceptions), test synthetic checkout-to-100 fulfillment and error/restart behavior, add automation alerting and backup proof. Do not leak relay payloads or customer personal data into public GitHub. PR #5 remains separately unmerged until release gates are satisfied; preserve existing full research census and Service Network. Do not write or approve campaign mail on behalf of the owner.
+
+
+## Section 82 — Read-only VPS operator snapshot integration (2026-10-28)
+After owner insisted on execution rather than another future worklist, development continued on PR #6 (draft, safety branch). Changes:
+- `vps-gitops-relay.py` allowlists `operator_snapshot` under READ_ONLY_ACTIONS; it reads Docker running services, private API health, the three local outbound switches, deployed SHA and whitelisted aggregate Growth numbers. No customer email sent, no launch action and no secrets intentionally included.
+- `operator-console.py` accepts sanitized snapshots or genuine relay result envelopes, checks action, status, exit_code, non-external action and reported SHA consistency, fails closed for stale/unknown/unsafe data.
+- `test-operator-console.py` includes 10 synthetic tests covering healthy reporting, staleness, missing/on outreach, unknown revenue, exceptions, secret stripping, relay action shape and mismatched SHA.
+- BMC Portfolio CI validates the new read-only allowlist and executes console tests.
+- `OPERATOR_CONSOLE.md` explains the relay request contract and clearly distinguishes branch code from VPS deployment.
+- This is an isolated development branch. It does not mean the VPS is updated or live metrics have been verified. Continue with safe CI and relay verification before release. Do not touch PR #5 or merge into master until quality and data policy release review. All outbound remains disabled.
+
+
+## Section 83 — Owner HOLD, dashboard HTML, fresh read-only VPS checks (2026-10-28)
+Owner directive reconfirmed: do not send live customers or prospects any messages until owner approves offer quality, full plan, low-touch operation, and previews. Development work proceeded on safety branch PR #6, not production:
+- `operator-console.py --html <private-file.html>` now generates an escaped, script-free, local status dashboard from sanitized relay JSON. It is not automatically refreshed or deployed.
+- `vps-gitops-relay.py` adds independent `BMC_OWNER_LAUNCH_HOLD` fail-closed gate for `growth_launch_enable`. Defaults to active if missing, separate from email template SHA approval. `.env.example` now sets the hold true; strict `growth-launch-readiness.sh` blocks until explicitly false.
+- CI checks the read-only classification of `operator_snapshot`, independent launch hold, and now 12 console unit test scenarios.
+- Read-only existing VPS relay requests submitted (request IDs `owner-readonly-20261028-proof_readout-1222`, `owner-readonly-20261028-growth_status-1222`); result artifacts were not yet available when first checked. Do not claim VPS metrics from them until returned.
+- Keep PR #5 and PR #6 unmapped to live production; all provider, buyer and Growth outreach controls OFF. No actual live customer marketing sent.
+
+Important follow-up: Owner hold requires manual configuration change on VPS only after explicit user approval; do not silently set it false. Finish real relay proof, CI validation, synthetic full funnel, private access control and durable low-maintenance monitoring.
+
+
+## Section 84 — Operator relay synthetic test and exact owner hold observability (Oct 28, 2026)
+More development on draft PR #6:
+- New `test-operator-relay.py`: five fully mocked tests of the new VPS read-only `operator_snapshot` action. No Docker/API/network/GitHub writes in test. CI now invokes these tests.
+- Operator status requires `owner_launch_hold_active=true` and displays it explicitly; absence or false alerts. Updated console test fixture and additional hold test.
+- `operator_snapshot` now reads the three campaign flags directly from local .env and marks omitted flags unknown, rather than relying on relay helper defaults; continues to emit only aggregate, whitelisted fields.
+- PR #6 is currently draft/mergeable against PR #5 and NOT deployed; no customer outreach authorized.
+- Two existing read-only relay checks were queued at 19:22 UTC, but result files had not appeared in first several checks. Do not claim live VPS proof until result artifacts actually exist.
+- No new CI success was verified for the latest PR #6 HEAD at the time of this entry (workflow query returned no runs). All newly added tests remain pending CI proof. Do not conflate PR #5's earlier green tests with PR #6.
+
+
+## Section 85 — Operator monitoring repair (2026-10-28)
+
+Engineering continues on draft PR #6 only. No merge, production deployment, email, launch approval or campaign configuration change was performed.
+
+Found and fixed three defects in the previous unverified checkpoint:
+- GitHub Actions YAML contained literal backslash-n text in the console step; the workflow failed before creating any jobs. Restored actual YAML line breaks.
+- HTML renderer was missing a concatenation operator, preventing the console module from importing.
+- Snapshot booleans were inverted: a false campaign flag was reported as true and an enabled flag as false. Corrected conversion; added coverage for enabled flags in all three lanes and malformed flag values remaining unknown.
+
+The HTML escaping test previously injected into an invalid SHA that assessment intentionally discarded. It now injects into displayed timestamp data, checking actual escaping without weakening SHA rejection.
+
+Local validation: workflow YAML parsed; exact relay-validation and operator-console workflow steps executed successfully; 13 console and 7 relay tests passed; git diff whitespace checks passed. Fresh GitHub CI for this commit still must be checked. Local tests do not establish production health, capacity, recovery or end-to-end payment fulfillment.
+
+Remaining: obtain green full CI, verify real private snapshot integration and field semantics, full funnel/error/restart and capacity checks, historical exposure/identity audit and real inventory QA. Preserve the seven historic SMTP submissions as previously contacted prospects, not dead leads or verified deliveries. Keep all outreach OFF and owner hold active; no owner email approval is implied.
+
+Additional monitoring hardening in the same repair: HTTP success alone no longer counts as API health; /health must return valid JSON with ok=true. Core runtime health includes this API check. Added mocked failures for invalid/unhealthy API responses, missing scheduler, Docker failure, unavailable metrics, and actual relay-envelope-to-console integration for enabled/disabled outreach. All 24 local tests pass (13 console + 11 relay). Full GitHub CI is still the release authority.
+
+
+## Section 86 — Connected private monitor release candidate (2026-10-28)
+
+Owner explicitly requested continued execution without stopping at each checkpoint. PR #6 continues safely; no merge, deployment or outreach authorized by these changes.
+
+Added operator-monitor.py: locally invokes only read-only operator_snapshot, collects every 60 seconds, binds HTTP to 127.0.0.1:8765, rejects nonlocal Host headers, serves only escaped HTML and sanitized JSON, no-cache responses and 30-second refresh. Requires SSH forwarding for remote owner access; no public route. Collection errors retain last-known metrics with REVIEW, startup is unknown, five-minute stale threshold is evaluated at every read. No mailbox polling, GitHub upload, external mail or configuration action.
+
+Added optional install-operator-monitor.sh with unprivileged systemd service, process restart, 256 MB memory limit and 25% CPU quota. Not run. Seven new tests include real local HTTP requests and collection-failure/recovery checks. Together with previous 24 tests, all 31 local monitoring tests pass. CI runs the new suite and shell syntax check. Exact-head GitHub CI must still be verified.
+
+Previous repair commit 63457a8d5a077652e80287cc287be8c49888042e passed full CI in both runs 40761873281 and 40761863976, including synthetic database/funnel/fulfillment integration. This does not prove production integration or real revenue.
+
+Remaining release boundary: PR #6 depends on unmerged PR #5. Do not silently merge/deploy either. Finish production-specific inventory/identity/exposure review and release review before an owner-approved tested-SHA rollout with all outreach OFF. Resource limits are not a load test; VPS capacity/restart/restore and private SSH integration remain unverified until authorized release. Seven original contacts remain previously contacted prospects, not dead leads.
+
+
+## Section 87 — Owner hold enforced inside campaign workers (2026-10-28)
+
+Release review found the previous hold only guarded relay launch/readiness; the API campaign workers could bypass it, and Growth nurture had no campaign hold at all. Added fail-closed BMC_OWNER_LAUNCH_HOLD (default true, only explicit false releases) to provider outreach, buyer outreach, Growth outreach and Growth nurture after authentication and before database/mail work. Compose passes this hold to the running API. Transactional intake/payment/fulfillment and owner-preview behavior are unchanged by this campaign-only gate. No customer mail was sent.
+
+Growth status now exposes the API process's effective hold and all three effective campaign switches. Operator snapshots require API hold confirmation and agreement between local .env and running API switches; legacy/missing/drifting runtime fields remain unknown and cannot show healthy/outreach-off. This prevents edited .env values being mistaken for the configuration of a still-running old container.
+
+Added four campaign hold tests executing the real extracted worker functions with DB-access traps: all four block before database/mail, authentication still applies, missing/malformed hold stays blocked, releasing hold does not enable disabled campaigns. Relay tests also cover API hold absent/released and effective flag drift. Total local monitoring/hold tests: 38 (13 console, 14 relay, 7 monitor, 4 hold). Full CI must be verified for the final head.
+
+CI releases the hold only in its temporary synthetic .env.ci while SMTP_DRY_RUN=true so existing nurture integration exercises real behavior without sending mail. Production .env is never modified by that fixture.
+
+
+## Section 88 — Qualification filter corrections and production recheck (2026-10-28)
+
+During release review, excluding every permitted buyer category incorrectly restored the original categories. Removed that fallback: an empty allowed set returns no candidates, never ignores the buyer's exclusions. Also found stale/missing verification dates could still achieve high scores. New candidate qualification requires an actual last_verified_at datetime within 90 days (future dates beyond five-minute clock tolerance rejected); search refresh or row edits alone no longer prove freshness. These gates affect newly selected candidates; this is not a claim that every historical saved sample or every census row is independently audited.
+
+Added three tests executing production qualification functions on synthetic records: all-category exclusion returns no candidates/no query, stale/missing/future records fail even at score 100, and exact freshness boundary checks. All 41 local tests pass across console/relay/monitor/hold/qualification suites. Full CI for final head is still required.
+
+Read existing watch41 proof: runtime completed 2026-10-28T20:42:07Z, production remains 95fc8acf691ad6517e1be3a17f8e27517a15ea9c, all campaigns OFF, runtime zero failures/warnings. Growth status at 20:41:50Z: seven prior SMTP submissions, zero replies/samples/orders/revenue, zero open Growth exceptions. No live configuration or production code changed by this work.
+
+
+## Section 89 — Owner approved held deployment (2026-10-28)
+
+Owner explicitly approved merging PR #6 into #5, merging tested result to master, and production deployment for monitoring/recovery checks only. This does not authorize customer contact, release of owner hold, or model upgrade. PR #6 merged at 6cdb0a86cda027f7ebfdf6b08a2a0bc67a463f95.
+
+Deployment hardening: require all three outreach flags exactly false, explicitly set BMC_OWNER_LAUNCH_HOLD=true without replacing other configuration, create a fresh database backup and verify checksum/full restore into an isolated test DB before migrations. backup.sh and verify-backup.sh now accept the selected environment file; mocked selected-env checks and shell syntax passed. Production restore result remains pending until deployment.
+
+The relay's systemd service has NoNewPrivileges=true, so it cannot use sudo to install a system service. Added --user monitor installation only when an existing persistent (linger-enabled) user systemd manager is available. No privilege workaround is attempted. Deployment reports monitor installation incomplete if that access is unavailable, rather than pretending a child process or temporary session is durable. Backend deployment and read-only relay snapshot remain independently verifiable.

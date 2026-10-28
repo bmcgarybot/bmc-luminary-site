@@ -2,7 +2,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BMC Service Network | Get the Problem Off Your Plate</title>
 <meta name="description" content="Tell BMC what you want solved: find someone for the job, compare options, coordinate recurring maintenance, reduce vendor costs, or find more customers.">
-<link rel="stylesheet" href="assets/core.css?v=clarity-13">
+<link rel="stylesheet" href="assets/core.css?v=mobile-refresh-14">
 </head><body class="editorial-site">
 
 <nav class="nav"><div class="wrap nav-in">
@@ -17,10 +17,11 @@
   <p class="hero-sub">Need a repair, cleaning, yard work, business service, or help finding quotes? Start here.</p>
 
   <form class="hero-problem-form" action="services/" method="get" data-home-service-search>
-    <input id="home-service-search" name="q" aria-label="What are you trying to get done?" placeholder="Try “my fryer is broken” or “real estate”" autocomplete="off" required>
+    <input id="home-service-search" name="q" aria-label="What are you trying to get done?" placeholder="What needs fixing? Try plumber or fryer repair" autocomplete="off" required>
     <button class="btn btn-primary" type="submit">Show my options</button>
   </form>
-  <div class="microcopy">We’ll show the services that look closest before you fill anything out.</div>
+  <div class="mobile-quick-search" aria-label="Popular searches"><span>Popular:</span> <button type="button" data-quick-search="plumber">Plumber</button><button type="button" data-quick-search="electrician">Electrician</button><button type="button" data-quick-search="tree removal">Tree removal</button><button type="button" data-quick-search="fryer repair">Fryer repair</button></div>
+  <div class="microcopy">See possible services before filling out a request.</div>
   <div id="home-finder-results" class="finder-results hero-finder-panel" hidden></div>
 
   <div class="customer-proof">
@@ -133,14 +134,15 @@
 <a class="provider-footer-link" href="providers/">Service business? BMC Partner Network</a>
 </div></footer>
 
-<div class="mobile-sticky-cta"><a class="btn btn-primary" href="request/">Tell us the problem</a></div>
-<script src="assets/core.js?v=clarity-13"></script>
+
+<script src="assets/core.js?v=mobile-refresh-14"></script>
 <script src="assets/service-finder.js?v=plumbing-2"></script>
 <script>
 (async function(){
   const input=document.getElementById('home-service-search');
   const results=document.getElementById('home-finder-results');
   try{await BMCServiceFinder.attach(input,results,{limit:3});}catch(e){console.error(e);}
+  document.querySelectorAll("[data-quick-search]").forEach(button=>button.addEventListener("click",()=>{input.value=button.dataset.quickSearch;input.dispatchEvent(new Event("input",{bubbles:true}));input.focus();}));
 })();
 </script>
 </body></html>

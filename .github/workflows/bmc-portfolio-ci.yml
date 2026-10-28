@@ -28,17 +28,34 @@ jobs:
           ns=runpy.run_path("vps-gitops-relay.py",run_name="bmc_relay_ci")
           expected={
               "proof_readout","launch_audit","runtime_doctor","diagnostic_bundle","scheduler_status","search_quality_probe","research_refresh_status",
-              "growth_status","growth_launch_audit",
+              "growth_status","growth_launch_audit","operator_snapshot",
               "deploy_update","market_inventory_step","local_demand_step",
               "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","inventory_closure_step","research_refresh_install","scheduler_start","scheduler_stop",
               "growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_launch_enable","growth_launch_disable","growth_owner_replay_email","owner_replay_all_email_templates","growth_owner_preview_approve"
           }
           assert ns["ALLOWED_ACTIONS"] == expected, ns["ALLOWED_ACTIONS"]
           assert all("shell" not in x for x in ns["ALLOWED_ACTIONS"])
+          assert "operator_snapshot" in ns["READ_ONLY_ACTIONS"]
+          assert "operator_snapshot" not in ns["EXTERNAL_ACTIONS"]
+          relay_source=open("vps-gitops-relay.py").read()
+          assert 'app_env().get("BMC_OWNER_LAUNCH_HOLD","true")' in relay_source
+          readiness_source=open("growth-launch-readiness.sh").read()
+          assert 'Owner launch hold is active (default safe)' in readiness_source
           assert ns["RELAY_BRANCH"] == "vps-relay"
           PY
           grep -q 'allow_external_actions' vps-gitops-relay.py
           ! grep -q 'shell=True' vps-gitops-relay.py
+
+      - name: Validate read-only operator console
+        run: |
+          python3 -m py_compile portfolio/automation/operator-console.py
+          python3 portfolio/automation/test-operator-console.py
+          python3 portfolio/automation/test-operator-relay.py
+          python3 -m py_compile portfolio/automation/operator-monitor.py
+          python3 portfolio/automation/test-operator-monitor.py
+          python3 portfolio/automation/test-campaign-owner-hold.py
+          python3 portfolio/automation/test-growth-qualification-gates.py
+          bash -n portfolio/automation/install-operator-monitor.sh
 
       - name: Validate service registry and fronts
         run: |
@@ -79,9 +96,12 @@ jobs:
           assert "response.sample" in core and "Get the full 100 for $499" in core
           assert "maybeClaimGrowthSample" in core and 'preview:q.get("preview")||""' in core
           assert "growth_claim_token" in api and "one_click_sample_claimed" in api
+          assert "growth_lock_exposure_allocator" in api and "growth_exposure_filter" in api
+          assert "growth_record_exposures" in api and "GROWTH_FREE_DISTINCT_90D" in api
+          assert "growth_select_representative_sample" in api
           assert "owner_template_preview_catalog" in api and "replay-all-email-templates-to-owner" in api
           assert "OWNER PREVIEW" in api and "count_sent" in api
-          for table in ("growth_experiment_cells","growth_outreach_targets","growth_sample_requests","growth_sample_prospects","growth_order_prospects"):
+          for table in ("growth_experiment_cells","growth_outreach_targets","growth_sample_requests","growth_sample_prospects","growth_order_prospects","growth_prospect_exposures","growth_prospect_suppressions","growth_source_rights_review"):
               assert f"create table if not exists {table}" in schema, table
           for endpoint in ("/api/admin/stage-growth-pressure-washing","/api/admin/growth-status","/api/process-growth-health","/api/process-growth-nurture","/api/process-growth-fulfillment","/api/growth/claim-free-five"):
               assert endpoint in api, endpoint
@@ -428,10 +448,22 @@ jobs:
             -v "$PWD/nginx-webhooks.conf:/etc/nginx/conf.d/default.conf:ro" \
             nginx:alpine nginx -t
 
+      - name: Verify exact public API gateway allowlist
+        working-directory: portfolio/automation
+        run: |
+          for endpoint in /api/intake /api/service-search /api/growth/claim-free-five /api/growth/verify-email /api/stripe-webhook; do
+            grep -Fq "location = $endpoint {" nginx-webhooks.conf
+          done
+          grep -Fq 'location / { return 404; }' nginx-webhooks.conf
+          ! grep -Eq 'location .*\/api\/admin' nginx-webhooks.conf
+
       - name: Boot database and API smoke test
         working-directory: portfolio/automation
         run: |
           cp .env.example .env.ci
+          # Synthetic-only fixture: exercise nurture under dry-run SMTP. This is
+          # not a production release or owner approval.
+          sed -i 's/^BMC_OWNER_LAUNCH_HOLD=.*/BMC_OWNER_LAUNCH_HOLD=false/' .env.ci
           sed -i 's/^SMTP_DRY_RUN=.*/SMTP_DRY_RUN=true/' .env.ci
           sed -i 's#^STRIPE_WEBHOOK_SECRET=.*#STRIPE_WEBHOOK_SECRET=whsec_ci_test#' .env.ci
           sed -i 's#^BMC_ADMIN_KEY=.*#BMC_ADMIN_KEY=ci_admin_key#' .env.ci
@@ -602,7 +634,13 @@ jobs:
               'vendor','CI Growth Market','pressure_washing','Pressure Washing','CI Pressure Wash Co',
               'https://ci-pressure.example.com','ci-pressure.example.com','ci-pressure@example.com','9285559999',
               true,'direct','direct_evidence',now(),'discovered',now()
-            ) on conflict do nothing;"
+            ) on conflict do nothing;
+
+            -- Only synthetic domains are marked redistribution-approved for this test.
+            insert into growth_source_rights_review(source_domain,status,basis,reviewed_at)
+            select 'ci-prospect-'||g||'.example.com','approved','synthetic CI test domain',now()
+            from generate_series(1,135) g
+            on conflict(source_domain) do update set status='approved',reviewed_at=now();"
 
           curl -fsS -X POST http://127.0.0.1:8000/api/admin/stage-growth-pressure-washing \
             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_growth_stage.json
@@ -665,8 +703,29 @@ jobs:
 
           curl -fsS -X POST http://127.0.0.1:8000/api/intake \
             -H 'Content-Type: application/json' \
-            -d '{"submission_id":"ci-growth-sample-1","form_type":"growth_snapshot","service_key":"pressure_washing","business_name":"CI Pressure Wash Co","contact_name":"CI Owner","email":"ci-owner@example.com","market":"CI Growth Market","ideal_customer":"restaurants","minimum_job":"500","consent":"yes","source_target_id":"inventory:'"$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select candidate_id from market_inventory_candidates where side='vendor' and public_email='ci-pressure@example.com' limit 1;")"'"}' \
-            >/tmp/bmc_growth_sample.json
+            -d '{"submission_id":"ci-growth-sample-1","form_type":"growth_snapshot","service_key":"pressure_washing","business_name":"CI Second Pressure Wash Company","contact_name":"CI Owner","email":"ci-owner@example.com","market":"CI Growth Market","ideal_customer":"restaurants","minimum_job":"500","consent":"yes","source_target_id":"inventory:'"$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select candidate_id from market_inventory_candidates where side='vendor' and public_email='ci-pressure@example.com' limit 1;")"'"}' \
+            >/tmp/bmc_growth_verify_request.json
+          python - <<'PY'
+          import hashlib,hmac,json,urllib.request,urllib.error
+          request=json.load(open("/tmp/bmc_growth_verify_request.json"))
+          assert request["status"]=="verify_email" and "sample" not in request,request
+          vid=request["verification_id"]
+          email="ci-owner@example.com"
+          token=hmac.new(b"ci_admin_key",f"growth-email-verify|{vid}|{email}".encode(),hashlib.sha256).hexdigest()
+          url="http://127.0.0.1:8000/api/growth/verify-email"
+          invalid=urllib.request.Request(url,json.dumps({"verify_id":vid,"verify_token":"invalid"}).encode(),headers={"Content-Type":"application/json"})
+          try:
+              urllib.request.urlopen(invalid,timeout=30)
+              raise AssertionError("Invalid verification token accepted")
+          except urllib.error.HTTPError as error:
+              assert error.code==403,error.code
+          payload=json.dumps({"verify_id":vid,"verify_token":token}).encode()
+          approved=urllib.request.Request(url,payload,headers={"Content-Type":"application/json"})
+          with urllib.request.urlopen(approved,timeout=90) as response:
+              result=json.load(response)
+          json.dump(result,open("/tmp/bmc_growth_sample.json","w"))
+          assert result["status"]=="sample_ready",result
+          PY
           python - <<'PY'
           import json
           d=json.load(open("/tmp/bmc_growth_sample.json"))
@@ -680,6 +739,19 @@ jobs:
           PY
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from growth_sample_prospects where sample_id=(select sample_id from growth_sample_requests where submission_id='ci-growth-sample-1');")" -eq 5
 
+          # The one-click sample and second customer sample MUST contain ten distinct prospects.
+          # This tests real cross-customer rotation, not merely a static symbol name.
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from growth_prospect_exposures where market='CI Growth Market' and delivery_kind='free' and status='delivered';")" -eq 10
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct prospect_key) from growth_prospect_exposures where market='CI Growth Market' and delivery_kind='free' and status='delivered';")" -ge 8
+          # Record objections and verify the suppression table can block exposure.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            insert into growth_prospect_suppressions(prospect_key,reason,source)
+            select prospect_key,'CI reported no contact','ci'
+            from growth_prospect_exposures
+            where market='CI Growth Market' order by exposure_id limit 1
+            on conflict(prospect_key) do update set lifted_at=null,reason=excluded.reason;"
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from growth_prospect_suppressions where source='ci' and lifted_at is null;")" -eq 1
+
           # Force the first nurture reminder due and prove it advances without sending when not due again.
           docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
             update growth_sample_requests set next_nurture_at=now()-interval '1 minute'
@@ -692,6 +764,24 @@ jobs:
           assert d["ok"] is True and d["sent"] == 1, d
           PY
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select nurture_step from growth_sample_requests where submission_id='ci-growth-sample-1';")" -eq 1
+
+          # A reply must permanently stop automated nurture for that address.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            insert into growth_outreach_targets(target_id,business_name,public_email,market,service_key,status)
+            values('ci-nurture-reply','CI Reply Contractor','ci-owner@example.com','CI Growth Market','pressure_washing','replied')
+            on conflict(target_id) do nothing;
+            insert into outreach(entity_type,entity_id,campaign,wave,channel,sequence_step,status,replied_at)
+            values('growth_customer','ci-nurture-reply','growth_sales','ci','email',1,'replied',now());
+            update growth_sample_requests set next_nurture_at=now()-interval '1 minute'
+            where submission_id='ci-growth-sample-1';"
+          curl -fsS -X POST http://127.0.0.1:8000/api/process-growth-nurture \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_growth_nurture_after_reply.json
+          python - <<'PY'
+          import json
+          result=json.load(open("/tmp/bmc_growth_nurture_after_reply.json"))
+          assert result["ok"] and result["sent"]==0,result
+          print("PASS no automated nurture after a recorded reply")
+          PY
 
           # Simulate a paid, already-linked order. The fulfillment endpoint must build exactly
           # 100 unique, in-market, score-passing rows and complete the order automatically.
@@ -719,6 +809,216 @@ jobs:
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from growth_order_prospects where order_id=(select order_id from orders where customer_email='ci-owner@example.com' order by created_at desc limit 1) and (fit_score<65 or market<>'CI Growth Market');")" -eq 0
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from orders where customer_email='ci-owner@example.com' order by created_at desc limit 1;")" = "fulfilled"
 
+
+          # PROSPECT_EXPOSURE_CONCURRENCY_V1: no two simultaneous free requests can see
+          # the same reserved five, even when they start at the same instant.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            insert into market_inventory_candidates(
+              side,market,category_key,category_label,business_name,source_url,source_domain,
+              public_phone,official_site,source_tier,verification_status,last_verified_at,status,last_seen_at
+            )
+            select 'buyer','CI Race Market','restaurants','Restaurants','Race Prospect '||g,
+              'https://ci-race-'||g||'.example.com','ci-race-'||g||'.example.com',
+              '480999'||lpad(g::text,4,'0'),true,'direct','direct_evidence',now(),'discovered',now()
+            from generate_series(1,30) g
+            on conflict do nothing;
+            insert into growth_source_rights_review(source_domain,status,basis,reviewed_at)
+            select 'ci-race-'||g||'.example.com','approved','synthetic CI test domain',now()
+            from generate_series(1,29) g
+            on conflict(source_domain) do update set status='approved';
+            insert into growth_prospect_suppressions(prospect_key,reason,source)
+            values('ci race market:raceprospect1','CI objection','ci') on conflict do nothing;"
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "
+            select 'CI race total='||count(*)||' approved='||count(*) filter(where r.status='approved')
+            from market_inventory_candidates c
+            left join growth_source_rights_review r on r.source_domain=c.source_domain
+            where c.market='CI Race Market';"
+          docker compose --env-file .env.ci exec -T ops_api python - <<'PY'
+          import asyncio,asyncpg
+          from app import DB_DSN,growth_qualified_candidates
+          async def probe():
+              conn=await asyncpg.connect(DB_DSN)
+              rows=await growth_qualified_candidates(conn,"pressure_washing","CI Race Market",limit=125,
+                  recipient_key="ci-race-debug@example.com",recipient_business_key="business:ci-race-debug")
+              print("CI race eligible",len(rows),[r["business_name"] for r in rows[:3]])
+              await conn.close()
+          asyncio.run(probe())
+          PY
+          python - <<'PY'
+          import concurrent.futures,hashlib,hmac,json,urllib.request
+          def post(url,payload):
+              req=urllib.request.Request(url,json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
+              with urllib.request.urlopen(req,timeout=90) as response:
+                  return json.load(response)
+          def verify(vid,token):
+              return post("http://127.0.0.1:8000/api/growth/verify-email",
+                          {"verify_id":vid,"verify_token":token})
+          def sample(email,uid,business=None,phone=None,website=None):
+              payload={"submission_id":uid,"form_type":"growth_snapshot","service_key":"pressure_washing",
+                       "business_name":business or ("Race Alternate Name" if uid.endswith("-d") else "Race Synthetic Contractor "+("A" if uid.endswith("-a") else "B" if uid.endswith("-b") else "A")),
+                       "contact_name":"CI Owner","email":email,"market":"CI Race Market","consent":"yes"}
+              if phone:payload["business_phone"]=phone
+              if website:payload["business_website"]=website
+              requested=post("http://127.0.0.1:8000/api/intake",payload)
+              assert requested["status"]=="verify_email" and "sample" not in requested,requested
+              vid=requested.get("verification_id")
+              if not vid:
+                  return {"status":"verification_pending","sample":[]}
+              token=hmac.new(b"ci_admin_key",f"growth-email-verify|{vid}|{email}".encode(),hashlib.sha256).hexdigest()
+              result=verify(vid,token)
+              result["_verification_id"]=vid
+              result["_verify_token"]=token
+              return result
+          with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+              futures=[pool.submit(sample,"ci-race-a@example.com","ci-race-sample-a"),
+                       pool.submit(sample,"ci-race-b@example.com","ci-race-sample-b")]
+              first,second=[f.result() for f in futures]
+          assert first["status"]=="sample_ready" and second["status"]=="sample_ready",(first,second)
+          a={x["business_name"] for x in first["sample"]}
+          b={x["business_name"] for x in second["sample"]}
+          assert len(a)==5 and len(b)==5 and len(a&b)<=2,(a,b)
+          assert "Race Prospect 1" not in (a|b),(a,b)
+          repeated=verify(first["_verification_id"],first["_verify_token"])
+          assert {x["business_name"] for x in repeated["sample"]}==a,"Verified email link replay rotated delivered list"
+          alias=sample("ci-race-alias@example.com","ci-race-sample-c")
+          assert alias["status"]=="already_claimed" and alias["sample"]==[],alias
+          alias_by_email=sample("ci-race-a@example.com","ci-race-sample-d")
+          assert alias_by_email["status"] in ("verification_pending","already_claimed") and alias_by_email["sample"]==[],alias_by_email
+          # Legal-suffix aliases and two simultaneous alternate email accounts
+          # must not disclose any additional free prospects.
+          with concurrent.futures.ThreadPoolExecutor(max_workers=2) as race:
+              results=list(race.map(lambda item:sample(*item),[
+                ("ci-llc-one@example.com","ci-llc-e","Race Synthetic Contractor A LLC"),
+                ("ci-llc-two@example.com","ci-llc-f","Race Synthetic Contractor A Inc")
+              ]))
+          assert all(x["status"]=="already_claimed" and x["sample"]==[] for x in results),results
+          # Same self-reported site/phone under a renamed company is held.
+          site=sample("ci-domain-one@example.com","ci-domain-one","CI Domain Contractor",None,"https://ci-domain-company.example.com")
+          assert site["status"]=="sample_ready",site
+          site_alias=sample("ci-domain-two@example.com","ci-domain-two","Renamed Contractor",None,"https://www.ci-domain-company.example.com")
+          assert site_alias["status"]=="verification_needed" and site_alias["sample"]==[],site_alias
+          print("Concurrency, rights, suppression and idempotency passed")
+          PY
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct prospect_key) from growth_prospect_exposures where market='CI Race Market' and status='delivered';")" -ge 8
+
+          # Verify the exact common MIME-building path removes dash characters.
+          # No SMTP connection is made by this test.
+          docker compose --env-file .env.ci exec -T ops_api python - <<'PY'
+          import asyncio
+          import app as m
+          async def check():
+              messages=[]
+              async def capture(message,**kwargs):
+                  messages.append(message)
+              prior=m.aiosmtplib.send
+              dry=m.SMTP_DRY_RUN
+              host=m.SMTP_HOST
+              try:
+                  m.aiosmtplib.send=capture
+                  m.SMTP_DRY_RUN=False
+                  m.SMTP_HOST="smtp.ci.example"
+                  ok=await m.send_mail("ci-style@example.com","Sample — subject",
+                                       "Hi — no long dashes","<p>HTML — no long dashes</p>")
+                  assert ok and len(messages)==1,(ok,messages)
+                  message=messages[0]
+                  plain=message.get_body(preferencelist=("plain",)).get_content()
+                  html=message.get_body(preferencelist=("html",)).get_content()
+                  assert "\\u2014" not in str(message["Subject"])+plain+html
+                  assert "\\u2013" not in str(message["Subject"])+plain+html
+                  print("PASS common SMTP MIME dash normalization")
+              finally:
+                  m.aiosmtplib.send=prior
+                  m.SMTP_DRY_RUN=dry
+                  m.SMTP_HOST=host
+          asyncio.run(check())
+          PY
+
+          # EMAIL_FAILURE_DISCLOSURE_V1: failed SMTP does NOT mean no disclosure;
+          # the HTTP response contains the five, and retry must not leak new five.
+          docker compose --env-file .env.ci exec -T ops_api python - <<'PY'
+          import asyncio,asyncpg
+          import app as m
+          async def smtp_failure(_to,_subject,_body,_html_body=None,_attachments=None):
+              return False
+          async def check():
+              m.send_mail=smtp_failure
+              conn=await asyncpg.connect(m.DB_DSN)
+              request={"submission_id":"ci-smtp-failure-1","form_type":"growth_snapshot",
+                       "service_key":"pressure_washing","business_name":"CI SMTP Failure Contractor",
+                       "contact_name":"CI Owner","email":"ci-smtp-failure@example.com",
+                       "market":"CI Race Market","consent":"yes"}
+              async with conn.transaction():
+                  first=await m.handle_growth_snapshot(conn,request)
+              assert first["status"]=="sample_ready" and len(first["sample"])==5,first
+              sid=first["sample_id"]
+              state=await conn.fetchrow("select status,sample_sent_at from growth_sample_requests where sample_id=$1",__import__("uuid").UUID(sid))
+              assert state["status"]=="delivery_error" and state["sample_sent_at"] is None,state
+              n=await conn.fetchval("""select count(*) from growth_prospect_exposures
+                where delivery_ref=$1 and status='delivered'""","sample:"+sid)
+              assert n==5,n
+              async with conn.transaction():
+                  again=await m.handle_growth_snapshot(conn,request)
+              assert again["sample"]==first["sample"] and again["sample_id"]==sid,(first,again)
+              n2=await conn.fetchval("""select count(*) from growth_prospect_exposures
+                where delivery_ref=$1""","sample:"+sid)
+              assert n2==5,n2
+              await conn.close()
+              print("SMTP failure disclosure and idempotent retry passed")
+          asyncio.run(check())
+          PY
+
+          # Natural-language service search regression coverage.
+          docker compose --env-file .env.ci exec -T ops_api python - <<'PY'
+          from app import classify_with_rules
+          cases=[
+            ("need a plumber","backflow_plumbing"),
+            ("my toilet is overflowing","backflow_plumbing"),
+            ("leaking pipe","backflow_plumbing"),
+            ("electrician near me","electrical_service"),
+            ("breaker keeps tripping","electrical_service"),
+            ("furnace repair","hvac_heat"),
+            ("air conditioner not cooling","hvac_heat"),
+            ("clean my house","residential_cleaning"),
+            ("office cleaning","commercial_cleaning"),
+            ("remove a dead tree","tree_service"),
+            ("sprinkler repair","landscaping"),
+            ("haul away old couch","junk_hauling"),
+            ("fix my fryer","restaurant_equipment"),
+            ("walk in cooler","restaurant_repair"),
+            ("commercial ice maker","ice_machine"),
+            ("restaurant hood cleaning","hood_exhaust"),
+            ("grease trap","grease_drain"),
+            ("need a tow truck","towing_roadside"),
+            ("flat tire","mobile_tire_battery"),
+            ("cracked windshield","auto_glass"),
+            ("mobile mechanic","vehicle_services"),
+            ("brake repair","auto_repair_shop"),
+            ("termite treatment","pest_control"),
+            ("pressure washing","pressure_washing"),
+            ("wash windows","window_cleaning"),
+            ("strip and wax","floor_carpet"),
+            ("parking lot striping","parking_lot"),
+            ("rekey my house","locksmith_access"),
+            ("fire extinguisher","fire_safety"),
+            ("septic pumping","rural_property"),
+            ("pool pump","pool_desert_property"),
+            ("airbnb turnover","str_property_care"),
+            ("snow removal","snow_service"),
+            ("garage door repair","garage_door"),
+            ("dog poop pickup","pet_waste"),
+            ("dog walker","pet_sitting"),
+            ("mobile groomer","mobile_pet_grooming"),
+            ("stage my house","home_staging"),
+            ("prepare home for sale","realtor_listing_prep"),
+            ("facility maintenance","facility_maintenance"),
+            ("store sign repair","sign_lighting"),
+            ("dryer vent cleaning","duct_vent"),
+          ]
+          for phrase,expected in cases:
+              result=classify_with_rules(phrase)
+              assert result and result["service_key"]==expected,(phrase,result,expected)
+          print("PASS",len(cases),"natural-language searches")
+          PY
 
           # Exact real-world search regressions from manual QA.
           curl -fsS -X POST http://127.0.0.1:8000/api/service-search \

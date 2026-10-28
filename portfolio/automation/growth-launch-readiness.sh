@@ -17,6 +17,8 @@ dbq(){ docker compose --env-file "$ENV_FILE" exec -T postgres psql -v ON_ERROR_S
 
 echo "BMC Growth launch readiness"
 echo "==========================="
+owner_hold="$(env_value BMC_OWNER_LAUNCH_HOLD)"
+[ "$owner_hold" = "false" ] && pass "Owner launch hold explicitly released" || fail "Owner launch hold is active (default safe)"
 current_sha="$(git rev-parse HEAD 2>/dev/null || echo unknown)"
 echo "Commit: $current_sha"
 configured_wave="$(env_value GROWTH_OUTREACH_WAVE)"
@@ -46,7 +48,7 @@ else
   fail "Owner preview is not approved for this exact deployed commit (approved=${owner_approved_sha:-none}, current=$current_sha)"
 fi
 
-for table in growth_experiment_cells growth_outreach_targets growth_sample_requests growth_sample_prospects growth_order_prospects; do
+for table in growth_experiment_cells growth_outreach_targets growth_sample_requests growth_sample_prospects growth_order_prospects growth_prospect_exposures growth_prospect_suppressions growth_source_rights_review; do
   exists="$(dbq "select count(*) from information_schema.tables where table_name='$table';")"
   [ "$exists" -eq 1 ] && pass "Database table $table is deployed" || fail "Database table $table is missing"
 done

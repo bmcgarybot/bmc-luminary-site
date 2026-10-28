@@ -13,12 +13,18 @@ intake_code="$(status "$BASE/api/intake")"
 admin_code="$(status "$BASE/admin")"
 admin_api_code="$(status "$BASE/api/admin/preflight")"
 stripe_code="$(status "$BASE/api/stripe-webhook")"
+search_code="$(curl -sS --connect-timeout 8 --max-time 20 -X POST -H 'Content-Type: application/json' -d '{"query":"plumber"}' -o /dev/null -w '%{http_code}' "$BASE/api/service-search" || printf '000')"
+claim_code="$(curl -sS --connect-timeout 8 --max-time 15 -X POST -H 'Content-Type: application/json' -d '{}' -o /dev/null -w '%{http_code}' "$BASE/api/growth/claim-free-five" || printf '000')"
+verify_code="$(curl -sS --connect-timeout 8 --max-time 15 -X POST -H 'Content-Type: application/json' -d '{}' -o /dev/null -w '%{http_code}' "$BASE/api/growth/verify-email" || printf '000')"
 
 echo "BMC public-ingress verification"
 echo "==============================="
 printf "%-42s %s\n" "$BASE/" "$root_code"
 printf "%-42s %s\n" "$BASE/api/intake" "$intake_code"
 printf "%-42s %s\n" "$BASE/api/stripe-webhook" "$stripe_code"
+printf "%-42s %s\n" "$BASE/api/service-search" "$search_code"
+printf "%-42s %s\n" "$BASE/api/growth/claim-free-five" "$claim_code"
+printf "%-42s %s\n" "$BASE/api/growth/verify-email" "$verify_code"
 printf "%-42s %s\n" "$BASE/admin" "$admin_code"
 printf "%-42s %s\n" "$BASE/api/admin/preflight" "$admin_api_code"
 
@@ -40,6 +46,20 @@ case "$stripe_code" in
   405|400|422) echo "PASS  /api/stripe-webhook reaches the application gateway." ;;
   *) echo "WARN  /api/stripe-webhook returned status $stripe_code." ;;
 esac
+
+if [ "$search_code" = "200" ]; then
+  echo "PASS  Public service search reaches the backend."
+else
+  echo "FAIL  Service search is unavailable ($search_code)."
+  fail=1
+fi
+
+if [ "$claim_code" = "400" ] && [ "$verify_code" = "400" ]; then
+  echo "PASS  Token-protected public Growth routes are reachable."
+else
+  echo "FAIL  Token-protected Growth route status was $claim_code / $verify_code."
+  fail=1
+fi
 
 if [ "$admin_code" = "404" ] && [ "$admin_api_code" = "404" ]; then
   echo "PASS  Private admin routes are not exposed by the public gateway."

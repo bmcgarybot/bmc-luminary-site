@@ -1011,10 +1011,34 @@ create table if not exists growth_sample_requests (
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
+-- Optional self-reported contractor signals used for duplicate-claim holds.
+-- They are NOT verified proof of business ownership.
+alter table growth_sample_requests add column if not exists business_phone text;
+alter table growth_sample_requests add column if not exists business_site_host text;
+create index if not exists idx_growth_samples_site_host
+  on growth_sample_requests(business_site_host,provider_service_key,market);
+
 create index if not exists idx_growth_samples_nurture
 on growth_sample_requests(status,next_nurture_at,created_at);
 create index if not exists idx_growth_samples_email
 on growth_sample_requests(lower(email),provider_service_key,created_at desc);
+
+-- Public Growth forms must prove email control before receiving five records.
+-- Signed outreach claims are separately authenticated by their invitation.
+create table if not exists growth_email_verifications (
+  verification_id uuid primary key default gen_random_uuid(),
+  submission_id text not null unique,
+  email text not null,
+  service_key text not null,
+  market text not null,
+  request_payload jsonb not null,
+  status text not null default 'pending',
+  expires_at timestamptz not null default (now() + interval '48 hours'),
+  claimed_at timestamptz,
+  created_at timestamptz not null default now()
+);
+create index if not exists idx_growth_email_verifications_throttle
+  on growth_email_verifications(lower(email),created_at desc);
 
 create table if not exists growth_sample_prospects (
   sample_id uuid references growth_sample_requests(sample_id) on delete cascade,
@@ -1071,3 +1095,109 @@ create table if not exists growth_order_prospects (
 );
 create index if not exists idx_growth_order_prospects_score
 on growth_order_prospects(order_id,fit_score desc);
+
+
+-- Prospect distribution is distinct from prospect quality. These tables are append/audit-oriented.
+-- A canonical identity is based on normalized market + business name pending entity resolution.
+-- Branch/property contact-route and source-rights audits remain separate launch gates.
+create table if not exists growth_prospect_suppressions (
+  prospect_key text primary key,
+  reason text not null,
+  source text not null default 'owner_review',
+  created_at timestamptz not null default now(),
+  reviewed_at timestamptz,
+  lifted_at timestamptz
+);
+create table if not exists growth_prospect_exposures (
+  exposure_id bigserial primary key,
+  prospect_key text not null,
+  recipient_key text not null,
+  service_key text not null,
+  market text not null,
+  candidate_id uuid,
+  delivery_kind text not null check(delivery_kind in ('free','paid')),
+  delivery_ref text not null,
+  status text not null default 'reserved' check(status in ('reserved','delivered','void')),
+  created_at timestamptz not null default now(),
+  delivered_at timestamptz,
+  unique(prospect_key,recipient_key,delivery_ref)
+);
+create index if not exists idx_growth_exposure_key_status_time
+  on growth_prospect_exposures(prospect_key,status,created_at desc);
+create index if not exists idx_growth_exposure_recipient
+  on growth_prospect_exposures(recipient_key,prospect_key,status);
+-- Preserves future source-rights approvals as explicit per-source decisions.
+create table if not exists growth_source_rights_review (
+  source_domain text primary key,
+  status text not null default 'unreviewed' check(status in ('unreviewed','approved','blocked')),
+  basis text,
+  reviewed_at timestamptz
+);
+
+alter table growth_prospect_exposures add column if not exists contact_key text;
+create index if not exists idx_growth_exposure_contact_status_time on growth_prospect_exposures(contact_key,status,created_at desc);
+
+-- Historical distributions must participate in exposure caps; never start at zero.
+-- The historical canonical key is approximate, and unresolved collisions fail to audit.
+insert into growth_prospect_exposures(
+  prospect_key,recipient_key,service_key,market,candidate_id,delivery_kind,delivery_ref,status,delivered_at,created_at
+)
+select lower(s.market)||':'||regexp_replace(lower(s.business_name),'[^a-z0-9]','','g'),
+       lower(g.email),g.provider_service_key,s.market,s.candidate_id,
+       'free','historical-sample:'||s.sample_id::text,'delivered',
+       coalesce(s.delivered_at,g.sample_generated_at,g.created_at),
+       coalesce(s.delivered_at,g.sample_generated_at,g.created_at)
+from growth_sample_prospects s
+join growth_sample_requests g on g.sample_id=s.sample_id
+where lower(g.email)<>'' and not exists (
+  select 1 from growth_prospect_exposures e
+  where e.delivery_ref='sample:'||s.sample_id::text
+    and e.recipient_key=lower(g.email)
+    and e.prospect_key=lower(s.market)||':'||regexp_replace(lower(s.business_name),'[^a-z0-9]','','g')
+)
+on conflict(prospect_key,recipient_key,delivery_ref) do nothing;
+
+insert into growth_prospect_exposures(
+  prospect_key,recipient_key,service_key,market,candidate_id,delivery_kind,delivery_ref,status,delivered_at,created_at
+)
+select lower(p.market)||':'||regexp_replace(lower(p.business_name),'[^a-z0-9]','','g'),
+       lower(o.customer_email),coalesce(g.provider_service_key,'unknown'),p.market,p.candidate_id,
+       'paid','historical-order:'||p.order_id::text,'delivered',
+       coalesce(p.delivered_at,p.created_at),coalesce(p.delivered_at,p.created_at)
+from growth_order_prospects p
+join orders o on o.order_id=p.order_id
+left join growth_sample_requests g on g.sample_id=o.growth_sample_id
+where lower(o.customer_email)<>'' and p.delivered_at is not null and not exists (
+  select 1 from growth_prospect_exposures e
+  where e.delivery_ref='order:'||p.order_id::text
+    and e.recipient_key=lower(o.customer_email)
+    and e.prospect_key=lower(p.market)||':'||regexp_replace(lower(p.business_name),'[^a-z0-9]','','g')
+)
+on conflict(prospect_key,recipient_key,delivery_ref) do nothing;
+
+
+-- Resolve contact-route saturation for historical rows whenever the raw candidate still exists.
+update growth_prospect_exposures e
+set contact_key=case
+    when coalesce(c.public_email,'')<>'' then 'email:'||lower(c.public_email)
+    when length(regexp_replace(coalesce(c.public_phone,''),'\D','','g'))>=10
+      then 'phone:'||right(regexp_replace(c.public_phone,'\D','','g'),10)
+    else null end
+from market_inventory_candidates c
+where e.candidate_id=c.candidate_id and e.contact_key is null;
+
+
+-- Companion buyer-organization identity catches repeat purchases via a new email.
+alter table growth_prospect_exposures add column if not exists recipient_business_key text;
+update growth_prospect_exposures e
+set recipient_business_key='business:'||regexp_replace(lower(g.business_name),'[^a-z0-9]','','g')
+from growth_sample_requests g
+where e.delivery_ref in ('sample:'||g.sample_id::text,'historical-sample:'||g.sample_id::text)
+  and e.recipient_business_key is null;
+update growth_prospect_exposures e
+set recipient_business_key='business:'||regexp_replace(lower(g.business_name),'[^a-z0-9]','','g')
+from orders o join growth_sample_requests g on g.sample_id=o.growth_sample_id
+where e.delivery_ref in ('order:'||o.order_id::text,'historical-order:'||o.order_id::text)
+  and e.recipient_business_key is null;
+create index if not exists idx_growth_exposure_recipient_business
+  on growth_prospect_exposures(recipient_business_key,prospect_key,status);

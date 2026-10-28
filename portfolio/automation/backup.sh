@@ -2,13 +2,15 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-if [ ! -f .env ]; then
-  echo ".env is required."
+ENV_FILE="${1:-.env}"
+
+if [ ! -f "$ENV_FILE" ]; then
+  echo "The selected environment file is required."
   exit 1
 fi
 
 env_value(){
-  grep -m1 "^$1=" .env 2>/dev/null | cut -d= -f2-
+  grep -m1 "^$1=" "$ENV_FILE" 2>/dev/null | cut -d= -f2-
 }
 
 INSTANCE_KEY="$(env_value INSTANCE_KEY)"
@@ -26,7 +28,7 @@ DBUSER="$(env_value POSTGRES_USER)"
 DBNAME="$(env_value POSTGRES_DB)"
 OUT="$BACKUP_DIR/${INSTANCE_KEY}_${STAMP}.dump"
 
-docker compose exec -T postgres pg_dump -U "$DBUSER" -d "$DBNAME" -Fc > "$OUT"
+docker compose --env-file "$ENV_FILE" exec -T postgres pg_dump -U "$DBUSER" -d "$DBNAME" -Fc > "$OUT"
 chmod 600 "$OUT"
 sha256sum "$OUT" > "${OUT}.sha256"
 chmod 600 "${OUT}.sha256"
