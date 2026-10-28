@@ -11087,3 +11087,28 @@ NEXT:
 2. Ensure synthetic CI covers allowed two-overlap and forbidden three-overlap, and check historical backfill/idempotency.
 3. Do not enable outreach; do not deploy an unmerged PR.
 4. When all remaining release and owner gates are satisfied, merge through normal review and use tested-SHA VPS relay deployment with all outbound OFF; verify production SHA, database migrations, search, funnel, health; owner review of exact email preview is required before any emails.
+
+
+## 80. Verified Growth claim, owner-protected release and public gateway (2026-10-28)
+
+Development remains on PR #5 safety branch `safety/prospect-exposure-gates-20261027`. All outreach switches remain OFF and no new customer-facing campaign may be enabled without exact deployed-SHA owner Gmail preview approval.
+
+Engineering implemented:
+- Business duplicate gates and the global free-sample allocation are in the same transaction lock, covering pending requests and same email/named contractor aliases. Common LLC/Inc/Corp suffixes are normalized. Optional self-reported business phone and website are stored. A website or phone match is held as `verification_needed` rather than assumed to prove ownership; original sample contents are never revealed to an unverified alternate email.
+- Cold public free-five intake sends an expiring 48h signed email ownership link before revealing five prospects. `growth_email_verifications` stores an immutable request, status, expiry; `/api/growth/verify-email` redeems it on the same landing page and returns the allocated sample. Signed existing BMC outreach claim retains one-click route without a second form. Site HTML and shared JS updated, with cache versions.
+- Free samples rotate with at most two overlaps between any pair, shared per-prospect saturation caps and one-claim-per-contractor behavior. Replaying a verified link returns the saved five.
+- Public Nginx gateway fixed to permit only POST/OPTIONS on `/api/service-search`, `/api/growth/claim-free-five`, `/api/growth/verify-email`, alongside the preexisting intake and Stripe webhook. Admin endpoints remain private. `verify-public-ingress.sh` validates new routes and no admin access.
+- Nurture now excludes people with a recorded Growth outreach reply, plus existing opt-outs/suppressions and paid orders. Common SMTP MIME normalizes em/en dashes in subject, plain text and HTML, with CI regression.
+- Added CI for invalid email verification tokens, concurrent aliases, shared-domain hold, free-five saturation and idempotency, paid-order simulated 100 qualified prospect fulfillment, nurture stopping after reply, source inventory and Nginx endpoint allowlist.
+- Merged current master into PR branch with dual-parent commit `ca8f3d5758b77d71260f8fd6c8c4195369c8cf70`, preserving image overhaul and public plumber search. GitHub reports PR mergeable.
+- Live Stripe API verified the active starter product `growth_pack_starter` is exactly $499 (one-time, 49900 cents); premium $749, competitor $299, expansion $699. This does not prove sales.
+- Fresh read-only VPS relay 2026-10-28 16:44 UTC succeeded for proof/runtime/Growth status/scheduler. VPS still running older `95fc8acf691ad6517e1be3a17f8e27517a15ea9c`; all three outreach switches false, zero Growth orders, zero samples and zero recorded replies. Scheduler/API healthy; seven old SMTP submissions remain recorded but not independently verified as recipient delivery.
+- Latest confirmed green combined branch CI before writing this section: `b68bbc496967720a791b96877d00c234f5508a77`, workflow runs `40729219223` and `40729208681`, both success.
+
+Release requirements:
+1. Verify latest CI on THIS handoff commit, not previous green head.
+2. Confirm no new merge conflicts with master; merge PR #5 only when latest CI green and no unresolved release failures.
+3. Use exact green tested master SHA through existing VPS GitOps relay to deploy, all outreach OFF. Migrations are additive; `deploy-update.sh` recreates API and public webhook proxy (required for new routes). Verify live SHA, schema, Nginx public search/claim/verify, Stripe, scheduler, health and customer form path; do not enable outreach.
+4. The exact deployed live email template must be sent through production path to owner's existing test inbox and visually approved before ever setting `GROWTH_OWNER_APPROVED_SHA` or enabling any campaign.
+5. A simulated CI paid transaction and Stripe product existence are NOT a real $499 sale. Do not claim revenue until an actual successful verified order/payment and 100-pack delivery.
+6. Before launch, independently verify contact legitimacy and abuse throttling; soft identity matches may remain in manual review and no extra sample should be disclosed.
