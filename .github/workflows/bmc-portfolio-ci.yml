@@ -798,6 +798,16 @@ jobs:
           assert alias["status"]=="already_claimed" and alias["sample"]==[],alias
           alias_by_email=sample("ci-race-a@example.com","ci-race-sample-d")
           assert alias_by_email["status"]=="already_claimed" and alias_by_email["sample"]==[],alias_by_email
+          # A new email and an LLC suffix must not obtain another free batch.
+          # Same-business claims remain blocked even while first send is pending.
+          from concurrent.futures import ThreadPoolExecutor
+          with ThreadPoolExecutor(max_workers=2) as race:
+              results=list(race.map(lambda item:sample(*item),[
+                ("ci-llc-one@example.com","ci-llc-e"),
+                ("ci-llc-two@example.com","ci-llc-f")
+              ]))
+          # These identities use the existing fixture names and must be gated.
+          assert all(x["status"]=="already_claimed" for x in results),results
           print("Concurrency, rights, suppression and idempotency passed")
           PY
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct prospect_key) from growth_prospect_exposures where market='CI Race Market' and status='delivered';")" -ge 8
