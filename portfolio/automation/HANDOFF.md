@@ -11155,3 +11155,19 @@ More development on draft PR #6:
 - PR #6 is currently draft/mergeable against PR #5 and NOT deployed; no customer outreach authorized.
 - Two existing read-only relay checks were queued at 19:22 UTC, but result files had not appeared in first several checks. Do not claim live VPS proof until result artifacts actually exist.
 - No new CI success was verified for the latest PR #6 HEAD at the time of this entry (workflow query returned no runs). All newly added tests remain pending CI proof. Do not conflate PR #5's earlier green tests with PR #6.
+
+
+## Section 85 — Operator monitoring repair (2026-10-28)
+
+Engineering continues on draft PR #6 only. No merge, production deployment, email, launch approval or campaign configuration change was performed.
+
+Found and fixed three defects in the previous unverified checkpoint:
+- GitHub Actions YAML contained literal backslash-n text in the console step; the workflow failed before creating any jobs. Restored actual YAML line breaks.
+- HTML renderer was missing a concatenation operator, preventing the console module from importing.
+- Snapshot booleans were inverted: a false campaign flag was reported as true and an enabled flag as false. Corrected conversion; added coverage for enabled flags in all three lanes and malformed flag values remaining unknown.
+
+The HTML escaping test previously injected into an invalid SHA that assessment intentionally discarded. It now injects into displayed timestamp data, checking actual escaping without weakening SHA rejection.
+
+Local validation: workflow YAML parsed; exact relay-validation and operator-console workflow steps executed successfully; 13 console and 7 relay tests passed; git diff whitespace checks passed. Fresh GitHub CI for this commit still must be checked. Local tests do not establish production health, capacity, recovery or end-to-end payment fulfillment.
+
+Remaining: obtain green full CI, verify real private snapshot integration and field semantics, full funnel/error/restart and capacity checks, historical exposure/identity audit and real inventory QA. Preserve the seven historic SMTP submissions as previously contacted prospects, not dead leads or verified deliveries. Keep all outreach OFF and owner hold active; no owner email approval is implied.

@@ -636,7 +636,7 @@ def execute(req: dict) -> dict:
           "runtime_healthy":health.returncode==0 and all(k in running for k in ("postgres","ops_api","scheduler")),
           "scheduler_healthy":health.returncode==0 and "scheduler" in running,
           "api_healthy":api_health.returncode==0,
-          "outreach_switches":{k:str(flags.get(k,"")).strip().lower()=="false" if str(flags.get(k,"")).strip().lower() in ("true","false") else None for k in ("OUTREACH_ENABLED","BUYER_OUTREACH_ENABLED","GROWTH_OUTREACH_ENABLED")},
+          "outreach_switches":{k:str(flags.get(k,"")).strip().lower()=="true" if str(flags.get(k,"")).strip().lower() in ("true","false") else None for k in ("OUTREACH_ENABLED","BUYER_OUTREACH_ENABLED","GROWTH_OUTREACH_ENABLED")},
           "growth":metrics,"health_error":health_error}
         stdout=json.dumps(snapshot,indent=2)
         stderr=""

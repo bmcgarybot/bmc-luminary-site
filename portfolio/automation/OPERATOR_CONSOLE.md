@@ -1,17 +1,18 @@
 # BMC read-only operator console (safe development branch)
-This console is a **prototype**, not yet wired into the live VPS relay. It consumes a **sanitized snapshot JSON**; it cannot connect to the VPS, change configuration, launch email, or mutate records.
+This console is a **prototype**. Snapshot collection is implemented on this safety branch but is not deployed to the VPS. It consumes sanitized JSON or a successful `operator_snapshot` relay envelope; it cannot change configuration, launch email, or mutate records.
 
 Run: `python3 portfolio/automation/operator-console.py /path/to/sanitized-snapshot.json`
 Machine-readable: add `--json`.
 Tests: `python3 portfolio/automation/test-operator-console.py`.
 
-The relay/snapshot integration must be added in a separate reviewed change. Never expose VPS credentials, email addresses, raw business records, access tokens, webhooks or private keys in a snapshot; only aggregate metrics and booleans. Never place raw snapshots in a public GitHub repository.
+The relay/snapshot integration below must pass CI and production verification before activation. Never expose VPS credentials, email addresses, raw business records, access tokens, webhooks or private keys in a snapshot; only aggregate metrics and booleans. Never place raw snapshots in a public GitHub repository.
 
 Expected sanitized shape:
 ```json
 {
   "observed_at": "2026-10-28T18:45:00Z",
   "deployed_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "owner_launch_hold_active": true,
   "runtime_healthy": true,
   "scheduler_healthy": true,
   "api_healthy": true,

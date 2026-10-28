@@ -93,7 +93,7 @@ def render_html(result):
       "<h1>BMC Mission Control</h1><p>Local read-only snapshot. Never authorizes marketing.</p>"
       "<section><strong>"+esc(result["status"])+"</strong><table>"+rows+"</table>"
       "<h2>Checks needing attention</h2>"+("<ul>"+issues+"</ul>" if issues else "<p>No known issues in this snapshot.</p>")
-      "</section></body></html>")
+      + "</section></body></html>")
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)

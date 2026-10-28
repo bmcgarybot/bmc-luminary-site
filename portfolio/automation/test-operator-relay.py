@@ -45,6 +45,16 @@ class SnapshotTests(unittest.TestCase):
         env=dict(BASE_ENV);del env["OUTREACH_ENABLED"]
         snap=json.loads(simulate(env=env)["stdout"])
         self.assertIsNone(snap["outreach_switches"]["OUTREACH_ENABLED"])
+    def test_enabled_campaign_never_reported_off(self):
+        for key in ("OUTREACH_ENABLED","BUYER_OUTREACH_ENABLED","GROWTH_OUTREACH_ENABLED"):
+            with self.subTest(key=key):
+                env=dict(BASE_ENV);env[key]="true"
+                snap=json.loads(simulate(env=env)["stdout"])
+                self.assertIs(snap["outreach_switches"][key],True)
+    def test_invalid_campaign_flag_stays_unknown(self):
+        env=dict(BASE_ENV);env["GROWTH_OUTREACH_ENABLED"]="invalid"
+        snap=json.loads(simulate(env=env)["stdout"])
+        self.assertIsNone(snap["outreach_switches"]["GROWTH_OUTREACH_ENABLED"])
     def test_unknown_metrics_not_misreported_zero(self):
         counts=dict(COUNTS);del counts["revenue_cents"]
         snap=json.loads(simulate(metrics=counts)["stdout"])

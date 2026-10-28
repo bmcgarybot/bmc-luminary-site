@@ -46,8 +46,13 @@ jobs:
           grep -q 'allow_external_actions' vps-gitops-relay.py
           ! grep -q 'shell=True' vps-gitops-relay.py
 
-      - name: Validate read-only operator console\n        run: |\n          python3 -m py_compile portfolio/automation/operator-console.py\n          python3 portfolio/automation/test-operator-console.py
-          python3 portfolio/automation/test-operator-relay.py\n\n      - name: Validate service registry and fronts
+      - name: Validate read-only operator console
+        run: |
+          python3 -m py_compile portfolio/automation/operator-console.py
+          python3 portfolio/automation/test-operator-console.py
+          python3 portfolio/automation/test-operator-relay.py
+
+      - name: Validate service registry and fronts
         run: |
           python - <<'PY'
           import json, pathlib, sys
