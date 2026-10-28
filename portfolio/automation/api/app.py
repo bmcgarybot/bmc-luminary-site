@@ -3018,8 +3018,6 @@ async def handle_growth_snapshot(conn,p):
           or lower(email)=$4
           or regexp_replace(lower(business_name),'[^a-z0-9]','','g') =
              any($5::text[])
-          or ($6<>'' and business_site_host=$6)
-          or ($7<>'' and right(regexp_replace(coalesce(business_phone,''),'[^0-9]','','g'),10)=$7)
         )
         and status not in ('cancelled','rejected')
       order by created_at desc limit 1""",
@@ -3027,10 +3025,25 @@ async def handle_growth_snapshot(conn,p):
       [growth_normalized_contractor_name(business),
        growth_normalized_contractor_name(business)+"llc",
        growth_normalized_contractor_name(business)+"inc",
-       growth_normalized_contractor_name(business)+"corp"],business_site_host,phone_key)
+       growth_normalized_contractor_name(business)+"corp"])
     if prior_business_claim:
         return {"ok":True,"status":"already_claimed","sample":[],
           "checkout_url":"","message":"BMC has already prepared a free sample for this business and territory. Use the original invitation or contact BMC to review the account."}
+
+    # Shared website or phone is a risk signal, not proof of ownership.
+    # Hold uncertain matches without exposing the existing customer's sample.
+    if business_site_host or phone_key:
+        possible_match=await conn.fetchval("""select sample_id from growth_sample_requests
+          where lower(market)=lower($1) and provider_service_key=$2
+            and (
+              ($3<>'' and business_site_host=$3)
+              or ($4<>'' and right(regexp_replace(coalesce(business_phone,''),'[^0-9]','','g'),10)=$4)
+            ) and status not in ('cancelled','rejected')
+          order by created_at desc limit 1""",
+          market,service_key,business_site_host,phone_key)
+        if possible_match:
+            return {"ok":True,"status":"verification_needed","sample":[],
+              "checkout_url":"","message":"These contact details may belong to an existing business. We need to confirm business ownership before releasing another free sample."}
 
     target_id=clean(p.get("source_target_id")) or None
     if target_id and not await conn.fetchval("select 1 from growth_outreach_targets where target_id=$1",target_id):
