@@ -11215,3 +11215,12 @@ Owner explicitly approved merging PR #6 into #5, merging tested result to master
 Deployment hardening: require all three outreach flags exactly false, explicitly set BMC_OWNER_LAUNCH_HOLD=true without replacing other configuration, create a fresh database backup and verify checksum/full restore into an isolated test DB before migrations. backup.sh and verify-backup.sh now accept the selected environment file; mocked selected-env checks and shell syntax passed. Production restore result remains pending until deployment.
 
 The relay's systemd service has NoNewPrivileges=true, so it cannot use sudo to install a system service. Added --user monitor installation only when an existing persistent (linger-enabled) user systemd manager is available. No privilege workaround is attempted. Deployment reports monitor installation incomplete if that access is unavailable, rather than pretending a child process or temporary session is durable. Backend deployment and read-only relay snapshot remain independently verifiable.
+
+
+## Section 90 — Merged release queued; relay responsiveness investigation (2026-10-28)
+
+PR #6 merged into #5, then #5 merged to master 3a53e61e03de963ce48cfa3bc533411dd3cc259b. Exact master CI 40768738329 and Pages 40768738212 passed. Owner-approved deployment request held-release-z-deploy-20261028T210601Z targets exactly that SHA with external actions disabled. Three read-only held-release-pre requests were submitted at 21:02Z. At the time of this note, no fresh result had returned; last proven VPS evidence remains watch41 around 20:42Z. Never claim queued equals deployed. Direct SSH from this workspace returns Network is unreachable.
+
+Investigation found each relay cycle individually checks all historical remote results (321 request records currently). This can consume hundreds of GitHub API calls every poll; it is a possible contributor, not a confirmed diagnosis of the current delay. A scheduled relay research refresh can also block the same process up to an hour per lane.
+
+Separate fix/relay-result-index-20261028 branch indexes historical results once, retains a fresh duplicate check for pending requests, and handles GitHub's 1000-entry directory cap using complete tree data, refusing truncated responses. Five no-network tests pass, including 321 historical records with no individual GETs. This branch must NOT change master until the outstanding exact-SHA deployment resolves, or that request will safely reject as stale. No live settings/customer communications changed by this investigation.
