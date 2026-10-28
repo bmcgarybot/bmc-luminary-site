@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "watch40-proof-20261028T1936Z",
+  "action": "proof_readout",
+  "created_at": "2026-10-28T19:36:13Z",
+  "expires_at": "2026-10-28T21:36:13Z",
+  "allow_external_actions": false,
+  "args": {}
+}
