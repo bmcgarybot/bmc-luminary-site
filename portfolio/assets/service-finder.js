@@ -145,7 +145,7 @@
 
   // General plumbing is not the same as specialist backflow certification.
   // Offer one honest request path instead of pretending a provider is active.
-  const PLUMBING_QUERY=/\\b(plumb(?:er|ers|ing)?|pipe leak|leak(?:ing|y)? pipe|burst pipe|clogged (?:toilet|drain|sink)|toilet (?:repair|overflow)|water heater|sewer backup|no hot water)\\b/i;
+  const PLUMBING_QUERY=/\b(plumb(?:er|ers|ing)?|pipe leak|leak(?:ing|y)? pipe|burst pipe|clogged (?:toilet|drain|sink)|toilet (?:repair|overflow)|water heater|sewer backup|no hot water)\b/i;
   function plumbingRequest(query){
     return {service:{
       service_key:"plumbing_request",
@@ -243,7 +243,7 @@
       render(container,local,q,{fallback:fallbackResults});
       if(opts.onResults)opts.onResults(local,q,{source:"local"});
 
-      if(q.length<3)return;
+      if(q.length<3 || PLUMBING_QUERY.test(q))return;
       const remote=await remoteSearch(services,q);
       if(current!==runId || !remote || !remote.results.length)return;
 
