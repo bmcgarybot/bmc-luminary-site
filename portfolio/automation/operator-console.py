@@ -3,6 +3,7 @@
 import argparse
 import datetime as dt
 import json
+import html
 import pathlib
 import sys
 
@@ -64,10 +65,37 @@ def assess(s, now=None, max_age_minutes=90):
       "deployed_sha":sha,"outreach_switches":{k:switches.get(k) for k in SWITCHES},
       "growth":metrics,"issues":issues,"marketing_authorized":False}
 
+def render_html(result):
+    """A local, static, escaped view of an already-sanitized snapshot."""
+    def esc(value): return html.escape(str(value),quote=True)
+    fields=[
+      ("Observed",result.get("observed_at")),
+      ("Age (minutes)",result.get("age_minutes")),
+      ("Deployed commit",result.get("deployed_sha")),
+    ]
+    fields.extend((k,("OFF" if v is False else "NOT CONFIRMED OFF")) for k,v in result["outreach_switches"].items())
+    fields.extend((k,("Unavailable" if v is None else v)) for k,v in result["growth"].items())
+    rows="".join("<tr><th>"+esc(k)+"</th><td>"+esc(v)+"</td></tr>" for k,v in fields)
+    issues="".join("<li>"+esc(issue)+"</li>" for issue in result["issues"])
+    return ("<!doctype html><html lang='en'><head><meta charset='utf-8'>"
+      "<meta name='viewport' content='width=device-width, initial-scale=1'>"
+      "<meta http-equiv='Content-Security-Policy' content=\"default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'\">"
+      "<title>BMC Operator Console</title><style>"
+      "body{font:16px system-ui,sans-serif;max-width:900px;margin:32px auto;padding:0 18px;background:#111a23;color:#edf3f8}"
+      "h1{font-size:1.7rem}p{color:#b6c6d3}table{width:100%;border-collapse:collapse;margin-top:22px}"
+      "th,td{padding:12px;text-align:left;border-bottom:1px solid #43515c;overflow-wrap:anywhere}"
+      "th{width:44%;color:#b6c6d3}section{padding:16px;border:1px solid #596a76;border-radius:12px}"
+      "strong{font-size:1.25rem}li{margin:6px 0}</style></head><body>"
+      "<h1>BMC Mission Control</h1><p>Local read-only snapshot. Never authorizes marketing.</p>"
+      "<section><strong>"+esc(result["status"])+"</strong><table>"+rows+"</table>"
+      "<h2>Checks needing attention</h2>"+("<ul>"+issues+"</ul>" if issues else "<p>No known issues in this snapshot.</p>")
+      "</section></body></html>")
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("snapshot",type=pathlib.Path)
     p.add_argument("--json",action="store_true")
+    p.add_argument("--html",type=pathlib.Path,help="Write static local-only dashboard HTML")
     args=p.parse_args()
     try:
         if args.snapshot.stat().st_size>1048576: raise ValueError("File too large")
@@ -75,7 +103,10 @@ def main():
     except (OSError,ValueError,TypeError):
         print("Cannot read valid snapshot",file=sys.stderr)
         return 2
-    if args.json:
+    if args.html:
+        args.html.write_text(render_html(result),encoding="utf-8")
+        print("Wrote local read-only dashboard:",args.html)
+    elif args.json:
         print(json.dumps(result,indent=2))
     else:
         print("BMC SERVICE NETWORK | READ-ONLY")
