@@ -79,3 +79,7 @@ The access boundary is an authenticated SSH port forward, not an unauthenticated
 Tests: `python3 portfolio/automation/test-operator-monitor.py`. Seven tests cover startup, healthy data, secret filtering, failed collection and recovery, stale collection, unhealthy scheduler, the constant local read-only action, and actual loopback HTTP access/method/header/route behavior. No real Docker, production API, email, payments or GitHub writes occur in these tests.
 
 Still unverified in production: systemd restart behavior, SSH access, collection latency/resource use under load, backup/restore freshness and payment reconciliation. Synthetic fulfillment CI is distinct from a live Stripe payment.
+
+
+## Effective runtime safety
+The owner hold is enforced inside all four campaign workers (provider, buyer, Growth outreach and Growth nurture), not just the relay launch action. Missing or malformed hold configuration blocks campaigns. Growth status reports effective running API flags; the snapshot requires agreement with local configuration before confirming a switch. An old API or a container with configuration drift requires REVIEW. This does not block transactional requested receipts/fulfillment or grant permission to send previews.

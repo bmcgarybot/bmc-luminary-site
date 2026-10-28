@@ -11186,3 +11186,14 @@ Added optional install-operator-monitor.sh with unprivileged systemd service, pr
 Previous repair commit 63457a8d5a077652e80287cc287be8c49888042e passed full CI in both runs 40761873281 and 40761863976, including synthetic database/funnel/fulfillment integration. This does not prove production integration or real revenue.
 
 Remaining release boundary: PR #6 depends on unmerged PR #5. Do not silently merge/deploy either. Finish production-specific inventory/identity/exposure review and release review before an owner-approved tested-SHA rollout with all outreach OFF. Resource limits are not a load test; VPS capacity/restart/restore and private SSH integration remain unverified until authorized release. Seven original contacts remain previously contacted prospects, not dead leads.
+
+
+## Section 87 — Owner hold enforced inside campaign workers (2026-10-28)
+
+Release review found the previous hold only guarded relay launch/readiness; the API campaign workers could bypass it, and Growth nurture had no campaign hold at all. Added fail-closed BMC_OWNER_LAUNCH_HOLD (default true, only explicit false releases) to provider outreach, buyer outreach, Growth outreach and Growth nurture after authentication and before database/mail work. Compose passes this hold to the running API. Transactional intake/payment/fulfillment and owner-preview behavior are unchanged by this campaign-only gate. No customer mail was sent.
+
+Growth status now exposes the API process's effective hold and all three effective campaign switches. Operator snapshots require API hold confirmation and agreement between local .env and running API switches; legacy/missing/drifting runtime fields remain unknown and cannot show healthy/outreach-off. This prevents edited .env values being mistaken for the configuration of a still-running old container.
+
+Added four campaign hold tests executing the real extracted worker functions with DB-access traps: all four block before database/mail, authentication still applies, missing/malformed hold stays blocked, releasing hold does not enable disabled campaigns. Relay tests also cover API hold absent/released and effective flag drift. Total local monitoring/hold tests: 38 (13 console, 14 relay, 7 monitor, 4 hold). Full CI must be verified for the final head.
+
+CI releases the hold only in its temporary synthetic .env.ci while SMTP_DRY_RUN=true so existing nurture integration exercises real behavior without sending mail. Production .env is never modified by that fixture.

@@ -625,6 +625,7 @@ def execute(req: dict) -> dict:
         except (ValueError,TypeError):
             api_healthy=False
         metrics={}
+        raw={}
         health_error=None
         try:
             raw=admin_post("/api/admin/growth-status",timeout=30)
@@ -635,13 +636,20 @@ def execute(req: dict) -> dict:
         except Exception:
             health_error="Growth status unavailable"
             metrics={k:None for k in ("paid_orders","revenue_cents","samples_requested","samples_delivered","replies","open_growth_exceptions","staged_active")}
+        effective_flags=raw.get("outreach_switches",{}) if isinstance(raw,dict) else {}
+        if not isinstance(effective_flags,dict): effective_flags={}
+        confirmed_flags={}
+        for key,value in flags.items():
+            normalized=str(value).strip().lower()
+            effective=effective_flags.get(key)
+            confirmed_flags[key]=(normalized=="true") if normalized in ("true","false") and type(effective) is bool and effective==(normalized=="true") else None
         snapshot={
           "observed_at":now_iso(),"deployed_sha":current_sha(),
-          "owner_launch_hold_active":raw_env.get("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="false",
+          "owner_launch_hold_active":raw_env.get("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="false" and isinstance(raw,dict) and raw.get("owner_launch_hold_active") is True,
           "runtime_healthy":api_healthy and health.returncode==0 and all(k in running for k in ("postgres","ops_api","scheduler")),
           "scheduler_healthy":health.returncode==0 and "scheduler" in running,
           "api_healthy":api_healthy,
-          "outreach_switches":{k:str(flags.get(k,"")).strip().lower()=="true" if str(flags.get(k,"")).strip().lower() in ("true","false") else None for k in ("OUTREACH_ENABLED","BUYER_OUTREACH_ENABLED","GROWTH_OUTREACH_ENABLED")},
+          "outreach_switches":confirmed_flags,
           "growth":metrics,"health_error":health_error}
         stdout=json.dumps(snapshot,indent=2)
         stderr=""

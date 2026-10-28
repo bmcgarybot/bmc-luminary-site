@@ -53,6 +53,7 @@ jobs:
           python3 portfolio/automation/test-operator-relay.py
           python3 -m py_compile portfolio/automation/operator-monitor.py
           python3 portfolio/automation/test-operator-monitor.py
+          python3 portfolio/automation/test-campaign-owner-hold.py
           bash -n portfolio/automation/install-operator-monitor.sh
 
       - name: Validate service registry and fronts
@@ -459,6 +460,9 @@ jobs:
         working-directory: portfolio/automation
         run: |
           cp .env.example .env.ci
+          # Synthetic-only fixture: exercise nurture under dry-run SMTP. This is
+          # not a production release or owner approval.
+          sed -i 's/^BMC_OWNER_LAUNCH_HOLD=.*/BMC_OWNER_LAUNCH_HOLD=false/' .env.ci
           sed -i 's/^SMTP_DRY_RUN=.*/SMTP_DRY_RUN=true/' .env.ci
           sed -i 's#^STRIPE_WEBHOOK_SECRET=.*#STRIPE_WEBHOOK_SECRET=whsec_ci_test#' .env.ci
           sed -i 's#^BMC_ADMIN_KEY=.*#BMC_ADMIN_KEY=ci_admin_key#' .env.ci

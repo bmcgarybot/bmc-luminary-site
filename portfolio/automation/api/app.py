@@ -42,6 +42,7 @@ OUTREACH_WAVE=os.getenv("OUTREACH_WAVE","pilot1").strip() or "pilot1"
 BUYER_OUTREACH_ENABLED=os.getenv("BUYER_OUTREACH_ENABLED","false").lower()=="true"
 BUYER_OUTREACH_DAILY_LIMIT=env_int("BUYER_OUTREACH_DAILY_LIMIT",15)
 BUYER_OUTREACH_WAVE=os.getenv("BUYER_OUTREACH_WAVE","pilot1").strip() or "pilot1"
+OWNER_LAUNCH_HOLD=os.getenv("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="false"
 GROWTH_OUTREACH_ENABLED=os.getenv("GROWTH_OUTREACH_ENABLED","false").lower()=="true"
 GROWTH_OUTREACH_DAILY_LIMIT=env_int("GROWTH_OUTREACH_DAILY_LIMIT",10)
 GROWTH_OUTREACH_WAVE=os.getenv("GROWTH_OUTREACH_WAVE","growth-pressure-1").strip() or "growth-pressure-1"
@@ -3310,7 +3311,9 @@ async def growth_runtime_status(conn):
     imap_ready=bool(IMAP_ENABLED and IMAP_HOST and IMAP_USER and IMAP_PASSWORD)
     postal_ready=bool(BUSINESS_POSTAL_ADDRESS and "CHANGE_ME" not in BUSINESS_POSTAL_ADDRESS)
     config_ready=smtp_ready and imap_ready and postal_ready and int(links or 0)>=1
-    return {"ok":True,"growth_enabled":GROWTH_OUTREACH_ENABLED,"wave":GROWTH_OUTREACH_WAVE,
+    return {"ok":True,"owner_launch_hold_active":OWNER_LAUNCH_HOLD,
+      "outreach_switches":{"OUTREACH_ENABLED":OUTREACH_ENABLED,"BUYER_OUTREACH_ENABLED":BUYER_OUTREACH_ENABLED,"GROWTH_OUTREACH_ENABLED":GROWTH_OUTREACH_ENABLED},
+      "growth_enabled":GROWTH_OUTREACH_ENABLED,"wave":GROWTH_OUTREACH_WAVE,
       "daily_limit":GROWTH_OUTREACH_DAILY_LIMIT,"sample_reserve":GROWTH_SAMPLE_MIN_RESERVE,
       "config":{"smtp":smtp_ready,"imap":imap_ready,"postal":postal_ready,"payment_link":int(links or 0)>=1},
       "config_ready":config_ready,"staged_active":int(staged or 0),"sent":int(sent or 0),"replies":int(replies or 0),
@@ -3361,6 +3364,9 @@ async def process_growth_health(x_bmc_admin_key:str|None=Header(default=None)):
 @app.post("/api/process-growth-nurture")
 async def process_growth_nurture(x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)
+    if OWNER_LAUNCH_HOLD:
+        return {"ok":True,"enabled":False,"sent":0,"blocked":True,
+                "message":"Owner launch hold is active."}
     sent=0; converted=0
     async with app.state.pool.acquire() as conn:
       rows=await conn.fetch("""select * from growth_sample_requests
@@ -3884,6 +3890,9 @@ async def admin_outreach_wave_preview(
 @app.post("/api/process-outreach")
 async def process_outreach(x_bmc_admin_key:str|None=Header(default=None)):
     if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY: raise HTTPException(403,"Forbidden")
+    if OWNER_LAUNCH_HOLD:
+        return {"ok":True,"enabled":False,"sent":0,"blocked":True,
+                "message":"Owner launch hold is active."}
     if not OUTREACH_ENABLED:
         return {"ok":True,"enabled":False,"sent":0,"message":"Outbound outreach is disabled."}
     if not BUSINESS_POSTAL_ADDRESS or "CHANGE_ME" in BUSINESS_POSTAL_ADDRESS:
@@ -4019,6 +4028,9 @@ Reply no if you do not want future outreach."""
 @app.post("/api/process-buyer-outreach")
 async def process_buyer_outreach(x_bmc_admin_key:str|None=Header(default=None)):
     if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY: raise HTTPException(403,"Forbidden")
+    if OWNER_LAUNCH_HOLD:
+        return {"ok":True,"enabled":False,"sent":0,"blocked":True,
+                "message":"Owner launch hold is active."}
     if not BUYER_OUTREACH_ENABLED:
         return {"ok":True,"enabled":False,"sent":0,"message":"Buyer outreach is disabled."}
     if not BUSINESS_POSTAL_ADDRESS or "CHANGE_ME" in BUSINESS_POSTAL_ADDRESS:
@@ -4141,6 +4153,9 @@ Reply no if you do not want future outreach."""
 @app.post("/api/process-growth-outreach")
 async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None)):
     if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY: raise HTTPException(403,"Forbidden")
+    if OWNER_LAUNCH_HOLD:
+        return {"ok":True,"enabled":False,"sent":0,"blocked":True,
+                "message":"Owner launch hold is active."}
     if not GROWTH_OUTREACH_ENABLED:
         return {"ok":True,"enabled":False,"sent":0,"message":"Growth outreach is disabled."}
     if not BUSINESS_POSTAL_ADDRESS or "CHANGE_ME" in BUSINESS_POSTAL_ADDRESS:

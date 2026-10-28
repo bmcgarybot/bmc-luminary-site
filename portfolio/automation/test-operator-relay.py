@@ -14,7 +14,7 @@ G=execute.__globals__
 SHA="a"*40
 BASE_ENV={"OUTREACH_ENABLED":"false","BUYER_OUTREACH_ENABLED":"false",
           "GROWTH_OUTREACH_ENABLED":"false","BMC_OWNER_LAUNCH_HOLD":"true"}
-COUNTS={"paid_orders":0,"revenue_cents":0,"samples_requested":0,
+COUNTS={"owner_launch_hold_active":True,"paid_orders":0,"revenue_cents":0,"samples_requested":0,
         "samples_delivered":0,"replies":0,"open_growth_exceptions":0,"staged_active":3}
 REQ={"request_id":"operator-unit-20261028","action":"operator_snapshot",
      "args":{},"allow_external_actions":False}
@@ -28,7 +28,10 @@ def simulate(env=None, metrics=None, services="postgres\nops_api\nscheduler\n", 
         raise AssertionError("Unexpected external command")
     def fake_metrics(path,timeout=30):
         if metrics_failure: raise RuntimeError("private failure details")
-        return dict(COUNTS if metrics is None else metrics)
+        result=dict(COUNTS if metrics is None else metrics)
+        active_env=BASE_ENV if env is None else env
+        result.setdefault("outreach_switches",{key:active_env.get(key)=="true" for key in ("OUTREACH_ENABLED","BUYER_OUTREACH_ENABLED","GROWTH_OUTREACH_ENABLED")})
+        return result
     with patch.dict(G,{"app_env":lambda: dict(BASE_ENV if env is None else env),
                       "run":fake_run,
                       "admin_post":fake_metrics,
@@ -59,6 +62,15 @@ class SnapshotTests(unittest.TestCase):
         env=dict(BASE_ENV);env["GROWTH_OUTREACH_ENABLED"]="invalid"
         snap=json.loads(simulate(env=env)["stdout"])
         self.assertIsNone(snap["outreach_switches"]["GROWTH_OUTREACH_ENABLED"])
+    def test_running_api_flag_drift_not_reported_off(self):
+        counts=dict(COUNTS)
+        counts["outreach_switches"]={"OUTREACH_ENABLED":False,"BUYER_OUTREACH_ENABLED":False,"GROWTH_OUTREACH_ENABLED":True}
+        snap=json.loads(simulate(metrics=counts)["stdout"])
+        self.assertIsNone(snap["outreach_switches"]["GROWTH_OUTREACH_ENABLED"])
+    def test_old_api_without_flags_stays_unknown(self):
+        counts=dict(COUNTS);counts["outreach_switches"]={}
+        snap=json.loads(simulate(metrics=counts)["stdout"])
+        self.assertTrue(all(value is None for value in snap["outreach_switches"].values()))
     def test_unknown_metrics_not_misreported_zero(self):
         counts=dict(COUNTS);del counts["revenue_cents"]
         snap=json.loads(simulate(metrics=counts)["stdout"])
@@ -71,6 +83,12 @@ class SnapshotTests(unittest.TestCase):
         env=dict(BASE_ENV);env["BMC_OWNER_LAUNCH_HOLD"]="false"
         snap=json.loads(simulate(env=env)["stdout"])
         self.assertFalse(snap["owner_launch_hold_active"])
+    def test_api_hold_missing_or_released_not_confirmed_active(self):
+        for value in (None,False):
+            with self.subTest(value=value):
+                counts=dict(COUNTS);counts["owner_launch_hold_active"]=value
+                snap=json.loads(simulate(metrics=counts)["stdout"])
+                self.assertFalse(snap["owner_launch_hold_active"])
     def test_api_health_requires_successful_valid_response(self):
         for body,code in (("not JSON",0),('{"ok":false}',0),('[]',0),('{"ok":true}',22)):
             with self.subTest(body=body,code=code):
