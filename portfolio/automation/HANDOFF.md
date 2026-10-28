@@ -11124,3 +11124,13 @@ New isolated development branch: `safety/operator-console-20261028` (created fro
 - It currently consumes a sanitized local JSON file, **not** a connected live VPS data feed or browser dashboard. Never imply otherwise. This is a first part of operational observability, not a finished owner portal.
 
 Next engineering work: integrate read-only signed/authenticated VPS relay snapshot to a private owner dashboard, prove real monitoring (scheduler, queue, runtime, deployment SHA, funnel counts, verified Stripe orders and exceptions), test synthetic checkout-to-100 fulfillment and error/restart behavior, add automation alerting and backup proof. Do not leak relay payloads or customer personal data into public GitHub. PR #5 remains separately unmerged until release gates are satisfied; preserve existing full research census and Service Network. Do not write or approve campaign mail on behalf of the owner.
+
+
+## Section 82 — Read-only VPS operator snapshot integration (2026-10-28)
+After owner insisted on execution rather than another future worklist, development continued on PR #6 (draft, safety branch). Changes:
+- `vps-gitops-relay.py` allowlists `operator_snapshot` under READ_ONLY_ACTIONS; it reads Docker running services, private API health, the three local outbound switches, deployed SHA and whitelisted aggregate Growth numbers. No customer email sent, no launch action and no secrets intentionally included.
+- `operator-console.py` accepts sanitized snapshots or genuine relay result envelopes, checks action, status, exit_code, non-external action and reported SHA consistency, fails closed for stale/unknown/unsafe data.
+- `test-operator-console.py` includes 10 synthetic tests covering healthy reporting, staleness, missing/on outreach, unknown revenue, exceptions, secret stripping, relay action shape and mismatched SHA.
+- BMC Portfolio CI validates the new read-only allowlist and executes console tests.
+- `OPERATOR_CONSOLE.md` explains the relay request contract and clearly distinguishes branch code from VPS deployment.
+- This is an isolated development branch. It does not mean the VPS is updated or live metrics have been verified. Continue with safe CI and relay verification before release. Do not touch PR #5 or merge into master until quality and data policy release review. All outbound remains disabled.
