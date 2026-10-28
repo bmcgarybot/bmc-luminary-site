@@ -619,6 +619,11 @@ def execute(req: dict) -> dict:
         health=run(["docker","compose","--env-file",ENV_FILE,"ps","--status","running","--services"],timeout=40)
         running=set(health.stdout.splitlines()) if health.returncode==0 else set()
         api_health=run(["curl","--silent","--show-error","--fail","--max-time","10","http://127.0.0.1:8000/health"],timeout=15)
+        try:
+            health_body=json.loads(api_health.stdout)
+            api_healthy=api_health.returncode==0 and isinstance(health_body,dict) and health_body.get("ok") is True
+        except (ValueError,TypeError):
+            api_healthy=False
         metrics={}
         health_error=None
         try:
@@ -633,9 +638,9 @@ def execute(req: dict) -> dict:
         snapshot={
           "observed_at":now_iso(),"deployed_sha":current_sha(),
           "owner_launch_hold_active":raw_env.get("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="false",
-          "runtime_healthy":health.returncode==0 and all(k in running for k in ("postgres","ops_api","scheduler")),
+          "runtime_healthy":api_healthy and health.returncode==0 and all(k in running for k in ("postgres","ops_api","scheduler")),
           "scheduler_healthy":health.returncode==0 and "scheduler" in running,
-          "api_healthy":api_health.returncode==0,
+          "api_healthy":api_healthy,
           "outreach_switches":{k:str(flags.get(k,"")).strip().lower()=="true" if str(flags.get(k,"")).strip().lower() in ("true","false") else None for k in ("OUTREACH_ENABLED","BUYER_OUTREACH_ENABLED","GROWTH_OUTREACH_ENABLED")},
           "growth":metrics,"health_error":health_error}
         stdout=json.dumps(snapshot,indent=2)

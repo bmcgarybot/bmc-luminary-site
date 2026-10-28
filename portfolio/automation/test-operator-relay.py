@@ -18,16 +18,20 @@ COUNTS={"paid_orders":0,"revenue_cents":0,"samples_requested":0,
         "samples_delivered":0,"replies":0,"open_growth_exceptions":0,"staged_active":3}
 REQ={"request_id":"operator-unit-20261028","action":"operator_snapshot",
      "args":{},"allow_external_actions":False}
-def simulate(env=None, metrics=None):
+def simulate(env=None, metrics=None, services="postgres\nops_api\nscheduler\n", docker_code=0,
+             health_body='{"ok":true}', health_code=0, metrics_failure=False):
     def fake_run(cmd, **kwargs):
         if cmd[0]=="docker":
-            return subprocess.CompletedProcess(cmd,0,"postgres\nops_api\nscheduler\n","")
+            return subprocess.CompletedProcess(cmd,docker_code,services,"")
         if cmd[0]=="curl":
-            return subprocess.CompletedProcess(cmd,0,'{"ok":true}',"")
+            return subprocess.CompletedProcess(cmd,health_code,health_body,"")
         raise AssertionError("Unexpected external command")
+    def fake_metrics(path,timeout=30):
+        if metrics_failure: raise RuntimeError("private failure details")
+        return dict(COUNTS if metrics is None else metrics)
     with patch.dict(G,{"app_env":lambda: dict(BASE_ENV if env is None else env),
                       "run":fake_run,
-                      "admin_post":lambda path,timeout=30:dict(COUNTS if metrics is None else metrics),
+                      "admin_post":fake_metrics,
                       "current_sha":lambda:SHA,
                       "current_branch":lambda:"master",
                       "redact":lambda s:s}):
@@ -67,4 +71,31 @@ class SnapshotTests(unittest.TestCase):
         env=dict(BASE_ENV);env["BMC_OWNER_LAUNCH_HOLD"]="false"
         snap=json.loads(simulate(env=env)["stdout"])
         self.assertFalse(snap["owner_launch_hold_active"])
+    def test_api_health_requires_successful_valid_response(self):
+        for body,code in (("not JSON",0),('{"ok":false}',0),('[]',0),('{"ok":true}',22)):
+            with self.subTest(body=body,code=code):
+                snap=json.loads(simulate(health_body=body,health_code=code)["stdout"])
+                self.assertFalse(snap["api_healthy"])
+                self.assertFalse(snap["runtime_healthy"])
+    def test_scheduler_missing_or_docker_failed(self):
+        for services,code in (("postgres\nops_api\n",0),("postgres\nops_api\nscheduler\n",1)):
+            with self.subTest(services=services,code=code):
+                snap=json.loads(simulate(services=services,docker_code=code)["stdout"])
+                self.assertFalse(snap["scheduler_healthy"])
+                self.assertFalse(snap["runtime_healthy"])
+    def test_metrics_failure_keeps_values_unknown_and_error_sanitized(self):
+        result=simulate(metrics_failure=True)
+        snap=json.loads(result["stdout"])
+        self.assertTrue(all(value is None for value in snap["growth"].values()))
+        self.assertEqual(snap["health_error"],"Growth status unavailable")
+        self.assertNotIn("private failure details",json.dumps(result))
+    def test_actual_relay_output_to_console(self):
+        console=runpy.run_path(str(PATH.with_name("operator-console.py")),run_name="console_integration")
+        for enabled in (False,True):
+            with self.subTest(enabled=enabled):
+                env=dict(BASE_ENV);env["GROWTH_OUTREACH_ENABLED"]="true" if enabled else "false"
+                result=simulate(env=env)
+                assessed=console["assess"](console["decode_snapshot"](result))
+                self.assertEqual(assessed["status"],"REVIEW" if enabled else "HEALTHY / OUTREACH OFF")
+                self.assertFalse(assessed["marketing_authorized"])
 if __name__=="__main__":unittest.main()
