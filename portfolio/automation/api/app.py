@@ -2873,6 +2873,11 @@ def growth_email_verification_token(verification_id,email_addr):
 
 async def handle_growth_verification_request(conn,p):
     """Email proof before any cold public form can disclose five prospect records."""
+    # The hidden website field is deliberately not the business website field.
+    # Reject scripted bot submissions server-side without leaking a sample.
+    if clean(p.get("website")):
+        return {"ok":True,"status":"verify_email",
+          "message":"If the request is valid, check your email for a confirmation link."}
     service_key=clean(p.get("service_key") or p.get("provider_service_key"))
     email_addr=clean(p.get("email")).lower()
     business=clean(p.get("business_name"))
@@ -2880,6 +2885,8 @@ async def handle_growth_verification_request(conn,p):
     market=clean(p.get("market"))
     if service_key not in GROWTH_SERVICE_LABELS or not all([business,contact,market,email_addr]):
         raise HTTPException(400,"Business, name, email, market and a valid service are required")
+    if max(len(business),len(contact),len(market))>200 or len(email_addr)>254:
+        raise HTTPException(400,"Please shorten the business or contact details")
     if not re.fullmatch(r"[^\\s@]+@[^\\s@]+\\.[^\\s@]+",email_addr):
         raise HTTPException(400,"Enter a valid business email")
     if clean(p.get("consent")).lower()!="yes":
