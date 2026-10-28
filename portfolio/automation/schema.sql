@@ -1023,6 +1023,23 @@ on growth_sample_requests(status,next_nurture_at,created_at);
 create index if not exists idx_growth_samples_email
 on growth_sample_requests(lower(email),provider_service_key,created_at desc);
 
+-- Public Growth forms must prove email control before receiving five records.
+-- Signed outreach claims are separately authenticated by their invitation.
+create table if not exists growth_email_verifications (
+  verification_id uuid primary key default gen_random_uuid(),
+  submission_id text not null unique,
+  email text not null,
+  service_key text not null,
+  market text not null,
+  request_payload jsonb not null,
+  status text not null default 'pending',
+  expires_at timestamptz not null default (now() + interval '48 hours'),
+  claimed_at timestamptz,
+  created_at timestamptz not null default now()
+);
+create index if not exists idx_growth_email_verifications_throttle
+  on growth_email_verifications(lower(email),created_at desc);
+
 create table if not exists growth_sample_prospects (
   sample_id uuid references growth_sample_requests(sample_id) on delete cascade,
   candidate_id uuid references market_inventory_candidates(candidate_id) on delete set null,
