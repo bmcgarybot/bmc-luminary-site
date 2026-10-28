@@ -1011,6 +1011,13 @@ create table if not exists growth_sample_requests (
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
+-- Optional self-reported contractor signals used for duplicate-claim holds.
+-- They are NOT verified proof of business ownership.
+alter table growth_sample_requests add column if not exists business_phone text;
+alter table growth_sample_requests add column if not exists business_site_host text;
+create index if not exists idx_growth_samples_site_host
+  on growth_sample_requests(business_site_host,provider_service_key,market);
+
 create index if not exists idx_growth_samples_nurture
 on growth_sample_requests(status,next_nurture_at,created_at);
 create index if not exists idx_growth_samples_email
