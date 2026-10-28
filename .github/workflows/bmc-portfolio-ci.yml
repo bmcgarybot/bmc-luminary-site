@@ -795,15 +795,30 @@ jobs:
           asyncio.run(probe())
           PY
           python - <<'PY'
-          import concurrent.futures,json,urllib.request
-          def sample(email,uid):
-              payload={"submission_id":uid,"form_type":"growth_snapshot","service_key":"pressure_washing",
-                       "business_name":("Race Alternate Name" if uid.endswith("-d") else "Race Synthetic Contractor "+("A" if uid.endswith("-a") else "B" if uid.endswith("-b") else "A")),"contact_name":"CI Owner",
-                       "email":email,"market":"CI Race Market","consent":"yes"}
-              request=urllib.request.Request("http://127.0.0.1:8000/api/intake",
-                json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
-              with urllib.request.urlopen(request,timeout=90) as response:
+          import concurrent.futures,hashlib,hmac,json,urllib.request
+          def post(url,payload):
+              req=urllib.request.Request(url,json.dumps(payload).encode(),headers={"Content-Type":"application/json"})
+              with urllib.request.urlopen(req,timeout=90) as response:
                   return json.load(response)
+          def verify(vid,token):
+              return post("http://127.0.0.1:8000/api/growth/verify-email",
+                          {"verify_id":vid,"verify_token":token})
+          def sample(email,uid,business=None,phone=None,website=None):
+              payload={"submission_id":uid,"form_type":"growth_snapshot","service_key":"pressure_washing",
+                       "business_name":business or ("Race Alternate Name" if uid.endswith("-d") else "Race Synthetic Contractor "+("A" if uid.endswith("-a") else "B" if uid.endswith("-b") else "A")),
+                       "contact_name":"CI Owner","email":email,"market":"CI Race Market","consent":"yes"}
+              if phone:payload["business_phone"]=phone
+              if website:payload["business_website"]=website
+              requested=post("http://127.0.0.1:8000/api/intake",payload)
+              assert requested["status"]=="verify_email" and "sample" not in requested,requested
+              vid=requested.get("verification_id")
+              if not vid:
+                  return {"status":"verification_pending","sample":[]}
+              token=hmac.new(b"ci_admin_key",f"growth-email-verify|{vid}|{email}".encode(),hashlib.sha256).hexdigest()
+              result=verify(vid,token)
+              result["_verification_id"]=vid
+              result["_verify_token"]=token
+              return result
           with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
               futures=[pool.submit(sample,"ci-race-a@example.com","ci-race-sample-a"),
                        pool.submit(sample,"ci-race-b@example.com","ci-race-sample-b")]
@@ -813,22 +828,25 @@ jobs:
           b={x["business_name"] for x in second["sample"]}
           assert len(a)==5 and len(b)==5 and len(a&b)<=2,(a,b)
           assert "Race Prospect 1" not in (a|b),(a,b)
-          repeated=sample("ci-race-a@example.com","ci-race-sample-a")
-          assert {x["business_name"] for x in repeated["sample"]}==a,"Repeat click rotated delivered list"
+          repeated=verify(first["_verification_id"],first["_verify_token"])
+          assert {x["business_name"] for x in repeated["sample"]}==a,"Verified email link replay rotated delivered list"
           alias=sample("ci-race-alias@example.com","ci-race-sample-c")
           assert alias["status"]=="already_claimed" and alias["sample"]==[],alias
           alias_by_email=sample("ci-race-a@example.com","ci-race-sample-d")
-          assert alias_by_email["status"]=="already_claimed" and alias_by_email["sample"]==[],alias_by_email
-          # A new email and an LLC suffix must not obtain another free batch.
-          # Same-business claims remain blocked even while first send is pending.
-          from concurrent.futures import ThreadPoolExecutor
-          with ThreadPoolExecutor(max_workers=2) as race:
+          assert alias_by_email["status"] in ("verification_pending","already_claimed") and alias_by_email["sample"]==[],alias_by_email
+          # Legal-suffix aliases and two simultaneous alternate email accounts
+          # must not disclose any additional free prospects.
+          with concurrent.futures.ThreadPoolExecutor(max_workers=2) as race:
               results=list(race.map(lambda item:sample(*item),[
-                ("ci-llc-one@example.com","ci-llc-e"),
-                ("ci-llc-two@example.com","ci-llc-f")
+                ("ci-llc-one@example.com","ci-llc-e","Race Synthetic Contractor A LLC"),
+                ("ci-llc-two@example.com","ci-llc-f","Race Synthetic Contractor A Inc")
               ]))
-          # These identities use the existing fixture names and must be gated.
-          assert all(x["status"]=="already_claimed" for x in results),results
+          assert all(x["status"]=="already_claimed" and x["sample"]==[] for x in results),results
+          # Same self-reported site/phone under a renamed company is held.
+          site=sample("ci-domain-one@example.com","ci-domain-one","CI Domain Contractor",None,"https://ci-domain-company.example.com")
+          assert site["status"]=="sample_ready",site
+          site_alias=sample("ci-domain-two@example.com","ci-domain-two","Renamed Contractor",None,"https://www.ci-domain-company.example.com")
+          assert site_alias["status"]=="already_claimed" and site_alias["sample"]==[],site_alias
           print("Concurrency, rights, suppression and idempotency passed")
           PY
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct prospect_key) from growth_prospect_exposures where market='CI Race Market' and status='delivered';")" -ge 8
