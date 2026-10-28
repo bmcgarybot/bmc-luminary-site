@@ -3367,6 +3367,13 @@ async def process_growth_nurture(x_bmc_admin_key:str|None=Header(default=None)):
         where status='delivered' and converted_at is null and next_nurture_at is not null and next_nurture_at<=now()
           and nurture_step<2
           and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(growth_sample_requests.email))
+          and not exists(
+            select 1 from growth_outreach_targets gt
+            join outreach o on o.entity_type='growth_customer' and o.entity_id=gt.target_id
+              and o.campaign='growth_sales'
+            where lower(gt.public_email)=lower(growth_sample_requests.email)
+              and (o.replied_at is not null or o.opt_out=true)
+          )
         order by next_nurture_at limit 25""")
       for row in rows:
         paid=await conn.fetchrow("""select order_id from orders where lower(customer_email)=lower($1)
