@@ -614,7 +614,8 @@ def execute(req: dict) -> dict:
 
     elif action == "operator_snapshot":
         # Only aggregate, whitelist-derived data. No credentials or prospect records.
-        flags=outreach_state()
+        raw_env=app_env()
+        flags={key:raw_env.get(key) for key in ("OUTREACH_ENABLED","BUYER_OUTREACH_ENABLED","GROWTH_OUTREACH_ENABLED")}
         health=run(["docker","compose","--env-file",ENV_FILE,"ps","--status","running","--services"],timeout=40)
         running=set(health.stdout.splitlines()) if health.returncode==0 else set()
         api_health=run(["curl","--silent","--show-error","--fail","--max-time","10","http://127.0.0.1:8000/health"],timeout=15)
@@ -631,6 +632,7 @@ def execute(req: dict) -> dict:
             metrics={k:None for k in ("paid_orders","revenue_cents","samples_requested","samples_delivered","replies","open_growth_exceptions","staged_active")}
         snapshot={
           "observed_at":now_iso(),"deployed_sha":current_sha(),
+          "owner_launch_hold_active":raw_env.get("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="false",
           "runtime_healthy":health.returncode==0 and all(k in running for k in ("postgres","ops_api","scheduler")),
           "scheduler_healthy":health.returncode==0 and "scheduler" in running,
           "api_healthy":api_health.returncode==0,
