@@ -11134,3 +11134,14 @@ After owner insisted on execution rather than another future worklist, developme
 - BMC Portfolio CI validates the new read-only allowlist and executes console tests.
 - `OPERATOR_CONSOLE.md` explains the relay request contract and clearly distinguishes branch code from VPS deployment.
 - This is an isolated development branch. It does not mean the VPS is updated or live metrics have been verified. Continue with safe CI and relay verification before release. Do not touch PR #5 or merge into master until quality and data policy release review. All outbound remains disabled.
+
+
+## Section 83 — Owner HOLD, dashboard HTML, fresh read-only VPS checks (2026-10-28)
+Owner directive reconfirmed: do not send live customers or prospects any messages until owner approves offer quality, full plan, low-touch operation, and previews. Development work proceeded on safety branch PR #6, not production:
+- `operator-console.py --html <private-file.html>` now generates an escaped, script-free, local status dashboard from sanitized relay JSON. It is not automatically refreshed or deployed.
+- `vps-gitops-relay.py` adds independent `BMC_OWNER_LAUNCH_HOLD` fail-closed gate for `growth_launch_enable`. Defaults to active if missing, separate from email template SHA approval. `.env.example` now sets the hold true; strict `growth-launch-readiness.sh` blocks until explicitly false.
+- CI checks the read-only classification of `operator_snapshot`, independent launch hold, and now 12 console unit test scenarios.
+- Read-only existing VPS relay requests submitted (request IDs `owner-readonly-20261028-proof_readout-1222`, `owner-readonly-20261028-growth_status-1222`); result artifacts were not yet available when first checked. Do not claim VPS metrics from them until returned.
+- Keep PR #5 and PR #6 unmapped to live production; all provider, buyer and Growth outreach controls OFF. No actual live customer marketing sent.
+
+Important follow-up: Owner hold requires manual configuration change on VPS only after explicit user approval; do not silently set it false. Finish real relay proof, CI validation, synthetic full funnel, private access control and durable low-maintenance monitoring.
