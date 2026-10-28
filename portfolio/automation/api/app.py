@@ -1877,6 +1877,9 @@ async def handle_facility_lead(conn,p):
     requested=[sk for field,sk in FACILITY_SERVICE_FIELDS.items() if clean(p.get(field)).lower() in ("yes","on","true","1")]
     if not requested:
         raise HTTPException(400,"Choose at least one facility service category")
+    business_phone=clean(p.get("business_phone"))[:40]
+    business_site_host=growth_business_site_host(p.get("business_website"))
+    phone_key=growth_business_phone_key(business_phone)
     submission_id=clean(p.get("submission_id")) or str(uuid.uuid4())
     # Serialize the identity check AND the prospect allocation, not just the
     # selection. Otherwise simultaneous aliases can both pass the claim gate.
@@ -2876,6 +2879,22 @@ def growth_normalized_contractor_name(name):
         tokens.pop()
     return "".join(tokens)
 
+def growth_business_site_host(value):
+    raw=clean(value).lower()
+    if not raw:
+        return ""
+    if not raw.startswith(("http://","https://")):
+        raw="https://"+raw
+    try:
+        host=urllib.parse.urlsplit(raw).hostname or ""
+    except ValueError:
+        return ""
+    return host.removeprefix("www.") if re.fullmatch(r"[a-z0-9.-]{4,253}",host) else ""
+
+def growth_business_phone_key(value):
+    digits=re.sub(r"[^0-9]","",clean(value))
+    return digits[-10:] if len(digits)>=10 else ""
+
 async def handle_growth_snapshot(conn,p):
     service_key=clean(p.get("service_key") or p.get("provider_service_key"))
     if service_key not in GROWTH_SERVICE_LABELS:
@@ -2909,6 +2928,8 @@ async def handle_growth_snapshot(conn,p):
           or lower(email)=$4
           or regexp_replace(lower(business_name),'[^a-z0-9]','','g') =
              any($5::text[])
+          or ($6<>'' and business_site_host=$6)
+          or ($7<>'' and right(regexp_replace(coalesce(business_phone,''),'[^0-9]','','g'),10)=$7)
         )
         and status not in ('cancelled','rejected')
       order by created_at desc limit 1""",
@@ -2916,7 +2937,7 @@ async def handle_growth_snapshot(conn,p):
       [growth_normalized_contractor_name(business),
        growth_normalized_contractor_name(business)+"llc",
        growth_normalized_contractor_name(business)+"inc",
-       growth_normalized_contractor_name(business)+"corp"])
+       growth_normalized_contractor_name(business)+"corp"],business_site_host,phone_key)
     if prior_business_claim:
         return {"ok":True,"status":"already_claimed","sample":[],
           "checkout_url":"","message":"BMC has already prepared a free sample for this business and territory. Use the original invitation or contact BMC to review the account."}
@@ -2931,12 +2952,13 @@ async def handle_growth_snapshot(conn,p):
     attribution={k:clean(p.get(k)) for k in ("utm_source","utm_medium","utm_campaign","utm_content","utm_term","referrer") if clean(p.get(k))}
     sample_id=await conn.fetchval("""insert into growth_sample_requests(
         submission_id,business_name,contact_name,email,provider_service_key,market,service_area,
-        ideal_customer,minimum_job,exclusions,experiment_cell,source_target_id,status,source_page,attribution)
-      values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,'requested',$13,$14::jsonb)
+        ideal_customer,minimum_job,exclusions,experiment_cell,source_target_id,status,source_page,attribution,
+        business_phone,business_site_host)
+      values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,'requested',$13,$14::jsonb,$15,$16)
       returning sample_id""",
       submission_id,business,contact,email_addr,service_key,market,clean(p.get("service_area") or p.get("radius")),
       clean(p.get("ideal_customer")),clean(p.get("minimum_job")),clean(p.get("exclusions")),cell,target_id,
-      clean(p.get("page")),json.dumps(attribution))
+      clean(p.get("page")),json.dumps(attribution),business_phone,business_site_host)
     await conn.execute("""update growth_experiment_cells
       set samples_requested=samples_requested+1,engagements=engagements+1,updated_at=now()
       where cell_key=$1""",cell)
