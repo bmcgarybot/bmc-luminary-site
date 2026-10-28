@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "watch33-diagnostic-20261028T1146Z",
+  "action": "diagnostic_bundle",
+  "created_at": "2026-10-28T11:46:00Z",
+  "expires_at": "2026-10-28T13:46:00Z",
+  "allow_external_actions": false,
+  "args": {}
+}
