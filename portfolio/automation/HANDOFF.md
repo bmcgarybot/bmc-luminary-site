@@ -11173,3 +11173,16 @@ Local validation: workflow YAML parsed; exact relay-validation and operator-cons
 Remaining: obtain green full CI, verify real private snapshot integration and field semantics, full funnel/error/restart and capacity checks, historical exposure/identity audit and real inventory QA. Preserve the seven historic SMTP submissions as previously contacted prospects, not dead leads or verified deliveries. Keep all outreach OFF and owner hold active; no owner email approval is implied.
 
 Additional monitoring hardening in the same repair: HTTP success alone no longer counts as API health; /health must return valid JSON with ok=true. Core runtime health includes this API check. Added mocked failures for invalid/unhealthy API responses, missing scheduler, Docker failure, unavailable metrics, and actual relay-envelope-to-console integration for enabled/disabled outreach. All 24 local tests pass (13 console + 11 relay). Full GitHub CI is still the release authority.
+
+
+## Section 86 — Connected private monitor release candidate (2026-10-28)
+
+Owner explicitly requested continued execution without stopping at each checkpoint. PR #6 continues safely; no merge, deployment or outreach authorized by these changes.
+
+Added operator-monitor.py: locally invokes only read-only operator_snapshot, collects every 60 seconds, binds HTTP to 127.0.0.1:8765, rejects nonlocal Host headers, serves only escaped HTML and sanitized JSON, no-cache responses and 30-second refresh. Requires SSH forwarding for remote owner access; no public route. Collection errors retain last-known metrics with REVIEW, startup is unknown, five-minute stale threshold is evaluated at every read. No mailbox polling, GitHub upload, external mail or configuration action.
+
+Added optional install-operator-monitor.sh with unprivileged systemd service, process restart, 256 MB memory limit and 25% CPU quota. Not run. Seven new tests include real local HTTP requests and collection-failure/recovery checks. Together with previous 24 tests, all 31 local monitoring tests pass. CI runs the new suite and shell syntax check. Exact-head GitHub CI must still be verified.
+
+Previous repair commit 63457a8d5a077652e80287cc287be8c49888042e passed full CI in both runs 40761873281 and 40761863976, including synthetic database/funnel/fulfillment integration. This does not prove production integration or real revenue.
+
+Remaining release boundary: PR #6 depends on unmerged PR #5. Do not silently merge/deploy either. Finish production-specific inventory/identity/exposure review and release review before an owner-approved tested-SHA rollout with all outreach OFF. Resource limits are not a load test; VPS capacity/restart/restore and private SSH integration remain unverified until authorized release. Seven original contacts remain previously contacted prospects, not dead leads.

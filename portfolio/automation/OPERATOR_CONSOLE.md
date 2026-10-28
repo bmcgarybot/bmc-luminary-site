@@ -60,3 +60,22 @@ Before owner-facing activation, review the existing `growth-status` private API 
 
 ## Local dashboard rendering
 The same read-only console can produce a static, script-free HTML dashboard using `python3 portfolio/automation/operator-console.py <sanitized-result.json> --html /private/path/bmc-status.html`. The HTML escapes all displayed data and never embeds private raw records. This is local output, not a public site or live auto-refreshing dashboard. Only use private storage. Missing/unverified data stays visibly unknown.
+
+
+## Private continuously refreshed view (release candidate; not installed)
+
+`operator-monitor.py` now connects local collection to the console. Every 60 seconds it invokes only the constant read-only `operator_snapshot` executor locally. It never polls the relay mailbox, uploads results, sends mail, or runs a launch action. Only whitelisted assessment data remains in memory.
+
+- HTTP binds exclusively to `127.0.0.1:8765`; only local Host headers are accepted. There is no public tunnel/gateway route.
+- GET `/` renders the escaped dashboard; GET `/status.json` returns sanitized assessment data. Responses disable caching; the browser refreshes every 30 seconds.
+- Startup, collection failures, unhealthy services and data older than five minutes show REVIEW. After a collection failure, prior metrics remain visibly last-known rather than silently becoming zero. Recovery clears the collection alert only after successful collection.
+- POST/DELETE and all other routes have no operational handlers. No configuration controls or customer data are exposed.
+- `--once` produces terminal JSON and exits nonzero on review.
+
+The access boundary is an authenticated SSH port forward, not an unauthenticated public website. An operator with existing VPS SSH access can forward local port 8765 to VPS loopback port 8765 and open `http://127.0.0.1:8765`. Do not create a public Cloudflare route for this service.
+
+`install-operator-monitor.sh` prepares an unprivileged systemd service with automatic process restart, read-only filesystem protection, a 256 MB memory limit and 25% CPU quota. Installation has NOT been performed; those limits are intended bounds, not measured production capacity. Do not install before release approval.
+
+Tests: `python3 portfolio/automation/test-operator-monitor.py`. Seven tests cover startup, healthy data, secret filtering, failed collection and recovery, stale collection, unhealthy scheduler, the constant local read-only action, and actual loopback HTTP access/method/header/route behavior. No real Docker, production API, email, payments or GitHub writes occur in these tests.
+
+Still unverified in production: systemd restart behavior, SSH access, collection latency/resource use under load, backup/restore freshness and payment reconciliation. Synthetic fulfillment CI is distinct from a live Stripe payment.

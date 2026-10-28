@@ -51,6 +51,9 @@ jobs:
           python3 -m py_compile portfolio/automation/operator-console.py
           python3 portfolio/automation/test-operator-console.py
           python3 portfolio/automation/test-operator-relay.py
+          python3 -m py_compile portfolio/automation/operator-monitor.py
+          python3 portfolio/automation/test-operator-monitor.py
+          bash -n portfolio/automation/install-operator-monitor.sh
 
       - name: Validate service registry and fronts
         run: |
