@@ -42,6 +42,8 @@ def assess(s, now=None, max_age_minutes=90):
     except (KeyError,TypeError,ValueError,AttributeError):
         age=None
         issues.append("Timestamp missing or invalid")
+    if s.get("owner_launch_hold_active") is not True:
+        issues.append("Owner launch hold not confirmed active")
     switches=s.get("outreach_switches")
     if not isinstance(switches,dict): switches={}
     for key in SWITCHES:
@@ -62,7 +64,8 @@ def assess(s, now=None, max_age_minutes=90):
         issues.append("Open Growth exceptions")
     return {"status":"REVIEW" if issues else "HEALTHY / OUTREACH OFF",
       "observed_at":s.get("observed_at"),"age_minutes":round(age,1) if age is not None else None,
-      "deployed_sha":sha,"outreach_switches":{k:switches.get(k) for k in SWITCHES},
+      "deployed_sha":sha,"owner_launch_hold_active":s.get("owner_launch_hold_active") is True,
+      "outreach_switches":{k:switches.get(k) for k in SWITCHES},
       "growth":metrics,"issues":issues,"marketing_authorized":False}
 
 def render_html(result):
@@ -72,6 +75,7 @@ def render_html(result):
       ("Observed",result.get("observed_at")),
       ("Age (minutes)",result.get("age_minutes")),
       ("Deployed commit",result.get("deployed_sha")),
+      ("Owner launch hold", "ACTIVE" if result.get("owner_launch_hold_active") else "NOT CONFIRMED"),
     ]
     fields.extend((k,("OFF" if v is False else "NOT CONFIRMED OFF")) for k,v in result["outreach_switches"].items())
     fields.extend((k,("Unavailable" if v is None else v)) for k,v in result["growth"].items())
@@ -113,6 +117,7 @@ def main():
         print("Status:",result["status"])
         print("Observed:",result["observed_at"],"Age (min):",result["age_minutes"])
         print("Deployed:",result["deployed_sha"])
+        print("Owner launch hold:", "ACTIVE" if result["owner_launch_hold_active"] else "NOT CONFIRMED")
         for k,v in result["outreach_switches"].items():
             print(k+":", "OFF" if v is False else "NOT CONFIRMED OFF")
         for k,v in result["growth"].items():
