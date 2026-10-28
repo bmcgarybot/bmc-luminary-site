@@ -11145,3 +11145,13 @@ Owner directive reconfirmed: do not send live customers or prospects any message
 - Keep PR #5 and PR #6 unmapped to live production; all provider, buyer and Growth outreach controls OFF. No actual live customer marketing sent.
 
 Important follow-up: Owner hold requires manual configuration change on VPS only after explicit user approval; do not silently set it false. Finish real relay proof, CI validation, synthetic full funnel, private access control and durable low-maintenance monitoring.
+
+
+## Section 84 — Operator relay synthetic test and exact owner hold observability (Oct 28, 2026)
+More development on draft PR #6:
+- New `test-operator-relay.py`: five fully mocked tests of the new VPS read-only `operator_snapshot` action. No Docker/API/network/GitHub writes in test. CI now invokes these tests.
+- Operator status requires `owner_launch_hold_active=true` and displays it explicitly; absence or false alerts. Updated console test fixture and additional hold test.
+- `operator_snapshot` now reads the three campaign flags directly from local .env and marks omitted flags unknown, rather than relying on relay helper defaults; continues to emit only aggregate, whitelisted fields.
+- PR #6 is currently draft/mergeable against PR #5 and NOT deployed; no customer outreach authorized.
+- Two existing read-only relay checks were queued at 19:22 UTC, but result files had not appeared in first several checks. Do not claim live VPS proof until result artifacts actually exist.
+- No new CI success was verified for the latest PR #6 HEAD at the time of this entry (workflow query returned no runs). All newly added tests remain pending CI proof. Do not conflate PR #5's earlier green tests with PR #6.
