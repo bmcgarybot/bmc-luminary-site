@@ -2874,7 +2874,7 @@ async def growth_sample_checkout(conn,email,sample_id,service_key):
 def growth_email_verification_token(verification_id,email_addr):
     if not ADMIN_KEY:
         return ""
-    payload=f"growth-email-verify\\n{verification_id}\\n{clean(email_addr).lower()}"
+    payload=f"growth-email-verify|{verification_id}|{clean(email_addr).lower()}"
     return hmac.new(ADMIN_KEY.encode("utf-8"),payload.encode("utf-8"),hashlib.sha256).hexdigest()
 
 async def handle_growth_verification_request(conn,p):
@@ -2931,7 +2931,7 @@ async def handle_growth_verification_request(conn,p):
     {BUSINESS_POSTAL_ADDRESS}"""
     if not await send_mail(email_addr,"Confirm your BMC five-prospect request",body):
         raise HTTPException(503,"We couldn't send your verification email. Please try again shortly.")
-    return generic
+    return {**generic,"verification_id":str(verification_id)}
 
 @app.post("/api/growth/verify-email")
 async def growth_verify_email(request:Request):
