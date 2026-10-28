@@ -2,13 +2,15 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-if [ ! -f .env ]; then
-  echo ".env is required."
+ENV_FILE="${1:-.env}"
+
+if [ ! -f "$ENV_FILE" ]; then
+  echo "The selected environment file is required."
   exit 1
 fi
 
 env_value(){
-  grep -m1 "^$1=" .env 2>/dev/null | cut -d= -f2-
+  grep -m1 "^$1=" "$ENV_FILE" 2>/dev/null | cut -d= -f2-
 }
 
 INSTANCE_KEY="$(env_value INSTANCE_KEY)"
@@ -34,18 +36,18 @@ sha256sum -c "$CHECKSUM"
 
 TEST_DB="bmc_restore_test_$(date +%Y%m%d%H%M%S)"
 cleanup(){
-  docker compose exec -T postgres dropdb -U "$DBUSER" --if-exists "$TEST_DB" >/dev/null 2>&1 || true
+  docker compose --env-file "$ENV_FILE" exec -T postgres dropdb -U "$DBUSER" --if-exists "$TEST_DB" >/dev/null 2>&1 || true
 }
 trap cleanup EXIT
 
 echo "Creating isolated restore-test database: $TEST_DB"
-docker compose exec -T postgres createdb -U "$DBUSER" "$TEST_DB"
+docker compose --env-file "$ENV_FILE" exec -T postgres createdb -U "$DBUSER" "$TEST_DB"
 
 echo "Restoring $LATEST into isolated test database..."
-cat "$LATEST" | docker compose exec -T postgres pg_restore   -U "$DBUSER"   -d "$TEST_DB"   --no-owner   --no-privileges   --exit-on-error
+cat "$LATEST" | docker compose --env-file "$ENV_FILE" exec -T postgres pg_restore   -U "$DBUSER"   -d "$TEST_DB"   --no-owner   --no-privileges   --exit-on-error
 
 query(){
-  docker compose exec -T postgres psql -U "$DBUSER" -d "$TEST_DB" -Atc "$1"
+  docker compose --env-file "$ENV_FILE" exec -T postgres psql -U "$DBUSER" -d "$TEST_DB" -Atc "$1"
 }
 
 services="$(query 'select count(*) from services;')"

@@ -60,6 +60,23 @@ env_value(){
   grep -m1 "^$1=" "$ENV_FILE" 2>/dev/null | cut -d= -f2-
 }
 
+# An approved maintenance deployment never grants campaign authorization.
+for key in OUTREACH_ENABLED BUYER_OUTREACH_ENABLED GROWTH_OUTREACH_ENABLED; do
+  [ "$(env_value "$key")" = "false" ] || { echo "Refusing deploy: $key must be OFF."; exit 1; }
+done
+python3 - "$ENV_FILE" <<'PYENV'
+import pathlib,sys
+p=pathlib.Path(sys.argv[1])
+lines=p.read_text().splitlines()
+lines=[line for line in lines if not line.startswith("BMC_OWNER_LAUNCH_HOLD=")]
+lines.append("BMC_OWNER_LAUNCH_HOLD=true")
+p.write_text("\n".join(lines)+"\n")
+PYENV
+echo "Owner launch hold is ON."
+echo "Taking and verifying an isolated-restorable pre-migration backup..."
+bash ./backup.sh "$ENV_FILE"
+bash ./verify-backup.sh "$ENV_FILE"
+
 echo "Deploying BMC commit: $LOCAL_SHA"
 echo "Outreach switches are preserved exactly as configured:"
 echo "  OUTREACH_ENABLED=$(env_value OUTREACH_ENABLED)"
@@ -120,3 +137,11 @@ docker compose --env-file "$ENV_FILE" ps
 echo
 echo "Running production health and launch-gate checks..."
 bash ./runtime-doctor.sh "$ENV_FILE"
+
+# No sudo escalation from the relay. Install via an already persistent user
+# manager when available; report the access boundary explicitly otherwise.
+if bash ./install-operator-monitor.sh --user; then
+  echo "Private operator monitor service installed."
+else
+  echo "MONITOR INSTALL INCOMPLETE: backend checks passed; persistent private monitor service needs administrator installation."
+fi

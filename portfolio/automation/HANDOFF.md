@@ -11206,3 +11206,12 @@ During release review, excluding every permitted buyer category incorrectly rest
 Added three tests executing production qualification functions on synthetic records: all-category exclusion returns no candidates/no query, stale/missing/future records fail even at score 100, and exact freshness boundary checks. All 41 local tests pass across console/relay/monitor/hold/qualification suites. Full CI for final head is still required.
 
 Read existing watch41 proof: runtime completed 2026-10-28T20:42:07Z, production remains 95fc8acf691ad6517e1be3a17f8e27517a15ea9c, all campaigns OFF, runtime zero failures/warnings. Growth status at 20:41:50Z: seven prior SMTP submissions, zero replies/samples/orders/revenue, zero open Growth exceptions. No live configuration or production code changed by this work.
+
+
+## Section 89 — Owner approved held deployment (2026-10-28)
+
+Owner explicitly approved merging PR #6 into #5, merging tested result to master, and production deployment for monitoring/recovery checks only. This does not authorize customer contact, release of owner hold, or model upgrade. PR #6 merged at 6cdb0a86cda027f7ebfdf6b08a2a0bc67a463f95.
+
+Deployment hardening: require all three outreach flags exactly false, explicitly set BMC_OWNER_LAUNCH_HOLD=true without replacing other configuration, create a fresh database backup and verify checksum/full restore into an isolated test DB before migrations. backup.sh and verify-backup.sh now accept the selected environment file; mocked selected-env checks and shell syntax passed. Production restore result remains pending until deployment.
+
+The relay's systemd service has NoNewPrivileges=true, so it cannot use sudo to install a system service. Added --user monitor installation only when an existing persistent (linger-enabled) user systemd manager is available. No privilege workaround is attempted. Deployment reports monitor installation incomplete if that access is unavailable, rather than pretending a child process or temporary session is durable. Backend deployment and read-only relay snapshot remain independently verifiable.
