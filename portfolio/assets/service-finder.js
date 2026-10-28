@@ -143,9 +143,22 @@
   }
 
 
+  // General plumbing is not the same as specialist backflow certification.
+  // Offer one honest request path instead of pretending a provider is active.
+  const PLUMBING_QUERY=/\\b(plumb(?:er|ers|ing)?|pipe leak|leak(?:ing|y)? pipe|burst pipe|clogged (?:toilet|drain|sink)|toilet (?:repair|overflow)|water heater|sewer backup|no hot water)\\b/i;
+  function plumbingRequest(query){
+    return {service:{
+      service_key:"plumbing_request",
+      display_name:"Plumbing help",
+      primary_offer:"Describe your plumbing problem. We can take the request and check whether a suitable provider is available.",
+      live_front:"/portfolio/request/?problem="+encodeURIComponent(query)
+    },score:125,reason:"Plumbing request"};
+  }
+
   function find(services,query,limit){
     const q=normalize(query);
     if(!q)return [];
+    if(PLUMBING_QUERY.test(query))return [plumbingRequest(query)];
     const tokens=q.split(" ").filter(t=>t.length>1);
     const boosts={};
     let intentLabel="";
@@ -204,6 +217,13 @@
       ? (list.length===1?'This looks like the best fit.':'These look like the best fits.')
       : 'We did not find an exact match, but you still have options.';
     const shown=list.length?list:(options.fallback||[]);
+    const isPlumbing=PLUMBING_QUERY.test(query);
+    if(isPlumbing){
+      container.hidden=false;
+      container.innerHTML='<div class="finder-result-head"><div><div class="editorial-kicker">Plumbing help</div><h2>Need a plumber?</h2><p>Tell us what needs fixing and where. We will check whether a suitable provider is available. No contractor is confirmed yet.</p></div></div>'
+        +'<a class="btn btn-primary" href="/request/?problem='+encodeURIComponent(query)+'">Request plumbing help</a>';
+      return;
+    }
     container.hidden=false;
     container.innerHTML='<div class="finder-result-head"><div><div class="editorial-kicker">What we found</div><h2>'+title+'</h2><p>Choose the closest one. You can change course later.</p></div>'
       +'<a class="btn btn-secondary" href="/request/?problem='+encodeURIComponent(query)+'">None of these</a></div>'
