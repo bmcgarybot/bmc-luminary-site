@@ -2887,7 +2887,7 @@ async def handle_growth_verification_request(conn,p):
         raise HTTPException(400,"Business, name, email, market and a valid service are required")
     if max(len(business),len(contact),len(market))>200 or len(email_addr)>254:
         raise HTTPException(400,"Please shorten the business or contact details")
-    if not re.fullmatch(r"[^\\s@]+@[^\\s@]+\\.[^\\s@]+",email_addr):
+    if not re.fullmatch(r"[^ @]+@[^ @]+[.][^ @]+",email_addr):
         raise HTTPException(400,"Enter a valid business email")
     if clean(p.get("consent")).lower()!="yes":
         raise HTTPException(400,"Please confirm that you want to receive your sample")
