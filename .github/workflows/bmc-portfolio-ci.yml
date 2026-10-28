@@ -54,6 +54,7 @@ jobs:
           python3 -m py_compile portfolio/automation/operator-monitor.py
           python3 portfolio/automation/test-operator-monitor.py
           python3 portfolio/automation/test-campaign-owner-hold.py
+          python3 portfolio/automation/test-growth-qualification-gates.py
           bash -n portfolio/automation/install-operator-monitor.sh
 
       - name: Validate service registry and fronts

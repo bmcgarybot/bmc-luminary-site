@@ -2537,9 +2537,18 @@ def growth_selected_categories(service_key,ideal_customer="",exclusions=""):
             base=explicit
     if excluded:
         filtered=[cat for cat in base if not any(term in excluded for term in growth_category_terms(cat))]
-        if filtered:
-            base=filtered
+        base=filtered
     return base
+
+def growth_candidate_is_fresh(row,now=None):
+    # A refreshed search/edit timestamp is not a verification of this business.
+    verified=row.get("last_verified_at")
+    if not isinstance(verified,datetime):
+        return False
+    if verified.tzinfo is None:
+        verified=verified.replace(tzinfo=timezone.utc)
+    age=(now or datetime.now(timezone.utc))-verified
+    return -timedelta(minutes=5)<=age<=timedelta(days=90)
 
 def growth_candidate_score(row,service_key):
     r=dict(row)
@@ -2727,6 +2736,8 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
         if not key or key in seen or cid in excluded_ids or name.lower() in excluded_names:
             continue
         if not (clean(r.get("public_email")) or clean(r.get("public_phone")) or bool(r.get("official_site"))):
+            continue
+        if not growth_candidate_is_fresh(r):
             continue
         score=growth_candidate_score(r,service_key)
         if score<65:

@@ -11197,3 +11197,12 @@ Growth status now exposes the API process's effective hold and all three effecti
 Added four campaign hold tests executing the real extracted worker functions with DB-access traps: all four block before database/mail, authentication still applies, missing/malformed hold stays blocked, releasing hold does not enable disabled campaigns. Relay tests also cover API hold absent/released and effective flag drift. Total local monitoring/hold tests: 38 (13 console, 14 relay, 7 monitor, 4 hold). Full CI must be verified for the final head.
 
 CI releases the hold only in its temporary synthetic .env.ci while SMTP_DRY_RUN=true so existing nurture integration exercises real behavior without sending mail. Production .env is never modified by that fixture.
+
+
+## Section 88 — Qualification filter corrections and production recheck (2026-10-28)
+
+During release review, excluding every permitted buyer category incorrectly restored the original categories. Removed that fallback: an empty allowed set returns no candidates, never ignores the buyer's exclusions. Also found stale/missing verification dates could still achieve high scores. New candidate qualification requires an actual last_verified_at datetime within 90 days (future dates beyond five-minute clock tolerance rejected); search refresh or row edits alone no longer prove freshness. These gates affect newly selected candidates; this is not a claim that every historical saved sample or every census row is independently audited.
+
+Added three tests executing production qualification functions on synthetic records: all-category exclusion returns no candidates/no query, stale/missing/future records fail even at score 100, and exact freshness boundary checks. All 41 local tests pass across console/relay/monitor/hold/qualification suites. Full CI for final head is still required.
+
+Read existing watch41 proof: runtime completed 2026-10-28T20:42:07Z, production remains 95fc8acf691ad6517e1be3a17f8e27517a15ea9c, all campaigns OFF, runtime zero failures/warnings. Growth status at 20:41:50Z: seven prior SMTP submissions, zero replies/samples/orders/revenue, zero open Growth exceptions. No live configuration or production code changed by this work.
