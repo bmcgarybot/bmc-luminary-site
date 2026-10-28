@@ -123,6 +123,9 @@ jobs:
           assert not missing_required, f"Missing required public surfaces: {missing_required}"
           print("Validated provider portal and solution hub surfaces")
           PY
+      - name: Validate all service-specific image assignments
+        run: python portfolio/automation/check-service-image-coverage.py
+
       - name: Validate generated priority storefronts
         run: python portfolio/automation/generate-storefronts.py --check
 
