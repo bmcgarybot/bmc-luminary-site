@@ -9,6 +9,23 @@ import sys
 SWITCHES=("OUTREACH_ENABLED","BUYER_OUTREACH_ENABLED","GROWTH_OUTREACH_ENABLED")
 METRICS=("paid_orders","revenue_cents","samples_requested","samples_delivered","replies","open_growth_exceptions","staged_active")
 
+def decode_snapshot(payload):
+    """Accept standalone sanitized snapshot or a verified relay result envelope."""
+    if not isinstance(payload,dict):
+        raise ValueError("Expected JSON object")
+    if "action" not in payload:
+        return payload
+    if payload.get("action")!="operator_snapshot" or payload.get("status")!="success" or payload.get("exit_code")!=0:
+        raise ValueError("Not a successful operator_snapshot relay result")
+    if payload.get("allow_external_actions") is not False:
+        raise ValueError("External actions were not disabled")
+    result=json.loads(payload.get("stdout") or "null")
+    if not isinstance(result,dict):
+        raise ValueError("Invalid snapshot payload")
+    if result.get("deployed_sha")!=payload.get("git_commit_after"):
+        raise ValueError("Relay reported mismatched deployment SHA")
+    return result
+
 def assess(s, now=None, max_age_minutes=90):
     if not isinstance(s,dict):
         raise ValueError("Snapshot must be a JSON object")
@@ -54,7 +71,7 @@ def main():
     args=p.parse_args()
     try:
         if args.snapshot.stat().st_size>1048576: raise ValueError("File too large")
-        result=assess(json.loads(args.snapshot.read_text(encoding="utf-8")))
+        result=assess(decode_snapshot(json.loads(args.snapshot.read_text(encoding="utf-8"))))
     except (OSError,ValueError,TypeError):
         print("Cannot read valid snapshot",file=sys.stderr)
         return 2
