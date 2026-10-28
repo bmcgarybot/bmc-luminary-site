@@ -2871,6 +2871,96 @@ async def growth_sample_checkout(conn,email,sample_id,service_key):
       where product_key='growth_pack_starter' and active=true""")
     return growth_checkout_url(clean(base),email,sample_id,service_key)
 
+def growth_email_verification_token(verification_id,email_addr):
+    if not ADMIN_KEY:
+        return ""
+    payload=f"growth-email-verify\\n{verification_id}\\n{clean(email_addr).lower()}"
+    return hmac.new(ADMIN_KEY.encode("utf-8"),payload.encode("utf-8"),hashlib.sha256).hexdigest()
+
+async def handle_growth_verification_request(conn,p):
+    """Email proof before any cold public form can disclose five prospect records."""
+    service_key=clean(p.get("service_key") or p.get("provider_service_key"))
+    email_addr=clean(p.get("email")).lower()
+    business=clean(p.get("business_name"))
+    contact=clean(p.get("contact_name"))
+    market=clean(p.get("market"))
+    if service_key not in GROWTH_SERVICE_LABELS or not all([business,contact,market,email_addr]):
+        raise HTTPException(400,"Business, name, email, market and a valid service are required")
+    if not re.fullmatch(r"[^\\s@]+@[^\\s@]+\\.[^\\s@]+",email_addr):
+        raise HTTPException(400,"Enter a valid business email")
+    if clean(p.get("consent")).lower()!="yes":
+        raise HTTPException(400,"Please confirm that you want to receive your sample")
+    if not ADMIN_KEY:
+        raise HTTPException(503,"Email verification is temporarily unavailable")
+    sid=clean(p.get("submission_id")) or str(uuid.uuid4())
+    generic={"ok":True,"status":"verify_email",
+             "message":"Check your email for the verification link. Your five targets will be prepared after you confirm the address."}
+    if await conn.fetchval("select 1 from growth_email_verifications where submission_id=$1",sid):
+        return generic
+    # Prevent repeated mail submissions to the same inbox during a short window.
+    if await conn.fetchval("""select 1 from growth_email_verifications
+        where lower(email)=$1 and status='pending' and created_at>now()-interval '10 minutes'
+        limit 1""",email_addr):
+        return generic
+    allowed=("service_key","business_name","contact_name","email","market","service_area",
+             "radius","ideal_customer","minimum_job","exclusions","consent","page",
+             "referrer","utm_source","utm_medium","utm_campaign","utm_content",
+             "utm_term","business_phone","business_website")
+    payload={key:clean(p.get(key)) for key in allowed if clean(p.get(key))}
+    payload["submission_id"]=sid
+    payload["source_target_id"]=""  # Only the signed one-click endpoint may claim a target.
+    verification_id=uuid.uuid4()
+    await conn.execute("""insert into growth_email_verifications(
+        verification_id,submission_id,email,service_key,market,request_payload)
+        values($1,$2,$3,$4,$5,$6::jsonb)""",
+        verification_id,sid,email_addr,service_key,market,json.dumps(payload))
+    token=growth_email_verification_token(verification_id,email_addr)
+    landing=GROWTH_LANDING_PATHS.get(service_key,"/growth-packs/")
+    link=PUBLIC_SITE_URL.rstrip("/")+landing+"?"+urllib.parse.urlencode({
+        "verify_id":str(verification_id),"verify_token":token})
+    body=f"""Hi {contact},
+
+    Please confirm this email address to view the five commercial prospects you requested for {business} in {market}.
+
+    {link}
+
+    This link expires in 48 hours. If you did not request these prospects, you can ignore this email.
+
+    BMC Service Network
+    BMC Luminary Ventures LLC
+    {BUSINESS_POSTAL_ADDRESS}"""
+    if not await send_mail(email_addr,"Confirm your BMC five-prospect request",body):
+        raise HTTPException(503,"We couldn't send your verification email. Please try again shortly.")
+    return generic
+
+@app.post("/api/growth/verify-email")
+async def growth_verify_email(request:Request):
+    p=await request.json()
+    try:
+        verification_id=uuid.UUID(clean(p.get("verify_id")))
+    except (ValueError,TypeError,AttributeError):
+        raise HTTPException(400,"Invalid verification link")
+    token=clean(p.get("verify_token"))
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        v=await conn.fetchrow("""select * from growth_email_verifications
+          where verification_id=$1 for update""",verification_id)
+        if not v:
+            raise HTTPException(404,"Verification link not found")
+        expected=growth_email_verification_token(verification_id,v["email"])
+        if not expected or not hmac.compare_digest(expected,token):
+            raise HTTPException(403,"Invalid verification link")
+        if datetime.now(timezone.utc)>v["expires_at"]:
+            raise HTTPException(410,"This verification link has expired")
+        payload=v["request_payload"]
+        if isinstance(payload,str):
+            payload=json.loads(payload)
+        result=await handle_growth_snapshot(conn,dict(payload))
+        await conn.execute("""update growth_email_verifications
+          set status='claimed',claimed_at=coalesce(claimed_at,now())
+          where verification_id=$1""",verification_id)
+        return result
+
 def growth_normalized_contractor_name(name):
     """Normalize common legal suffixes; this is a safety hint, not account proof."""
     tokens=re.findall(r"[a-z0-9]+",clean(name).lower().replace("&"," and "))
@@ -3475,7 +3565,7 @@ async def intake(request:Request):
             if ft=="vendor_pilot_activation": return await handle_vendor_pilot_activation(conn,p)
             if ft=="vendor_partner": return await handle_vendor_application(conn,p)
             if ft=="facility_maintenance": return await handle_facility_lead(conn,p)
-            if ft=="growth_snapshot": return await handle_growth_snapshot(conn,p)
+            if ft=="growth_snapshot": return await handle_growth_verification_request(conn,p)
             return await handle_lead(conn,p)
 
 @app.post("/api/process-expired")
