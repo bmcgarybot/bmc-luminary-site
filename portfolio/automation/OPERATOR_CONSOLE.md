@@ -56,3 +56,6 @@ Example request for the existing authenticated/private relay workflow (not a pub
 Actual requests require current timestamps and the existing relay request transport. Never publish raw status results that might contain identifying information. The branch has **not yet been deployed** to the VPS, so the live relay does not yet support this new action. For now, the owner console can read any genuine successful `operator_snapshot` result file exported from the private relay; no new terminal commands for the owner are required.
 
 Before owner-facing activation, review the existing `growth-status` private API schema: missing fields are deliberately shown as unavailable, not zero. Build authenticated private UI only after the schema mapping and incident response gates are verified.
+
+## Local dashboard rendering
+The same read-only console can produce a static, script-free HTML dashboard using `python3 portfolio/automation/operator-console.py <sanitized-result.json> --html /private/path/bmc-status.html`. The HTML escapes all displayed data and never embeds private raw records. This is local output, not a public site or live auto-refreshing dashboard. Only use private storage. Missing/unverified data stays visibly unknown.
