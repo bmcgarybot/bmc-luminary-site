@@ -35,7 +35,7 @@
     growth_pack:"https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=78",
     competitor_intel:"https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=78",
     market_expansion:"https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=78",
-    waste_audit:"https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=900&q=78"
+    waste_audit:"https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=900&q=78",
     rural_property:"https://images.pexels.com/photos/37636298/pexels-photo-37636298.jpeg?auto=compress&cs=tinysrgb&w=900",
     snow_service:"https://images.pexels.com/photos/11508827/pexels-photo-11508827.jpeg?auto=compress&cs=tinysrgb&w=900",
     pool_desert_property:"https://images.pexels.com/photos/6436202/pexels-photo-6436202.jpeg?auto=compress&cs=tinysrgb&w=900",
