@@ -11112,3 +11112,15 @@ Release requirements:
 4. The exact deployed live email template must be sent through production path to owner's existing test inbox and visually approved before ever setting `GROWTH_OWNER_APPROVED_SHA` or enabling any campaign.
 5. A simulated CI paid transaction and Stripe product existence are NOT a real $499 sale. Do not claim revenue until an actual successful verified order/payment and 100-pack delivery.
 6. Before launch, independently verify contact legitimacy and abuse throttling; soft identity matches may remain in manual review and no extra sample should be disclosed.
+
+
+## 81. Owner-controlled operator console prototype (2026-10-28)
+Owner directive: **NO LIVE CUSTOMER OUTREACH until the owner personally approves quality, plan, operational workload, and deployed email previews.** Keep OUTREACH_ENABLED, BUYER_OUTREACH_ENABLED, GROWTH_OUTREACH_ENABLED OFF. Build and test safely, including a private dashboard/terminal that the owner can inspect in under ten minutes per day. Owner wants the VPS to do ongoing work automatically with small manual intervention, but the system must be observable and fail closed.
+
+New isolated development branch: `safety/operator-console-20261028` (created from PR #5 head `330923128207062e66b494c7c730a0f2b861de17`). NO PRODUCTION RELEASE OR EMAIL AUTHORIZED.
+- `portfolio/automation/operator-console.py`: read-only snapshot monitor; stale evidence, unavailable metric fields, unconfirmed outbound OFF, unhealthy runtime and missing deployment SHA force REVIEW; never grants marketing authorization.
+- `portfolio/automation/test-operator-console.py`: synthetic tests for stale evidence, failed switches, missing revenue, exceptions, ignored secrets.
+- `portfolio/automation/OPERATOR_CONSOLE.md`: sanitized JSON contract and instructions.
+- It currently consumes a sanitized local JSON file, **not** a connected live VPS data feed or browser dashboard. Never imply otherwise. This is a first part of operational observability, not a finished owner portal.
+
+Next engineering work: integrate read-only signed/authenticated VPS relay snapshot to a private owner dashboard, prove real monitoring (scheduler, queue, runtime, deployment SHA, funnel counts, verified Stripe orders and exceptions), test synthetic checkout-to-100 fulfillment and error/restart behavior, add automation alerting and backup proof. Do not leak relay payloads or customer personal data into public GitHub. PR #5 remains separately unmerged until release gates are satisfied; preserve existing full research census and Service Network. Do not write or approve campaign mail on behalf of the owner.
