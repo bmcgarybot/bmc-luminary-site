@@ -39,7 +39,7 @@ def render(key: str, p: dict) -> str:
 <div><div class="editorial-kicker">{esc(p["name"])}</div><h1>{esc(p["headline"])}</h1><p class="hero-sub">{esc(p["sub"])}</p>
 <div class="actions"><a class="btn btn-primary" href="#request">Get help</a><a class="btn btn-secondary" href="#common">Common jobs</a></div>
 <div class="customer-proof">{proof}</div></div>
-<div class="hero-photo"><img src="{p["image"]}" alt="{esc(p["alt"])}" width="1400" height="1000" fetchpriority="high"><div class="hero-photo-card"><small>{esc(p["name"])}</small><strong>Need help with this?</strong><span>Send the job details and timing.</span></div></div>
+<div class="hero-photo"><img src="{esc(p["image"])}" alt="{esc(p["alt"])}" width="1400" height="1000" fetchpriority="high"><div class="hero-photo-card"><small>{esc(p["name"])}</small><strong>Need help with this?</strong><span>Send the job details and timing.</span></div></div>
 </div></header>
 
 <section class="editorial-section alt" id="common"><div class="wrap">
