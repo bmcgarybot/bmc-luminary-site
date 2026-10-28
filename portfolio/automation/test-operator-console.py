@@ -35,6 +35,23 @@ class Tests(unittest.TestCase):
     def test_exceptions_alert(self):
         x=fixture();x["growth"]["open_growth_exceptions"]=3
         self.assertIn("Open Growth exceptions",console.assess(x,NOW)["issues"])
+    def test_relay_snapshot_valid(self):
+        import json
+        snap=fixture()
+        envelope={"action":"operator_snapshot","status":"success","exit_code":0,
+          "allow_external_actions":False,"git_commit_after":"a"*40,
+          "stdout":json.dumps(snap)}
+        self.assertEqual(console.assess(console.decode_snapshot(envelope),NOW)["status"],"HEALTHY / OUTREACH OFF")
+    def test_reject_mismatched_deployment(self):
+        import json
+        envelope={"action":"operator_snapshot","status":"success","exit_code":0,
+          "allow_external_actions":False,"git_commit_after":"b"*40,
+          "stdout":json.dumps(fixture())}
+        with self.assertRaises(ValueError):console.decode_snapshot(envelope)
+    def test_reject_failed_relay_action(self):
+        with self.assertRaises(ValueError):
+            console.decode_snapshot({"action":"growth_launch_enable","status":"success","exit_code":0})
+
     def test_secret_ignored(self):
         x=fixture();x["SMTP_PASSWORD"]="dont-publish-this"
         self.assertNotIn("dont-publish-this",str(console.assess(x,NOW)))
