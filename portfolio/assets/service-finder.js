@@ -4,38 +4,60 @@
   const DEFAULT_IMAGE="https://images.unsplash.com/photo-1505798577917-a65157d3320a?auto=format&fit=crop&w=900&q=78";
 
   const images={
-    restaurant_equipment:"https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=900&q=78",
-    restaurant_repair:"https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=900&q=78",
-    ice_machine:"https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=900&q=78",
-    restaurant_maintenance:"https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=900&q=78",
-    equipment_quotes:"https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=78",
-    used_equipment:"https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=78",
-    electrical_service:"https://images.unsplash.com/photo-1758101755915-462eddc23f57?auto=format&fit=crop&w=900&q=78",
-    hvac_heat:"https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=900&q=78",
-    handyman_repairs:"https://images.unsplash.com/photo-1505798577917-a65157d3320a?auto=format&fit=crop&w=900&q=78",
-    residential_cleaning:"https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=78",
-    turnover_cleaning:"https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=78",
-    tree_service:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=78",
-    landscaping:"https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=900&q=78",
-    junk_hauling:"https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=900&q=78",
-    realtor_listing_prep:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=78",
-    home_staging:"https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=78",
+    restaurant_equipment:"https://images.pexels.com/photos/28704740/pexels-photo-28704740.jpeg?auto=compress&cs=tinysrgb&w=900",
+    restaurant_repair:"https://images.pexels.com/photos/28704740/pexels-photo-28704740.jpeg?auto=compress&cs=tinysrgb&w=900",
+    ice_machine:"https://images.pexels.com/photos/28704740/pexels-photo-28704740.jpeg?auto=compress&cs=tinysrgb&w=900",
+    restaurant_maintenance:"https://images.pexels.com/photos/28704740/pexels-photo-28704740.jpeg?auto=compress&cs=tinysrgb&w=900",
+    equipment_quotes:"https://images.pexels.com/photos/6375553/pexels-photo-6375553.jpeg?auto=compress&cs=tinysrgb&w=900",
+    used_equipment:"https://images.pexels.com/photos/6375553/pexels-photo-6375553.jpeg?auto=compress&cs=tinysrgb&w=900",
+    electrical_service:"https://images.pexels.com/photos/27928760/pexels-photo-27928760.jpeg?auto=compress&cs=tinysrgb&w=900",
+    hvac_heat:"https://images.pexels.com/photos/5463575/pexels-photo-5463575.jpeg?auto=compress&cs=tinysrgb&w=900",
+    handyman_repairs:"https://images.pexels.com/photos/4981812/pexels-photo-4981812.jpeg?auto=compress&cs=tinysrgb&w=900",
+    residential_cleaning:"https://images.pexels.com/photos/5591854/pexels-photo-5591854.jpeg?auto=compress&cs=tinysrgb&w=900",
+    turnover_cleaning:"https://images.pexels.com/photos/5591854/pexels-photo-5591854.jpeg?auto=compress&cs=tinysrgb&w=900",
+    tree_service:"https://images.pexels.com/photos/31127615/pexels-photo-31127615.jpeg?auto=compress&cs=tinysrgb&w=900",
+    landscaping:"https://images.pexels.com/photos/9029162/pexels-photo-9029162.jpeg?auto=compress&cs=tinysrgb&w=900",
+    junk_hauling:"https://images.pexels.com/photos/33222182/pexels-photo-33222182.jpeg?auto=compress&cs=tinysrgb&w=900",
+    realtor_listing_prep:"https://images.pexels.com/photos/5591854/pexels-photo-5591854.jpeg?auto=compress&cs=tinysrgb&w=900",
+    home_staging:"https://images.pexels.com/photos/8927361/pexels-photo-8927361.jpeg?auto=compress&cs=tinysrgb&w=900",
     str_property_care:"https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=78",
     facility_maintenance:"https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=78",
-    commercial_cleaning:"https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=78",
-    towing_roadside:"https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=78",
-    vehicle_services:"https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=900&q=78",
-    auto_repair_shop:"https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=900&q=78",
-    auto_glass:"https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=900&q=78",
-    pet_sitting:"https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=900&q=78",
-    mobile_pet_grooming:"https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=900&q=78",
-    pet_waste:"https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=900&q=78",
-    vendor_savings:"https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=78",
-    quote_sourcing:"https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=78",
-    growth_pack:"https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=78",
-    competitor_intel:"https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=900&q=78",
-    market_expansion:"https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=78",
-    waste_audit:"https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=900&q=78"
+    commercial_cleaning:"https://images.pexels.com/photos/4098315/pexels-photo-4098315.jpeg?auto=compress&cs=tinysrgb&w=900",
+    towing_roadside:"https://images.pexels.com/photos/8931963/pexels-photo-8931963.jpeg?auto=compress&cs=tinysrgb&w=900",
+    vehicle_services:"https://images.pexels.com/photos/17429096/pexels-photo-17429096.jpeg?auto=compress&cs=tinysrgb&w=900",
+    auto_repair_shop:"https://images.pexels.com/photos/8985613/pexels-photo-8985613.jpeg?auto=compress&cs=tinysrgb&w=900",
+    auto_glass:"https://images.pexels.com/photos/19773544/pexels-photo-19773544.jpeg?auto=compress&cs=tinysrgb&w=900",
+    pet_sitting:"https://images.pexels.com/photos/9354904/pexels-photo-9354904.jpeg?auto=compress&cs=tinysrgb&w=900",
+    mobile_pet_grooming:"https://images.pexels.com/photos/6131568/pexels-photo-6131568.jpeg?auto=compress&cs=tinysrgb&w=900",
+    pet_waste:"https://images.pexels.com/photos/11400229/pexels-photo-11400229.jpeg?auto=compress&cs=tinysrgb&w=900",
+    vendor_savings:"https://images.pexels.com/photos/8297220/pexels-photo-8297220.jpeg?auto=compress&cs=tinysrgb&w=900",
+    quote_sourcing:"https://images.pexels.com/photos/7433837/pexels-photo-7433837.jpeg?auto=compress&cs=tinysrgb&w=900",
+    growth_pack:"https://images.pexels.com/photos/6248959/pexels-photo-6248959.jpeg?auto=compress&cs=tinysrgb&w=900",
+    competitor_intel:"https://images.pexels.com/photos/7693733/pexels-photo-7693733.jpeg?auto=compress&cs=tinysrgb&w=900",
+    market_expansion:"https://images.pexels.com/photos/7651734/pexels-photo-7651734.jpeg?auto=compress&cs=tinysrgb&w=900",
+    waste_audit:"https://images.pexels.com/photos/6591432/pexels-photo-6591432.jpeg?auto=compress&cs=tinysrgb&w=900",
+    rural_property:"https://images.pexels.com/photos/37636298/pexels-photo-37636298.jpeg?auto=compress&cs=tinysrgb&w=900",
+    snow_service:"https://images.pexels.com/photos/11508827/pexels-photo-11508827.jpeg?auto=compress&cs=tinysrgb&w=900",
+    pool_desert_property:"https://images.pexels.com/photos/6436202/pexels-photo-6436202.jpeg?auto=compress&cs=tinysrgb&w=900",
+    hood_exhaust:"https://images.pexels.com/photos/10511959/pexels-photo-10511959.jpeg?auto=compress&cs=tinysrgb&w=900",
+    grease_drain:"https://images.pexels.com/photos/15945555/pexels-photo-15945555.jpeg?auto=compress&cs=tinysrgb&w=900",
+    window_cleaning:"https://images.pexels.com/photos/13755909/pexels-photo-13755909.jpeg?auto=compress&cs=tinysrgb&w=900",
+    pressure_washing:"https://images.pexels.com/photos/12919779/pexels-photo-12919779.jpeg?auto=compress&cs=tinysrgb&w=900",
+    pest_control:"https://images.pexels.com/photos/4099468/pexels-photo-4099468.jpeg?auto=compress&cs=tinysrgb&w=900",
+    linen_laundry:"https://images.pexels.com/photos/8774639/pexels-photo-8774639.jpeg?auto=compress&cs=tinysrgb&w=900",
+    floor_carpet:"https://images.pexels.com/photos/4107278/pexels-photo-4107278.jpeg?auto=compress&cs=tinysrgb&w=900",
+    fire_safety:"https://images.pexels.com/photos/34206461/pexels-photo-34206461.jpeg?auto=compress&cs=tinysrgb&w=900",
+    backflow_plumbing:"https://images.pexels.com/photos/32588548/pexels-photo-32588548.jpeg?auto=compress&cs=tinysrgb&w=900",
+    sign_lighting:"https://images.pexels.com/photos/16368418/pexels-photo-16368418.jpeg?auto=compress&cs=tinysrgb&w=900",
+    locksmith_access:"https://images.pexels.com/photos/35287856/pexels-photo-35287856.jpeg?auto=compress&cs=tinysrgb&w=900",
+    duct_vent:"https://images.pexels.com/photos/16628050/pexels-photo-16628050.jpeg?auto=compress&cs=tinysrgb&w=900",
+    fleet_washing:"https://images.pexels.com/photos/27312708/pexels-photo-27312708.jpeg?auto=compress&cs=tinysrgb&w=900",
+    mobile_tire_battery:"https://images.pexels.com/photos/17600886/pexels-photo-17600886.jpeg?auto=compress&cs=tinysrgb&w=900",
+    coffee_water:"https://images.pexels.com/photos/11206191/pexels-photo-11206191.jpeg?auto=compress&cs=tinysrgb&w=900",
+    parking_lot:"https://images.pexels.com/photos/33966251/pexels-photo-33966251.jpeg?auto=compress&cs=tinysrgb&w=900",
+    epoxy_flooring:"https://images.pexels.com/photos/36230768/pexels-photo-36230768.jpeg?auto=compress&cs=tinysrgb&w=900",
+    mobile_detailing:"https://images.pexels.com/photos/27312708/pexels-photo-27312708.jpeg?auto=compress&cs=tinysrgb&w=900",
+    garage_door:"https://images.pexels.com/photos/7996765/pexels-photo-7996765.jpeg?auto=compress&cs=tinysrgb&w=900",
   };
 
   const aliases={
@@ -143,9 +165,22 @@
   }
 
 
+  // General plumbing is not the same as specialist backflow certification.
+  // Offer one honest request path instead of pretending a provider is active.
+  const PLUMBING_QUERY=/\b(plumb(?:er|ers|ing)?|pipe leak|leak(?:ing|y)? pipe|burst pipe|clogged (?:toilet|drain|sink)|toilet (?:repair|overflow)|water heater|sewer backup|no hot water)\b/i;
+  function plumbingRequest(query){
+    return {service:{
+      service_key:"plumbing_request",
+      display_name:"Plumbing help",
+      primary_offer:"Describe your plumbing problem. We can take the request and check whether a suitable provider is available.",
+      live_front:"/portfolio/request/?problem="+encodeURIComponent(query)
+    },score:125,reason:"Plumbing request"};
+  }
+
   function find(services,query,limit){
     const q=normalize(query);
     if(!q)return [];
+    if(PLUMBING_QUERY.test(query))return [plumbingRequest(query)];
     const tokens=q.split(" ").filter(t=>t.length>1);
     const boosts={};
     let intentLabel="";
@@ -204,6 +239,13 @@
       ? (list.length===1?'This looks like the best fit.':'These look like the best fits.')
       : 'We did not find an exact match, but you still have options.';
     const shown=list.length?list:(options.fallback||[]);
+    const isPlumbing=PLUMBING_QUERY.test(query);
+    if(isPlumbing){
+      container.hidden=false;
+      container.innerHTML='<div class="finder-result-head"><div><div class="editorial-kicker">Plumbing help</div><h2>Need a plumber?</h2><p>Tell us what needs fixing and where. We will check whether a suitable provider is available. No contractor is confirmed yet.</p></div></div>'
+        +'<a class="btn btn-primary" href="/request/?problem='+encodeURIComponent(query)+'">Request plumbing help</a>';
+      return;
+    }
     container.hidden=false;
     container.innerHTML='<div class="finder-result-head"><div><div class="editorial-kicker">What we found</div><h2>'+title+'</h2><p>Choose the closest one. You can change course later.</p></div>'
       +'<a class="btn btn-secondary" href="/request/?problem='+encodeURIComponent(query)+'">None of these</a></div>'
@@ -223,7 +265,7 @@
       render(container,local,q,{fallback:fallbackResults});
       if(opts.onResults)opts.onResults(local,q,{source:"local"});
 
-      if(q.length<3)return;
+      if(q.length<3 || PLUMBING_QUERY.test(q))return;
       const remote=await remoteSearch(services,q);
       if(current!==runId || !remote || !remote.results.length)return;
 
