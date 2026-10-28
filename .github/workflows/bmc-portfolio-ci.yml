@@ -851,6 +851,38 @@ jobs:
           PY
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(distinct prospect_key) from growth_prospect_exposures where market='CI Race Market' and status='delivered';")" -ge 8
 
+          # Verify the exact common MIME-building path removes dash characters.
+          # No SMTP connection is made by this test.
+          docker compose --env-file .env.ci exec -T ops_api python - <<'PY'
+          import asyncio
+          import app as m
+          async def check():
+              messages=[]
+              async def capture(message,**kwargs):
+                  messages.append(message)
+              prior=m.aiosmtplib.send
+              dry=m.SMTP_DRY_RUN
+              host=m.SMTP_HOST
+              try:
+                  m.aiosmtplib.send=capture
+                  m.SMTP_DRY_RUN=False
+                  m.SMTP_HOST="smtp.ci.example"
+                  ok=await m.send_mail("ci-style@example.com","Sample — subject",
+                                       "Hi — no long dashes","<p>HTML — no long dashes</p>")
+                  assert ok and len(messages)==1,(ok,messages)
+                  message=messages[0]
+                  plain=message.get_body(preferencelist=("plain",)).get_content()
+                  html=message.get_body(preferencelist=("html",)).get_content()
+                  assert "\\u2014" not in str(message["Subject"])+plain+html
+                  assert "\\u2013" not in str(message["Subject"])+plain+html
+                  print("PASS common SMTP MIME dash normalization")
+              finally:
+                  m.aiosmtplib.send=prior
+                  m.SMTP_DRY_RUN=dry
+                  m.SMTP_HOST=host
+          asyncio.run(check())
+          PY
+
           # EMAIL_FAILURE_DISCLOSURE_V1: failed SMTP does NOT mean no disclosure;
           # the HTTP response contains the five, and retry must not leak new five.
           docker compose --env-file .env.ci exec -T ops_api python - <<'PY'
