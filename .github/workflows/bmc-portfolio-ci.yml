@@ -733,6 +733,24 @@ jobs:
           PY
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select nurture_step from growth_sample_requests where submission_id='ci-growth-sample-1';")" -eq 1
 
+          # A reply must permanently stop automated nurture for that address.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            insert into growth_outreach_targets(target_id,business_name,public_email,market,service_key,status)
+            values('ci-nurture-reply','CI Reply Contractor','ci-owner@example.com','CI Growth Market','pressure_washing','replied')
+            on conflict(target_id) do nothing;
+            insert into outreach(entity_type,entity_id,campaign,wave,channel,sequence_step,status,replied_at)
+            values('growth_customer','ci-nurture-reply','growth_sales','ci','email',1,'replied',now());
+            update growth_sample_requests set next_nurture_at=now()-interval '1 minute'
+            where submission_id='ci-growth-sample-1';"
+          curl -fsS -X POST http://127.0.0.1:8000/api/process-growth-nurture \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_growth_nurture_after_reply.json
+          python - <<'PY'
+          import json
+          result=json.load(open("/tmp/bmc_growth_nurture_after_reply.json"))
+          assert result["ok"] and result["sent"]==0,result
+          print("PASS no automated nurture after a recorded reply")
+          PY
+
           # Simulate a paid, already-linked order. The fulfillment endpoint must build exactly
           # 100 unique, in-market, score-passing rows and complete the order automatically.
           docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
