@@ -1,0 +1,21 @@
+{
+  "action": "growth_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-28T08:43:09.087481+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "95fc8acf691ad6517e1be3a17f8e27517a15ea9c",
+  "git_commit_before": "95fc8acf691ad6517e1be3a17f8e27517a15ea9c",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "87278b951ba2546016f6975466610670dbbea94c",
+  "request_id": "watch30-growth-status-20261028T0841Z",
+  "request_sha256": "8aad9e722d6ed9b451985211917457d3a5f297f3636e646f7f3aa42cbbec8315",
+  "started_at": "2026-10-28T08:43:09.077784+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"ok\": true,\n  \"growth_enabled\": false,\n  \"wave\": \"growth-pressure-1\",\n  \"daily_limit\": 10,\n  \"sample_reserve\": 125,\n  \"config\": {\n    \"smtp\": true,\n    \"imap\": true,\n    \"postal\": true,\n    \"payment_link\": true\n  },\n  \"config_ready\": true,\n  \"staged_active\": 7,\n  \"sent\": 7,\n  \"replies\": 0,\n  \"samples_requested\": 0,\n  \"samples_delivered\": 0,\n  \"converted_samples\": 0,\n  \"paid_orders\": 0,\n  \"revenue_cents\": 0,\n  \"open_growth_exceptions\": 0\n}",
+  "version": 1
+}
