@@ -394,8 +394,35 @@ def list_requests() -> list[dict]:
     listing = github_contents(REQUEST_DIR, RELAY_BRANCH)
     if not isinstance(listing, list):
         return []
+    if len(listing) >= 1000:
+        tree = github_request("GET", f"/git/trees/{urllib.parse.quote(RELAY_BRANCH, safe='')}?recursive=1")
+        if not isinstance(tree, dict) or tree.get("truncated") is not False or not isinstance(tree.get("tree"), list):
+            raise RelayError("Cannot obtain a complete relay requests index")
+        listing = [{"type": "file", "name": Path(row["path"]).name, "path": row["path"]}
+                   for row in tree["tree"] if row.get("type") == "blob"
+                   and Path(row.get("path", "")).parent == Path(REQUEST_DIR)]
     rows = [x for x in listing if x.get("type") == "file" and str(x.get("name", "")).endswith(".json")]
     return sorted(rows, key=lambda x: str(x.get("name", "")))
+
+
+def list_remote_result_ids() -> set[str]:
+    """Index historical acknowledgments once, instead of GET per old request."""
+    listing = github_contents(RESULT_DIR, RELAY_BRANCH)
+    if listing is None:
+        return set()
+    if not isinstance(listing, list):
+        raise RelayError("Invalid relay results directory response")
+    if len(listing) >= 1000:
+        # GitHub Contents caps directory listings at 1000 entries. A truncated
+        # index must not make old completed requests look pending again.
+        tree = github_request("GET", f"/git/trees/{urllib.parse.quote(RELAY_BRANCH, safe='')}?recursive=1")
+        if not isinstance(tree, dict) or tree.get("truncated") is not False or not isinstance(tree.get("tree"), list):
+            raise RelayError("Cannot obtain a complete relay results index")
+        return {Path(row["path"]).stem for row in tree["tree"]
+                if row.get("type") == "blob" and Path(row.get("path", "")).parent == Path(RESULT_DIR)
+                and row["path"].endswith(".json")}
+    return {Path(row["name"]).stem for row in listing
+            if row.get("type") == "file" and str(row.get("name", "")).endswith(".json")}
 
 
 def load_request(item: dict) -> dict:
@@ -847,6 +874,7 @@ def process_once() -> dict:
     STATE_DIR.mkdir(parents=True, exist_ok=True)
     LOCAL_RESULTS.mkdir(parents=True, exist_ok=True)
     stats = {"seen": 0, "processed": 0, "uploaded_cached": 0, "skipped_remote_result": 0, "errors": []}
+    known_results = list_remote_result_ids()
 
     for item in list_requests():
         stats["seen"] += 1
@@ -856,11 +884,15 @@ def process_once() -> dict:
             stats["errors"].append({"file": item.get("name"), "error": "invalid request filename"})
             continue
         try:
-            if remote_result_exists(fallback_id):
+            # Keep a fresh per-request check for apparently pending work, while
+            # historical acknowledgments need no repeated network round trips.
+            if fallback_id in known_results or remote_result_exists(fallback_id):
+                known_results.add(fallback_id)
                 stats["skipped_remote_result"] += 1
                 continue
             if local_result_file(fallback_id).exists():
                 if upload_cached_if_needed(fallback_id):
+                    known_results.add(fallback_id)
                     stats["uploaded_cached"] += 1
                 continue
 
@@ -877,6 +909,7 @@ def process_once() -> dict:
         save_local_result(result)
         try:
             upload_json(remote_result_path(request_id), result, f"VPS relay result {request_id}")
+            known_results.add(request_id)
         except Exception as exc:
             stats["errors"].append({"request_id": request_id, "upload_error": redact(str(exc))})
         stats["processed"] += 1

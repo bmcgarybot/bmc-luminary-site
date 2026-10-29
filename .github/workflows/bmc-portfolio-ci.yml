@@ -51,6 +51,7 @@ jobs:
           python3 -m py_compile portfolio/automation/operator-console.py
           python3 portfolio/automation/test-operator-console.py
           python3 portfolio/automation/test-operator-relay.py
+          python3 portfolio/automation/test-relay-result-index.py
           python3 -m py_compile portfolio/automation/operator-monitor.py
           python3 portfolio/automation/test-operator-monitor.py
           python3 portfolio/automation/test-campaign-owner-hold.py
