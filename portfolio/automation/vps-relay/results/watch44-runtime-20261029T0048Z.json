@@ -1,0 +1,21 @@
+{
+  "action": "runtime_doctor",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-29T00:50:31.667230+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "3a53e61e03de963ce48cfa3bc533411dd3cc259b",
+  "git_commit_before": "3a53e61e03de963ce48cfa3bc533411dd3cc259b",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "cdcecc51f58b057e84e612d2a55db346aac872ea",
+  "request_id": "watch44-runtime-20261029T0048Z",
+  "request_sha256": "880df958be9f086df35405ff2c4b5a8a526eb1d5347c0ac53fd9cabe78899b42",
+  "started_at": "2026-10-29T00:50:28.403904+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "BMC runtime doctor\n==================\nPASS  Deployment target is cloud-vps\nPASS  Host memory fits 8 GB production class (11671 MB visible)\nPASS  Working filesystem has 76 GB free\nPASS  Emergency swap is configured\nPASS  Docker command is installed\nPASS  Docker Compose plugin is available\nPASS  .env exists\nPASS  Public site URL is bmcservicenetwork.com\nPASS  Vendor outreach global switch is OFF\nPASS  Buyer outreach global switch is OFF\nPASS  Growth Pack outreach global switch is OFF\nPASS  Provider and buyer outbound waves are restricted to pilot1\nPASS  Docker Compose configuration validates\nPASS  Continuous bulk research refresher is running\nPASS  Cloudflare Tunnel is running patched cloudflared (2026.10.3)\nPASS  Ops API health endpoint is OK\nPASS  Service registry seeded (54)\nPASS  Traditional auto repair service is active\nPASS  Research refresh state is available (2 source rows)\nPASS  Vendor research pool seeded (212)\nPASS  Buyer research pool seeded (2915)\nPASS  First Wave provider cohort is exactly 12\nPASS  First Wave buyer cohort is exactly 7\nPASS  Research backlog is fully drained (0 queued)\nPASS  Recovered Arizona expansion research cells are seeded (198)\nPASS  Source-native market scope includes recovered Arizona expansion\nPASS  Private admin preflight endpoint is reachable\nLaunch gates:\n  live_intake_ready: BLOCKED\n  outreach_ready: READY\n  payments_ready: READY\n  intelligent_search_ai_ready: READY\nExternal/launch actions still required:\n  - Activate at least one verified pilot provider\nPASS  Private agent status endpoint is reachable\nAgent:\n  enabled: True\n  mode: bounded_internal_operator_v1\n  external actions allowed: False\n  open agent tasks: 1\n  research queued: 0\n  research assigned: 0\nPASS  Local AI service is reachable\nPASS  Configured local AI model is loaded (qwen3:1.7b)\nPASS  Intelligent service search maps 'fix my fryer' to restaurant equipment repair\nPASS  Intelligent service search maps 'brake repair' to traditional auto repair\nPASS  Private research search is reachable\n\nCore failures: 0 \u00b7 warnings: 0\nCore runtime is healthy. Warnings are launch/external configuration items.\n",
+  "version": 1
+}
