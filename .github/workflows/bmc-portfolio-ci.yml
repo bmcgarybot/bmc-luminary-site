@@ -56,6 +56,7 @@ jobs:
           python3 portfolio/automation/test-operator-monitor.py
           python3 portfolio/automation/test-campaign-owner-hold.py
           python3 portfolio/automation/test-growth-qualification-gates.py
+          python3 portfolio/automation/test-local-ai-budget.py
           bash -n portfolio/automation/install-operator-monitor.sh
 
       - name: Validate service registry and fronts
@@ -401,6 +402,7 @@ jobs:
         working-directory: portfolio/automation
         run: |
           docker compose --env-file .env.example config >/dev/null
+          docker compose --env-file .env.example --profile local-ai config --format json | python3 -c 'import json,sys; s=json.load(sys.stdin)["services"]["ollama"]; assert float(s["cpus"]) == 2.0, s'
           docker compose --env-file .env.example build research_refresher
           grep -q 'research_refresher:' docker-compose.yml
           grep -q 'research-refresher.Dockerfile' docker-compose.yml

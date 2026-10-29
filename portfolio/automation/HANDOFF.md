@@ -11235,3 +11235,16 @@ Private monitor service installation did NOT complete: persistent user systemd m
 Latest retrieved watch44 runtime/Growth evidence around 2026-10-29T00:50Z confirms production still on the same SHA, effective owner hold true, provider/buyer/Growth switches all false, zero runtime failures/warnings. Seven original SMTP submissions remain recorded; zero replies, samples, paid orders or revenue. Buyer research pool now 2915; free disk 76 GB. These are health/headroom observations, not a full load/capacity test.
 
 PR #7 at 461a9724c186aea1ef70b1769111417d95aacdbc passed both full CI runs 40769523277 and 40769498191. The prior exact-SHA deployment is now resolved, so its wait restriction no longer prevents releasing the result-index optimization after current-head CI. No outreach or owner preview has been authorized.
+
+
+## Section 92 — Owner terminal proves monitor installation and resource headroom (2026-10-28 Arizona)
+
+Owner supplied full terminal output in Pasted markdown(20261029-050833).md. Exact tested e41ed6c2e1cbc8a92a4072887ad9d2d7d0f9216d deployed on VPS. New backup bmc_20261029_045829.dump passed checksum and isolated restore; 54 services, 212 vendors, 2915 buyers, 849 research records restored. Runtime zero failures/warnings. System bmc-operator-monitor.service enabled and active at startup; command-line collector at 04:59:57Z reports HEALTHY / OUTREACH OFF, effective owner hold true, all three flags false, zero issues/replies/samples/orders/revenue. This proves startup and live collection; sustained HTTP refresh/restart proof remains separate.
+
+Capacity snapshot: 11 GiB RAM total, 3.4 GiB used, 8.0 GiB available, about 10 MiB swap used. Ollama was using 597.78% Docker CPU (almost six cores) and 1.854 GiB of its 2.441 GiB memory limit at that instant. Other services were lightly loaded. This is a snapshot, not proof of sustained saturation or a full load test.
+
+Added bounded AI execution: Ollama Compose cpus=2.0; classifier requests think=false, num_thread=2, num_predict=128, existing 15-second timeout and catalog/confidence validation retained. Incomplete JSON/timeouts return no classification. Four new no-network tests pass. Docker-rendered CPU allocation is checked in CI. Limits protect non-AI workloads without buying hardware; runtime latency and actual limit still require post-deploy validation.
+
+Deployment now recognizes an already-active system monitor service instead of misleadingly reporting the unavailable user-manager path as an incomplete install. No campaign or owner preview authorized. Technical references: https://docs.docker.com/reference/compose-file/services/ and https://github.com/ollama/ollama/blob/main/docs/api.md .
+
+Read-only diagnostic_bundle now also collects Docker CPU/memory stats, system monitor active state, and the loopback sanitized /status.json response. This makes post-deploy verification possible through the existing relay without requiring another owner terminal dump. No new action name, public route, secrets, or mutating command is introduced.

@@ -974,7 +974,8 @@ If no catalog item fits reliably, return service_key "unclassified". Do not inve
         "messages":[{"role":"user","content":prompt}],
         "stream":False,
         "format":"json",
-        "options":{"temperature":0.1,"num_ctx":4096}
+        "think":False,
+        "options":{"temperature":0.1,"num_ctx":4096,"num_thread":2,"num_predict":128}
     }).encode()
     def call():
         req=urllib.request.Request(LOCAL_AI_URL+"/api/chat",data=payload,headers={"Content-Type":"application/json"},method="POST")
