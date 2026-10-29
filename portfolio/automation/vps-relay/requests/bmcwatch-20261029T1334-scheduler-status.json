@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "request_id": "bmcwatch-20261029T1334-scheduler-status",
+  "action": "scheduler_status",
+  "args": {},
+  "allow_external_actions": false,
+  "created_at": "2026-10-29T13:34:40.471Z"
+}
