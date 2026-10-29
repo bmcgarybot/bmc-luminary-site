@@ -8,7 +8,7 @@ if [ "$USER_NAME" = root ]; then
   echo "Run as the existing unprivileged BMC operator user."
   exit 1
 fi
-python3 -m py_compile operator-monitor.py operator-console.py vps-gitops-relay.py
+python3 -m py_compile operator-monitor.py operator-console.py operator-dashboard.py operator-metrics.py vps-gitops-relay.py
 if [ "${1:-}" = "--user" ]; then
   # The GitOps relay cannot sudo. Reuse a persistent user manager only when
   # already available; never claim a session-bound process is durable monitoring.
@@ -27,7 +27,7 @@ Description=BMC private read-only operator monitor
 [Service]
 Type=simple
 WorkingDirectory=$ROOT
-ExecStart=/usr/bin/python3 "$ROOT/operator-monitor.py" --port 8765 --interval 60
+ExecStart=/usr/bin/python3 "$ROOT/operator-monitor.py" --port 8765 --interval 60 --history "$HOME/.local/state/bmc-operator-monitor/history.sqlite3"
 Restart=always
 RestartSec=5
 TimeoutStopSec=10
@@ -40,7 +40,8 @@ CPUQuota=25%
 WantedBy=default.target
 EOF
   systemctl --user daemon-reload
-  systemctl --user enable --now bmc-operator-monitor.service
+  systemctl --user enable bmc-operator-monitor.service
+  systemctl --user restart bmc-operator-monitor.service
   systemctl --user --no-pager status bmc-operator-monitor.service
   exit 0
 fi
@@ -54,10 +55,12 @@ Wants=network-online.target
 Type=simple
 User=$USER_NAME
 WorkingDirectory=$ROOT
-ExecStart=/usr/bin/python3 "$ROOT/operator-monitor.py" --port 8765 --interval 60
+ExecStart=/usr/bin/python3 "$ROOT/operator-monitor.py" --port 8765 --interval 60 --history /var/lib/bmc-operator-monitor/history.sqlite3
 Restart=always
 RestartSec=5
 TimeoutStopSec=10
+StateDirectory=bmc-operator-monitor
+StateDirectoryMode=0700
 UMask=0077
 NoNewPrivileges=true
 PrivateTmp=true
@@ -71,6 +74,7 @@ CPUQuota=25%
 WantedBy=multi-user.target
 EOF
 sudo systemctl daemon-reload
-sudo systemctl enable --now bmc-operator-monitor.service
+sudo systemctl enable bmc-operator-monitor.service
+sudo systemctl restart bmc-operator-monitor.service
 echo "Read-only monitor bound to 127.0.0.1:8765; no public endpoint created."
 sudo systemctl --no-pager status bmc-operator-monitor.service

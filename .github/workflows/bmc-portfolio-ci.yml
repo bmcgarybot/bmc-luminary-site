@@ -54,6 +54,7 @@ jobs:
           python3 portfolio/automation/test-relay-result-index.py
           python3 -m py_compile portfolio/automation/operator-monitor.py
           python3 portfolio/automation/test-operator-monitor.py
+          python3 portfolio/automation/test-operator-dashboard.py
           python3 portfolio/automation/test-campaign-owner-hold.py
           python3 portfolio/automation/test-growth-qualification-gates.py
           python3 portfolio/automation/test-local-ai-budget.py
