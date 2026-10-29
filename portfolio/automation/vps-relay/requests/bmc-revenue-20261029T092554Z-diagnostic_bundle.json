@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-revenue-20261029T092554Z-diagnostic_bundle",
+  "action": "diagnostic_bundle",
+  "created_at": "2026-10-29T09:25:54.161Z",
+  "expires_at": "2026-10-29T11:25:54.161Z",
+  "allow_external_actions": false,
+  "args": {}
+}
