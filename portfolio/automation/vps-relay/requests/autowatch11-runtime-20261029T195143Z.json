@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "autowatch11-runtime-20261029T195143Z",
+  "action": "runtime_doctor",
+  "created_at": "2026-10-29T19:51:43.489Z",
+  "expires_at": "2026-10-29T21:51:43.489Z",
+  "allow_external_actions": false,
+  "args": {}
+}
