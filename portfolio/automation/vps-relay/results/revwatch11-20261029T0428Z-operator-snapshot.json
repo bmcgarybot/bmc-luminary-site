@@ -1,0 +1,21 @@
+{
+  "action": "operator_snapshot",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-29T04:37:03.555055+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "3a53e61e03de963ce48cfa3bc533411dd3cc259b",
+  "git_commit_before": "3a53e61e03de963ce48cfa3bc533411dd3cc259b",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "457756108be9f271616e542fc57c100f81de2018",
+  "request_id": "revwatch11-20261029T0428Z-operator-snapshot",
+  "request_sha256": "de05921f4065c7c7624bdad47f8acdba4068d3f95a20586db75d44cccb0facef",
+  "started_at": "2026-10-29T04:37:03.338161+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"observed_at\": \"2026-10-29T04:37:03.552585+00:00\",\n  \"deployed_sha\": \"3a53e61e03de963ce48cfa3bc533411dd3cc259b\",\n  \"owner_launch_hold_active\": true,\n  \"runtime_healthy\": true,\n  \"scheduler_healthy\": true,\n  \"api_healthy\": true,\n  \"outreach_switches\": {\n    \"OUTREACH_ENABLED\": false,\n    \"BUYER_OUTREACH_ENABLED\": false,\n    \"GROWTH_OUTREACH_ENABLED\": false\n  },\n  \"growth\": {\n    \"paid_orders\": 0,\n    \"revenue_cents\": 0,\n    \"samples_requested\": 0,\n    \"samples_delivered\": 0,\n    \"replies\": 0,\n    \"open_growth_exceptions\": 0,\n    \"staged_active\": 7\n  },\n  \"health_error\": null\n}",
+  "version": 1
+}
