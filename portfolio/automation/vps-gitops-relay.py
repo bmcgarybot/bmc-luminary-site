@@ -751,6 +751,7 @@ def execute(req: dict) -> dict:
             ["docker", "compose", "--env-file", ENV_FILE, "logs", "--tail=250", "ops_api"],
             ["docker", "compose", "--env-file", ENV_FILE, "logs", "--tail=250", "scheduler"],
             ["docker", "stats", "--no-stream", "--format", "{{json .}}"],
+            ["docker", "inspect", "--format", "{{.HostConfig.NanoCpus}}", "bmc-ollama-1"],
             ["systemctl", "is-active", "bmc-operator-monitor.service"],
             ["curl", "--silent", "--show-error", "--fail", "--max-time", "5", "http://127.0.0.1:8765/status.json"],
         ]
