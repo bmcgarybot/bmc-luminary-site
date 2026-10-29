@@ -177,6 +177,7 @@ services:
 
   ollama:
     image: ollama/ollama:latest
+    cpus: 2.0
     restart: unless-stopped
     mem_limit: 2500m
     logging: *default-logging

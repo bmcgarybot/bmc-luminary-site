@@ -750,6 +750,9 @@ def execute(req: dict) -> dict:
             ["docker", "compose", "--env-file", ENV_FILE, "ps"],
             ["docker", "compose", "--env-file", ENV_FILE, "logs", "--tail=250", "ops_api"],
             ["docker", "compose", "--env-file", ENV_FILE, "logs", "--tail=250", "scheduler"],
+            ["docker", "stats", "--no-stream", "--format", "{{json .}}"],
+            ["systemctl", "is-active", "bmc-operator-monitor.service"],
+            ["curl", "--silent", "--show-error", "--fail", "--max-time", "5", "http://127.0.0.1:8765/status.json"],
         ]
         chunks = []
         exit_code = 0

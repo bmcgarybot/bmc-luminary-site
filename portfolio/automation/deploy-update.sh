@@ -140,7 +140,9 @@ bash ./runtime-doctor.sh "$ENV_FILE"
 
 # No sudo escalation from the relay. Install via an already persistent user
 # manager when available; report the access boundary explicitly otherwise.
-if bash ./install-operator-monitor.sh --user; then
+if systemctl is-active --quiet bmc-operator-monitor.service; then
+  echo "Existing system operator monitor service is active."
+elif bash ./install-operator-monitor.sh --user; then
   echo "Private operator monitor service installed."
 else
   echo "MONITOR INSTALL INCOMPLETE: backend checks passed; persistent private monitor service needs administrator installation."
