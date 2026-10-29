@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "request_id": "revenue-watch-20261029-20261029234857-02-growth_status",
+  "action": "growth_status",
+  "created_at": "2026-10-29T23:48:59.353Z",
+  "allow_external_actions": false,
+  "args": {}
+}
