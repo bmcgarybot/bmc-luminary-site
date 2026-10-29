@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "graph-dashboard-deploy-20261029T054615Z",
+  "action": "deploy_update",
+  "required_ci_sha": "18a65129ca88893e9f43b2209bb3faf2e6b85079",
+  "created_at": "2026-10-29T05:46:15.190Z",
+  "expires_at": "2026-10-29T07:46:15.190Z",
+  "allow_external_actions": false,
+  "args": {}
+}
