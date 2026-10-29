@@ -94,6 +94,9 @@ class Tests(unittest.TestCase):
             code, headers, body = request("/")
             self.assertEqual(code, 200)
             self.assertIn(b"BMC Mission Control", body)
+            self.assertEqual(request("/?range=6")[0],200)
+            self.assertEqual(request("/?range=999")[0],404)
+            self.assertEqual(request("/?range=1&range=6")[0],404)
             self.assertIn("frame-ancestors 'none'", headers["Content-Security-Policy"])
             self.assertEqual(request("/", host="attacker.example")[0], 403)
             for path in ("/.env", "/api/admin", "/../.env", "/status.json?token=secret"):

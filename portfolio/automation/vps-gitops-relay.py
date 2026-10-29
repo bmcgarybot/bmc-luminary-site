@@ -657,12 +657,12 @@ def execute(req: dict) -> dict:
         try:
             raw=admin_post("/api/admin/growth-status",timeout=30)
             if not isinstance(raw,dict): raise ValueError("Invalid Growth status response")
-            for k in ("paid_orders","revenue_cents","samples_requested","samples_delivered","replies","open_growth_exceptions","staged_active"):
+            for k in ("paid_orders","revenue_cents","samples_requested","samples_delivered","replies","open_growth_exceptions","staged_active","sent"):
                 value=raw.get(k)
                 metrics[k]=value if type(value) is int and value>=0 else None
         except Exception:
             health_error="Growth status unavailable"
-            metrics={k:None for k in ("paid_orders","revenue_cents","samples_requested","samples_delivered","replies","open_growth_exceptions","staged_active")}
+            metrics={k:None for k in ("paid_orders","revenue_cents","samples_requested","samples_delivered","replies","open_growth_exceptions","staged_active","sent")}
         effective_flags=raw.get("outreach_switches",{}) if isinstance(raw,dict) else {}
         if not isinstance(effective_flags,dict): effective_flags={}
         confirmed_flags={}

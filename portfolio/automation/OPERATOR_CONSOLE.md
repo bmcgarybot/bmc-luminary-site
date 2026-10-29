@@ -83,3 +83,13 @@ Still unverified in production: systemd restart behavior, SSH access, collection
 
 ## Effective runtime safety
 The owner hold is enforced inside all four campaign workers (provider, buyer, Growth outreach and Growth nurture), not just the relay launch action. Missing or malformed hold configuration blocks campaigns. Growth status reports effective running API flags; the snapshot requires agreement with local configuration before confirming a switch. An old API or a container with configuration drift requires REVIEW. This does not block transactional requested receipts/fulfillment or grant permission to send previews.
+
+
+## Graphical operations dashboard
+The private monitor now renders an ivory/forest-green operations workspace with revenue/order/sample/reply cards, revenue history, an SMTP-to-order funnel, host resource gauges and CPU history, container CPU/memory readings, attention checks and owner-hold/campaign state. It remains script-free, read-only and bound to loopback. Browser refresh is 30 seconds; collection remains 60 seconds.
+
+Range filters on the overview accept only 1, 6, 24 or 168 hours. /status.json remains current sanitized metrics only (no history payload), and rejects arbitrary query parameters. Missing values show an em dash/awaiting measurement. Zero is plotted only when actually measured. SMTP submissions are explicitly not called verified deliveries.
+
+Persistent history requires rerunning bash ./install-operator-monitor.sh in the normal VPS terminal. The system unit uses StateDirectory=bmc-operator-monitor with mode 0700 and /var/lib/bmc-operator-monitor/history.sqlite3 mode 0600. It retains only whitelisted aggregate counts/resource measurements for 14 days. No credentials, messages, names, email addresses, customer records or launch capabilities are stored. Without --history the monitor labels history as session-only. A restarted monitor never restores old healthy status from history; it waits for a fresh collection.
+
+The installer restarts the service to load the new renderer and private history unit configuration. The existing SSH forward still works. Host CPU needs two collections for its first percentage; no older values are invented. Chart downsampling preserves window endpoints and outage gaps. Resources are measured from /proc, disk statistics and bounded read-only Docker stats. Container CPU uses Docker's per-core scale; 100% means one core.

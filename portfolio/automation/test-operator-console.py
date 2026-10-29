@@ -57,8 +57,9 @@ class Tests(unittest.TestCase):
             console.decode_snapshot({"action":"growth_launch_enable","status":"success","exit_code":0})
 
     def test_html_escapes_untrusted_data(self):
-        x=fixture();x["observed_at"]="<script>alert('unsafe')</script>"
-        rendered=console.render_html(console.assess(x,NOW))
+        x=console.assess(fixture(),NOW)
+        x["issues"].append("<script>alert('unsafe')</script>")
+        rendered=console.render_html(x)
         self.assertNotIn("<script>",rendered)
         self.assertIn("&lt;script&gt;",rendered)
     def test_html_marketing_never_authorized(self):

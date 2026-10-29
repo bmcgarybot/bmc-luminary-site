@@ -14,7 +14,7 @@ G=execute.__globals__
 SHA="a"*40
 BASE_ENV={"OUTREACH_ENABLED":"false","BUYER_OUTREACH_ENABLED":"false",
           "GROWTH_OUTREACH_ENABLED":"false","BMC_OWNER_LAUNCH_HOLD":"true"}
-COUNTS={"owner_launch_hold_active":True,"paid_orders":0,"revenue_cents":0,"samples_requested":0,
+COUNTS={"sent":0,"owner_launch_hold_active":True,"paid_orders":0,"revenue_cents":0,"samples_requested":0,
         "samples_delivered":0,"replies":0,"open_growth_exceptions":0,"staged_active":3}
 REQ={"request_id":"operator-unit-20261028","action":"operator_snapshot",
      "args":{},"allow_external_actions":False}
