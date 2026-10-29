@@ -1,0 +1,21 @@
+{
+  "action": "growth_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-29T15:25:46.468065+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "18a65129ca88893e9f43b2209bb3faf2e6b85079",
+  "git_commit_before": "18a65129ca88893e9f43b2209bb3faf2e6b85079",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "6db102f9d29923ecf65e9f0d3e3968bd2beded54",
+  "request_id": "watch53-growth-status-20261029T1524Z",
+  "request_sha256": "91b7044aa0635b56f7cded5f8e0cf9bc48cb3d98551c3a0772da2245b45c95ba",
+  "started_at": "2026-10-29T15:25:46.456473+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"ok\": true,\n  \"owner_launch_hold_active\": true,\n  \"outreach_switches\": {\n    \"OUTREACH_ENABLED\": false,\n    \"BUYER_OUTREACH_ENABLED\": false,\n    \"GROWTH_OUTREACH_ENABLED\": false\n  },\n  \"growth_enabled\": false,\n  \"wave\": \"growth-pressure-1\",\n  \"daily_limit\": 10,\n  \"sample_reserve\": 125,\n  \"config\": {\n    \"smtp\": true,\n    \"imap\": true,\n    \"postal\": true,\n    \"payment_link\": true\n  },\n  \"config_ready\": true,\n  \"staged_active\": 7,\n  \"sent\": 7,\n  \"replies\": 0,\n  \"samples_requested\": 0,\n  \"samples_delivered\": 0,\n  \"converted_samples\": 0,\n  \"paid_orders\": 0,\n  \"revenue_cents\": 0,\n  \"open_growth_exceptions\": 0\n}",
+  "version": 1
+}
