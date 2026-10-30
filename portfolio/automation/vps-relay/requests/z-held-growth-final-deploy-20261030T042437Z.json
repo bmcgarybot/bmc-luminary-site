@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "z-held-growth-final-deploy-20261030T042437Z",
+  "action": "deploy_update",
+  "required_ci_sha": "315eeeefeb9f09f25a1ba5268a871844b0fc08ef",
+  "created_at": "2026-10-30T04:24:37.765Z",
+  "expires_at": "2026-10-30T06:24:37.765Z",
+  "allow_external_actions": false,
+  "args": {}
+}
