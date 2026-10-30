@@ -57,6 +57,7 @@ jobs:
           python3 portfolio/automation/test-operator-dashboard.py
           python3 portfolio/automation/test-campaign-owner-hold.py
           python3 portfolio/automation/test-growth-qualification-gates.py
+          python3 portfolio/automation/test-checkout-idempotency.py
           python3 portfolio/automation/test-local-ai-budget.py
           bash -n portfolio/automation/install-operator-monitor.sh
 
@@ -787,18 +788,15 @@ jobs:
           print("PASS no automated nurture after a recorded reply")
           PY
 
-          # Simulate a paid, already-linked order. The fulfillment endpoint must build exactly
-          # 100 unique, in-market, score-passing rows and complete the order automatically.
-          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
-            with s as (select sample_id,email from growth_sample_requests where submission_id='ci-growth-sample-1'),
-            o as (
-              insert into orders(product_key,customer_email,amount_cents,currency,payment_status,status,growth_sample_id)
-              select 'growth_pack_starter',email,49900,'usd','paid','ready_for_fulfillment',sample_id from s
-              returning order_id,growth_sample_id
-            )
-            insert into tasks(order_id,service_key,task_type,status,priority,owner,summary,payload)
-            select order_id,'growth_pack','fulfill_growth_pack','open','high','bmc_operator','CI Growth fulfillment',
-              jsonb_build_object('growth_sample_id',growth_sample_id) from o;"
+          # Exercise the actual sample -> signed checkout -> task -> CSV path.
+          export GROWTH_SAMPLE_ID="$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select sample_id from growth_sample_requests where submission_id='ci-growth-sample-1';")"
+          export GROWTH_PAYMENT="$(python -c 'import json,os; print(json.dumps(dict(id="evt_ci_sample_payment",type="checkout.session.completed",data=dict(object=dict(id="cs_ci_sample_payment",mode="payment",payment_status="paid",amount_total=49900,currency="usd",payment_link="plink_1UUYdjQU2BLM8GhLWdq2uB1F",customer_details=dict(email="ci-owner@example.com"),client_reference_id="growth_"+os.environ["GROWTH_SAMPLE_ID"].replace("-",""))))))')"
+          export GROWTH_TS="$(date +%s)"
+          GROWTH_SIG="$(python -c 'import os,hmac,hashlib; print(hmac.new(b"whsec_ci_test",(os.environ["GROWTH_TS"]+".").encode()+os.environ["GROWTH_PAYMENT"].encode(),hashlib.sha256).hexdigest())')"
+          curl -fsS -X POST http://127.0.0.1:8000/api/stripe-webhook \
+            -H 'Content-Type: application/json' -H "Stripe-Signature: t=$GROWTH_TS,v1=$GROWTH_SIG" \
+            --data-binary "$GROWTH_PAYMENT" >/tmp/bmc_growth_payment.json
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from tasks t join orders o on o.order_id=t.order_id where o.stripe_checkout_session_id='cs_ci_sample_payment' and t.task_type='fulfill_growth_pack' and t.status='open';")" -eq 1
           curl -fsS -X POST http://127.0.0.1:8000/api/process-growth-fulfillment \
             -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_growth_fulfill_e2e.json
           python - <<'PY'
@@ -1815,6 +1813,17 @@ jobs:
             --data-binary "$PAYLOAD" >/tmp/bmc_stripe_duplicate.json
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from payment_events where stripe_event_id='evt_ci_checkout_1';")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select coalesce(sum(amount_cents),0) from revenue_events where model='stripe_checkout';")" -eq 49900
+
+          # A distinct paid event for the same session must not reset fulfillment or rebook revenue.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "update orders set status='fulfilled' where stripe_checkout_session_id='cs_ci_1';"
+          export PAYLOAD_CROSS_EVENT="$(python -c 'import json,os; d=json.loads(os.environ["PAYLOAD"]); d["id"]="evt_ci_checkout_same_session"; d["type"]="checkout.session.async_payment_succeeded"; print(json.dumps(d))')"
+          SIG_CROSS_EVENT="$(python -c 'import os,hmac,hashlib; print(hmac.new(b"whsec_ci_test",(os.environ["TS"]+".").encode()+os.environ["PAYLOAD_CROSS_EVENT"].encode(),hashlib.sha256).hexdigest())')"
+          curl -fsS -X POST http://127.0.0.1:8000/api/stripe-webhook \
+            -H 'Content-Type: application/json' -H "Stripe-Signature: t=$TS,v1=$SIG_CROSS_EVENT" \
+            --data-binary "$PAYLOAD_CROSS_EVENT" >/tmp/bmc_stripe_cross_event.json
+          python -c 'import json; assert json.load(open("/tmp/bmc_stripe_cross_event.json"))["duplicate_checkout"] is True'
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select coalesce(sum(amount_cents),0) from revenue_events where model='stripe_checkout';")" -eq 49900
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from orders where stripe_checkout_session_id='cs_ci_1';")" = "fulfilled"
 
           # Prove paid-first checkout creates a visible recovery task until the buyer supplies intake details.
           export PAYLOAD2='{"id":"evt_ci_checkout_2","type":"checkout.session.completed","data":{"object":{"id":"cs_ci_paid_first","mode":"payment","payment_status":"paid","amount_total":74900,"currency":"usd","payment_link":"plink_1UUYdvQU2BLM8GhLe3QUR0Yg","customer_details":{"email":"ci-paid-first@example.com"}}}}'
