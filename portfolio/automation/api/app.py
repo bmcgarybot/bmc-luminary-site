@@ -3459,14 +3459,22 @@ Reply no to stop future BMC outreach."""
               f"Growth nurture email failed for sample {row['sample_id']}","Verify SMTP/address before the next nurture attempt")
     return {"ok":True,"sent":sent,"converted_without_followup":converted}
 
+def growth_csv_cell(value):
+    # Public business text is untrusted; spreadsheet apps must not execute it.
+    text=str(value if value is not None else "")
+    if text.lstrip(" \t\r\n").startswith(("=","+","-","@")):
+        return "'"+text
+    return text
+
 def growth_csv_bytes(rows):
     out=io.StringIO()
     writer=csv.writer(out)
     writer.writerow(["Priority","Fit score","Business","Market","Type","Why it fits","Public email","Public phone","Source","Suggested outreach angle","Verification"])
     for r in rows:
-        writer.writerow([r["grade"],r["fit_score"],r["business_name"],r["market"],r["category_label"],
+        writer.writerow([growth_csv_cell(value) for value in [
+          r["grade"],r["fit_score"],r["business_name"],r["market"],r["category_label"],
           r["fit_reason"],clean(r.get("public_email")),clean(r.get("public_phone")),r["source_url"],
-          r["sales_angle"],clean(r.get("verification_status"))])
+          r["sales_angle"],clean(r.get("verification_status"))]])
     return out.getvalue().encode("utf-8-sig")
 
 @app.post("/api/process-growth-fulfillment")
@@ -3485,6 +3493,23 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
       for row in tasks:
         async with conn.transaction():
           await growth_lock_exposure_allocator(conn)
+          # The outer queue snapshot may be stale after another worker completes.
+          # Lock and recheck both records before any allocation or customer email.
+          current=await conn.fetchrow("""select t.status as task_status,o.status as order_status,
+              o.product_key,o.payment_status
+            from tasks t join orders o on o.order_id=t.order_id
+            where t.task_id=$1 and o.order_id=$2 for update of t,o""",
+            row["task_id"],row["paid_order_id"])
+          if not current or current["task_status"] not in ("open","queued") or current["order_status"]!="ready_for_fulfillment" or current["payment_status"] not in ("paid","complete"):
+              continue
+          if current["product_key"]!="growth_pack_starter":
+              await conn.execute("update tasks set status='exception',updated_at=now() where task_id=$1",row["task_id"])
+              await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+                values('growth_fulfillment_product_scope','critical',$1,$2)""",
+                f"Growth order {row['paid_order_id']} requires product-specific deliverables",
+                "Prepare and review every purchased deliverable before delivery; the starter CSV cannot fulfill a Premium order")
+              exceptions+=1
+              continue
           prior=await conn.fetch("""select distinct lower(gop.business_name) name
             from growth_order_prospects gop join orders po on po.order_id=gop.order_id
             where lower(po.customer_email)=lower($1) and po.order_id<>$2""",row["customer_email"],row["paid_order_id"])
@@ -6638,6 +6663,13 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
     if not event_id or not event_type: raise HTTPException(400,"Invalid Stripe event")
     async with app.state.pool.acquire() as conn:
       async with conn.transaction():
+        # Stripe can deliver different event IDs for the same checkout concurrently.
+        # Serialize by session before checking either event or order state.
+        if event_type in ("checkout.session.completed","checkout.session.async_payment_succeeded"):
+            session_id=clean(obj.get("id"))
+            if not session_id:
+                raise HTTPException(400,"Missing checkout session ID")
+            await conn.execute("select pg_advisory_xact_lock(hashtextextended($1,0))","stripe_checkout:"+session_id)
         if await conn.fetchval("select 1 from payment_events where stripe_event_id=$1",event_id):
             return {"received":True,"duplicate":True}
         product_key=await stripe_product_key(conn,obj)
@@ -6658,8 +6690,13 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
 
         if event_type in ("checkout.session.completed","checkout.session.async_payment_succeeded"):
             mode=clean(obj.get("mode"))
-            paid=status in ("paid","complete") or event_type=="checkout.session.async_payment_succeeded"
+            paid=status=="paid" or event_type=="checkout.session.async_payment_succeeded"
             if mode!="subscription" and paid:
+                # An already-paid session must never rebook revenue, reopen completed
+                # fulfillment, or increment experiment conversions on another event.
+                if await conn.fetchval("""select 1 from orders where stripe_checkout_session_id=$1
+                  and payment_status in ('paid','complete')""",object_id):
+                    return {"received":True,"duplicate_checkout":True}
                 await record_revenue(conn,product_key,amount,currency,"stripe_checkout",f"Stripe event {event_id}; session {object_id}")
                 payment_intent_id=clean(obj.get("payment_intent"))
                 order_id=await conn.fetchval("""insert into orders(product_key,stripe_checkout_session_id,stripe_payment_intent_id,customer_email,amount_cents,currency,payment_status,status,raw_payload)
@@ -6679,13 +6716,15 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
                     if client_ref.startswith("growth_"):
                         try:
                             sample_uuid=uuid.UUID(hex=client_ref.removeprefix("growth_"))
-                            growth_sample=await conn.fetchrow("select * from growth_sample_requests where sample_id=$1",sample_uuid)
+                            growth_sample=await conn.fetchrow("""select * from growth_sample_requests
+                              where sample_id=$1 and lower(email)=lower($2)
+                                and converted_at is null for update""",sample_uuid,customer_email)
                         except (ValueError,TypeError):
                             growth_sample=None
                     if not growth_sample and customer_email:
                         growth_sample=await conn.fetchrow("""select * from growth_sample_requests
                           where lower(email)=lower($1) and converted_at is null and created_at>=now()-interval '30 days'
-                          order by created_at desc limit 1""",customer_email)
+                          order by created_at desc limit 1 for update""",customer_email)
                     if growth_sample:
                         await conn.execute("""update orders set growth_sample_id=$2,status='ready_for_fulfillment',updated_at=now()
                           where order_id=$1""",order_id,growth_sample["sample_id"])
