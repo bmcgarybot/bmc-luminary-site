@@ -61,6 +61,8 @@ jobs:
           python3 portfolio/automation/test-fulfillment-claim.py
           python3 portfolio/automation/test-growth-csv.py
           python3 portfolio/automation/test-growth-inventory-audit.py
+          python3 portfolio/automation/test-paid-mail-once.py
+          python3 portfolio/automation/test-saved-sample-recheck.py
           python3 portfolio/automation/test-local-ai-budget.py
           bash -n portfolio/automation/install-operator-monitor.sh
 
@@ -621,6 +623,9 @@ jobs:
 
           # Prove First Wave provider copy uses the dedicated existing-vendor activation path.
           export BMC_ADMIN_KEY="$(grep '^BMC_ADMIN_KEY=' .env.ci | cut -d= -f2-)"
+
+          # Real concurrent SQL delivery claims; SMTP function is replaced by a fake.
+          docker compose --env-file .env.ci exec -T ops_api python - < ci/paid-mail-idempotency.py
 
           # CI_GROWTH_E2E_V1 — prove free sample -> reserve gate -> nurture -> paid fulfillment.
           docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
