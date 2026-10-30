@@ -3459,14 +3459,22 @@ Reply no to stop future BMC outreach."""
               f"Growth nurture email failed for sample {row['sample_id']}","Verify SMTP/address before the next nurture attempt")
     return {"ok":True,"sent":sent,"converted_without_followup":converted}
 
+def growth_csv_cell(value):
+    # Public business text is untrusted; spreadsheet apps must not execute it.
+    text=str(value if value is not None else "")
+    if text.lstrip(" \t\r\n").startswith(("=","+","-","@")):
+        return "'"+text
+    return text
+
 def growth_csv_bytes(rows):
     out=io.StringIO()
     writer=csv.writer(out)
     writer.writerow(["Priority","Fit score","Business","Market","Type","Why it fits","Public email","Public phone","Source","Suggested outreach angle","Verification"])
     for r in rows:
-        writer.writerow([r["grade"],r["fit_score"],r["business_name"],r["market"],r["category_label"],
+        writer.writerow([growth_csv_cell(value) for value in [
+          r["grade"],r["fit_score"],r["business_name"],r["market"],r["category_label"],
           r["fit_reason"],clean(r.get("public_email")),clean(r.get("public_phone")),r["source_url"],
-          r["sales_angle"],clean(r.get("verification_status"))])
+          r["sales_angle"],clean(r.get("verification_status"))]])
     return out.getvalue().encode("utf-8-sig")
 
 @app.post("/api/process-growth-fulfillment")

@@ -59,6 +59,7 @@ jobs:
           python3 portfolio/automation/test-growth-qualification-gates.py
           python3 portfolio/automation/test-checkout-idempotency.py
           python3 portfolio/automation/test-fulfillment-claim.py
+          python3 portfolio/automation/test-growth-csv.py
           python3 portfolio/automation/test-local-ai-budget.py
           bash -n portfolio/automation/install-operator-monitor.sh
 
@@ -1801,7 +1802,7 @@ jobs:
             --data-binary "$PAYLOAD" >/tmp/bmc_stripe.json
           cat /tmp/bmc_stripe.json
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from payment_events where stripe_event_id='evt_ci_checkout_1' and product_key='growth_pack_starter';")" -eq 1
-          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select coalesce(sum(amount_cents),0) from revenue_events where model='stripe_checkout';")" -eq 49900
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select coalesce(sum(amount_cents),0) from revenue_events where model='stripe_checkout' and notes not like '%session cs_ci_sample_payment';")" -eq 49900
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from orders where stripe_checkout_session_id='cs_ci_1' and product_key='growth_pack_starter';")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from orders where stripe_checkout_session_id='cs_ci_1';")" = "ready_for_fulfillment"
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from leads where lead_id='$GROWTH_LEAD_ID'::uuid;")" = "internal_queue"
@@ -1813,7 +1814,7 @@ jobs:
             -H "Stripe-Signature: t=$TS,v1=$SIG" \
             --data-binary "$PAYLOAD" >/tmp/bmc_stripe_duplicate.json
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from payment_events where stripe_event_id='evt_ci_checkout_1';")" -eq 1
-          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select coalesce(sum(amount_cents),0) from revenue_events where model='stripe_checkout';")" -eq 49900
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select coalesce(sum(amount_cents),0) from revenue_events where model='stripe_checkout' and notes not like '%session cs_ci_sample_payment';")" -eq 49900
 
           # A distinct paid event for the same session must not reset fulfillment or rebook revenue.
           docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "update orders set status='fulfilled' where stripe_checkout_session_id='cs_ci_1';"
@@ -1823,7 +1824,7 @@ jobs:
             -H 'Content-Type: application/json' -H "Stripe-Signature: t=$TS,v1=$SIG_CROSS_EVENT" \
             --data-binary "$PAYLOAD_CROSS_EVENT" >/tmp/bmc_stripe_cross_event.json
           python -c 'import json; assert json.load(open("/tmp/bmc_stripe_cross_event.json"))["duplicate_checkout"] is True'
-          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select coalesce(sum(amount_cents),0) from revenue_events where model='stripe_checkout';")" -eq 49900
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select coalesce(sum(amount_cents),0) from revenue_events where model='stripe_checkout' and notes not like '%session cs_ci_sample_payment';")" -eq 49900
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from orders where stripe_checkout_session_id='cs_ci_1';")" = "fulfilled"
 
           # Prove paid-first checkout creates a visible recovery task until the buyer supplies intake details.
@@ -1859,7 +1860,7 @@ jobs:
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select status from orders where stripe_checkout_session_id='cs_ci_paid_first';")" = "ready_for_fulfillment"
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from tasks where order_id=(select order_id from orders where stripe_checkout_session_id='cs_ci_paid_first') and task_type='collect_paid_order_intake' and status='completed';")" -eq 1
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from tasks where lead_id='$PAID_VALID_LEAD_ID'::uuid and task_type='fulfill_internal_product' and status='open' and owner='bmc_operator' and order_id is not null;")" -eq 1
-          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select coalesce(sum(amount_cents),0) from revenue_events where model='stripe_checkout';")" -eq 124800
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select coalesce(sum(amount_cents),0) from revenue_events where model='stripe_checkout' and notes not like '%session cs_ci_sample_payment';")" -eq 124800
       - name: Show automation logs on failure
         if: failure()
         working-directory: portfolio/automation
