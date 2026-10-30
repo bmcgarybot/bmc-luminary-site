@@ -30,7 +30,7 @@ I found several {market} businesses that look like strong commercial prospects f
 
 Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the kind of commercial work your business does — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.
 
-Click once to see the five BMC already prepared for this invitation:
+Click once to get your five free commercial targets:
 {landing_url}
 
 The link uses the business, market, and service already tied to this outreach, so you do not have to re-enter them.
@@ -66,16 +66,23 @@ Reply no if you do not want future outreach.
 
 ## 3. Growth positive-reply response
 
-**Subject:** `Here’s the free 5-target form`
+**Subject:** Your five free commercial targets
 
-Thanks for the reply. Tell BMC the commercial work and area you want here:
+Hi {business_name},
 
-{landing_url}
+Thanks for replying. Use the link below to get five commercial targets for {business_name} in {market}.
 
-We’ll research five real targets free.
+Your invitation carries over your business, market, email, and service. You do not need to fill out the same details again.
 
+{signed_one_click_sample_url}
+
+BMC Service Network
 BMC Luminary Ventures LLC
 {business_postal_address}
+
+Reply no if you do not want future BMC outreach.
+
+A positive reply is recorded while the owner hold is active, but no automatic response is sent until the owner hold is released and Growth outreach is enabled.
 
 ---
 

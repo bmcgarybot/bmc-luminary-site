@@ -63,6 +63,7 @@ jobs:
           python3 portfolio/automation/test-growth-inventory-audit.py
           python3 portfolio/automation/test-paid-mail-once.py
           python3 portfolio/automation/test-saved-sample-recheck.py
+          python3 portfolio/automation/test-growth-reply-hold.py
           python3 portfolio/automation/test-local-ai-budget.py
           bash -n portfolio/automation/install-operator-monitor.sh
 
