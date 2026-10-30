@@ -652,6 +652,33 @@ async def send_mail(to,subject,body,html_body=None,attachments=None):
     except Exception:
         return False
 
+async def send_mail_once(delivery_key,to,subject,body,html_body=None,attachments=None):
+    """Durable paid-delivery claim; uncertain SMTP outcomes require review, never blind retry."""
+    if not to:
+        return False
+    if SMTP_DRY_RUN:
+        return await send_mail(to,subject,body,html_body,attachments)
+    fingerprint=hashlib.sha256(json.dumps({
+      "to":to,"subject":subject,"body":body,"html":html_body,
+      "attachments":[[name,hashlib.sha256(data).hexdigest(),maintype,subtype]
+        for name,data,maintype,subtype in (attachments or [])]
+    },sort_keys=True).encode()).hexdigest()
+    # Commit this claim independently BEFORE SMTP. A surrounding business
+    # transaction rollback must not erase evidence that mail may have left.
+    async with app.state.pool.acquire() as delivery_conn:
+        claimed=await delivery_conn.fetchval("""insert into mail_delivery_attempts(delivery_key,payload_sha256,status)
+          values($1,$2,'attempting') on conflict(delivery_key) do nothing returning delivery_key""",
+          delivery_key,fingerprint)
+        if not claimed:
+            prior=await delivery_conn.fetchrow("""select payload_sha256,status from mail_delivery_attempts
+              where delivery_key=$1""",delivery_key)
+            return bool(prior and prior["payload_sha256"]==fingerprint and prior["status"]=="submitted")
+    ok=await send_mail(to,subject,body,html_body,attachments)
+    async with app.state.pool.acquire() as delivery_conn:
+        await delivery_conn.execute("""update mail_delivery_attempts set status=$2,updated_at=now()
+          where delivery_key=$1""",delivery_key,"submitted" if ok else "uncertain")
+    return ok
+
 def clean(v): return str(v or "").strip()
 def slug(v): return re.sub(r"[^a-z0-9]+","-",clean(v).lower()).strip("-")[:40] or "vendor"
 
@@ -3620,7 +3647,7 @@ Please tell us what happens as you work the list — interested, quote, won, los
 
 BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}"""
-          ok=await send_mail(row["customer_email"],subject,body,workflow_email_html(subject,[
+          ok=await send_mail_once("growth-order:"+str(row["paid_order_id"]),row["customer_email"],subject,body,workflow_email_html(subject,[
             "Your 100-prospect Growth Pack is attached as a CSV you can open in Excel, Google Sheets, or Numbers.",
             "The five free targets are included in the 100.",
             "Every row passed BMC's territory, fit, contact/source, activity, score, and duplicate checks.",
@@ -3631,7 +3658,7 @@ BMC Luminary Ventures LLC
               await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
                 values('growth_fulfillment_delivery_failure','critical',$1,$2)""",
                 f"Paid Growth order {row['paid_order_id']} passed QA but email delivery failed",
-                "Verify customer email/SMTP and resend the stored 100-row order deliverable")
+                "Review durable mail_delivery_attempts and the stored 100-row deliverable. An uncertain or changed payload must not be blindly resent; confirm submission before any owner-approved retry.")
               exceptions+=1; continue
           await conn.execute("""update growth_prospect_exposures set status='delivered',delivered_at=now()
             where delivery_ref=$1 and status='reserved'""","order:"+str(row["paid_order_id"]))

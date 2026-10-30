@@ -1201,3 +1201,13 @@ where e.delivery_ref in ('order:'||o.order_id::text,'historical-order:'||o.order
   and e.recipient_business_key is null;
 create index if not exists idx_growth_exposure_recipient_business
   on growth_prospect_exposures(recipient_business_key,prospect_key,status);
+
+-- Durable transactional paid-delivery claims survive the business transaction.
+-- No recipient/contact details or message body are stored in this ledger.
+create table if not exists mail_delivery_attempts (
+  delivery_key text primary key,
+  payload_sha256 text not null,
+  status text not null check(status in ('attempting','submitted','uncertain')),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
