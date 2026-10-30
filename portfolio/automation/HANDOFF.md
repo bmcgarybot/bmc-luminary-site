@@ -11311,3 +11311,19 @@ Paid delivery PR #12 head 64b12b22 passed both full CI runs 41000544277/41000539
 Added explicit owner_review_required boolean to outreach for pre-review Growth submissions before the proven seven-contact checkpoint (2026-10-30T03:50:30Z). Preserves sent status, sequence step, original timestamps and evidence. Growth worker and launch-ready staged count exclude held records; raw SMTP sent count remains unchanged. Growth status reports historical_contacts_awaiting_review. New post-checkpoint contacts remain unaffected. Incoming replies/requested samples remain usable. These contacts are held for recovery review, not marked dead or opted out.
 
 SEVEN_CONTACT_RECOVERY.md records concrete per-contact evidence/copy/route/approval steps. No apology blast or historical sequence reset. CI applies the migration twice to synthetic old/new contacts and checks original status/step/timestamp plus correct hold targeting. Exact-head full CI required before release. All customer/owner-preview mail remains unauthorized, owner hold ON.
+
+## Section 98 — Final held-pilot acceptance checkpoint (2026-10-29 Arizona)
+
+Paid delivery rollout result SUCCESS on exact 3c5dc832, completed 2026-10-30T04:08:46Z, exit 0; runtime zero failures/warnings and existing private monitor active. No customer/owner-preview message, live charge, model upgrade or hold release occurred.
+
+Original-seven recovery PR #13 head efe94363 passed full CI 41001238498/41001233985, merged as 5b733c7f6b960b5eb922cc62cb18d2b4616c8231. Exact merged-master CI still being checked at this checkpoint. Recovery migration also records historical_review_recorded_at so a later explicitly reviewed release is not undone by subsequent migrations.
+
+Corrected a small plain-text first-touch overstatement: it said five records were "already prepared", although selection/reservation occurs on the click. Copy now says "Click once to get your five free commercial targets". HTML does not make the old prepared claim. EMAIL_TEMPLATE_REVIEW.md mirrors the correction. No extra test was written for this reversible copy edit; normal full CI remains required before release.
+
+Live selector capacity: Prescott and Prescott Valley both reach the 125-record reserve for both current services. First controlled experiment remains pressure-washing free-five -> $499 starter 100 INCLUDING the five. Premium must not be advertised as fully autonomous; its extra deliverables require review. Phase-2 provider activation is not a blocker for this Phase-1 experiment.
+
+Launch acceptance still requires actual current-template Gmail rendering review and Brett's explicit approval, using exact deployed SHA. No permission to send even owner-preview mail has been given in this turn. Existing first-touch owner replay is a separate external action and can be requested only after explicit permission; customer campaigns must remain OFF throughout. The owner can then test the signed preview click against real inventory without allocating a customer sample or sending customer mail.
+
+DNS/email authentication could not be independently confirmed from this tool environment (public DNS lookup inaccessible/refused). Connected Gmail contains prior owner previews in the Gmail account's Sent folder, which does not prove receipt, inbox placement, current configured sender identity, or current SPF/DKIM/DMARC. Do not claim authentication or deliverability is verified. Actual current preview/header review remains needed.
+
+Readiness evidence completed this session: 87 local tests across 14 suites; real CI sample -> signed synthetic payment -> fulfillment -> 100 rows; distinct checkout-event replay; actual Postgres paid-mail concurrency/rollback persistence with fake SMTP; all 42 live selector-capacity lane aggregates. These do not prove real sales, every prospect's current business status, inbox delivery or full autonomous Premium fulfillment.
