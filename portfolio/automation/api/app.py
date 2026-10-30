@@ -4557,15 +4557,18 @@ def owner_template_preview_catalog():
     return entries
 
 @app.post("/api/admin/replay-all-email-templates-to-owner")
-async def replay_all_email_templates_to_owner(x_bmc_admin_key:str|None=Header(default=None)):
+async def replay_all_email_templates_to_owner(x_bmc_admin_key:str|None=Header(default=None),scope:str="all"):
     if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY:
         raise HTTPException(403,"Forbidden")
     if OUTREACH_ENABLED or BUYER_OUTREACH_ENABLED or GROWTH_OUTREACH_ENABLED:
         raise HTTPException(409,"All outbound campaign switches must remain OFF for owner preview testing.")
+    if scope not in ("all","growth"):
+        raise HTTPException(400,"Preview scope must be all or growth")
+    entries=[item for item in owner_template_preview_catalog() if scope=="all" or item["num"]<=7]
     recipient="brett.coon2@gmail.com"
     sent=[]; failed=[]
-    for item in owner_template_preview_catalog():
-        label=f"[OWNER PREVIEW {item['num']:02d}/27] {item['name']}"
+    for item in entries:
+        label=f"[OWNER PREVIEW {item['num']:02d}/{len(entries):02d}] {item['name']}"
         subject=f"{label} — {item['subject']}"
         html_body=workflow_email_html(
           label,item["lines"],item.get("button"),item.get("url"),
@@ -4577,7 +4580,7 @@ async def replay_all_email_templates_to_owner(x_bmc_admin_key:str|None=Header(de
         body+=f"\n\nBMC Service Network\nBMC Luminary Ventures LLC\n{BUSINESS_POSTAL_ADDRESS}"
         ok=await send_mail(recipient,subject,body,html_body)
         (sent if ok else failed).append({"num":item["num"],"name":item["name"],"subject":subject})
-    return {"ok":not failed,"recipient":recipient,"sent":sent,"failed":failed,"count_sent":len(sent),"count_failed":len(failed)}
+    return {"ok":not failed,"recipient":recipient,"scope":scope,"sent":sent,"failed":failed,"count_sent":len(sent),"count_failed":len(failed)}
 
 def require_admin(key):
     if not ADMIN_KEY or key!=ADMIN_KEY:
