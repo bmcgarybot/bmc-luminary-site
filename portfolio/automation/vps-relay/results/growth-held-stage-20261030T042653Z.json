@@ -1,0 +1,27 @@
+{
+  "action": "growth_stage_pressure_washing",
+  "allow_external_actions": false,
+  "completed_at": "2026-10-30T04:26:59.831977+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "315eeeefeb9f09f25a1ba5268a871844b0fc08ef",
+  "git_commit_before": "315eeeefeb9f09f25a1ba5268a871844b0fc08ef",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "bd6ba214d799b09292bd2eafc72dd879075498a6",
+  "request_id": "growth-held-stage-20261030T042653Z",
+  "request_sha256": "9b05be8b92f81468959c1983e844d7e20021e7a785c32cdec9ef1e3b0a215ad9",
+  "started_at": "2026-10-30T04:26:59.734700+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"iterations\": 1,\n  \"responses\": [\n    {\n      \"ok\": true,\n      \"service_key\": \"pressure_washing\",\n      \"wave\": \"growth-pressure-1\",\n      \"staged\": 0,\n      \"email_candidates\": 7,\n      \"skipped_insufficient_buyer_inventory\": 0,\n      \"qualified_pool_by_market\": {\n        \"Prescott\": 125,\n        \"Prescott Valley\": 125,\n        \"Sedona\": 125\n      }\n    }\n  ]\n}",
+  "version": 1
+}
