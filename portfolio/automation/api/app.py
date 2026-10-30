@@ -4196,19 +4196,36 @@ async def process_buyer_outreach(x_bmc_admin_key:str|None=Header(default=None)):
     return {"ok":True,"enabled":True,"sent":sent,"daily_limit":BUYER_OUTREACH_DAILY_LIMIT}
 
 
-def growth_outreach_message(row,step,owner_preview=False):
+def growth_invitation_url(row,owner_preview=False,source="bmc_outreach"):
     service_key=clean(row["service_key"])
-    service_label=GROWTH_SERVICE_LABELS.get(service_key,service_key.replace("_"," "))
-    claim=growth_claim_token(row["target_id"],row["public_email"])
     query={
-      "utm_source":"bmc_outreach","utm_medium":"email","utm_campaign":"growth_"+service_key,
+      "utm_source":source,"utm_medium":"email","utm_campaign":"growth_"+service_key,
       "utm_content":row["target_id"],"target":row["target_id"],"market":row["market"],"business":row["business_name"],
-      "claim":claim
+      "claim":growth_claim_token(row["target_id"],row["public_email"])
     }
     if owner_preview:
         query["preview"]="1"
     params=urllib.parse.urlencode(query)
-    landing=f"{PUBLIC_SITE_URL}{GROWTH_LANDING_PATHS.get(service_key,'/growth-packs/')}?{params}"
+    return f"{PUBLIC_SITE_URL}{GROWTH_LANDING_PATHS.get(service_key,'/growth-packs/')}?{params}"
+
+def growth_positive_reply_message(row):
+    landing=growth_invitation_url(row,source="bmc_reply")
+    subject="Your five free commercial targets"
+    lines=[
+      f"Thanks for replying. Use the link below to get five commercial targets for {clean(row['business_name'])} in {clean(row['market'])}.",
+      "Your invitation carries over your business, market, email, and service. You do not need to fill out the same details again."
+    ]
+    body="\n\n".join([f"Hi {clean(row['business_name'])},",*lines,landing,
+      "BMC Service Network","BMC Luminary Ventures LLC",BUSINESS_POSTAL_ADDRESS,
+      "Reply no if you do not want future BMC outreach."])
+    rendered=workflow_email_html(subject,lines,"Show me my five targets",landing,
+      greeting=f"Hi {clean(row['business_name'])},",marketing=True)
+    return subject,body,rendered
+
+def growth_outreach_message(row,step,owner_preview=False):
+    service_key=clean(row["service_key"])
+    service_label=GROWTH_SERVICE_LABELS.get(service_key,service_key.replace("_"," "))
+    landing=growth_invitation_url(row,owner_preview=owner_preview)
     business=clean(row["business_name"])
     market=clean(row["market"])
     if step==1:
@@ -4393,10 +4410,10 @@ def owner_template_preview_catalog():
       "Your invitation already knows the business, market, and service tied to this email. Click once to see the five.",
       "The five are yours to use. You only pay if you decide you want the full 100-prospect pack."
     ],"Show me the 5 targets",landing,True)
-    add(3,"Growth positive-reply response","Here’s the free 5-target form",None,[
-      "Thanks for the reply. Tell BMC the commercial work and area you want here:",
-      "We’ll research five real targets free."
-    ],"Open the free 5-target page",landing,False)
+    add(3,"Growth positive-reply response","Your five free commercial targets",f"Hi {business},",[
+      f"Thanks for replying. Use the link below to get five commercial targets for {business} in {market}.",
+      "Your invitation carries over your business, market, email, and service. You do not need to fill out the same details again."
+    ],"Show me my five targets",landing,True)
     delivery_lines=[f"Here are five commercial targets for {business} in {market}."]
     for i,(n,cat,score,why,angle,route,src) in enumerate(sample_targets,1):
         delivery_lines.append(f"{i}. {n} — {cat} — fit {score}/100\nWhy it fits: {why}\nPublic contact route: {route}\nSuggested angle: {angle}\nSource: {src}")
@@ -6672,11 +6689,24 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                             await conn.execute("update growth_outreach_targets set status='engaged',updated_at=now() where target_id=$1",row["entity_id"])
                             await conn.execute("""update growth_experiment_cells set engagements=engagements+1,updated_at=now()
                               where cell_key=$1""",target["experiment_cell"])
-                            params=urllib.parse.urlencode({"utm_source":"bmc_reply","utm_medium":"email","utm_campaign":"growth_"+target["service_key"],
-                              "target":target["target_id"],"market":target["market"],"business":target["business_name"]})
-                            landing=f"{PUBLIC_SITE_URL}{GROWTH_LANDING_PATHS.get(target['service_key'],'/growth-packs/')}?{params}"
-                            await send_mail(sender,"Here’s the free 5-target form",
-                              f"Thanks for the reply. Tell BMC the commercial work and area you want here:\n\n{landing}\n\nWe’ll research five real targets free.\n\nBMC Luminary Ventures LLC\n{BUSINESS_POSTAL_ADDRESS}")
+                            # Reply ingestion continues during a hold, but customer
+                            # follow-up remains behind the same owner/campaign gates.
+                            if not OWNER_LAUNCH_HOLD and GROWTH_OUTREACH_ENABLED:
+                                subject,reply_body,reply_html=growth_positive_reply_message(target)
+                                ok=await send_mail_once("growth-positive:"+str(target["target_id"]),sender,
+                                  subject,reply_body,reply_html)
+                                if not ok:
+                                    await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+                                      values('growth_reply_delivery_failure','high',$1,$2)""",
+                                      f"Growth positive-reply response requires delivery review for target {target['target_id']}",
+                                      "Review the durable delivery attempt before retrying; do not send an unreviewed or duplicate response")
+                            else:
+                                summary=f"Positive Growth reply awaiting owner-approved response for target {target['target_id']}"
+                                await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+                                  select 'growth_reply_awaiting_review','high',$1,$2
+                                  where not exists(select 1 from exceptions where type='growth_reply_awaiting_review'
+                                    and status='open' and summary=$1)""",summary,
+                                  "The reply was recorded without sending. Review the contact and approved one-click response before follow-up.")
                 if classification=="opt_out":
                     await conn.execute("insert into outreach_suppressions(email,reason,source) values($1,'reply opt-out','imap') on conflict(email) do nothing",sender)
                     await conn.execute("""update growth_sample_requests set status='suppressed',next_nurture_at=null,updated_at=now()

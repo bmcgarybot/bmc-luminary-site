@@ -66,16 +66,23 @@ Reply no if you do not want future outreach.
 
 ## 3. Growth positive-reply response
 
-**Subject:** `Here’s the free 5-target form`
+**Subject:** Your five free commercial targets
 
-Thanks for the reply. Tell BMC the commercial work and area you want here:
+Hi {business_name},
 
-{landing_url}
+Thanks for replying. Use the link below to get five commercial targets for {business_name} in {market}.
 
-We’ll research five real targets free.
+Your invitation carries over your business, market, email, and service. You do not need to fill out the same details again.
 
+{signed_one_click_sample_url}
+
+BMC Service Network
 BMC Luminary Ventures LLC
 {business_postal_address}
+
+Reply no if you do not want future BMC outreach.
+
+A positive reply is recorded while the owner hold is active, but no automatic response is sent until the owner hold is released and Growth outreach is enabled.
 
 ---
 
