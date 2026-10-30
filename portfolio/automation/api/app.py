@@ -3485,6 +3485,23 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
       for row in tasks:
         async with conn.transaction():
           await growth_lock_exposure_allocator(conn)
+          # The outer queue snapshot may be stale after another worker completes.
+          # Lock and recheck both records before any allocation or customer email.
+          current=await conn.fetchrow("""select t.status as task_status,o.status as order_status,
+              o.product_key,o.payment_status
+            from tasks t join orders o on o.order_id=t.order_id
+            where t.task_id=$1 and o.order_id=$2 for update of t,o""",
+            row["task_id"],row["paid_order_id"])
+          if not current or current["task_status"] not in ("open","queued") or current["order_status"]!="ready_for_fulfillment" or current["payment_status"] not in ("paid","complete"):
+              continue
+          if current["product_key"]!="growth_pack_starter":
+              await conn.execute("update tasks set status='exception',updated_at=now() where task_id=$1",row["task_id"])
+              await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+                values('growth_fulfillment_product_scope','critical',$1,$2)""",
+                f"Growth order {row['paid_order_id']} requires product-specific deliverables",
+                "Prepare and review every purchased deliverable before delivery; the starter CSV cannot fulfill a Premium order")
+              exceptions+=1
+              continue
           prior=await conn.fetch("""select distinct lower(gop.business_name) name
             from growth_order_prospects gop join orders po on po.order_id=gop.order_id
             where lower(po.customer_email)=lower($1) and po.order_id<>$2""",row["customer_email"],row["paid_order_id"])

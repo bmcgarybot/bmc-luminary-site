@@ -58,6 +58,7 @@ jobs:
           python3 portfolio/automation/test-campaign-owner-hold.py
           python3 portfolio/automation/test-growth-qualification-gates.py
           python3 portfolio/automation/test-checkout-idempotency.py
+          python3 portfolio/automation/test-fulfillment-claim.py
           python3 portfolio/automation/test-local-ai-budget.py
           bash -n portfolio/automation/install-operator-monitor.sh
 
