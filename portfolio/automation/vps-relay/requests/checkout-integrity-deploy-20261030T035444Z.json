@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "checkout-integrity-deploy-20261030T035444Z",
+  "action": "deploy_update",
+  "required_ci_sha": "cfb65236af3151b34ba50540aff2a45751d1aeab",
+  "created_at": "2026-10-30T03:54:44.950Z",
+  "expires_at": "2026-10-30T05:54:44.950Z",
+  "allow_external_actions": false,
+  "args": {}
+}
