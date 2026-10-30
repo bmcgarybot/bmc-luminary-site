@@ -1,0 +1,181 @@
+{
+  "title": "Phase-1 pressure-washing customer contact-route review",
+  "researched_by": "assistant_manual_primary_source_review",
+  "reviewed_date": "2026-10-29",
+  "purpose": "Prepare a held review cohort without contacting or approving providers",
+  "count": 11,
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Prescott",
+      "category_key": "pressure_washing",
+      "category_label": "Pressure Washing",
+      "business_name": "A&B Gutters & Glass",
+      "url": "https://abpressurewashing.services/",
+      "domain": "abpressurewashing.services",
+      "email": "abpressurewashing63@gmail.com",
+      "phone": "928-499-2937",
+      "official": true,
+      "verified_date": "2026-10-29",
+      "note": "Direct website lists Prescott and Tri-City commercial/residential exterior cleaning, pressure washing and public email. Public business contact route only; no inbox validation, buying intent, provider approval, or independent credential check is claimed. Outreach held."
+    },
+    {
+      "side": "vendor",
+      "market": "Scottsdale",
+      "category_key": "pressure_washing",
+      "category_label": "Pressure Washing",
+      "business_name": "AZ Pressure Wash and Windows",
+      "url": "https://azpressurewashandwindows.com/contact-us/",
+      "domain": "azpressurewashandwindows.com",
+      "email": "info@azpressurewashandwindows.com",
+      "phone": "480-658-3605",
+      "official": true,
+      "verified_date": "2026-10-29",
+      "note": "Direct contact page lists pressure washing for homes/businesses and Scottsdale/Phoenix metro service. Market is service coverage, not an asserted office address. Public business contact route only; no inbox validation, buying intent, provider approval, or independent credential check is claimed. Outreach held."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "pressure_washing",
+      "category_label": "Pressure Washing",
+      "business_name": "Affordable Pressure Washing",
+      "url": "https://affordablepressurewashingaz.com/contact/",
+      "domain": "affordablepressurewashingaz.com",
+      "email": "info@am-pros.com",
+      "phone": "480-863-6460",
+      "official": true,
+      "verified_date": "2026-10-29",
+      "note": "Direct contact page lists public email/phone, Phoenix service area, and commercial concrete, dumpster-pad, building and garage cleaning. Public business contact route only; no inbox validation, buying intent, provider approval, or independent credential check is claimed. Outreach held."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "pressure_washing",
+      "category_label": "Pressure Washing",
+      "business_name": "Pressure Washing Near Me, LLC",
+      "url": "https://www.pressurewashingnearmeaz.com/",
+      "domain": "pressurewashingnearmeaz.com",
+      "email": "contact@pressurewashingnearmeaz.com",
+      "phone": "602-686-3033",
+      "official": true,
+      "verified_date": "2026-10-29",
+      "note": "Direct homepage lists commercial/residential pressure washing, public email/phone and Phoenix among covered locations. Public business contact route only; no inbox validation, buying intent, provider approval, or independent credential check is claimed. Outreach held."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "pressure_washing",
+      "category_label": "Pressure Washing",
+      "business_name": "Desert Finish Pressure Washing",
+      "url": "https://www.desertfinishpressurewashing.com/contact",
+      "domain": "desertfinishpressurewashing.com",
+      "email": "desertfinishpw@gmail.com",
+      "phone": "602-598-0801",
+      "official": true,
+      "verified_date": "2026-10-29",
+      "note": "Direct contact page lists public email/phone, Phoenix service coverage, restaurant, grocery storefront and gas-station work. Public business contact route only; no inbox validation, buying intent, provider approval, or independent credential check is claimed. Outreach held."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "pressure_washing",
+      "category_label": "Pressure Washing",
+      "business_name": "Under The Gun Pressure Washing",
+      "url": "https://underthegunpressurewashing.com/",
+      "domain": "underthegunpressurewashing.com",
+      "email": "utgpressurewashing@gmail.com",
+      "phone": "480-818-4122",
+      "official": true,
+      "verified_date": "2026-10-29",
+      "note": "Owner-operated business based in San Tan Valley explicitly serves Phoenix commercial properties. Market is service coverage, not headquarters. Public business contact route only; no inbox validation, buying intent, provider approval, or independent credential check is claimed. Outreach held."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "pressure_washing",
+      "category_label": "Pressure Washing",
+      "business_name": "Service Brothers Commercial Cleaning",
+      "url": "https://servicebrothers.info/contact",
+      "domain": "servicebrothers.info",
+      "email": "servicebrotherscommercial@gmail.com",
+      "phone": "602-721-3587",
+      "official": true,
+      "verified_date": "2026-10-29",
+      "note": "Direct contact page lists pressure washing, public email/phone, and Phoenix service coverage. Alternate phone also displayed; primary contact-section number recorded. Public business contact route only; no inbox validation, buying intent, provider approval, or independent credential check is claimed. Outreach held."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "pressure_washing",
+      "category_label": "Pressure Washing",
+      "business_name": "Clean Surface Pressure Washing",
+      "url": "https://cleansurfacepressurewashing.com/contact?intent=commercial",
+      "domain": "cleansurfacepressurewashing.com",
+      "email": "infocleansurfacepw@gmail.com",
+      "phone": "480-298-3416",
+      "official": true,
+      "verified_date": "2026-10-29",
+      "note": "Direct commercial contact page lists public email/phone, Phoenix address and commercial exterior-cleaning scope. Public business contact route only; no inbox validation, buying intent, provider approval, or independent credential check is claimed. Outreach held."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "pressure_washing",
+      "category_label": "Pressure Washing",
+      "business_name": "Ace Surface Maintenance, Inc.",
+      "url": "https://www.acesurface.com/contact",
+      "domain": "acesurface.com",
+      "email": "acesurf@acesurface.com",
+      "phone": "602-455-4797",
+      "official": true,
+      "verified_date": "2026-10-29",
+      "note": "Direct contact page lists Phoenix office, public email/phone and pressure-washing services. Established commercial operator; purchase interest and pack fit require review. Public business contact route only; no inbox validation, buying intent, provider approval, or independent credential check is claimed. Outreach held."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "pressure_washing",
+      "category_label": "Pressure Washing",
+      "business_name": "Pro-Sweep, LLC",
+      "url": "https://prosweepaz.com/contact-us/",
+      "domain": "prosweepaz.com",
+      "email": "service@prosweepaz.com",
+      "phone": "480-464-8050",
+      "official": true,
+      "verified_date": "2026-10-29",
+      "note": "Direct contact page lists steam pressure washing, public email/phone and Greater Phoenix coverage. Office is Mesa; market denotes Phoenix service coverage. Public business contact route only; no inbox validation, buying intent, provider approval, or independent credential check is claimed. Outreach held."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "pressure_washing",
+      "category_label": "Pressure Washing",
+      "business_name": "Pro Power Wash",
+      "url": "https://propowerwash.com/contact-us/",
+      "domain": "propowerwash.com",
+      "email": "ronppw@aol.com",
+      "phone": "480-522-5227",
+      "official": true,
+      "verified_date": "2026-10-29",
+      "note": "Direct contact page lists public business contact and Phoenix commercial cleaning. Established multistate operator/trainer; purchase interest and pack fit require review. Public business contact route only; no inbox validation, buying intent, provider approval, or independent credential check is claimed. Outreach held."
+    }
+  ],
+  "rejected_examples": [
+    {
+      "url": "https://prescottspressurewashing.com/",
+      "reason": "Prescott business name, but source identifies Alvin, Texas and Texas service counties; not an Arizona market match."
+    },
+    {
+      "url": "https://www.pressuresystemsinc.com/contact/",
+      "reason": "Pressure-washer equipment/supply business; not verified as the target commercial cleaning contractor."
+    },
+    {
+      "url": "https://www.sunpressurewash.com/contact/",
+      "reason": "Direct page returned a verification wall during review; cached snippet alone not promoted in this batch."
+    },
+    {
+      "url": "https://www.arizonafacilityservices.com/",
+      "reason": "Service/geography confirmed, but current fetched page did not expose the email from the earlier search snippet; not promoted as verified email."
+    }
+  ]
+}
