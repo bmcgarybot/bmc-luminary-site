@@ -47,7 +47,7 @@ LOCAL_RESULTS = STATE_DIR / "results"
 RESEARCH_SCHEDULE_FILE = STATE_DIR / "research-refresh-schedule.json"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot"}
+READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
     "market_inventory_step",
@@ -681,6 +681,10 @@ def execute(req: dict) -> dict:
         stdout=json.dumps(snapshot,indent=2)
         stderr=""
         exit_code=0
+
+    elif action == "growth_inventory_audit":
+        status=admin_post("/api/admin/growth-inventory-audit",timeout=180)
+        stdout=json.dumps(status,indent=2,default=str);stderr="";exit_code=0
 
     elif action == "growth_status":
         status=admin_post("/api/admin/growth-status",timeout=120)

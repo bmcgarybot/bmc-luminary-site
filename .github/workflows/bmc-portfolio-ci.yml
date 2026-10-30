@@ -28,7 +28,7 @@ jobs:
           ns=runpy.run_path("vps-gitops-relay.py",run_name="bmc_relay_ci")
           expected={
               "proof_readout","launch_audit","runtime_doctor","diagnostic_bundle","scheduler_status","search_quality_probe","research_refresh_status",
-              "growth_status","growth_launch_audit","operator_snapshot",
+              "growth_status","growth_launch_audit","operator_snapshot","growth_inventory_audit",
               "deploy_update","market_inventory_step","local_demand_step",
               "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","inventory_closure_step","research_refresh_install","scheduler_start","scheduler_stop",
               "growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_launch_enable","growth_launch_disable","growth_owner_replay_email","owner_replay_all_email_templates","growth_owner_preview_approve"
@@ -60,6 +60,7 @@ jobs:
           python3 portfolio/automation/test-checkout-idempotency.py
           python3 portfolio/automation/test-fulfillment-claim.py
           python3 portfolio/automation/test-growth-csv.py
+          python3 portfolio/automation/test-growth-inventory-audit.py
           python3 portfolio/automation/test-local-ai-budget.py
           bash -n portfolio/automation/install-operator-monitor.sh
 
@@ -1200,6 +1201,19 @@ jobs:
           import json
           assert json.load(open("/tmp/bmc_growth_nurture.json"))["ok"] is True
           assert json.load(open("/tmp/bmc_growth_fulfillment.json"))["ok"] is True
+          PY
+
+          # Aggregate capacity audit runs in a read-only Postgres transaction.
+          curl -fsS -X POST http://127.0.0.1:8000/api/admin/growth-inventory-audit \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_growth_inventory_audit.json
+          python - <<'PY'
+          import json
+          data=json.load(open("/tmp/bmc_growth_inventory_audit.json"))
+          assert data["ok"] and data["read_only"] and data["counts_capped_at_reserve"]
+          assert len(data["lanes"]) == 42
+          assert len({(r["market"],r["service_key"]) for r in data["lanes"]}) == 42
+          assert all(0<=r["qualified_up_to_reserve"]<=data["reserve_required"] for r in data["lanes"])
+          assert all(set(r)=={"market","service_key","qualified_up_to_reserve","sample_capacity","paid_reserve_capacity"} for r in data["lanes"])
           PY
 
           # Prove the bounded operator performs internal work while external actions remain impossible.
