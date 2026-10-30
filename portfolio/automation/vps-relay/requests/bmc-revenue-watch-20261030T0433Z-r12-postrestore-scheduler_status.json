@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-revenue-watch-20261030T0433Z-r12-postrestore-scheduler_status",
+  "action": "scheduler_status",
+  "created_at": "2026-10-30T04:33:10Z",
+  "expires_at": "2026-10-30T06:33:10Z",
+  "allow_external_actions": false,
+  "args": {}
+}
