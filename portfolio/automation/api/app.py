@@ -3507,6 +3507,27 @@ Reply no to stop future BMC outreach."""
               f"Growth nurture email failed for sample {row['sample_id']}","Verify SMTP/address before the next nurture attempt")
     return {"ok":True,"sent":sent,"converted_without_followup":converted}
 
+def growth_saved_sample_is_current(saved,current,service_key):
+    if not current or current.get("status")!="discovered" or current.get("closed_at") is not None:
+        return False
+    if growth_prospect_key(saved)!=growth_prospect_key(current):
+        return False
+    if clean(saved.get("category_key"))!=clean(current.get("category_key")):
+        return False
+    if not growth_candidate_is_fresh(current) or growth_candidate_score(current,service_key)<65:
+        return False
+    host=clean(current.get("source_domain")).lower().removeprefix("www.")
+    if any(host==d or host.endswith("."+d) for d in GROWTH_SOURCE_BLOCKLIST):
+        return False
+    # An old saved route must still be supported by the current record.
+    for key in ("source_url","public_email"):
+        if clean(saved.get(key)).lower()!=clean(current.get(key)).lower():
+            return False
+    if re.sub(r"\D","",clean(saved.get("public_phone")))!=re.sub(r"\D","",clean(current.get("public_phone"))):
+        return False
+    return bool(clean(current.get("source_url")) and
+      (clean(current.get("public_email")) or clean(current.get("public_phone")) or current.get("official_site")))
+
 def growth_csv_cell(value):
     # Public business text is untrusted; spreadsheet apps must not execute it.
     text=str(value if value is not None else "")
@@ -3563,6 +3584,19 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
             where lower(po.customer_email)=lower($1) and po.order_id<>$2""",row["customer_email"],row["paid_order_id"])
           prior_names={x["name"] for x in prior}
           sample_rows=await conn.fetch("""select * from growth_sample_prospects where sample_id=$1 order by fit_score desc,business_name""",row["growth_sample_id"])
+          current_sample_rows=await conn.fetch("""select * from market_inventory_candidates
+            where candidate_id=any($1::uuid[])""",[s["candidate_id"] for s in sample_rows if s["candidate_id"]])
+          current_by_id={str(x["candidate_id"]):dict(x) for x in current_sample_rows}
+          invalid_sample=int(len(sample_rows)!=5)+sum(not growth_saved_sample_is_current(dict(s),current_by_id.get(str(s["candidate_id"])),
+            row["provider_service_key"]) for s in sample_rows)
+          if invalid_sample:
+              await conn.execute("update tasks set status='exception',updated_at=now() where task_id=$1",row["task_id"])
+              await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+                values('growth_paid_sample_reapproval','critical',$1,$2)""",
+                f"Growth order {row['paid_order_id']} has {invalid_sample} sample record(s) failing current qualification",
+                "Review stale, closed, changed or missing sample evidence before delivery. Never silently substitute a different five.")
+              exceptions+=1
+              continue
           # A source licence, business objection, or shared-contact suppression may
           # have changed after the free sample was shown. Never re-distribute those
           # records in the paid pack without a fresh eligibility check.
