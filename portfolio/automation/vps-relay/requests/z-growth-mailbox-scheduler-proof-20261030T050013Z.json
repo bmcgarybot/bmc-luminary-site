@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "z-growth-mailbox-scheduler-proof-20261030T050013Z",
+  "action": "scheduler_status",
+  "created_at": "2026-10-30T05:00:13.407Z",
+  "expires_at": "2026-10-30T07:00:13.407Z",
+  "allow_external_actions": false,
+  "args": {}
+}
