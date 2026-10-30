@@ -3335,9 +3335,12 @@ async def growth_runtime_status(conn):
     links=await conn.fetchval("""select count(*) from products where product_key='growth_pack_starter' and active=true
       and coalesce(payment_link_url,'')<>''""")
     staged=await conn.fetchval("""select count(*) from outreach where entity_type='growth_customer'
-      and campaign='growth_sales' and wave=$1 and status in ('queued','sent') and opt_out=false""",GROWTH_OUTREACH_WAVE)
+      and campaign='growth_sales' and wave=$1 and status in ('queued','sent') and opt_out=false
+      and owner_review_required=false""",GROWTH_OUTREACH_WAVE)
     sent=await conn.fetchval("""select count(*) from outreach where entity_type='growth_customer'
       and campaign='growth_sales' and sent_at is not null""")
+    review_required=await conn.fetchval("""select count(*) from outreach where entity_type='growth_customer'
+      and campaign='growth_sales' and owner_review_required=true""")
     replies=await conn.fetchval("""select count(*) from outreach where entity_type='growth_customer'
       and campaign='growth_sales' and replied_at is not null""")
     samples=await conn.fetchval("select count(*) from growth_sample_requests")
@@ -3353,7 +3356,7 @@ async def growth_runtime_status(conn):
     return {"ok":True,"owner_launch_hold_active":OWNER_LAUNCH_HOLD,
       "outreach_switches":{"OUTREACH_ENABLED":OUTREACH_ENABLED,"BUYER_OUTREACH_ENABLED":BUYER_OUTREACH_ENABLED,"GROWTH_OUTREACH_ENABLED":GROWTH_OUTREACH_ENABLED},
       "growth_enabled":GROWTH_OUTREACH_ENABLED,"wave":GROWTH_OUTREACH_WAVE,
-      "daily_limit":GROWTH_OUTREACH_DAILY_LIMIT,"sample_reserve":GROWTH_SAMPLE_MIN_RESERVE,
+      "daily_limit":GROWTH_OUTREACH_DAILY_LIMIT,"sample_reserve":GROWTH_SAMPLE_MIN_RESERVE,"historical_contacts_awaiting_review":int(review_required or 0),
       "config":{"smtp":smtp_ready,"imap":imap_ready,"postal":postal_ready,"payment_link":int(links or 0)>=1},
       "config_ready":config_ready,"staged_active":int(staged or 0),"sent":int(sent or 0),"replies":int(replies or 0),
       "samples_requested":int(samples or 0),"samples_delivered":int(delivered or 0),"converted_samples":int(converted or 0),
@@ -4298,6 +4301,7 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
         from outreach o join growth_outreach_targets g on g.target_id=o.entity_id
         join growth_experiment_cells e on e.cell_key=g.experiment_cell
         where o.entity_type='growth_customer' and o.campaign='growth_sales' and o.wave=$2 and o.opt_out=false
+          and o.owner_review_required=false
           and g.status not in ('suppressed','bad_fit') and e.status in ('exploring','winner','challenger')
           and (o.status='queued' or (o.status='sent' and o.next_followup_at<=now() and o.sequence_step<2))
           and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(g.public_email))

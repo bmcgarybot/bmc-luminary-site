@@ -624,6 +624,23 @@ jobs:
           # Prove First Wave provider copy uses the dedicated existing-vendor activation path.
           export BMC_ADMIN_KEY="$(grep '^BMC_ADMIN_KEY=' .env.ci | cut -d= -f2-)"
 
+          # The historical-review migration preserves lead history and never holds new contacts.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
+            insert into outreach(entity_type,entity_id,campaign,wave,status,sequence_step,sent_at)
+            values('growth_customer','ci-review-old','growth_sales','ci-review','sent',1,'2026-10-27T00:00Z'),
+                  ('growth_customer','ci-review-new','growth_sales','ci-review','sent',1,now());"
+          HISTORICAL_GROWTH_REVIEW_SQL="$(python -c 'from pathlib import Path; s=Path("schema.sql").read_text(); print(s[s.index("update outreach set owner_review_required=true"):].split(";")[0]+";")')"
+          for iteration in 1 2; do
+            docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "$HISTORICAL_GROWTH_REVIEW_SQL"
+          done
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_id='ci-review-old' and owner_review_required=true and status='sent' and sequence_step=1 and sent_at='2026-10-27T00:00Z';")" -eq 1
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_id='ci-review-new' and owner_review_required=false and status='sent' and sequence_step=1;")" -eq 1
+          # Later deployments must preserve an explicitly reviewed release.
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "update outreach set owner_review_required=false where entity_id='ci-review-old';"
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "$HISTORICAL_GROWTH_REVIEW_SQL"
+          test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_id='ci-review-old' and owner_review_required=false and historical_review_recorded_at is not null;")" -eq 1
+          docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "delete from outreach where entity_id in ('ci-review-old','ci-review-new');"
+
           # Real concurrent SQL delivery claims; SMTP function is replaced by a fake.
           docker compose --env-file .env.ci exec -T ops_api python - < ci/paid-mail-idempotency.py
 

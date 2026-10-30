@@ -55,7 +55,7 @@ done
 
 product="$(dbq "select count(*) from products where product_key='growth_pack_starter' and active=true and amount_cents=49900 and coalesce(payment_link_url,'')<>'';")"
 [ "$product" -eq 1 ] && pass "Live \$499 Growth Pack payment link is mapped" || fail "Live \$499 Growth Pack mapping is not ready"
-staged="$(dbq "select count(*) from outreach where entity_type='growth_customer' and campaign='growth_sales' and wave='$wave' and status in ('queued','sent') and opt_out=false;")"
+staged="$(dbq "select count(*) from outreach where entity_type='growth_customer' and campaign='growth_sales' and wave='$wave' and status in ('queued','sent') and opt_out=false and owner_review_required=false;")"
 printf '  active staged Growth targets: %s\n' "$staged"
 [ "$staged" -gt 0 ] && pass "Selected Growth wave has contactable staged targets" || fail "No staged targets exist for selected Growth wave"
 
