@@ -2815,15 +2815,16 @@ def growth_checkout_url(base_url,email,sample_id,service_key):
     })
     return base_url+sep+params
 
-def growth_claim_token(target_id,email_addr):
+def growth_claim_token(target_id,email_addr,owner_preview=False):
     """Sign a one-click free-five claim without exposing the recipient email in the URL."""
     if not ADMIN_KEY:
         return ""
-    payload=f"{clean(target_id)}\n{clean(email_addr).lower()}".encode("utf-8")
+    purpose="owner-preview\n" if owner_preview else ""
+    payload=f"{purpose}{clean(target_id)}\n{clean(email_addr).lower()}".encode("utf-8")
     return hmac.new(ADMIN_KEY.encode("utf-8"),payload,hashlib.sha256).hexdigest()[:40]
 
-def growth_claim_valid(target_id,email_addr,token):
-    expected=growth_claim_token(target_id,email_addr)
+def growth_claim_valid(target_id,email_addr,token,owner_preview=False):
+    expected=growth_claim_token(target_id,email_addr,owner_preview=owner_preview)
     return bool(expected and clean(token) and hmac.compare_digest(expected,clean(token)))
 
 def growth_select_representative_sample(rows,recipient_key,count=5):
@@ -3231,9 +3232,9 @@ async def growth_claim_free_five(request:Request):
           from growth_outreach_targets g where g.target_id=$1""",target_id)
         if not target or not target["was_sent"]:
             raise HTTPException(404,"This free-five invitation is not active.")
-        if not growth_claim_valid(target_id,target["public_email"],token):
-            raise HTTPException(403,"This free-five link is invalid or expired.")
         preview=str(p.get("preview") or "").lower() in ("1","true","yes")
+        if not growth_claim_valid(target_id,target["public_email"],token,owner_preview=preview):
+            raise HTTPException(403,"This free-five link is invalid or expired.")
         if preview:
             rows=await growth_qualified_candidates(
               conn,target["service_key"],target["market"],limit=GROWTH_SAMPLE_MIN_RESERVE
@@ -4207,7 +4208,7 @@ def growth_invitation_url(row,owner_preview=False,source="bmc_outreach"):
     query={
       "utm_source":source,"utm_medium":"email","utm_campaign":"growth_"+service_key,
       "utm_content":row["target_id"],"target":row["target_id"],"market":row["market"],"business":row["business_name"],
-      "claim":growth_claim_token(row["target_id"],row["public_email"])
+      "claim":growth_claim_token(row["target_id"],row["public_email"],owner_preview=owner_preview)
     }
     if owner_preview:
         query["preview"]="1"

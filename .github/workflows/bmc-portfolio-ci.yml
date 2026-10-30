@@ -64,6 +64,7 @@ jobs:
           python3 portfolio/automation/test-paid-mail-once.py
           python3 portfolio/automation/test-saved-sample-recheck.py
           python3 portfolio/automation/test-growth-reply-hold.py
+          python3 portfolio/automation/test-growth-preview-token.py
           python3 portfolio/automation/test-local-ai-budget.py
           bash -n portfolio/automation/install-operator-monitor.sh
 
@@ -695,10 +696,21 @@ jobs:
           print(hmac.new(os.environ["BMC_ADMIN_KEY"].encode(),payload,hashlib.sha256).hexdigest()[:40])
           PY
           )"
+          export CI_GROWTH_PREVIEW_CLAIM="$(python - <<'PY'
+          import hashlib,hmac,os
+          payload=chr(10).join(["owner-preview",os.environ["CI_GROWTH_TARGET"],"ci-pressure@example.com"]).encode()
+          print(hmac.new(os.environ["BMC_ADMIN_KEY"].encode(),payload,hashlib.sha256).hexdigest()[:40])
+          PY
+          )"
+          # Stripping the preview flag must never authorize a real customer claim.
+          preview_strip_code="$(curl -sS -o /tmp/bmc_preview_stripped.json -w '%{http_code}' -X POST http://127.0.0.1:8000/api/growth/claim-free-five \
+            -H 'Content-Type: application/json' \
+            -d '{"target_id":"'"$CI_GROWTH_TARGET"'","claim":"'"$CI_GROWTH_PREVIEW_CLAIM"'"}')"
+          test "$preview_strip_code" = "403"
           # Owner preview must render the same five-target experience without mutating the prospect or creating a sample.
           curl -fsS -X POST http://127.0.0.1:8000/api/growth/claim-free-five \
             -H 'Content-Type: application/json' \
-            -d '{"target_id":"'"$CI_GROWTH_TARGET"'","claim":"'"$CI_GROWTH_CLAIM"'","preview":"1","utm_source":"owner_preview"}' \
+            -d '{"target_id":"'"$CI_GROWTH_TARGET"'","claim":"'"$CI_GROWTH_PREVIEW_CLAIM"'","preview":"1","utm_source":"owner_preview"}' \
             >/tmp/bmc_growth_owner_preview.json
           python - <<'PY'
           import json
