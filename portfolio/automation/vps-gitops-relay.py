@@ -554,7 +554,12 @@ def execute(req: dict) -> dict:
         state=outreach_state()
         if any(str(v).lower()!="false" for v in state.values()):
             raise RelayError("All-template owner preview requires all campaign outbound switches OFF")
-        replay=admin_post("/api/admin/replay-all-email-templates-to-owner",timeout=300)
+        scope=str(args.get("scope") or "all").strip().lower()
+        if scope not in ("all","growth"):
+            raise RelayError("Owner preview scope must be all or growth")
+        path="/api/admin/replay-all-email-templates-to-owner"
+        if scope=="growth": path+="?scope=growth"
+        replay=admin_post(path,timeout=300)
         metadata["outreach_gate"]=state
         metadata["preview_commit"]=current_sha()
         stdout=json.dumps(replay,indent=2,default=str)
