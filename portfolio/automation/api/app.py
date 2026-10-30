@@ -3332,6 +3332,27 @@ async def growth_runtime_status(conn):
       "samples_requested":int(samples or 0),"samples_delivered":int(delivered or 0),"converted_samples":int(converted or 0),
       "paid_orders":int(paid["paid_orders"] or 0),"revenue_cents":int(paid["revenue_cents"] or 0),"open_growth_exceptions":int(open_errors or 0)}
 
+@app.post("/api/admin/growth-inventory-audit")
+async def admin_growth_inventory_audit(x_bmc_admin_key:str|None=Header(default=None)):
+    """Aggregate real selector capacity; no sample allocation, email or checkout."""
+    require_admin(x_bmc_admin_key)
+    lanes=[]
+    async with app.state.pool.acquire() as conn:
+      # One consistent read-only snapshot across all markets and exposure ledgers.
+      async with conn.transaction(isolation="repeatable_read",readonly=True):
+        for market in DEFAULT_SOURCE_NATIVE_MARKETS:
+          for service_key in GROWTH_SERVICE_LABELS:
+            rows=await growth_qualified_candidates(conn,service_key,market,
+              limit=GROWTH_SAMPLE_MIN_RESERVE,delivery_kind="free")
+            count=len(rows)
+            lanes.append({"market":market,"service_key":service_key,
+              "qualified_up_to_reserve":count,"sample_capacity":count>=5,
+              "paid_reserve_capacity":count>=GROWTH_SAMPLE_MIN_RESERVE})
+    return {"ok":True,"observed_at":datetime.now(timezone.utc).isoformat(),
+      "read_only":True,"reserve_required":GROWTH_SAMPLE_MIN_RESERVE,
+      "counts_capped_at_reserve":True,"lanes":lanes,
+      "limits":"Capacity before buyer-specific exclusions and account identity checks; not a manual source or fulfillment audit."}
+
 @app.post("/api/admin/stage-growth-pressure-washing")
 async def admin_stage_growth_pressure_washing(x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)
