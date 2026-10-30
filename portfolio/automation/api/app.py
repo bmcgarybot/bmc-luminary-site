@@ -614,12 +614,16 @@ app.add_middleware(CORSMiddleware,allow_origins=[
 @app.on_event("startup")
 async def startup():
     app.state.pool=await asyncpg.create_pool(DB_DSN,min_size=1,max_size=5)
+    # Delivery claims must remain available while business transactions hold the
+    # main pool; sharing that pool could deadlock concurrent fulfillment workers.
+    app.state.delivery_pool=await asyncpg.create_pool(DB_DSN,min_size=1,max_size=2,command_timeout=15)
     await initialize_source_native_state(app.state.pool)
     await initialize_local_demand_scan_state(app.state.pool)
     await initialize_market_inventory_state(app.state.pool)
 
 @app.on_event("shutdown")
 async def shutdown():
+    await app.state.delivery_pool.close()
     await app.state.pool.close()
 
 async def send_mail(to,subject,body,html_body=None,attachments=None):
@@ -665,7 +669,7 @@ async def send_mail_once(delivery_key,to,subject,body,html_body=None,attachments
     },sort_keys=True).encode()).hexdigest()
     # Commit this claim independently BEFORE SMTP. A surrounding business
     # transaction rollback must not erase evidence that mail may have left.
-    async with app.state.pool.acquire() as delivery_conn:
+    async with app.state.delivery_pool.acquire() as delivery_conn:
         claimed=await delivery_conn.fetchval("""insert into mail_delivery_attempts(delivery_key,payload_sha256,status)
           values($1,$2,'attempting') on conflict(delivery_key) do nothing returning delivery_key""",
           delivery_key,fingerprint)
@@ -674,7 +678,7 @@ async def send_mail_once(delivery_key,to,subject,body,html_body=None,attachments
               where delivery_key=$1""",delivery_key)
             return bool(prior and prior["payload_sha256"]==fingerprint and prior["status"]=="submitted")
     ok=await send_mail(to,subject,body,html_body,attachments)
-    async with app.state.pool.acquire() as delivery_conn:
+    async with app.state.delivery_pool.acquire() as delivery_conn:
         await delivery_conn.execute("""update mail_delivery_attempts set status=$2,updated_at=now()
           where delivery_key=$1""",delivery_key,"submitted" if ok else "uncertain")
     return ok

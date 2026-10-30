@@ -32,7 +32,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         source=ast.parse(Path(__file__).with_name("api").joinpath("app.py").read_text())
         node=next(n for n in source.body if isinstance(n,ast.AsyncFunctionDef) and n.name=="send_mail_once")
         self.ns=dict(SMTP_DRY_RUN=False,hashlib=hashlib,json=json,send_mail=mail,
-            app=SimpleNamespace(state=SimpleNamespace(pool=SimpleNamespace(acquire=lambda:Context(self.conn)))))
+            app=SimpleNamespace(state=SimpleNamespace(delivery_pool=SimpleNamespace(acquire=lambda:Context(self.conn)))))
         exec(compile(ast.Module(body=[node],type_ignores=[]),"production_paid_mail_once","exec"),self.ns)
     async def send(self,body="Fixture",attachment=b"fixture"):
         return await self.ns["send_mail_once"]("growth-order:fixture","buyer@example.test","Fixture",body,
