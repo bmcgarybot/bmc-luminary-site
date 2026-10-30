@@ -3434,6 +3434,8 @@ async def process_growth_nurture(x_bmc_admin_key:str|None=Header(default=None)):
     if OWNER_LAUNCH_HOLD:
         return {"ok":True,"enabled":False,"sent":0,"blocked":True,
                 "message":"Owner launch hold is active."}
+    if not GROWTH_OUTREACH_ENABLED:
+        return {"ok":True,"enabled":False,"sent":0,"message":"Growth outreach is disabled."}
     sent=0; converted=0
     async with app.state.pool.acquire() as conn:
       rows=await conn.fetch("""select * from growth_sample_requests

@@ -783,6 +783,19 @@ jobs:
             on conflict(prospect_key) do update set lifted_at=null,reason=excluded.reason;"
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from growth_prospect_suppressions where source='ci' and lifted_at is null;")" -eq 1
 
+          # Disabled Growth must stop nurture even after the owner hold is released.
+          curl -fsS -X POST http://127.0.0.1:8000/api/process-growth-nurture \
+            -H "X-BMC-Admin-Key: $BMC_ADMIN_KEY" >/tmp/bmc_growth_nurture_disabled.json
+          python -c 'import json; d=json.load(open("/tmp/bmc_growth_nurture_disabled.json")); assert d["enabled"] is False and d["sent"]==0'
+          # Disposable CI only: enable Growth with SMTP_DRY_RUN=true to exercise the reminder.
+          sed -i 's/^GROWTH_OUTREACH_ENABLED=.*/GROWTH_OUTREACH_ENABLED=true/' .env.ci
+          docker compose --env-file .env.ci up -d --no-deps --force-recreate ops_api
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/health >/dev/null; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8000/health >/dev/null
+
           # Force the first nurture reminder due and prove it advances without sending when not due again.
           docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -c "
             update growth_sample_requests set next_nurture_at=now()-interval '1 minute'
@@ -813,6 +826,15 @@ jobs:
           assert result["ok"] and result["sent"]==0,result
           print("PASS no automated nurture after a recorded reply")
           PY
+
+          # Restore disabled campaigns before the rest of the smoke suite.
+          sed -i 's/^GROWTH_OUTREACH_ENABLED=.*/GROWTH_OUTREACH_ENABLED=false/' .env.ci
+          docker compose --env-file .env.ci up -d --no-deps --force-recreate ops_api
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/health >/dev/null; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8000/health >/dev/null
 
           # Exercise the actual sample -> signed checkout -> task -> CSV path.
           export GROWTH_SAMPLE_ID="$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select sample_id from growth_sample_requests where submission_id='ci-growth-sample-1';")"

@@ -67,7 +67,7 @@ class Tests(unittest.TestCase):
     def test_releasing_hold_does_not_enable_disabled_campaigns(self):
         ns = load(False)
         ns.update(OUTREACH_ENABLED=False, BUYER_OUTREACH_ENABLED=False, GROWTH_OUTREACH_ENABLED=False)
-        for name in WORKERS[:3]:
+        for name in WORKERS:
             with self.subTest(worker=name):
                 result = asyncio.run(ns[name]("unit-key"))
                 self.assertEqual(result["sent"], 0)
