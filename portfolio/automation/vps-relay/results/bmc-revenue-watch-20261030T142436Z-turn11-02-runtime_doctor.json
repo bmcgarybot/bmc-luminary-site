@@ -1,0 +1,16 @@
+{
+  "action": null,
+  "allow_external_actions": false,
+  "completed_at": "2026-10-30T14:28:03.656853+00:00",
+  "error": "GitHub API PUT https://api.github.com/repos/bmcgarybot/bmc-luminary-site/contents/portfolio/automation/vps-relay/results/bmc-revenue-watch-20261030T142436Z-turn11-02-runtime_doctor.json failed HTTP 500: ",
+  "exit_code": null,
+  "git_commit_after": "80136cc50122bc3b51d60a7d1c2c6955a14ca923",
+  "git_commit_before": "80136cc50122bc3b51d60a7d1c2c6955a14ca923",
+  "host": "vps-5675821a",
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_id": "bmc-revenue-watch-20261030T142436Z-turn11-02-runtime_doctor",
+  "started_at": "2026-10-30T14:28:03.656826+00:00",
+  "status": "rejected",
+  "version": 1
+}
