@@ -1211,3 +1211,12 @@ create table if not exists mail_delivery_attempts (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+-- Preserve the seven pre-review Growth contacts without automatically following
+-- them up when a new wave starts. Historical status and SMTP evidence stay intact.
+alter table outreach add column if not exists owner_review_required boolean not null default false;
+alter table outreach add column if not exists historical_review_recorded_at timestamptz;
+update outreach set owner_review_required=true,historical_review_recorded_at=now()
+where entity_type='growth_customer' and campaign='growth_sales'
+  and historical_review_recorded_at is null
+  and sent_at is not null and sent_at < '2026-10-30T03:50:30Z'::timestamptz;
