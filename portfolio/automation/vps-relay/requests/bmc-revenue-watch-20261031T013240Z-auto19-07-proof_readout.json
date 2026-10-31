@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "request_id": "bmc-revenue-watch-20261031T013240Z-auto19-07-proof_readout",
+  "action": "proof_readout",
+  "args": {},
+  "allow_external_actions": false,
+  "created_at": "2026-10-31T01:32:40.000Z"
+}
