@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "request_id": "bmc-revenue-watch-20261031T062533Z-auto11-02-runtime_doctor",
+  "action": "runtime_doctor",
+  "created_at": "2026-10-31T06:25:33Z",
+  "allow_external_actions": false,
+  "args": {}
+}
