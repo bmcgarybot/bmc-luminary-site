@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "request_id": "watch-20261031T042311Z-turn11b-operator_snapshot",
+  "action": "operator_snapshot",
+  "created_at": "2026-10-31T04:23:11Z",
+  "allow_external_actions": false,
+  "args": {}
+}
