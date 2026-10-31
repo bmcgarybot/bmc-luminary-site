@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-revenue-watch-20261031T1346Z-auto11-09-diagnostic_bundle",
+  "created_at": "2026-10-31T13:46:11.000Z",
+  "expires_at": "2026-10-31T15:46:11.000Z",
+  "action": "diagnostic_bundle",
+  "args": {},
+  "allow_external_actions": false
+}
