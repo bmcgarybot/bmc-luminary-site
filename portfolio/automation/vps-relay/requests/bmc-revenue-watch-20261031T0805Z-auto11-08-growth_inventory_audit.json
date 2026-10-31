@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "request_id": "bmc-revenue-watch-20261031T0805Z-auto11-08-growth_inventory_audit",
+  "action": "growth_inventory_audit",
+  "created_at": "2026-10-31T08:05:21Z",
+  "allow_external_actions": false,
+  "args": {}
+}
