@@ -960,3 +960,6 @@ footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-s
   .provider-funnel .customer-hero .actions .btn-secondary{font-size:.88rem}
   .provider-funnel .customer-hero .hero-photo{min-height:180px;max-height:220px}
 }
+
+/* Honor completed Growth form state even when rows/buttons set display. */
+form[data-form-type="growth_snapshot"] > [hidden]{display:none!important}

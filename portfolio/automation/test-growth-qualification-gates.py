@@ -93,6 +93,12 @@ class Tests(unittest.TestCase):
         row['market']='Prescott'
         self.assertFalse(ns['growth_candidate_evidence_valid'](row,'Prescott'))
 
+    def test_near_city_marketing_path_is_not_a_local_branch(self):
+        row=self.evidence_row(business_name='Flagstaff Regional Clinic',source_url='https://clinic.example/locations/near-sedona/')
+        self.assertFalse(ns['growth_candidate_evidence_valid'](row,'Sedona'))
+        row['source_url']='https://clinic.example/locations/arizona/sedona/'
+        self.assertTrue(ns['growth_candidate_evidence_valid'](row,'Sedona'))
+
     def test_explicit_local_branch_can_use_regional_domain_and_brand(self):
         row=self.evidence_row(business_name='Flagstaff Regional Clinic',source_url='https://clinic.example/locations/sedona/')
         self.assertTrue(ns['growth_candidate_evidence_valid'](row,'Sedona'))
