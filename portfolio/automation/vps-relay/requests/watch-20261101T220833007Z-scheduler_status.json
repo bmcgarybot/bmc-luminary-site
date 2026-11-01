@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "watch-20261101T220833007Z-scheduler_status",
+  "action": "scheduler_status",
+  "created_at": "2026-11-01T22:08:33.007Z",
+  "expires_at": "2026-11-01T22:53:33.007Z",
+  "allow_external_actions": false,
+  "args": {}
+}
