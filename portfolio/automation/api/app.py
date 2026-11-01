@@ -2629,7 +2629,7 @@ def growth_candidate_evidence_valid(row,market):
     if contradictory:
         # An explicit branch/location URL can support a branch of a regional
         # company; a generic marketing 'near CITY' page cannot.
-        branch=r"/(?:locations?|branches|offices|clinics|stores|campuses)/[^?#]*"+re.escape(clean(market).lower().replace(" ","-"))+r"(?:/|$)"
+        branch=r"/(?:locations?|branches|offices|clinics|stores|campuses)/(?:[^/?#]+/)*"+re.escape(clean(market).lower().replace(" ","-"))+r"(?:/|$)"
         return bool(re.search(branch,parsed.path.lower()))
     return True
 
