@@ -21,11 +21,12 @@ def intake_open(env):
 
 def validate_request(payload):
     if not isinstance(payload,dict): raise ValueError('Request must be an object.')
-    if payload.get('state_code') != 'NV' or payload.get('market') not in MARKETS:
+    if payload.get('state_code') != 'NV' or not isinstance(payload.get('market'),str) or payload.get('market') not in MARKETS:
         raise ValueError('Choose Las Vegas or Henderson, Nevada.')
     audience=payload.get('audience')
     if audience not in ('household','business'): raise ValueError('Choose household or business research.')
     key=payload.get('service_key')
+    if not isinstance(key,str): raise ValueError('Choose a listed service.')
     service=SERVICES.get(key)
     if not service: raise ValueError('Choose a listed service.')
     if service['availability']=='licensing_hold':
