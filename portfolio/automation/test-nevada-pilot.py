@@ -43,6 +43,11 @@ class PolicyTests(unittest.TestCase):
         for text in ['Need a nanny','live-in housekeeper','house manager placement','personal care for parent','staff placement','babysitter needed','full time housekeeper','staffing help']:
             p=self.payload();p.update(service_key='residential_cleaning',scope=text)
             with self.assertRaises(ValueError):nv.validate_request(p)
+    def test_wrong_json_field_types_do_not_raise_server_errors(self):
+        for key in ['market','service_key']:
+            for value in [[],{},None,42]:
+                p=self.payload();p[key]=value
+                with self.assertRaises(ValueError):nv.validate_request(p)
     def test_consent_must_be_boolean_true(self):
         for consent in [False,None,'true',1]:
             p=self.payload();p['consent']=consent
