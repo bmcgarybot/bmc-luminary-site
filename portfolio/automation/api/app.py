@@ -6927,3 +6927,8 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
                 await record_revenue(conn,product_key,-refunded,currency,"stripe_refund",f"Stripe refund event {event_id}; object {object_id}")
                 await event(conn,"payment",event_id,"refund_recorded",{"product_key":product_key,"amount_cents":refunded},"stripe")
     return {"received":True}
+
+
+# State-isolated Nevada pilot; no shared AZ allocator, mail, or payments.
+from nevada_pilot import install as install_nevada_pilot
+install_nevada_pilot(app, require_admin)

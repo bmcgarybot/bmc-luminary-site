@@ -1,0 +1,361 @@
+{
+  "state_code": "NV",
+  "record_semantics": "15 researched businesses, not approved providers or paying customers",
+  "records": [
+    {
+      "research_id": "NV-primary-001",
+      "state_code": "NV",
+      "business_name": "Pro Shine LV",
+      "markets": [
+        "Las Vegas",
+        "Henderson"
+      ],
+      "service_keys": [
+        "solar_panel_cleaning",
+        "window_cleaning"
+      ],
+      "source_url": "https://www.proshinelv.com/",
+      "public_business_phone": "725-304-6601",
+      "public_business_email": "",
+      "reviewed_at": "2026-11-01",
+      "evidence_note": "Explicit city coverage; window and solar cleaning.",
+      "source_reviewed": true,
+      "delivery_eligible": false,
+      "provider_approved": false,
+      "outreach_status": "held",
+      "licensing_hold": false,
+      "next_check": "Confirm current route, service scope, city coverage and applicable credentials; owner release required."
+    },
+    {
+      "research_id": "NV-primary-002",
+      "state_code": "NV",
+      "business_name": "Barron’s Solar Wash Company",
+      "markets": [
+        "Las Vegas",
+        "Henderson"
+      ],
+      "service_keys": [
+        "solar_panel_cleaning"
+      ],
+      "source_url": "https://www.barronssolarwashcompany.com/contact-us",
+      "public_business_phone": "702-538-5025",
+      "public_business_email": "rick@barronssolarwashcompany.com",
+      "reviewed_at": "2026-11-01",
+      "evidence_note": "Explicit Las Vegas and Henderson coverage and public business email.",
+      "source_reviewed": true,
+      "delivery_eligible": false,
+      "provider_approved": false,
+      "outreach_status": "held",
+      "licensing_hold": false,
+      "next_check": "Confirm current route, service scope, city coverage and applicable credentials; owner release required."
+    },
+    {
+      "research_id": "NV-primary-003",
+      "state_code": "NV",
+      "business_name": "Clean Solar Solutions America",
+      "markets": [
+        "Las Vegas",
+        "Henderson"
+      ],
+      "service_keys": [
+        "solar_panel_cleaning"
+      ],
+      "source_url": "https://cleansolarsolutionsamerica.com/contact-us/",
+      "public_business_phone": "737-359-5565",
+      "public_business_email": "info@cleansolarsolutionsamerica.com",
+      "reviewed_at": "2026-11-01",
+      "evidence_note": "Las Vegas contact address and both markets named; national capability does not prove local availability.",
+      "source_reviewed": true,
+      "delivery_eligible": false,
+      "provider_approved": false,
+      "outreach_status": "held",
+      "licensing_hold": false,
+      "next_check": "Confirm current route, service scope, city coverage and applicable credentials; owner release required."
+    },
+    {
+      "research_id": "NV-primary-004",
+      "state_code": "NV",
+      "business_name": "TLC Cleaning Company",
+      "markets": [
+        "Las Vegas",
+        "Henderson"
+      ],
+      "service_keys": [
+        "residential_cleaning",
+        "housekeeping_service"
+      ],
+      "source_url": "https://atlccleaningcompanyllc.com/",
+      "public_business_phone": "702-260-8772",
+      "public_business_email": "",
+      "reviewed_at": "2026-11-01",
+      "evidence_note": "Cleaning crew business, both cities named; insurance statements are self-reported.",
+      "source_reviewed": true,
+      "delivery_eligible": false,
+      "provider_approved": false,
+      "outreach_status": "held",
+      "licensing_hold": false,
+      "next_check": "Confirm current route, service scope, city coverage and applicable credentials; owner release required."
+    },
+    {
+      "research_id": "NV-primary-005",
+      "state_code": "NV",
+      "business_name": "élevé",
+      "markets": [
+        "Las Vegas",
+        "Henderson"
+      ],
+      "service_keys": [
+        "residential_cleaning",
+        "housekeeping_service"
+      ],
+      "source_url": "https://www.eleve.vegas/",
+      "public_business_phone": "",
+      "public_business_email": "",
+      "reviewed_at": "2026-11-01",
+      "evidence_note": "Public booking link; both city coverage stated; direct phone/email not found in fetched page.",
+      "source_reviewed": true,
+      "delivery_eligible": false,
+      "provider_approved": false,
+      "outreach_status": "held",
+      "licensing_hold": false,
+      "next_check": "Confirm current route, service scope, city coverage and applicable credentials; owner release required."
+    },
+    {
+      "research_id": "NV-primary-006",
+      "state_code": "NV",
+      "business_name": "Casa Concierge LLC",
+      "markets": [
+        "Las Vegas"
+      ],
+      "service_keys": [
+        "housekeeping_service",
+        "errand_service",
+        "home_organization"
+      ],
+      "source_url": "https://www.casaconciergellc.com/",
+      "public_business_phone": "702-850-0691",
+      "public_business_email": "info@casaconciergellc.com",
+      "reviewed_at": "2026-11-01",
+      "evidence_note": "Greater Las Vegas service claim; Henderson coverage not established. Employee/child transport services excluded.",
+      "source_reviewed": true,
+      "delivery_eligible": false,
+      "provider_approved": false,
+      "outreach_status": "held",
+      "licensing_hold": false,
+      "next_check": "Confirm current route, service scope, city coverage and applicable credentials; owner release required."
+    },
+    {
+      "research_id": "NV-primary-007",
+      "state_code": "NV",
+      "business_name": "Home Watcher LV",
+      "markets": [
+        "Las Vegas",
+        "Henderson"
+      ],
+      "service_keys": [
+        "home_watch"
+      ],
+      "source_url": "https://www.homewatcherlv.com/",
+      "public_business_phone": "",
+      "public_business_email": "",
+      "reviewed_at": "2026-11-01",
+      "evidence_note": "Both cities named; public contact page. Credentials are company claims, not independently verified.",
+      "source_reviewed": true,
+      "delivery_eligible": false,
+      "provider_approved": false,
+      "outreach_status": "held",
+      "licensing_hold": false,
+      "next_check": "Confirm current route, service scope, city coverage and applicable credentials; owner release required."
+    },
+    {
+      "research_id": "NV-primary-008",
+      "state_code": "NV",
+      "business_name": "Anthem Home Watchers",
+      "markets": [
+        "Henderson"
+      ],
+      "service_keys": [
+        "home_watch",
+        "estate_maintenance"
+      ],
+      "source_url": "https://anthemhomewatchers.com/",
+      "public_business_phone": "702-706-3301",
+      "public_business_email": "mverly@gmail.com",
+      "reviewed_at": "2026-11-01",
+      "evidence_note": "Email publicly offered for business inquiries. Henderson neighborhoods named; no Las Vegas coverage assumed.",
+      "source_reviewed": true,
+      "delivery_eligible": false,
+      "provider_approved": false,
+      "outreach_status": "held",
+      "licensing_hold": false,
+      "next_check": "Confirm current route, service scope, city coverage and applicable credentials; owner release required."
+    },
+    {
+      "research_id": "NV-primary-009",
+      "state_code": "NV",
+      "business_name": "PMI Henderson",
+      "markets": [
+        "Henderson"
+      ],
+      "service_keys": [
+        "home_watch",
+        "estate_maintenance"
+      ],
+      "source_url": "https://www.hendersonpropertymanagementinc.com/home-watch",
+      "public_business_phone": "702-816-3284",
+      "public_business_email": "donna@pmihenderson.com",
+      "reviewed_at": "2026-11-01",
+      "evidence_note": "Estate maintenance offering; no rental-management or real-estate referral offered by BMC.",
+      "source_reviewed": true,
+      "delivery_eligible": false,
+      "provider_approved": false,
+      "outreach_status": "held",
+      "licensing_hold": false,
+      "next_check": "Confirm current route, service scope, city coverage and applicable credentials; owner release required."
+    },
+    {
+      "research_id": "NV-primary-010",
+      "state_code": "NV",
+      "business_name": "Premier Landscape Maintenance",
+      "markets": [
+        "Las Vegas",
+        "Henderson"
+      ],
+      "service_keys": [
+        "groundskeeping",
+        "landscaping"
+      ],
+      "source_url": "https://premierlandscapemaintenance.webnode.page/contact-us/",
+      "public_business_phone": "702-485-4060",
+      "public_business_email": "premier_landscape_maintenance@gardener.com",
+      "reviewed_at": "2026-11-01",
+      "evidence_note": "Both cities explicitly listed; no license validity asserted.",
+      "source_reviewed": true,
+      "delivery_eligible": false,
+      "provider_approved": false,
+      "outreach_status": "held",
+      "licensing_hold": false,
+      "next_check": "Confirm current route, service scope, city coverage and applicable credentials; owner release required."
+    },
+    {
+      "research_id": "NV-primary-011",
+      "state_code": "NV",
+      "business_name": "U.S. Lawns Henderson",
+      "markets": [
+        "Henderson"
+      ],
+      "service_keys": [
+        "groundskeeping",
+        "landscaping"
+      ],
+      "source_url": "https://uslawns.com/locations/nv/henderson/",
+      "public_business_phone": "702-703-1676",
+      "public_business_email": "taylor.kelley@uslawns.net",
+      "reviewed_at": "2026-11-01",
+      "evidence_note": "Commercial grounds care; Las Vegas office, Henderson territory. Residential fit not established.",
+      "source_reviewed": true,
+      "delivery_eligible": false,
+      "provider_approved": false,
+      "outreach_status": "held",
+      "licensing_hold": false,
+      "next_check": "Confirm current route, service scope, city coverage and applicable credentials; owner release required."
+    },
+    {
+      "research_id": "NV-primary-012",
+      "state_code": "NV",
+      "business_name": "Balance Your Life Concierge",
+      "markets": [
+        "Las Vegas",
+        "Henderson"
+      ],
+      "service_keys": [
+        "errand_service",
+        "home_organization"
+      ],
+      "source_url": "https://www.bylconcierge.com/",
+      "public_business_phone": "702-290-2415",
+      "public_business_email": "Valerie@bylconcierge.com",
+      "reviewed_at": "2026-11-01",
+      "evidence_note": "Older site; re-confirm availability before delivery. Staffing placement excluded.",
+      "source_reviewed": true,
+      "delivery_eligible": false,
+      "provider_approved": false,
+      "outreach_status": "held",
+      "licensing_hold": false,
+      "next_check": "Confirm current route, service scope, city coverage and applicable credentials; owner release required."
+    },
+    {
+      "research_id": "NV-primary-013",
+      "state_code": "NV",
+      "business_name": "True Task",
+      "markets": [
+        "Las Vegas",
+        "Henderson"
+      ],
+      "service_keys": [
+        "home_organization"
+      ],
+      "source_url": "https://www.truetask.online/",
+      "public_business_phone": "702-439-2352",
+      "public_business_email": "",
+      "reviewed_at": "2026-11-01",
+      "evidence_note": "Home organizing and downsizing; site explicitly distinguishes from personal/medical care.",
+      "source_reviewed": true,
+      "delivery_eligible": false,
+      "provider_approved": false,
+      "outreach_status": "held",
+      "licensing_hold": false,
+      "next_check": "Confirm current route, service scope, city coverage and applicable credentials; owner release required."
+    },
+    {
+      "research_id": "NV-primary-014",
+      "state_code": "NV",
+      "business_name": "Nannies & Housekeepers USA",
+      "markets": [
+        "Las Vegas"
+      ],
+      "service_keys": [
+        "nanny_staffing",
+        "housekeeper_staffing"
+      ],
+      "source_url": "https://nahusa.com/",
+      "public_business_phone": "702-451-3000",
+      "public_business_email": "",
+      "reviewed_at": "2026-11-01",
+      "evidence_note": "Agency research only; PEA license and Henderson coverage not independently verified.",
+      "source_reviewed": true,
+      "delivery_eligible": false,
+      "provider_approved": false,
+      "outreach_status": "held",
+      "licensing_hold": true,
+      "next_check": "Confirm current route, service scope, city coverage and applicable credentials; owner release required."
+    },
+    {
+      "research_id": "NV-primary-015",
+      "state_code": "NV",
+      "business_name": "Las Vegas Domestic Staffing",
+      "markets": [
+        "Las Vegas",
+        "Henderson"
+      ],
+      "service_keys": [
+        "nanny_staffing",
+        "housekeeper_staffing",
+        "house_manager_staffing",
+        "personal_assistant_staffing",
+        "private_chef_staffing"
+      ],
+      "source_url": "https://www.lasvegasdomesticstaffing.com/services",
+      "public_business_phone": "702-603-4343",
+      "public_business_email": "hello@lasvegasdomesticstaffing.com",
+      "reviewed_at": "2026-11-01",
+      "evidence_note": "Agency research only; PEA license not independently verified. No BMC placement solicitation.",
+      "source_reviewed": true,
+      "delivery_eligible": false,
+      "provider_approved": false,
+      "outreach_status": "held",
+      "licensing_hold": true,
+      "next_check": "Confirm current route, service scope, city coverage and applicable credentials; owner release required."
+    }
+  ]
+}

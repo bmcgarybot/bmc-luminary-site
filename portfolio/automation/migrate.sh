@@ -41,7 +41,7 @@ trap 'rm -f "$GENERATED_CENSUS_SEED"' EXIT
 echo "Building deterministic assistant census seed from committed JSON artifacts..."
 python3 build-assistant-research-seed.py --output "$GENERATED_CENSUS_SEED" --summary-json
 
-for file in schema.sql seed-services.sql seed-products.sql seed-research-sources.sql seed-research-scale.sql; do
+for file in schema.sql nevada-schema.sql seed-services.sql seed-products.sql seed-research-sources.sql seed-research-scale.sql; do
   echo "Applying additive migration: $file"
   docker compose --env-file "$ENV_FILE" exec -T postgres psql -v ON_ERROR_STOP=1 -U "$DBUSER" -d "$DBNAME" < "$file"
 done
