@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-revenue-watch-20261101T1152Z-run11-04-growth_status",
+  "action": "growth_status",
+  "created_at": "2026-11-01T11:52:30.000Z",
+  "expires_at": "2026-11-01T13:22:30.000Z",
+  "args": {},
+  "allow_external_actions": false
+}
