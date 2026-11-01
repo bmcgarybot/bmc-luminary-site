@@ -1,0 +1,28 @@
+{
+  "action": "owner_replay_all_email_templates",
+  "allow_external_actions": true,
+  "completed_at": "2026-11-01T23:28:27.068399+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "a18b2db979bd6c85f3d37ee869fac0cf84c408e1",
+  "git_commit_before": "a18b2db979bd6c85f3d37ee869fac0cf84c408e1",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    },
+    "preview_commit": "a18b2db979bd6c85f3d37ee869fac0cf84c408e1"
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "375cf7240f5917cc0ade0178a05eb2c23f1ab5fd",
+  "request_id": "b-owner-1-growth-layouts-20261101T232750Z",
+  "request_sha256": "016741bc406b2176c4ac7b9c3a3d3b1b5276acd08de81c11a1820fb302308985",
+  "started_at": "2026-11-01T23:28:18.973559+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"ok\": true,\n  \"recipient\": \"brett.coon2@gmail.com\",\n  \"scope\": \"growth\",\n  \"sent\": [\n    {\n      \"num\": 1,\n      \"name\": \"Growth cold first touch\",\n      \"subject\": \"[OWNER PREVIEW 01/07] Growth cold first touch \\u2014 Sedona: 5 commercial accounts worth checking\"\n    },\n    {\n      \"num\": 2,\n      \"name\": \"Growth cold follow-up\",\n      \"subject\": \"[OWNER PREVIEW 02/07] Growth cold follow-up \\u2014 Re: 5 free commercial targets in Sedona\"\n    },\n    {\n      \"num\": 3,\n      \"name\": \"Growth positive-reply response\",\n      \"subject\": \"[OWNER PREVIEW 03/07] Growth positive-reply response \\u2014 Your five free commercial targets\"\n    },\n    {\n      \"num\": 4,\n      \"name\": \"Growth free-five delivery\",\n      \"subject\": \"[OWNER PREVIEW 04/07] Growth free-five delivery \\u2014 Your 5 commercial targets in Sedona\"\n    },\n    {\n      \"num\": 5,\n      \"name\": \"Growth nurture 1\",\n      \"subject\": \"[OWNER PREVIEW 05/07] Growth nurture 1 \\u2014 Want the other 95 commercial targets in Sedona?\"\n    },\n    {\n      \"num\": 6,\n      \"name\": \"Growth nurture 2\",\n      \"subject\": \"[OWNER PREVIEW 06/07] Growth nurture 2 \\u2014 Last note on the Sedona commercial prospect pack\"\n    },\n    {\n      \"num\": 7,\n      \"name\": \"Paid Growth Pack delivery\",\n      \"subject\": \"[OWNER PREVIEW 07/07] Paid Growth Pack delivery \\u2014 Your BMC Growth Pack \\u2014 100 commercial prospects in Sedona\"\n    }\n  ],\n  \"failed\": [],\n  \"count_sent\": 7,\n  \"count_failed\": 0\n}",
+  "version": 1
+}
