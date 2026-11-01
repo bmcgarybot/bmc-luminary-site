@@ -1,0 +1,21 @@
+{
+  "action": "nevada_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-01T22:39:40.965550+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "4a4ddf5e5ab38f5c419ae7f8202bc303dd380841",
+  "git_commit_before": "4a4ddf5e5ab38f5c419ae7f8202bc303dd380841",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "531e072cc430a7ea71c179e59f4ee469a5100bad",
+  "request_id": "b-nevada-final-a-status-20261101T223850Z",
+  "request_sha256": "f25a74d6b31036b11124580861786dc9faba98537fbb8f3e33be88b11558b668",
+  "started_at": "2026-11-01T22:39:40.954987+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"state_code\": \"NV\",\n  \"markets\": [\n    \"Henderson\",\n    \"Las Vegas\"\n  ],\n  \"intake_open\": false,\n  \"checkout_open\": false,\n  \"outreach_open\": false,\n  \"employee_placement_open\": false,\n  \"stage\": \"research_and_owner_review\",\n  \"offers\": [\n    {\n      \"product_key\": \"nv_growth_pack_starter\",\n      \"amount_cents\": 49900,\n      \"currency\": \"usd\",\n      \"checkout_enabled\": false\n    },\n    {\n      \"product_key\": \"nv_household_research\",\n      \"amount_cents\": 4900,\n      \"currency\": \"usd\",\n      \"checkout_enabled\": false\n    }\n  ],\n  \"requests\": 0,\n  \"orders\": 0,\n  \"blockers\": [\n    \"Owner review and release\",\n    \"Review eligible Nevada fulfillment inventory\",\n    \"Separate payment links and signature-verified payment routing\",\n    \"Nevada fulfillment proof\"\n  ],\n  \"household_data_included\": false\n}",
+  "version": 1
+}
