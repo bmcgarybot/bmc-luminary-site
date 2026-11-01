@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "observed_at": "2026-11-01T22:39:42.783689+00:00",
+  "deployed_sha": "4a4ddf5e5ab38f5c419ae7f8202bc303dd380841",
+  "ci": {
+    "merged_master": 41357788972,
+    "pages": 41357788842,
+    "all_success": true
+  },
+  "deployment": {
+    "request_id": "b-nevada-final-release-20261101T223629Z",
+    "status": "success",
+    "completed_at": "2026-11-01T22:38:36.543174+00:00"
+  },
+  "proof_requests": [
+    {
+      "id": "b-nevada-final-a-status-20261101T223850Z",
+      "action": "nevada_status"
+    },
+    {
+      "id": "b-nevada-final-b-snapshot-20261101T223850Z",
+      "action": "operator_snapshot"
+    },
+    {
+      "id": "b-nevada-final-c-audit-20261101T223850Z",
+      "action": "growth_launch_audit"
+    }
+  ],
+  "research": {
+    "state": "NV",
+    "license_source_records": 41092,
+    "las_vegas": 26501,
+    "henderson": 14591,
+    "primary_site_businesses": 15,
+    "catalog_services": 67,
+    "license_records_delivery_eligible": 0
+  },
+  "nevada": {
+    "state_code": "NV",
+    "markets": [
+      "Henderson",
+      "Las Vegas"
+    ],
+    "intake_open": false,
+    "checkout_open": false,
+    "outreach_open": false,
+    "employee_placement_open": false,
+    "stage": "research_and_owner_review",
+    "offers": [
+      {
+        "product_key": "nv_growth_pack_starter",
+        "amount_cents": 49900,
+        "currency": "usd",
+        "checkout_enabled": false
+      },
+      {
+        "product_key": "nv_household_research",
+        "amount_cents": 4900,
+        "currency": "usd",
+        "checkout_enabled": false
+      }
+    ],
+    "requests": 0,
+    "orders": 0,
+    "blockers": [
+      "Owner review and release",
+      "Review eligible Nevada fulfillment inventory",
+      "Separate payment links and signature-verified payment routing",
+      "Nevada fulfillment proof"
+    ],
+    "household_data_included": false
+  },
+  "arizona_snapshot": {
+    "observed_at": "2026-11-01T22:39:42.783689+00:00",
+    "deployed_sha": "4a4ddf5e5ab38f5c419ae7f8202bc303dd380841",
+    "owner_launch_hold_active": true,
+    "runtime_healthy": true,
+    "scheduler_healthy": true,
+    "api_healthy": true,
+    "outreach_switches": {
+      "OUTREACH_ENABLED": false,
+      "BUYER_OUTREACH_ENABLED": false,
+      "GROWTH_OUTREACH_ENABLED": false
+    },
+    "growth": {
+      "paid_orders": 0,
+      "revenue_cents": 0,
+      "samples_requested": 0,
+      "samples_delivered": 0,
+      "replies": 0,
+      "open_growth_exceptions": 0,
+      "staged_active": 11,
+      "sent": 7
+    },
+    "health_error": null
+  },
+  "deadline": {
+    "local": "2026-11-02 06:00 MST",
+    "timezone": "America/Phoenix",
+    "utc": "2026-11-02T13:00:00Z",
+    "nevada_local": "2026-11-02 05:00 PST",
+    "readiness_automation_created": true,
+    "autolaunch_authorized": false
+  },
+  "income": {
+    "first_business_week_target": true,
+    "november_30_target": true,
+    "guaranteed": false,
+    "actual_revenue_cents": 0
+  },
+  "owner_preview_authorization": false,
+  "new_mail_sent": 0,
+  "new_charges": 0,
+  "astra_used": false,
+  "remaining_work": [
+    "Qualify Nevada fulfillment inventory, keeping staffing/personal care held",
+    "Implement separate Nevada Stripe products/payment allowlist, signature-verified event dispatch and paid fulfillment",
+    "Prove actual Nevada fulfillment and state-specific accounting before opening payment",
+    "Obtain permission for eight fixed owner-only Growth preview emails, then actual current-release owner review before releasing AZ hold"
+  ],
+  "plan": "https://github.com/bmcgarybot/bmc-luminary-site/blob/master/portfolio/automation/NEVADA_PILOT_PLAN.md",
+  "pulls": [
+    18,
+    19
+  ]
+}
