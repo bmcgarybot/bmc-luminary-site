@@ -1,0 +1,534 @@
+{
+  "state_code": "NV",
+  "markets": [
+    "Las Vegas",
+    "Henderson"
+  ],
+  "schema_version": 1,
+  "owner_hold": true,
+  "services": [
+    {
+      "service_key": "restaurant_repair",
+      "display_name": "Restaurant Repair",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "growth_pack",
+      "display_name": "Find New Customers",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "commercial_cleaning",
+      "display_name": "Commercial Cleaning",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "tree_service",
+      "display_name": "Tree Service & Brush Clearing",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "junk_hauling",
+      "display_name": "Junk Removal",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "landscaping",
+      "display_name": "Landscaping & Yard Cleanup",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "rural_property",
+      "display_name": "Septic, Grading & Wells",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "snow_service",
+      "display_name": "Snow Removal",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "towing_roadside",
+      "display_name": "Towing & Roadside Help",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "vehicle_services",
+      "display_name": "Mobile Mechanic & Vehicle Service",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "auto_repair_shop",
+      "display_name": "Auto Repair Shop",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "pet_waste",
+      "display_name": "Pet Waste Cleanup",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "pool_desert_property",
+      "display_name": "Pool & Outdoor Property Care",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "str_property_care",
+      "display_name": "Rental Property Care",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "hvac_heat",
+      "display_name": "Heating & Air",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "ice_machine",
+      "display_name": "Ice Machine Repair",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "hood_exhaust",
+      "display_name": "Hood Cleaning",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "grease_drain",
+      "display_name": "Grease Trap & Drain Cleaning",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "window_cleaning",
+      "display_name": "Window Cleaning",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "pressure_washing",
+      "display_name": "Pressure Washing",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "pest_control",
+      "display_name": "Pest Control",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "restaurant_equipment",
+      "display_name": "Restaurant Equipment Repair",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "used_equipment",
+      "display_name": "Buy or Sell Used Restaurant Equipment",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "equipment_quotes",
+      "display_name": "Get Equipment Quotes",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "vendor_savings",
+      "display_name": "Cut Vendor Costs",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "restaurant_maintenance",
+      "display_name": "Restaurant Maintenance Help",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "linen_laundry",
+      "display_name": "Linen & Laundry Service",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "floor_carpet",
+      "display_name": "Floor & Carpet Cleaning",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "fire_safety",
+      "display_name": "Fire Safety Service",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "backflow_plumbing",
+      "display_name": "Backflow & Commercial Plumbing",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "sign_lighting",
+      "display_name": "Sign & Lighting Repair",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "locksmith_access",
+      "display_name": "Locks & Access Control",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "duct_vent",
+      "display_name": "Duct & Dryer Vent Cleaning",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "fleet_washing",
+      "display_name": "Fleet Washing",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "mobile_tire_battery",
+      "display_name": "Mobile Tire & Battery",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "coffee_water",
+      "display_name": "Office Coffee & Water",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "waste_audit",
+      "display_name": "Cut Waste & Recycling Costs",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "competitor_intel",
+      "display_name": "Check Local Competitors",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "market_expansion",
+      "display_name": "Research a New Market",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "quote_sourcing",
+      "display_name": "Get Business Quotes",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "parking_lot",
+      "display_name": "Parking Lot Cleaning & Striping",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "epoxy_flooring",
+      "display_name": "Epoxy & Concrete Floors",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "mobile_detailing",
+      "display_name": "Mobile Detailing",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "auto_glass",
+      "display_name": "Windshield & Auto Glass",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "pet_sitting",
+      "display_name": "Pet Sitting & Dog Walking",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "mobile_pet_grooming",
+      "display_name": "Mobile Pet Grooming",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "turnover_cleaning",
+      "display_name": "Move-Out Cleaning",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "garage_door",
+      "display_name": "Garage Door Repair",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "facility_maintenance",
+      "display_name": "Building Maintenance Help",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "electrical_service",
+      "display_name": "Electrician",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "handyman_repairs",
+      "display_name": "Handyman",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "residential_cleaning",
+      "display_name": "House Cleaning",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "home_staging",
+      "display_name": "Home Staging",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "realtor_listing_prep",
+      "display_name": "Get a Home Ready to Sell",
+      "origin": "cloned_catalog",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "solar_panel_cleaning",
+      "display_name": "Solar panel cleaning",
+      "origin": "nevada_expansion",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "groundskeeping",
+      "display_name": "Groundskeeping and estate landscape care",
+      "origin": "nevada_expansion",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "errand_service",
+      "display_name": "Errands and personal shopping",
+      "origin": "nevada_expansion",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "home_watch",
+      "display_name": "Seasonal home watch",
+      "origin": "nevada_expansion",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "housekeeping_service",
+      "display_name": "Maid and housekeeping service businesses",
+      "origin": "nevada_expansion",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "estate_maintenance",
+      "display_name": "Estate upkeep and vendor coordination",
+      "origin": "nevada_expansion",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "home_organization",
+      "display_name": "Home and closet organization",
+      "origin": "nevada_expansion",
+      "availability": "research_only",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "nanny_staffing",
+      "display_name": "Nannies and babysitters",
+      "origin": "nevada_expansion",
+      "availability": "licensing_hold",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "house_manager_staffing",
+      "display_name": "Household and estate managers",
+      "origin": "nevada_expansion",
+      "availability": "licensing_hold",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "personal_assistant_staffing",
+      "display_name": "Household personal assistants",
+      "origin": "nevada_expansion",
+      "availability": "licensing_hold",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "private_chef_staffing",
+      "display_name": "Private chefs",
+      "origin": "nevada_expansion",
+      "availability": "licensing_hold",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "housekeeper_staffing",
+      "display_name": "Employed housekeepers",
+      "origin": "nevada_expansion",
+      "availability": "licensing_hold",
+      "placement_allowed": false
+    },
+    {
+      "service_key": "senior_personal_care",
+      "display_name": "In-home personal care",
+      "origin": "nevada_expansion",
+      "availability": "licensing_hold",
+      "placement_allowed": false
+    }
+  ],
+  "offers": [
+    {
+      "product_key": "nv_growth_pack_starter",
+      "audience": "business",
+      "amount_cents": 49900,
+      "currency": "usd",
+      "deliverable": "100 source-reviewed business targets including the original free five",
+      "minimum_eligible_reserve": 125,
+      "checkout_enabled": false
+    },
+    {
+      "product_key": "nv_household_research",
+      "audience": "household",
+      "amount_cents": 4900,
+      "currency": "usd",
+      "deliverable": "Three researched service businesses, public contact routes, scope comparison and quote checklist",
+      "minimum_eligible_reserve": 3,
+      "checkout_enabled": false
+    }
+  ],
+  "sequence": [
+    {
+      "step": 1,
+      "subject": "A few potential customers in {market}",
+      "body": "Hi {name}, we research business prospects for {service} companies serving {market}. If useful, I can prepare five free business targets with source links and contact routes. The full pack is 100 targets for $499, including those five. These are researched prospects; they have not requested your service. Would you like the five?"
+    },
+    {
+      "step": 2,
+      "subject": "Your {market} target sample",
+      "body": "Here are the five business targets you requested for {service} in {market}: {sample_link}. The full pack contains 100 total for $499. It is available only after we confirm enough suitable records. No subscription and no promise of sales."
+    },
+    {
+      "step": 3,
+      "subject": "Checking back on the {market} sample",
+      "body": "Was the sample relevant to the jobs you want? Reply with any scope changes before ordering. If it is useful, the full 100 is $499. Reply stop to end follow-ups."
+    },
+    {
+      "step": 4,
+      "subject": "Your service-business research request",
+      "body": "We received your request for {service} in {market}. We will confirm whether we can research three suitable service businesses before offering the $49 shortlist. Service quotes, availability, contracts and service payments are handled directly with each business."
+    },
+    {
+      "step": 5,
+      "subject": "Your {market} service shortlist",
+      "body": "Your researched options and quote checklist are ready: {delivery_link}. These businesses have not been contacted on your behalf. Please confirm current availability, insurance, credentials and final scope directly before hiring."
+    }
+  ],
+  "controls": {
+    "outreach_enabled": false,
+    "paid_employee_placement": false,
+    "auto_provider_approval": false,
+    "household_cold_outreach": false,
+    "cross_state_exports": false
+  }
+}

@@ -1,0 +1,1385 @@
+{
+  "state_code": "NV",
+  "generated_at": "2026-11-01T22:17:52.516175+00:00",
+  "launch_ready": false,
+  "runtime_verified": false,
+  "census_records": 41092,
+  "census_markets": {
+    "las-vegas": {
+      "market": "Las Vegas",
+      "records": 26501,
+      "source_url": "https://mapdata.lasvegasnevada.gov/clvgis/rest/services/DevelopmentServices/Business_Licenses/MapServer/0",
+      "source_where": "LICSTATUS='Active' AND UPPER(BUS_STATE)='NV' AND UPPER(BUS_CITY)='LAS VEGAS'",
+      "status_counts": {
+        "Active": 26501
+      },
+      "past_expiration_records": 21375,
+      "delivery_eligible": 0
+    },
+    "henderson": {
+      "market": "Henderson",
+      "records": 14591,
+      "source_url": "https://maps.cityofhenderson.com/arcgis/rest/services/public/OpenDataGovernment/MapServer/0",
+      "source_where": "STATUS IN ('Active','Active - Pending Renewal') AND LOCATION IN ('Commercial in COH','Residential in COH')",
+      "status_counts": {
+        "Active": 12323,
+        "Active - Pending Renewal": 2268
+      },
+      "past_expiration_records": 14220,
+      "delivery_eligible": 0
+    }
+  },
+  "primary_site_businesses": 15,
+  "public_business_email_candidates": 9,
+  "catalog_services": 67,
+  "lane_count": 134,
+  "blockers": [
+    "Owner review/release; exact email version not approved",
+    "Nevada delivery-eligible inventory not yet qualified",
+    "Separate Nevada Stripe payment mapping and signed-event fulfillment not implemented",
+    "Nevada paid delivery proof not yet completed"
+  ],
+  "regulated_categories": "Agency research only; no employee placement or personal-care intake/payment",
+  "lanes": [
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "restaurant_repair",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "growth_pack",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "commercial_cleaning",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "tree_service",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "junk_hauling",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "landscaping",
+      "primary_site_candidates": 2,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "rural_property",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "snow_service",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "towing_roadside",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "vehicle_services",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "auto_repair_shop",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "pet_waste",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "pool_desert_property",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "str_property_care",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "hvac_heat",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "ice_machine",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "hood_exhaust",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "grease_drain",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "window_cleaning",
+      "primary_site_candidates": 1,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "pressure_washing",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "pest_control",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "restaurant_equipment",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "used_equipment",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "equipment_quotes",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "vendor_savings",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "restaurant_maintenance",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "linen_laundry",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "floor_carpet",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "fire_safety",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "backflow_plumbing",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "sign_lighting",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "locksmith_access",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "duct_vent",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "fleet_washing",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "mobile_tire_battery",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "coffee_water",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "waste_audit",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "competitor_intel",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "market_expansion",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "quote_sourcing",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "parking_lot",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "epoxy_flooring",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "mobile_detailing",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "auto_glass",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "pet_sitting",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "mobile_pet_grooming",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "turnover_cleaning",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "garage_door",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "facility_maintenance",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "electrical_service",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "handyman_repairs",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "residential_cleaning",
+      "primary_site_candidates": 2,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "home_staging",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "realtor_listing_prep",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "solar_panel_cleaning",
+      "primary_site_candidates": 3,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "groundskeeping",
+      "primary_site_candidates": 2,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "errand_service",
+      "primary_site_candidates": 1,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "home_watch",
+      "primary_site_candidates": 3,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "housekeeping_service",
+      "primary_site_candidates": 2,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "estate_maintenance",
+      "primary_site_candidates": 2,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "home_organization",
+      "primary_site_candidates": 2,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "nanny_staffing",
+      "primary_site_candidates": 1,
+      "delivery_eligible": 0,
+      "status": "licensing_hold",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "house_manager_staffing",
+      "primary_site_candidates": 1,
+      "delivery_eligible": 0,
+      "status": "licensing_hold",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "personal_assistant_staffing",
+      "primary_site_candidates": 1,
+      "delivery_eligible": 0,
+      "status": "licensing_hold",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "private_chef_staffing",
+      "primary_site_candidates": 1,
+      "delivery_eligible": 0,
+      "status": "licensing_hold",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "housekeeper_staffing",
+      "primary_site_candidates": 1,
+      "delivery_eligible": 0,
+      "status": "licensing_hold",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Henderson",
+      "service_key": "senior_personal_care",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "licensing_hold",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "restaurant_repair",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "growth_pack",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "commercial_cleaning",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "tree_service",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "junk_hauling",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "landscaping",
+      "primary_site_candidates": 1,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "rural_property",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "snow_service",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "towing_roadside",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "vehicle_services",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "auto_repair_shop",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "pet_waste",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "pool_desert_property",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "str_property_care",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "hvac_heat",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "ice_machine",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "hood_exhaust",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "grease_drain",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "window_cleaning",
+      "primary_site_candidates": 1,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "pressure_washing",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "pest_control",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "restaurant_equipment",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "used_equipment",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "equipment_quotes",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "vendor_savings",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "restaurant_maintenance",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "linen_laundry",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "floor_carpet",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "fire_safety",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "backflow_plumbing",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "sign_lighting",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "locksmith_access",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "duct_vent",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "fleet_washing",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "mobile_tire_battery",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "coffee_water",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "waste_audit",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "competitor_intel",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "market_expansion",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "quote_sourcing",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "parking_lot",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "epoxy_flooring",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "mobile_detailing",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "auto_glass",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "pet_sitting",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "mobile_pet_grooming",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "turnover_cleaning",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "garage_door",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "facility_maintenance",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "electrical_service",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "handyman_repairs",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "residential_cleaning",
+      "primary_site_candidates": 2,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "home_staging",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "realtor_listing_prep",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "solar_panel_cleaning",
+      "primary_site_candidates": 3,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "groundskeeping",
+      "primary_site_candidates": 1,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "errand_service",
+      "primary_site_candidates": 2,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "home_watch",
+      "primary_site_candidates": 1,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "housekeeping_service",
+      "primary_site_candidates": 3,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "estate_maintenance",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "home_organization",
+      "primary_site_candidates": 3,
+      "delivery_eligible": 0,
+      "status": "needs_source_and_route_review",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "nanny_staffing",
+      "primary_site_candidates": 2,
+      "delivery_eligible": 0,
+      "status": "licensing_hold",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "house_manager_staffing",
+      "primary_site_candidates": 1,
+      "delivery_eligible": 0,
+      "status": "licensing_hold",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "personal_assistant_staffing",
+      "primary_site_candidates": 1,
+      "delivery_eligible": 0,
+      "status": "licensing_hold",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "private_chef_staffing",
+      "primary_site_candidates": 1,
+      "delivery_eligible": 0,
+      "status": "licensing_hold",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "housekeeper_staffing",
+      "primary_site_candidates": 2,
+      "delivery_eligible": 0,
+      "status": "licensing_hold",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    },
+    {
+      "state_code": "NV",
+      "market": "Las Vegas",
+      "service_key": "senior_personal_care",
+      "primary_site_candidates": 0,
+      "delivery_eligible": 0,
+      "status": "licensing_hold",
+      "consumer_minimum": 3,
+      "business_reserve_minimum": 125
+    }
+  ]
+}

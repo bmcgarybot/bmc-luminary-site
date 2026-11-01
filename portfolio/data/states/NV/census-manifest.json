@@ -1,0 +1,244 @@
+{
+  "state_code": "NV",
+  "retrieved_at": "2026-11-01T22:09:26.385897+00:00",
+  "as_of": "2026-11-01",
+  "record_semantics": "license/source records; not unique businesses, contactable prospects, operating proof, or approved providers",
+  "commercial_reuse_review": "pending; use as discovery evidence, not a resale permission grant",
+  "markets": {
+    "las-vegas": {
+      "market": "Las Vegas",
+      "records": 26501,
+      "source_url": "https://mapdata.lasvegasnevada.gov/clvgis/rest/services/DevelopmentServices/Business_Licenses/MapServer/0",
+      "source_where": "LICSTATUS='Active' AND UPPER(BUS_STATE)='NV' AND UPPER(BUS_CITY)='LAS VEGAS'",
+      "status_counts": {
+        "Active": 26501
+      },
+      "past_expiration_records": 21375,
+      "delivery_eligible": 0
+    },
+    "henderson": {
+      "market": "Henderson",
+      "records": 14591,
+      "source_url": "https://maps.cityofhenderson.com/arcgis/rest/services/public/OpenDataGovernment/MapServer/0",
+      "source_where": "STATUS IN ('Active','Active - Pending Renewal') AND LOCATION IN ('Commercial in COH','Residential in COH')",
+      "status_counts": {
+        "Active": 12323,
+        "Active - Pending Renewal": 2268
+      },
+      "past_expiration_records": 14220,
+      "delivery_eligible": 0
+    }
+  },
+  "artifacts": [
+    {
+      "file": "census-las-vegas-001.json",
+      "records": 1000,
+      "sha256": "630c1737bb87a92cc066734a4cbfe476f497df37f8f302957199b95ff49dd50e"
+    },
+    {
+      "file": "census-las-vegas-002.json",
+      "records": 1000,
+      "sha256": "4cce7720412e2f96b2f5bc73f9ff948dfd47bca5b07b659fef903e7a3220e868"
+    },
+    {
+      "file": "census-las-vegas-003.json",
+      "records": 1000,
+      "sha256": "cb1a7af5cddf9a94db22c858bd079639063888fbc2a6038d50b65ced370e2cc7"
+    },
+    {
+      "file": "census-las-vegas-004.json",
+      "records": 1000,
+      "sha256": "1d8e413c6052b30f9a0568cb835329696836a6df45a5b0cef5f337a7eb1bcf28"
+    },
+    {
+      "file": "census-las-vegas-005.json",
+      "records": 1000,
+      "sha256": "d13bb743285cb181fc6b7e976045232c8408b44a5a76ec0ae997c5fd5cd2974a"
+    },
+    {
+      "file": "census-las-vegas-006.json",
+      "records": 1000,
+      "sha256": "efce4a29fd5a64f2b6ec782e167d9bca3512624baafde61a242f1c520257a2db"
+    },
+    {
+      "file": "census-las-vegas-007.json",
+      "records": 1000,
+      "sha256": "2acf6a5c685b870b77818581ece1d18f44a79c781e17de2b50231d800f694460"
+    },
+    {
+      "file": "census-las-vegas-008.json",
+      "records": 1000,
+      "sha256": "e71b04a1f80a29855633fe509e10f94740d6a28eda3e270794e088f2bb39840f"
+    },
+    {
+      "file": "census-las-vegas-009.json",
+      "records": 1000,
+      "sha256": "4d45f69ff47c349a0c4ddde44ecaf16c5fffa5995be3dfa663660656c6270d83"
+    },
+    {
+      "file": "census-las-vegas-010.json",
+      "records": 1000,
+      "sha256": "56833114b85de3d579d36175f1e6c4577ae97d6eff31a7aab8c71b2ba913959f"
+    },
+    {
+      "file": "census-las-vegas-011.json",
+      "records": 1000,
+      "sha256": "a197f7cda1b92ccdfacbc936fd4cc5f090ce9f828c4cd2520c09d6f77ce9e1c6"
+    },
+    {
+      "file": "census-las-vegas-012.json",
+      "records": 1000,
+      "sha256": "8fcafb6bfbcc08eb344256f2048a187850cebb1bcd78a3178f8ceb023afed204"
+    },
+    {
+      "file": "census-las-vegas-013.json",
+      "records": 1000,
+      "sha256": "3165e081ca60d06fd149a57f0609d2b9616946a5bab751fbd766424a12b736e8"
+    },
+    {
+      "file": "census-las-vegas-014.json",
+      "records": 1000,
+      "sha256": "2551beadced5b38a4483fc2e745eead7f13029a631508489237e29ad48932d53"
+    },
+    {
+      "file": "census-las-vegas-015.json",
+      "records": 1000,
+      "sha256": "64a40256e9fa062c2ef284c672e670ced688d118e9268461a06a553b2bf1fba2"
+    },
+    {
+      "file": "census-las-vegas-016.json",
+      "records": 1000,
+      "sha256": "809e5ccaa3c1ceb6329c2ec23bb50043a96acf8559f4bde79eac3e4ef5e952d7"
+    },
+    {
+      "file": "census-las-vegas-017.json",
+      "records": 1000,
+      "sha256": "595b881ad005ea30c2125fd1855ca94dc7dc17f6fb152aa8a3120e78b69e6e53"
+    },
+    {
+      "file": "census-las-vegas-018.json",
+      "records": 1000,
+      "sha256": "d9d68b52f77842dbf39867710d7a0b1ba90d7a63bd155d3c8b142233415f3c64"
+    },
+    {
+      "file": "census-las-vegas-019.json",
+      "records": 1000,
+      "sha256": "63293fb49c432cdfc0fe6b8147da64de5d6ed87edc6eb3c2f298a2826018f513"
+    },
+    {
+      "file": "census-las-vegas-020.json",
+      "records": 1000,
+      "sha256": "d596ec97e0253a4e8d7e8653388c363d8bf2070556be7ccf71e20463d9b8d367"
+    },
+    {
+      "file": "census-las-vegas-021.json",
+      "records": 1000,
+      "sha256": "e23ab56339befa245ea6b79375a21633cf0dbedb7b36e467664517478f132722"
+    },
+    {
+      "file": "census-las-vegas-022.json",
+      "records": 1000,
+      "sha256": "333063f12d93c11653dc6c98845f25046e406ec9714328f1638ea879cab50556"
+    },
+    {
+      "file": "census-las-vegas-023.json",
+      "records": 1000,
+      "sha256": "c04acfc054900b4d8c5ff60a017a2ab6885224d111ab8d8c0b425c398f18e755"
+    },
+    {
+      "file": "census-las-vegas-024.json",
+      "records": 1000,
+      "sha256": "dc19c66adb2c191088a0896ac65a606ee0dd3c1d7694ef0335d333382605ddce"
+    },
+    {
+      "file": "census-las-vegas-025.json",
+      "records": 1000,
+      "sha256": "292b2a05163c3743503e3ffc2e8026863510bd05b5e19a200cadeec47832a3ac"
+    },
+    {
+      "file": "census-las-vegas-026.json",
+      "records": 1000,
+      "sha256": "0c3f7069752f84c95f5cf840effcb34a1265dc264c201e234e8428e8ae740ca3"
+    },
+    {
+      "file": "census-las-vegas-027.json",
+      "records": 501,
+      "sha256": "d949057e37186f63fc7faf935edf798fa8d81c2298b6e69b56ae891fd7b0aead"
+    },
+    {
+      "file": "census-henderson-001.json",
+      "records": 1000,
+      "sha256": "afb430a0dc022c077f93c8c952a0f95b87ff27168a0d997e58663b681a3a451e"
+    },
+    {
+      "file": "census-henderson-002.json",
+      "records": 1000,
+      "sha256": "d7e53aefd35b470f035e851cc8690dff9e33facce389916d2fe4c5711245fd06"
+    },
+    {
+      "file": "census-henderson-003.json",
+      "records": 1000,
+      "sha256": "a1c07ce11f46683f8831fc4e1e8380847a9de200515ac0b07bca23e0e466937f"
+    },
+    {
+      "file": "census-henderson-004.json",
+      "records": 1000,
+      "sha256": "f46ae9790d3b72516e494efc22d9363fb8df435111290ff046d244adebe4f79b"
+    },
+    {
+      "file": "census-henderson-005.json",
+      "records": 1000,
+      "sha256": "e302c0621d802c6611655ef73a7bda6e940e43e513373638b01e778c8cd8360f"
+    },
+    {
+      "file": "census-henderson-006.json",
+      "records": 1000,
+      "sha256": "94f7524c4f5410b7be90e5ee59b49d2d0d1c6ebe083705d5ef5ed838b1e5e22f"
+    },
+    {
+      "file": "census-henderson-007.json",
+      "records": 1000,
+      "sha256": "329b65f71f2a7cc43634b4e7e75cb36d058f610b2c459b24cb74c8bcbb420b65"
+    },
+    {
+      "file": "census-henderson-008.json",
+      "records": 1000,
+      "sha256": "e8a93e296298652751def249bb11e19f90baad8cb7679cd427a4df671178dad5"
+    },
+    {
+      "file": "census-henderson-009.json",
+      "records": 1000,
+      "sha256": "b776604554df95af330c1386c45a5a21307695209deee903a9c1a8c546fcc0e3"
+    },
+    {
+      "file": "census-henderson-010.json",
+      "records": 1000,
+      "sha256": "c3217086378d83c81dbfb61e3a5ca1aa69244ac6dac14f0f038d778b1c023b99"
+    },
+    {
+      "file": "census-henderson-011.json",
+      "records": 1000,
+      "sha256": "fbacf208db93dba2861a54fa51369b6e3e368592d6bf6ca240dfd719a2aa2e62"
+    },
+    {
+      "file": "census-henderson-012.json",
+      "records": 1000,
+      "sha256": "b2cc1512b1cc2a6802b1f60b31d5ce788ec8829d197356184fb65e297ba1b2de"
+    },
+    {
+      "file": "census-henderson-013.json",
+      "records": 1000,
+      "sha256": "e565f09b26d8e624f379098e693bd3bb1f20f4429db3fd052c86846f71921eb7"
+    },
+    {
+      "file": "census-henderson-014.json",
+      "records": 1000,
+      "sha256": "c8dddfc2f245b1c45cfb4c94b0b4537bc8a3f37b51b1026665967fd40a0d8d69"
+    },
+    {
+      "file": "census-henderson-015.json",
+      "records": 591,
+      "sha256": "594d55ccba513420b2891a2b6cc14a2506c851e3777faf7d77de5236a91188e0"
+    }
+  ]
+}
