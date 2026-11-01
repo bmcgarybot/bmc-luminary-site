@@ -342,7 +342,7 @@ INVENTORY_REGIONAL_MARKETS={"Prescott","Prescott Valley","Flagstaff","Kingman","
 INVENTORY_QUERY_STRATEGY_VERSION=7
 
 INVENTORY_BLOCKED_DOMAINS={
-    "facebook.com","nextdoor.com","linkedin.com","yelp.com","yellowpages.com","angi.com",
+    "loc8nearme.com","facebook.com","nextdoor.com","linkedin.com","yelp.com","yellowpages.com","angi.com",
     "thumbtack.com","bbb.org","mapquest.com","tripadvisor.com","doordash.com","grubhub.com",
     "superpages.com","allbiz.com","restaurantji.com","manta.com","chamberofcommerce.com",
     "birdeye.com","foursquare.com","opentable.com","restaurantguru.com",
@@ -2533,7 +2533,7 @@ GROWTH_HIGH_VALUE_CATEGORIES={
   "pressure_washing":{"auto_dealers","auto_fleet","grocery","hotels_motels","property_management","restaurants","retail","warehouses_industrial"},
   "commercial_cleaning":{"grocery","hotels_motels","medical_centers","property_management","schools","schools_education","senior_daycare","warehouses_industrial"}
 }
-GROWTH_SOURCE_BLOCKLIST=("booking.com","tripadvisor.com","kayak.com","hotels.com","expedia.com","facebook.com","nextdoor.com")
+GROWTH_SOURCE_BLOCKLIST=tuple(sorted(INVENTORY_BLOCKED_DOMAINS | {"booking.com","tripadvisor.com","kayak.com","hotels.com","expedia.com","facebook.com","nextdoor.com"}))
 
 def growth_category_terms(category):
     mapping={
@@ -2581,6 +2581,57 @@ def growth_candidate_is_fresh(row,now=None):
         verified=verified.replace(tzinfo=timezone.utc)
     age=(now or datetime.now(timezone.utc))-verified
     return -timedelta(minutes=5)<=age<=timedelta(days=90)
+
+def growth_candidate_evidence_valid(row,market):
+    """Do not turn a directory or contradictory location into a qualified buyer.
+
+    Stored market and official_site flags are ingestion claims, not overrides
+    for an aggregate source or a physical location contradicted by the evidence.
+    Preserve discovery rows; exclude them only from sample/paid selection.
+    """
+    if clean(row.get("market")).casefold()!=clean(market).casefold():
+        return False
+    try:
+        parsed=urllib.parse.urlparse(clean(row.get("source_url")))
+        host=(parsed.hostname or "").lower().removeprefix("www.")
+    except ValueError:
+        return False
+    if parsed.scheme not in ("http","https") or not host:
+        return False
+    if any(host==d or host.endswith("."+d) for d in GROWTH_SOURCE_BLOCKLIST):
+        return False
+    name=clean(row.get("business_name"))
+    if re.search(r"\b(?:directory|ratings,? reviews|with reviews|hours and|top \d+|best \d+)\b",name,re.I):
+        return False
+    if re.search(r"\b(?:grocery stores|supermarkets|restaurants|hotels|dentists|contractors|companies|providers)\s+(?:in|near)\b",name,re.I):
+        return False
+    if any(part in {"directory","directories","search","categories"} for part in parsed.path.lower().split("/")):
+        return False
+    place=lambda value: re.sub(r"[-\s]+"," ",clean(value)).casefold()
+    expected_place=place(market)
+    cities=sorted({place(x) for x in DEFAULT_SOURCE_NATIVE_MARKETS},key=len,reverse=True)
+    city_pattern="|".join(re.escape(x) for x in cities)
+    # Registry notes carry a physical address; when present it outranks a
+    # regional brand name (e.g. a Phoenix-named company with a Sedona branch).
+    note=place(row.get("snippet"))
+    physical=re.search(r",\s*("+city_pattern+r")(?:,)?\s+(?:AZ|Arizona)\s+\d{5}\b",note,re.I)
+    if physical:
+        return physical.group(1).casefold()==expected_place
+    # 'Near Sedona' and 'serving Sedona' do not move a Flagstaff property.
+    location_title=re.split(r"\b(?:near|serving|service areas?|areas? served)\b",place(name),maxsplit=1,flags=re.I)[0]
+    named_cities={m.group(0).casefold() for m in re.finditer(r"(?<![a-z])(?:"+city_pattern+r")(?![a-z])",location_title,re.I)}
+    # A direct site's city-specific domain is additional contradictory
+    # evidence even when an SEO title omits its actual home city.
+    compact=lambda value: re.sub(r"[^a-z0-9]","",value)
+    host_cities={city for city in cities if compact(city) in compact(host)} if row.get("official_site") else set()
+    host_cities={city for city in host_cities if not any(city!=other and compact(city) in compact(other) for other in host_cities)}
+    contradictory=(named_cities and expected_place not in named_cities) or (host_cities and expected_place not in host_cities)
+    if contradictory:
+        # An explicit branch/location URL can support a branch of a regional
+        # company; a generic marketing 'near CITY' page cannot.
+        branch=r"/(?:locations?|branches|offices|clinics|stores|campuses)/[^?#]*"+re.escape(clean(market).lower().replace(" ","-"))+r"(?:/|$)"
+        return bool(re.search(branch,parsed.path.lower()))
+    return True
 
 def growth_candidate_score(row,service_key):
     r=dict(row)
@@ -2739,7 +2790,7 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
     if service_key not in GROWTH_SERVICE_LABELS or not categories:
         return []
     rows=await conn.fetch("""select candidate_id,market,category_key,category_label,business_name,source_url,source_domain,
-          public_email,public_phone,official_site,source_tier,verification_status,last_verified_at,last_seen_at,updated_at
+          public_email,public_phone,official_site,source_tier,verification_status,last_verified_at,last_seen_at,updated_at,snippet,evidence
         from market_inventory_candidates
         where side='buyer' and market=$1 and category_key=any($2::text[])
           and status='discovered' and closed_at is null
@@ -2759,6 +2810,8 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
     seen=set(); qualified=[]
     for raw in rows:
         r=dict(raw)
+        if not growth_candidate_evidence_valid(r,market):
+            continue
         host=clean(r.get("source_domain")).lower().removeprefix("www.")
         if any(host==d or host.endswith("."+d) for d in GROWTH_SOURCE_BLOCKLIST):
             continue
@@ -3519,6 +3572,8 @@ Reply no to stop future BMC outreach."""
 
 def growth_saved_sample_is_current(saved,current,service_key):
     if not current or current.get("status")!="discovered" or current.get("closed_at") is not None:
+        return False
+    if not growth_candidate_evidence_valid(current,saved.get("market")):
         return False
     if growth_prospect_key(saved)!=growth_prospect_key(current):
         return False
