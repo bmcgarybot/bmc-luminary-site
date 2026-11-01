@@ -29,6 +29,9 @@ def render(key: str, p: dict) -> str:
         for i, item in enumerate(p["needs"], 1)
     )
     return f'''<!doctype html><html lang="en"><head>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=1">
+<link rel="icon" sizes="any" href="/favicon.ico?v=1">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=1">
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(p["title"])}</title><meta name="description" content="{esc(p["desc"])}">{robots}
 <meta name="bmc-webhook" content="https://hooks.bmcservicenetwork.com/api/intake"><link rel="stylesheet" href="../assets/core.css?v=clarity-10">
