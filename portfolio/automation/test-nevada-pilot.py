@@ -5,6 +5,8 @@ import hashlib
 import importlib.util
 import itertools
 import json
+import runpy
+from unittest.mock import patch
 from pathlib import Path
 import unittest
 
@@ -38,7 +40,7 @@ class PolicyTests(unittest.TestCase):
             p=self.payload();p.update(service_key=k,audience=a,business_name='Fixture')
             with self.assertRaises(ValueError):nv.validate_request(p)
     def test_employee_scope_cannot_use_cleaning_category(self):
-        for text in ['Need a nanny','live-in housekeeper','house manager placement','personal care for parent','staff placement','babysitter needed']:
+        for text in ['Need a nanny','live-in housekeeper','house manager placement','personal care for parent','staff placement','babysitter needed','full time housekeeper','staffing help']:
             p=self.payload();p.update(service_key='residential_cleaning',scope=text)
             with self.assertRaises(ValueError):nv.validate_request(p)
     def test_consent_must_be_boolean_true(self):
@@ -107,6 +109,22 @@ class ArtifactTests(unittest.TestCase):
         exporter=importlib.util.module_from_spec(spec);spec.loader.exec_module(exporter)
         row=exporter.normalize('las-vegas',{'OBJECTID':1,'BUS_NAME':'Fixture','LICSTATUS':'Active','EXPDTTM':'01-AUG-24'},'2026-11-01')
         self.assertTrue(row['expiry_precedes_retrieval']);self.assertFalse(row['delivery_eligible'])
+    def test_nevada_relay_is_read_only_and_fixed_route(self):
+        ns=runpy.run_path(str(ROOT/'automation/vps-gitops-relay.py'),run_name='nv_relay_test')
+        self.assertIn('nevada_status',ns['READ_ONLY_ACTIONS'])
+        self.assertNotIn('nevada_status',ns['EXTERNAL_ACTIONS'])
+        execute=ns['execute'];calls=[]
+        def post(path,**kwargs):calls.append(path);return {'state_code':'NV','requests':0,'orders':0}
+        with patch.dict(execute.__globals__,{'admin_post':post,'current_sha':lambda:'a'*40,'current_branch':lambda:'master','redact':lambda s:s}):
+            result=execute({'request_id':'nevada-status-test','action':'nevada_status','args':{'path':'/api/intake'},'allow_external_actions':False})
+        self.assertEqual(calls,['/api/admin/nevada/status'])
+        self.assertEqual(result['status'],'success')
+    def test_legal_pages_keep_nevada_navigation_and_no_legacy_script(self):
+        for name in ['privacy','terms']:
+            p=ROOT/'nevada'/name/'index.html'
+            self.assertTrue(p.exists())
+            self.assertNotIn('assets/core.js',p.read_text())
+            self.assertIn('/nevada/',p.read_text())
     def test_public_routes_exact_and_admin_not_exposed(self):
         nginx=(ROOT/'automation/nginx-webhooks.conf').read_text()
         self.assertIn('location = /api/nevada/status',nginx);self.assertIn('location = /api/nevada/request',nginx)

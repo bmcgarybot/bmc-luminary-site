@@ -35,7 +35,7 @@ def validate_request(payload):
     if len(email)>254 or not re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]+',email): raise ValueError('Enter a valid email address.')
     scope=str(payload.get('scope') or '').strip()
     if len(scope)>1500: raise ValueError('Please keep the request under 1,500 characters.')
-    if re.search(r'\b(nann(?:y|ies)|babysitt\w*|hire an? employee|live[ -]in|personal care|house(?:hold)? manager|staff placement)\b',scope,re.I):
+    if re.search(r'\b(nann(?:y|ies)|babysitt\w*|hire an? employee|employee placement|staffing|full[ -]time housekeeper|live[ -]in|personal care|house(?:hold)? manager|staff placement)\b',scope,re.I):
         raise ValueError('Employee placement and personal care are not available through this pilot.')
     business=str(payload.get('business_name') or '').strip()
     if len(business)>200: raise ValueError('Business name is too long.')
@@ -79,6 +79,7 @@ def install(app, require_admin):
             'message':'Your request is awaiting review. No payment has been taken and no service has been booked.'}
 
     @app.get('/api/admin/nevada/status')
+    @app.post('/api/admin/nevada/status')
     async def admin_status(x_bmc_admin_key:str|None=Header(default=None)):
         require_admin(x_bmc_admin_key)
         async with app.state.pool.acquire() as conn:
