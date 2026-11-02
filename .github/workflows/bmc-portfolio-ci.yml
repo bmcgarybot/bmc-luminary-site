@@ -70,6 +70,7 @@ jobs:
           python3 portfolio/automation/test-growth-reply-hold.py
           python3 portfolio/automation/test-growth-preview-token.py
           python3 portfolio/automation/test-owner-preview-scope.py
+          python3 portfolio/automation/test-owner-contact-config.py
           python3 portfolio/automation/test-service-outreach-copy.py
           python3 portfolio/automation/test-local-ai-budget.py
           python3 portfolio/automation/test-nevada-pilot.py
