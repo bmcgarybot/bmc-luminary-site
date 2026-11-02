@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Exercise production qualification filters with synthetic data; no external services."""
 import ast
+import json
 import asyncio
 from datetime import datetime, timedelta, timezone
 import hashlib
@@ -11,10 +12,10 @@ import urllib.parse
 
 SOURCE=ast.parse(Path(__file__).with_name("api").joinpath("app.py").read_text())
 NAMES={"clean","growth_category_terms","growth_selected_categories","growth_candidate_is_fresh",
-       "growth_qualified_candidates","growth_prospect_key","growth_candidate_evidence_valid"}
+       "growth_qualified_candidates","growth_prospect_key","growth_candidate_evidence_valid","json_dict"}
 nodes=[node for node in SOURCE.body if isinstance(node,(ast.FunctionDef,ast.AsyncFunctionDef)) and node.name in NAMES]
 async def exposure_passthrough(conn,rows,*args): return rows
-ns={"urllib":urllib,"DEFAULT_SOURCE_NATIVE_MARKETS":("Prescott","Prescott Valley","Sedona","Flagstaff"),"datetime":datetime,"timezone":timezone,"timedelta":timedelta,"hashlib":hashlib,"re":re,
+ns={"json":json,"urllib":urllib,"DEFAULT_SOURCE_NATIVE_MARKETS":("Prescott","Prescott Valley","Sedona","Flagstaff"),"datetime":datetime,"timezone":timezone,"timedelta":timedelta,"hashlib":hashlib,"re":re,
     "GROWTH_BUYER_CATEGORIES":{"pressure_washing":["restaurants","retail"]},
     "GROWTH_SERVICE_LABELS":{"pressure_washing":"Pressure washing"},"GROWTH_SOURCE_BLOCKLIST":("loc8nearme.com","yelp.com"),
     "growth_exposure_filter":exposure_passthrough,
@@ -42,7 +43,7 @@ class Tests(unittest.TestCase):
             rows.append({"business_name":name,"market":"Test","category_key":"restaurants",
                          "source_url":"https://synthetic.example","source_domain":"synthetic.example",
                          "public_phone":"9285550100","official_site":True,"last_verified_at":verified,
-                         "last_seen_at":now,"updated_at":now})
+                         "last_seen_at":now,"updated_at":now,"evidence":{"artifact_files":["synthetic-reviewed.json"],"researched_by":"assistant_manual_census"}})
         result=asyncio.run(ns["growth_qualified_candidates"](Connection(rows),"pressure_washing","Test"))
         self.assertEqual([row["business_name"] for row in result],["Fresh"])
 
@@ -50,7 +51,7 @@ class Tests(unittest.TestCase):
         row=dict(business_name="Hilton Sedona Resort at Bell Rock",market="Sedona",
             category_key="restaurants",source_url="https://www.hilton.com/en/hotels/sdxsehh/",
             source_domain="hilton.com",official_site=True,public_phone="9282844040",
-            last_verified_at=datetime.now(timezone.utc))
+            last_verified_at=datetime.now(timezone.utc),evidence={"artifact_files":["synthetic-reviewed.json"],"researched_by":"assistant_manual_census"})
         row.update(patch);return row
 
     def test_live_directory_and_wrong_city_regressions(self):
@@ -62,6 +63,20 @@ class Tests(unittest.TestCase):
         result=asyncio.run(ns["growth_qualified_candidates"](Connection(rows),"pressure_washing","Sedona"))
         self.assertEqual([r['business_name'] for r in result],[rows[0]['business_name']])
 
+    def test_raw_search_record_cannot_self_approve_with_fresh_date_and_official_flag(self):
+        row=self.evidence_row(evidence={"query":"Sedona grocery","engine":"search"})
+        self.assertFalse(ns['growth_candidate_evidence_valid'](row,'Sedona'))
+    def test_unknown_aggregate_and_near_city_landing_regressions(self):
+        for name,url in [('10+ TOP RATED Grocery Store in Sedona Open Now','https://gematos.id/12381-grocery-store-in-sedona/'),
+          ('Jones Ford Verde Valley New, Used & Service Near Sedona, AZ','https://jonesfordverdevalley.com/ford-dealer-near-sedona-az')]:
+            self.assertFalse(ns['growth_candidate_evidence_valid'](self.evidence_row(business_name=name,source_url=url),'Sedona'))
+    def test_structured_government_provenance_or_curated_json_provenance(self):
+        row=self.evidence_row(evidence=json.dumps({"artifact_files":["reviewed.json"],"researched_by":"assistant_manual_census"}))
+        self.assertTrue(ns['growth_candidate_evidence_valid'](row,'Sedona'))
+        row.update(source_url='https://data.cms.gov/record',source_tier='government_registry',verification_status='government_record',evidence={'source_key':'cms_clia'})
+        self.assertTrue(ns['growth_candidate_evidence_valid'](row,'Sedona'))
+        row['source_url']='https://unreviewed.example/record'
+        self.assertFalse(ns['growth_candidate_evidence_valid'](row,'Sedona'))
     def test_actual_url_host_cannot_be_overridden_by_official_flag_or_domain(self):
         for url in ['https://www.loc8nearme.com/a','https://sub.yelp.com/b','javascript:alert(1)']:
             self.assertFalse(ns['growth_candidate_evidence_valid'](self.evidence_row(source_url=url,source_domain='hilton.com'),'Sedona'))
