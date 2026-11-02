@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "b-stage-cleaning-held-20261102T212740Z",
+  "action": "growth_stage_commercial_cleaning",
+  "allow_external_actions": false,
+  "created_at": "2026-11-02T21:27:40.844Z",
+  "expires_at": "2026-11-02T22:27:40.844Z",
+  "args": {}
+}
