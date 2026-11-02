@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Owner Growth review scope never contacts a prospect or sends unrelated templates."""
 import ast
+from datetime import datetime, timezone
+from email.message import EmailMessage
+from email.utils import formataddr, format_datetime, make_msgid
 from pathlib import Path
 import runpy
 import unittest
@@ -20,6 +23,7 @@ class ScopeTests(unittest.IsolatedAsyncioTestCase):
             lines=["Synthetic review copy"],button=None,url=None,marketing=False) for i in range(1,28)]
         ns=dict(Header=lambda **kw:None,HTTPException=HTTPError,ADMIN_KEY="fixture",
             OUTREACH_ENABLED=False,BUYER_OUTREACH_ENABLED=False,GROWTH_OUTREACH_ENABLED=False,
+            OWNER_PREVIEW_RECIPIENT="contact@bmcservicenetwork.com",
             BUSINESS_POSTAL_ADDRESS="Fixture postal",owner_template_preview_catalog=lambda:catalog,
             workflow_email_html=lambda *args,**kw:"<p>Fixture</p>",send_mail=mail)
         ns.update(flags or {})
@@ -30,7 +34,7 @@ class ScopeTests(unittest.IsolatedAsyncioTestCase):
         result=await ns["replay_all_email_templates_to_owner"]("fixture",scope="growth")
         self.assertEqual(result["count_sent"],7);self.assertEqual(result["scope"],"growth")
         self.assertEqual([x["num"] for x in result["sent"]],list(range(1,8)))
-        self.assertTrue(all(x[0]=="brett.coon2@gmail.com" for x in sent))
+        self.assertTrue(all(x[0]=="contact@bmcservicenetwork.com" for x in sent))
         self.assertIn("01/07",sent[0][1]);self.assertIn("07/07",sent[-1][1])
     async def test_legacy_default_still_renders_all_27(self):
         ns,sent=self.load()
@@ -52,6 +56,25 @@ class ScopeTests(unittest.IsolatedAsyncioTestCase):
         with self.assertRaises(HTTPError) as caught:
             await ns["replay_all_email_templates_to_owner"]("wrong",scope="growth")
         self.assertEqual(caught.exception.status_code,403);self.assertEqual(sent,[])
+
+class MailHeaderTests(unittest.IsolatedAsyncioTestCase):
+    async def test_live_mime_has_owner_reply_mailbox(self):
+        source=ast.parse(Path(__file__).with_name("api").joinpath("app.py").read_text())
+        node=next(n for n in source.body if isinstance(n,ast.AsyncFunctionDef) and n.name=="send_mail")
+        captured=[]
+        class SMTP:
+            async def send(self,msg,**kwargs):captured.append(msg)
+        ns=dict(EmailMessage=EmailMessage,formataddr=formataddr,format_datetime=format_datetime,
+            make_msgid=make_msgid,datetime=datetime,timezone=timezone,clean=str.strip,
+            SMTP_DRY_RUN=False,SMTP_HOST="smtp.example.test",SMTP_PORT=587,SMTP_USER="",
+            SMTP_PASSWORD="",SMTP_FROM="contact@bmcservicenetwork.com",
+            SMTP_FROM_NAME="BMC Service Network",SMTP_REPLY_TO="contact@bmcservicenetwork.com",
+            SMTP_STARTTLS=True,aiosmtplib=SMTP())
+        exec(compile(ast.Module(body=[node],type_ignores=[]),"production_send_mail","exec"),ns)
+        self.assertTrue(await ns["send_mail"]("owner@example.test","Review","Plain","<p>HTML</p>"))
+        self.assertEqual(len(captured),1)
+        self.assertEqual(captured[0]["Reply-To"],"contact@bmcservicenetwork.com")
+        self.assertEqual(captured[0]["To"],"owner@example.test")
 
 class RelayScopeTests(unittest.TestCase):
     def load(self):
