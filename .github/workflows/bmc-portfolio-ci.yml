@@ -540,6 +540,7 @@ jobs:
             sleep 2
           done
           cat /tmp/bmc_health.json
+          docker compose --env-file .env.ci exec -T ops_api python - < ci/unsubscribe-smoke.py
           python3 ci/nevada-intake-smoke.py
           docker compose --env-file .env.ci exec -T ops_api python - < ci/nevada-db-proof.py
           POSTGRES_CONTAINER="$(docker compose --env-file .env.ci ps -q postgres)"
