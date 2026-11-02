@@ -1,0 +1,4837 @@
+{
+  "source": "https://mcp.keywordtool.io/guest",
+  "country": "United States",
+  "language": "English",
+  "location_is_query_text_only": true,
+  "review_status": "unreviewed",
+  "use": "Research only; no published pages or LLM training",
+  "keywords": [
+    {
+      "keyword": "are commercial cleaning business profitable",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        },
+        {
+          "seed": "commercial cleaning Ash Fork Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/e8fe396c561aa482.json"
+        },
+        {
+          "seed": "commercial cleaning Cottonwood Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/99b97b7005f5c9a0.json"
+        }
+      ]
+    },
+    {
+      "keyword": "are commercial cleaning businesses profitable",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        }
+      ]
+    },
+    {
+      "keyword": "are commercial cleaning companies profitable",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Chino Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/4f70d9bb4370b102.json"
+        },
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        },
+        {
+          "seed": "commercial cleaning Cottonwood Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/99b97b7005f5c9a0.json"
+        }
+      ]
+    },
+    {
+      "keyword": "are commercial dehumidifiers worth it",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Dewey-Humboldt Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Dewey-Humboldt, Arizona",
+          "raw_path": "data/question-research/raw/0f7eb386259e2cf0.json"
+        }
+      ]
+    },
+    {
+      "keyword": "can kingman arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "can pressure washing",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        },
+        {
+          "seed": "pressure washing Williamson Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Williamson Valley, Arizona",
+          "raw_path": "data/question-research/raw/3a1b9973840c8c94.json"
+        },
+        {
+          "seed": "pressure washing Cottonwood Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/10f83b915ee36204.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        },
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "can pressure washing damage windows",
+      "provenance": [
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "can pressure washing make you sick",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "can you pressure wash a canopy",
+      "provenance": [
+        {
+          "seed": "pressure washing Cottonwood Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/10f83b915ee36204.json"
+        }
+      ]
+    },
+    {
+      "keyword": "can you pressure wash a deer skull",
+      "provenance": [
+        {
+          "seed": "pressure washing Skull Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Skull Valley, Arizona",
+          "raw_path": "data/question-research/raw/6e38ad138e7be3f8.json"
+        }
+      ]
+    },
+    {
+      "keyword": "can you pressure wash a manufactured home",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "can you pressure wash a sealed driveway",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "can you pressure wash a sealed patio",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "can you pressure wash a side by side",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "can you pressure wash a sidewalk",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "can you pressure wash asphalt driveways",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "can you pressure wash asphalt roof",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "can you pressure wash asphalt shingles",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "can you pressure wash flagstone patio",
+      "provenance": [
+        {
+          "seed": "pressure washing Flagstaff Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Flagstaff, Arizona",
+          "raw_path": "data/question-research/raw/0eac8d6f45d8d945.json"
+        }
+      ]
+    },
+    {
+      "keyword": "can you pressure wash your driveway in california",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        }
+      ]
+    },
+    {
+      "keyword": "commercial cleaning ash fork arizona",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Ash Fork Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/e8fe396c561aa482.json"
+        }
+      ]
+    },
+    {
+      "keyword": "commercial cleaning camp verde arizona",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Camp Verde Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/28d38c780ffa67c6.json"
+        }
+      ]
+    },
+    {
+      "keyword": "commercial cleaning chino valley arizona",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Chino Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/4f70d9bb4370b102.json"
+        }
+      ]
+    },
+    {
+      "keyword": "commercial cleaning cordes lakes arizona",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Cordes Lakes Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Cordes Lakes, Arizona",
+          "raw_path": "data/question-research/raw/0b44d6107b34c2c1.json"
+        }
+      ]
+    },
+    {
+      "keyword": "commercial cleaning cottonwood arizona",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Cottonwood Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/99b97b7005f5c9a0.json"
+        }
+      ]
+    },
+    {
+      "keyword": "commercial cleaning dewey-humboldt arizona",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Dewey-Humboldt Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Dewey-Humboldt, Arizona",
+          "raw_path": "data/question-research/raw/0f7eb386259e2cf0.json"
+        }
+      ]
+    },
+    {
+      "keyword": "commercial cleaning flagstaff arizona",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Flagstaff Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Flagstaff, Arizona",
+          "raw_path": "data/question-research/raw/497b61674b48be19.json"
+        }
+      ]
+    },
+    {
+      "keyword": "commercial cleaning kingman arizona",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Kingman Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/16e9af5a45931cd1.json"
+        }
+      ]
+    },
+    {
+      "keyword": "commercial cleaning mayer arizona",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        }
+      ]
+    },
+    {
+      "keyword": "commercial cleaning prescott arizona",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Prescott Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/f21aa45d22103610.json"
+        }
+      ]
+    },
+    {
+      "keyword": "commercial cleaning sedona arizona",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Sedona Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/d73222ba7343e421.json"
+        }
+      ]
+    },
+    {
+      "keyword": "commercial cleaning skull valley arizona",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Skull Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Skull Valley, Arizona",
+          "raw_path": "data/question-research/raw/eecfce7e3b3faf88.json"
+        }
+      ]
+    },
+    {
+      "keyword": "commercial cleaning williamson valley arizona",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Williamson Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Williamson Valley, Arizona",
+          "raw_path": "data/question-research/raw/c3dce3e77544def3.json"
+        }
+      ]
+    },
+    {
+      "keyword": "commercial cleaning winslow arizona",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Winslow Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/70ae75068a05ed64.json"
+        }
+      ]
+    },
+    {
+      "keyword": "did camp verde get snow",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        }
+      ]
+    },
+    {
+      "keyword": "did flagstaff get rain today",
+      "provenance": [
+        {
+          "seed": "pressure washing Flagstaff Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Flagstaff, Arizona",
+          "raw_path": "data/question-research/raw/0eac8d6f45d8d945.json"
+        }
+      ]
+    },
+    {
+      "keyword": "did it rain in bullhead city last night",
+      "provenance": [
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "did kingman az get snow",
+      "provenance": [
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "did kingman get snow",
+      "provenance": [
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "did sedona arizona get snow",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "did winslow",
+      "provenance": [
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "do house managers live on site",
+      "provenance": [
+        {
+          "seed": "house manager Las Vegas Nevada",
+          "service_keys": [
+            "house_manager_staffing"
+          ],
+          "query_location_text": "Las Vegas, Nevada",
+          "raw_path": "data/question-research/raw/98d025dcf0a7eeb7.json"
+        }
+      ]
+    },
+    {
+      "keyword": "do pressure washers have settings",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "do pressure washers save water",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "do pressure washing",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        },
+        {
+          "seed": "pressure washing Cottonwood Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/10f83b915ee36204.json"
+        },
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        },
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "do pressure washing business make money",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "do pressure washing companies need insurance",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        },
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "do you need a license to pressure wash in arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does ash fork arizona get snow",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does ash fork az get snow",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does bullhead city get monsoon",
+      "provenance": [
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does camp verde",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        },
+        {
+          "seed": "commercial cleaning Camp Verde Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/28d38c780ffa67c6.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does camp verde arizona get snow",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does camp verde az get snow",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does camp verde get snow",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does camp verde have snow",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does chino valley az get snow",
+      "provenance": [
+        {
+          "seed": "pressure washing Chino Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/5a4275c899215987.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does cottonwood az have enough water",
+      "provenance": [
+        {
+          "seed": "pressure washing Cottonwood Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/10f83b915ee36204.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does cottonwood az have water",
+      "provenance": [
+        {
+          "seed": "pressure washing Cottonwood Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/10f83b915ee36204.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does flagstaff have good water",
+      "provenance": [
+        {
+          "seed": "pressure washing Flagstaff Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Flagstaff, Arizona",
+          "raw_path": "data/question-research/raw/0eac8d6f45d8d945.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does kingman arizona have water issues",
+      "provenance": [
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does kingman az have a water problem",
+      "provenance": [
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does prescott arizona have a water problem",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does prescott az have water",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does prescott az have water issues",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does prescott az have water problems",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does prescott have a water shortage",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does pressure washing",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does pressure washing count as landscaping",
+      "provenance": [
+        {
+          "seed": "pressure washing Cordes Lakes Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cordes Lakes, Arizona",
+          "raw_path": "data/question-research/raw/d346324b7ce675dd.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does pressure washing damage",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does pressure washing damage asphalt",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does pressure washing include windows",
+      "provenance": [
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does pressure washing make good money",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does pressure washing make money",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does pressure washing remove sealer",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does pressure washing save water",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does pressure washing waste a lot of water",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does pressure washing work",
+      "provenance": [
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does sedona arizona have a water problem",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does sedona arizona have water",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does sedona have water issues",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does seligman az get snow",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "does seligman get snow",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "hiring a nanny las vegas nevada",
+      "provenance": [
+        {
+          "seed": "hiring a nanny Las Vegas Nevada",
+          "service_keys": [
+            "nanny_staffing"
+          ],
+          "query_location_text": "Las Vegas, Nevada",
+          "raw_path": "data/question-research/raw/9f6098181286e91f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "house manager las vegas nevada",
+      "provenance": [
+        {
+          "seed": "house manager Las Vegas Nevada",
+          "service_keys": [
+            "house_manager_staffing"
+          ],
+          "query_location_text": "Las Vegas, Nevada",
+          "raw_path": "data/question-research/raw/98d025dcf0a7eeb7.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how did seligman arizona get its name",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how did seligman az get its name",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how did skull valley arizona get its name",
+      "provenance": [
+        {
+          "seed": "pressure washing Skull Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Skull Valley, Arizona",
+          "raw_path": "data/question-research/raw/6e38ad138e7be3f8.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how did skull valley az get its name",
+      "provenance": [
+        {
+          "seed": "pressure washing Skull Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Skull Valley, Arizona",
+          "raw_path": "data/question-research/raw/6e38ad138e7be3f8.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how did skull valley get its name",
+      "provenance": [
+        {
+          "seed": "pressure washing Skull Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Skull Valley, Arizona",
+          "raw_path": "data/question-research/raw/6e38ad138e7be3f8.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how did winslow arizona get its name",
+      "provenance": [
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how dry is sedona",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how far is williamson valley from prescott",
+      "provenance": [
+        {
+          "seed": "pressure washing Williamson Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Williamson Valley, Arizona",
+          "raw_path": "data/question-research/raw/3a1b9973840c8c94.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how hot is bullhead city right now",
+      "provenance": [
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how hot was bullhead city today",
+      "provenance": [
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how hot was it in bullhead city arizona today",
+      "provenance": [
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how much do commercial cleaners make a year",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how much does a commercial cleaner make per hour",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how much does a commercial window cleaner make",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Winslow Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/70ae75068a05ed64.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how much does a nanny make in las vegas",
+      "provenance": [
+        {
+          "seed": "hiring a nanny Las Vegas Nevada",
+          "service_keys": [
+            "nanny_staffing"
+          ],
+          "query_location_text": "Las Vegas, Nevada",
+          "raw_path": "data/question-research/raw/9f6098181286e91f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how to become a nanny in las vegas",
+      "provenance": [
+        {
+          "seed": "hiring a nanny Las Vegas Nevada",
+          "service_keys": [
+            "nanny_staffing"
+          ],
+          "query_location_text": "Las Vegas, Nevada",
+          "raw_path": "data/question-research/raw/9f6098181286e91f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how to clean a commercial building",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how to clean a commercial dehumidifier",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Dewey-Humboldt Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Dewey-Humboldt, Arizona",
+          "raw_path": "data/question-research/raw/0f7eb386259e2cf0.json"
+        }
+      ]
+    },
+    {
+      "keyword": "how to clean windows in arizona",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Winslow Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/70ae75068a05ed64.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is ash fork az growing",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is ash from pressure treated wood toxic",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is camp verde arizona a good place to live",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        },
+        {
+          "seed": "commercial cleaning Camp Verde Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/28d38c780ffa67c6.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is camp verde az a good place to live",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is camp verde az safe",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is camp verde in yavapai county",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is chino valley a city",
+      "provenance": [
+        {
+          "seed": "pressure washing Chino Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/5a4275c899215987.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is chino valley az windy",
+      "provenance": [
+        {
+          "seed": "pressure washing Chino Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/5a4275c899215987.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is chino valley in prescott",
+      "provenance": [
+        {
+          "seed": "pressure washing Chino Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/5a4275c899215987.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is chino valley in yavapai county",
+      "provenance": [
+        {
+          "seed": "pressure washing Chino Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/5a4275c899215987.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is chino valley near prescott az",
+      "provenance": [
+        {
+          "seed": "pressure washing Chino Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/5a4275c899215987.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is commercial cleaning",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Dewey-Humboldt Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Dewey-Humboldt, Arizona",
+          "raw_path": "data/question-research/raw/0f7eb386259e2cf0.json"
+        },
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        },
+        {
+          "seed": "commercial cleaning Williamson Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Williamson Valley, Arizona",
+          "raw_path": "data/question-research/raw/c3dce3e77544def3.json"
+        },
+        {
+          "seed": "commercial cleaning Winslow Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/70ae75068a05ed64.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is commercial cleaning a good business",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is commercial cleaning profitable",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is commercial window cleaning profitable",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Williamson Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Williamson Valley, Arizona",
+          "raw_path": "data/question-research/raw/c3dce3e77544def3.json"
+        },
+        {
+          "seed": "commercial cleaning Winslow Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/70ae75068a05ed64.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is cordes lakes a good place to live",
+      "provenance": [
+        {
+          "seed": "pressure washing Cordes Lakes Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cordes Lakes, Arizona",
+          "raw_path": "data/question-research/raw/d346324b7ce675dd.json"
+        },
+        {
+          "seed": "commercial cleaning Cordes Lakes Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Cordes Lakes, Arizona",
+          "raw_path": "data/question-research/raw/0b44d6107b34c2c1.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is cordes lakes az a good place to live",
+      "provenance": [
+        {
+          "seed": "pressure washing Cordes Lakes Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cordes Lakes, Arizona",
+          "raw_path": "data/question-research/raw/d346324b7ce675dd.json"
+        },
+        {
+          "seed": "commercial cleaning Cordes Lakes Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Cordes Lakes, Arizona",
+          "raw_path": "data/question-research/raw/0b44d6107b34c2c1.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is golden valley arizona safe",
+      "provenance": [
+        {
+          "seed": "pressure washing Golden Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Golden Valley, Arizona",
+          "raw_path": "data/question-research/raw/164c0c70dc43995f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is house manager a good job",
+      "provenance": [
+        {
+          "seed": "house manager Las Vegas Nevada",
+          "service_keys": [
+            "house_manager_staffing"
+          ],
+          "query_location_text": "Las Vegas, Nevada",
+          "raw_path": "data/question-research/raw/98d025dcf0a7eeb7.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is prescott dry",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is pressure washing a good business in arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        },
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        },
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        },
+        {
+          "seed": "pressure washing Cottonwood Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/10f83b915ee36204.json"
+        },
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        },
+        {
+          "seed": "pressure washing Flagstaff Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Flagstaff, Arizona",
+          "raw_path": "data/question-research/raw/0eac8d6f45d8d945.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        },
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        },
+        {
+          "seed": "pressure washing Golden Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Golden Valley, Arizona",
+          "raw_path": "data/question-research/raw/164c0c70dc43995f.json"
+        },
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        },
+        {
+          "seed": "pressure washing Phoenix Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Phoenix, Arizona",
+          "raw_path": "data/question-research/raw/80a1e526b8558883.json"
+        },
+        {
+          "seed": "pressure washing Scottsdale Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Scottsdale, Arizona",
+          "raw_path": "data/question-research/raw/172f07fe937cbe3a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is pressure washing allowed in california",
+      "provenance": [
+        {
+          "seed": "pressure washing Chino Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/5a4275c899215987.json"
+        },
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is pressure washing high demand",
+      "provenance": [
+        {
+          "seed": "pressure washing Dewey-Humboldt Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Dewey-Humboldt, Arizona",
+          "raw_path": "data/question-research/raw/61c32b3b6f95a953.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is pressure washing seasonal",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is sedona dry",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is sedona tap water safe",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is seligman arizona a good place to live",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is seligman arizona safe",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is seligman az safe",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is seligman in yavapai county",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is seligman safe",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "is skull valley",
+      "provenance": [
+        {
+          "seed": "pressure washing Skull Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Skull Valley, Arizona",
+          "raw_path": "data/question-research/raw/6e38ad138e7be3f8.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing ash fork arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing bullhead city arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing camp verde arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing chino valley arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Chino Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/5a4275c899215987.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing cordes lakes arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Cordes Lakes Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cordes Lakes, Arizona",
+          "raw_path": "data/question-research/raw/d346324b7ce675dd.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing cottonwood arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Cottonwood Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/10f83b915ee36204.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing dewey-humboldt arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Dewey-Humboldt Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Dewey-Humboldt, Arizona",
+          "raw_path": "data/question-research/raw/61c32b3b6f95a953.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing flagstaff arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Flagstaff Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Flagstaff, Arizona",
+          "raw_path": "data/question-research/raw/0eac8d6f45d8d945.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing golden valley arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Golden Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Golden Valley, Arizona",
+          "raw_path": "data/question-research/raw/164c0c70dc43995f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing kingman arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing mayer arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing phoenix arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Phoenix Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Phoenix, Arizona",
+          "raw_path": "data/question-research/raw/80a1e526b8558883.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing prescott arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing prescott valley arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing scottsdale arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Scottsdale Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Scottsdale, Arizona",
+          "raw_path": "data/question-research/raw/172f07fe937cbe3a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing sedona arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing seligman arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing skull valley arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Skull Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Skull Valley, Arizona",
+          "raw_path": "data/question-research/raw/6e38ad138e7be3f8.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing williamson valley arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Williamson Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Williamson Valley, Arizona",
+          "raw_path": "data/question-research/raw/3a1b9973840c8c94.json"
+        }
+      ]
+    },
+    {
+      "keyword": "pressure washing winslow arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should a cleaning company be insured",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should i pressure wash my gutters",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should i pressure wash my home",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should i start a commercial cleaning business",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Kingman Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/16e9af5a45931cd1.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should solar panels be cleaned periodically",
+      "provenance": [
+        {
+          "seed": "solar panel cleaning Las Vegas Nevada",
+          "service_keys": [
+            "solar_panel_cleaning"
+          ],
+          "query_location_text": "Las Vegas, Nevada",
+          "raw_path": "data/question-research/raw/06a02c18b38c6d18.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should solar panels be cleaned regularly",
+      "provenance": [
+        {
+          "seed": "solar panel cleaning Las Vegas Nevada",
+          "service_keys": [
+            "solar_panel_cleaning"
+          ],
+          "query_location_text": "Las Vegas, Nevada",
+          "raw_path": "data/question-research/raw/06a02c18b38c6d18.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should you pressure wash a camper",
+      "provenance": [
+        {
+          "seed": "pressure washing Chino Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/5a4275c899215987.json"
+        },
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        },
+        {
+          "seed": "pressure washing Cottonwood Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/10f83b915ee36204.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should you pressure wash a fence",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should you pressure wash a log cabin",
+      "provenance": [
+        {
+          "seed": "pressure washing Cottonwood Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/10f83b915ee36204.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should you pressure wash a shingle roof",
+      "provenance": [
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should you pressure wash an asphalt roof",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should you pressure wash an awning",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should you pressure wash an rv",
+      "provenance": [
+        {
+          "seed": "pressure washing Chino Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/5a4275c899215987.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should you pressure wash asphalt driveway",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should you pressure wash asphalt shingles",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should you pressure wash flagstone",
+      "provenance": [
+        {
+          "seed": "pressure washing Flagstaff Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Flagstaff, Arizona",
+          "raw_path": "data/question-research/raw/0eac8d6f45d8d945.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should you pressure wash in the winter",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should you pressure wash in winter",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        },
+        {
+          "seed": "pressure washing Williamson Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Williamson Valley, Arizona",
+          "raw_path": "data/question-research/raw/3a1b9973840c8c94.json"
+        },
+        {
+          "seed": "pressure washing Cottonwood Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/10f83b915ee36204.json"
+        },
+        {
+          "seed": "pressure washing Flagstaff Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Flagstaff, Arizona",
+          "raw_path": "data/question-research/raw/0eac8d6f45d8d945.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should you pressure wash your ac",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should you pressure wash your rv",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should you pressure wash your sidewalk",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "should you pressure wash your windows",
+      "provenance": [
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "solar panel cleaning las vegas nevada",
+      "provenance": [
+        {
+          "seed": "solar panel cleaning Las Vegas Nevada",
+          "service_keys": [
+            "solar_panel_cleaning"
+          ],
+          "query_location_text": "Las Vegas, Nevada",
+          "raw_path": "data/question-research/raw/06a02c18b38c6d18.json"
+        }
+      ]
+    },
+    {
+      "keyword": "was flagstaff",
+      "provenance": [
+        {
+          "seed": "pressure washing Flagstaff Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Flagstaff, Arizona",
+          "raw_path": "data/question-research/raw/0eac8d6f45d8d945.json"
+        }
+      ]
+    },
+    {
+      "keyword": "was prescott",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "was prescott the capital of arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "was prescott the capital of az",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what are the amenities in camp verde",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Camp Verde Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/28d38c780ffa67c6.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what commercial cleaning",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Prescott Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/f21aa45d22103610.json"
+        },
+        {
+          "seed": "commercial cleaning Chino Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/4f70d9bb4370b102.json"
+        },
+        {
+          "seed": "commercial cleaning Dewey-Humboldt Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Dewey-Humboldt, Arizona",
+          "raw_path": "data/question-research/raw/0f7eb386259e2cf0.json"
+        },
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        },
+        {
+          "seed": "commercial cleaning Williamson Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Williamson Valley, Arizona",
+          "raw_path": "data/question-research/raw/c3dce3e77544def3.json"
+        },
+        {
+          "seed": "commercial cleaning Sedona Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/d73222ba7343e421.json"
+        },
+        {
+          "seed": "commercial cleaning Winslow Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/70ae75068a05ed64.json"
+        },
+        {
+          "seed": "commercial cleaning Kingman Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/16e9af5a45931cd1.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what commercial cleaning mean",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what county is skull valley az in",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Skull Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Skull Valley, Arizona",
+          "raw_path": "data/question-research/raw/eecfce7e3b3faf88.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what did seligman az used to be called",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what do commercial window cleaners use",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Winslow Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/70ae75068a05ed64.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what do commercial window cleaners use to clean windows",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Winslow Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/70ae75068a05ed64.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what elevation is chino valley arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Chino Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/5a4275c899215987.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what elevation is chino valley az",
+      "provenance": [
+        {
+          "seed": "pressure washing Chino Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/5a4275c899215987.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what elevation is seligman arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what is camp verde arizona known for",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what is seligman arizona known for",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what is seligman az altitude",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what is seligman az known for",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what is the atmospheric pressure in flagstaff az",
+      "provenance": [
+        {
+          "seed": "pressure washing Flagstaff Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Flagstaff, Arizona",
+          "raw_path": "data/question-research/raw/0eac8d6f45d8d945.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what is the elevation of skull valley arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Skull Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Skull Valley, Arizona",
+          "raw_path": "data/question-research/raw/6e38ad138e7be3f8.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what is the elevation of skull valley az",
+      "provenance": [
+        {
+          "seed": "pressure washing Skull Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Skull Valley, Arizona",
+          "raw_path": "data/question-research/raw/6e38ad138e7be3f8.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what makes winslow arizona famous",
+      "provenance": [
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what pressure washer for foam cannon",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what pressure washer nozzle for siding",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what pressure washer setting for car",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what pressure washers are made in the usa",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what pressure washing machine",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what was the high in bullhead city arizona today",
+      "provenance": [
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "what was the high temperature in bullhead city arizona today",
+      "provenance": [
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "when do commercial cleaners work",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        }
+      ]
+    },
+    {
+      "keyword": "when pressure washer",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "when pressure washing",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        },
+        {
+          "seed": "pressure washing Dewey-Humboldt Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Dewey-Humboldt, Arizona",
+          "raw_path": "data/question-research/raw/61c32b3b6f95a953.json"
+        },
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        },
+        {
+          "seed": "pressure washing Williamson Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Williamson Valley, Arizona",
+          "raw_path": "data/question-research/raw/3a1b9973840c8c94.json"
+        },
+        {
+          "seed": "pressure washing Cottonwood Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/10f83b915ee36204.json"
+        },
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        },
+        {
+          "seed": "pressure washing Flagstaff Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Flagstaff, Arizona",
+          "raw_path": "data/question-research/raw/0eac8d6f45d8d945.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        },
+        {
+          "seed": "pressure washing Golden Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Golden Valley, Arizona",
+          "raw_path": "data/question-research/raw/164c0c70dc43995f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "when pressure washing a house",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        },
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        },
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "when to hire commercial cleaning services",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Sedona Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/d73222ba7343e421.json"
+        }
+      ]
+    },
+    {
+      "keyword": "when was camp verde arizona founded",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        }
+      ]
+    },
+    {
+      "keyword": "when was chino valley az founded",
+      "provenance": [
+        {
+          "seed": "pressure washing Chino Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/5a4275c899215987.json"
+        }
+      ]
+    },
+    {
+      "keyword": "when will bullhead city cool down",
+      "provenance": [
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "when will kingman az get rain",
+      "provenance": [
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where camp verde",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        },
+        {
+          "seed": "commercial cleaning Camp Verde Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/28d38c780ffa67c6.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where does bullhead city get its water",
+      "provenance": [
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where does bullhead city get its water today",
+      "provenance": [
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where does cottonwood arizona get its water",
+      "provenance": [
+        {
+          "seed": "pressure washing Cottonwood Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/10f83b915ee36204.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where does flagstaff get their water",
+      "provenance": [
+        {
+          "seed": "pressure washing Flagstaff Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Flagstaff, Arizona",
+          "raw_path": "data/question-research/raw/0eac8d6f45d8d945.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where does flagstaff water come from",
+      "provenance": [
+        {
+          "seed": "pressure washing Flagstaff Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Flagstaff, Arizona",
+          "raw_path": "data/question-research/raw/0eac8d6f45d8d945.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where does kingman arizona get its water",
+      "provenance": [
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where does prescott valley get its water",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where does sedona arizona get its water",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where does sedona az get its water",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where does sedona get water from",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where does winslow az get its water",
+      "provenance": [
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where in arizona is chino valley",
+      "provenance": [
+        {
+          "seed": "pressure washing Chino Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/5a4275c899215987.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where is ash fork arizona located",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where is ash fork arizona near",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where is camp verde arizona located",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Camp Verde Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/28d38c780ffa67c6.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where is camp verde az located",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where is camp verde located in arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where is dewey humboldt in arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Dewey-Humboldt Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Dewey-Humboldt, Arizona",
+          "raw_path": "data/question-research/raw/61c32b3b6f95a953.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where is kingman wash",
+      "provenance": [
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where is seligman arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where is seligman arizona located",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where is seligman arizona on a map",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where is seligman az located",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where is seligman located",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where is skull valley in arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Skull Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Skull Valley, Arizona",
+          "raw_path": "data/question-research/raw/6e38ad138e7be3f8.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where is williamson valley az",
+      "provenance": [
+        {
+          "seed": "pressure washing Williamson Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Williamson Valley, Arizona",
+          "raw_path": "data/question-research/raw/3a1b9973840c8c94.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where is williamson valley in arizona",
+      "provenance": [
+        {
+          "seed": "pressure washing Williamson Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Williamson Valley, Arizona",
+          "raw_path": "data/question-research/raw/3a1b9973840c8c94.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where is winslow arizona located",
+      "provenance": [
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "where pressure washer",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "which pressure washer for driveway",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "which pressure washer is best for driveways",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "which pressure washer is right for me",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "which pressure washer nozzle for fence",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        }
+      ]
+    },
+    {
+      "keyword": "which pressure washer nozzle for sidewalk",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "which pressure washer nozzle for siding",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        },
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "which pressure washer tip for driveway",
+      "provenance": [
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "which pressure washer tip for siding",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "which pressure washers are best",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "which pressure washers are made in the usa",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "who cleans solar panels in my area",
+      "provenance": [
+        {
+          "seed": "solar panel cleaning Las Vegas Nevada",
+          "service_keys": [
+            "solar_panel_cleaning"
+          ],
+          "query_location_text": "Las Vegas, Nevada",
+          "raw_path": "data/question-research/raw/06a02c18b38c6d18.json"
+        }
+      ]
+    },
+    {
+      "keyword": "who is seligman",
+      "provenance": [
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        }
+      ]
+    },
+    {
+      "keyword": "who owns camp verde",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Camp Verde Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/28d38c780ffa67c6.json"
+        }
+      ]
+    },
+    {
+      "keyword": "who owns camp verde general store",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Camp Verde Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/28d38c780ffa67c6.json"
+        }
+      ]
+    },
+    {
+      "keyword": "who owns chino heating and cooling",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Chino Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/4f70d9bb4370b102.json"
+        }
+      ]
+    },
+    {
+      "keyword": "who owns cottonwood",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Cottonwood Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/99b97b7005f5c9a0.json"
+        }
+      ]
+    },
+    {
+      "keyword": "who owns meyer cleaning products",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        }
+      ]
+    },
+    {
+      "keyword": "who owns skull valley company",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Skull Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Skull Valley, Arizona",
+          "raw_path": "data/question-research/raw/eecfce7e3b3faf88.json"
+        }
+      ]
+    },
+    {
+      "keyword": "who pressure washer",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        },
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "who pressure washes",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        },
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        },
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "who pressure washes driveways",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "who pressure washes houses",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        },
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why are some pressure washers not available in california",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why hire a commercial cleaning service",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Chino Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/4f70d9bb4370b102.json"
+        },
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        },
+        {
+          "seed": "commercial cleaning Sedona Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/d73222ba7343e421.json"
+        },
+        {
+          "seed": "commercial cleaning Winslow Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/70ae75068a05ed64.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why is ash good for cleaning",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Ash Fork Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/e8fe396c561aa482.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why is bullhead city so hot",
+      "provenance": [
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why is bullhead city so windy",
+      "provenance": [
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why is camp verde called camp verde",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        },
+        {
+          "seed": "commercial cleaning Camp Verde Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/28d38c780ffa67c6.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why is camp verde famous",
+      "provenance": [
+        {
+          "seed": "pressure washing Camp Verde Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Camp Verde, Arizona",
+          "raw_path": "data/question-research/raw/4fb5791bc3669d49.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why is commercial cleaning important",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Chino Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/4f70d9bb4370b102.json"
+        },
+        {
+          "seed": "commercial cleaning Dewey-Humboldt Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Dewey-Humboldt, Arizona",
+          "raw_path": "data/question-research/raw/0f7eb386259e2cf0.json"
+        },
+        {
+          "seed": "commercial cleaning Mayer Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/0cd8569815195a08.json"
+        },
+        {
+          "seed": "commercial cleaning Williamson Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Williamson Valley, Arizona",
+          "raw_path": "data/question-research/raw/c3dce3e77544def3.json"
+        },
+        {
+          "seed": "commercial cleaning Cottonwood Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/99b97b7005f5c9a0.json"
+        },
+        {
+          "seed": "commercial cleaning Flagstaff Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Flagstaff, Arizona",
+          "raw_path": "data/question-research/raw/497b61674b48be19.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why is it called skull valley",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Skull Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Skull Valley, Arizona",
+          "raw_path": "data/question-research/raw/eecfce7e3b3faf88.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why is it called skull valley az",
+      "provenance": [
+        {
+          "seed": "commercial cleaning Skull Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Skull Valley, Arizona",
+          "raw_path": "data/question-research/raw/eecfce7e3b3faf88.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why is kingman az so windy",
+      "provenance": [
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why is sedona air quality bad today",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why is sedona hazy",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why is sedona so hazy today",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why is skull valley called skull valley",
+      "provenance": [
+        {
+          "seed": "pressure washing Skull Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Skull Valley, Arizona",
+          "raw_path": "data/question-research/raw/6e38ad138e7be3f8.json"
+        },
+        {
+          "seed": "commercial cleaning Skull Valley Arizona",
+          "service_keys": [
+            "commercial_cleaning"
+          ],
+          "query_location_text": "Skull Valley, Arizona",
+          "raw_path": "data/question-research/raw/eecfce7e3b3faf88.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why is winslow arizona so popular",
+      "provenance": [
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why pressure wash a house",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why pressure wash a roof",
+      "provenance": [
+        {
+          "seed": "pressure washing Ash Fork Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Ash Fork, Arizona",
+          "raw_path": "data/question-research/raw/b05319335b82e8ee.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why pressure wash driveway",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why pressure wash your driveway",
+      "provenance": [
+        {
+          "seed": "pressure washing Williamson Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Williamson Valley, Arizona",
+          "raw_path": "data/question-research/raw/3a1b9973840c8c94.json"
+        },
+        {
+          "seed": "pressure washing Cottonwood Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Cottonwood, Arizona",
+          "raw_path": "data/question-research/raw/10f83b915ee36204.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why pressure wash your home",
+      "provenance": [
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why pressure washing",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Prescott Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott Valley, Arizona",
+          "raw_path": "data/question-research/raw/f208f1e312463c2f.json"
+        },
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why pressure washing is important",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        },
+        {
+          "seed": "pressure washing Seligman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Seligman, Arizona",
+          "raw_path": "data/question-research/raw/cda2f94807dd6a85.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        },
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why solar panel cleaning",
+      "provenance": [
+        {
+          "seed": "solar panel cleaning Las Vegas Nevada",
+          "service_keys": [
+            "solar_panel_cleaning"
+          ],
+          "query_location_text": "Las Vegas, Nevada",
+          "raw_path": "data/question-research/raw/06a02c18b38c6d18.json"
+        }
+      ]
+    },
+    {
+      "keyword": "why solar panels need to be cleaned",
+      "provenance": [
+        {
+          "seed": "solar panel cleaning Las Vegas Nevada",
+          "service_keys": [
+            "solar_panel_cleaning"
+          ],
+          "query_location_text": "Las Vegas, Nevada",
+          "raw_path": "data/question-research/raw/06a02c18b38c6d18.json"
+        }
+      ]
+    },
+    {
+      "keyword": "will bullhead city run out of water",
+      "provenance": [
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "will it rain in bullhead city arizona today",
+      "provenance": [
+        {
+          "seed": "pressure washing Bullhead City Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Bullhead City, Arizona",
+          "raw_path": "data/question-research/raw/e8899748cf7e2ba4.json"
+        }
+      ]
+    },
+    {
+      "keyword": "will it rain in chino valley arizona today",
+      "provenance": [
+        {
+          "seed": "pressure washing Chino Valley Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Chino Valley, Arizona",
+          "raw_path": "data/question-research/raw/5a4275c899215987.json"
+        }
+      ]
+    },
+    {
+      "keyword": "will it rain in kingman arizona today",
+      "provenance": [
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "will las vegas housing market crash",
+      "provenance": [
+        {
+          "seed": "house manager Las Vegas Nevada",
+          "service_keys": [
+            "house_manager_staffing"
+          ],
+          "query_location_text": "Las Vegas, Nevada",
+          "raw_path": "data/question-research/raw/98d025dcf0a7eeb7.json"
+        }
+      ]
+    },
+    {
+      "keyword": "will pressure washing",
+      "provenance": [
+        {
+          "seed": "pressure washing Prescott Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Prescott, Arizona",
+          "raw_path": "data/question-research/raw/975e665f9f721226.json"
+        },
+        {
+          "seed": "pressure washing Mayer Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Mayer, Arizona",
+          "raw_path": "data/question-research/raw/87da748187507fef.json"
+        },
+        {
+          "seed": "pressure washing Winslow Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Winslow, Arizona",
+          "raw_path": "data/question-research/raw/d1f207d0e2dbfed4.json"
+        },
+        {
+          "seed": "pressure washing Kingman Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Kingman, Arizona",
+          "raw_path": "data/question-research/raw/caab757aeed9517a.json"
+        }
+      ]
+    },
+    {
+      "keyword": "will pressure washing remove concrete sealer",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "will sedona run out of water",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    },
+    {
+      "keyword": "will sedona snow",
+      "provenance": [
+        {
+          "seed": "pressure washing Sedona Arizona",
+          "service_keys": [
+            "pressure_washing"
+          ],
+          "query_location_text": "Sedona, Arizona",
+          "raw_path": "data/question-research/raw/9b1198fe4e8d7d27.json"
+        }
+      ]
+    }
+  ]
+}

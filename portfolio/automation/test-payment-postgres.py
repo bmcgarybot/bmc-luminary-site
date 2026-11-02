@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+"""Handler SQL integration against disposable real PostgreSQL (no Stripe/mail).
+Signature verification is deliberately stubbed here; the HTTP CI smoke suite
+exercises the production signature verifier with synthetic signed payloads.
+CI requires PAYMENT_TEST_DATABASE_URL; absence is a deliberate local skip.
+"""
+import ast
+import asyncio
+import json
+import os
+from pathlib import Path
+from types import SimpleNamespace
+import unittest
+import uuid
+from datetime import datetime, timezone
+
+DSN=os.environ.get('PAYMENT_TEST_DATABASE_URL')
+
+@unittest.skipUnless(DSN,'PAYMENT_TEST_DATABASE_URL is required for PostgreSQL integration')
+class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        import asyncpg
+        self.schema='payment_test_'+uuid.uuid4().hex
+        self.admin=await asyncpg.connect(DSN)
+        await self.admin.execute('create schema '+self.schema)
+        async def init(conn): await conn.execute('set search_path to '+self.schema+',public')
+        self.pool=await asyncpg.create_pool(DSN,min_size=1,max_size=5,init=init)
+        async with self.pool.acquire() as conn:
+            await conn.execute(Path(__file__).with_name('schema.sql').read_text())
+        source=ast.parse(Path(__file__).with_name('api').joinpath('app.py').read_text())
+        names={'stripe_webhook','stripe_product_key','stripe_email','nested','record_revenue','clean'}
+        nodes=[n for n in source.body if isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef)) and n.name in names]
+        for n in nodes: n.decorator_list=[]
+        async def event(*args): pass
+        self.ns=dict(Request=object,Header=lambda **kw:None,json=json,uuid=uuid,datetime=datetime,timezone=timezone,
+            verify_stripe_signature=lambda *args:None,event=event,HTTPException=RuntimeError,
+            app=SimpleNamespace(state=SimpleNamespace(pool=self.pool)))
+        exec(compile(ast.Module(body=nodes,type_ignores=[]),'production_payment_handler','exec'),self.ns)
+    async def asyncTearDown(self):
+        await self.pool.close()
+        await self.admin.execute('drop schema '+self.schema+' cascade')
+        await self.admin.close()
+    async def send(self,event_id,kind,obj):
+        payload=json.dumps(dict(id=event_id,type=kind,data=dict(object=obj))).encode()
+        class Request:
+            async def body(self): return payload
+        return await self.ns['stripe_webhook'](Request(),None)
+    def checkout(self):
+        return dict(id='cs_fixture',payment_intent='pi_fixture',mode='payment',payment_status='paid',amount_total=49900,currency='usd',customer_details=dict(email='owner@example.com'))
+    def refund(self,status='succeeded',rid='re_one',amount=1000):
+        return dict(id=rid,payment_intent='pi_fixture',status=status,amount=amount,currency='usd')
+    async def scalar(self,sql):
+        async with self.pool.acquire() as conn: return await conn.fetchval(sql)
+    async def seed_growth(self):
+        async with self.pool.acquire() as conn:
+            await conn.execute("insert into services(service_key,display_name) values('growth_pack','Growth')")
+            await conn.execute("insert into products(product_key,service_key,display_name,billing_type) values('growth_pack_starter','growth_pack','Growth','one_time')")
+            for i in (1,2):
+                await conn.execute("""insert into growth_sample_requests(sample_id,business_name,contact_name,email,provider_service_key,market,status)
+                  values($1,'Fixture','Owner','owner@example.com','pressure_washing',$2,'delivered')""",uuid.UUID(int=i),'Market '+str(i))
+        obj=self.checkout(); obj['metadata']={'product_key':'growth_pack_starter'}
+        return obj
+    async def test_invalid_explicit_reference_cannot_select_other_territory(self):
+        obj=await self.seed_growth(); obj['client_reference_id']='growth_'+uuid.UUID(int=99).hex
+        await self.send('evt_checkout','checkout.session.completed',obj)
+        self.assertEqual(await self.scalar('select status from orders'),'paid_needs_intake')
+        self.assertIsNone(await self.scalar('select growth_sample_id from orders'))
+        self.assertEqual(await self.scalar('select sum(amount_cents) from revenue_events'),49900)
+    async def test_ambiguous_missing_reference_requires_intake(self):
+        obj=await self.seed_growth()
+        await self.send('evt_checkout','checkout.session.completed',obj)
+        self.assertEqual(await self.scalar('select status from orders'),'paid_needs_intake')
+        self.assertEqual(await self.scalar("select count(*) from growth_sample_requests where status='delivered'"),2)
+    async def test_explicit_sample_without_saved_five_is_held(self):
+        obj=await self.seed_growth(); obj['client_reference_id']='growth_'+uuid.UUID(int=1).hex
+        await self.send('evt_checkout','checkout.session.completed',obj)
+        self.assertIsNone(await self.scalar('select growth_sample_id from orders'))
+        self.assertEqual(await self.scalar("select count(*) from exceptions where type='growth_payment_scope_review'"),1)
+    async def test_concurrent_checkout_receipt_once(self):
+        await asyncio.gather(self.send('evt_a','checkout.session.completed',self.checkout()),self.send('evt_b','checkout.session.async_payment_succeeded',self.checkout()))
+        self.assertEqual(await self.scalar('select count(*) from orders'),1)
+        self.assertEqual(await self.scalar('select sum(amount_cents) from revenue_events'),49900)
+    async def test_pending_failed_then_success_and_retry(self):
+        await self.send('evt_checkout','checkout.session.completed',self.checkout())
+        async with self.pool.acquire() as conn:
+            await conn.execute("insert into tasks(order_id,task_type,status) select order_id,'fulfill_growth_pack','queued' from orders")
+        await self.send('evt_pending','refund.created',self.refund('pending'))
+        self.assertEqual(await self.scalar('select sum(amount_cents) from revenue_events'),49900)
+        self.assertEqual(await self.scalar('select status from tasks'),'blocked')
+        await self.send('evt_failed','refund.failed',self.refund('failed'))
+        self.assertEqual(await self.scalar('select sum(amount_cents) from revenue_events'),49900)
+        await asyncio.gather(self.send('evt_success','refund.updated',self.refund()),self.send('evt_success_retry','refund.created',self.refund()))
+        await self.send('evt_late_checkout','checkout.session.completed',self.checkout())
+        self.assertEqual(await self.scalar('select sum(amount_cents) from revenue_events'),48900)
+        self.assertEqual(await self.scalar('select payment_status from orders'),'partially_refunded')
+    async def test_out_of_order_refund_blocks_checkout(self):
+        await self.send('evt_refund','refund.created',self.refund())
+        await self.send('evt_checkout','checkout.session.completed',self.checkout())
+        self.assertEqual(await self.scalar('select payment_status from orders'),'refund_review')
+        self.assertEqual(await self.scalar('select sum(amount_cents) from revenue_events'),48900)
+    async def test_separate_partial_refunds_accumulate(self):
+        await self.send('evt_checkout','checkout.session.completed',self.checkout())
+        await asyncio.gather(self.send('evt_r1','refund.created',self.refund()),self.send('evt_r2','refund.updated',self.refund(rid='re_two',amount=2000)))
+        self.assertEqual(await self.scalar('select sum(amount_cents) from revenue_events'),46900)
+
+if __name__=='__main__': unittest.main()

@@ -1,0 +1,138 @@
+{
+  "retrieved_at": "2026-11-02T05:38:51.384014+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "pressure washing Ash Fork Arizona",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+    "data": [
+      {
+        "string": "pressure washing ash fork arizona",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can you pressure wash asphalt driveways",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can you pressure wash asphalt shingles",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can you pressure wash asphalt roof",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does ash fork az get snow",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does ash fork arizona get snow",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does pressure washing damage asphalt",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is pressure washing a good business in arizona",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is ash fork az growing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you pressure wash asphalt driveway",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you pressure wash asphalt shingles",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you pressure wash an asphalt roof",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what pressure washer for foam cannon",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when pressure washing a house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is ash fork arizona located",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is ash fork arizona near",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which pressure washer for driveway",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which pressure washer nozzle for siding",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which pressure washer nozzle for fence",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why pressure wash a roof",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is ash from pressure treated wood toxic",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 21,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    }
+  }
+}

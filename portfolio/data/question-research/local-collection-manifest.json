@@ -1,0 +1,323 @@
+{
+  "source": "https://keywordtool.io/mcp/guest",
+  "geography": "United States; not measured AZ/NV demand",
+  "updated_at": "2026-11-02T05:40:57.052395+00:00",
+  "queries": [
+    {
+      "seed": "pressure washing Prescott Arizona",
+      "path": "data/question-research/raw/975e665f9f721226.json",
+      "status": "collected",
+      "returned_count": 23
+    },
+    {
+      "seed": "commercial cleaning Prescott Arizona",
+      "path": "data/question-research/raw/f21aa45d22103610.json",
+      "status": "collected",
+      "returned_count": 2
+    },
+    {
+      "seed": "pressure washing Prescott Valley Arizona",
+      "path": "data/question-research/raw/f208f1e312463c2f.json",
+      "status": "collected",
+      "returned_count": 17
+    },
+    {
+      "seed": "commercial cleaning Prescott Valley Arizona",
+      "path": "data/question-research/raw/03ce2b2b02f75085.json",
+      "status": "collected",
+      "returned_count": 0
+    },
+    {
+      "seed": "pressure washing Chino Valley Arizona",
+      "path": "data/question-research/raw/5a4275c899215987.json",
+      "status": "collected",
+      "returned_count": 15
+    },
+    {
+      "seed": "commercial cleaning Chino Valley Arizona",
+      "path": "data/question-research/raw/4f70d9bb4370b102.json",
+      "status": "collected",
+      "returned_count": 6
+    },
+    {
+      "seed": "pressure washing Dewey-Humboldt Arizona",
+      "path": "data/question-research/raw/61c32b3b6f95a953.json",
+      "status": "collected",
+      "returned_count": 4
+    },
+    {
+      "seed": "commercial cleaning Dewey-Humboldt Arizona",
+      "path": "data/question-research/raw/0f7eb386259e2cf0.json",
+      "status": "collected",
+      "returned_count": 6
+    },
+    {
+      "seed": "pressure washing Mayer Arizona",
+      "path": "data/question-research/raw/87da748187507fef.json",
+      "status": "collected",
+      "returned_count": 32
+    },
+    {
+      "seed": "commercial cleaning Mayer Arizona",
+      "path": "data/question-research/raw/0cd8569815195a08.json",
+      "status": "collected",
+      "returned_count": 17
+    },
+    {
+      "seed": "pressure washing Cordes Lakes Arizona",
+      "path": "data/question-research/raw/d346324b7ce675dd.json",
+      "status": "collected",
+      "returned_count": 4
+    },
+    {
+      "seed": "commercial cleaning Cordes Lakes Arizona",
+      "path": "data/question-research/raw/0b44d6107b34c2c1.json",
+      "status": "collected",
+      "returned_count": 3
+    },
+    {
+      "seed": "pressure washing Williamson Valley Arizona",
+      "path": "data/question-research/raw/3a1b9973840c8c94.json",
+      "status": "collected",
+      "returned_count": 8
+    },
+    {
+      "seed": "commercial cleaning Williamson Valley Arizona",
+      "path": "data/question-research/raw/c3dce3e77544def3.json",
+      "status": "collected",
+      "returned_count": 5
+    },
+    {
+      "seed": "pressure washing Ash Fork Arizona",
+      "path": "data/question-research/raw/b05319335b82e8ee.json",
+      "status": "collected",
+      "returned_count": 21
+    },
+    {
+      "seed": "commercial cleaning Ash Fork Arizona",
+      "path": "data/question-research/raw/e8fe396c561aa482.json",
+      "status": "collected",
+      "returned_count": 3
+    },
+    {
+      "seed": "pressure washing Seligman Arizona",
+      "path": "data/question-research/raw/cda2f94807dd6a85.json",
+      "status": "collected",
+      "returned_count": 23
+    },
+    {
+      "seed": "commercial cleaning Seligman Arizona",
+      "path": "data/question-research/raw/935d0ae9420052e8.json",
+      "status": "collected",
+      "returned_count": 0
+    },
+    {
+      "seed": "pressure washing Skull Valley Arizona",
+      "path": "data/question-research/raw/6e38ad138e7be3f8.json",
+      "status": "collected",
+      "returned_count": 10
+    },
+    {
+      "seed": "commercial cleaning Skull Valley Arizona",
+      "path": "data/question-research/raw/eecfce7e3b3faf88.json",
+      "status": "collected",
+      "returned_count": 6
+    },
+    {
+      "seed": "pressure washing Camp Verde Arizona",
+      "path": "data/question-research/raw/4fb5791bc3669d49.json",
+      "status": "collected",
+      "returned_count": 21
+    },
+    {
+      "seed": "commercial cleaning Camp Verde Arizona",
+      "path": "data/question-research/raw/28d38c780ffa67c6.json",
+      "status": "collected",
+      "returned_count": 9
+    },
+    {
+      "seed": "pressure washing Cottonwood Arizona",
+      "path": "data/question-research/raw/10f83b915ee36204.json",
+      "status": "collected",
+      "returned_count": 13
+    },
+    {
+      "seed": "commercial cleaning Cottonwood Arizona",
+      "path": "data/question-research/raw/99b97b7005f5c9a0.json",
+      "status": "collected",
+      "returned_count": 5
+    },
+    {
+      "seed": "pressure washing Sedona Arizona",
+      "path": "data/question-research/raw/9b1198fe4e8d7d27.json",
+      "status": "collected",
+      "returned_count": 42
+    },
+    {
+      "seed": "commercial cleaning Sedona Arizona",
+      "path": "data/question-research/raw/d73222ba7343e421.json",
+      "status": "collected",
+      "returned_count": 4
+    },
+    {
+      "seed": "pressure washing Flagstaff Arizona",
+      "path": "data/question-research/raw/0eac8d6f45d8d945.json",
+      "status": "collected",
+      "returned_count": 12
+    },
+    {
+      "seed": "commercial cleaning Flagstaff Arizona",
+      "path": "data/question-research/raw/497b61674b48be19.json",
+      "status": "collected",
+      "returned_count": 2
+    },
+    {
+      "seed": "pressure washing Winslow Arizona",
+      "path": "data/question-research/raw/d1f207d0e2dbfed4.json",
+      "status": "collected",
+      "returned_count": 29
+    },
+    {
+      "seed": "commercial cleaning Winslow Arizona",
+      "path": "data/question-research/raw/70ae75068a05ed64.json",
+      "status": "collected",
+      "returned_count": 9
+    },
+    {
+      "seed": "pressure washing Kingman Arizona",
+      "path": "data/question-research/raw/caab757aeed9517a.json",
+      "status": "collected",
+      "returned_count": 22
+    },
+    {
+      "seed": "commercial cleaning Kingman Arizona",
+      "path": "data/question-research/raw/16e9af5a45931cd1.json",
+      "status": "collected",
+      "returned_count": 3
+    },
+    {
+      "seed": "pressure washing Golden Valley Arizona",
+      "path": "data/question-research/raw/164c0c70dc43995f.json",
+      "status": "collected",
+      "returned_count": 4
+    },
+    {
+      "seed": "commercial cleaning Golden Valley Arizona",
+      "path": "data/question-research/raw/34e96652e7f3d478.json",
+      "status": "collected",
+      "returned_count": 0
+    },
+    {
+      "seed": "pressure washing Bullhead City Arizona",
+      "path": "data/question-research/raw/e8899748cf7e2ba4.json",
+      "status": "collected",
+      "returned_count": 17
+    },
+    {
+      "seed": "commercial cleaning Bullhead City Arizona",
+      "path": "data/question-research/raw/c883a1cdc6714352.json",
+      "status": "collected",
+      "returned_count": 0
+    },
+    {
+      "seed": "pressure washing Phoenix Arizona",
+      "path": "data/question-research/raw/80a1e526b8558883.json",
+      "status": "collected",
+      "returned_count": 2
+    },
+    {
+      "seed": "commercial cleaning Phoenix Arizona",
+      "path": "data/question-research/raw/3fb6901e0ea9ced7.json",
+      "status": "collected",
+      "returned_count": 0
+    },
+    {
+      "seed": "pressure washing Scottsdale Arizona",
+      "path": "data/question-research/raw/172f07fe937cbe3a.json",
+      "status": "collected",
+      "returned_count": 2
+    },
+    {
+      "seed": "commercial cleaning Scottsdale Arizona",
+      "path": "data/question-research/raw/7ad5c00f50695a8b.json",
+      "status": "collected",
+      "returned_count": 0
+    },
+    {
+      "seed": "pressure washing Tucson Arizona",
+      "path": "data/question-research/raw/ae4a878c659184ea.json",
+      "status": "collected",
+      "returned_count": 0
+    },
+    {
+      "seed": "commercial cleaning Tucson Arizona",
+      "path": "data/question-research/raw/d62d0c2ffdb4ac9a.json",
+      "status": "collected",
+      "returned_count": 0
+    },
+    {
+      "seed": "solar panel cleaning Las Vegas Nevada",
+      "path": "data/question-research/raw/06a02c18b38c6d18.json",
+      "status": "collected",
+      "returned_count": 6
+    },
+    {
+      "seed": "house cleaning Las Vegas Nevada",
+      "path": "data/question-research/raw/7adb96ef3a44dd66.json",
+      "status": "collected",
+      "returned_count": 0
+    },
+    {
+      "seed": "hiring a nanny Las Vegas Nevada",
+      "path": "data/question-research/raw/9f6098181286e91f.json",
+      "status": "collected",
+      "returned_count": 3
+    },
+    {
+      "seed": "house manager Las Vegas Nevada",
+      "path": "data/question-research/raw/98d025dcf0a7eeb7.json",
+      "status": "collected",
+      "returned_count": 4
+    },
+    {
+      "seed": "home watch service Las Vegas Nevada",
+      "path": "data/question-research/raw/939390ea8cc859d7.json",
+      "status": "pending"
+    },
+    {
+      "seed": "errand service Las Vegas Nevada",
+      "path": "data/question-research/raw/7898daab38a39fc2.json",
+      "status": "pending"
+    },
+    {
+      "seed": "solar panel cleaning Henderson Nevada",
+      "path": "data/question-research/raw/689a4c69c49e61a4.json",
+      "status": "pending"
+    },
+    {
+      "seed": "house cleaning Henderson Nevada",
+      "path": "data/question-research/raw/2992c988e9907237.json",
+      "status": "pending"
+    },
+    {
+      "seed": "hiring a nanny Henderson Nevada",
+      "path": "data/question-research/raw/63511a5040c7544b.json",
+      "status": "pending"
+    },
+    {
+      "seed": "house manager Henderson Nevada",
+      "path": "data/question-research/raw/fbbb58f84b507e6d.json",
+      "status": "pending"
+    },
+    {
+      "seed": "home watch service Henderson Nevada",
+      "path": "data/question-research/raw/4f6fb9bfb19c0e39.json",
+      "status": "pending"
+    },
+    {
+      "seed": "errand service Henderson Nevada",
+      "path": "data/question-research/raw/717e4ecd356f0000.json",
+      "status": "pending"
+    }
+  ]
+}
