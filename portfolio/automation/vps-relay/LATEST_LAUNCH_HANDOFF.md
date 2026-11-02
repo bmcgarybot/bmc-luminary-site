@@ -75,3 +75,14 @@ Current deployed Growth copy rendered offline with that real existing owner-only
 All four owner/campaign holds unchanged. No live charge, SMTP send, resend, approvalSHA, provider promotion or campaign release. Eight prior owner previews and seven original contacts retain their separate history.
 Actual receipts remain $0; targets Nov13 first sale /Nov30 latest, initial300gross /8333monthly.
 Next work must preserve current branch/live distinction, finish correct-service signed provider journeys and dedicated fence manual-review workflow, verify actual provider capacity/qualifications/access through authorized contact, and obtain exact Gmail/click-path approval followed by explicit release. Generic continue is not that permission. Do not reuse the historical signed pressure-washing route for a recovery service.
+
+
+## Security checkpoint — November 2, 2026, 17:34 UTC
+
+Owner confirms the separate private territory export command was NEVER run on the VPS. The export kit is preparation only; do not claim a database backup or territory exports exist. Customer outreach has NOT launched.
+
+Read the two-page BMC_Territory_Data_Security_Audit_2026-11-02.pdf (Library libfile_e593fd9664b481919e63e6302787eb4d). Independently reverified repository visibility public and master still33ab2d7618022eb4575688f7f17c134a4a9e5dc2. Current Pages workflow uploads entire portfolio directory, including research and automation. This establishes public source exposure, not a live database breach or confirmed credential compromise. Historical copies remain relevant.
+
+PR29 https://github.com/bmcgarybot/bmc-luminary-site/pull/29 head14437c5f9c5ca71ccbc96e0bed62765c1754f378 prepares an explicit109-file public-only Pages artifact. Public frontend services.json/billing.json retained; all other data and internal automation excluded. Actual build passed; malicious/unreviewed-data/internal/traversal manifest cases rejected; unlisted prospect fixture excluded. BRANCH ONLY, not merged/deployed; CI not yet verified. Does not make repo private or erase history. Public repository privacy/integration compatibility, history/token/customer-data audit, any necessary revocation and independent live exposure verification remain outstanding. Existing PR28 remains separate and not deployed. No fresh VPS runtime check was completed in this security continuation; previous runtime readings retain their original timestamps.
+
+All outreach holds unchanged; no email, preview resend, charge, approval, release or VPS export command executed. Prioritize containment before customer launch. Do not publish private database exports to this public repository.
