@@ -69,7 +69,7 @@ class MailHeaderTests(unittest.IsolatedAsyncioTestCase):
             SMTP_DRY_RUN=False,SMTP_HOST="smtp.example.test",SMTP_PORT=587,SMTP_USER="",
             SMTP_PASSWORD="",SMTP_FROM="contact@bmcservicenetwork.com",
             SMTP_FROM_NAME="BMC Service Network",SMTP_REPLY_TO="contact@bmcservicenetwork.com",
-            SMTP_STARTTLS=True,aiosmtplib=SMTP())
+            SMTP_STARTTLS=True,aiosmtplib=SMTP(),email_unsubscribe_content=lambda to,body,markup:(body,markup,""))
         exec(compile(ast.Module(body=[node],type_ignores=[]),"production_send_mail","exec"),ns)
         self.assertTrue(await ns["send_mail"]("owner@example.test","Review","Plain","<p>HTML</p>"))
         self.assertEqual(len(captured),1)

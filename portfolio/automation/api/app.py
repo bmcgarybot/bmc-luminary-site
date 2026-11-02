@@ -628,11 +628,62 @@ async def shutdown():
     await app.state.delivery_pool.close()
     await app.state.pool.close()
 
+def email_unsubscribe_token(address):
+    if not ADMIN_KEY:
+        raise ValueError("Unsubscribe signing is not configured")
+    return hmac.new(ADMIN_KEY.encode(),("email-unsubscribe\n"+clean(address).lower()).encode(),hashlib.sha256).hexdigest()
+
+def email_unsubscribe_content(to,body,html_body):
+    marketing=("promotional email" in (body or "").lower() or
+      bool(re.search(r"reply\s+no\b",body or "",re.I)))
+    if not marketing:
+        return body,html_body,""
+    endpoint=urllib.parse.urlsplit(WEBHOOK_URL)
+    if endpoint.scheme!="https" or not endpoint.netloc:
+        raise ValueError("Public unsubscribe endpoint is not configured")
+    url=urllib.parse.urlunsplit((endpoint.scheme,endpoint.netloc,"/api/email-preferences",
+      urllib.parse.urlencode({"email":clean(to).lower(),"token":email_unsubscribe_token(to)}),""))
+    body=re.sub(r"(?im)^\s*Reply no[^\n]*", "",body).rstrip()+"\n\nStop receiving these emails: "+url
+    if html_body:
+        html_body=re.sub(r"Reply <strong>no</strong> if you do not want future BMC outreach\.","",html_body)
+        footer=("<p style='margin:16px 0 0;font-size:11px;line-height:1.5;color:#6b7280'>"
+          f"<a href='{html.escape(url,quote=True)}' style='color:#6b7280;text-decoration:underline'>Stop receiving these emails</a></p>")
+        # Shared templates finish with these wrappers: keep the link inside the
+        # email width, below the company/address/legal footer.
+        ending="</div></div></div></body></html>"
+        html_body=html_body.replace(ending,footer+ending) if ending in html_body else html_body.replace("</body>",footer+"</body>")
+    return body,html_body,url
+
+@app.api_route("/api/email-preferences",methods=["GET","POST"])
+async def email_preferences(request:Request):
+    address=clean(request.query_params.get("email")).lower()
+    token=clean(request.query_params.get("token"))
+    if not address or "@" not in address or not ADMIN_KEY or not hmac.compare_digest(email_unsubscribe_token(address),token):
+        raise HTTPException(403,"This unsubscribe link is invalid.")
+    if request.method=="POST":
+        async with app.state.pool.acquire() as conn:
+          async with conn.transaction():
+            await conn.execute("""insert into outreach_suppressions(email,reason,source)
+              values($1,'recipient unsubscribe link','unsubscribe') on conflict(email) do nothing""",address)
+            await conn.execute("""update outreach set opt_out=true,status='suppressed',next_followup_at=null
+              where (entity_type='vendor' and entity_id in (select vendor_id from vendors where lower(public_email)=$1))
+                 or (entity_type='buyer' and entity_id in (select buyer_id from buyers where lower(public_email)=$1))
+                 or (entity_type='growth_customer' and entity_id in (select target_id from growth_outreach_targets where lower(public_email)=$1))""",address)
+            await conn.execute("""update growth_sample_requests set next_nurture_at=null,
+              status=case when converted_at is null then 'suppressed' else status end,updated_at=now()
+              where lower(email)=$1""",address)
+        content="<h1>You're unsubscribed.</h1><p>You will no longer receive BMC marketing emails at this address.</p>"
+    else:
+        # GET is read-only so mail scanners cannot silently unsubscribe people.
+        content="<h1>Stop BMC marketing emails?</h1><p>Confirm below. No login is needed.</p><form method='post'><button type='submit'>Stop receiving these emails</button></form>"
+    return HTMLResponse("<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'><title>BMC email preferences</title></head><body style='font-family:Arial,sans-serif;max-width:580px;margin:60px auto;padding:20px'><p>BMC Service Network</p>"+content+"</body></html>",headers={"Cache-Control":"no-store","Referrer-Policy":"no-referrer","X-Robots-Tag":"noindex, nofollow"})
+
 async def send_mail(to,subject,body,html_body=None,attachments=None):
     if not to: return False
     if SMTP_DRY_RUN: return True
     if not SMTP_HOST or "CHANGE_ME" in SMTP_HOST: return False
     try:
+        body,html_body,unsubscribe_url=email_unsubscribe_content(to,body,html_body)
         msg=EmailMessage()
         msg["From"]=formataddr((SMTP_FROM_NAME,SMTP_FROM))
         msg["Reply-To"]=SMTP_REPLY_TO
@@ -641,6 +692,9 @@ async def send_mail(to,subject,body,html_body=None,attachments=None):
         msg["Date"]=format_datetime(datetime.now(timezone.utc))
         from_domain=SMTP_FROM.rsplit("@",1)[-1] if "@" in SMTP_FROM else None
         msg["Message-ID"]=make_msgid(domain=from_domain)
+        if unsubscribe_url:
+            msg["List-Unsubscribe"]="<"+unsubscribe_url+">"
+            msg["List-Unsubscribe-Post"]="List-Unsubscribe=One-Click"
         # Enforce plain, human email punctuation at the final SMTP boundary.
         # This also protects emails generated by the small VPS language model.
         body=clean(body).replace("\u2014",", ").replace("\u2013","-")
