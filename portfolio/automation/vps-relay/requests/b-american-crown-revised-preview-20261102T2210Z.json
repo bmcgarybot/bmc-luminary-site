@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "request_id": "b-american-crown-revised-preview-20261102T2210Z",
+  "action": "growth_owner_target_preview",
+  "allow_external_actions": true,
+  "created_at": "2026-11-02T22:09:35.882Z",
+  "expires_at": "2026-11-02T23:09:35.882Z",
+  "args": {
+    "target_id": "vendor:v_prescott_americancrown"
+  }
+}
