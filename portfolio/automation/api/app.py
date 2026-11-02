@@ -34,6 +34,8 @@ SMTP_USER=os.getenv("SMTP_USER","")
 SMTP_PASSWORD=os.getenv("SMTP_PASSWORD","")
 SMTP_FROM=os.getenv("SMTP_FROM",SMTP_USER or "contact@bmcservicenetwork.com")
 SMTP_FROM_NAME=os.getenv("SMTP_FROM_NAME","BMC Service Network").strip() or "BMC Service Network"
+SMTP_REPLY_TO=os.getenv("SMTP_REPLY_TO","contact@bmcservicenetwork.com").strip() or "contact@bmcservicenetwork.com"
+OWNER_PREVIEW_RECIPIENT=os.getenv("OWNER_PREVIEW_RECIPIENT","contact@bmcservicenetwork.com").strip() or "contact@bmcservicenetwork.com"
 SMTP_STARTTLS=os.getenv("SMTP_STARTTLS","true").lower()=="true"
 SMTP_DRY_RUN=os.getenv("SMTP_DRY_RUN","false").lower()=="true"
 OUTREACH_ENABLED=os.getenv("OUTREACH_ENABLED","false").lower()=="true"
@@ -633,6 +635,7 @@ async def send_mail(to,subject,body,html_body=None,attachments=None):
     try:
         msg=EmailMessage()
         msg["From"]=formataddr((SMTP_FROM_NAME,SMTP_FROM))
+        msg["Reply-To"]=SMTP_REPLY_TO
         msg["To"]=to
         msg["Subject"]=subject
         msg["Date"]=format_datetime(datetime.now(timezone.utc))
@@ -4505,7 +4508,7 @@ async def replay_first_growth_email_to_owner(x_bmc_admin_key:str|None=Header(def
         raise HTTPException(403,"Forbidden")
     if OUTREACH_ENABLED or BUYER_OUTREACH_ENABLED or GROWTH_OUTREACH_ENABLED:
         raise HTTPException(409,"All outbound campaign switches must remain OFF for owner preview testing.")
-    test_recipient="brett.coon2@gmail.com"
+    test_recipient=OWNER_PREVIEW_RECIPIENT
     async with app.state.pool.acquire() as conn:
         row=await conn.fetchrow("""select o.outreach_id,o.sent_at,o.entity_id,
             g.business_name,g.public_email,g.market,g.service_key,g.target_id
@@ -4710,7 +4713,7 @@ async def replay_all_email_templates_to_owner(x_bmc_admin_key:str|None=Header(de
     if scope not in ("all","growth"):
         raise HTTPException(400,"Preview scope must be all or growth")
     entries=[item for item in owner_template_preview_catalog() if scope=="all" or item["num"]<=7]
-    recipient="brett.coon2@gmail.com"
+    recipient=OWNER_PREVIEW_RECIPIENT
     sent=[]; failed=[]
     for item in entries:
         label=f"[OWNER PREVIEW {item['num']:02d}/{len(entries):02d}] {item['name']}"
