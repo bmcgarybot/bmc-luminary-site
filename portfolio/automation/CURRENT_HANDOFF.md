@@ -4,7 +4,7 @@ Read this file, `LAUNCH_REVIEW_2026-11-02.md`, then the newest section of `HANDO
 
 ## Objective and model handoff
 
-Owner requests Arizona launch readiness Monday **November 2, 2026 at 06:00 America/Phoenix (13:00 UTC)**. First November receipts target $300 gross; longer goal $8,333/month. Do not shift the target to November 3 because the host is already on UTC November 2. Revenue is not guaranteed. Prioritize a working acquisition → sample → purchase → delivery loop over more niches or dashboard decoration.
+Owner requests Arizona launch readiness Monday **November 2, 2026 at 06:00 America/Phoenix (13:00 UTC)**. First-sale target is **November13**, with **November30 the latest deadline**. First November receipts target $300 gross; longer goal $8,333/month. Do not shift the target to November 3 because the host is already on UTC November 2. Revenue is not guaranteed. Prioritize a working acquisition → sample → purchase → delivery loop over more niches or dashboard decoration.
 
 The owner requested a higher-level review followed by Sol execution. Continue routine implementation with Sol. Ask before Astra or another higher-cost model. The chat model picker is controlled by the user; an agent handoff does not change it.
 
@@ -19,7 +19,7 @@ The owner requested a higher-level review followed by Sol execution. Continue ro
 
 ## Launch decision
 
-**Not authorized to enable yet.** Existing audit has two authorization blockers: owner hold and no exact deployed-SHA visual approval. The deeper review found payment-scope/refund integrity defects. Sol has implemented branch fixes and17 handler fixtures; full Portfolio/Postgres CI and held deployment remain required before treating them as production fixes. See the review document and PAYMENT_INTEGRITY_REVIEW.md. Do not mistake a green configuration audit for exhaustive business-logic proof.
+**Not authorized to enable yet.** Existing audit has two authorization blockers: owner hold and no exact deployed-SHA visual approval. The deeper review found payment-scope/refund integrity defects. Sol implemented branch fixes and17 handler fixtures. Head d44e15089d7f46f947d3b884e8920dcd3a64a464 passed both full CI runs41396827411/41396823623, including all seven real Postgres cases and the signed HTTP/fulfillment suite. Exact final-master CI and held deployment remain required before treating them as production fixes. See the review document and PAYMENT_INTEGRITY_REVIEW.md. Do not mistake a green configuration audit for exhaustive business-logic proof.
 
 Do not send more owner previews: **eight authorized owner-only messages have already been submitted once** (seven layouts plus one signed read-only route preview). No resend without fresh explicit permission. SMTP success is not inbox/render approval. Brett must approve the actual Gmail rendering AND the post-click journey for the final deployed version; store the exact SHA only after that decision. Changing the deployed SHA invalidates the old approval. Generic continue/proceed is not release approval.
 

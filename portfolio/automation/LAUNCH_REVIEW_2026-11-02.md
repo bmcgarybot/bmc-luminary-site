@@ -53,3 +53,9 @@ Research work completed separately: all42 Arizona city-worded seeds plus4 Las Ve
 ## Sol implementation checkpoint
 
 Sol completed payment commits b7aa37c and65a9f219, integrated into this review branch. Strict explicit-reference matching, delivered/current-five checks, unambiguous missing-reference handling, refund-object accounting and fulfillment holds are implemented. Local48 focused tests pass, including17 handler tests. Seven real Postgres tests skip locally without a server and must pass the new CI payment-postgres job. Existing signed HTTP sample→payment→fulfillment remains in full CI; updated sampleless-payment assertions now expect review rather than unsafe auto-linking. Pending/failed/partial refunds stay manually held; no automatic resumption. Missing payment-intent association and historic misbooked refunds need reconciliation, not guessed linkage. No live payment/email occurred.
+
+## Final review and owner deadline update
+
+Final code head d44e15089d7f46f947d3b884e8920dcd3a64a464 passed full Portfolio CI41396827411 and41396823623: both validate and payment-postgres jobs succeeded, all seven real PostgreSQL cases executed. This includes the corrected unique fixture submission IDs and per-acquire schema setup. Production is still067ad5df until exact-tested merge/deploy proof.
+
+Owner tightened commercial target: **first sale by November13; November30 at the latest**. Arizona launch target remains November2 06:00 America/Phoenix. Prioritize first-cohort acquisition, useful sample, checkout, delivery and reply follow-through; no new niche, continuity product or speculative lead-volume expansion should displace this loop. These are execution targets, not booked receipts or a guarantee.
