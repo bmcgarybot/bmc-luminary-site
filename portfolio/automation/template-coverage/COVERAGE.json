@@ -4,7 +4,7 @@
   "smtp_calls": 0,
   "production_records_changed": 0,
   "campaigns_enabled": false,
-  "source_sha256": "5df7b45a0ce263fb0e5d54f781d9f721c291a968b5beb761996af4d531b83134",
+  "source_sha256": "3233aa88b6ca45bae3a77f1aa071e0396810f56513bccf9c1a322ff101d49d53",
   "registry_sha256": "39639988087fae346736aee1380f891bbe05510c1a892bd144cb394937e9fd12",
   "actual_service_count": 54,
   "registry_declared_count": 53,

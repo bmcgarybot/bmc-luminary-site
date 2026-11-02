@@ -19,8 +19,11 @@ class Context:
     async def __aexit__(self,*args):return False
 class Connection:
     async def fetchval(self,*args):return 0
-    async def fetch(self,*args):return [dict(entity_id='fixture',outreach_id='fixture',sequence_step=0,status='queued',
+    async def fetch(self,*args):
+        if 'join buyers' in args[0]:return []
+        return [dict(entity_id='fixture',outreach_id='fixture',sequence_step=0,status='queued',
         business_name='Fixture Co',public_email='fixture@example.invalid',association_signal='',market='Phoenix',
+        public_phone='',website='',source_url='',
         service_key='landscaping',service_name='Landscaping & Yard Cleanup',wave='pilot1')]
     async def execute(self,*args):pass
 
@@ -49,6 +52,12 @@ class Tests(unittest.IsolatedAsyncioTestCase):
                         self.assertIn(line,plain);self.assertIn(html.escape(line),rendered)
                     legacy='first_wave_vendor_copy' if wave=='pilot1' else 'vendor_recruitment_copy'
                     self.assertEqual(self.ns[legacy](row,step),(subject,plain))
+    def test_first_wave_preview_uses_campaign_target_before_vendor_defaults(self):
+        node=next(n for n in SOURCE.body if isinstance(n,ast.AsyncFunctionDef) and n.name=='admin_first_wave')
+        query=next(n.value for n in ast.walk(node) if isinstance(n,ast.Constant) and isinstance(n.value,str) and 'from outreach o join vendors' in n.value)
+        self.assertIn('coalesce(o.target_market,vm.market) as market',query)
+        self.assertIn('coalesce(o.target_service_key,vs.service_key) as service_key',query)
+        self.assertIn('svc.service_key=coalesce(o.target_service_key,vs.service_key)',query)
     def test_growth_is_short_human_and_honest_in_both_channels(self):
         fn=next(n for n in SOURCE.body if isinstance(n,ast.FunctionDef) and n.name=='growth_outreach_message')
         self.ns['growth_invitation_url']=lambda row,owner_preview=False:'https://preview.example.invalid/growth-packs/'+row['service_key']+'/?claim=NONLIVE'
@@ -67,12 +76,12 @@ class Tests(unittest.IsolatedAsyncioTestCase):
                 self.assertLess(len(plain.split()),170)
         with self.assertRaises(ValueError):self.ns['growth_outreach_message'](dict(service_key='landscaping'),1)
     async def test_live_sender_and_admin_preview_share_actual_html_without_smtp(self):
-        nodes=[n for n in SOURCE.body if isinstance(n,ast.AsyncFunctionDef) and n.name in ('process_outreach','admin_outreach_wave_preview','provider_outreach_review')]
+        nodes=[n for n in SOURCE.body if isinstance(n,ast.AsyncFunctionDef) and n.name in ('process_outreach','admin_outreach_wave_preview','provider_outreach_review','admin_first_wave')]
         for n in nodes:n.decorator_list=[]
         sent=[]
         async def mail(*args):sent.append(args);return True
         async def event(*args):pass
-        self.ns.update(Header=lambda **kw:None,ADMIN_KEY='fixture',HTTPException=RuntimeError,
+        self.ns.update(Header=lambda **kw:None,require_admin=lambda key:None,ADMIN_KEY='fixture',HTTPException=RuntimeError,
           OWNER_LAUNCH_HOLD=False,OUTREACH_ENABLED=True,BUYER_OUTREACH_ENABLED=False,OUTREACH_DAILY_LIMIT=1,
           OUTREACH_WAVE='pilot1',send_mail_once=mail,event=event,datetime=datetime,timedelta=timedelta,timezone=timezone,
           app=SimpleNamespace(state=SimpleNamespace(pool=SimpleNamespace(acquire=lambda:Context(Connection())))))
@@ -82,6 +91,11 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         preview=await self.ns['admin_outreach_wave_preview']('vendor','pilot1',25,'fixture')
         self.assertEqual(preview['records'][0]['body'],sent[0][3])
         self.assertEqual(preview['records'][0]['html_body'],sent[0][4])
+        first=await self.ns['admin_first_wave']('fixture')
+        self.assertEqual(first['count'],1)
+        self.assertEqual(first['records'][0]['template_status'],'supported_service')
+        self.assertEqual(first['records'][0]['html_body'],sent[0][4])
+        self.assertIn(first['records'][0]['activation_url'],first['records'][0]['body'])
         reviews=[]
         async def review(conn,row,step,reason):reviews.append(reason)
         self.ns['provider_outreach_review']=review
@@ -95,5 +109,10 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         preview=await self.ns['admin_outreach_wave_preview']('vendor','pilot1',25,'fixture')
         self.assertEqual(preview['records'][0]['template_status'],'unsupported_service')
         self.assertIsNone(preview['records'][0]['html_body'])
+        first=await self.ns['admin_first_wave']('fixture')
+        self.assertEqual(first['count'],1)
+        self.assertEqual(first['records'][0]['template_status'],'unsupported_service')
+        self.assertTrue(first['records'][0]['review_required'])
+        self.assertIsNone(first['records'][0]['body']);self.assertIsNone(first['records'][0]['activation_url'])
 
 if __name__=='__main__':unittest.main()

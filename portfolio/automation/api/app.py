@@ -6560,20 +6560,28 @@ async def admin_first_wave(x_bmc_admin_key:str|None=Header(default=None)):
     records=[]
     async with app.state.pool.acquire() as conn:
         vendors=await conn.fetch("""select o.entity_id,o.wave,v.business_name,v.public_email,v.public_phone,v.website,v.source_url,v.status,v.association_signal,
-          vm.market,vs.service_key,svc.display_name as service_name
+          o.target_market,o.target_service_key,
+          coalesce(o.target_market,vm.market) as market,coalesce(o.target_service_key,vs.service_key) as service_key,svc.display_name as service_name
           from outreach o join vendors v on v.vendor_id=o.entity_id
           left join lateral (select market from vendor_markets where vendor_id=v.vendor_id order by market limit 1) vm on true
           left join lateral (select service_key from vendor_services where vendor_id=v.vendor_id order by service_key limit 1) vs on true
-          left join services svc on svc.service_key=vs.service_key
+          left join services svc on svc.service_key=coalesce(o.target_service_key,vs.service_key)
           where o.entity_type='vendor' and o.wave='pilot1'
           order by o.created_at,o.entity_id""")
         for row in vendors:
-            subject,body=first_wave_vendor_copy(row,1)
+            try:
+                subject,body,html_body=provider_outreach_message(row,1)
+                activation=next(line for line in body.splitlines() if line.startswith(PILOT_ACTIVATION_URL+"?"))
+                template_status="supported_service"
+            except ValueError:
+                subject=body=html_body=activation=None
+                template_status="unsupported_service"
             records.append({"side":"vendor","entity_id":row["entity_id"],"business_name":row["business_name"],
               "email":row["public_email"],"public_phone":row["public_phone"],"website":row["website"],"source_url":row["source_url"],
               "status":row["status"],"association_signal":row["association_signal"],"market":row["market"],
               "service_key":row["service_key"],"service_name":row["service_name"],"subject":subject,"body":body,
-              "activation_url":pilot_activation_url(row)})
+              "html_body":html_body,"template_status":template_status,"review_required":template_status=="unsupported_service",
+              "activation_url":activation})
         buyers=await conn.fetch("""select o.entity_id,b.business_name,b.public_email,b.market,b.buyer_type,b.campaign,b.likely_services
           from outreach o join buyers b on b.buyer_id=o.entity_id
           where o.entity_type='buyer' and o.wave='pilot1'

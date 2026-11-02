@@ -1564,8 +1564,12 @@ jobs:
           assert "/provider-pilot-activate/?" in provider["body"]
           assert "activation_token=" in provider["activation_url"]
           assert "activation_token=" in provider["body"]
-          assert "There is no fee to join." in provider["body"]
-          assert "price and terms will be shown before you choose to participate" in provider["body"]
+          assert "Joining is free." in provider["body"]
+          assert "Any future paid lead or territory terms will be shown before you choose." in provider["body"]
+          assert provider["template_status"]=="supported_service" and provider["review_required"] is False
+          assert "<!doctype html>" in provider["html_body"]
+          for gap in (x for x in data["records"] if x.get("template_status")=="unsupported_service"):
+              assert gap["body"] is None and gap["html_body"] is None and gap["activation_url"] is None and gap["review_required"] is True
           assert "prove whether BMC is worth paying for" not in provider["body"]
           assert "/vendor-partner/" not in provider["body"]
           token=parse_qs(urlparse(provider["activation_url"]).query)["activation_token"][0]
