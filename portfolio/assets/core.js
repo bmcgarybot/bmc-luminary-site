@@ -86,6 +86,22 @@
     });
   });
 
+  // Multi-city Growth scope is explicit; travel notes never silently widen it.
+  document.querySelectorAll('[data-growth-territory]').forEach(function(group){
+    markets.forEach(function(city){
+      const label=document.createElement("label");label.className="check";
+      const input=document.createElement("input");input.type="checkbox";input.name="additional_markets";input.value=city;
+      const text=document.createElement("span");text.textContent=city;
+      label.append(input,text);group.appendChild(label);
+    });
+    const primary=group.closest("form").querySelector('[name="market"]');
+    function sync(){group.querySelectorAll('input').forEach(function(input){
+      if(input.dataset.primaryIncluded==="true"){input.checked=false;input.disabled=false;delete input.dataset.primaryIncluded;}
+      if(input.value===primary.value){input.checked=true;input.disabled=true;input.dataset.primaryIncluded="true";}
+    });}
+    primary.addEventListener("change",sync);sync();
+  });
+
   document.querySelectorAll("[data-year]").forEach(function(el){el.textContent=new Date().getFullYear();});
   document.querySelectorAll(".footer-in").forEach(function(el){
     if(el.querySelector("[data-bmc-legal-links]"))return;
@@ -111,6 +127,11 @@
     const data={};
     new FormData(form).forEach(function(v,k){if(k!=="website")data[k]=String(v).trim();});
     data.form_type=form.dataset.formType||"general";
+    if(["growth_snapshot","growth_scope_request"].includes(data.form_type) && form.querySelector('[data-growth-territory]')){
+      data.selected_markets=[...new Set([data.market,...new FormData(form).getAll("additional_markets").map(String)].filter(Boolean))];
+      delete data.additional_markets;
+      data.website=String(form.elements.website?.value||"").trim();
+    }
     data.customer_path=form.dataset.customerPath||data.customer_path||(
       document.body.classList.contains("service-page")?"fix_or_handle_job":""
     );
@@ -166,6 +187,9 @@
           "If a paid prospect later fails the published qualification standard, BMC replaces it."
         ];
       }
+    }else if(formType==="growth_scope_request"){
+      title="We received your territory request.";
+      steps=["BMC will check the cities, prospect types and quantity you requested.","We will confirm the available scope and price before any payment.","This request does not purchase a pack or start a subscription."];
     }else if(formType==="vendor_response"){
       if(response.status==="accepted"){
         title="Job accepted.";
@@ -267,6 +291,9 @@
     });
     card.appendChild(heading);
     card.appendChild(message);
+    if(formType==="growth_snapshot" && Array.isArray(response.selected_markets)){
+      const territory=document.createElement("p");territory.textContent="Your selected territory: "+response.selected_markets.join(", ");card.appendChild(territory);
+    }
     card.appendChild(list);
     if(formType==="growth_snapshot" && Array.isArray(response.sample) && response.sample.length){
       const sampleWrap=document.createElement("div");
@@ -275,7 +302,7 @@
         const item=document.createElement("div");
         item.className="soft-panel";
         const h=document.createElement("h4");
-        h.textContent=(index+1)+". "+(row.business_name||"Commercial prospect")+" · "+(row.fit_score||0)+"/100";
+        h.textContent=(index+1)+". "+(row.business_name||"Commercial prospect")+" · "+(row.market||"")+" · "+(row.fit_score||0)+"/100";
         const why=document.createElement("p");
         why.textContent=row.fit_reason||"Qualified commercial fit.";
         const contact=document.createElement("p");
@@ -297,6 +324,11 @@
         const checkout=document.createElement("a");checkout.className="btn btn-primary";
         checkout.href=response.checkout_url;checkout.textContent="Get the full 100 for $499";
         actions.appendChild(checkout);card.appendChild(actions);
+      }else if(!response.preview){
+        const options=document.createElement("p");
+        const link=document.createElement("a");link.textContent="Ask about a smaller territory pack";
+        link.href="/growth-packs/smaller-territory/?cities="+encodeURIComponent((response.selected_markets||[]).join("|"));
+        options.appendChild(link);card.appendChild(options);
       }
     }
     card.classList.add("show");
@@ -313,6 +345,7 @@
     const pageEndpoint=document.querySelector('meta[name="bmc-webhook"]')?.content||GLOBAL_WEBHOOK;
     const endpoint=pageEndpoint.replace(/\/api\/intake(?:\?.*)?$/,"/api/growth/claim-free-five");
     const payload={target_id:target,claim:claim,preview:q.get("preview")||"",page:location.href,referrer:document.referrer||""};
+    if(q.get("preview")==="1" && q.get("markets"))payload.selected_markets=q.get("markets").split(",").map(function(city){return city.trim()}).filter(Boolean);
     ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(function(k){if(q.get(k))payload[k]=q.get(k)});
     if(note){note.textContent="Building your 5 researched commercial targets…";note.classList.add("show");}
     try{
