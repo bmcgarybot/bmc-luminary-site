@@ -4,6 +4,7 @@ import ast
 from datetime import datetime,timedelta,timezone
 import html
 import json
+import urllib.parse
 from pathlib import Path
 import runpy
 from types import SimpleNamespace
@@ -63,6 +64,9 @@ class Tests(unittest.IsolatedAsyncioTestCase):
           n.name in ('growth_verified_opener','growth_outreach_message')]
         self.ns['growth_invitation_url']=lambda row,owner_preview=False:'https://preview.example.invalid/growth-packs/'+row['service_key']+'/?claim=NONLIVE'
         self.ns['json_dict']=lambda x:x if isinstance(x,dict) else {}
+        self.ns.update(datetime=datetime,timedelta=timedelta,timezone=timezone,
+          urllib=SimpleNamespace(parse=urllib.parse),GROWTH_SERVICE_LABELS={
+            'commercial_cleaning':'commercial cleaning / janitorial','pressure_washing':'commercial pressure washing / exterior cleaning'})
         exec(compile(ast.Module(body=fns,type_ignores=[]),'production_growth_copy','exec'),self.ns)
         for service,example in [('pressure_washing','commercial exterior'),('commercial_cleaning','janitorial cleaning')]:
             for step in (1,2):
@@ -96,6 +100,16 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         with self.assertRaisesRegex(ValueError,'source-backed'):
             self.ns['growth_outreach_message'](dict(target_id='vendor:unreviewed',service_key='commercial_cleaning',
               business_name='Unreviewed Co',market='Prescott',source_url='https://unreviewed.example'),1)
+        direct=dict(target_id='inventory:fixture',service_key='commercial_cleaning',
+          business_name='Fixture Janitorial',market='Prescott',source_kind='deep_inventory',
+          source_url='https://fixture.example',public_email='hello@fixture.example',
+          source_data={'source_tier':'direct','verification_status':'direct_evidence',
+            'official_site':True,'research_note':'Direct site lists Prescott offices and restaurants for cleaning.',
+            'last_verified_at':datetime.now(timezone.utc).isoformat()})
+        self.assertIn('offices around Prescott',self.ns['growth_outreach_message'](direct,1)[2])
+        direct['source_data']['last_verified_at']=(datetime.now(timezone.utc)-timedelta(days=31)).isoformat()
+        with self.assertRaisesRegex(ValueError,'source-backed'):
+            self.ns['growth_outreach_message'](direct,1)
         with self.assertRaises(ValueError):self.ns['growth_outreach_message'](dict(service_key='landscaping'),1)
     async def test_live_sender_and_admin_preview_share_actual_html_without_smtp(self):
         nodes=[n for n in SOURCE.body if isinstance(n,ast.AsyncFunctionDef) and n.name in ('process_outreach','admin_outreach_wave_preview','provider_outreach_review','admin_first_wave')]

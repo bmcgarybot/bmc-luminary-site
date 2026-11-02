@@ -3452,7 +3452,9 @@ async def stage_growth_service(conn,service_key,max_targets=25):
     inventory=await conn.fetch("""select 'inventory:'||candidate_id::text as target_id,business_name,lower(public_email) public_email,
           public_phone,null::text website,source_url,market,'deep_inventory' source_kind,
           case when verification_status in ('direct_evidence','government_record','credential_corroborated') then 80 else 70 end fit_score,
-          jsonb_build_object('candidate_id',candidate_id,'source_tier',source_tier,'verification_status',verification_status) source_data
+          jsonb_build_object('candidate_id',candidate_id,'source_tier',source_tier,
+            'verification_status',verification_status,'official_site',official_site,
+            'research_note',snippet,'last_verified_at',last_verified_at) source_data
         from market_inventory_candidates
         where side='vendor' and category_key=$1 and status='discovered' and closed_at is null
           and coalesce(public_email,'')<>''
@@ -4433,6 +4435,28 @@ def growth_verified_opener(row):
         return ("I saw on your site that American Crown handles janitorial cleaning "
           "for offices and common areas across Yavapai County.")
     data=json_dict(row["source_data"]) if "source_data" in row else {}
+    if (("source_kind" in row and clean(row["source_kind"])=="deep_inventory") and
+        data.get("source_tier")=="direct" and data.get("verification_status")=="direct_evidence"
+        and data.get("official_site") is True and source.startswith("https://")):
+        try:
+            verified=datetime.fromisoformat(clean(data.get("last_verified_at")).replace("Z","+00:00"))
+            if verified.tzinfo is None: verified=verified.replace(tzinfo=timezone.utc)
+            host=(urllib.parse.urlparse(source).hostname or "").lower().removeprefix("www.")
+            email_domain=clean(row["public_email"]).lower().rsplit("@",1)[-1]
+            note=clean(data.get("research_note")).lower()
+            nouns={
+              "commercial_cleaning":(("offices","offices"),("restaurants","restaurants"),
+                ("common areas","common areas"),("hotels","hotels"),("warehouses","warehouses")),
+              "pressure_washing":(("patios","patios"),("storefronts","storefronts"),
+                ("parking","parking areas"),("exterior","exterior surfaces"))
+            }
+            detail=next((label for needle,label in nouns.get(service,()) if needle in note),"")
+            if (timedelta(0)<=datetime.now(timezone.utc)-verified<=timedelta(days=30)
+                and (host==email_domain or email_domain.endswith("."+host))
+                and market.lower() in note and detail):
+                return f"Your site mentions {GROWTH_SERVICE_LABELS[service]} for {detail} around {market}."
+        except (TypeError,ValueError,OverflowError):
+            pass
     reviewed=data.get("reviewed_copy")
     if isinstance(reviewed,dict):
         fact=clean(reviewed.get("fact"));url=clean(reviewed.get("source_url"))
@@ -4507,7 +4531,7 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
       if allowance<=0:
         return {"ok":True,"enabled":True,"sent":0,"message":"Growth daily outreach limit reached."}
       rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,o.target_market,o.target_service_key,
-          g.business_name,g.public_email,g.market,g.service_key,g.target_id,g.experiment_cell,g.source_url,g.source_data
+          g.business_name,g.public_email,g.market,g.service_key,g.target_id,g.experiment_cell,g.source_url,g.source_kind,g.source_data
         from outreach o join growth_outreach_targets g on g.target_id=o.entity_id
         join growth_experiment_cells e on e.cell_key=g.experiment_cell
         where o.entity_type='growth_customer' and o.campaign='growth_sales' and o.wave=$2 and o.opt_out=false
