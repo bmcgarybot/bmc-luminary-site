@@ -1232,3 +1232,7 @@ create table if not exists warm_lead_reviews (
   evidence_note text not null check(length(evidence_note) between 10 and 1000),
   reviewed_at timestamptz not null default now()
 );
+
+-- Provider-chosen Growth territory. Existing samples remain their original single city.
+alter table growth_sample_requests add column if not exists selected_markets text[] not null default '{}';
+update growth_sample_requests set selected_markets=array[market] where cardinality(selected_markets)=0;

@@ -963,3 +963,9 @@ footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-s
 
 /* Honor completed Growth form state even when rows/buttons set display. */
 form[data-form-type="growth_snapshot"] > [hidden]{display:none!important}
+
+/* Explicit Growth service cities, separate from the one-city customer request forms. */
+.growth-territory{border:1px solid #d7dfe7;border-radius:12px;padding:18px;margin:20px 0;min-width:0}
+.growth-territory legend{font-weight:700;padding:0 6px}
+.growth-city-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px 16px}
+.growth-city-options .check{margin:0;align-items:flex-start}

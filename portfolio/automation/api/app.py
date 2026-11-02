@@ -2876,6 +2876,51 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
         picked.extend(x for x in qualified if growth_prospect_key(x) not in used)
     return picked[:limit]
 
+def growth_territory_markets(primary,selected=None):
+    """Main city plus explicitly chosen Arizona cities; legacy requests stay single-city."""
+    primary=clean(primary)
+    if selected is None:
+        return [primary] if primary else []
+    if not isinstance(selected,list) or len(selected)>len(DEFAULT_SOURCE_NATIVE_MARKETS):
+        raise HTTPException(400,"Choose service cities using the checkboxes")
+    if any(not isinstance(x,str) for x in selected):
+        raise HTTPException(400,"Each selected city must be a city name")
+    # Preserve existing one-city integrations, including isolated CI fixture cities.
+    if all(clean(x)==primary for x in selected):
+        return [primary] if primary else []
+    canonical={x.casefold():x for x in DEFAULT_SOURCE_NATIVE_MARKETS}
+    requested=[primary,*[clean(x) for x in selected]]
+    if any(x.casefold() not in canonical for x in requested):
+        raise HTTPException(400,"Select Arizona cities from the published list; Nevada is separate")
+    chosen={canonical[x.casefold()] for x in requested}
+    main=canonical[primary.casefold()]
+    return [main,*[x for x in DEFAULT_SOURCE_NATIVE_MARKETS if x in chosen and x!=main]]
+
+def growth_request_territory(row):
+    return growth_territory_markets(row.get("market"),row.get("selected_markets") or None)
+
+def growth_territory_label(row):
+    return ", ".join(growth_request_territory(row))
+
+async def growth_qualified_territory_candidates(conn,service_key,markets,ideal_customer="",exclusions="",limit=400,**kwargs):
+    if len(markets)==1:
+        return await growth_qualified_candidates(conn,service_key,markets[0],ideal_customer,exclusions,limit=limit,**kwargs)
+    pools=[]
+    for market in markets:
+        rows=await growth_qualified_candidates(conn,service_key,market,ideal_customer,exclusions,limit=max(250,limit*2),**kwargs)
+        # The single-city selector validates each source against its actual city.
+        pools.append([r for r in rows if clean(r.get("market"))==market])
+    chosen=[];seen=set()
+    for index in range(max((len(pool) for pool in pools),default=0)):
+        for pool in pools:
+            if index>=len(pool):continue
+            row=pool[index]
+            key=re.sub(r"[^a-z0-9]+","",clean(row.get("business_name")).lower())
+            if not key or key in seen:continue
+            seen.add(key);chosen.append(row)
+            if len(chosen)>=limit:return chosen
+    return chosen
+
 def growth_checkout_url(base_url,email,sample_id,service_key):
     if not base_url:
         return ""
@@ -2942,9 +2987,9 @@ async def growth_select_rotated_sample(conn,rows,recipient_key,service_key,marke
     """
     historical=await conn.fetch("""select delivery_ref, array_agg(distinct prospect_key) as keys
         from growth_prospect_exposures
-        where delivery_kind='free' and service_key=$1 and lower(market)=lower($2)
+        where delivery_kind='free' and service_key=$1 and lower(market)=any($2::text[])
           and status in ('reserved','delivered')
-        group by delivery_ref""",service_key,market)
+        group by delivery_ref""",service_key,sorted({clean(r.get("market")).lower() for r in rows}))
     groups=[set(x["keys"]) for x in historical]
     chosen=[]
     # Prefer underused opportunities, with deterministic recipient-specific ties.
@@ -2980,15 +3025,36 @@ def growth_sample_public_rows(rows):
     return out
 
 async def growth_sample_checkout(conn,email,sample_id,service_key):
+    # Recheck on every offer/replay/nurture, not only on the initial sample.
+    request=await conn.fetchrow("select * from growth_sample_requests where sample_id=$1",sample_id)
+    if not request or clean(request["email"]).lower()!=clean(email).lower() or request["provider_service_key"]!=service_key:
+        return ""
+    if request["status"] in ("cancelled","rejected","converted","fulfilled"):
+        return ""
+    territory=growth_request_territory(request)
+    saved=await conn.fetch("select * from growth_sample_prospects where sample_id=$1",sample_id)
+    if len(saved)!=5 or any(clean(x["market"]) not in territory for x in saved):
+        return ""
+    current=await conn.fetch("select * from market_inventory_candidates where candidate_id=any($1::uuid[])",[x["candidate_id"] for x in saved if x["candidate_id"]])
+    by_id={str(x["candidate_id"]):dict(x) for x in current}
+    if any(not growth_saved_sample_is_current(dict(x),by_id.get(str(x["candidate_id"])),service_key) for x in saved):
+        return ""
+    blocked=await conn.fetchval("""select count(*) from growth_sample_prospects p
+      where p.sample_id=$1 and exists(select 1 from growth_prospect_suppressions sup
+        where sup.lifted_at is null and sup.prospect_key in (
+          lower(p.market)||':'||regexp_replace(lower(p.business_name),'[^a-z0-9]','','g'),
+          'email:'||lower(coalesce(p.public_email,'')),
+          'phone:'||right(regexp_replace(coalesce(p.public_phone,''),'[^0-9]','','g'),10)))""",sample_id)
+    if blocked:return ""
+    others=await growth_qualified_territory_candidates(conn,service_key,territory,request["ideal_customer"],request["exclusions"],
+      limit=GROWTH_SAMPLE_MIN_RESERVE,exclude_ids={str(x["candidate_id"]) for x in saved},
+      exclude_names={clean(x["business_name"]).lower() for x in saved},recipient_key=email,delivery_kind="paid",
+      recipient_business_key=growth_recipient_business_key(request["business_name"]))
+    if len(others)+len(saved)<GROWTH_SAMPLE_MIN_RESERVE:
+        return ""
     base=await conn.fetchval("""select payment_link_url from products
       where product_key='growth_pack_starter' and active=true""")
     return growth_checkout_url(clean(base),email,sample_id,service_key)
-
-def growth_email_verification_token(verification_id,email_addr):
-    if not ADMIN_KEY:
-        return ""
-    payload=f"growth-email-verify|{verification_id}|{clean(email_addr).lower()}"
-    return hmac.new(ADMIN_KEY.encode("utf-8"),payload.encode("utf-8"),hashlib.sha256).hexdigest()
 
 async def handle_growth_verification_request(conn,p):
     """Email proof before any cold public form can disclose five prospect records."""
@@ -3012,6 +3078,8 @@ async def handle_growth_verification_request(conn,p):
         raise HTTPException(400,"Please confirm that you want to receive your sample")
     if not ADMIN_KEY:
         raise HTTPException(503,"Email verification is temporarily unavailable")
+    territory=growth_territory_markets(market,p.get("selected_markets"))
+    territory_label=", ".join(territory)
     sid=clean(p.get("submission_id")) or str(uuid.uuid4())
     generic={"ok":True,"status":"verify_email",
              "message":"Check your email for the verification link. Your five targets will be prepared after you confirm the address."}
@@ -3027,6 +3095,7 @@ async def handle_growth_verification_request(conn,p):
              "referrer","utm_source","utm_medium","utm_campaign","utm_content",
              "utm_term","business_phone","business_website")
     payload={key:clean(p.get(key)) for key in allowed if clean(p.get(key))}
+    payload["selected_markets"]=territory
     payload["submission_id"]=sid
     payload["source_target_id"]=""  # Only the signed one-click endpoint may claim a target.
     verification_id=uuid.uuid4()
@@ -3040,7 +3109,7 @@ async def handle_growth_verification_request(conn,p):
         "verify_id":str(verification_id),"verify_token":token})
     body=f"""Hi {contact},
 
-    Please confirm this email address to view the five commercial prospects you requested for {business} in {market}.
+    Please confirm this email address to view the five commercial prospects you requested for {business} in {territory_label}.
 
     {link}
 
@@ -3110,6 +3179,7 @@ async def handle_growth_snapshot(conn,p):
     if service_key not in GROWTH_SERVICE_LABELS:
         raise HTTPException(400,"This free commercial-opportunity snapshot is not active for that service yet")
     market=clean(p.get("market")); business=clean(p.get("business_name")); contact=clean(p.get("contact_name"))
+    territory=growth_territory_markets(market,p.get("selected_markets"))
     email_addr=clean(p.get("email")).lower(); consent=clean(p.get("consent")).lower()=="yes"
     if not all([market,business,contact,email_addr]) or not consent:
         raise HTTPException(400,"Business, name, email, market, and consent are required")
@@ -3123,6 +3193,8 @@ async def handle_growth_snapshot(conn,p):
     await growth_lock_exposure_allocator(conn)
     existing=await conn.fetchrow("select * from growth_sample_requests where submission_id=$1",submission_id)
     if existing:
+        if set(growth_request_territory(existing))!=set(territory):
+            raise HTTPException(409,"This sample already has an agreed territory. Contact BMC to change its scope; the saved five will not rotate.")
         payload=existing["sample_payload"]
         if isinstance(payload,str):
             try: payload=json.loads(payload)
@@ -3130,14 +3202,14 @@ async def handle_growth_snapshot(conn,p):
         payload=payload if isinstance(payload,list) else []
         checkout=await growth_sample_checkout(conn,email_addr,existing["sample_id"],service_key)
         return {"ok":True,"status":clean(existing["status"]),"sample_id":str(existing["sample_id"]),
-          "sample":payload,"checkout_url":checkout,"message":"Your commercial opportunity snapshot is already saved."}
+          "sample":payload,"checkout_url":checkout,"selected_markets":growth_request_territory(existing),"message":"Your commercial opportunity snapshot is already saved."}
 
     # A different submission/email must not unlock another free five for the
     # same named contractor. This is anti-abuse only, not account authentication.
     # Do not reveal prior contact/sample details to an unverified requester.
     prior_business_claim=await conn.fetchval("""select sample_id
       from growth_sample_requests
-      where lower(market)=lower($1) and provider_service_key=$2
+      where coalesce(nullif(selected_markets,'{}'::text[]),array[market]) && $1::text[] and provider_service_key=$2
         and (
           regexp_replace(lower(business_name),'[^a-z0-9]','','g')=$3
           or lower(email)=$4
@@ -3146,7 +3218,7 @@ async def handle_growth_snapshot(conn,p):
         )
         and status not in ('cancelled','rejected')
       order by created_at desc limit 1""",
-      market,service_key,re.sub(r"[^a-z0-9]+","",business.lower()),email_addr,
+      territory,service_key,re.sub(r"[^a-z0-9]+","",business.lower()),email_addr,
       [growth_normalized_contractor_name(business),
        growth_normalized_contractor_name(business)+"llc",
        growth_normalized_contractor_name(business)+"inc",
@@ -3159,13 +3231,13 @@ async def handle_growth_snapshot(conn,p):
     # Hold uncertain matches without exposing the existing customer's sample.
     if business_site_host or phone_key:
         possible_match=await conn.fetchval("""select sample_id from growth_sample_requests
-          where lower(market)=lower($1) and provider_service_key=$2
+          where coalesce(nullif(selected_markets,'{}'::text[]),array[market]) && $1::text[] and provider_service_key=$2
             and (
               ($3<>'' and business_site_host=$3)
               or ($4<>'' and right(regexp_replace(coalesce(business_phone,''),'[^0-9]','','g'),10)=$4)
             ) and status not in ('cancelled','rejected')
           order by created_at desc limit 1""",
-          market,service_key,business_site_host,phone_key)
+          territory,service_key,business_site_host,phone_key)
         if possible_match:
             return {"ok":True,"status":"verification_needed","sample":[],
               "checkout_url":"","message":"These contact details may belong to an existing business. We need to confirm business ownership before releasing another free sample."}
@@ -3181,12 +3253,12 @@ async def handle_growth_snapshot(conn,p):
     sample_id=await conn.fetchval("""insert into growth_sample_requests(
         submission_id,business_name,contact_name,email,provider_service_key,market,service_area,
         ideal_customer,minimum_job,exclusions,experiment_cell,source_target_id,status,source_page,attribution,
-        business_phone,business_site_host)
-      values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,'requested',$13,$14::jsonb,$15,$16)
+        business_phone,business_site_host,selected_markets)
+      values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,'requested',$13,$14::jsonb,$15,$16,$17::text[])
       returning sample_id""",
       submission_id,business,contact,email_addr,service_key,market,clean(p.get("service_area") or p.get("radius")),
       clean(p.get("ideal_customer")),clean(p.get("minimum_job")),clean(p.get("exclusions")),cell,target_id,
-      clean(p.get("page")),json.dumps(attribution),business_phone,business_site_host)
+      clean(p.get("page")),json.dumps(attribution),business_phone,business_site_host,territory)
     await conn.execute("""update growth_experiment_cells
       set samples_requested=samples_requested+1,engagements=engagements+1,updated_at=now()
       where cell_key=$1""",cell)
@@ -3195,7 +3267,7 @@ async def handle_growth_snapshot(conn,p):
         await conn.execute("""update outreach set status='sample_requested',replied_at=coalesce(replied_at,now()),reply_type='sample_requested'
           where entity_type='growth_customer' and entity_id=$1 and campaign='growth_sales'""",target_id)
 
-    rows=await growth_qualified_candidates(conn,service_key,market,clean(p.get("ideal_customer")),clean(p.get("exclusions")),
+    rows=await growth_qualified_territory_candidates(conn,service_key,territory,clean(p.get("ideal_customer")),clean(p.get("exclusions")),
       limit=GROWTH_SAMPLE_MIN_RESERVE,recipient_key=email_addr,delivery_kind="free",
       recipient_business_key=growth_recipient_business_key(business))
     if len(rows)<5:
@@ -3230,6 +3302,7 @@ async def handle_growth_snapshot(conn,p):
           r["fit_score"],r["grade"],r["fit_reason"],r["sales_angle"],r["public_email"],r["public_phone"],
           r["source_url"],r["source_domain"],r["verification_status"])
     public_rows=growth_sample_public_rows(sample)
+    territory_label=", ".join(territory)
     checkout=""
     if len(rows)>=GROWTH_SAMPLE_MIN_RESERVE:
         checkout=await growth_sample_checkout(conn,email_addr,sample_id,service_key)
@@ -3249,17 +3322,17 @@ async def handle_growth_snapshot(conn,p):
     else:
         flat.append("This market does not yet have the 125-prospect reserve BMC requires before selling a 100-prospect pack. We will not pad a paid pack with weaker rows.")
     flat.extend(["","Qualification guarantee: if a delivered prospect fails the published territory/activity/type/contact standard, BMC replaces it.","Reply no at any time to stop follow-up."])
-    body=f"Hi {contact},\n\nHere are five commercial targets for {business} in {market}.\n\n"+"\n".join(flat)+f"\n\nThis is a promotional email from BMC Service Network.\n\nBMC Service Network\nBMC Luminary Ventures LLC\n{BUSINESS_POSTAL_ADDRESS}"
+    body=f"Hi {contact},\n\nHere are five commercial targets for {business} in {territory_label}.\n\n"+"\n".join(flat)+f"\n\nThis is a promotional email from BMC Service Network.\n\nBMC Service Network\nBMC Luminary Ventures LLC\n{BUSINESS_POSTAL_ADDRESS}"
     html_body=workflow_email_html("Your 5 commercial targets",[
-      f"Here are five commercial targets for {business} in {market}.",
+      f"Here are five commercial targets for {business} in {territory_label}.",
       *[f"{i}. {x['business_name']} · {x['category']} · fit {x['fit_score']}/100\n{x['fit_reason']}\nContact: {x['contact_route']}" for i,x in enumerate(public_rows,1)],
       "If these fit the work you want, the full pack is 100 total qualified prospects for $499." if checkout else "BMC is not offering the 100-prospect pack in this exact market until the reserve inventory clears our quality gate.",
       "Qualification guarantee: wrong territory, inactive business, wrong property type, duplicate, or missing promised contact route gets replaced."
     ],"Get the full 100 for $499",checkout,greeting=f"Hi {contact},",marketing=True) if checkout else workflow_email_html("Your 5 commercial targets",[
-      f"Here are five commercial targets for {business} in {market}.",
+      f"Here are five commercial targets for {business} in {territory_label}.",
       *[f"{i}. {x['business_name']} · {x['category']} · fit {x['fit_score']}/100\n{x['fit_reason']}" for i,x in enumerate(public_rows,1)]
     ],greeting=f"Hi {contact},",marketing=True)
-    submitted=await send_mail(email_addr,f"Your 5 commercial targets in {market}",body,html_body)
+    submitted=await send_mail(email_addr,f"Your 5 commercial targets in {territory_label}",body,html_body)
     # Both response branches disclose the five prospects IN THE HTTP RESPONSE,
     # regardless of whether SMTP accepted the email. Never release or rotate
     # these five on an email failure: that would leak a second set on retry.
@@ -3279,7 +3352,7 @@ async def handle_growth_snapshot(conn,p):
           "Keep the five disclosed prospects reserved for this customer; retry emailing the saved sample only")
         await event(conn,"growth_sample",sample_id,"web_disclosed_email_failed",{"email":email_addr,"smtp_accepted":False})
         return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"sample":public_rows,
-          "checkout_url":checkout,"message":"Your five targets are ready on this page, but the email copy needs a delivery retry."}
+          "checkout_url":checkout,"selected_markets":territory,"message":"Your five targets are ready on this page, but the email copy needs a delivery retry."}
     await conn.execute("""update growth_sample_requests
       set status='delivered',sample_sent_at=now(),next_nurture_at=now()+interval '2 days',updated_at=now()
       where sample_id=$1""",sample_id)
@@ -3287,7 +3360,7 @@ async def handle_growth_snapshot(conn,p):
       {"email":email_addr,"service_key":service_key,"market":market,"qualified_pool":len(rows),
        "smtp_accepted":True,"inbox_delivery_verified":False})
     return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"sample":public_rows,
-      "checkout_url":checkout,"qualified_pool":len(rows),
+      "checkout_url":checkout,"selected_markets":territory,"qualified_pool":len(rows),
       "message":"Your five commercial targets are ready. We also emailed a copy so you can use them later."}
 
 @app.post("/api/growth/claim-free-five")
@@ -3310,8 +3383,9 @@ async def growth_claim_free_five(request:Request):
         if not growth_claim_valid(target_id,target["public_email"],token,owner_preview=preview):
             raise HTTPException(403,"This free-five link is invalid or expired.")
         if preview:
-            rows=await growth_qualified_candidates(
-              conn,target["service_key"],target["market"],limit=GROWTH_SAMPLE_MIN_RESERVE
+            territory=growth_territory_markets(target["market"],p.get("selected_markets"))
+            rows=await growth_qualified_territory_candidates(
+              conn,target["service_key"],territory,limit=GROWTH_SAMPLE_MIN_RESERVE
             )
             if len(rows)<5:
                 return {"ok":True,"status":"sample_pending","sample_id":"owner-preview",
@@ -3321,7 +3395,7 @@ async def growth_claim_free_five(request:Request):
             return {"ok":True,"status":"sample_ready","sample_id":"owner-preview",
               "sample":public_rows,
               "checkout_url":"#owner-preview-checkout" if len(rows)>=GROWTH_SAMPLE_MIN_RESERVE else "",
-              "qualified_pool":len(rows),"preview":True,
+              "qualified_pool":len(rows),"selected_markets":territory,"preview":True,
               "message":"Owner preview only — no customer sample, email, reply, or checkout was created."}
         submission_id="growth_claim_"+hashlib.sha256(target_id.encode("utf-8")).hexdigest()[:32]
         payload={
@@ -3526,6 +3600,7 @@ async def process_growth_nurture(x_bmc_admin_key:str|None=Header(default=None)):
           )
         order by next_nurture_at limit 25""")
       for row in rows:
+        territory_label=growth_territory_label(row)
         paid=await conn.fetchrow("""select order_id from orders where lower(customer_email)=lower($1)
           and product_key in ('growth_pack_starter','growth_pack_premium') and payment_status in ('paid','complete')
           and created_at>= $2 order by created_at desc limit 1""",row["email"],row["created_at"])
@@ -3538,10 +3613,10 @@ async def process_growth_nurture(x_bmc_admin_key:str|None=Header(default=None)):
             continue
         step=int(row["nurture_step"] or 0)+1
         if step==1:
-            subject=f"Want the other 95 commercial targets in {row['market']}?"
+            subject=f"Want the other 95 commercial targets in {territory_label}?"
             body=f"""Hi {row['contact_name']},
 
-You asked BMC for five commercial targets for {row['business_name']} in {row['market']}.
+You asked BMC for five commercial targets for {row['business_name']} in {territory_label}.
 
 If those are the kinds of accounts you want, the full $499 Growth Pack gives you 100 total qualified commercial prospects built to the same standard — not a raw contact dump.
 
@@ -3556,7 +3631,7 @@ BMC Luminary Ventures LLC
 
 Reply no if you do not want another follow-up."""
         else:
-            subject=f"Last note on the {row['market']} commercial prospect pack"
+            subject=f"Last note on the {territory_label} commercial prospect pack"
             body=f"""Hi {row['contact_name']},
 
 Last follow-up on the commercial targets BMC researched for {row['business_name']}.
@@ -3705,7 +3780,9 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
               continue
           sample_ids={str(x["candidate_id"]) for x in sample_rows if x["candidate_id"]}
           sample_names={clean(x["business_name"]).lower() for x in sample_rows}
-          candidates=await growth_qualified_candidates(conn,row["provider_service_key"],row["market"],row["ideal_customer"],row["exclusions"],
+          territory=growth_request_territory(row)
+          territory_label=", ".join(territory)
+          candidates=await growth_qualified_territory_candidates(conn,row["provider_service_key"],territory,row["ideal_customer"],row["exclusions"],
             limit=GROWTH_SAMPLE_MIN_RESERVE+100,exclude_ids=sample_ids,exclude_names=prior_names|sample_names,
             recipient_key=row["customer_email"],delivery_kind="paid",
             recipient_business_key=growth_recipient_business_key(row["business_name"]))
@@ -3727,7 +3804,7 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
           # Four deterministic QA gates before customer delivery.
           qa_count=len(final)==100
           qa_scores=all(int(x["fit_score"])>=65 for x in final)
-          qa_market=all(clean(x["market"])==clean(row["market"]) for x in final)
+          qa_market=all(clean(x["market"]) in territory for x in final)
           keys=[re.sub(r"[^a-z0-9]+","",clean(x["business_name"]).lower()) for x in final]
           qa_unique=len(keys)==len(set(keys))
           qa_sources=all(clean(x.get("source_url")) and (clean(x.get("public_email")) or clean(x.get("public_phone")) or clean(x.get("source_url"))) for x in final)
@@ -3752,12 +3829,12 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
                 int(x["fit_score"]),x["grade"],x["fit_reason"],x["sales_angle"],x.get("public_email"),x.get("public_phone"),
                 x["source_url"],x.get("source_domain"),x.get("verification_status"))
           attachment=growth_csv_bytes(final)
-          subject=f"Your BMC Growth Pack — 100 commercial prospects in {row['market']}"
+          subject=f"Your BMC Growth Pack — 100 commercial prospects in {territory_label}"
           body=f"""Hi {row['contact_name']},
 
 Your BMC Growth Pack is attached.
 
-It contains 100 qualified commercial prospects in {row['market']} for {GROWTH_SERVICE_LABELS.get(row['provider_service_key'],row['provider_service_key'])}. The five free targets you already saw are included in the 100.
+It contains 100 qualified commercial prospects in {territory_label} for {GROWTH_SERVICE_LABELS.get(row['provider_service_key'],row['provider_service_key'])}. The five free targets you already saw are included in the 100.
 
 Every row passed BMC's territory, fit, contact/source, activity, score, and duplicate checks before delivery.
 

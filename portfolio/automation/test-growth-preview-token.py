@@ -24,7 +24,7 @@ class Request:
     async def json(self):return self.p
 class Tests(unittest.IsolatedAsyncioTestCase):
     def setUp(self):
-        names={"clean","growth_claim_token","growth_claim_valid","growth_claim_free_five"}
+        names={"clean","growth_claim_token","growth_claim_valid","growth_claim_free_five","growth_territory_markets","growth_qualified_territory_candidates"}
         nodes=[n for n in source.body if isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef)) and n.name in names]
         for node in nodes:
             if isinstance(node,ast.AsyncFunctionDef):node.decorator_list=[]
