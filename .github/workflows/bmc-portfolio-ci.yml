@@ -54,6 +54,7 @@ jobs:
           python3 portfolio/automation/test-relay-result-index.py
           python3 -m py_compile portfolio/automation/operator-monitor.py
           python3 portfolio/automation/test-operator-monitor.py
+          python3 portfolio/automation/test-monitor-reload.py
           python3 portfolio/automation/test-operator-dashboard.py
           python3 portfolio/automation/test-warm-leads.py
           python3 portfolio/automation/test-growth-territory.py

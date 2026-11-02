@@ -141,7 +141,11 @@ bash ./runtime-doctor.sh "$ENV_FILE"
 # No sudo escalation from the relay. Install via an already persistent user
 # manager when available; report the access boundary explicitly otherwise.
 if systemctl is-active --quiet bmc-operator-monitor.service; then
-  echo "Existing system operator monitor service is active."
+  if python3 ./reload-operator-monitor.py; then
+    echo "Existing private operator monitor loaded the deployed dashboard code."
+  else
+    echo "MONITOR RELOAD INCOMPLETE: backend is healthy; existing monitor needs administrator restart."
+  fi
 elif bash ./install-operator-monitor.sh --user; then
   echo "Private operator monitor service installed."
 else

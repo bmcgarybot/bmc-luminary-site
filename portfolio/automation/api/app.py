@@ -3056,6 +3056,14 @@ async def growth_sample_checkout(conn,email,sample_id,service_key):
       where product_key='growth_pack_starter' and active=true""")
     return growth_checkout_url(clean(base),email,sample_id,service_key)
 
+
+
+def growth_email_verification_token(verification_id,email_addr):
+    if not ADMIN_KEY:
+        return ""
+    payload=f"growth-email-verify|{verification_id}|{clean(email_addr).lower()}"
+    return hmac.new(ADMIN_KEY.encode("utf-8"),payload.encode("utf-8"),hashlib.sha256).hexdigest()
+
 async def handle_growth_verification_request(conn,p):
     """Email proof before any cold public form can disclose five prospect records."""
     # The hidden website field is deliberately not the business website field.
