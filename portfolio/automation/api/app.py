@@ -342,7 +342,7 @@ INVENTORY_REGIONAL_MARKETS={"Prescott","Prescott Valley","Flagstaff","Kingman","
 INVENTORY_QUERY_STRATEGY_VERSION=7
 
 INVENTORY_BLOCKED_DOMAINS={
-    "loc8nearme.com","facebook.com","nextdoor.com","linkedin.com","yelp.com","yellowpages.com","angi.com",
+    "loc8nearme.com","gematos.id","facebook.com","nextdoor.com","linkedin.com","yelp.com","yellowpages.com","angi.com",
     "thumbtack.com","bbb.org","mapquest.com","tripadvisor.com","doordash.com","grubhub.com",
     "superpages.com","allbiz.com","restaurantji.com","manta.com","chamberofcommerce.com",
     "birdeye.com","foursquare.com","opentable.com","restaurantguru.com",
@@ -2600,10 +2600,22 @@ def growth_candidate_evidence_valid(row,market):
         return False
     if any(host==d or host.endswith("."+d) for d in GROWTH_SOURCE_BLOCKLIST):
         return False
-    name=clean(row.get("business_name"))
-    if re.search(r"\b(?:directory|ratings,? reviews|with reviews|hours and|top \d+|best \d+)\b",name,re.I):
+    evidence=json_dict(row.get("evidence"))
+    curated=(evidence.get("researched_by")=="assistant_manual_census"
+      and isinstance(evidence.get("artifact_files"),list) and bool(evidence["artifact_files"]))
+    government=(clean(row.get("source_tier")) in ("government","government_registry")
+      and clean(row.get("verification_status"))=="government_record"
+      and (host.endswith(".gov") or host in ("services1.arcgis.com","services.arcgis.com"))
+      and bool(evidence.get("source_key") or evidence.get("official_registry")))
+    # Search-result titles and an auto-assigned official_site flag do not
+    # establish an individual business or its physical territory. Keep those
+    # rows for research; they need a reviewed import or structured source.
+    if not (curated or government):
         return False
-    if re.search(r"\b(?:grocery stores|supermarkets|restaurants|hotels|dentists|contractors|companies|providers)\s+(?:in|near)\b",name,re.I):
+    name=clean(row.get("business_name"))
+    if re.search(r"\b(?:directory|ratings,? reviews|with reviews|hours and|top \d+|best \d+|top rated)\b",name,re.I):
+        return False
+    if re.search(r"\b(?:grocery stores?|supermarkets?|restaurants?|hotels?|dentists?|contractors?|companies|providers)\s+(?:in|near)\b",name,re.I):
         return False
     if any(part in {"directory","directories","search","categories"} for part in parsed.path.lower().split("/")):
         return False
@@ -2617,6 +2629,9 @@ def growth_candidate_evidence_valid(row,market):
     physical=re.search(r",\s*("+city_pattern+r")(?:,)?\s+(?:AZ|Arizona)\s+\d{5}\b",note,re.I)
     if physical:
         return physical.group(1).casefold()==expected_place
+    near_market=re.escape(expected_place).replace(r"\ ",r"[ -]+")
+    if re.search(r"\bnear[ -]+"+near_market+r"\b",place(name)+" "+parsed.path.lower()):
+        return False
     # 'Near Sedona' and 'serving Sedona' do not move a Flagstaff property.
     location_title=re.split(r"\b(?:near|serving|service areas?|areas? served)\b",place(name),maxsplit=1,flags=re.I)[0]
     named_cities={m.group(0).casefold() for m in re.finditer(r"(?<![a-z])(?:"+city_pattern+r")(?![a-z])",location_title,re.I)}
@@ -2796,6 +2811,12 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
           and status='discovered' and closed_at is null
           and coalesce(business_name,'')<>''
           and coalesce(source_url,'')<>''
+          and (
+            (evidence->>'researched_by'='assistant_manual_census'
+              and jsonb_typeof(evidence->'artifact_files')='array'
+              and evidence->'artifact_files'<>'[]'::jsonb)
+            or (source_tier in ('government','government_registry') and verification_status='government_record')
+          )
           and (
             coalesce(public_email,'')<>'' or coalesce(public_phone,'')<>'' or official_site=true
           )
