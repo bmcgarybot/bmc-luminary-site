@@ -23,6 +23,15 @@ async def main():
                 'ci-territory-'||lower($1)||'-'||g||'.example.com','92855'||lpad(g::text,5,'0'),true,'direct','direct_evidence',now(),now(),'discovered',
                 '{"artifact_files":["synthetic-ci-territory.json"],"researched_by":"assistant_manual_census"}'::jsonb
               from generate_series(1,80) g""",city)
+        order_count=await conn.fetchval('select count(*) from orders')
+        inquiry=dict(submission_id='ci-territory-scope',business_name='CI Territory Scope',contact_name='Synthetic owner',
+          email='ci-territory-scope@example.invalid',market='Flagstaff',selected_markets=['Flagstaff','Cottonwood'],
+          consent='yes',scope='Request a quote for a smaller commercial prospect pack.',requested_size='20')
+        async with conn.transaction():quote=await api.handle_growth_scope_request(conn,inquiry)
+        async with conn.transaction():repeat_quote=await api.handle_growth_scope_request(conn,inquiry)
+        assert quote['status']=='scope_review' and repeat_quote['status']=='scope_review'
+        assert await conn.fetchval('select count(*) from orders')==order_count
+        assert await conn.fetchval("select count(*) from tasks where lead_id=(select lead_id from leads where submission_id='ci-territory-scope')")==1
         base=dict(form_type='growth_snapshot',service_key='pressure_washing',contact_name='Synthetic owner',market='Flagstaff',consent='yes')
         single=dict(base,submission_id='ci-territory-single',business_name='CI Territory Single',email='ci-territory-single@example.invalid')
         async with conn.transaction():a=await api.handle_growth_snapshot(conn,single)
@@ -69,6 +78,8 @@ async def main():
     finally:
         await conn.execute("delete from tasks where order_id in(select order_id from orders where customer_email like 'ci-territory-%@example.invalid')")
         await conn.execute("delete from orders where customer_email like 'ci-territory-%@example.invalid'")
+        await conn.execute("delete from tasks where lead_id in(select lead_id from leads where submission_id like 'ci-territory-%')")
+        await conn.execute("delete from leads where submission_id like 'ci-territory-%'")
         await conn.execute("delete from growth_prospect_exposures where recipient_key like 'ci-territory-%@example.invalid'")
         await conn.execute("delete from growth_sample_requests where submission_id like 'ci-territory-%'")
         await conn.execute("delete from market_inventory_candidates where category_key='ci_territory'")

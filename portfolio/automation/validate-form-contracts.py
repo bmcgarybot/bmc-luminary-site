@@ -13,6 +13,7 @@ REQUIRED={
   "vendor_partner":{"business_name","contact_name","email","market","services","capacity","pilot_terms"},
   "vendor_pilot_activation":{"contact_name","email","market","territory","services","capacity","pilot_terms"},
   "growth_snapshot":{"business_name","contact_name","email","market","consent"},
+  "growth_scope_request":{"business_name","contact_name","email","market","scope","consent"},
 }
 
 SPECIAL={
@@ -23,6 +24,7 @@ SPECIAL={
   "vendor_response":{"lead_id","vendor_id","token","response"},
   "job_update":{"lead_id","vendor_id","token","job_status"},
   "growth_snapshot":{"business_name","contact_name","email","market","service_key","consent"},
+  "growth_scope_request":{"business_name","contact_name","email","market","scope","consent"},
 }
 
 def main()->int:

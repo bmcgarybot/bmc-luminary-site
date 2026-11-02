@@ -127,9 +127,10 @@
     const data={};
     new FormData(form).forEach(function(v,k){if(k!=="website")data[k]=String(v).trim();});
     data.form_type=form.dataset.formType||"general";
-    if(data.form_type==="growth_snapshot" && form.querySelector('[data-growth-territory]')){
+    if(["growth_snapshot","growth_scope_request"].includes(data.form_type) && form.querySelector('[data-growth-territory]')){
       data.selected_markets=[...new Set([data.market,...new FormData(form).getAll("additional_markets").map(String)].filter(Boolean))];
       delete data.additional_markets;
+      data.website=String(form.elements.website?.value||"").trim();
     }
     data.customer_path=form.dataset.customerPath||data.customer_path||(
       document.body.classList.contains("service-page")?"fix_or_handle_job":""
@@ -186,6 +187,9 @@
           "If a paid prospect later fails the published qualification standard, BMC replaces it."
         ];
       }
+    }else if(formType==="growth_scope_request"){
+      title="We received your territory request.";
+      steps=["BMC will check the cities, prospect types and quantity you requested.","We will confirm the available scope and price before any payment.","This request does not purchase a pack or start a subscription."];
     }else if(formType==="vendor_response"){
       if(response.status==="accepted"){
         title="Job accepted.";
@@ -323,7 +327,7 @@
       }else if(!response.preview){
         const options=document.createElement("p");
         const link=document.createElement("a");link.textContent="Ask about a smaller territory pack";
-        link.href="mailto:"+CONTACT_EMAIL+"?subject="+encodeURIComponent("Smaller prospect pack")+"&body="+encodeURIComponent("My selected cities: "+(response.selected_markets||[]).join(", ")+". Please confirm the available quantity, price and delivery scope before payment.");
+        link.href="/growth-packs/smaller-territory/?cities="+encodeURIComponent((response.selected_markets||[]).join("|"));
         options.appendChild(link);card.appendChild(options);
       }
     }

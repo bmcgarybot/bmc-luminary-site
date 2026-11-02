@@ -8,7 +8,7 @@ The 21 market labels remain their actual researched geography. Cordes Lakes is n
 
 - Five free researched prospects when the chosen cities can support five qualified, fairly rotated records.
 - A 100-total-prospect pack for the existing $499 price only when the chosen territory clears the unique inventory reserve and saved-five rechecks. The original five are included in the 100.
-- A visible “Ask about a smaller territory pack” request path when the 100-pack isn't offered. Confirm available quantity, price, scope and delivery terms before payment.
+- A visible “Ask about a smaller territory pack” on-site request form when the 100-pack isn't offered. It saves one review task per submission and creates no order or payment entitlement. Confirm available quantity, price, scope and delivery terms before payment.
 - If even five aren't available, save the request for research review. Do not manufacture a sample or claim an unavailable provider/customer.
 
 No smaller paid product, quantity or checkout price is activated by this change. A 20- or 50-prospect offer may be appropriate after the actual territory research, buyer exclusions, reuse rules and delivery cost are known. Product size is not the minimum business count a town must have to deserve service.

@@ -3844,12 +3844,13 @@ Please tell us what happens as you work the list — interested, quote, won, los
 
 BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}"""
+          attachment_name="BMC-Growth-Pack-"+("selected-cities" if len(territory)>1 else row["market"].replace(" ","-"))+".csv"
           ok=await send_mail_once("growth-order:"+str(row["paid_order_id"]),row["customer_email"],subject,body,workflow_email_html(subject,[
             "Your 100-prospect Growth Pack is attached as a CSV you can open in Excel, Google Sheets, or Numbers.",
             "The five free targets are included in the 100.",
             "Every row passed BMC's territory, fit, contact/source, activity, score, and duplicate checks.",
             "Reply with bad-fit rows and the reason. Qualifying mistakes are replaced."
-          ]),[(f"BMC-Growth-Pack-{row['market'].replace(' ','-')}.csv",attachment,"text","csv")])
+          ]),[(attachment_name,attachment,"text","csv")])
           if not ok:
               await conn.execute("update tasks set status='exception',updated_at=now() where task_id=$1",row["task_id"])
               await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
@@ -3863,10 +3864,37 @@ BMC Luminary Ventures LLC
           await conn.execute("update tasks set status='completed',updated_at=now() where task_id=$1",row["task_id"])
           await conn.execute("update orders set status='fulfilled',updated_at=now() where order_id=$1",row["paid_order_id"])
           await conn.execute("update growth_sample_requests set status='fulfilled',updated_at=now() where sample_id=$1",row["growth_sample_id"])
-          await event(conn,"order",row["paid_order_id"],"growth_pack_fulfilled",{"prospects":100,"market":row["market"],"qa":{"count":qa_count,"score":qa_scores,"market":qa_market,"unique":qa_unique,"source":qa_sources}})
+          await event(conn,"order",row["paid_order_id"],"growth_pack_fulfilled",{"prospects":100,"market":row["market"],"selected_markets":territory,"qa":{"count":qa_count,"score":qa_scores,"market":qa_market,"unique":qa_unique,"source":qa_sources}})
           fulfilled+=1
     return {"ok":True,"enabled":True,"fulfilled":fulfilled,"exceptions":exceptions}
 
+
+async def handle_growth_scope_request(conn,p):
+    """A free scoped-research inquiry, never an order or paid-delivery entitlement."""
+    if clean(p.get("website")):
+        return {"ok":True,"status":"scope_review","message":"If the request is valid, BMC will review the scope."}
+    market=clean(p.get("market"));business=clean(p.get("business_name"));contact=clean(p.get("contact_name"))
+    email_addr=clean(p.get("email")).lower();scope=clean(p.get("scope"))
+    if not all([market,business,contact,scope]) or clean(p.get("consent")).lower()!="yes":
+        raise HTTPException(400,"Business, contact, cities, research details and consent are required")
+    if not re.fullmatch(r"[^ @]+@[^ @]+[.][^ @]+",email_addr):raise HTTPException(400,"Enter a valid business email")
+    if max(len(business),len(contact),len(market))>200 or len(scope)>5000:raise HTTPException(400,"Please shorten the request")
+    territory=growth_territory_markets(market,p.get("selected_markets"))
+    size=clean(p.get("requested_size"))
+    if size not in ("","unsure","20","50","100"):raise HTTPException(400,"Choose a listed size to discuss")
+    sid=clean(p.get("submission_id")) or str(uuid.uuid4())
+    existing=await conn.fetchval("select lead_id from leads where submission_id=$1",sid)
+    if existing:return {"ok":True,"status":"scope_review","message":"Your territory request is already saved. No payment was taken."}
+    lid=await conn.fetchval("""insert into leads(submission_id,form_type,market,service_key,customer_path,customer_name,business_name,email,scope,consent,status,raw_payload)
+      values($1,'growth_scope_request',$2,'growth_pack','growth_scope_quote',$3,$4,$5,$6,true,'scope_review',$7::jsonb) returning lead_id""",
+      sid,market,contact,business,email_addr,scope,json.dumps({**p,"selected_markets":territory,"requested_size":size}))
+    await conn.execute("""insert into tasks(lead_id,service_key,task_type,status,priority,owner,summary,payload)
+      values($1,'growth_pack','quote_growth_scope','open','normal','bmc_operator',$2,$3::jsonb)""",lid,
+      "Review prospect-research scope for "+business+" in "+", ".join(territory),
+      json.dumps({"selected_markets":territory,"requested_size":size,"payment_required_now":False}))
+    await event(conn,"lead",lid,"growth_scope_requested",{"selected_markets":territory,"requested_size":size})
+    return {"ok":True,"status":"scope_review","selected_markets":territory,
+      "message":"BMC will check your requested territory and confirm the available quantity, price and delivery scope before payment. This request does not buy a pack."}
 
 @app.post("/api/intake")
 async def intake(request:Request):
@@ -3880,6 +3908,7 @@ async def intake(request:Request):
             if ft=="vendor_partner": return await handle_vendor_application(conn,p)
             if ft=="facility_maintenance": return await handle_facility_lead(conn,p)
             if ft=="growth_snapshot": return await handle_growth_verification_request(conn,p)
+            if ft=="growth_scope_request": return await handle_growth_scope_request(conn,p)
             return await handle_lead(conn,p)
 
 @app.post("/api/process-expired")
