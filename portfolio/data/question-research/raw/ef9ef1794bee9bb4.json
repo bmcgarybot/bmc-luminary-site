@@ -1,0 +1,234 @@
+{
+  "retrieved_at": "2026-11-02T03:26:08.042576+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "mobile tire service",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+    "data": [
+      {
+        "string": "mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are mobile tire shops profitable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are mobile tire installers good",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is mobile tire service profitable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are mobile home tires legal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is mobile tire service profitable reddit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can tesla mobile service do tire rotation",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can a mobile.tire service do an alignment",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can tesla mobile service replace a tire",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can tesla mobile service patch tire",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can rivian mobile service do tire rotation",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does mobile tire repair cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do mobile tire services cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does les schwab do mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does tesla do mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does discount tire do mobile service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what do i need to start a mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do you tip a mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does ford mobile service do tire rotation",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does mobile tire service cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who does mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does tesla mobile service do tire rotation",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does aaa have mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does tesla mobile service charge for tire rotation",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does tesla have mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does walmart have mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does costco have mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does discount tire have a mobile service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does tire rack have mobile service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to start a mobile tire service business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to start mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is tesla mobile service tire rotation",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is tesla mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is there a mobile tire service near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is there a mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is tesla mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is caa mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is a mobile tire shop profitable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does mobile tire mean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is mobile tire service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does service tire mobility mean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who does mobile tire repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will mobile mechanic",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does a mobile tire service cost",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 45,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    }
+  }
+}

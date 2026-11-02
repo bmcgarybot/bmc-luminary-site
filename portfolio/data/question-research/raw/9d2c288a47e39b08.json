@@ -1,0 +1,166 @@
+{
+  "retrieved_at": "2026-11-02T03:29:55.066695+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "water hauling",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+    "data": [
+      {
+        "string": "water hauling",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is water hauling profitable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are water trucks profitable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can you haul water heater laying down",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is hauled water expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do water trucks have baffles",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do water trucks have pumps",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does water hauling cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how does water hauling work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does hauling water mean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to haul water",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have water will travel",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does it cost to have water hauled in",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have water will travel photos",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is water hauling",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to start a water hauling business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how does hauled water work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how do you haul water",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is water hauling",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is a water hauler",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where do water haulers get their water",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to haul water from",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who owns patrik's water hauling",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is hauled water",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who hauls water in my area",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who hauls water near me prices",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who hauls water",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is hauling water",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 28,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    }
+  }
+}

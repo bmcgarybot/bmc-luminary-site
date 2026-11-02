@@ -107,7 +107,7 @@ class Monitor:
             result = console.assess(candidate)
             sanitized = {key: candidate.get(key) for key in
                          ("observed_at", "runtime_healthy", "scheduler_healthy", "api_healthy")}
-            for key in ("deployed_sha", "owner_launch_hold_active", "outreach_switches", "growth", "resources"):
+            for key in ("deployed_sha", "owner_launch_hold_active", "outreach_switches", "growth", "active_jobs", "resources"):
                 sanitized[key] = result[key]
         except Exception:
             with self.lock:

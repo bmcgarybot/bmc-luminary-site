@@ -1,0 +1,238 @@
+{
+  "retrieved_at": "2026-11-02T03:29:46.134718+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "land grading",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+    "data": [
+      {
+        "string": "land grading",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is land grading expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does grading a land mean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can you grade land yourself",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can i grade my own land",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is land grading in construction",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does grading the land mean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to do land grading",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what effect do clearing and grading have on the land",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is land grading",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do landscapers do grading",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do landscaping companies do grading",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does land grading cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does land grading mean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how does land grading work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who does land grading",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does land clearing and grading cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does grading include tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is grading land",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to learn land grading",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to start a land grading business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to get.into grading land",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how is land grading done",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is land grading depreciable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is land grading services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is land grading mean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is land grading in landscaping",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is land grading called",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the proper grading for land around the foundation",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is grading in land development",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should land grant be capitalized",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i get land survey",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does grading land mean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is land leveling and grading",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the difference between grading of land and excavation",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is clearing and grading land",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the average price for land grading",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to grade land",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when developers grade land they have to",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who grades land",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is land grading and drainage",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how is agricultural land graded",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who creates a grading plan",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who makes grading plans",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is land grading important",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is land grading so expensive",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 46,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    }
+  }
+}

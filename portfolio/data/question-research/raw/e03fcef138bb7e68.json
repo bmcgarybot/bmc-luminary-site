@@ -1,0 +1,502 @@
+{
+  "retrieved_at": "2026-11-02T03:25:28.446937+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "HVAC repair",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 110 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+    "data": [
+      {
+        "string": "hvac repair",
+        "volume": 74000,
+        "trend": -18,
+        "cpc": 22.65,
+        "cmp": 0.15,
+        "top_of_page_bid_low": 0.3,
+        "top_of_page_bid_high": 3.01,
+        "top_of_page_bid": "$0.30 - $3.01",
+        "metrics_status": "included"
+      },
+      {
+        "string": "are hvac repairs tax deductible",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are hvac repairs expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much are hvac repairs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are you supposed to tip hvac repairman",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are tenants responsible for hvac repairs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are the most common hvac repairs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does it cost to repair hvac",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is hvac repair so expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much to repair hvac system",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are hvac service contracts worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can hvac repairs be capitalized",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does an hvac repair cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does it cost to repair an hvac system",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does it cost to repair an hvac leak",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does an average hvac repair cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can a hvac compressor be repaired",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can you write off hvac repairs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can hvac coils be repaired",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can hvac be repaired",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to repair hvac system",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did hvac",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does hvac do repairs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does hvac replace furnace",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do hvac companies rip you off",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do hvac repair refrigerators",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do hvac repairman make",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do hvac repairs cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does home depot do hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do hvac repair techs make",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long do hvac repairs take",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does costco do hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does lowes do hvac repairs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do hvac repair make",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do you tip hvac repairman",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does hvac repair water heater",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does hvac repair refrigerators",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does hvac repair cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long does hvac repair take",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does hvac repair mean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does hvac repair make",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does hvac repairman make",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does hvac repair typically cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does homeowners insurance cover hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how hard is hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "had a repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have hvac",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much to tip hvac repairman",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to repair hvac ductwork",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to repair a hole in hvac duct",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to get certified for hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to repair hvac flex duct",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to learn hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is hvac repair covered by homeowners insurance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is hvac repair a capital improvement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is hvac repair tax deductible",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is hvac repair expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is hvac repair cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is auto hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the hourly rate for hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is hvac ac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should hvac repairs be capitalized",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should hvac repair cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you tip hvac repairman",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i repair or replace my hvac",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i tip hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i repair or replace my air conditioner",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is hvac maintenance worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should hvac be serviced",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "was hvac",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "was hvac system",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is average costs to repair hvac ducting",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is hvac system repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the average cost of hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does hvac repair cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is a hvac repair license",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to call hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to repair vs replace hvac",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when replace hvac",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when hvac",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to replace hvac system",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to replace hvac unit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where hvac",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to repair ac",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is hvac in my house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which hvac system should i buy",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which hvac is the best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which hvac system is the best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which hvac system is the most reliable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who repairs hvac",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who to call for hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who services hvac",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who fixes hvac systems",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who repair air conditioner",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who services hvac systems",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who fixes hvac",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why hvac maintenance is important",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why hvac reddit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why hvac",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will homeowners insurance cover hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will home insurance cover hvac repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will hvac be replaced",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will hvac get replaced by",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will hvac",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will hvac be replaced by ai",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why are hvac repairs so expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would i like hvac",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 110,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 110 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    },
+    "display_note": "When displaying these results in a table, include a \"Top of Page Bid\" column using the top_of_page_bid value. Top of Page Bid is a different metric from CPC (cpc is Bing-only average cost-per-click)."
+  }
+}

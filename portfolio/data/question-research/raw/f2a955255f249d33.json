@@ -1,0 +1,746 @@
+{
+  "retrieved_at": "2026-11-02T03:24:00.310865+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "electrician",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 171 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+    "data": [
+      {
+        "string": "electrician",
+        "volume": 368000,
+        "trend": 0,
+        "cpc": 18.04,
+        "cmp": 0.27,
+        "top_of_page_bid_low": 5.09,
+        "top_of_page_bid_high": 47.61,
+        "top_of_page_bid": "$5.09 - $47.61",
+        "metrics_status": "included"
+      },
+      {
+        "string": "are electricians in demand",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are electricians blue collar",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are electricians gay",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are electricians in high demand",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are electrician jobs in high demand",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are electrician jobs safe from ai",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are electricians the highest paid trade",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are electricians allowed to smoke weed",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are electricians happy with their job",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are electricians expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can electricians wear steel toe boots",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can electricians make 200k a year",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can electricians work in the rain",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can i become an electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can electricians make 100k a year",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can electricians smoke weed off duty",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did electricians",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did electricians use ferrets",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when did electricians become a thing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what did electrician do",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when did electrician become a trade",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when did electrician become a job",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when did electricians start",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does electrician use",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do electricians make good money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do electricians make a lot of money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do electricians get drug tested for weed",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do electricians or plumbers make more money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do electricians or hvac make more money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do electricians use a lot of math",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do electricians make more than plumbers",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do electricians work in the rain",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do electricians wear steel toe boots",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does electrician require a lot of math",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does electrician require math",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does electricians make good money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does electricians or hvac make more money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does electrician apprentice get paid",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does electrician simulator teach you",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does electrician school drug test",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does electricians use math",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does electrician license expire",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does electrician need math",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why had the electrician done nothing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "had the electrician not come in time",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is being an electrician dangerous",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have electricians died",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does the army have electricians",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what colleges have electrician programs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does taskrabbit have electricians",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does lowes have electricians",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does the military have electricians",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does the navy have electricians",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do you have electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how electricians roll up extension cords",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how electrician make money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how electricians brush their teeth",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how electricians use electrical insulators in their work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how electrician charge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how electrician help us",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how electrician apprenticeship",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how electrician work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how electrician make",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do electricians make",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is electrician a blue collar job",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is electrician a good career",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is electrician blue collar",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is electrician a dangerous job",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is electrician hard on the body",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is electrician a physically demanding job",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is electrician school hard",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is electrician hard",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is electrician a good job",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is electrician a trade",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should electricians wear steel toe boots",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should electricians wear watches",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should electricians be licensed and bonded",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should electricians wear gloves",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should electricians wear wedding rings",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should electricians clean up after themselves",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should electrician provide certificate",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should electricians work alone",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should electricians wear polyester",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should electrician be capitalized",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what do you need as an electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the average salary as an electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what to charge as an electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to train as an electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "was tesla an electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who was the electrician in the backrooms",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who was the fat electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who was the first electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what electricians make the most money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what electrician jobs pay the most",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what electricians do",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what electricians get paid the most",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what electricians install",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what electricians charge per hour",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what electricians install crossword clue",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what electrician jobs make the most money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what electricians make 100k a year",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when electrician day",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to call an electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when do electricians get paid",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when do you need an electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when is the electrician test",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to hire an electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when is master electrician exam",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when do you become an electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to pay electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when is the general electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where electrician work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is the fat electrician from",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to become an electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to find an electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to get an electrician apprenticeship",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to get electrician license",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to find electrician near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where are electricians in demand",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to become an electrician apprentice",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to train to be an electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which electrician makes the most money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which electrician job pays the most",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which electrician apprenticeship is best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which electrician certification is best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which electrician course is best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which electrician is the best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which colour helmet for electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which union is for electricians",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which course for electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is the fat electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is the fat electrician on youtube",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is an auto electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is a journeyman electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is the best electrician near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who much do electricians make",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is an industrial electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is john maine electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is a good electrician near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is a master electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who employs electricians",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why electricians never ignore flickering lights",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why electricians love data centers",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why electrician is the best trade",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why electricians are so expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why electricians wear rubber gloves",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why electricians use circuit diagrams",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why electrician is a good career",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why electrician jobs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why electrician apprenticeship",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will electricians be replaced by ai",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will electricians be needed in the future",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will electricians ever be replaced by ai",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will electricians be taken over by ai",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will electricians be in demand in the future",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will electricians make more money in the future",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will electricians be replaced by robots",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will electricians be the next millionaires",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will electricians work in the rain",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will electrician pay go up",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would electricians be exempt from conscription",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much would electrician charge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would an electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what would electrician fall under",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much would electricians make",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much would electrician cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what industry would electrician be",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where would electricians work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long would it take to become an electrician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much would an apprentice electrician make",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 171,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 171 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    },
+    "display_note": "When displaying these results in a table, include a \"Top of Page Bid\" column using the top_of_page_bid value. Top of Page Bid is a different metric from CPC (cpc is Bing-only average cost-per-click)."
+  }
+}

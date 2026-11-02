@@ -1,0 +1,162 @@
+{
+  "retrieved_at": "2026-11-02T03:24:50.283796+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "commercial drain cleaning",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+    "data": [
+      {
+        "string": "commercial drain cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how often should commercial drains be cleaned",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are drain cleaners plumbers",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can i use commercial drano at home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to clean a commercial drain",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how do commercial floor drains work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do drain cleaners need a license",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does drain cleaning require a license",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is commercial drain cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is drain cleaning a good business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is drain cleaning considered plumbing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is drain cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is a drain cleaning business profitable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should drains be cleaned monthly",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you clean drains",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to unclog a commercial drain",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to clean cleanout drain",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is a commercial drain cleaner",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the best commercial drain cleaner",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is a commercial drain",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the best commercial drain cleaner to unclog drains",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who clean drains",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who cleans drain pipes",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who cleans drains",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is drain cleaning important",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why clean drains",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why are drain cleaners bad",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 27,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    }
+  }
+}

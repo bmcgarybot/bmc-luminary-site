@@ -7008,3 +7008,7 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
 # State-isolated Nevada pilot; no shared AZ allocator, mail, or payments.
 from nevada_pilot import install as install_nevada_pilot
 install_nevada_pilot(app, require_admin)
+
+# Private customer-request qualification; paid introductions remain disabled.
+from warm_leads import register as register_warm_leads
+register_warm_leads(app, ADMIN_KEY)

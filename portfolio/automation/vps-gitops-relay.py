@@ -675,6 +675,14 @@ def execute(req: dict) -> dict:
             normalized=str(value).strip().lower()
             effective=effective_flags.get(key)
             confirmed_flags[key]=(normalized=="true") if normalized in ("true","false") and type(effective) is bool and effective==(normalized=="true") else None
+        active_jobs={key:None for key in ("active_requests","confirmed_requests_in_window","needs_review_in_window")}
+        try:
+            jobs=admin_post("/api/admin/active-leads",timeout=30)
+            for key in active_jobs:
+                value=jobs.get(key)
+                active_jobs[key]=value if type(value) is int and value>=0 else None
+        except Exception:
+            pass  # An older API or unavailable reading stays unknown, never zero.
         snapshot={
           "observed_at":now_iso(),"deployed_sha":current_sha(),
           "owner_launch_hold_active":raw_env.get("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="false" and isinstance(raw,dict) and raw.get("owner_launch_hold_active") is True,
@@ -682,7 +690,7 @@ def execute(req: dict) -> dict:
           "scheduler_healthy":health.returncode==0 and "scheduler" in running,
           "api_healthy":api_healthy,
           "outreach_switches":confirmed_flags,
-          "growth":metrics,"health_error":health_error}
+          "growth":metrics,"active_jobs":active_jobs,"health_error":health_error}
         stdout=json.dumps(snapshot,indent=2)
         stderr=""
         exit_code=0

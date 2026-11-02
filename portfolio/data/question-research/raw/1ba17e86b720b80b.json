@@ -1,0 +1,538 @@
+{
+  "retrieved_at": "2026-11-02T03:26:11.894815+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "car battery replacement",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 119 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+    "data": [
+      {
+        "string": "car battery replacement",
+        "volume": 165000,
+        "trend": -33,
+        "cpc": 4.25,
+        "cmp": 0.27,
+        "top_of_page_bid_low": 0.61,
+        "top_of_page_bid_high": 6.01,
+        "top_of_page_bid": "$0.61 - $6.01",
+        "metrics_status": "included"
+      },
+      {
+        "string": "how much are car battery replacements",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much are electric car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what happens if you don't replace your car battery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can i replace my car battery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you replace your car battery before it dies",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are car battery replacements free",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are car batteries replaceable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are car batteries repairable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are car batteries expensive to replace",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can car batteries be repaired",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can car batteries be rebuilt",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can car batteries be restored",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did car battery die",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did car batteries get more expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did car battery prices go up",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did car batteries used to last longer",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does costco do car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does walmart do car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does autozone do car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does sam's club do car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do car battery replacements cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does aaa do car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does bjs do car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long do car battery replacements take",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do halfords do car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does car battery replacement cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long does car battery replacement take",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who does car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who does car battery replacement near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does car insurance cover battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does car warranty cover battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does car insurance cover ev battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long does an electric car battery last before replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are car batteries hard to replace",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are car batteries hard to change",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have to replace car battery every year",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "had to replace tesla battery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does costco have car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do i have to reprogram my car after battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to get car battery replaced",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does it cost to have car battery replaced",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to replace car battery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have car batteries",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have car battery delivered",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have car battery prices gone up",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does a car battery replacement cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how often car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long does a car battery replacement take",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to know if car battery needs replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is a replacement battery for an electric car",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is a car key battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is a hybrid car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is a tesla car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is a car battery replacement at autozone",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is car battery replacement easy",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is car battery replacement covered under warranty",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is car battery replacement under warranty",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is car battery replacement covered in insurance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is car battery replacement free",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is car battery replacement diy",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is car battery replacement at costco",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is car battery replacement at walmart",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is car battery replacement cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should car battery replacement cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long should a car battery last before replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long should a replacement car battery last",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should a car battery replacement be",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should i pay for a car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long should a car battery replacement take",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where should i go for car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i replace my car battery after 4 years",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "was battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is car battery replacement expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what to do with old car battery after replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what to do after car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the cost of car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does a car battery replacement cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the best replacement car battery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the average cost of a car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is a car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who replaces car batteries for free",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to know when car battery needs replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what to do after replacing car battery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when should i replace the car battery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when car battery change",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when car battery needs to be replaced",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to replace car battery years",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to go for car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to get car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to get replacement battery for car key",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where can i replace my car battery near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where car battery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is the best place to replace a car battery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who will replace my car battery at home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to choose car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which car battery to get",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which car battery is right for me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which car battery to buy",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which car battery should i buy",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which car battery do i buy",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who replacement battery in car key",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who replaces car batteries",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who replaces car batteries at home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who replaced car batteries",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "whose batteries",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why car battery expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why car batteries so expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why car batteries",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why replace car battery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long will an electric car battery last before replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will insurance cover car battery replacement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will car battery recharge itself",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much would a car battery replacement cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would a car battery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would a car battery die while driving",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would car batteries be affected by emp",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would a battery be covered under warranty",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 119,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 119 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    },
+    "display_note": "When displaying these results in a table, include a \"Top of Page Bid\" column using the top_of_page_bid value. Top of Page Bid is a different metric from CPC (cpc is Bing-only average cost-per-click)."
+  }
+}

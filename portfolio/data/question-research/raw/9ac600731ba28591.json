@@ -1,0 +1,470 @@
+{
+  "retrieved_at": "2026-11-02T03:40:57.514686+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "solar panel cleaning",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 102 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+    "data": [
+      {
+        "string": "solar panel cleaning",
+        "volume": 12100,
+        "trend": 0,
+        "cpc": 10.66,
+        "cmp": 0.76,
+        "top_of_page_bid_low": 2.34,
+        "top_of_page_bid_high": 12.06,
+        "top_of_page_bid": "$2.34 - $12.06",
+        "metrics_status": "included"
+      },
+      {
+        "string": "how much are solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you get your solar panels cleaned",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how are solar panels cleaned",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how often should you get your solar panels cleaned",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do solar panels require cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are solar panels supposed to be cleaned",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are clean solar panels more efficient",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are solar panels easy to clean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are solar panels clean energy",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can i use shampoo for solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can you clean solar panels",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is it ok to clean solar panels",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how do you clean solar panel",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can solar panels be cleaned with windex",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can solar panel be washed",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can solar panels be cleaned with soap and water",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does solar panel cleaning work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does cleaning solar panels save money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does cleaning solar panels really help",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does solar panel cleaning help",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does cleaning solar panels help production",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to do solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do solar panel cleaning cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do solar panel cleaning companies make",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do companies charge for solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do people charge for solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do it yourself solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do solar panel need cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do you charge for solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does solar panel cleaning make a difference",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does solar panel cleaning cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does solar panel cleaning cost in california",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long does solar panel cleaning take",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does solar panel cleaning cost per panel",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does professional solar panel cleaning cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does solar panel need cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is cleaning solar panels dangerous",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is solar panel cleaning worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is solar panel cleaning a good business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is solar panel cleaning necessary",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is solar panel cleaning needed",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does solar panels have to be cleaned",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to clean solar panels professionally",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do solar panels have to be cleaned",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to clean solar panels and how often",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to start a solar panel cleaning business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much to charge for solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how many days solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is solar panel cleaning near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to make solar panel cleaning system",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to make solar panel cleaning robot",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should solar panel cleaning cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is solar panel cleaning business profitable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is solar panel cleaning a scam",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is solar panel cleaning service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is solar panel cleaning cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is solar panel cleaning important",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is solar panel cleaning in california",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should i charge for solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should i pay for solar panel.cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is it worth it to clean solar panels",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how often should solar panels be cleaned",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you clean solar panels",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is it necessary to clean your solar panels",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should solar panels be cleaned regularly",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should solar panels be cleaned periodically",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is solar panel cleaner made of",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what to use for solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does solar panel cleaning cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the average cost for solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what to charge for solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the best solar panel cleaning kit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the best solar panel cleaning solution",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what solution to clean solar panels with",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what should solar panels be cleaned with",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when should solar panels be cleaned",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when do solar panels need cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to buy solar panel cleaning brush",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to clean solar panels",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to buy solar panel cleaner",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who cleans solar panels in my area",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which chemical is used for solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which brush is best for solar panel cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what to clean solar panel with",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to clean solar panels in india",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to keep your solar panels clean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the best cleaning solution for solar panels",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which solar panel companies to avoid",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who cleans solar panels near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who should clean solar panels",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who cleans solar panels",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who can clean my solar panels",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who washes solar panels",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why solar panel cleaning is important",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why should i clean my solar panels",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why solar panels need to be cleaned",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will cleaning solar panels help",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will rain clean my solar panels",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would solar panels work on my house",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 102,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 102 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    },
+    "display_note": "When displaying these results in a table, include a \"Top of Page Bid\" column using the top_of_page_bid value. Top of Page Bid is a different metric from CPC (cpc is Bing-only average cost-per-click)."
+  }
+}

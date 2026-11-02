@@ -1,0 +1,474 @@
+{
+  "retrieved_at": "2026-11-02T03:23:30.143033+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "auto repair",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 103 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+    "data": [
+      {
+        "string": "auto repair",
+        "volume": 368000,
+        "trend": -63,
+        "cpc": 4.08,
+        "cmp": 0.17,
+        "top_of_page_bid_low": 2.02,
+        "top_of_page_bid_high": 9.2,
+        "top_of_page_bid": "$2.02 - $9.20",
+        "metrics_status": "included"
+      },
+      {
+        "string": "are auto repair shops slow right now",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are auto repair shops open on weekends",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are auto repair shops open on labor day",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are auto repair shops open on saturday",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are auto repair insurance worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are auto repair warranties worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are auto repair shops cash intensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are auto repair shops open on sunday",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are auto repair shops profitable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are auto repair shops closed on labor day",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the naics code for an auto repair shop",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can auto repairs be financed",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can auto repair shop keep vehicle",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can a repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can auto shop",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does auto repair work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did auto plus file bankruptcies",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do auto repair shops do payment plans",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do auto repair shops charge tax on labor",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do auto repair shops mark up parts",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do auto repair shops take credit cards",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do auto repair shops offer towing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do auto repair shops close on labor day",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do auto repair shops buy cars",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do auto repair shops change tires",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does auto repair get 1099",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does auto repair insurance cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does auto repair mean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long does auto repair take",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how does auto repair insurance work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how does auto repair work tinkers construct",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what time does auto repair open",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who does auto repair financing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what time does auto repair close",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "had a repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is auto glass chip repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is auto repair insurance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is auto body repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is auto glass repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to repair auto upholstery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to fix auto repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to repair auto paint",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is auto repair insurance worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is auto repair network legit reddit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is auto repair a good business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is auto repair labor taxable in california",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is auto repair network legit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is auto repair business profitable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is auto repair shops",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i use geico auto repair xpress",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i tip the auto glass repair guy",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long should auto body repair take",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should my auto repair cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do most auto repairs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do right auto repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should auto repairs be capitalized",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should autoshop estimate or repair car",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is auto repair a service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what auto repair shops take snap finance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what auto repair shops take affirm",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what auto repair shops take affirm near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what auto repair shops offer financing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what auto repair shops are open today",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what auto repair shops are open on sunday",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what auto repair shops are near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what auto repair shops do payment plans",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what auto repair shops take synchrony car care credit card",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what auto repair shops take snap finance near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when a auto",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to repair car",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when you authorize repairs you",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where auto repair shops",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is the nearest auto repair shop",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is dave's auto repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is auto glass repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is bh auto repairs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is auto repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is mike's auto repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is affordable auto repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which auto repair shop",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the best auto repair shop near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which auto repair insurance is best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which auto service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who repairs auto glass",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is bh auto repairs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is auto repair network",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who repairs automobiles",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who repair near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is the best auto repair shops near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who repairs auto",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why auto repair shops",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is the auto repair industry slowing down",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is auto repair so expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why auto body repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why are auto repair shops so expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why auto mechanic",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why auto mechanics are quitting",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will auto repair shops do payment plans",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will auto repair winnipeg",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will a auto repair shop",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would auto",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would you repair the car",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 103,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 103 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    },
+    "display_note": "When displaying these results in a table, include a \"Top of Page Bid\" column using the top_of_page_bid value. Top of Page Bid is a different metric from CPC (cpc is Bing-only average cost-per-click)."
+  }
+}

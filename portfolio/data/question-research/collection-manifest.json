@@ -1,0 +1,383 @@
+{
+  "source": "https://keywordtool.io/mcp/guest",
+  "geography": "United States; not measured AZ/NV demand",
+  "updated_at": "2026-11-02T04:00:52.642694+00:00",
+  "queries": [
+    {
+      "seed": "pressure washing",
+      "path": "data/question-research/raw/fe1b231a36451494.json",
+      "status": "collected"
+    },
+    {
+      "seed": "windshield replacement",
+      "path": "data/question-research/raw/f886305e6bbbe5a7.json",
+      "status": "collected"
+    },
+    {
+      "seed": "auto repair",
+      "path": "data/question-research/raw/7bba8dd180db9415.json",
+      "status": "collected"
+    },
+    {
+      "seed": "backflow testing",
+      "path": "data/question-research/raw/5e43be44cb09f6ba.json",
+      "status": "collected"
+    },
+    {
+      "seed": "office coffee service",
+      "path": "data/question-research/raw/1cb75779930f2311.json",
+      "status": "collected"
+    },
+    {
+      "seed": "office water delivery",
+      "path": "data/question-research/raw/9442ce265c4d3c17.json",
+      "status": "collected"
+    },
+    {
+      "seed": "commercial cleaning",
+      "path": "data/question-research/raw/87ca309c339f0bb5.json",
+      "status": "collected"
+    },
+    {
+      "seed": "competitor analysis",
+      "path": "data/question-research/raw/21ee50199dedea45.json",
+      "status": "collected"
+    },
+    {
+      "seed": "air duct cleaning",
+      "path": "data/question-research/raw/4d4a725f62f1560a.json",
+      "status": "collected"
+    },
+    {
+      "seed": "dryer vent cleaning",
+      "path": "data/question-research/raw/7601088d34f4eb75.json",
+      "status": "collected"
+    },
+    {
+      "seed": "electrician",
+      "path": "data/question-research/raw/f2a955255f249d33.json",
+      "status": "collected"
+    },
+    {
+      "seed": "epoxy flooring",
+      "path": "data/question-research/raw/c80ba441c04f2d7b.json",
+      "status": "collected"
+    },
+    {
+      "seed": "equipment purchasing",
+      "path": "data/question-research/raw/cf69b7b599c13ab0.json",
+      "status": "collected"
+    },
+    {
+      "seed": "errand service",
+      "path": "data/question-research/raw/59d5ebcbfda4c469.json",
+      "status": "collected"
+    },
+    {
+      "seed": "home watch service",
+      "path": "data/question-research/raw/8291943117a8861d.json",
+      "status": "collected"
+    },
+    {
+      "seed": "estate management",
+      "path": "data/question-research/raw/a14ab75f9e7b1a9b.json",
+      "status": "collected"
+    },
+    {
+      "seed": "facility maintenance",
+      "path": "data/question-research/raw/57e717416f0736c7.json",
+      "status": "collected"
+    },
+    {
+      "seed": "fire extinguisher inspection",
+      "path": "data/question-research/raw/7a26f1602e2ffc87.json",
+      "status": "collected"
+    },
+    {
+      "seed": "fleet washing",
+      "path": "data/question-research/raw/03c635a3c2db273f.json",
+      "status": "collected"
+    },
+    {
+      "seed": "commercial carpet cleaning",
+      "path": "data/question-research/raw/24e9d7938413f08e.json",
+      "status": "collected"
+    },
+    {
+      "seed": "garage door repair",
+      "path": "data/question-research/raw/fab346ddd1dc8731.json",
+      "status": "collected"
+    },
+    {
+      "seed": "grease trap cleaning",
+      "path": "data/question-research/raw/82e333f10d49bdae.json",
+      "status": "collected"
+    },
+    {
+      "seed": "commercial drain cleaning",
+      "path": "data/question-research/raw/5a40cffff65a5cd5.json",
+      "status": "collected"
+    },
+    {
+      "seed": "landscape maintenance",
+      "path": "data/question-research/raw/eaf5fe5b28b1f4cc.json",
+      "status": "collected"
+    },
+    {
+      "seed": "business leads",
+      "path": "data/question-research/raw/927ca930e08ed1b8.json",
+      "status": "collected"
+    },
+    {
+      "seed": "handyman services",
+      "path": "data/question-research/raw/7e607c46206f1873.json",
+      "status": "collected"
+    },
+    {
+      "seed": "home organization",
+      "path": "data/question-research/raw/0d8d8928a8aaa22a.json",
+      "status": "collected"
+    },
+    {
+      "seed": "home staging",
+      "path": "data/question-research/raw/6517f11aa38f07ed.json",
+      "status": "collected"
+    },
+    {
+      "seed": "commercial hood cleaning",
+      "path": "data/question-research/raw/da90d5c696ce0f00.json",
+      "status": "collected"
+    },
+    {
+      "seed": "household staffing",
+      "path": "data/question-research/raw/db24fe7f5978e07b.json",
+      "status": "collected"
+    },
+    {
+      "seed": "hiring a housekeeper",
+      "path": "data/question-research/raw/d3438aa4693dec36.json",
+      "status": "collected"
+    },
+    {
+      "seed": "house cleaning",
+      "path": "data/question-research/raw/d6e3639e2c29aa06.json",
+      "status": "collected"
+    },
+    {
+      "seed": "HVAC repair",
+      "path": "data/question-research/raw/e03fcef138bb7e68.json",
+      "status": "collected"
+    },
+    {
+      "seed": "commercial ice machine",
+      "path": "data/question-research/raw/f06f7d3707f965b6.json",
+      "status": "collected"
+    },
+    {
+      "seed": "junk removal",
+      "path": "data/question-research/raw/0a7dd7bf820c83f2.json",
+      "status": "collected"
+    },
+    {
+      "seed": "commercial laundry service",
+      "path": "data/question-research/raw/d5b73038df4aa5e3.json",
+      "status": "collected"
+    },
+    {
+      "seed": "commercial locksmith",
+      "path": "data/question-research/raw/df185d6523a924e6.json",
+      "status": "collected"
+    },
+    {
+      "seed": "market research for small business",
+      "path": "data/question-research/raw/79329b52ec8bef11.json",
+      "status": "collected"
+    },
+    {
+      "seed": "mobile car detailing",
+      "path": "data/question-research/raw/5840b34a6b99ea12.json",
+      "status": "collected"
+    },
+    {
+      "seed": "mobile dog grooming",
+      "path": "data/question-research/raw/5ee2d61dc73ecf34.json",
+      "status": "collected"
+    },
+    {
+      "seed": "mobile tire service",
+      "path": "data/question-research/raw/ef9ef1794bee9bb4.json",
+      "status": "collected"
+    },
+    {
+      "seed": "car battery replacement",
+      "path": "data/question-research/raw/1ba17e86b720b80b.json",
+      "status": "collected"
+    },
+    {
+      "seed": "hiring a nanny",
+      "path": "data/question-research/raw/a89885eb5547a054.json",
+      "status": "collected"
+    },
+    {
+      "seed": "parking lot cleaning",
+      "path": "data/question-research/raw/333ea03f8cddcf65.json",
+      "status": "collected"
+    },
+    {
+      "seed": "parking lot striping",
+      "path": "data/question-research/raw/bbe26955f9c1a7bc.json",
+      "status": "collected"
+    },
+    {
+      "seed": "personal concierge",
+      "path": "data/question-research/raw/f856fc22e274ceb3.json",
+      "status": "collected"
+    },
+    {
+      "seed": "pest control",
+      "path": "data/question-research/raw/97acf2ac82a8bbe0.json",
+      "status": "collected"
+    },
+    {
+      "seed": "pet sitting",
+      "path": "data/question-research/raw/2ed2f07999617ea9.json",
+      "status": "collected"
+    },
+    {
+      "seed": "dog walking",
+      "path": "data/question-research/raw/25360be3b4181a34.json",
+      "status": "collected"
+    },
+    {
+      "seed": "pet waste removal",
+      "path": "data/question-research/raw/797f323ca3418587.json",
+      "status": "collected"
+    },
+    {
+      "seed": "pool cleaning",
+      "path": "data/question-research/raw/4f3f52467c8d45e8.json",
+      "status": "collected"
+    },
+    {
+      "seed": "private chef",
+      "path": "data/question-research/raw/95e83e84a0e611a7.json",
+      "status": "collected"
+    },
+    {
+      "seed": "request for quotation",
+      "path": "data/question-research/raw/b3c961178e926e80.json",
+      "status": "collected"
+    },
+    {
+      "seed": "preparing home for sale",
+      "path": "data/question-research/raw/b912ea0062657435.json",
+      "status": "collected"
+    },
+    {
+      "seed": "restaurant equipment repair",
+      "path": "data/question-research/raw/41423146fc099b67.json",
+      "status": "collected"
+    },
+    {
+      "seed": "restaurant maintenance",
+      "path": "data/question-research/raw/b3aed79441b01dbd.json",
+      "status": "collected"
+    },
+    {
+      "seed": "septic tank pumping",
+      "path": "data/question-research/raw/bf46457c30a86ad3.json",
+      "status": "collected"
+    },
+    {
+      "seed": "land grading",
+      "path": "data/question-research/raw/ca77ad72afa4c140.json",
+      "status": "collected"
+    },
+    {
+      "seed": "well pump repair",
+      "path": "data/question-research/raw/d593362f27f0e0c1.json",
+      "status": "collected"
+    },
+    {
+      "seed": "water hauling",
+      "path": "data/question-research/raw/9d2c288a47e39b08.json",
+      "status": "collected"
+    },
+    {
+      "seed": "home care agency",
+      "path": "data/question-research/raw/a8000c6a0c03410c.json",
+      "status": "collected"
+    },
+    {
+      "seed": "commercial sign repair",
+      "path": "data/question-research/raw/b7df2d170c924bf0.json",
+      "status": "collected"
+    },
+    {
+      "seed": "snow removal",
+      "path": "data/question-research/raw/e6beeff690d0f8f0.json",
+      "status": "collected"
+    },
+    {
+      "seed": "solar panel cleaning",
+      "path": "data/question-research/raw/9ac600731ba28591.json",
+      "status": "collected"
+    },
+    {
+      "seed": "vacation rental property maintenance",
+      "path": "data/question-research/raw/242a24b89699b08a.json",
+      "status": "collected"
+    },
+    {
+      "seed": "roadside assistance",
+      "path": "data/question-research/raw/71091954789c1587.json",
+      "status": "collected"
+    },
+    {
+      "seed": "towing service",
+      "path": "data/question-research/raw/0f8a5aeba96363c6.json",
+      "status": "collected"
+    },
+    {
+      "seed": "tree removal",
+      "path": "data/question-research/raw/bf953d43433164d9.json",
+      "status": "collected"
+    },
+    {
+      "seed": "move out cleaning",
+      "path": "data/question-research/raw/8c277d4f5a581814.json",
+      "status": "collected",
+      "returned_count": 71
+    },
+    {
+      "seed": "used restaurant equipment",
+      "path": "data/question-research/raw/623fcceea2bd78ac.json",
+      "status": "collected",
+      "returned_count": 51
+    },
+    {
+      "seed": "mobile mechanic",
+      "path": "data/question-research/raw/dcaef26e9de002bf.json",
+      "status": "collected",
+      "returned_count": 124
+    },
+    {
+      "seed": "supplier cost reduction",
+      "path": "data/question-research/raw/8765a0c6df42d4a5.json",
+      "status": "collected",
+      "returned_count": 21
+    },
+    {
+      "seed": "commercial waste management",
+      "path": "data/question-research/raw/33817cdfd461f652.json",
+      "status": "collected",
+      "returned_count": 54
+    },
+    {
+      "seed": "window cleaning",
+      "path": "data/question-research/raw/3e775f8187ba93e0.json",
+      "status": "collected",
+      "returned_count": 125
+    }
+  ]
+}

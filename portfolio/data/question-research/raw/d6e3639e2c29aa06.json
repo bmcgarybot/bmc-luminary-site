@@ -1,0 +1,602 @@
+{
+  "retrieved_at": "2026-11-02T03:25:25.323063+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "house cleaning",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 135 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+    "data": [
+      {
+        "string": "house cleaning",
+        "volume": 60500,
+        "trend": 0,
+        "cpc": 5.27,
+        "cmp": 0.37,
+        "top_of_page_bid_low": 1.03,
+        "top_of_page_bid_high": 9.56,
+        "top_of_page_bid": "$1.03 - $9.56",
+        "metrics_status": "included"
+      },
+      {
+        "string": "are house cleaning robots worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much are house cleaning services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are house cleaning rates",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are house cleaning prices",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are house cleaning items",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much are house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are the materials used for cleaning the house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are the best house cleaning products",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are the charges for house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are the tools for cleaning the house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can house cleaning be considered exercise",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can house cleaning be claimed on taxes",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can house cleaning count as exercise",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can house cleaning induce labor",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can house cleaning help you lose weight",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is an average cost for house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can house cleaners spread bed bugs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can house cause headaches",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did some house cleaning crossword",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did some house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why did i stop cleaning my house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why did meadow end up cleaning the house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what did jesus say about cleaning your house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does house cleaning cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long does house cleaning take",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did house get clean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did house ever get clean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do house cleaning services do laundry",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do house cleaning services charge sales tax",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do house cleaning apps work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do house cleaning services do dishes",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do house cleaning apps really work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do house cleaning services cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what do house cleaning services include",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can i do house cleaning while pregnant",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can we do house cleaning on amavasya",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does house cleaning count as exercise",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does house cleaning burn calories",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does house cleaning count as a workout",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does house cleaning include dishes",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does house cleaning include laundry",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does house cleaning include windows",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does house cleaning count as cardio",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does house cleaning require a license",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does house cleaner pay well",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does house cleaning burn a lot of calories",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to write an ad for house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to make a house cleaning ad",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does amazon have house cleaning services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does costco have house cleaning services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does walmart have house cleaning services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why have i lost interest in cleaning my house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why have i stopped cleaning my house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how house cleaning services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to start a house cleaning business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is a deep cleaning house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much house cleaning cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is duct cleaning for a house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is a full house cleaning service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is a house deep cleaning service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is window cleaning for a house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is a one time house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is house cleaning a blue collar job",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is house cleaning one word or two",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is house cleaning a good job",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is house cleaning a good business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is house cleaning considered blue collar",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is house cleaning a good business to start",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is house cleaning considered exercise",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is house cleaning a good side hustle",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is house cleaning a good job reddit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is house cleaning a form of exercise",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should house cleaning cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long should house cleaning take",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how often should house cleaning be done",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should house cleaning be",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should i charge for cleaning a house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should i pay for house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you tip a house cleaning service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should a house deep cleaning cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should i charge for deep cleaning a house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where should i start cleaning my house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why was meadow cleaning the house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what to do while house is being cleaned",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what house cleaning should be done weekly",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what house cleaning should be done daily",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what house cleaning supplies",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the going rate for house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is deep cleaning house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the average cost of house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is duct cleaning in a house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the best house cleaning app",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when cleaning your house where to start",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to charge when cleaning a house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what to clean when deep cleaning a house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to start cleaning your house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what house cleaners do",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where can i clean houses",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which house cleaning app is best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which house cleaning robot is best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which day is best for house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which is best for house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which mop is best for house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which app for house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who can deep clean my house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is included in a deep house cleaning uk",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who help in cleaning of the house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does whole house cleaning cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who does house cleaning in my area",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who does house cleaning near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "whose house correct grammar",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why am i obsessed with cleaning my house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is cleaning the house important",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why does cleaning house take so long",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is house cleaning service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why have a house cleaner",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when will house cleaning robots be available",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will medicare pay for house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will the va pay for house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will medicare pay for house cleaning services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will medicaid pay for house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will insurance pay for house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will health insurance pay for house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will medicare pay for house cleaning for seniors",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will medicare help with house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will health insurance cover house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much would a house cleaning cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much would weekly house cleaning cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much would you charge for house cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much would a full house cleaning cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what to expect when hiring a house cleaner",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will house cleaners clean mold",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will house cleaners do dishes",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will house cleaners do laundry",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 135,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 135 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    },
+    "display_note": "When displaying these results in a table, include a \"Top of Page Bid\" column using the top_of_page_bid value. Top of Page Bid is a different metric from CPC (cpc is Bing-only average cost-per-click)."
+  }
+}

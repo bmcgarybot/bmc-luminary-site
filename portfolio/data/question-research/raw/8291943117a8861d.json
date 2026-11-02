@@ -1,0 +1,234 @@
+{
+  "retrieved_at": "2026-11-02T03:24:16.183023+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "home watch service",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+    "data": [
+      {
+        "string": "home watch service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are home watch services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does a home watch service do",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do watches need servicing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does a watch service include",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are home warranty services worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what do home watch services cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are home service plans worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are watch warranties worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what streaming service can i watch home alone on",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what streaming service can i watch home on",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what streaming service can i watch sweet home alabama",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what streaming service can i watch the way home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what streaming service can i watch home improvement on",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what streaming service can i watch no way home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where can i watch home service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what streaming service can you watch the way home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what streaming service can i watch home alone 2 on",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do home watch services cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do home watch services charge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is a home watch service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can i service my own watch",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does home watch service cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does a home watch service cost in florida",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does home depot sell watches",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does home depot watch cameras",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to service watch at home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to start a home watch service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to service automatic watch at home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is home watch",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is home watch services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is home warranty services legit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is home warranty services legitimate",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you watch workers in your home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you watch contractors working on your house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i watch workers",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what service can i watch home alone on",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to service a watch reddit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to service a watch",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where can i watch home alone on a streaming service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to watch service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which streaming service can i watch home alone",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who services watches",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why do watches need to be serviced",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why does a watch need to be serviced",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 45,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    }
+  }
+}

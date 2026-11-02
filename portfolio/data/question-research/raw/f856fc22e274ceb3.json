@@ -1,0 +1,322 @@
+{
+  "retrieved_at": "2026-11-02T03:26:29.505115+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "personal concierge",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 65 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+    "data": [
+      {
+        "string": "personal concierge",
+        "volume": 590,
+        "trend": -18,
+        "cpc": 5.99,
+        "cmp": 0.12,
+        "top_of_page_bid_low": 1.69,
+        "top_of_page_bid_high": 5.69,
+        "top_of_page_bid": "$1.69 - $5.69",
+        "metrics_status": "included"
+      },
+      {
+        "string": "what are personal concierge services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does a personal concierge charge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is a personal concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does a personal concierge do",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are concierge services worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are concierge services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are concierge services profitable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are concierge services free",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are concierge services deductible",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can concierge doctors bill insurance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does personal concierge mean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can do concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do concierge still exist",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is a personal concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does personal concierge do",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do personal concierge services charge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do personal concierge make",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do you tip a personal concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does a personal concierge service do",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do you need a personal cybersecurity concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is personal concierge assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do concierge charge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does personal concierge service mean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does a personal concierge make",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does a personal concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to become a personal concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much to tip personal concierge in mexico",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to start a personal concierge business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much to tip personal concierge in dominican republic",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much to tip personal concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is a personal concierge service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to start a personal concierge service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is personal concierge service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is personal concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is the personal concierge in tna",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is a concierge and personal assistant the same thing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is gogo personal concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the waldorf astoria personal concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is global personal concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is personal virtual concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i use a concierge doctor",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i get a concierge doctor",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i do concierge medicine",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is personal concierge services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "was concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is a personal concierge service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is a personal concierge business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is a personal concierge called",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what a personal concierge does",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where would a concierge typically be found",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where does a concierge work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which credit card has concierge service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is a concierge doctor",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who uses concierge services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who owns concierge care",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why concierge is important",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why concierge doctor",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will concierge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will insurance pay for concierge medicine",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 65,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 65 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    },
+    "display_note": "When displaying these results in a table, include a \"Top of Page Bid\" column using the top_of_page_bid value. Top of Page Bid is a different metric from CPC (cpc is Bing-only average cost-per-click)."
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "retrieved_at": "2026-11-02T03:24:11.370858+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "errand service",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+    "data": [
+      {
+        "string": "errand service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are errand services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are errand services profitable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are errands",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are errands chores",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is errand legit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are errands and chores the same",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can errands",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did errands",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what errands did you do",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do errand services charge",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do errands for people",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do errands for money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do errands with me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do errands in spanish",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "had errands to do",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have a errand",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to accept payment for errand service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to charge for errand services in lagos",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to start an errand service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to start a senior errand service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to set up an errand service business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to start an errand service business in nigeria",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much to charge for errand service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to market an errand service business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to start errand service business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is errand service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is an errand service business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is errand running service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is subscription errand service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is errand",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is errand runner legit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is errand runner app legit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should i charge for errand services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do errands or run errands",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what errands can i do",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what errands to do",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what errands can you run",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what errands do people do",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what errands to run",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what errands do i need to run",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what errands do you have to do",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who errands",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who gets sent out on an errand",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why do errands take so long",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why are errands called errands",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 46,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    }
+  }
+}

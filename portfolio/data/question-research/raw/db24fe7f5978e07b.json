@@ -1,0 +1,194 @@
+{
+  "retrieved_at": "2026-11-02T03:25:17.246710+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "household staffing",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+    "data": [
+      {
+        "string": "household staffing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are household employees statutory",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is household staffing legit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are household",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are household employees tax deductible",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are household employment taxes deductible",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can household employees be salaried",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what household staff do i need",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is household staffing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does household staff mean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have staffing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how many household staff do i need",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how staffing companies make money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how do staffing services make money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is household staffing agency legit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is british american household staffing legit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is british american household staffing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is domestic staffing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how many household staff do you need",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should staffing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you use a staffing agency",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "was staffing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when is someone a household employee",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when do staffing agencies get paid",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is a household staffing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which staffing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who staffing company",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who staffing agency",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why staffing group",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why staffing agency",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why staffing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why do staffing companies make so much money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why staffing shortages",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will household",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will staffing agency",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 35,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    }
+  }
+}

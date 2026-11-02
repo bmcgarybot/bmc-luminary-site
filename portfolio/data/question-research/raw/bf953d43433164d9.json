@@ -1,0 +1,606 @@
+{
+  "retrieved_at": "2026-11-02T03:41:16.651423+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "tree removal",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 136 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+    "data": [
+      {
+        "string": "tree removal",
+        "volume": 40500,
+        "trend": -18,
+        "cpc": 16.01,
+        "cmp": 0.35,
+        "top_of_page_bid_low": 3.51,
+        "top_of_page_bid_high": 21.66,
+        "top_of_page_bid": "$3.51 - $21.66",
+        "metrics_status": "included"
+      },
+      {
+        "string": "are tree removal companies insured",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are tree removal companies licensed",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are tree removal tax deductible",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much are tree removal services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much are tree removals",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can the city remove a tree",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do i need permission to remove a tree",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will the city pay for tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can you get a tree removed for free",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who pays for tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can tree removal be capitalized",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can tree removal be covered by insurance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can tree removal be deducted from taxes",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can tree removal be written off on taxes",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can tree removal be covered by homeowners insurance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does an average tree removal cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can you finance tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can you claim tree removal on insurance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can i remove tree from my property",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who removes trees",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does the city remove trees",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did tree",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does tree removal include the stump",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did trees kill the world",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do tree removal companies need to be licensed",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do tree removal companies offer financing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do tree removal companies need to be insured",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do tree removal companies do payment plans",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do tree removal companies charge sales tax",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do tree removal companies sell the wood",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do tree removal companies work in the rain",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do tree removal companies have insurance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do tree removal companies remove stumps",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do tree removal companies take credit cards",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does tree removal count as capital improvement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does tree removal include stump",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does tree removal increase property value",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does tree removal include stump grinding",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does tree removal include roots",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does tree removal count as home improvement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does tree removal require a permit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does tree removal require a license",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does tree removal add to home basis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does tree removal fall under landscaping",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have tree cut down",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have a tree removed from yard",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what insurance should a tree removal company have",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does dollar tree have hair removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do you have to capitalize tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do you have to pay for tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does dollar tree have nair hair removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does it cost to have a tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does tree removal cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is tree stump removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is tree removal service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is tree removal near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is palm tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is a tree removal permit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is tree branch removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is tree limb removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is fallen tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is tree removal a capital improvement",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is tree removal a capital improvement or expense",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is tree removal cheaper in winter",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is tree removal tax deductible",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is tree removal taxable in minnesota",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is tree removal taxable in ny",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is tree removal a good business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is tree removal taxable in nj",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is tree removal covered under homeowners insurance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is tree removal covered by insurance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should tree removal be capitalized",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should tree removal company be insured",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should tree removal cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should tree removal be",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you tip tree removal workers",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you tip a tree removal service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you tip for tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should i charge for tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how many quotes should i get for tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should i expect to pay for tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who removes tree debris",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who removes tree",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why tree removal is important",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the average cost for tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what to plant after tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does tree removal cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the cost of tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is tree stump removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does tree stump removal cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what to charge for tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the average cost of a large tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what should tree removal cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when is christmas tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when is tree removal cheapest",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when will insurance cover tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to have a tree removed",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can i ask the city to remove a tree",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to remove a dead tree",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to remove tree roots",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to get rid of a tree",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to get rid of tree limbs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which tree service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which tree roots damage foundations",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which tree roots are invasive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which tree trimmer is best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is responsible for fallen tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who pays for tree removal on property line",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is the cheapest tree removal service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is responsible for tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is responsible for downed tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who removes trees for free",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who removes tree roots",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who removes tree branches",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "whose tree is it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "whose responsibility is it to remove a fallen tree",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is tree removal so expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why does tree removal cost so much",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why remove tree",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much will tree removal cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will homeowners insurance cover tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will homeowners insurance pay for tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will insurance cover tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will insurance pay for tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will state farm pay for tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will homeowners cover tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will insurance help pay for tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will insurance companies pay for tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would homeowners insurance cover tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much would a tree removal cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would home insurance cover tree removal",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would trees",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would removing trees increase water retention",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would trees die without humans",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will removing a tree damage foundation",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 136,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 136 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    },
+    "display_note": "When displaying these results in a table, include a \"Top of Page Bid\" column using the top_of_page_bid value. Top of Page Bid is a different metric from CPC (cpc is Bing-only average cost-per-click)."
+  }
+}

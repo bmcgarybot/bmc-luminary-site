@@ -1,0 +1,114 @@
+{
+  "retrieved_at": "2026-11-02T03:27:04.034085+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "preparing home for sale",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 13 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+    "data": [
+      {
+        "string": "preparing home for sale",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can i deduct expenses for preparing my home for sale",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to prepare house for sale",
+        "volume": 880,
+        "trend": 164,
+        "cpc": 1.69,
+        "cmp": 0.09,
+        "top_of_page_bid_low": 0.05,
+        "top_of_page_bid_high": 3.86,
+        "top_of_page_bid": "$0.05 - $3.86",
+        "metrics_status": "included"
+      },
+      {
+        "string": "how long to prepare house for sale",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long does it take to prepare house for sale",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long to prepare a house for sale",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long to prep house for sale",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how prepare house for sale",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is a recommendation for preparing your home for sale",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what to do to prepare home for sale",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when preparing to buy a home you should not",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when preparing their home for sale sellers should consider",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to start preparing to buy a house",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 13,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 13 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    },
+    "display_note": "When displaying these results in a table, include a \"Top of Page Bid\" column using the top_of_page_bid value. Top of Page Bid is a different metric from CPC (cpc is Bing-only average cost-per-click)."
+  }
+}
