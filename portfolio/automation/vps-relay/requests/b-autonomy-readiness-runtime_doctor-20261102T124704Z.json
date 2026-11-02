@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "b-autonomy-readiness-runtime_doctor-20261102T124704Z",
+  "action": "runtime_doctor",
+  "created_at": "2026-11-02T12:47:04.481Z",
+  "expires_at": "2026-11-02T13:47:04.481Z",
+  "allow_external_actions": false,
+  "args": {}
+}
