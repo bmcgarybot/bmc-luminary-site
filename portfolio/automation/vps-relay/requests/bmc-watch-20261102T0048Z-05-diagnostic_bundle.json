@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "bmc-watch-20261102T0048Z-05-diagnostic_bundle",
+  "action": "diagnostic_bundle",
+  "created_at": "2026-11-02T00:48:00.000Z",
+  "expires_at": "2026-11-02T02:00:00.000Z",
+  "allow_external_actions": false,
+  "args": {}
+}
