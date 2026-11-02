@@ -5169,3 +5169,6340 @@ After this checkpoint:
 11. Buyer sender now enforces that coverage in code as a backstop.
 
 The target is not merely "server healthy." The target is a measurable, controlled, launch-ready research-to-outreach system.
+
+
+## 55. ASSISTANT-LED MARKET RESEARCH BOOTSTRAP + LINE-BY-LINE AUDIT — 2026-10-26
+
+This section is authoritative over older language that implied the drained legacy research queue meant the overall market research job was substantially complete or that provider launch should be the next priority.
+
+Brett explicitly said the current research experience is not acceptable because obvious Arizona markets still show zero/empty cells even though real businesses and potential buyers plainly exist.
+
+### User directive
+
+Brett's preferred operating model is now:
+
+1. **ChatGPT performs the heavy bootstrap research itself** using connected public-web search/research tools.
+2. ChatGPT gathers as much useful public business/buyer/vendor/source data as practical across all configured markets and categories.
+3. That data is structured and handed to GitHub/VPS for storage, dedupe, scoring and ongoing automation.
+4. The VPS scanner becomes the **continuous delta/update engine**:
+   - find net-new businesses;
+   - refresh stale records;
+   - detect changed contacts;
+   - find new public demand;
+   - find new procurement opportunities;
+   - continue enrichment.
+5. The VPS scanner is **not** to be treated as the sole primary researcher while ChatGPT waits for it to crawl thousands of lanes.
+6. Before launch, Brett and ChatGPT intend to go **line by line** through the resulting dataset and verify accuracy.
+
+### What counts as useful research
+
+Do not require a pristine official/direct source before retaining a discovery.
+
+Useful discovery may come from:
+- ordinary search-engine results;
+- direct business websites;
+- official government/institutional pages;
+- chambers of commerce;
+- tourism/business directories;
+- Yelp/Yellow Pages/BBB-style directories;
+- association/member directories;
+- public school/church/medical/facility listings;
+- public procurement portals;
+- publicly indexed social/community pages;
+- other publicly accessible sources that a normal customer might find.
+
+The correct model is:
+- **discover first**;
+- **grade the source**;
+- **verify/promote later**.
+
+A directory result can establish that a candidate is worth investigating without being strong enough to call the candidate verified.
+
+### Coverage semantics must be honest
+
+Never equate:
+- scanner has not touched the lane
+with:
+- no business exists.
+
+The research/coverage UI and reports should distinguish:
+- base records already stored;
+- newly search-discovered candidate records;
+- direct/verified records;
+- scan state.
+
+A “0” should only mean there are currently zero records in that specific defined bucket — not “there are no businesses in this city.”
+
+### Backend issue found
+
+The prior deep-inventory worker had several behaviors that made the board look falsely empty:
+
+- 1,239 market/category lanes existed;
+- each inventory invocation processed only a bounded subset;
+- priority ordering repeatedly favored a small group of cities before rural markets;
+- a lane can take multiple pages/variants to complete;
+- vendor relevance required result-level market text, which could reject a legitimate regional provider returned by a market-specific search merely because its website did not literally print the small town name.
+
+That made workflow state look like market truth.
+
+### Backend changes committed
+
+Recent commits:
+- `bf12d742abd7fe8b70b8bbeabb28427bc8baafa6`
+  - spreads inventory selection across markets;
+  - retains vendor discoveries from market-specific search context even when direct page market text is absent;
+  - stores whether market evidence came from result text vs market-specific query context;
+  - direct/verified classification still requires explicit result-level market evidence.
+- `bea20a58ee78ee6323146f9ff295da9f3aef73e1`
+  - coverage API now reports:
+    - base records;
+    - current search-discovered candidates;
+    - combined discovered records;
+    - direct/official candidate counts;
+    - scanner state separately.
+- `2f516675964b59fbd36996ab014eb69cc7c723d8`
+  - production proof output separates base / search-discovered / direct-verified coverage.
+- `fd6f208df376830b42e74d30932facf8b141ccae`
+  - CI regression tests for the new discovery/coverage semantics.
+
+At the moment this handoff section was written, a CI-gated relay deployment for `fd6f208...` had been requested but **not yet confirmed complete**.
+Verify:
+- relay deploy result;
+- production SHA;
+- scheduler state;
+- all outreach switches OFF;
+before assuming the change is live.
+
+### Recent source audit lesson
+
+Brett also directed a line-by-line source audit.
+
+The first 100 stored source-domain entries showed:
+- many real direct business/organization sites;
+- many useful but secondary chamber/directory sources;
+- stale/bad URLs that need replacement;
+- discovery sources that should not be labeled “verified” merely because they resolve;
+- a major concentration of buyer records from an ADHS ArcGIS source that requires freshness checking.
+
+Important examples discovered:
+- `prescottelkstheater.com` was stale/bad and should be replaced with the current Prescott Elks Theatre source.
+- the stored Southern Tire Mart location URL was stale and should be replaced with the current official location page.
+- an AppliTrack job/recruiting URL is the wrong evidence type for PUSD facilities/buyer verification.
+- Clear My Land Directory showed obvious taxonomy contamination and should be discovery-only at best.
+- a self-published Canva STR page requires independent corroboration.
+- official/direct, secondary-discovery, and weak/lead-gen sources must be distinguished.
+
+### Line-by-line verification standard
+
+For every final buyer/vendor record, verify as much as publicly available:
+
+- canonical business/organization name;
+- correct Arizona market / service territory;
+- correct buyer/vendor role;
+- correct service/category fit;
+- direct website if available;
+- source URL and source type;
+- public phone;
+- public email;
+- address/service territory if relevant;
+- licensing/credential information where the category requires it;
+- duplicate/stale status;
+- whether source is:
+  - direct/official;
+  - established secondary directory/association/chamber;
+  - ordinary discovery;
+  - weak/untrusted;
+- whether the record is:
+  - discovery only;
+  - corroborated;
+  - directly verified;
+  - stale/reject.
+
+Do not silently delete history; quarantine/supersede stale evidence where useful.
+
+### Research-bootstrap implementation strategy
+
+The preferred next engineering/research phase is:
+
+1. Use ChatGPT/web search to research market/category batches directly.
+2. Produce structured seed data with provenance, e.g. JSON/CSV/SQL records containing:
+   - market;
+   - side;
+   - category/service;
+   - business name;
+   - source URL/domain;
+   - discovered phone/email/site;
+   - source tier;
+   - verification status;
+   - evidence notes;
+   - researched timestamp.
+3. Commit those seed artifacts to GitHub.
+4. Add/verify idempotent import/upsert tooling so the VPS can ingest them safely without duplicating existing records.
+5. Never enable outreach merely because a seed import happened.
+6. Let the VPS scanner continue afterward for new discoveries and refresh.
+7. Build board/reporting so empty/untouched/verified are distinct concepts.
+8. Audit records line by line with Brett before launch.
+
+### Safety and launch state
+
+Current policy remains:
+- no vendor outreach without explicit Brett approval;
+- no buyer outreach without explicit Brett approval;
+- no Growth Pack outreach without explicit Brett approval;
+- no automatic procurement bidding;
+- no private-group scraping/bypass;
+- no automatic contact to individual social/community posters;
+- no provider auto-approval.
+
+The business is **not launch-ready** merely because infrastructure works or legacy queues are drained.
+
+### Immediate next-thread instruction
+
+The next assistant should **not** restart with “let the scheduler run and see what it finds.”
+
+Instead:
+1. read this Section 55 and the new top override in `NEXT_THREAD.md`;
+2. verify the pending fair-coverage deploy;
+3. keep outreach OFF;
+4. begin active assistant-led research seeding;
+5. eliminate false-empty market/category cells;
+6. then conduct the planned line-by-line verification with Brett.
+
+
+
+## 56. STATEWIDE ASSISTANT-LED BOOTSTRAP ENGINE — 2026-10-26
+
+This section continues Section 55 and records the actual implementation now underway.
+
+### User expectation
+
+Brett expects the initial statewide research pool to contain **thousands of plausible businesses/buyers/vendors**, not dozens, because ordinary public search clearly exposes large numbers of organizations in every meaningful Arizona market.
+
+The assistant must continue doing the bootstrap work rather than waiting for the old VPS scanner to crawl 1,239 lanes slowly.
+
+### First hand-researched rural seed
+
+A first manually researched rural batch was committed:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-batch-01.json`
+- `portfolio/automation/seed-assistant-research-bootstrap.sql`
+
+It contains approximately 50 discovery/direct-evidence records across difficult small markets such as:
+- Ash Fork;
+- Mayer;
+- Cordes Lakes;
+- Williamson Valley;
+- Seligman;
+- Skull Valley;
+- Dewey-Humboldt;
+- Golden Valley.
+
+These records are discovery/research rows only. They do not auto-promote providers/buyers and do not send outreach.
+
+### Discovery-table dedupe flaw fixed
+
+The prior unique key effectively allowed only one candidate per:
+- side;
+- market;
+- category;
+- source URL.
+
+That meant one chamber/directory/category page listing many businesses could contribute only one candidate.
+
+This was changed so multiple distinct businesses may be supported by the same directory/category source while deduplicating the business/source pair.
+
+Relevant commits include:
+- `b897084f3b4299e5cbaca0901affd9b18625f8cb`
+- `88b189799002a0e6aa4f8dbead14233c449c0f49`
+- `ea6a9eb370c7c455bcf6dff057d97eef313cd375`
+
+### Statewide curated directory bootstrap importer
+
+New:
+- `portfolio/automation/assistant-directory-bootstrap.py`
+- `portfolio/data/assistant-bootstrap-source-registry.json`
+
+The importer uses public city/category directory pages selected by ChatGPT as discovery feeders.
+
+Current curated market set:
+- all 21 configured BMC markets.
+
+Current feed families include:
+- restaurants and bars;
+- educational services;
+- healthcare;
+- shopping;
+- government;
+- housing;
+- insurance;
+- automotive services;
+- construction;
+- electrical;
+- consumer services;
+- environmental services.
+
+The importer:
+- fetches only public pages;
+- extracts distinct company names;
+- captures visible phone/address where available;
+- uses the individual company page as the source URL when exposed;
+- classifies the company into a BMC buyer/vendor lane;
+- inserts only into `market_inventory_candidates`;
+- does not promote to base buyer/vendor tables;
+- does not stage outreach;
+- does not send email;
+- does not approve providers.
+
+This is intentionally **discovery bootstrap**, not verification.
+
+A safe allowlisted VPS relay action was added:
+- `assistant_bootstrap_import`
+
+It is an internal mutating action and therefore inherits the relay requirement that all outbound switches remain OFF.
+
+### Source quality is now explicit
+
+The candidate table now has explicit fields:
+- `source_tier`
+- `verification_status`
+- `last_verified_at`
+
+Current intended semantics:
+
+Source tier examples:
+- `direct`
+- `secondary`
+- `directory`
+- `search`
+- `weak`
+
+Verification status examples:
+- `discovery`
+- `direct_evidence`
+- later `manual_verified`
+- later `credential_verified`
+- `stale`
+- `rejected`
+
+The bulk public-directory importer writes:
+- `source_tier=directory`
+- `verification_status=discovery`
+
+Search-scanner direct pages use:
+- `source_tier=direct`
+- `verification_status=direct_evidence`
+
+This is specifically to prevent a repeat of the earlier reporting mistake where any source URL was visually treated like equally strong evidence.
+
+### Production proof now reports evidence tiers
+
+`production-proof-readout.sh` now includes candidate counts grouped by:
+- source tier;
+- verification status.
+
+It also separately reports:
+- base records;
+- search-discovered rows;
+- direct/verified-style evidence;
+- lane scan state.
+
+### Public source validation performed during this build
+
+The assistant confirmed public category pages with hundreds/thousands of records exist for markets including:
+- Kingman;
+- Winslow;
+- Camp Verde;
+- Chino Valley;
+- Prescott Valley;
+- Prescott;
+- Flagstaff;
+- Mayer;
+- Ash Fork;
+- Skull Valley;
+- Golden Valley.
+
+Examples of visible category depths:
+- Kingman automotive: hundreds;
+- Kingman construction: over a thousand;
+- Prescott Valley construction: over a thousand;
+- Chino Valley construction: hundreds;
+- Camp Verde construction: hundreds;
+- Winslow total directory: over a thousand;
+- Flagstaff total directory: many thousands.
+
+This proves the old apparent zeroes were not credible market reality.
+
+Some market names do not map cleanly to the same directory slug:
+- Cordes Lakes;
+- Dewey-Humboldt;
+- Williamson Valley.
+
+Those should continue using direct-search/manual/bootstrap sources rather than forcing a bad directory alias.
+
+### Important deployment state
+
+An earlier deploy request targeting:
+- `f9e75b35381bb8578af837a2e2db1cc399baec97`
+
+became obsolete because source-tier/schema/importer work continued afterward.
+
+Do not treat that older request as the intended final bootstrap deployment.
+
+Before production import:
+1. verify latest master;
+2. require BMC Portfolio CI success on that exact SHA;
+3. deploy the latest SHA through the VPS relay;
+4. keep all outreach switches OFF;
+5. run the assistant bootstrap importer in controlled market batches;
+6. inspect production row counts and evidence tiers;
+7. continue with remaining markets/source families until statewide discovery reaches the expected thousands.
+
+### Audit plan remains mandatory
+
+Thousands of discovery rows are not the same as thousands of verified companies.
+
+After bootstrap:
+- dedupe;
+- identify stale entries;
+- replace stale URLs;
+- direct-site verify;
+- verify service territory/category;
+- verify public contact data;
+- credential-check regulated services;
+- mark records line by line with Brett.
+
+The VPS scanner should thereafter operate as a delta/update layer, not as a substitute for the bootstrap.
+
+
+
+### Section 56 follow-up — final pre-deploy bootstrap corrections
+
+Two implementation issues were caught before the statewide importer was allowed to touch production:
+
+1. The hand-researched SQL seed was briefly inconsistent after adding `source_tier`, `verification_status`, and `last_verified_at`. It was fully regenerated from the canonical JSON artifact rather than patched by string replacement.
+   - corrected seed commit: `85277b331c311253138193d0e1894e68834aab15`
+2. The bulk directory importer had an unused first-draft parser and its conflict-update path did not refresh the new evidence-tier fields.
+   - cleanup/evidence-refresh commit: `979552c1e36d6669ff5de5dd69be4716ae9bcb3a`
+   - CI was strengthened afterward to prevent regression.
+
+Do not use any earlier bootstrap deployment request. They target stale SHAs by design and should be rejected by the relay's exact-SHA guard.
+
+The next deploy must target the current master after this handoff update and must pass BMC Portfolio CI before the relay will execute it.
+
+
+## 56. EXHAUSTIVE MARKET ENUMERATION BOOTSTRAP — 2026-10-26
+
+Brett clarified the research target again: do not stop at “multiple local candidates per market.” The bootstrap objective is to enumerate **all publicly discoverable plausible candidates per configured market/category**, subject to reasonable deduplication and source provenance.
+
+### Current research state
+
+Assistant-led bootstrap batch 01 was created with **50 researched rural-market records** spanning Ash Fork, Mayer, Cordes Lakes, Williamson Valley, Seligman, Skull Valley, Dewey-Humboldt and Golden Valley.
+
+Artifacts:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-batch-01.json`
+- `portfolio/automation/seed-assistant-research-bootstrap.sql`
+
+The SQL seed:
+- inserts only into `market_inventory_candidates`;
+- is idempotent;
+- does not promote records into live vendors/buyers;
+- does not stage or send outreach;
+- preserves source quality / verification state in evidence JSON.
+
+Migration and CI were updated to ingest/test the assistant bootstrap seed.
+
+### Important ingestion defect fixed
+
+The prior inventory uniqueness rule was:
+`unique(side,market,category_key,source_url)`.
+
+That was too restrictive for directory/chamber/registry research because one directory page can legitimately contain dozens or hundreds of distinct businesses. Under the old key, the first business from a source page could block every other business from that same source URL.
+
+This was changed to dedupe by:
+`(side,market,category_key,source_url,business_name)`.
+
+Related commits:
+- `b897084f3b4299e5cbaca0901affd9b18625f8cb` — schema allows multiple businesses per source page;
+- `88b189799002a0e6aa4f8dbead14233c449c0f49` — API uses business+source dedupe;
+- `ea6a9eb370c7c455bcf6dff057d97eef313cd375` — bootstrap seed aligned to new dedupe key.
+
+### Scalable discovery path confirmed
+
+Public city/category directories expose enough records to make a statewide thousands-record bootstrap realistic.
+
+Examples found during the live research pass:
+- Prescott Yellow Pages business listing reports 4,281 businesses;
+- Mayer business listing reports 104;
+- Ash Fork reports 28;
+- Golden Valley exposes hundreds of listings;
+- Seligman plumber category reports 61;
+- Seligman restaurants reports 17;
+- Chino Valley plumbers contains many local entries;
+- Dewey-Humboldt category pages expose many service-area providers.
+
+These sources are **discovery feeders**, not automatic verification.
+
+### New research rule
+
+For each configured market:
+1. enumerate broad local business directory results;
+2. enumerate each BMC buyer category;
+3. enumerate each BMC vendor/service category;
+4. preserve every plausible unique business/organization candidate;
+5. retain phone/address/site where publicly visible;
+6. label source provenance and source tier;
+7. deduplicate across sources and categories without throwing away multi-source corroboration;
+8. direct-site / government / registry research later raises verification confidence;
+9. do not cap at a small arbitrary number when the source exposes more.
+
+The objective is a **statewide bootstrap in the thousands**, with large markets naturally containing hundreds or thousands and rural markets containing all discoverable local + serving-area candidates.
+
+### Current limitation / honesty rule
+
+At this checkpoint, the repository contains the initial 50-record assistant bootstrap batch plus the ingestion/schema changes. The thousands-record enumeration is **in progress**, not complete.
+
+Do not claim the full statewide bootstrap is finished until actual committed row counts support that claim.
+
+### Next actions
+
+1. Continue market-by-market enumeration, beginning with public directory/category pages and direct sources.
+2. Build batch artifacts large enough to materially move coverage counts.
+3. Commit each batch with provenance.
+4. Deploy only after CI is green; outreach remains OFF.
+5. Use VPS automation afterward for delta/new-record detection and refresh.
+6. Continue periodic HANDOFF updates so conversation changes do not lose state.
+
+
+
+## 57. CONTINUOUS EXHAUSTIVE DISCOVERY + CLOSURE REFRESH — 2026-10-26
+
+This section supersedes older inventory language that treated research depth targets as terminal completion.
+
+### Current master at this checkpoint
+
+Latest observed master:
+- `b28e9b67b0a086626d80c8d3fd42ad1523c54836`
+- commit message: **Test paginated exhaustive directory crawl**
+
+CI/deployment note:
+- GitHub combined status had not yet reported a completed status for this exact SHA when this handoff section was written.
+- Therefore do **not** assume this exact master is green or deployed until a successful BMC Portfolio CI run and production relay proof are confirmed.
+
+### Open-ended inventory is implemented in code
+
+The inventory worker no longer stops because an arbitrary numeric target was met.
+
+Current behavior:
+- every market/category lane remains eligible for future refresh;
+- a complete search pass transitions the lane to `monitoring`, not terminal complete;
+- cursor resets to page 1 / variant 0 for later refresh;
+- `scan_cycles` increments each full cycle;
+- `last_full_scan_at` records the latest completed cycle;
+- old `scan_complete_target_met` / `scan_complete_under_target` states are migrated back to active monitoring;
+- depth targets remain useful as reporting goals only and do not stop discovery.
+
+Current search cycle:
+- up to 8 query variants;
+- up to 4 result pages per variant;
+- full cycle then repeats later.
+
+### Candidate lifecycle / closure tracking
+
+`market_inventory_candidates` now has:
+- `first_seen_at`
+- `last_seen_at`
+- `closed_at`
+- `closure_reason`
+- `source_tier`
+- `verification_status`
+- `last_verified_at`
+
+The market search worker checks result text for credible closure evidence. When closure evidence is returned:
+- candidate status becomes `closed`;
+- `closed_at` and `closure_reason` are recorded;
+- closed records no longer count as active discovery/direct coverage;
+- history is preserved rather than silently deleted.
+
+This is the beginning of the requested ability to remove closed businesses from active coverage while retaining audit history.
+
+### Exhaustive public-directory bootstrap
+
+Current importer:
+- `portfolio/automation/assistant-directory-bootstrap.py`
+
+It covers all 21 configured BMC markets and has broadened feed families including:
+- restaurants/bars;
+- education;
+- healthcare;
+- shopping;
+- government;
+- housing;
+- insurance;
+- automotive;
+- construction;
+- electrical;
+- consumer services;
+- environmental services;
+- travel/leisure;
+- real estate;
+- professional services;
+- nonprofits;
+- food;
+- pharmaceuticals;
+- industrial machinery;
+- manufacturing;
+- transportation;
+- storage.
+
+It:
+- follows public WhereOrg category pages;
+- recursively discovers more specific subcategory pages;
+- follows pagination pages such as `-02`, `-03`, etc.;
+- extracts individual business pages, phone/address where visible;
+- classifies rows into BMC buyer/vendor lanes;
+- inserts them as discovery evidence only;
+- does not promote providers/buyers;
+- does not stage outreach;
+- does not send anything.
+
+The previous one-page/sample behavior has been replaced with paginated enumeration.
+
+### Bulk refresh commands
+
+New:
+- `portfolio/automation/research-source-refresh.sh`
+
+Modes:
+- `directory`
+- `licensed`
+- `all`
+
+Directory refresh currently runs:
+- up to 500 candidates per feed;
+- up to 1500 discovered pages per market;
+- 0.20 second inter-request delay.
+
+It refuses to run unless all three outbound switches are OFF.
+
+### Continuous timers
+
+New:
+- `portfolio/automation/install-research-refresh-timers.sh`
+
+Intended production cadence:
+- public directory discovery refresh: daily;
+- licensed-trade discovery refresh: weekly.
+
+The installer uses systemd timers and requires the VPS service user to have passwordless sudo for installation.
+
+Do not assume the timers are installed until the relay action/result proves it.
+
+### VPS relay support
+
+Current relay allowlist includes:
+- `assistant_bootstrap_import`
+- `assistant_licensed_bootstrap_import`
+- `research_refresh_install`
+- `research_refresh_status`
+
+Mutating research actions still require all outbound switches OFF.
+
+The directory bootstrap relay now supports large exhaustive parameters:
+- max_per_feed up to 500;
+- max_pages_per_market up to 2500.
+
+### Important current limitation
+
+The architecture for exhaustive discovery and refresh is now substantially built, but the actual production database has **not yet been proven to contain the expected statewide thousands from this new exhaustive importer** at this checkpoint.
+
+The next assistant must not confuse:
+- code capable of exhaustive crawling
+with
+- production crawl already completed.
+
+### Immediate next actions
+
+1. Verify BMC Portfolio CI success on the exact latest master.
+2. Deploy that exact tested SHA through the relay.
+3. Confirm all outreach switches remain OFF.
+4. Run exhaustive assistant directory bootstrap across all 21 markets.
+5. Run licensed-trade bootstrap.
+6. Capture actual production counts by:
+   - market;
+   - buyer/vendor side;
+   - category;
+   - source tier;
+   - verification status;
+   - closed status.
+7. Install/verify research refresh timers.
+8. Run fresh production proof.
+9. Continue assistant-led direct-site/manual research for gaps and weak classifications.
+10. Begin the planned line-by-line verification with Brett after the bootstrap population is materially complete.
+
+
+
+## 57. STATEWIDE BOOTSTRAP CROSSED 15K + CONTINUOUS RESEARCH DEPLOYED — 2026-10-26
+
+This section supersedes any older handoff wording that describes the inventory as only a few hundred candidates.
+
+### Actual production bootstrap result
+
+The first assistant-driven all-market WhereOrg bulk import completed successfully on production.
+
+Relay request:
+- `assistant-bootstrap-all-markets-20261026T2208Z`
+
+Production commit during that import:
+- `9d1d2edc47ff307205c1e88e7e266b4a5491465c`
+
+Import result:
+- 21 configured markets attempted;
+- 252 category feeds attempted;
+- 209 succeeded;
+- 43 returned 404;
+- 11,618 raw company rows read;
+- **9,519 classified discovery candidates inserted/updated**.
+
+Per-market classified counts from this first pass:
+- Ash Fork 66
+- Bullhead City 633
+- Camp Verde 493
+- Chino Valley 485
+- Cordes Lakes 6
+- Cottonwood 641
+- Dewey-Humboldt 0 from the literal WhereOrg slug
+- Flagstaff 785
+- Golden Valley 253
+- Kingman 712
+- Mayer 221
+- Phoenix 909
+- Prescott 784
+- Prescott Valley 664
+- Scottsdale 864
+- Sedona 462
+- Seligman 107
+- Skull Valley 31
+- Tucson 909
+- Williamson Valley 0 from the literal WhereOrg slug
+- Winslow 494
+
+No outbound action occurred:
+- OUTREACH_ENABLED=false
+- BUYER_OUTREACH_ENABLED=false
+- GROWTH_OUTREACH_ENABLED=false
+
+### Fresh production proof after import
+
+Proof request:
+- `bootstrap-proof-20261026T2208Z`
+
+At that checkpoint:
+- **15,185 active v7 inventory candidates**
+- direct/direct-evidence: 211
+- directory/discovery: 14,859
+- discovery/discovery: 97
+- secondary/discovery: 18
+- 11 candidates with email
+- 14,362 candidates with phone
+- 829 superseded historical candidates
+
+Examples of market-side search-discovered counts at that checkpoint:
+- Kingman buyer 821 / vendor 343
+- Phoenix buyer 1,073 / vendor 599
+- Prescott buyer 933 / vendor 409
+- Prescott Valley buyer 627 / vendor 361
+- Flagstaff buyer 965 / vendor 424
+- Scottsdale buyer 1,046 / vendor 557
+- Tucson buyer 1,138 / vendor 575
+- Bullhead City buyer 674 / vendor 479
+- Cottonwood buyer 651 / vendor 294
+
+These are discovery records, not automatically verified/prospects approved for outreach.
+
+### Important quality caveat
+
+The first 9,519 import used the older fixed-feed WhereOrg importer. It still materially solved the “nothing is being researched” problem, but it was **not exhaustive** because large WhereOrg categories paginate.
+
+A live inspection proved WhereOrg pagination URLs:
+- base page
+- `-02`
+- `-03`
+- etc.
+
+Example: a 508-result category exposes pages 1–5.
+
+The upgraded importer now follows:
+- market root;
+- discovered subcategories;
+- all discovered pagination pages.
+
+Therefore the next exhaustive run should materially exceed the first 9,519 where sources expose additional pages.
+
+### Dewey-Humboldt alias correction
+
+The public directories commonly use **Dewey, AZ** rather than the municipal label Dewey-Humboldt.
+
+Current evidence:
+- WhereOrg reports 846 companies under Dewey;
+- Enigma reports 259 Dewey entities;
+- public business search returns many live Dewey/Humboldt businesses.
+
+The importer market slug was corrected:
+- Dewey-Humboldt -> `dewey`
+
+Do not interpret the prior 0 as market scarcity.
+
+### Williamson Valley interpretation
+
+Williamson Valley behaves more like a Prescott-area service territory/community than an independent directory city.
+
+Direct service-area research already supports multiple vendors serving Williamson Valley, including plumbing, HVAC/electrical, landscaping, tree service and related trades.
+
+Buyer discovery should use:
+- Williamson Valley addresses;
+- Williamson Valley Road / Prescott 86305 entities;
+- local community/church/school/property organizations;
+- service-territory evidence;
+rather than expecting a standalone city directory page.
+
+### Open-ended inventory system deployed
+
+CI-gated deploy:
+- deployed commit `6548ddb55a6cf3fc3f7a07b3cce78738e772d011`
+- BMC Portfolio CI success run: **40411170657**
+- relay deploy status: success
+- production runtime doctor: 0 core failures / 0 warnings
+- scheduler was intentionally stopped before deploy and remained stopped
+- all outreach switches remained OFF
+
+This deployed tree includes:
+- candidate first_seen_at / last_seen_at;
+- closed_at / closure_reason;
+- scan_cycles / last_full_scan_at;
+- expanded ordinary-search query variants;
+- explicit permanent-closure phrase detection;
+- closed candidates excluded from active discovery counts;
+- full scan cycles reset into `monitoring` instead of terminal “target met” states;
+- first-cycle launch semantics instead of numeric target completion;
+- general local business buyer lane;
+- initial licensed-trade importer and relay action;
+- daily/weekly refresh timer code/actions.
+
+### Open-ended research rule
+
+Numeric inventory targets are now advisory depth goals only.
+
+The system must never stop researching because a count was reached.
+
+After a lane finishes a full ordinary-search cycle:
+- increment scan_cycles;
+- record last_full_scan_at;
+- reset search cursor;
+- status becomes monitoring;
+- the lane remains eligible for future refresh forever.
+
+### Closed-business rule
+
+Explicit permanent-closure evidence can set a candidate status to `closed`.
+
+Closed candidates:
+- remain stored for audit/history;
+- are excluded from active coverage;
+- carry closure reason/time;
+- can be reopened if later rediscovered active.
+
+Do not treat “closed now” / normal business hours as permanent closure.
+
+### Further improvements committed after deployed 6548 tree
+
+Newer master work not yet production-confirmed at the moment this section was written includes:
+- exhaustive WhereOrg category-graph crawl;
+- pagination following;
+- up to a high technical page safety ceiling, not a business target;
+- Dewey-Humboldt -> Dewey directory alias;
+- deeper relay limits;
+- licensed-trade bulk import from Homversa/ROC-derived public data;
+- managed research refresh scripts/timers.
+
+Current pagination example proved that the old first-page-only logic could miss hundreds of records in one category.
+
+### Pending at this handoff checkpoint
+
+Relay requests in progress:
+- `licensed-bootstrap-all-markets-20261026T2218Z`
+- `install-research-refresh-timers-20261026T2218Z`
+
+A deploy request for the first pagination SHA was rejected safely because CI had not yet completed. This was expected guard behavior.
+
+The current master has advanced beyond that SHA. Verify current master + CI and deploy the exact green head before rerunning the exhaustive paginated bootstrap.
+
+### Correct next actions
+
+1. Poll licensed-bootstrap and timer-install relay results.
+2. Verify latest master CI.
+3. Deploy latest green master.
+4. Run the upgraded paginated `assistant_bootstrap_import` across all markets with high page ceiling.
+5. Re-run licensed-trade bootstrap on the latest build if needed.
+6. Run proof and count:
+   - active candidates total;
+   - closed candidates;
+   - by market;
+   - by side;
+   - by category;
+   - by source tier;
+   - duplicate/entity-level cleanup needs.
+7. Keep scheduler/outreach safe while validating.
+8. Once bulk bootstrap is stable, enable the internal scheduler only with all outbound switches still OFF.
+9. Verify daily public-directory timer and weekly licensed-trade timer.
+10. Continue adding public source families and direct verification feeds.
+11. Never revert to capped “target met = stop” semantics.
+
+
+
+## 58. MANUAL-FIRST STATEWIDE CENSUS HANDOFF — 2026-10-26 17:31 ARIZONA
+
+This section is the authoritative continuation point for the next conversation. It supersedes older instructions that put VPS crawling/deployment ahead of the assistant-led initial census.
+
+### Brett's explicit operating rule
+
+The initial business census must be built out by the assistant through research first.
+
+The VPS is **not** the substitute for the initial census.
+
+Correct division of labor:
+1. assistant manually/research-source builds the largest practical initial list across all 21 markets and all useful buyer/vendor categories;
+2. direct/official/license evidence upgrades the strongest records;
+3. keep expanding source families and categories until obvious market gaps are gone;
+4. only after that initial census is materially built does the VPS become the maintenance layer for:
+   - recurring refresh;
+   - new-business detection;
+   - closure detection;
+   - contact refresh;
+   - verification upgrades;
+   - delta discovery.
+
+Do not revert to "the crawler can find the rest later" as an excuse to stop the assistant-led build.
+
+Do not treat numeric targets as terminal completion. All markets remain open-ended.
+
+### Current repository head
+
+Latest observed master when this section was written:
+- `2cbf2be65c360ec0d41010d117108da35644ae67`
+- message: **Seed 9 Williamson Valley facility census records**
+
+The repo contains all of the manual census work described below.
+
+### What has been built manually since the 15K production bootstrap
+
+The original production proof before this manual expansion showed:
+- 15,185 active v7 inventory candidates;
+- most were directory/discovery evidence from the first large WhereOrg import.
+
+After Brett clarified that the assistant must build the census first rather than relying on the VPS to discover the initial universe, the assistant began explicit market-by-market batches.
+
+From explicit seeded commit counts, the new manual/research-source work accounts for **at least 7,879 seeded evidence rows across all 21 markets**.
+
+IMPORTANT:
+- 7,879 is an evidence-row count, **not a distinct-business count**.
+- A single company can legitimately appear in multiple service categories.
+- A later direct/verified record can coexist with earlier directory evidence for the same business.
+- License records can represent the same company under more than one classification.
+- The final distinct-company count must be obtained from the business-level rollup/audit view, not by summing raw evidence rows.
+
+### Explicit per-market manual seed accounting
+
+The following counts are from named seed commits and are safe as evidence-row accounting:
+
+- Prescott: 185 buyer + 147 vendor + 20 verified = **352**
+- Prescott Valley: 111 buyer + 106 vendor + 14 verified = **231**
+- Chino Valley: 89 buyer + 61 vendor + 10 verified = **160**
+- Dewey-Humboldt: 122 census + 116 category + 10 verified + 121 business + 38 agriculture/storage = **407**
+- Mayer: **132**
+- Cordes Lakes: **62**
+- Williamson Valley: 19 rural + 9 facility = **28**, plus the earlier direct/corroborated Williamson Valley seed already present in the repo
+- Ash Fork: **99**
+- Seligman: **115**
+- Skull Valley: **58**
+- Camp Verde: 155 broad + 16 verified = **171**
+- Cottonwood: 112 broad + 15 verified = **127**
+- Sedona: 116 broad + 15 verified = **131**
+- Flagstaff: 155 buyer + 46 vendor + 14 verified = **215**
+- Winslow: 80 broad + 11 verified = **91**
+- Kingman: 132 broad + 51 verified + 68 trade + 61 buyer = **312**
+- Golden Valley: **84**
+- Bullhead City: 139 buyer + 64 trade + 14 verified = **217**
+- Phoenix: 115 hospitality/retail + 135 health/professional + 74 industrial/public + 272 licensed vendors + 14 verified = **610**
+- Scottsdale: 156 buyer + 28 vendor + 291 licensed vendor + 12 verified = **487**
+- Tucson: explicit seeded batches total **3,790** evidence rows; see Tucson detail below.
+
+Total of the explicit counts above: **7,879** evidence rows, before adding the earlier Williamson direct/corroborated seed and before counting other pre-existing assistant bootstrap evidence.
+
+### Tucson is no longer a sample
+
+Tucson received a much deeper licensed-trade enumeration.
+
+Explicit seeded Tucson work:
+- 156 buyer census
+- 29 vendor census
+- 10 verified
+- 20 specialized vendor
+- 327 electrical licenses
+- 312 plumbing licenses
+- 358 HVAC licenses
+- 85 low-voltage + insulation licenses
+- 29 septic + well licenses
+- 136 concrete + fence + paving licenses
+- 81 pool licenses
+- 201 landscaping licenses
+- 192 roofing licenses
+- 183 masonry + drywall + tile licenses
+- 80 flooring licenses
+- 99 glass + stucco licenses
+- 330 painter + carpentry licenses
+- general contractor batches: 310 + 300 + 300 + 252
+
+Explicit Tucson seeded evidence total: **3,790**.
+
+Do not reduce Tucson back to a tiny sample. Continue with buyer-side categories/direct-site verification where useful, but the vendor universe has been materially enumerated.
+
+### Scottsdale state
+
+Seeded Scottsdale evidence currently includes:
+- 156 buyer records
+- 28 vendor records
+- 291 licensed vendor records
+- 12 verified/direct records
+
+That is **487 seeded evidence rows** from the explicit seeded batches.
+
+Important orphan/cleanup artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-scottsdale-batch-01.json`
+- commit `346579cf3ba2e1e9396fa9e3585dbd2395bf7ed3`
+- JSON count: **149**
+- purpose: metro-scale hospitality, health, professional, property and service-vendor census.
+
+There is no correspondingly named "Seed 149 Scottsdale census records" commit.
+Instead, separate 156-buyer and 28-vendor seed commits exist.
+
+NEXT INSTANCE MUST:
+1. compare this 149-record JSON against the seeded Scottsdale records;
+2. preserve/add unique records;
+3. do not double-insert obvious duplicates;
+4. do not simply assume the 149 were loaded.
+
+### Phoenix state
+
+Phoenix explicit manual/curated seeded evidence:
+- 115 hospitality/retail
+- 135 health/professional
+- 74 industrial/public
+- 272 licensed vendors
+- 14 verified/direct
+
+Total: **610** evidence rows.
+
+Phoenix still merits continued expansion because of its size. Do not mistake 610 evidence rows for an exhaustive Phoenix business census.
+
+### Regional/rural state
+
+The rural and regional markets are no longer empty placeholders.
+
+Examples:
+- Kingman: 312 explicit rows
+- Dewey-Humboldt: 407 explicit rows
+- Prescott: 352
+- Prescott Valley: 231
+- Bullhead City: 217
+- Flagstaff: 215
+- Camp Verde: 171
+- Chino Valley: 160
+- Mayer: 132
+- Sedona: 131
+- Cottonwood: 127
+- Seligman: 115
+- Ash Fork: 99
+- Winslow: 91
+- Golden Valley: 84
+- Cordes Lakes: 62
+- Skull Valley: 58
+- Williamson Valley: 28 new explicit rows plus earlier direct/corroborated research.
+
+The next assistant should still research gaps. "Has a batch" does not mean "complete forever."
+
+### Source/evidence philosophy
+
+Keep the layered evidence model:
+
+Discovery evidence:
+- chamber/business directories
+- municipal/economic-development directories
+- local directories
+- broad public listings
+- tourism directories
+- public business lists
+
+Direct/verified evidence:
+- official business site
+- government site
+- school/district site
+- official hospital/provider source
+- current license/registry data
+- credible direct service-area page
+- official hotel/chain property page
+
+Do not promote a directory hit to verified merely because it exists.
+
+Preserve multi-source evidence rather than throwing away corroboration.
+
+### Critical safety rule
+
+All outbound switches must remain OFF during census work:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+Manual census seeding:
+- must not send;
+- must not stage outreach;
+- must not auto-approve providers;
+- must not mutate payment credentials.
+
+### Production vs repository distinction
+
+Do not claim the 7,879 manual evidence rows are in production yet.
+
+Last proven production checkpoint in the handoff was the 15,185 active-v7 proof after the first bulk directory bootstrap.
+
+The new manual census rows are definitely committed/seeded in the repository, but the latest master is **not currently green**, so production deployment of this entire expanded seed has not been proven.
+
+This distinction is mandatory in user updates.
+
+### Current CI blocker
+
+Latest checked CI:
+- run: **40426359834**
+- SHA: `2cbf2be65c360ec0d41010d117108da35644ae67`
+- result: **failure**
+- failing job: `validate`
+- failing step: **Boot database and API smoke test**
+
+Important: this is NOT a broad database/API collapse.
+
+The failing run proved:
+- PostgreSQL initialized;
+- migrations/seeds executed without a SQL fatal error;
+- Ops API built and started;
+- health returned 200;
+- admin/preflight endpoints returned 200;
+- service-search calls returned 200;
+- provider funnel / launch-cell calls returned 200;
+- public opportunities call returned 200;
+- local-demand call returned 200;
+- local-demand coverage call returned 200;
+- `runtime-doctor.sh .env.ci` reported:
+  - **Core failures: 0**
+  - warnings only.
+
+The shell step then exited 1.
+
+From the API request sequence, the failure occurs **after the local-demand coverage assertions and before the CI ever calls `/api/admin/market-inventory-coverage`**.
+
+Therefore the likely failing boundary is one of the shell inventory assertions immediately before that endpoint:
+- expected vs actual `market_inventory_progress` lane count;
+- original assistant bootstrap source count;
+- original bootstrap distinct-market count;
+- Williamson bootstrap source count;
+- distinct inventory-market count.
+
+Do not waste time re-debugging Postgres startup or API health.
+
+Correct next CI action:
+1. instrument/echo each of those inventory assertion values;
+2. identify the first mismatching test;
+3. decide whether the application state is wrong or the old CI expectation is stale after the census expansion;
+4. fix the minimum correct thing;
+5. require green CI before deployment.
+
+Do NOT weaken a valid safety or integrity assertion merely to get green.
+
+### Continuous maintenance architecture state
+
+The repo also contains the continuous maintenance layer:
+- open-ended inventory cycles;
+- no "target reached = permanently stop";
+- closure audit and closure metadata;
+- directory pagination/category traversal;
+- licensed-trade importer;
+- Docker-managed `research_refresher`;
+- database-backed refresh cadence;
+- VPS GitOps relay with allowlisted actions.
+
+But Brett's priority remains:
+**initial census first, VPS maintenance second.**
+
+Do not get distracted into rebuilding the maintenance architecture unless it blocks safe census deployment.
+
+### Existing production bootstrap context
+
+Earlier production proof:
+- initial all-market WhereOrg import inserted/updated 9,519 classified discovery candidates;
+- production proof then showed 15,185 active v7 candidates.
+
+The new manual 7,879-row expansion should be thought of as:
+- targeted census enrichment;
+- better rural/regional coverage;
+- much deeper licensed-trade coverage;
+- more buyer/facility categories;
+- more direct verification.
+
+It is additive to the earlier production discovery universe, but overlap must be deduplicated at entity/business level.
+
+### Business-level dedupe/audit work already exists
+
+During the census build, repo commits added business-level inventory rollup/audit surfaces.
+
+Use them after the seed is green/deployed to answer:
+- how many distinct businesses, not evidence rows?
+- where do multiple categories point to the same business?
+- where do directory + official-site evidence corroborate the same entity?
+- which names/phones/addresses are likely duplicates?
+- which records are closed?
+- which direct evidence should supersede weaker discovery evidence for ranking while preserving provenance?
+
+Do not delete evidence just to make the raw row number smaller.
+
+### Immediate next-conversation checklist
+
+The next assistant should start here, in this order:
+
+1. **Read this section first.**
+2. Confirm current master has not advanced beyond `2cbf2be...`.
+3. Check the newest CI run; if still failing at the same smoke-test boundary, instrument the inventory assertions and fix that regression.
+4. Audit the orphan 149-record Scottsdale JSON against the seeded Scottsdale rows and seed unique records only.
+5. Audit for any other JSON census artifacts that were committed but never appended to `seed-assistant-research-bootstrap.sql`.
+6. Continue assistant-led manual census expansion, especially:
+   - Phoenix buyer/vendor categories still underrepresented for its size;
+   - Scottsdale buyer/vendor/direct verification expansion;
+   - Tucson buyer-side/institutional/commercial-facility expansion after the huge licensed-vendor build;
+   - Williamson Valley facilities/service-territory evidence;
+   - any obvious category gaps discovered in rural/regional markets.
+7. Keep direct/official verification passes running behind broad census passes.
+8. Do **not** declare the initial census "finished" merely because all 21 markets have rows.
+9. Once CI is green, deploy the exact green master through the safe relay with all outbound switches OFF.
+10. Run production migrations/seeds and capture fresh production proof.
+11. Use business-level rollup to report actual distinct-business counts by:
+    - market;
+    - buyer/vendor side;
+    - category;
+    - verification tier;
+    - active/closed status.
+12. Only after the manual initial census is materially exhausted should the VPS refresher become the primary ongoing discovery mechanism.
+
+### What to tell Brett in the next chat
+
+The truthful short version:
+
+- The assistant-led census has expanded across all 21 markets.
+- Explicit new manual/curated seed commits account for at least **7,879 evidence rows**, with Tucson alone at about **3,790**.
+- These are not all distinct businesses because multi-category/license/direct-evidence overlap is intentional.
+- The repository work is intact.
+- The newest master is not yet deployable because CI is failing in a narrow inventory smoke-test assertion after the database/API have already proven healthy.
+- Fix that assertion regression first, then continue census expansion and deploy/prove actual distinct production counts.
+- The VPS remains the future maintenance layer, not the substitute for the assistant-built initial census.
+
+
+---
+
+# 59. CENSUS RECOVERY + PHOENIX EXHAUSTIVE EXPANSION — 2026-10-26 17:59 ARIZONA
+
+## Brett's governing instruction remains unchanged
+
+**BUILD THE INITIAL BUSINESS DATABASE THROUGH ASSISTANT-LED RESEARCH FIRST. THE VPS IS THE MAINTENANCE LAYER AFTERWARD.**
+
+Do not revert to "the VPS will discover the rest later" as a reason to stop the assistant-led initial census.
+
+Correct sequence remains:
+
+**Assistant-built census -> direct/official/license evidence -> entity dedupe/audit -> green CI -> exact tested deploy -> production proof -> continued assistant gap-filling -> VPS maintenance/delta discovery.**
+
+## Major integrity issue found and repaired
+
+The prior handoff said the large manual census was present in the repository but CI was failing in a narrow inventory assertion.
+
+Investigation found a more important underlying integrity problem:
+
+- \`portfolio/automation/seed-assistant-research-bootstrap.sql\` had been repeatedly overwritten by stale snapshots during the rapid census build.
+- The newest aggregate SQL file contained only the four Tucson general-contractor batches (1,162 rows), even though the individual JSON research artifacts were still intact.
+- The research itself was **not lost**.
+- The committed JSON artifacts under \`portfolio/data/assistant-research-bootstrap-*.json\` were the durable source of truth.
+
+This was repaired by adding:
+
+- \`portfolio/automation/build-assistant-research-seed.py\`
+- deterministic artifact-to-SQL census generation;
+- strict identity dedupe on \`side + market + category_key + source_url + business_name\`;
+- preservation of artifact/source provenance in \`evidence\`;
+- direct evidence / registry-derived evidence classification;
+- production migration now builds the census seed from the JSON artifacts every deploy instead of trusting the stale giant SQL snapshot.
+
+Important commits:
+- \`e70ef8dd371184de178f32e102f13cf0ce910bed\` — initial deterministic census builder
+- \`e697fbb1717c92d818c37bde4d92f8055f5a8ff8\` — coverage summaries by market/side
+- \`c24409814977e435b11d3173113b6f1a47245a3e\` — migrations seed from committed artifacts
+- \`7b5980953080e41b127579ecde7f46f9abd6e9cd\` — CI proves census artifacts and instruments inventory assertions
+
+## CI regression is fixed
+
+Green BMC Portfolio CI:
+- run: **40427994871**
+- tested SHA: \`7b5980953080e41b127579ecde7f46f9abd6e9cd\`
+- conclusion: **success**
+
+That run proved:
+- 74 census JSON artifacts;
+- 8,249 raw artifact evidence rows;
+- 8,018 strict unique generated seed rows;
+- all 21 markets represented;
+- 2,903 buyer raw rows;
+- 5,346 vendor raw rows;
+- 1,260 / 1,260 expected inventory lanes;
+- 8,018 / 8,018 artifact candidates loaded in smoke-test Postgres;
+- 21 / 21 artifact markets;
+- 21 / 21 progress markets;
+- runtime doctor: **Core failures: 0**.
+
+The old silent CI assertions were replaced with explicit printed values and artifact-derived expectations.
+
+## Scottsdale orphan artifact audit is resolved
+
+The previously suspicious file:
+\`portfolio/data/assistant-research-bootstrap-2026-10-26-scottsdale-batch-01.json\`
+
+contains 149 rows:
+- 121 buyer
+- 28 vendor
+
+Compared with the later Scottsdale files:
+- 19 rows were strict identity duplicates;
+- 60 rows overlapped at normalized business-entity level;
+- **89 rows represented business entities not present in the later Scottsdale batches**.
+
+Because the deterministic seed builder now consumes **all** committed assistant census artifacts and collapses strict duplicates, this artifact is no longer orphaned or at risk of being ignored.
+
+Do not manually re-add it to the old aggregate SQL file.
+
+## Production deployment of repaired census is proven
+
+Exact tested production deployment request:
+- \`deploy-census-artifact-repair-20261027T0043Z\`
+
+Production result:
+- status: **success**
+- exact deployed SHA: \`7b5980953080e41b127579ecde7f46f9abd6e9cd\`
+- CI proof: run **40427994871**
+- production host: \`vps-5675821a\`
+- all outbound switches remained OFF:
+  - \`OUTREACH_ENABLED=false\`
+  - \`BUYER_OUTREACH_ENABLED=false\`
+  - \`GROWTH_OUTREACH_ENABLED=false\`
+- migration generated and loaded 8,018 strict artifact seed rows;
+- production runtime doctor finished:
+  - **Core failures: 0**
+  - **warnings: 0**
+
+## Fresh production proof after repaired census
+
+Proof request:
+- \`proof-census-artifact-repair-20261027T0046Z\`
+
+Proof timestamp:
+- 2026-10-27T00:47:49Z
+
+Production inventory:
+- **24,176 active v7 evidence rows**
+- 0 closed v7 rows at that proof
+- 468 official/direct candidate rows
+- evidence tiers included:
+  - direct/direct_evidence: 466
+  - registry_derived/credential_corroborated: 4,583
+  - directory/discovery: 19,012
+  - other smaller corroborated/government/discovery tiers
+- candidate phone-ready active v7: 17,388
+- candidate email-ready active v7: 81
+- outreach sent: **0**
+- outreach replied: **0**
+
+This supersedes the old 15,185 active-v7 production checkpoint.
+
+Production is healthy, but outbound launch is intentionally still blocked because no verified provider is active and the continuous inventory/local-demand lane scans are not yet complete. That is separate from census database health.
+
+## Production market snapshot before the newest Phoenix expansion
+
+At the 00:47 production proof, Phoenix had:
+- buyer evidence rows: **1,403**
+- normalized buyer businesses: **1,306**
+- vendor evidence rows: **953**
+- normalized vendor businesses: **912**
+
+So Phoenix production at that checkpoint was:
+- **2,356 active evidence rows**
+- **2,218 normalized market/side business entries**
+
+This snapshot does **not** yet include the newest 98-location Phoenix grocery/pharmacy batch or the exhaustive 6,568-row Phoenix licensed-trade export described below.
+
+## Phoenix buyer expansion added after that production proof
+
+Commit:
+- \`6e0edbbd4167ad354536fe0c38a9869c113c3671\`
+
+Artifact:
+- \`portfolio/data/assistant-research-bootstrap-2026-10-26-phoenix-grocery-pharmacy-06.json\`
+
+Adds **98 direct/official Phoenix buyer facilities**:
+- 45 pharmacies
+- 53 grocery stores
+
+Sources are official chain/location pages for:
+- CVS
+- Walgreens
+- Fry's Food Stores
+- Safeway
+- Sprouts Farmers Market
+
+The prior explicit Phoenix artifact set had zero rows in the dedicated grocery and pharmacy categories, so this filled a real category gap rather than padding an already-dense category.
+
+CI for that commit:
+- run **40428633775**
+- conclusion: **success**
+
+## Phoenix licensed-vendor census is now exhaustive across the published trade pages
+
+The old Phoenix explicit vendor sample was only about 280 rows.
+
+A new assistant-controlled exhaustive exporter was built:
+- \`portfolio/automation/export-homversa-census-artifacts.py\`
+- workflow: \`.github/workflows/assistant-census-artifact-export.yml\`
+
+The exporter:
+- discovers every published Phoenix licensed trade page;
+- reads the published source count;
+- parses ranked + full A-to-Z license listings;
+- preserves company name, ROC license number, trade, verification date and source page;
+- **refuses to commit a trade if parsed count != published count**.
+
+Several source-layout edge cases were found during development.
+The completeness gate stopped bad parses at 373/374 and 375/374 plumbing instead of accepting them.
+The parser was corrected rather than weakening the gate.
+
+Successful exhaustive export:
+- workflow run: **40429651742**
+- result: **success**
+- artifact commit: \`fb5090a1d8aa2b70457ad6ea57301c6dd5b4f488\`
+- 22 new Phoenix licensed-trade JSON files
+- **6,568 raw licensed evidence rows**
+- every trade matched its published source count exactly
+
+Trade counts:
+- plumbers: 374
+- roofers: 240
+- electricians: 522
+- HVAC: 639
+- insulation contractors: 52
+- low-voltage contractors: 183
+- septic contractors: 13
+- well-drilling contractors: 6
+- general contractors: 1,954
+- concrete contractors: 146
+- painters: 384
+- drywall contractors: 203
+- flooring contractors: 286
+- masonry contractors: 65
+- tile contractors: 184
+- glass contractors: 111
+- carpentry contractors: 403
+- stucco contractors: 142
+- pool contractors: 242
+- landscaping: 341
+- fence contractors: 48
+- paving contractors: 30
+
+These are evidence rows, not necessarily 6,568 distinct companies.
+A company can hold multiple classifications and can appear in multiple service categories.
+Use the business rollup after deployment for distinct-company reporting.
+
+## Current artifact census scale before this handoff commit
+
+Before the Phoenix additions:
+- 74 artifact files
+- 8,249 raw artifact rows
+- 8,018 strict unique seed rows
+
+Added since:
+- 98 Phoenix grocery/pharmacy direct rows
+- 6,568 Phoenix licensed-trade rows across 22 files
+
+Therefore the repository now has at least:
+- **97 assistant census JSON artifacts**
+- **14,915 raw artifact evidence rows before strict dedupe**
+
+Do **not** assume 14,915 strict unique seed rows.
+The old Phoenix vendor sample intentionally overlaps the new exhaustive licensed pages.
+The deterministic builder will compute the exact strict unique count in the next normal CI run.
+
+## Important CI behavior after the artifact exporter
+
+The \`fb5090a1...\` artifact commit was pushed by GitHub Actions using its workflow token.
+
+GitHub intentionally does not cascade-trigger another workflow from that token, so the BMC Portfolio CI did not automatically run on \`fb5090a1...\`.
+
+A normal human/assistant GitHub commit after that artifact commit is required to trigger BMC Portfolio CI over the complete 97-artifact tree.
+
+This handoff update is intentionally serving that purpose.
+
+Before any next production deploy:
+1. wait for the new BMC Portfolio CI run on the post-handoff master;
+2. inspect the artifact census summary;
+3. confirm all 21 markets;
+4. confirm the exact strict unique seed count equals smoke-test loaded artifact candidates;
+5. require green CI;
+6. deploy the **exact green master** through the safe VPS relay;
+7. keep all outbound switches OFF;
+8. take a fresh production proof;
+9. report Phoenix and statewide evidence rows vs normalized businesses.
+
+## Current master immediately before this handoff update
+
+\`fb5090a1d8aa2b70457ad6ea57301c6dd5b4f488\`
+
+Message:
+**Seed full Phoenix licensed trade census**
+
+## What NOT to do next
+
+Do not:
+- rebuild the crawler/refresher;
+- go back to the stale giant SQL file as census source of truth;
+- delete overlapping evidence merely to make row counts smaller;
+- declare 6,568 Phoenix trade rows to be 6,568 distinct companies;
+- deploy a non-green or non-exact SHA;
+- turn on outreach;
+- restart Phoenix vendor discovery from tiny hand-picked samples.
+
+## Next work, in order
+
+1. Let the normal BMC CI triggered by this handoff commit validate the complete 97-artifact census.
+2. Read the new builder summary and record:
+   - raw artifact rows;
+   - strict unique seed rows;
+   - buyer/vendor rows;
+   - per-market raw and strict-unique counts.
+3. If green, deploy exact master and run production proof.
+4. Get the new Phoenix business-level rollup after the 98 buyer + 6,568 licensed trade expansion.
+5. Continue **assistant-led** census gap filling, especially:
+   - Phoenix buyer facilities beyond grocery/pharmacy;
+   - Phoenix direct-site verification/contact enrichment;
+   - Scottsdale continued buyer/direct evidence expansion;
+   - Tucson buyer-side facilities/institutions/healthcare/hospitality/commercial properties;
+   - Williamson Valley direct facilities/service-territory evidence;
+   - obvious weak rural categories.
+6. Preserve the separation:
+   - assistant = initial universe builder;
+   - VPS = continuous refresh/new-business/closure maintenance after initial build.
+
+The most important continuity fact is now:
+
+**The census research is safe in auditable JSON artifacts, the deterministic builder prevents stale-SQL data loss, repaired production is healthy at 24,176 active v7 evidence rows, and Phoenix has just received a new 98-row direct buyer batch plus an exhaustive 6,568-row licensed-trade artifact expansion awaiting the next green exact-master deploy.**
+
+
+---
+
+# 60. GO-LIVE / VPS-LIFTING CHECKPOINT — 2026-10-26 18:05 ARIZONA
+
+This section is the newest continuation checkpoint and should be read after section 59.
+
+## Brett's concern / priority
+
+Brett explicitly said he has limited confidence in the VPS as the builder of the initial database and wants the assistant doing the heavy lifting to create a strong base first.
+
+That remains the correct operating rule.
+
+He also wants this business to become the low-involvement, high-margin operating model inspired by **Chris Koerner**, specifically:
+- Chris Koerner
+- "I Let AI Make and Save Me Money for 6 Weeks (Here's What Worked)"
+
+Do not lose that strategic reference.
+
+The intended lesson is not "passive income with no validation."
+It is to compress repetitive labor with agents/automation:
+- research;
+- vendor discovery;
+- buyer/prospect discovery;
+- quote gathering;
+- follow-up;
+- routing;
+- reminders;
+- comparison/organization;
+while preserving human approval for consequential commercial actions.
+
+## Exact current assistant artifact census
+
+BMC Portfolio CI run:
+- **40429808037**
+- SHA: \`f05ff6fcf2546de24edda14d58f367c61bb38092\`
+- result: **SUCCESS**
+
+Artifact builder summary:
+- **97 assistant census JSON artifacts**
+- **14,915 raw evidence rows**
+- **481 strict duplicate rows collapsed**
+- **14,434 strict unique generated seed rows**
+- all **21 markets**
+- raw buyer rows: **3,001**
+- raw vendor rows: **11,914**
+- strict unique buyer rows: **2,977**
+- strict unique vendor rows: **11,457**
+
+Phoenix artifact census:
+- raw rows: **7,276**
+- strict unique rows: **7,026**
+
+Tucson artifact census:
+- raw rows: **3,990**
+- strict unique rows: **3,790**
+
+CI smoke database proof:
+- expected artifact candidates: 14,434
+- actual artifact candidates: 14,434
+- expected markets: 21
+- actual markets: 21
+- expected inventory lanes: 1,260
+- actual inventory lanes: 1,260
+- runtime doctor core failures: 0
+
+## Latest production deploy is proven
+
+Deploy request:
+- \`deploy-phoenix-full-census-20261027T0101Z\`
+
+Result:
+- **SUCCESS**
+- exact deployed SHA: \`f05ff6fcf2546de24edda14d58f367c61bb38092\`
+- CI proof: run **40429808037**
+- generated census rows loaded: **14,434**
+- production runtime doctor:
+  - core failures: **0**
+  - warnings: **0**
+
+Outbound remained OFF:
+- \`OUTREACH_ENABLED=false\`
+- \`BUYER_OUTREACH_ENABLED=false\`
+- \`GROWTH_OUTREACH_ENABLED=false\`
+
+## Latest production business census proof
+
+Proof request:
+- \`proof-phoenix-full-census-20261027T0102Z\`
+
+Result:
+- **SUCCESS**
+- proof timestamp: 2026-10-27T01:02:49Z
+- production SHA: \`f05ff6fcf2546de24edda14d58f367c61bb38092\`
+
+Current active v7 production evidence:
+- **30,518 active evidence rows**
+- **0 closed v7 rows**
+- **566 official/direct rows**
+- **11,077 registry-derived / credential-corroborated rows**
+- **18,762 directory/discovery rows**
+- active phone-ready candidate rows: **17,485**
+- active email-ready candidate rows: **81**
+
+This supersedes:
+- old 15,185 production checkpoint;
+- intermediate 24,176 checkpoint.
+
+### Phoenix production after exhaustive expansion
+
+Phoenix buyer:
+- evidence rows: **1,501**
+- normalized businesses: **1,402**
+- direct rows: **104**
+
+Phoenix vendor:
+- evidence rows: **7,197**
+- normalized businesses: **6,537**
+- direct rows: **8**
+
+Combined Phoenix market/side production:
+- evidence rows: **8,698**
+- normalized business entries by side: **7,939**
+
+Important:
+- buyer/vendor normalization is within market+side;
+- do not claim 7,939 globally unique legal entities without a cross-side/entity audit.
+
+The new 98 direct grocery/pharmacy facilities are now live:
+- grocery category production rows rose to 165 / 143 normalized businesses statewide;
+- pharmacy category production rows rose to 97 / 80 normalized businesses statewide.
+
+## How much lifting the VPS was doing BEFORE this checkpoint
+
+At the proof immediately before re-enabling the internal scheduler:
+- deep inventory lanes: 1,260
+- untouched: 1,240
+- in progress: 20
+- completed full scan cycles: 0
+- local-demand lanes: 315
+- touched: 30
+- untouched: 285
+
+Therefore Brett's lack of confidence in the VPS as the *initial census builder* was justified.
+
+The VPS was reliably doing:
+- PostgreSQL / production state;
+- Ops API;
+- Cloudflare ingress;
+- SearXNG/private search;
+- n8n hosting;
+- safe exact-SHA deploys;
+- migrations;
+- runtime doctor/proof;
+- bulk research refresher;
+- GitOps relay;
+but it had not yet done enough lane coverage to be trusted as the initial business universe.
+
+## Scheduler is NOW running safely
+
+After the 30,518-row production proof, the internal maintenance scheduler safety was rechecked.
+
+\`scheduler.sh\` runs:
+- expired-offer handling;
+- internal agent cycle;
+- legacy research processing;
+- market inventory cycles;
+- followups;
+- reply processing;
+- public procurement checks;
+- local-demand checks;
+- closure audits;
+- source-native research;
+- outreach endpoints.
+
+Crucial safety property:
+the outreach endpoints return zero sends while their global switches are OFF.
+CI explicitly asserts these guards.
+
+Scheduler start request:
+- \`start-maintenance-scheduler-20261027T0103Z\`
+
+Result:
+- **SUCCESS**
+- all three outbound switches were confirmed false by the relay safety gate.
+
+Scheduler status request:
+- \`zz-scheduler-status-20261027T0103Z\`
+
+Result:
+- **SUCCESS**
+- \`bmc-scheduler-1\` is UP.
+
+This is the intended transition:
+- assistant continues building/enriching the initial universe;
+- VPS is now allowed to maintain, rescan, detect closures/new deltas, process internal cycles, and work the maintenance queues;
+- VPS still must not be used as an excuse to stop assistant-led census expansion.
+
+## Current launch/readiness state
+
+Production technical readiness is strong:
+- outreach infrastructure: READY
+- payment infrastructure: READY
+- intelligent search: READY
+- live site/intake infrastructure exists
+- SMTP configured
+- IMAP reply/opt-out monitoring configured
+- business postal address configured
+- Stripe webhook configured
+- 4 active products with payment links
+- provider activation page live
+- public webhook ingress constrained/reachable
+
+However:
+- verified pilot/active providers: **0**
+- buyer service outreach must remain OFF
+- bulk outbound remains OFF
+- public local-demand and deep inventory maintenance scans have not yet completed first full cycles.
+
+The software's runtime intake gate says:
+- activate at least one real verified pilot provider.
+
+Brett's safer commercial standard should be stronger than the bare minimum:
+- recruit/verify **3–5 real providers** in the first Prescott/Prescott Valley launch cell so a decline/unavailable provider does not break the customer promise.
+
+Existing controlled provider pilot cohort:
+- **12 provider records** in \`pilot1\`
+
+Existing controlled buyer pilot cohort:
+- **7 buyer records** in \`pilot1\`
+
+All outreach remains unsent:
+- outreach total: 121
+- sent: 0
+- replied: 0
+- queued unsent: 121
+
+Recommended first provider candidate remains:
+- \`v_prescott_americancrown\` — American Crown Commercial Cleaning
+- public email: donna@americancrowncc.com
+- broad Yavapai service territory
+- commercial cleaning / windows / pressure washing / hood-exhaust / venue cleaning evidence
+
+Fallback:
+- \`v_prescott_windowwranglers\` — Window Wranglers
+
+Other First Wave candidates are already seeded.
+
+Do not contact them automatically without Brett approving the external outreach action.
+
+## Go-live interpretation
+
+Do NOT wait for every Arizona business to be discovered before testing the business.
+
+Distinguish three states:
+
+### 1. Technical live
+This is effectively achieved:
+- site;
+- intake;
+- API;
+- payments;
+- email/reply infrastructure;
+- provider portal/activation;
+- routing engine;
+- production database;
+- safe deploy/backup foundations.
+
+### 2. Controlled commercial soft launch
+This is the next meaningful milestone.
+
+Before buyer service outreach:
+1. get 3–5 real provider activations in the first launch cell;
+2. manually approve credentials/service/territory/capacity as applicable;
+3. prove one real service request can:
+   - enter;
+   - classify;
+   - route;
+   - be accepted/passed;
+   - reroute if needed;
+   - release contacts correctly;
+   - produce a trackable outcome;
+4. keep acquisition wave small;
+5. then use the 7-buyer pilot cohort.
+
+The software's formal minimum is one provider; the operational recommendation is 3–5 for redundancy.
+
+### 3. Scaled low-involvement business
+This only becomes credible after real conversion/economic data exist.
+
+The intended automation ladder remains:
+- $0–$1K revenue: AI assists, human reviews consequential output;
+- $1K–$5K: n8n operates routine workflow/follow-up/delivery;
+- $5K–$15K: exception-based operations;
+- $15K+: portfolio operator model.
+
+Do not promise Brett passive profit before the pilot proves:
+- provider acceptance;
+- buyer response;
+- close rate;
+- willingness to pay;
+- lead/territory/research-product economics.
+
+But the architecture now supports testing that model without another major rebuild.
+
+## Revenue model continuity
+
+The approximate **$8,333/month** figure is the monthly run rate for a six-figure annual business, not one magic bulk-lead package.
+
+Original revenue engines remain:
+- $299 Competitor Intelligence
+- $499 Local Growth Pack
+- $699 Market Expansion Pack
+- $749 Premium Growth Pack
+- accepted qualified lead fees (examples modeled around $75–$100)
+- possible territory arrangements (example modeling around $1,000/month)
+- $49–$149-ish concierge/continuity concepts after value is proven
+- quote/procurement sourcing fees
+- recurring prospect refresh ($149–$249 concept after proof)
+- permitted referral/marketing economics
+
+Original first-$5K examples remain documented in \`BUSINESS_MODEL.md\`.
+
+Because Brett has already invested heavily across ventures, avoid recommending new paid software/ads/large spend before the first controlled provider/buyer/revenue proof. Use the existing stack and database first.
+
+## Immediate next internal work
+
+Continue without waiting for VPS discovery to build the base:
+
+1. Keep assistant-led census expansion going, now prioritizing buyer/institutional/direct evidence rather than more Phoenix licensed-vendor enumeration.
+2. Tucson buyer side is an obvious target.
+   - City of Tucson publishes a current 10/01/2026 quarterly cumulative active business-license CSV (~4 MB) with DBA, NAICS, address, city/state/ZIP and phone.
+   - Arizona Department of Health Services public facility search currently exposes thousands of Tucson licensed facilities.
+   - These are promising first-party buyer census sources.
+3. Continue direct verification/contact enrichment for high-value provider candidates.
+4. Let the now-running VPS scheduler work maintenance cycles in parallel.
+5. Measure whether inventory/local-demand touched-lane counts begin increasing.
+6. Do not enable bulk outbound.
+7. The next external/commercial action requiring Brett approval is controlled provider recruitment / invitation.
+
+## Handoff discipline
+
+Brett specifically asked that \`portfolio/automation/HANDOFF.md\` be updated near the end of substantial work responses so a new conversation can resume if the thread fills up.
+
+Continue doing that.
+
+## Current production vs repository distinction
+
+Production is exactly proven at:
+- \`f05ff6fcf2546de24edda14d58f367c61bb38092\`
+
+This section itself will create a newer documentation-only master commit after the production proof.
+
+Do not imply production has that later docs-only SHA unless it is deployed.
+The census/data/code content being described above **is** already production-proven at \`f05ff6fc...\`.
+
+
+---
+
+# 61. ASSISTANT-LED CENSUS EXPANSION HANDOFF — 2026-10-26 19:20 ARIZONA
+
+This is the newest authoritative continuation section. Read it after sections 59–60.
+
+## Brett's standing instruction
+
+Do **not** hand the initial business-universe build off to the VPS.
+
+The assistant is still responsible for doing the heavy research/building work needed to create a strong initial census across:
+- all 21 markets;
+- buyer/business/facility categories;
+- provider/vendor/service categories;
+- rural and metro markets;
+- official/direct evidence where available;
+- open-ended coverage rather than stopping when an arbitrary target is met.
+
+The VPS is the maintenance layer:
+- rescan;
+- find newly appearing businesses;
+- closure detection;
+- refresh;
+- local-demand monitoring;
+- public-opportunity monitoring;
+- queue processing.
+
+It must not be used as an excuse to stop assistant-led census expansion.
+
+All external outreach remains OFF unless Brett explicitly approves it.
+
+## Current repository census: exact green checkpoint
+
+Current master:
+- `a425e3d1723acaff90fd8d85e1faf287587f7d69`
+- commit message: **Add direct rural service-territory provider census**
+
+Green BMC Portfolio CI:
+- run **40436685691**
+- result: **SUCCESS**
+- exact SHA: `a425e3d1723acaff90fd8d85e1faf287587f7d69`
+
+Deterministic artifact builder summary on that exact SHA:
+- **286 assistant census JSON artifacts**
+- **52,167 raw evidence rows**
+- **823 strict duplicate rows collapsed**
+- **51,344 strict unique seed rows**
+- **21/21 markets**
+- raw buyer rows: **35,616**
+- raw vendor rows: **16,551**
+- strict unique buyer rows: **35,592**
+- strict unique vendor rows: **15,752**
+
+CI smoke proof:
+- expected artifact candidates: **51,344**
+- actual artifact candidates: **51,344**
+- expected artifact markets: **21**
+- actual artifact markets: **21**
+- inventory lanes: **1,260 / 1,260**
+- progress markets: **21**
+- core runtime failures: **0**
+
+CI runtime-doctor warnings are expected in the disposable CI stack because external services/secrets are intentionally absent there. Do not confuse those CI-only warnings with production health.
+
+## Exact current per-market artifact counts
+
+Raw / strict-unique artifact rows:
+
+- Ash Fork: **114 / 113**
+- Bullhead City: **480 / 480**
+- Camp Verde: **288 / 287**
+- Chino Valley: **278 / 277**
+- Cordes Lakes: **77 / 77**
+- Cottonwood: **383 / 383**
+- Dewey-Humboldt: **428 / 427**
+- Flagstaff: **893 / 893**
+- Golden Valley: **122 / 122**
+- Kingman: **753 / 753**
+- Mayer: **166 / 165**
+- Phoenix: **9,808 / 9,558**
+- Prescott: **1,023 / 926**
+- Prescott Valley: **818 / 818**
+- Scottsdale: **3,242 / 2,974**
+- Sedona: **262 / 262**
+- Seligman: **125 / 124**
+- Skull Valley: **73 / 71**
+- Tucson: **32,667 / 32,467**
+- Williamson Valley: **42 / 42**
+- Winslow: **125 / 125**
+
+These are evidence/seed rows under the strict artifact identity key, not globally deduplicated legal entities.
+
+## Critical production distinction
+
+The **51,344-row repository census is NOT yet deployed to production**.
+
+Latest production proof remains the older exact deployment:
+- production SHA: `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- active production v7 evidence rows: **30,518**
+- all three outbound switches OFF.
+
+Do not report 51,344 as live production data until the exact green census SHA is deployed and a new production proof is taken.
+
+Brett's priority is still census-building, so it is acceptable to keep researching before the next deployment checkpoint.
+
+## Major work completed after section 60
+
+### 1. Tucson buyer universe was expanded from a shallow sample to official first-party registries
+
+New exporter:
+- `portfolio/automation/export-tucson-buyer-census.py`
+- workflow: `.github/workflows/assistant-tucson-buyer-census.yml`
+
+Sources:
+- City of Tucson current active business-license GIS layer;
+- Arizona Department of Health Services licensed-facility ArcGIS layer.
+
+Successful Tucson export produced:
+- **27,079** City of Tucson current business-license records after Tucson filtering;
+- **1,598** Tucson ADHS licensed facilities;
+- **28,677 new official-government evidence rows** in that pass.
+
+City category examples from the successful export:
+- auto/fleet: 1,372
+- churches/nonprofits: 42
+- entertainment venues: 608
+- general business: 9,446
+- grocery: 143
+- hotels/motels: 146
+- insurance/professional: 2,133
+- medical centers: 1,217
+- pharmacy: 79
+- property management: 3,494
+- public facilities: 20
+- restaurants: 1,835
+- retail: 3,900
+- schools/education: 382
+- therapy/behavioral: 303
+- warehouses/industrial: 1,959
+
+ADHS Tucson categories:
+- medical centers/care facilities: 715
+- schools/childcare: 417
+- therapy/behavioral: 448
+- general business: 18
+
+The current Tucson artifact total is now:
+- **32,667 raw**
+- **32,467 strict unique**
+
+### 2. Government registry evidence was separated from direct business-site evidence
+
+This semantic correction is important.
+
+Current builder behavior:
+- `official=true` -> `source_tier=direct`, `verification_status=direct_evidence`, `official_site=true`
+- `official_registry=true` -> `source_tier=government_registry`, `verification_status=government_record`, `official_site=false`
+- ROC/credential evidence without direct site -> `registry_derived / credential_corroborated`
+- ordinary discovery -> `directory / discovery`
+
+Government datasets such as:
+- Tucson City business licenses;
+- ADHS licensed facilities;
+- Scottsdale City weekly license reports;
+- future ADE/AZROC government exports
+
+must **not** be mislabeled as direct company websites.
+
+Relevant semantic commit:
+- `d22a0a3be69517187dddbf0af5baa623b6bb0909`
+
+The affected exporters/artifacts were regenerated after this fix.
+
+### 3. ADHS official facility census expanded across the rest of the footprint
+
+Exporter:
+- `portfolio/automation/export-adhs-market-census.py`
+- workflow: `.github/workflows/assistant-adhs-market-census.yml`
+
+Successful ADHS additions outside Tucson:
+- **3,839 official government facility rows**
+
+Major market counts:
+- Phoenix: 2,532
+- Scottsdale: 571
+- Flagstaff: 174
+- Prescott: 131
+- Prescott Valley: 112
+- Kingman: 84
+- Bullhead City: 79
+- Cottonwood: 75
+- Winslow: 19
+- Sedona: 18
+- Chino Valley: 14
+- Dewey-Humboldt: 12
+- Camp Verde: 11
+- Golden Valley: 4
+- Ash Fork: 1
+- Mayer: 1
+- Skull Valley: 1
+
+No ADHS facility rows were found for some tiny markets; do not treat that as complete business coverage.
+
+### 4. Scottsdale vendor census is now much deeper
+
+Exhaustive completeness-checked Homversa/ROC-backed trade export:
+- **1,964 raw trade evidence rows**
+- **19 trade pages**
+- every committed trade matched the published count exactly.
+
+Major Scottsdale trade counts:
+- general contractors: 1,035
+- electricians: 138
+- pool contractors: 102
+- HVAC: 94
+- landscaping: 91
+- plumbers: 90
+- low voltage: 86
+- painters: 66
+- carpentry: 63
+- roofers: 45
+- flooring: 34
+- tile: 32
+- glass: 27
+- concrete: 15
+- stucco: 14
+- drywall: 11
+- masonry: 9
+- fence: 8
+- insulation: 4
+
+### 5. Scottsdale recent new-business license layer is now captured
+
+Exporter:
+- `portfolio/automation/export-scottsdale-new-business-licenses.py`
+- workflow: `.github/workflows/assistant-scottsdale-new-business-licenses.yml`
+
+The City/library source is a **rolling recent archive**, not a full 2026 archive.
+
+Currently retained reports parsed:
+- 2026-08-30
+- 2026-09-06
+- 2026-09-13
+- 2026-09-20
+- 2026-09-27
+- 2026-10-04
+- 2026-10-11
+- 2026-10-18
+
+Result:
+- **99 unique recent City-issued license rows**
+
+Do not describe this as a full-year Scottsdale license census.
+
+### 6. Remaining-market licensed-trade sweep substantially expanded the rural/secondary markets
+
+The exhaustive trade exporter was run across the non-Phoenix/non-Scottsdale/non-Tucson markets.
+
+First pass successfully completed full market exports for:
+- Ash Fork
+- Camp Verde
+- Dewey-Humboldt
+- Flagstaff
+- Golden Valley
+- Mayer
+- Prescott
+- Prescott Valley
+- Sedona
+- Seligman
+- Winslow
+
+Markets blocked by one or more source-count inconsistencies were **not** partially copied during that first pass.
+
+A second recovery workflow was then built:
+- `.github/workflows/assistant-gap-market-trade-recovery.yml`
+
+It uses `--continue-on-trade-error` so an individually complete trade can be committed while a mismatched trade remains excluded.
+
+Recovered complete trade artifacts:
+- Bullhead City: **15**
+- Chino Valley: **14**
+- Cottonwood: **14**
+- Kingman: **17**
+
+Known source/count mismatches intentionally left uncommitted include examples such as:
+- Bullhead City masonry: source claims 7, parser sees 8 unique company/license pairs;
+- Chino Valley general contractors: source claims 77, parser sees 78;
+- Cottonwood painters: source claims 14, parser sees 15;
+- Kingman tile: source claims 4, parser sees 5.
+
+Do not weaken the completeness gate simply to include those rows.
+Resolve the source discrepancy or use a better source.
+
+After gap recovery, artifact census reached:
+- 285 artifacts
+- 52,140 raw rows
+- 51,317 strict unique rows
+
+### 7. Direct rural service-territory evidence was added for the three weakest service markets
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-direct-service-territory-13.json`
+
+Adds:
+- **27 direct company-site vendor/service-territory evidence rows**
+
+Markets:
+- Cordes Lakes
+- Skull Valley
+- Williamson Valley
+
+Examples of direct providers/service areas include:
+- R.E.D. Plumbing
+- Nichols Plumbing, Electrical & HVAC
+- Assurance Electrical Services
+- PumpWorks
+- S&M Electric
+- Pur Solar and Electrical
+- R Bar J Contracting
+- Liberty Plumbing
+- Goettl's High Desert Mechanical
+- Mountain Air
+- Thompson's Steamway
+- Prescott Spray Foam
+- Cordes Lakes Hardware
+
+This is true `official=true` direct business-site evidence and therefore correctly counts as direct evidence.
+
+This final addition moved the census from:
+- **51,317** strict unique
+to
+- **51,344** strict unique.
+
+## Failed/rejected source work that must not be mistaken for completed census
+
+### Arizona Department of Education school spreadsheet
+
+Exporter/workflow exist:
+- `portfolio/automation/export-ade-school-census.py`
+- `.github/workflows/assistant-ade-school-census.yml`
+
+The official ADE FY2027 spreadsheet URL returns:
+- **HTTP 403 Forbidden** from GitHub Actions.
+
+Latest retry still failed.
+
+No ADE school artifact is currently committed from this exporter.
+
+Do not claim statewide ADE school coverage from it.
+
+A future thread can:
+- find a public alternate ADE endpoint/API;
+- use an official district/school directory source;
+- or manually/directly enumerate school sites from official district sources.
+
+### Arizona ROC direct active-contractor exporter
+
+Exporter/workflow were added:
+- `portfolio/automation/export-azroc-active-census.py`
+- corresponding workflow
+
+The official ROC source currently returns:
+- **HTTP 403 Forbidden** from GitHub Actions.
+
+No artifact from this direct AZROC exporter landed.
+
+The existing Homversa rows retain ROC numbers and are still registry-derived secondary evidence, not first-party ROC API evidence.
+
+### Phoenix liquor-license location layer
+
+Exporter/workflow exist:
+- `portfolio/automation/export-phoenix-liquor-buyers.py`
+- corresponding workflow
+
+The Phoenix ArcGIS layer accepts some metadata/count calls but rejects the full feature query with:
+- ArcGIS **400 Failed to execute query**
+
+No Phoenix liquor artifact has landed.
+
+Do not count it.
+
+### Scottsdale STR false lead was rejected
+
+A map layer that initially looked like a Scottsdale short-term-rental source was discovered to actually describe **Lyons, Colorado** data last edited years earlier.
+
+It was rejected and never added to the census.
+
+This is a useful quality-control precedent:
+- reject geographically wrong datasets even when search/result naming looks promising.
+
+### Arizona Corporation Commission bulk database
+
+The ACC does not provide a free convenient bulk active-entity export for this use.
+Paid extraction options were identified, including substantial fees.
+
+Do not spend Brett's money on that database without explicit approval.
+Continue using free official/local/direct sources first.
+
+## Workflow race protection
+
+Multiple assistant census workflows can push artifact commits close together.
+
+A real non-fast-forward race occurred during this thread:
+- an export built valid artifacts;
+- another commit reached master first;
+- the artifact push was rejected.
+
+The active artifact workflows were updated to use:
+- commit;
+- `git pull --rebase origin master`;
+- push.
+
+Continue using race-safe pushes for future assistant-controlled exporters.
+
+Do not count workflow-generated artifacts until they are confirmed on current master.
+
+## What the next conversation should do
+
+The next thread should **continue research immediately**. Do not restart the architecture discussion.
+
+Recommended next order:
+
+1. Treat `a425e3d...` / CI run 40436685691 as the clean repository baseline.
+2. Keep the assistant as the initial-universe builder.
+3. Prioritize the remaining thin markets:
+   - Williamson Valley: 42 strict rows
+   - Skull Valley: 71
+   - Cordes Lakes: 77
+   - Ash Fork: 113
+   - Golden Valley: 122
+   - Seligman: 124
+   - Winslow: 125
+   - Mayer: 165
+4. Continue direct service-territory/provider research for those rural markets, especially categories with little or no direct evidence.
+5. Continue buyer/facility census work outside Tucson:
+   - municipal business-license datasets;
+   - county/municipal facility lists;
+   - schools/districts;
+   - churches/nonprofits;
+   - hotels/lodging;
+   - restaurants;
+   - grocery/pharmacy;
+   - hospitals/clinics/dental/behavioral;
+   - senior living/group homes/childcare;
+   - property management/apartments/HOAs;
+   - retail;
+   - industrial/warehouse/manufacturing;
+   - insurance/professional offices;
+   - government/public facilities;
+   - entertainment/theaters;
+   - automotive/fleet.
+6. For Phoenix, buyer-side breadth still deserves work despite the 2,532 ADHS facilities and prior grocery/pharmacy batch.
+7. Do not spend much time repeatedly retrying ADE/AZROC/Phoenix-liquor blocked endpoints unless a materially different access path is found.
+8. Keep all evidence provenance intact and preserve source distinctions:
+   - direct site;
+   - government registry;
+   - ROC-backed secondary registry;
+   - directory/discovery.
+9. Do not delete overlapping evidence just to reduce counts.
+10. Do not call raw/strict rows globally unique businesses without a business/entity rollup.
+11. Keep all outbound switches OFF.
+12. Do not contact providers or buyers without Brett's approval.
+13. Continue updating this HANDOFF.md near the end of substantial work.
+
+## Current production/runtime continuity
+
+Latest proven production remains:
+- exact SHA `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+- outbound OFF
+- scheduler previously restarted safely for internal maintenance
+- research refresher running at the last production proof
+- runtime doctor at that production proof: 0 failures / 0 warnings
+
+The larger 51,344-row census is repository/CI-proven but not production-proven yet.
+
+When a deployment checkpoint is chosen:
+1. require a green exact master SHA;
+2. deploy through the safe VPS relay;
+3. keep all outbound false;
+4. take a fresh production proof;
+5. report evidence rows and normalized business counts separately.
+
+## Final continuity sentence
+
+**The assistant-led census has grown from 14,434 strict artifact rows at the prior handoff to 51,344 strict unique artifact rows across 286 auditable JSON artifacts and all 21 markets. Tucson buyer coverage is now massive via City + ADHS government registries, Scottsdale and many secondary markets gained deep licensed-trade coverage, gap-market trades were recovered without weakening completeness gates, and the three weakest rural markets received new direct company service-territory evidence. Production is still the older 30,518-row f05ff6 proof, all outreach remains OFF, and the next thread should keep digging into businesses rather than handing the initial census build to the VPS.**
+
+
+---
+
+# 62. RURAL DIRECT/OFFICIAL + MOHAVE COUNTY BUYER EXPANSION — 2026-10-26 20:10 ARIZONA
+
+This section continues Section 61 and records the next assistant-led census pass. The standing rule remains unchanged:
+
+**The assistant is still building the initial business universe. The VPS is the maintenance/rescan/delta layer, not the substitute for this initial census.**
+
+All outbound remains OFF. No provider/buyer contact was performed.
+
+## Exact green repository checkpoint
+
+Latest census/data commit:
+- `9543faff796f871aec46eccea5b2dfa28bebef28`
+- message: **Add direct Highway Hotdog census evidence**
+
+Green BMC Portfolio CI:
+- run **40442435635**
+- result: **SUCCESS**
+- exact SHA: `9543faff796f871aec46eccea5b2dfa28bebef28`
+
+Deterministic artifact census on that exact SHA:
+- **290 assistant census JSON artifacts**
+- **52,238 raw evidence rows**
+- **823 strict duplicate rows collapsed**
+- **51,415 strict unique artifact seed rows**
+- **35,650 strict unique buyer rows**
+- **15,765 strict unique vendor rows**
+- **21 / 21 markets**
+- **1,260 / 1,260 inventory lanes**
+- smoke DB expected artifact candidates: **51,415**
+- smoke DB actual artifact candidates: **51,415**
+- runtime doctor core failures: **0**
+
+CI reported 10 warnings in its disposable stack because external production services/secrets are intentionally absent there. This does not represent production runtime health.
+
+Compared with Section 61:
+- raw evidence: **52,167 -> 52,238** (**+71**)
+- strict artifact seed rows: **51,344 -> 51,415** (**+71**)
+- artifacts: **286 -> 290** (**+4**)
+
+The strict duplicate-collapse count remained 823, meaning this pass added 71 new strict artifact identities rather than padding the strict count with duplicate identities.
+
+## Updated strict artifact rows by market
+
+Current strict-unique artifact rows:
+
+- Ash Fork: **118** (+5)
+- Bullhead City: **480**
+- Camp Verde: **287**
+- Chino Valley: **277**
+- Cordes Lakes: **79** (+2)
+- Cottonwood: **383**
+- Dewey-Humboldt: **427**
+- Flagstaff: **893**
+- Golden Valley: **149** (+27)
+- Kingman: **753**
+- Mayer: **182** (+17)
+- Phoenix: **9,558**
+- Prescott: **926**
+- Prescott Valley: **818**
+- Scottsdale: **2,974**
+- Sedona: **262**
+- Seligman: **136** (+12)
+- Skull Valley: **72** (+1)
+- Tucson: **32,467**
+- Williamson Valley: **43** (+1)
+- Winslow: **131** (+6)
+
+These remain evidence/seed identities, **not globally deduplicated legal businesses**.
+
+## New artifact: rural direct/official batch 14
+
+Commit:
+- `c7782394e859ef3e70ec517683a7be56ae2486b0`
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-direct-official-batch-14.json`
+
+Adds **30 direct-company or official-government evidence rows** across the thinnest markets.
+
+Buyer/facility upgrades include examples such as:
+- Ash Fork Joint Unified School District #31;
+- Ash Fork Public Library;
+- Ash Fork Volunteer Fire District;
+- Canyon's Edge Route 66 Motel;
+- Seligman Volunteer Fire District;
+- Cordes Lakes Public Library;
+- Mayer Domestic Water Improvement District;
+- Mayer Volunteer Fire District;
+- Mayer Community Church;
+- Mission Church;
+- Creekside Lodge and Cabins;
+- Williamson Valley Fire District;
+- Golden Valley Fire District;
+- E.A.G.L.E. Academy;
+- Black Mountain Elementary / Golden Valley Middle School;
+- Winslow Christian School;
+- First Baptist Church Winslow;
+- The Winslow hotel.
+
+Direct vendor/service-territory upgrades include:
+- AZ Super Plumber -> Skull Valley;
+- Manor Plumbing -> Cordes Lakes and Mayer;
+- Nichols Plumbing, Electrical & HVAC -> Mayer plumbing/electrical/HVAC;
+- R.E.D. Plumbing -> Mayer;
+- S&M Electric -> Mayer;
+- ACE Cooling, Heating, Plumbing and Electrical -> Mayer plumbing/electrical/HVAC;
+- Miller's Water Works -> Winslow.
+
+Existing direct evidence was checked before adding records. Known already-direct entities such as Skull Valley School, Skull Valley Bible Church, Williamson Valley Community Organization, Williamson Valley Ranch Road Association, Winslow Unified School District and La Posada were not needlessly re-added as new direct identities.
+
+## New artifact: Seligman direct-site upgrade batch 15
+
+Initial commit:
+- `d1e5085b8f11df6b9811c057d35dac1d220e5bf7`
+
+Final update:
+- `9543faff796f871aec46eccea5b2dfa28bebef28`
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-seligman-direct-upgrade-15.json`
+
+Current count: **10 direct-site records**.
+
+Direct evidence added/upgraded for:
+- Roadkill Cafe / O.K. Saloon;
+- Historic Route 66 Motel;
+- Historic Route 66 General Store;
+- Historic Route 66 General Store & Hardware Store;
+- Route 66 Auto & Towing;
+- The Aztec Motel & Creative Space;
+- The Postcard Motel;
+- Canyon Lodge Motel;
+- Seligman / Route 66 KOA Journey;
+- Highway Hotdog.
+
+Highway Hotdog is especially useful as a current 2026 validation:
+- its own live website confirms the Seligman restaurant;
+- Yavapai County's January 2026 Board record approved its Series 12 restaurant liquor-license application.
+
+The broad Seligman Chamber data already existed in earlier artifacts, so this pass deliberately focused on first-party/direct upgrades instead of duplicating the same Chamber discovery evidence.
+
+## New artifact: direct rural chain facilities batch 16
+
+Commit:
+- `7ac8eda5d793f77c7f68c3c7f86c9d47ecffc6be`
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-chain-direct-16.json`
+
+Adds **8 direct first-party chain-location buyer records**:
+- Family Dollar - Ash Fork;
+- Family Dollar - Golden Valley;
+- two Family Dollar locations in Mayer;
+- Family Dollar - Seligman;
+- Family Dollar - Winslow;
+- Love's Travel Stop #722 - Mayer;
+- Love's Travel Stop #971 - Winslow.
+
+These use the chains' own location directories and therefore remain `direct / direct_evidence`, not generic directory discovery.
+
+## New artifact: Golden Valley Mohave County food-facility census batch 17
+
+Commit:
+- `cc997739226d8086147dc8b3788c8baeecc69cd3`
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-golden-valley-mohave-food-inspections-17.json`
+
+Adds **23 official Mohave County government-registry buyer/facility records** from 2026 Department of Public Health food-safety inspection reports.
+
+The pass retained one useful/latest 2026 government evidence row per establishment rather than treating every monthly reinspection as a new business.
+
+Facilities include:
+- American Legion Post 22;
+- Black Mountain Elementary;
+- Castle Rock Ranch;
+- Family Dollar #24767;
+- Grasshopper Junction Deli;
+- Gus's Fresh Jerky;
+- Hwy 68 IL Cafe;
+- Maverik #376;
+- Off Road Diner;
+- Outpost Inc.;
+- Sonic - Golden Valley;
+- Subway #50193;
+- El Rancho - Golden Valley;
+- Great American Pizza;
+- VFW Post #2555;
+- The Mother Road Coffee Bus;
+- The Johnson's American and Salvadorean Cuisine;
+- Tropical Snow Shack;
+- The Best Ass Coffee;
+- Golden Oyster-GV;
+- Cactus Cone Co;
+- Love's Travel Stop food/RV facility;
+- Veradan Oasis LLC.
+
+Provenance semantics are preserved:
+- these rows are **government_registry / government_record**;
+- they are not mislabeled as direct company websites.
+
+This pass materially improved Golden Valley from **122 to 149 strict artifact rows**.
+
+## County/state source leads and blockers found during this pass
+
+### Yavapai County food/health inspection facilities
+
+Yavapai County's official Environmental Health material confirms it regulates/inspects broad buyer classes such as:
+- eating/drinking establishments;
+- retail markets/groceries;
+- schools;
+- childcare;
+- assisted living;
+- hospital food operations;
+- hotels/motels;
+- mobile food;
+- camps;
+- pools;
+- other food/facility categories.
+
+However, the current public facility-results portal routes through HealthSpace and returned **403** through this research path.
+
+Do not claim an extracted Yavapai County facility census from that portal unless a different accessible official endpoint is found.
+
+### Navajo County / Winslow facility inspections
+
+Navajo County's official Environmental Health page confirms oversight of:
+- food establishments;
+- retail food;
+- bars/lounges;
+- school food/sanitation;
+- hotels/motels;
+- trailer parks;
+- pools/spas;
+- camps;
+- temporary/mobile food;
+- related regulated facilities.
+
+Its linked public inspection portal also returned **403** through this research path.
+
+Keep it as a source lead. Do not fabricate or call it an extracted Winslow facility census.
+
+### Arizona Department of Liquor Licenses and Control
+
+Arizona DLLC's official public license lookup and state documentation expose a potentially high-leverage statewide buyer source.
+
+The state's license-master specification includes fields such as:
+- license/status;
+- business name;
+- business address;
+- city/state/ZIP;
+- business phone;
+- owner/licensee;
+- issued/expiration/status dates;
+- county;
+- license type.
+
+The older documented bulk `master.csv` path now returns 404, while the current public license search remains available.
+
+This is a promising next source family for statewide restaurant/bar/hotel/grocery/liquor-facility enumeration, but **no current bulk DLLC artifact has been harvested yet**. Validate a current free official extraction path before counting anything.
+
+## Production distinction remains mandatory
+
+The **51,415-row repository census is NOT deployed to production**.
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+
+All outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+Do not say 51,415 rows are live until an exact green census SHA is deliberately deployed and a new production proof is taken.
+
+## Next work
+
+Continue assistant-led census research rather than waiting for the VPS.
+
+Priority order:
+1. continue thin-market buyer/facility enumeration using direct/official sources;
+2. pursue a current free Arizona DLLC extraction route because it could add a large statewide first-party buyer layer;
+3. continue direct-site upgrades for weak rural discovery rows;
+4. look for county/municipal permit, inspection, school, lodging, food, public-facility and business-license datasets that can be filtered by the 21 BMC markets;
+5. keep Phoenix buyer-side expansion moving because its size still justifies much deeper census work;
+6. preserve source tiers exactly;
+7. do not weaken completeness/quality gates to inflate counts;
+8. do not contact providers/buyers or enable outbound;
+9. continue updating this HANDOFF near the end of substantial work.
+
+## Continuity sentence
+
+**The clean repository census is now 51,415 strict artifact seed rows across 290 auditable JSON artifacts. This pass added 71 new strict evidence identities, concentrating on direct/official evidence in the thinnest rural markets and a 23-facility Mohave County government census for Golden Valley. Production is still the older 30,518-row f05ff6 deployment, all outbound remains OFF, and the assistant must keep building the initial universe while the VPS remains the maintenance layer.**
+
+
+---
+
+# 63. CMS BLOCKER ROUTED AROUND + FEDERAL HEALTH/EDUCATION EXPANSION — 2026-10-26 20:50 ARIZONA
+
+This is the newest authoritative continuation section after Sections 61–62.
+
+## Brett's standing operating rule remains unchanged
+
+**The assistant is still building the initial business universe. Do not hand initial census construction to the VPS.**
+
+The VPS remains the maintenance layer for:
+- recurring rescans;
+- new-business discovery;
+- closure detection;
+- refresh;
+- local-demand monitoring;
+- opportunity monitoring;
+- internal queue processing.
+
+All external outreach remains OFF unless Brett explicitly approves it.
+
+## Exact repository census before this documentation commit
+
+Current artifact/data head immediately before this Section 63 documentation update:
+- `656b569892e33e995b81cab22be1ebb8963759a7`
+- message: **Seed official NCES education facility census**
+
+Deterministic builder summary on that tree:
+- **309 assistant census JSON artifacts**
+- **57,744 raw evidence rows**
+- **1,185 strict duplicate rows collapsed**
+- **56,559 strict unique artifact seed rows**
+- **40,794 strict unique buyer rows**
+- **15,765 strict unique vendor rows**
+- **21 / 21 markets**
+
+Latest strict-unique artifact rows by market:
+- Ash Fork: **124**
+- Bullhead City: **574**
+- Camp Verde: **310**
+- Chino Valley: **298**
+- Cordes Lakes: **80**
+- Cottonwood: **458**
+- Dewey-Humboldt: **433**
+- Flagstaff: **1,054**
+- Golden Valley: **158**
+- Kingman: **853**
+- Mayer: **193**
+- Phoenix: **11,791**
+- Prescott: **1,116**
+- Prescott Valley: **908**
+- Scottsdale: **3,660**
+- Sedona: **297**
+- Seligman: **141**
+- Skull Valley: **75**
+- Tucson: **33,828**
+- Williamson Valley: **43**
+- Winslow: **165**
+
+These are evidence/seed identities under the deterministic artifact key, **not globally deduplicated legal businesses**.
+
+Compared with the Section 62 checkpoint:
+- strict rows: **51,415 -> 56,559** (**+5,144**)
+- raw rows: **52,238 -> 57,744** (**+5,506**)
+- artifacts: **290 -> 309** (**+19**)
+
+The raw/strict difference increased because the new official datasets can corroborate businesses/facilities already represented elsewhere and because some official source rows represent multiple program/provider identities. Preserve that provenance; do not delete it merely to shrink counts.
+
+## CMS issue from the prior day: status is now clear
+
+The original problem was real:
+- the VPS/CMS source-native crawler received HTTP 403 responses from CMS;
+- repeated VPS retries were not a reliable path;
+- the old crawler should still be considered **host-blocked for CMS** unless separately proven otherwise.
+
+However, **CMS is no longer a blocker for the assistant-built initial census**.
+
+The assistant built GitHub Actions exporters that access the same official CMS public sources outside the VPS path, validate the source counts, filter to Arizona/BMC markets, create auditable government-registry JSON artifacts, validate the deterministic census builder, and only then commit results.
+
+Correct interpretation:
+
+**The VPS CMS crawler itself was not fixed; the assistant successfully routed around the VPS 403 and harvested the official CMS data through a separate controlled path.**
+
+Do not regress to waiting for the VPS to fetch CMS before building the census.
+
+## CMS Care Compare / provider-facility census
+
+New exporter:
+- `portfolio/automation/export-cms-market-census.py`
+
+Workflow:
+- `.github/workflows/assistant-cms-market-census.yml`
+
+The exporter resolves each current official bulk CSV from the stable CMS dataset metadata IDs rather than hard-coding changing distribution filenames.
+
+Current official source families and BMC-market rows:
+- hospitals: **48**
+- nursing homes: **71**
+- home health agencies: **98**
+- hospice providers: **149**
+- dialysis centers: **53**
+- inpatient rehabilitation facilities: **14**
+- long-term-care hospitals: **4**
+
+Combined:
+- **437 official CMS buyer/facility rows** in BMC markets.
+
+Relevant stable dataset IDs:
+- hospitals: `xubh-q36u`
+- nursing homes: `4pq5-n9py`
+- home health: `6jpm-sxkc`
+- hospice: `yc9t-dgbk`
+- dialysis: `23ew-n7w9`
+- inpatient rehab: `7t8x-u3ir`
+- long-term-care hospitals: `azum-44iv`
+
+Successful expanded CMS workflow:
+- run **40444626310**
+
+Workflow artifact commit:
+- `a7aa1ac68c60135249dedcee7d3d033056779520`
+- message: **Seed official CMS buyer facility census**
+
+All of these records use:
+- `official=false`
+- `official_registry=true`
+
+Therefore the builder correctly classifies them as:
+- `government_registry / government_record`
+
+They are not mislabeled as direct business websites.
+
+## Additional CMS provider-enrollment clinic census
+
+New exporter:
+- `portfolio/automation/export-cms-enrollment-clinic-census.py`
+
+Workflow:
+- `.github/workflows/assistant-cms-enrollment-clinic-census.yml`
+
+The exporter resolves the latest versioned CMS catalog entries instead of hard-coding quarterly file URLs.
+
+Successful workflow:
+- run **40445270587**
+
+Combined BMC-market rows:
+- Federally Qualified Health Center enrollments: **82**
+- opioid-treatment program providers: **30**
+- rural health clinic enrollments: **3**
+- home-infusion therapy providers: **2**
+
+Combined:
+- **117 official CMS enrollment/clinic rows**
+
+The source totals proved that the exporter was filtering a much broader official Arizona universe:
+- FQHC: 190 Arizona source rows / 11,166 national source rows
+- opioid treatment: 46 Arizona / 1,578 national
+- rural health clinic: 57 Arizona / 5,626 national
+- home infusion: 10 Arizona / 1,724 national
+
+These are additive first-party government evidence for outpatient, clinic and behavioral-health buyers.
+
+## CMS clinical-laboratory census
+
+New exporter:
+- `portfolio/automation/export-cms-clinical-lab-census.py`
+
+Workflow:
+- `.github/workflows/assistant-cms-clinical-lab-census.yml`
+
+Important implementation detail:
+- the official CMS clinical-lab source contains roughly 676,000 national rows;
+- the exporter does **not** brute-force the national file;
+- it uses the CMS Data API filter `STATE_CD=AZ` before paging;
+- then it filters Arizona rows to the configured BMC markets;
+- it excludes explicitly terminated program rows where the termination code clearly indicates termination;
+- sanity gates prevent a tiny/implausible result from landing.
+
+Successful workflow:
+- run **40445751650**
+
+Official CMS source result:
+- **16,090 Arizona clinical-lab rows**
+- **3,338 BMC-market clinical-lab records** after exporter filtering/dedupe
+
+The deterministic cross-artifact builder collapsed additional strict overlaps with existing census evidence, which is why the strict census increased by fewer than 3,338 rows.
+
+Workflow artifact commit:
+- short commit shown in Actions: `87a4113`
+- message: **Seed official CMS clinical lab census**
+
+The current CMS public source documents:
+- Provider of Services File - Clinical Laboratories;
+- latest available version used in this run: Q1 2026;
+- provider/facility demographics, address, provider number, CLIA information and testing characteristics.
+
+## Direct rural chain/facility additions during the same pass
+
+### Dollar General
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-dollar-general-direct-19.json`
+
+Commit:
+- `6b2e036702c2459d203d824b7c3b87f956b223cb`
+
+Adds current direct first-party locations in:
+- Cordes Lakes;
+- Golden Valley (two locations represented in the first-party directory);
+- Winslow;
+- Chino Valley;
+- Camp Verde (two locations).
+
+Green CI:
+- run **40444724107**
+
+### Skull Valley USPS
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-skull-valley-usps-direct-20.json`
+
+Commit:
+- `05a87d47afb5806d503defcba86356048f5e8682`
+
+Adds the direct USPS Skull Valley Post Office facility:
+- 3085 S Iron Springs Rd
+- public USPS phone preserved.
+
+Green CI:
+- run **40444764342**
+
+### Pilot / Flying J
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-pilot-flyingj-direct-22.json`
+
+Commit:
+- `63c90c28a57d3304cc52be0ef325de3ded7044f4`
+
+Adds direct first-party travel-stop facilities:
+- ONE9 Travel Center #484 — Ash Fork
+- ONE9 Dealer #1362 — Winslow
+- Flying J Travel Center #612 — Winslow
+
+Green CI:
+- run **40445039109**
+
+These are valuable buyer facilities because they are large, maintenance-heavy commercial properties, not merely low-value directory names.
+
+## ADE school blocker routed around with federal NCES data
+
+The Arizona Department of Education spreadsheet remains blocked by HTTP 403 from GitHub Actions.
+
+Instead of repeatedly retrying the same blocked ADE URL, the assistant found an official federal source:
+- National Center for Education Statistics (NCES)
+- U.S. Department of Education
+- Common Core of Data / EDGE public-school location layer
+- official ArcGIS FeatureServer hosted on `services1.arcgis.com`
+
+The initial NCES endpoints exposed their own quirks:
+- the `nces.ed.gov` ArcGIS endpoint failed GitHub Python TLS certificate verification;
+- an advertised ArcGIS Hub bulk CSV URL returned HTTP 400;
+- the official ArcGIS FeatureServer worked after correcting the current schema field mapping to `STATE`, `CITY`, `NAME`, `NCESSCH`, `STREET`, and `ZIP`.
+
+Do not disable TLS verification or weaken source checks; the official ArcGIS-hosted FeatureServer solved the issue cleanly.
+
+## NCES public-school census
+
+Exporter:
+- `portfolio/automation/export-nces-school-census.py`
+
+Workflow:
+- `.github/workflows/assistant-nces-school-census.yml`
+
+Successful workflow:
+- run **40445522347**
+
+Official source:
+- **2,633 Arizona current public-school locations**
+- **1,047 BMC-market public-school facility rows**
+
+BMC-market public-school rows include:
+- Ash Fork 4
+- Bullhead City 14
+- Camp Verde 8
+- Chino Valley 7
+- Cottonwood 14
+- Dewey-Humboldt 2
+- Flagstaff 40
+- Golden Valley 1
+- Kingman 20
+- Mayer 4
+- Phoenix 476
+- Prescott 20
+- Prescott Valley 19
+- Scottsdale 64
+- Sedona 6
+- Seligman 3
+- Skull Valley 1
+- Tucson 334
+- Winslow 10
+
+No school in this federal layer mapped literally to Cordes Lakes or Williamson Valley by city field; do not treat that as evidence those communities lack school-related buyer facilities.
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-nces-public-schools-21.json`
+
+Workflow artifact commit:
+- `e11dd14be136c90707d25a0a1781be0557565be4`
+- message: **Seed official NCES public school census**
+
+## Additional NCES education-facility census
+
+The assistant then expanded beyond individual public schools.
+
+Exporter:
+- `portfolio/automation/export-nces-institution-census.py`
+
+Workflow:
+- `.github/workflows/assistant-nces-institution-census.yml`
+
+Successful workflow:
+- run **40445853517**
+
+Official BMC-market rows:
+- school district administrative offices: **347**
+- private schools: **147**
+- postsecondary / college / university / technical-vocational institutions: **62**
+
+Combined:
+- **556 additional official education-facility rows**
+
+Arizona source universes:
+- district offices: **775 Arizona source rows**
+- private schools: **307 Arizona source rows**
+- postsecondary: **131 Arizona source rows**
+
+Workflow artifact commit:
+- `656b569892e33e995b81cab22be1ebb8963759a7`
+- message: **Seed official NCES education facility census**
+
+This broadens the education buyer universe from school buildings alone to:
+- district administrative offices;
+- private schools;
+- colleges/universities;
+- technical and vocational institutions.
+
+## Production distinction remains mandatory
+
+**None of this 56,559-row repository census is production-proven yet.**
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+
+All outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+Do not report 56,559 as live production data until an exact green census SHA is deliberately deployed and a new production proof is taken.
+
+## What the next work should do
+
+Continue assistant-led census construction.
+
+High-value next source families include:
+1. additional official CMS/provider datasets where they represent distinct facilities rather than duplicate measures;
+2. municipal/county business-license and inspection datasets;
+3. official chain/store/hotel/travel-stop location directories;
+4. official school/district/postsecondary sources where geography still has gaps;
+5. churches/nonprofits and public/community facilities in the smallest markets;
+6. direct service-territory verification for rural vendor categories;
+7. Phoenix buyer-side breadth, which remains worthy of continued work despite large health/education additions.
+
+Keep Williamson Valley, Skull Valley and Cordes Lakes under special scrutiny because their literal-city official datasets remain naturally sparse and often require service-territory/community-address research.
+
+## Immediate validation requirement after this documentation commit
+
+This Section 63 documentation commit is a normal assistant GitHub commit and should trigger BMC Portfolio CI over the complete artifact tree.
+
+Before treating **56,559** as the next clean repository baseline:
+1. require BMC Portfolio CI success on the exact post-handoff master;
+2. confirm deterministic builder expected artifact candidates = smoke DB actual artifact candidates;
+3. confirm 21/21 markets;
+4. confirm 1,260/1,260 inventory lanes;
+5. confirm runtime core failures remain 0.
+
+Do not deploy merely because this checkpoint is green; Brett's current instruction is to continue fleshing out the initial list.
+
+## Continuity sentence
+
+**The CMS problem from yesterday is now solved for census-building: the VPS crawler itself remains the blocked component, but assistant-controlled GitHub exporters successfully harvested official CMS hospitals, nursing homes, home health, hospice, dialysis, rehab, LTCH, FQHC, RHC, home-infusion, opioid-treatment and clinical-lab data. Federal NCES sources also replaced the blocked ADE school path and added public schools, district offices, private schools and postsecondary institutions. The repo artifact census now stands at 56,559 strict rows across 309 auditable JSON artifacts before this documentation commit; production remains the older 30,518-row f05ff6 deployment and outbound remains OFF.**
+
+
+---
+
+# 64. HUD MULTIFAMILY BUYER EXPANSION + POST-CMS CLEAN CHECKPOINT — 2026-10-26 21:00 ARIZONA
+
+This section continues Section 63 and records the next official-source buyer expansion.
+
+## Standing instruction remains unchanged
+
+The assistant continues building the initial BMC business universe. The VPS remains the maintenance/rescan/delta layer and must not be used as a substitute for the assistant-built initial census.
+
+All external outreach remains OFF.
+
+## Exact repository state before this documentation commit
+
+Current artifact/data head:
+- `c07951f383ef95bd811f192e081764bd286f8ea3`
+- message: **Seed official HUD multifamily buyer census**
+
+Deterministic artifact builder summary on that tree:
+- **310 assistant census JSON artifacts**
+- **57,853 raw evidence rows**
+- **1,185 strict duplicate rows collapsed**
+- **56,668 strict unique artifact seed rows**
+- **40,903 strict unique buyer rows**
+- **15,765 strict unique vendor rows**
+- **21 / 21 markets**
+
+Strict artifact rows by market:
+- Ash Fork: **124**
+- Bullhead City: **575**
+- Camp Verde: **311**
+- Chino Valley: **298**
+- Cordes Lakes: **80**
+- Cottonwood: **464**
+- Dewey-Humboldt: **433**
+- Flagstaff: **1,060**
+- Golden Valley: **158**
+- Kingman: **853**
+- Mayer: **193**
+- Phoenix: **11,840**
+- Prescott: **1,121**
+- Prescott Valley: **910**
+- Scottsdale: **3,670**
+- Sedona: **299**
+- Seligman: **141**
+- Skull Valley: **75**
+- Tucson: **33,854**
+- Williamson Valley: **43**
+- Winslow: **166**
+
+These are evidence/seed identities, not globally deduplicated legal businesses.
+
+## Previous combined clean CI checkpoint
+
+Section 63's full application checkpoint is proven green:
+
+- BMC Portfolio CI run **40445983245**
+- exact SHA: `595a51ff75146cd366464d71ce962b14a7fd08bb`
+- result: **SUCCESS**
+- expected artifact candidates: **56,559**
+- actual artifact candidates: **56,559**
+- artifact markets: **21 / 21**
+- inventory lanes: **1,260 / 1,260**
+- runtime core failures: **0**
+
+The HUD artifact described below was committed afterward by a workflow token, so it did not itself cascade-trigger another normal BMC Portfolio CI run. This Section 64 documentation commit is intentionally a normal assistant commit that should trigger the complete 56,668-row tree through BMC Portfolio CI.
+
+## Official HUD insured multifamily buyer census
+
+Exporter:
+- `portfolio/automation/export-hud-multifamily-census.py`
+
+Workflow:
+- `.github/workflows/assistant-hud-multifamily-census.yml`
+
+Successful workflow:
+- **40446125201**
+
+Workflow-generated artifact commit:
+- `c07951f383ef95bd811f192e081764bd286f8ea3`
+- message: **Seed official HUD multifamily buyer census**
+
+Official source:
+- U.S. Department of Housing and Urban Development
+- current HUD Insured Multifamily Properties open-data FeatureServer
+- Arizona filter applied at the official source: `STD_ST='AZ'`
+
+Source/result counts:
+- **199 Arizona HUD insured multifamily source rows**
+- **109 BMC-market property rows**
+
+The artifact preserves where HUD publishes them:
+- HUD property ID;
+- property name;
+- standardized address/city/ZIP;
+- on-site phone;
+- total unit count;
+- assisted unit count;
+- property category;
+- management agent organization;
+- management contact name;
+- management contact phone;
+- management contact email;
+- primary FHA number;
+- financing type.
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-hud-insured-multifamily-26.json`
+
+Classification:
+- side: buyer
+- category: property management / multifamily & apartment properties
+- `official=false`
+- `official_registry=true`
+- therefore `government_registry / government_record`
+
+This is a strategically useful buyer layer because multifamily/apartment properties can plausibly buy recurring or turnover:
+- commercial/residential cleaning;
+- HVAC;
+- plumbing;
+- electrical;
+- pest control;
+- landscaping;
+- flooring;
+- painting;
+- junk/turn services;
+- general building maintenance.
+
+## CMS status remains solved for assistant census-building
+
+Do not regress to calling CMS a blocker.
+
+The VPS-native CMS crawler remains the host-blocked component, but the assistant-controlled official-data path successfully harvested:
+- hospitals;
+- nursing homes;
+- home health;
+- hospice;
+- dialysis;
+- inpatient rehab;
+- long-term-care hospitals;
+- FQHCs;
+- rural health clinics;
+- home infusion;
+- opioid-treatment programs;
+- clinical laboratories.
+
+The clinical-lab source alone contributed:
+- **16,090 Arizona source rows**
+- **3,338 BMC-market official lab records** before cross-artifact strict dedupe.
+
+CMS should now be treated as an established assistant-controlled official census source, not an unresolved dependency on the VPS.
+
+## NCES/ADE status remains solved for assistant census-building
+
+The ADE spreadsheet is still blocked by 403, but federal NCES official sources successfully replaced that path.
+
+Current official NCES additions include:
+- **1,047** BMC-market public schools;
+- **347** school district administrative offices;
+- **147** private schools;
+- **62** postsecondary/vocational institutions.
+
+Do not spend the next thread repeatedly retrying the blocked ADE spreadsheet unless a materially different official endpoint is found.
+
+## Production distinction remains mandatory
+
+The **56,668-row repository census is NOT production-proven**.
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+
+All outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+Do not report 56,668 as live production data until an exact green census SHA is deliberately deployed and a new production proof is taken.
+
+## Immediate next work
+
+Continue assistant-led census expansion after this checkpoint.
+
+High-value next source directions:
+1. additional HUD property/facility layers where they add distinct buyer facilities rather than redundant attributes;
+2. county/municipal business-license, health-inspection and lodging/facility datasets;
+3. official chain/location directories for large commercial facilities;
+4. churches/nonprofits and public/community facilities in the smallest markets;
+5. direct rural service-territory verification for missing vendor categories;
+6. Phoenix buyer-side breadth despite its already-large health/education/property universe;
+7. Williamson Valley, Skull Valley and Cordes Lakes require special direct/service-territory research because literal-city government datasets remain sparse.
+
+## Required post-documentation validation
+
+This Section 64 normal commit must trigger BMC Portfolio CI over the full 310-artifact tree.
+
+Require:
+- BMC Portfolio CI success on the exact post-Section-64 master;
+- expected artifact candidates = **56,668**;
+- actual artifact candidates = **56,668**;
+- artifact markets = **21**;
+- inventory lanes = **1,260 / 1,260**;
+- runtime core failures = **0**.
+
+Do not deploy merely because that checkpoint is green; Brett's current direction is to keep fleshing out the initial universe.
+
+## Continuity sentence
+
+**The assistant-built repo census has now reached 56,668 strict artifact seed rows across 310 auditable JSON artifacts. CMS is no longer a census blocker: the VPS itself remains blocked from CMS, but assistant-controlled official exporters successfully harvested health/provider data including 3,338 BMC-market clinical-lab records. NCES replaced the blocked ADE school path with 1,603 official education-facility rows across public schools, district offices, private schools and postsecondary institutions. HUD has now added 109 official multifamily/apartment properties with management/contact fields where available. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
+
+
+---
+
+# 65. IRS EXEMPT-ORGANIZATION BUYER CENSUS — 2026-10-26 21:10 ARIZONA
+
+This section continues Sections 63–64.
+
+## Standing rule
+
+The assistant continues building the initial BMC business universe. The VPS remains the maintenance/rescan/delta layer. Do not hand initial census construction back to the VPS.
+
+All external outreach remains OFF.
+
+## Exact artifact/data head before this documentation commit
+
+Current master:
+- `d482d5214a2da9251c90750105df4866a57024be`
+- message: **Seed official IRS exempt organization buyer census**
+
+Deterministic census summary on that tree:
+- **311 assistant census JSON artifacts**
+- **73,080 raw evidence rows**
+- **1,636 strict duplicate rows collapsed**
+- **71,444 strict unique artifact seed rows**
+- **55,679 strict unique buyer rows**
+- **15,765 strict unique vendor rows**
+- **21 / 21 markets**
+
+Strict artifact rows by market:
+- Ash Fork: **138**
+- Bullhead City: **712**
+- Camp Verde: **379**
+- Chino Valley: **400**
+- Cordes Lakes: **84**
+- Cottonwood: **628**
+- Dewey-Humboldt: **487**
+- Flagstaff: **1,664**
+- Golden Valley: **193**
+- Kingman: **1,092**
+- Mayer: **225**
+- Phoenix: **18,198**
+- Prescott: **1,666**
+- Prescott Valley: **930**
+- Scottsdale: **5,856**
+- Sedona: **561**
+- Seligman: **155**
+- Skull Valley: **79**
+- Tucson: **37,732**
+- Williamson Valley: **43**
+- Winslow: **222**
+
+These are evidence/seed identities, not globally deduplicated legal businesses.
+
+Compared with Section 64's green HUD checkpoint:
+- strict rows: **56,668 -> 71,444** (**+14,776**)
+- raw rows: **57,853 -> 73,080** (**+15,227**)
+- artifacts: **310 -> 311**
+- strict buyer rows: **40,903 -> 55,679** (**+14,776**)
+- strict vendor rows unchanged: **15,765**
+
+The difference between 15,227 new IRS artifact rows and 14,776 new strict identities reflects cross-artifact corroboration/overlap. Preserve it.
+
+## Official IRS EO Business Master File census
+
+Exporter:
+- `portfolio/automation/export-irs-eo-bmf-census.py`
+
+Workflow:
+- `.github/workflows/assistant-irs-eo-bmf-census.yml`
+
+Successful workflow:
+- **40446360385**
+
+Workflow artifact commit:
+- `d482d5214a2da9251c90750105df4866a57024be`
+- message: **Seed official IRS exempt organization buyer census**
+
+Official source:
+- Internal Revenue Service Exempt Organizations Business Master File Extract
+- Arizona state CSV: `https://www.irs.gov/pub/irs-soi/eo_az.csv`
+- current IRS posting used in this pass: **2026-10-13**
+
+IRS describes the EO BMF as:
+- cumulative;
+- based on IRS Business Master File data;
+- containing the most recent information IRS has for organizations that received recognition of tax-exempt status;
+- organized by filing/headquarters state.
+
+Important limitation preserved in every artifact note:
+- the filing/headquarters address does **not** by itself prove an organization operates outside that address;
+- churches and other organizations not required to apply for recognition can be absent from the BMF.
+
+Source result:
+- **31,700 Arizona EO BMF rows**
+- **15,227 BMC-market rows**
+- **15 status-25 terminating-private-foundation rows excluded**
+
+BMC-market category classification based on IRS NTEE/foundation/filing data:
+- churches/nonprofits/general exempt organizations: **12,110**
+- schools/education nonprofits: **1,704**
+- health/medical nonprofits: **855**
+- therapy/mental-health/crisis nonprofits: **291**
+- housing/shelter nonprofits: **267**
+
+BMC-market rows by filing-address market:
+- Ash Fork: **14**
+- Bullhead City: **138**
+- Camp Verde: **68**
+- Chino Valley: **102**
+- Cordes Lakes: **4**
+- Cottonwood: **165**
+- Dewey-Humboldt: **54**
+- Flagstaff: **611**
+- Golden Valley: **35**
+- Kingman: **241**
+- Mayer: **32**
+- Phoenix: **6,565**
+- Prescott: **557**
+- Prescott Valley: **20**
+- Scottsdale: **2,228**
+- Sedona: **269**
+- Seligman: **14**
+- Skull Valley: **4**
+- Tucson: **4,050**
+- Winslow: **56**
+
+No EO BMF filing-address record in this pass mapped literally to Williamson Valley; continue direct/community-address research there.
+
+## IRS evidence preserved per record
+
+Where present, the artifact preserves:
+- EIN;
+- primary organization name;
+- filing address;
+- IRS subsection code;
+- exempt-organization status code;
+- foundation code;
+- NTEE code/classification;
+- deductibility code;
+- ruling date;
+- latest tax period;
+- asset amount;
+- income amount;
+- Form 990 revenue amount;
+- in-care-of name;
+- secondary/sort name.
+
+Status semantics used:
+- 01 = unconditional exemption;
+- 02 = conditional exemption;
+- 12 = section 4947(a)(2) trust;
+- 25 = organization terminating private-foundation status.
+
+Status 25 was excluded rather than treated as a current buyer identity.
+
+The artifact uses:
+- `official=false`
+- `official_registry=true`
+- therefore `government_registry / government_record`
+
+No IRS record was promoted to direct-site evidence merely because the organization is federally registered.
+
+## Previous green checkpoint
+
+The post-HUD normal application checkpoint is independently proven:
+- BMC Portfolio CI run **40446264501**
+- exact SHA: `fae09701e16f26c718a0a894a15ccb45b9526091`
+- result: **SUCCESS**
+- expected artifact candidates: **56,668**
+- actual artifact candidates: **56,668**
+- artifact markets: **21 / 21**
+- inventory lanes: **1,260 / 1,260**
+- runtime core failures: **0**
+
+The IRS artifact was committed afterward by workflow token, so this Section 65 normal documentation commit is intentionally used to trigger BMC Portfolio CI across the complete 71,444-row tree.
+
+## Production distinction remains mandatory
+
+The **71,444-row repository census is NOT production-proven**.
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+
+All outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+Do not report 71,444 as live production data until an exact green census SHA is deliberately deployed and a fresh production proof is taken.
+
+## Next work
+
+Continue assistant-led research.
+
+The IRS pass materially strengthens churches/nonprofits/community organizations, but it does not eliminate the need for:
+- direct church/community-site verification;
+- organizations omitted because they never applied for IRS recognition;
+- Williamson Valley community/facility research;
+- additional property/apartment layers;
+- county/municipal food/lodging/business license datasets;
+- direct rural service-territory provider evidence;
+- buyer-side commercial facilities such as hotels, grocery, pharmacy, automotive/fleet, warehouses, manufacturing, insurance/professional offices and entertainment.
+
+Do not mistake a large federal registry count for a complete commercial universe.
+
+## Required post-documentation validation
+
+This Section 65 normal commit must trigger full BMC Portfolio CI over the 311-artifact tree.
+
+Require:
+- BMC Portfolio CI success on the exact post-Section-65 master;
+- expected artifact candidates = **71,444**;
+- actual artifact candidates = **71,444**;
+- artifact markets = **21**;
+- inventory lanes = **1,260 / 1,260**;
+- runtime core failures = **0**.
+
+Do not deploy merely because this checkpoint is green. Brett's current instruction is to keep fleshing out the list.
+
+## Continuity sentence
+
+**The assistant-built repository census has reached 71,444 strict artifact seed rows across 311 auditable JSON artifacts. The IRS Arizona EO Business Master File added 15,227 official nonprofit/exempt-organization evidence rows, of which 14,776 were new strict identities after cross-artifact dedupe. CMS is no longer a census blocker, NCES replaced the blocked ADE source, HUD added multifamily buyers, production remains the older 30,518-row f05ff6 deployment, and all outbound remains OFF.**
+
+
+---
+
+# 66. FDIC FINANCIAL-BRANCH BUYER CENSUS — 2026-10-26 21:20 ARIZONA
+
+This section continues Sections 63–65.
+
+## Standing rule
+
+The assistant continues building the initial BMC business universe. The VPS remains the maintenance/rescan/delta layer. All external outreach remains OFF.
+
+## Exact artifact/data head before this documentation commit
+
+Current master:
+- `55acd0737418f118879b7ace63f15166054085aa`
+- message: **Seed official FDIC bank branch buyer census**
+
+Deterministic census summary on that tree:
+- **312 assistant census JSON artifacts**
+- **73,566 raw evidence rows**
+- **1,637 strict duplicate rows collapsed**
+- **71,929 strict unique artifact seed rows**
+- **56,164 strict unique buyer rows**
+- **15,765 strict unique vendor rows**
+- **21 / 21 markets**
+
+Strict artifact rows by market:
+- Ash Fork: **138**
+- Bullhead City: **721**
+- Camp Verde: **381**
+- Chino Valley: **402**
+- Cordes Lakes: **84**
+- Cottonwood: **633**
+- Dewey-Humboldt: **488**
+- Flagstaff: **1,678**
+- Golden Valley: **193**
+- Kingman: **1,102**
+- Mayer: **226**
+- Phoenix: **18,396**
+- Prescott: **1,681**
+- Prescott Valley: **939**
+- Scottsdale: **5,957**
+- Sedona: **569**
+- Seligman: **155**
+- Skull Valley: **79**
+- Tucson: **37,840**
+- Williamson Valley: **43**
+- Winslow: **224**
+
+These are evidence/seed identities, not globally deduplicated legal businesses.
+
+## Previous clean IRS checkpoint
+
+Section 65's complete application checkpoint is proven green:
+- BMC Portfolio CI run **40446476492**
+- exact SHA: `7df3ff5928d5d98a31f2f779a057de7ff594dfdd`
+- result: **SUCCESS**
+- expected artifact candidates: **71,444**
+- actual artifact candidates: **71,444**
+- artifact markets: **21 / 21**
+- inventory lanes: **1,260 / 1,260**
+- runtime core failures: **0**
+
+The FDIC artifact was committed afterward by workflow token, so this Section 66 normal commit is intentionally used to trigger BMC Portfolio CI over the complete 71,929-row tree.
+
+## Official FDIC bank branch/location census
+
+Exporter:
+- `portfolio/automation/export-fdic-branch-census.py`
+
+Workflow:
+- `.github/workflows/assistant-fdic-branch-census.yml`
+
+Successful workflow:
+- **40446560057**
+
+Workflow artifact commit:
+- `55acd0737418f118879b7ace63f15166054085aa`
+- message: **Seed official FDIC bank branch buyer census**
+
+Official source:
+- Federal Deposit Insurance Corporation BankFind Suite
+- `/banks/locations` public API
+- Arizona filter applied at FDIC source: `STALP:AZ`
+
+Source/result counts:
+- **977 current Arizona FDIC location rows returned**
+- **486 BMC-market bank branch/office records**
+
+BMC-market FDIC branch counts:
+- Bullhead City: **9**
+- Camp Verde: **2**
+- Chino Valley: **2**
+- Cottonwood: **5**
+- Dewey-Humboldt: **1**
+- Flagstaff: **14**
+- Kingman: **10**
+- Mayer: **1**
+- Phoenix: **198**
+- Prescott: **15**
+- Prescott Valley: **9**
+- Scottsdale: **101**
+- Sedona: **8**
+- Tucson: **109**
+- Winslow: **2**
+
+No FDIC branch from this source mapped literally to the other configured markets. That is a source-specific zero, not evidence that those markets contain no other financial/service businesses.
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-fdic-bank-branches-28.json`
+
+Classification:
+- side: buyer
+- category: `insurance_professional`
+- label: **Banks & Financial Offices**
+- `official=false`
+- `official_registry=true`
+- therefore `government_registry / government_record`
+
+Where FDIC provides them, records preserve:
+- bank/institution name;
+- office/branch name;
+- street address/city/ZIP;
+- FDIC certificate number;
+- office number;
+- establishment date;
+- bank class;
+- regulator;
+- institution website.
+
+The source is branch/location level, so this adds physical facilities rather than merely bank headquarters or brand names.
+
+## NCUA note
+
+NCUA was investigated as the obvious companion source for credit-union branches.
+
+Current public NCUA quarterly data remains useful for credit-union institutions, but the historical public **Credit Union Branch Information** table is retired. NCUA FOIA logs also show branch-location dataset requests that ended for fee-related reasons.
+
+Do not invent exhaustive branch coverage from headquarters-only NCUA data. Continue looking for a genuinely free current branch-level source before adding a credit-union branch census.
+
+## Production distinction remains mandatory
+
+The **71,929-row repository census is NOT production-proven**.
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+
+All outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+Do not report 71,929 as live production data until an exact green census SHA is deliberately deployed and a fresh production proof is taken.
+
+## Immediate next work
+
+Continue assistant-led census expansion after this checkpoint.
+
+High-value remaining directions include:
+- free current credit-union office/branch sources if found;
+- additional HUD/property layers that represent distinct facilities;
+- county/municipal business-license and inspection datasets;
+- hotel/lodging and chain-location sources;
+- automotive/fleet, warehouses/manufacturing, grocery/pharmacy and professional-office buyers;
+- direct rural vendor service-territory verification;
+- Williamson Valley, Skull Valley and Cordes Lakes direct/community research.
+
+Do not confuse a large federal-registry footprint with a complete commercial universe.
+
+## Required post-documentation validation
+
+This Section 66 normal commit must trigger full BMC Portfolio CI over the 312-artifact tree.
+
+Require:
+- BMC Portfolio CI success on the exact post-Section-66 master;
+- expected artifact candidates = **71,929**;
+- actual artifact candidates = **71,929**;
+- artifact markets = **21**;
+- inventory lanes = **1,260 / 1,260**;
+- runtime core failures = **0**.
+
+Do not deploy merely because that checkpoint is green. Brett's current direction remains to continue fleshing out the initial list.
+
+## Continuity sentence
+
+**The assistant-built repo census now stands at 71,929 strict artifact seed rows across 312 auditable JSON artifacts. The CMS blockage was routed around successfully, NCES replaced the blocked ADE school source, HUD added multifamily properties, IRS added 15,227 exempt-organization buyer records, and FDIC added 486 current bank branch/office facilities. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
+
+
+### Commercial recurring-facility agreement opportunity — added by Brett during Section 67 work
+
+Brett explicitly identified another core BMC opportunity that must remain in continuity:
+
+**BMC should not think only in terms of one-time repair leads. It should also identify businesses/facilities that may benefit from recurring service agreements that they have never formally sourced.**
+
+Examples:
+- gas stations / convenience stores;
+- parking lots and parking-heavy commercial properties;
+- strip malls / retail centers;
+- restaurants;
+- hotels;
+- apartment / multifamily properties;
+- medical/dental/therapy offices;
+- schools/churches;
+- banks;
+- grocery/pharmacy;
+- warehouses / fleet yards;
+- municipal/public facilities.
+
+High-value recurring exterior/facility service opportunities include:
+- parking-lot power washing;
+- sidewalk / storefront pressure washing;
+- fuel-island and pump-pad cleaning;
+- dumpster-pad degreasing;
+- restaurant grease/oil cleanup;
+- gum removal;
+- curb / loading-zone cleaning;
+- parking-lot sweeping;
+- parking-lot striping / restriping;
+- exterior building washing;
+- window cleaning;
+- trash / junk / bulk-item removal;
+- seasonal grounds / snow / defensible-space service where appropriate;
+- recurring janitorial / common-area cleaning.
+
+Strategic principle:
+
+A buyer may already “know a guy,” but that does not mean it has:
+- a written recurring scope;
+- competitive pricing;
+- backup coverage;
+- scheduled preventive service;
+- a qualified second vendor;
+- an auditable service agreement.
+
+BMC can create value by identifying the unmet/under-formalized need and brokering a qualified recurring commercial opportunity.
+
+Potential BMC commercial model to preserve for later design:
+1. Research facility and likely service need.
+2. Qualify whether there is an actual recurring service gap / contract opportunity.
+3. Present a clear scoped opportunity to suitable local providers.
+4. Provider pays for the qualified opportunity / accepted lead under the normal model, or BMC later uses a legally reviewed success/referral/contract-origination fee where permitted.
+5. Buyer gets a real business agreement rather than a random one-off contractor list.
+6. BMC tracks performance so renewal / replacement opportunities become recurring network value.
+
+Important: do not make unsupported claims that a facility needs a service merely because it has a parking lot or fuel pumps. Treat these as prospecting hypotheses until buyer need is qualified.
+
+Research implication:
+
+Commercial-buyer census expansion should explicitly pursue **parking-heavy and exterior-maintenance-heavy facilities**, not just generic businesses. Gas stations and convenience/fuel locations are now a priority buyer class because they can create power-washing, fuel-island, dumpster-pad, sweeping, striping, window and exterior-cleaning demand.
+
+This opportunity should also inform future vendor discovery: power-washing, commercial exterior cleaning, parking-lot sweeping, striping, and facility-maintenance vendors may be able to grow through BMC contract opportunities they would not normally prospect themselves.
+
+
+---
+
+# 67. WIC COMMERCIAL BUYERS + RURAL GAP FILL + PROVIDER TRUST REQUIREMENT — 2026-10-26 21:05 ARIZONA
+
+This section continues Sections 63–66 and supersedes the partial Section 67 notes above where there is any ambiguity.
+
+## Standing operating rule
+
+The assistant is still building the initial BMC business universe. The VPS remains the maintenance/delta layer after that initial universe exists.
+
+All external outreach remains OFF unless Brett explicitly approves it.
+
+## Exact clean data checkpoint before this handoff section
+
+The latest full application smoke test covering the WIC + rural-direct artifacts is:
+
+- data/artifact SHA: `405ad994602e2968eabcb67f03f74afe053a7691`
+- message: **Fill rural direct service territory gaps**
+- BMC Portfolio CI run: **40447696046**
+- result: **SUCCESS**
+- assistant artifacts: **314**
+- raw evidence rows: **73,779**
+- strict duplicate rows collapsed: **1,637**
+- strict unique artifact seed rows: **72,142**
+- strict buyer rows: **56,370**
+- strict vendor rows: **15,772**
+- markets: **21 / 21**
+- inventory lanes: **1,260 / 1,260**
+- smoke DB expected/actual: **72,142 / 72,142**
+- runtime core failures: **0**
+
+Strict artifact rows by market at this checkpoint:
+- Ash Fork: **138**
+- Bullhead City: **724**
+- Camp Verde: **382**
+- Chino Valley: **403**
+- Cordes Lakes: **86**
+- Cottonwood: **637**
+- Dewey-Humboldt: **488**
+- Flagstaff: **1,685**
+- Golden Valley: **193**
+- Kingman: **1,107**
+- Mayer: **226**
+- Phoenix: **18,490**
+- Prescott: **1,687**
+- Prescott Valley: **942**
+- Scottsdale: **5,971**
+- Sedona: **571**
+- Seligman: **155**
+- Skull Valley: **81**
+- Tucson: **37,904**
+- Williamson Valley: **46**
+- Winslow: **226**
+
+These remain evidence/seed identities, not globally deduplicated legal businesses.
+
+## Arizona WIC grocery / food-retail buyer layer
+
+Exporter:
+- `portfolio/automation/export-az-wic-vendor-census.py`
+
+Workflow:
+- `.github/workflows/assistant-az-wic-vendor-census.yml`
+
+Successful workflow:
+- **40447607595**
+
+Workflow artifact commit:
+- `01df21d7b3febf25fefc6ee43302b9a97d2af3fd`
+- message: **Seed official Arizona WIC grocery buyer census**
+
+Official source:
+- Arizona Department of Health Services WIC authorized-vendor list PDF
+
+Parsed source:
+- 538 table rows
+- 523 Arizona WIC-authorized vendor rows
+- **206 BMC-market grocery/food-retail facilities**
+
+BMC-market WIC rows:
+- Bullhead City 3
+- Camp Verde 1
+- Chino Valley 1
+- Cottonwood 4
+- Flagstaff 7
+- Kingman 5
+- Phoenix 94
+- Prescott 6
+- Prescott Valley 3
+- Scottsdale 14
+- Sedona 2
+- Tucson 64
+- Winslow 2
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-az-wic-authorized-vendors-30.json`
+
+Use as:
+- buyer
+- grocery / food retail
+- `official_registry=true`
+- government-registry evidence
+
+WIC authorization is evidence that the store is an authorized WIC retailer, not an ADHS endorsement of the store or of any contractor relationship.
+
+## Rural direct service-territory gap fill
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-direct-service-gaps-29.json`
+
+Commit:
+- `405ad994602e2968eabcb67f03f74afe053a7691`
+
+Seven direct first-party service-territory rows were added:
+
+Williamson Valley:
+- Morgan Tree Service — tree service / brush clearing
+- Desert First Cleaning — residential / turnover / small-office cleaning
+- Haul It Or Toss It — junk hauling / dumpsters / cleanouts
+
+Skull Valley:
+- HOAX Pest Control — pest / rodent control
+- Haul It Or Toss It — junk hauling / dumpster service
+
+Cordes Lakes:
+- Truly Nolen Prescott Valley branch — pest / termite / rodent / commercial pest control
+- Haul It Or Toss It — junk hauling / dumpster service
+
+These are company-owned pages that explicitly name the market or explicit service/trip area. Preserve them as `direct / direct_evidence`.
+
+## Commercial recurring-service agreement strategy
+
+Brett explicitly wants BMC to pursue commercial opportunities that go beyond one-time repair leads.
+
+Priority buyer/property types include:
+- gas stations and convenience stores;
+- parking-heavy facilities;
+- strip malls / shopping centers;
+- restaurants;
+- hotels;
+- multifamily;
+- medical/dental/therapy offices;
+- schools/churches;
+- banks;
+- grocery/pharmacy;
+- warehouses/fleet yards;
+- municipal/public facilities.
+
+Potential recurring services include:
+- parking-lot and sidewalk power washing;
+- fuel-island / pump-pad cleaning;
+- dumpster-pad degreasing;
+- oil / grease / gum removal;
+- lot sweeping;
+- striping / restriping;
+- exterior building washing;
+- window cleaning;
+- recurring janitorial/common-area cleaning;
+- junk/bulk removal;
+- grounds / seasonal property work.
+
+BMC's opportunity is not merely “find a contractor.” It can identify a facility that has no formal recurring scope, competitive quote, backup vendor or scheduled service and broker a qualified commercial service opportunity.
+
+Do not assume a facility has an unmet need merely because it has a parking lot or fuel pumps. Treat the service need as a prospecting hypothesis until qualified.
+
+This strategy should affect both sides of the census:
+- buyer research should identify parking/exterior-maintenance-heavy properties;
+- vendor research should explicitly include power-washing, exterior commercial cleaning, parking-lot sweeping, striping and facility-maintenance companies.
+
+## Arizona liquor-license source
+
+Arizona DLLC remains a high-value unresolved buyer source because it could expose:
+- restaurants;
+- bars;
+- hotels;
+- grocery/convenience stores;
+- clubs/event venues.
+
+The public license search exists, but the old bulk/current extraction paths remain inconsistent and some legacy search endpoints return 403. Do not claim statewide DLLC coverage until a clean extraction route is proven.
+
+## Provider-quality / BMC trust system — REQUIRED FUTURE DESIGN
+
+Brett explicitly raised the risk that a contractor could buy leads/packages, perform poor work, and damage BMC's reputation.
+
+At the same time, BMC must not exclude small local contractors merely because they have fewer online reviews.
+
+This must remain a future pre-scale requirement.
+
+### Principle: quality and confidence are separate
+
+Do not use raw Google review count as the quality score.
+
+A small provider with limited history can be genuinely excellent.
+
+Use:
+- **quality/trust** = what the evidence says about performance and safety;
+- **confidence** = how much reliable evidence exists.
+
+A low-evidence provider should be “new / lower confidence,” not automatically “low quality.”
+
+### Hard factual eligibility gates
+
+Before ordinary BMC customer work is sent, verify as applicable:
+- real business identity / contact;
+- active Arizona trade/professional license where legally required;
+- license suspension/revocation/discipline status;
+- insurance/bond evidence where required or represented;
+- category/service-area fit;
+- severe authoritative fraud/safety findings if present.
+
+Payment to BMC must never bypass these requirements.
+
+### External reputation evidence
+
+Potential future inputs:
+- Google Business reviews;
+- Facebook ratings/recommendations;
+- BBB complaint/rating information;
+- Yelp/category-specific sources;
+- Trustpilot where meaningful;
+- Nextdoor recommendations where lawfully/technically available;
+- Arizona ROC / regulator discipline;
+- business age / registration evidence.
+
+Do not violate platform terms or build the system around prohibited scraping. Prefer lawful APIs, licensed access and public evidence.
+
+No one review platform should control provider eligibility.
+
+### BMC's own verified performance should ultimately be strongest
+
+Once jobs flow through BMC, track:
+- lead response time;
+- accept/decline behavior;
+- show/no-show;
+- cancellations;
+- completion rate;
+- customer post-job feedback;
+- callbacks/rework;
+- refund/dispute rate;
+- documented property damage/safety complaints;
+- repeat-customer rate;
+- quote-to-invoice consistency;
+- communication reliability.
+
+This internal verified performance should eventually outweigh public review volume.
+
+### Fair path for small/new contractors
+
+Do not require a large review count.
+
+Possible provider lifecycle:
+1. **BMC Verified / New** — credentials checked, limited BMC history.
+2. **BMC Proven** — enough completed BMC jobs with healthy outcomes.
+3. **BMC Preferred** — sustained strong BMC performance plus clean current credential/reputation evidence.
+
+New providers can receive a limited first wave of jobs/leads to earn confidence rather than being blocked.
+
+### Suggested future trust model
+
+Do not expose one opaque star number alone.
+
+Keep distinct fields:
+- credential status;
+- quality/trust score;
+- evidence-confidence score;
+- BMC job-performance score;
+- review-source snapshots / timestamps.
+
+Use a Bayesian/Wilson-style confidence adjustment later so:
+- 5.0 from 2 reviews does not automatically outrank 4.9 from 500;
+- a contractor with 6 good reviews is not penalized simply for being small.
+
+### Commercial separation rule
+
+**Buying a BMC package, territory or leads must never improve trust/quality ranking.**
+
+Revenue and provider quality must remain separate systems.
+
+### Complaint / appeal workflow
+
+Future system should support:
+- serious-complaint temporary hold;
+- evidence collection;
+- provider response;
+- credential re-check;
+- customer follow-up;
+- reinstatement/removal;
+- correction/appeal for inaccurate external data.
+
+Prefer factual public badges such as:
+- “license verified [date]”
+- “BMC jobs completed”
+- “BMC performance history available”
+
+Avoid unsupported public labels like “bad contractor.”
+
+## Production distinction
+
+The **72,142-row repository census is not production**.
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- 30,518 active v7 production evidence rows
+
+Outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+## Immediate next work
+
+Continue assistant-led census construction.
+
+Priority next directions:
+1. gas stations / convenience stores and other parking/exterior-heavy buyers;
+2. parking lots / strip malls / shopping centers / fleet yards;
+3. power-washing, lot-sweeping, striping and commercial exterior-cleaning vendors;
+4. hotels/lodging;
+5. automotive/fleet;
+6. warehouses/manufacturing;
+7. grocery/pharmacy and professional offices;
+8. continued direct/service-territory vendor research in Williamson Valley, Skull Valley and Cordes Lakes;
+9. keep looking for a clean Arizona DLLC extraction path.
+
+Do not stop at arbitrary targets; census lanes remain open-ended.
+
+## Continuity sentence
+
+**The current clean assistant-built repo baseline is 72,142 strict artifact seed rows across 314 auditable JSON artifacts, proven by BMC Portfolio CI run 40447696046 with 72,142/72,142 smoke rows, 21/21 markets, 1,260/1,260 lanes and 0 runtime core failures. The newest work added 206 official Arizona WIC grocery/food-retail buyers and seven direct rural service-territory vendor records. Future design must add a provider trust/quality layer that protects BMC without unfairly excluding small contractors, and the commercial strategy now explicitly includes brokering recurring facility-service agreements such as parking-lot/fuel-island power washing, sweeping, striping and related exterior maintenance. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
+
+
+---
+
+# 68. GAS-STATION / PARKING-LOT COMMERCIAL BUYERS + EXTERIOR-SERVICE MATCHING — 2026-10-26 21:20 ARIZONA
+
+This section continues Section 67 and is the newest handoff checkpoint.
+
+## Brett's newest commercial strategy instruction
+
+Brett explicitly wants BMC to treat parking-heavy and exterior-maintenance-heavy facilities as recurring commercial-opportunity targets, not merely generic business names.
+
+Examples:
+- gas stations / convenience stores;
+- fuel islands / pump pads;
+- dealership lots;
+- fleet yards;
+- equipment yards;
+- strip malls / shopping centers;
+- grocery/pharmacy lots;
+- restaurants;
+- hotels;
+- schools/churches;
+- medical offices;
+- apartment/multifamily properties;
+- banks/professional offices;
+- public facilities.
+
+Core insight:
+
+**Many facilities already “know a guy,” but BMC can create value by brokering a formal recurring service agreement with a documented scope, pricing cadence, backup coverage and accountable provider relationship.**
+
+Potential recurring agreement scopes:
+- parking-lot sweeping;
+- parking-lot pressure washing;
+- sidewalk / storefront pressure washing;
+- fuel-island / pump-pad washing;
+- dumpster-pad degreasing;
+- oil / grease / gum removal;
+- parking-lot striping / restriping;
+- exterior building washing;
+- commercial window cleaning;
+- fleet/equipment washing;
+- recurring janitorial/common-area cleaning;
+- seasonal property cleanup.
+
+This should become a major B2B lead-product strategy, especially for power-washing, sweeping, striping, commercial-cleaning and facility-maintenance providers.
+
+Do not claim a business needs a service merely because its property type suggests it. Treat these as **service-opportunity hypotheses that require qualification**.
+
+## Exact latest fully green census checkpoint
+
+Latest fully proven application checkpoint before the opportunity-tag-only regeneration:
+
+- data/artifact SHA: `7954d72a6135b338c661e5e74c891c98491408f7`
+- BMC Portfolio CI run: **40448250129**
+- result: **SUCCESS**
+- assistant artifacts: **316**
+- raw evidence rows: **76,619**
+- strict duplicate rows collapsed: **1,665**
+- strict unique artifact seed rows: **74,954**
+- strict buyer rows: **59,173**
+- strict vendor rows: **15,781**
+- markets: **21 / 21**
+- inventory lanes: **1,260 / 1,260**
+- runtime core failures: **0**
+
+Strict market counts at that checkpoint:
+- Ash Fork: **148**
+- Bullhead City: **770**
+- Camp Verde: **398**
+- Chino Valley: **413**
+- Cordes Lakes: **87**
+- Cottonwood: **660**
+- Dewey-Humboldt: **494**
+- Flagstaff: **1,821**
+- Golden Valley: **199**
+- Kingman: **1,201**
+- Mayer: **238**
+- Phoenix: **19,935**
+- Prescott: **1,766**
+- Prescott Valley: **966**
+- Scottsdale: **6,153**
+- Sedona: **588**
+- Seligman: **161**
+- Skull Valley: **83**
+- Tucson: **38,561**
+- Williamson Valley: **50**
+- Winslow: **262**
+
+These remain evidence/seed identities, not globally deduplicated legal businesses.
+
+Compared with Section 67:
+- strict rows: **72,142 -> 74,954** (**+2,812**)
+- raw rows: **73,779 -> 76,619** (**+2,840**)
+- strict buyers: **56,370 -> 59,173** (**+2,803**)
+- strict vendors: **15,772 -> 15,781** (**+9**)
+
+The +2,840 raw rows are exactly:
+- **2,831 ADEQ active UST commercial facilities**
+- **9 direct rural commercial exterior-service vendor records**
+
+Cross-artifact overlap caused the strict increase to be slightly smaller.
+
+## ADEQ active UST commercial-facility buyer census
+
+Exporter:
+- `portfolio/automation/export-adeq-ust-facility-census.py`
+
+Workflow:
+- `.github/workflows/assistant-adeq-ust-facility-census.yml`
+
+Official source:
+- Arizona Department of Environmental Quality active Underground Storage Tank facility layer
+- source is regenerated daily
+- active Arizona source facilities: **5,773**
+- BMC-market records: **2,831**
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-adeq-active-ust-facilities-31.json`
+
+Key BMC-market facility categories:
+- retail / fuel facilities: **1,184**
+- general commercial facilities: **790**
+- automotive / fleet: **488**
+- warehouse / industrial: **136**
+- public facilities: **77**
+- schools / education: **57**
+- grocery / convenience: **43**
+- medical: **40**
+- property management: **7**
+- hotels / lodging: **5**
+- churches / nonprofits: **4**
+
+Especially important ADEQ place types:
+- **1,087 GAS FILLING STATION - COMMERCIAL**
+- **97 GASOLINE FILLING STATION - FLEET**
+- **43 GROCERY STORE/CONVENIENCE STORE**
+- **218 AUTO/VEHICLE REPAIR FACILITY**
+- **152 EQUIPMENT YARD**
+- **264 COMMERCIAL PROPERTY**
+- **19 BULK FUEL STORAGE**
+- plus airports, hangars, industrial plants, warehouses, golf courses, business parks, medical facilities, public facilities and other pavement/exterior-heavy sites.
+
+BMC-market ADEQ facility counts:
+- Ash Fork 10
+- Bullhead City 46
+- Camp Verde 16
+- Chino Valley 10
+- Cottonwood 23
+- Dewey-Humboldt 6
+- Flagstaff 136
+- Golden Valley 6
+- Kingman 94
+- Mayer 9
+- Phoenix 1,465
+- Prescott 79
+- Prescott Valley 24
+- Scottsdale 183
+- Sedona 17
+- Seligman 6
+- Skull Valley 1
+- Tucson 664
+- Winslow 36
+
+No literal-city ADEQ UST record mapped to Cordes Lakes or Williamson Valley in this source. Continue direct/service-territory research there.
+
+## Commercial-service opportunity tags added
+
+Commit:
+- `e4069f59c0389d92b69f212bea92f3f95e5facbd`
+- message: **Tag ADEQ commercial service opportunities**
+
+Regeneration workflow:
+- **40448613514**
+- result: **SUCCESS**
+
+Workflow-generated artifact head after the tag regeneration:
+- `c8ca721ff18842ac604922322b0b8c3764890915`
+- message: **Seed ADEQ active UST commercial buyer census**
+
+The ADEQ exporter now adds:
+- `commercial_service_hypotheses`
+- `opportunity_qualification_required=true`
+
+Examples:
+
+Gas stations / retail fuel:
+- fuel-island / pump-pad pressure washing;
+- sidewalk/storefront pressure washing;
+- dumpster-pad degreasing;
+- parking-lot sweeping;
+- parking-lot striping/restriping;
+- commercial window cleaning.
+
+Fleet / equipment / automotive:
+- fleet/equipment washing;
+- oil/grease stain cleanup;
+- yard/lot sweeping;
+- striping;
+- exterior washing.
+
+Retail/grocery:
+- storefront/sidewalk washing;
+- dumpster-pad cleaning;
+- sweeping;
+- striping;
+- window cleaning.
+
+Hotels, multifamily, medical, industrial, public and school facilities receive property-appropriate recurring-service hypotheses as well.
+
+These tags are **prospecting hypotheses, not proof of need**.
+
+This is strategically important because BMC can eventually sell a provider something materially better than a generic list:
+- “Arizona gas stations likely worth qualifying for recurring fuel-island/lot cleaning”
+- “fleet/equipment yards for washing + sweeping”
+- “retail properties for exterior cleaning + striping”
+rather than simply a CSV of business names.
+
+## Rural commercial exterior-service vendor expansion
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-commercial-exterior-vendors-32.json`
+
+Commit:
+- `0cf21f581cb4145316271e30331e0538abb962be`
+
+Nine direct first-party vendor/service-territory records:
+
+Williamson Valley:
+- A&B Gutters & Glass — commercial pressure washing
+- Prescott Pressure Washing — exterior/storefront + fleet washing
+- Platinum Edge Services — commercial/fleet pressure washing + window cleaning
+- Prescott Asphalt Paving — paving / sealcoat / crack repair / striping
+
+Mayer:
+- Prescott Pressure Washing
+- Platinum Edge Services
+- Prescott Asphalt Paving
+
+Cordes Lakes:
+- Platinum Edge Services — commercial/fleet exterior service
+
+Skull Valley:
+- Prescott Asphalt Paving — lot paving / striping / maintenance
+
+Notable provider-quality evidence already exposed by direct sites:
+- Platinum Edge advertises **$2M general liability** and says it can provide COI, W-9 and vendor-onboarding documentation.
+
+Do not promote that as BMC-verified insurance until independently verified at onboarding; preserve it as provider-claimed direct-site evidence.
+
+## ADOT valid-dealer commercial buyer source — currently blocked
+
+ADOT's official Dealer Licensing page exposes a **Valid Dealer Report**, updated every Tuesday and Thursday.
+
+Current public report discovered by the assistant:
+- `https://apps.azdot.gov/files/26/valid-dealer-report/Report-2026-10-22-00-14-59.xls`
+
+This would be a useful automotive/dealership buyer layer because dealerships have:
+- large paved lots;
+- storefront glass;
+- vehicle inventory;
+- service bays;
+- fleet/detailing needs;
+- recurring striping/sweeping/exterior-cleaning opportunity.
+
+However:
+- ADOT landing page returns HTTP 403 to GitHub Actions;
+- the direct XLS currently also returns HTTP 403 to GitHub Actions;
+- assistant container download did not provide a usable alternate extraction path.
+
+Workflow failures:
+- **40448400556**
+- **40448586845**
+
+Do not weaken source-validation checks and do not fabricate the dealer artifact.
+
+Keep ADOT as a high-value unresolved source; continue with other productive sources until a clean extraction path is found.
+
+## Provider trust requirement remains active
+
+Section 67 contains the full future trust-system requirement.
+
+Key rule remains:
+
+**A provider's payment to BMC must never improve its trust/quality ranking.**
+
+Quality and confidence remain separate:
+- quality = credentials/safety/performance evidence;
+- confidence = quantity/reliability of evidence.
+
+Small contractors must have a fair path into BMC through credential verification and limited/probationary BMC work history rather than being excluded for low review counts.
+
+## Production distinction
+
+The 74,954-row repository census is **not production**.
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+
+Outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+## Immediate next work
+
+Continue assistant-led census building.
+
+Priority:
+1. more parking-heavy commercial buyers;
+2. shopping centers / strip malls;
+3. dealerships / automotive service / fleet yards;
+4. warehouses / manufacturing / distribution;
+5. hotels/lodging;
+6. grocery/pharmacy;
+7. direct commercial power-washing / sweeping / striping / window-cleaning vendors;
+8. recurring janitorial/facility-maintenance vendors;
+9. continued rural service-territory coverage for Cordes Lakes, Skull Valley and Williamson Valley;
+10. keep DLLC and ADOT as unresolved high-value official sources without letting them block productive work.
+
+Also preserve opportunity tags/hypotheses where they make future lead packages more actionable.
+
+## Continuity sentence
+
+**The newest fully green repository checkpoint is 74,954 strict artifact seed rows across 316 auditable JSON artifacts, proven by BMC Portfolio CI run 40448250129 with 21/21 markets, 1,260/1,260 lanes and 0 runtime core failures. The newest commercial expansion added 2,831 official ADEQ active UST facilities—including 1,087 commercial gas stations, 97 fleet fueling sites, 218 auto-repair sites and 152 equipment yards—and nine direct rural commercial exterior-service vendor records. ADEQ records now carry qualified-service hypotheses for power washing, fuel-island cleaning, sweeping, striping, window cleaning and related recurring facility services. The provider trust requirement from Section 67 remains mandatory. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
+
+---
+
+## Section 69 — Property managers, recovery housing, garages, casinos, retail centers + provider-flow finding
+
+Updated: 2026-10-26 late evening Arizona time
+
+This section continues Section 68. Assistant-led census expansion remains the immediate work. Do not mistake the research census for production, and do not turn outbound on.
+
+### New fully green census checkpoint
+
+BMC Portfolio CI run:
+- **40450028535**
+- result: **SUCCESS**
+- commit proven: `a52d464f5db41acfb8525bba5f311906a2ee9771`
+
+Strict assistant census at this proven point:
+- **321 artifacts**
+- **76,699 raw artifact rows**
+- **1,673 exact strict duplicates collapsed**
+- **75,026 strict unique seed rows**
+- **59,217 buyer rows**
+- **15,809 vendor rows**
+- **21/21 markets**
+- **1,260/1,260 deep inventory lanes**
+- **0 runtime core failures**
+
+This supersedes the Section 68 74,954-row / 316-artifact checkpoint.
+
+Two later research commits are newer than this fully proven checkpoint and have CI in progress as this handoff section is written:
+- `fac86350868a719b0e410aa39fce405d3973f3e2` — direct property-management expansion
+- `4fdd0b4ffddfdd19e9f914a19f36d34c7bd60d0b` — shopping-center management buyers
+
+When continuing, check their CI first and use the newest green strict count rather than estimating.
+
+### Rural commercial-maintenance provider expansion
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-rural-statewide-commercial-maintenance-vendors-33.json`
+
+Commit:
+- `cbf128c5308242ea721c5aa6759ff2ab5b3c5a4d`
+- CI **40449349553 SUCCESS**
+
+Added **28 provider-market records** across:
+- Williamson Valley
+- Mayer
+- Cordes Lakes
+- Skull Valley
+
+Providers include:
+- J & B Striping LLC
+- Maurer Sealing & Striping
+- Dirty's Power Washing and Cleaning Services, LLC
+- PowerWash Pro
+- WCD Enterprises LLC
+- Bio-Janitorial Service Inc
+- The DM Caldwell Corporation
+
+Evidence standard:
+- direct company statewide Arizona service claims; or
+- active Arizona State Procurement Office statewide/all-region or rural janitorial contract evidence.
+
+Important:
+- state contract evidence proves capability/coverage evidence, not private-market availability;
+- statewide service claims still require mobilization/minimum-job qualification before routing;
+- no provider is promoted or trust-ranked merely because it appears here.
+
+### Mayer-area commercial facility gap fill
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-mayer-commercial-facility-gap-fill-34.json`
+
+Commit:
+- `7c06941823e23f8af1e0a2e4e32a16db07a776b4`
+- CI **40449382276 SUCCESS**
+
+Three direct-site buyer facilities:
+- Bumble Bee Ranch Adventures
+- Arcosanti
+- Mayer RV Storage
+
+Each carries property-appropriate recurring-maintenance hypotheses such as:
+- exterior cleaning;
+- sweeping;
+- striping;
+- windows;
+- event/facility cleanup;
+- entry/gate/grounds maintenance.
+
+All opportunity tags remain **needs qualification**.
+
+### Property-management buyer lane
+
+Owner explicitly requested:
+- Rent Right-style property managers;
+- BloomTree-style management companies;
+- property firms found through Zillow/Apartments.com and similar portals;
+- out-of-area managers who may need local workers;
+- apartment / multifamily / portfolio managers.
+
+Strategic interpretation:
+**A property manager is an aggregated buyer account.**
+One relationship can represent many recurring maintenance decisions across homes, apartments, HOAs, commercial properties or mixed portfolios.
+
+Do not pitch these companies as if BMC is trying to replace all of their preferred vendors.
+The stronger offer hypothesis is:
+- overflow vendor coverage;
+- emergency/local gap coverage;
+- turnover/make-ready help;
+- local contractor sourcing in markets where they lack depth;
+- a single BMC intake/coordination layer when their normal vendor is unavailable;
+- recurring exterior/common-area work for larger properties.
+
+Relevant artifacts/commits:
+
+`portfolio/data/assistant-research-bootstrap-2026-10-26-property-management-vendor-coordination-buyers-35.json`
+- commit `b76122c8567ee9d7e87a6d801722ea54aff8be16`
+- CI **40449672142 SUCCESS**
+- **17 buyer-market records**
+- examples: 480 Realty & Property Management, Far West Realty & Property Management, Rosenbaum Realty Group, Hello Home, CR Property Services, Arizona Commercial Real Estate, Abodia Properties.
+
+`portfolio/data/assistant-research-bootstrap-2026-10-26-property-management-portfolio-buyers-35.json`
+- commit `c5bcfd972bef6267bacce7f568420f1421b7ca5d`
+- CI **40449955949 SUCCESS**
+- **14 buyer-market evidence records**
+- adds/strengthens Fortress Property Management, CR Property Services, Rosenbaum, 480 Realty and multi-market coverage.
+
+`portfolio/data/assistant-research-bootstrap-2026-10-26-property-management-direct-expansion-37.json`
+- commit `fac86350868a719b0e410aa39fce405d3973f3e2`
+- **11 buyer-market records**
+- CI was still in progress when this section was written.
+- includes Property Pros Realty, Hello Home, Sedona Verde Valley Property Management, AZ Realty & Rentals and Bear Creek Real Estate & Property Management.
+- AZ Realty & Rentals is especially important because its direct site explicitly lists Phoenix, Scottsdale, Tucson, Sedona, Prescott and Flagstaff.
+
+Discovery rule:
+- Zillow, Apartments.com, Realtor.com, rental portals and similar sources are useful **discovery sources**.
+- They must not auto-promote a management company into a trusted/current BMC buyer record by themselves.
+- Prefer direct management-company site, current management portal, current portfolio page, professional registry or other direct/authoritative confirmation.
+
+Future data-quality improvement:
+- strict artifact deduplication currently collapses exact key duplicates, but the same company can remain as multiple evidence rows if source URLs differ.
+- preserve useful multi-source evidence but eventually add a business/entity rollup so BMC can distinguish **evidence rows** from **unique companies/accounts**.
+
+### Recovery / sober-living / residential-treatment buyer lane
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-recovery-garage-casino-buyers-36.json`
+
+Commit:
+- `a52d464f5db41acfb8525bba5f311906a2ee9771`
+- CI **40450028535 SUCCESS**
+
+Recovery/sober-living additions include:
+- Royal Life Centers at Chapter 5 — Prescott
+- Miracle Recovery — Prescott Valley
+- Regency Recovery & Wellness Center — Prescott
+- Prescott Recovery Center — Prescott
+- Sustony Sober Living LLC — Prescott Valley
+
+Clarification:
+- **Chapter 5 is a local Royal Life Centers residential treatment facility**, not a housing program category.
+- Treat rehab, sober-living and transitional/supportive housing as separate facility-buyer lanes.
+
+Opportunity hypotheses:
+- janitorial / housekeeping;
+- floors / carpet;
+- laundry/linen where applicable;
+- plumbing/HVAC/electrical;
+- landscaping;
+- pest control;
+- windows / pressure washing;
+- junk / bulk-item / turnover cleanup.
+
+Do not assume these facilities need a new vendor merely because they operate residential programs.
+
+### Structured parking / garage lane
+
+Same artifact/commit as above.
+
+Added official/current structured-parking targets:
+- Tucson Centro Garage
+- Tucson Pennington Street Garage
+- Tucson City-State Garage
+- Tucson Library Garage
+- Tucson Depot Plaza Garage
+- Scottsdale Civic Center Parking Garage
+
+Opportunity hypotheses:
+- sweeping;
+- litter removal;
+- oil/grease cleanup;
+- pressure washing;
+- stairwell/elevator-lobby cleaning;
+- striping / curb / ADA / directional markings;
+- lighting/electrical;
+- graffiti removal;
+- drain/wash-down maintenance.
+
+Municipal procurement rules apply. These are buyer targets for qualification, not normal cold-commercial accounts.
+
+### Casino / gaming facility lane
+
+Same artifact/commit as above.
+
+New non-duplicate casino/gaming facility records include:
+- Bucky's Casino — Prescott
+- Yavapai Casino — Prescott
+- Twin Arrows Casino — Flagstaff
+- Casino Arizona — Scottsdale
+- Casino Del Sol — Tucson
+- Casino of the Sun — Tucson
+- Desert Diamond Casino - Tucson — Tucson
+
+Cliff Castle and Talking Stick already existed elsewhere in the census and were not duplicated here.
+
+Source basis:
+- current Arizona Department of Gaming facility information and direct/current facility evidence.
+
+Opportunity hypotheses:
+- large-lot sweeping / striping;
+- sidewalks / entrances / loading areas;
+- windows;
+- dumpster/grease areas;
+- janitorial / floor care;
+- landscaping;
+- signage/lighting;
+- HVAC/plumbing/electrical;
+- pest/waste services.
+
+Respect tribal sovereignty, procurement, insurance, credential and vendor-registration requirements.
+
+### Shopping-center / retail property-management lane
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-shopping-center-management-buyers-38.json`
+
+Commit:
+- `4fdd0b4ffddfdd19e9f914a19f36d34c7bd60d0b`
+- **11 current/direct retail-property records**
+- CI was still in progress when this section was written.
+
+New centers:
+- The Promenade Scottsdale
+- Depot Marketplace — Prescott
+- Glassford Hill Marketplace North — Prescott Valley
+- Grand Canyon Crossing — Phoenix
+- Sheridan Square — Phoenix
+- Huntington Square — Phoenix
+- Mesa Vista Marketplace — Phoenix
+- Sun City Promenade — Phoenix
+- Cortaro Crossings — Tucson
+- Plaza 22 — Tucson
+- Cañada Crossroads — Tucson
+
+This is a high-value buyer lane because centralized property management can control:
+- parking;
+- common areas;
+- storefront/sidewalk standards;
+- landscaping;
+- lighting/signs;
+- janitorial;
+- recurring exterior maintenance.
+
+A single center/management-company relationship may create repeated work across many tenants and service categories.
+
+### Provider fake-join workflow test — important UX defect
+
+Owner personally submitted a fake provider application through the public BMC provider form.
+
+Observed behavior:
+1. the initial provider application was accepted;
+2. an email was received;
+3. the email CTA sent the applicant to the Provider Pilot Terms page;
+4. that page's primary CTAs send the person back to `/providers/#apply`;
+5. the applicant is effectively asked to start the join process again.
+
+This is a **bad loop** and must be fixed before serious provider recruitment.
+
+Current code confirms:
+- public provider form posts `form_type=vendor_partner` to `https://hooks.bmcservicenetwork.com/api/intake`;
+- backend `handle_vendor_application()` creates an applicant vendor record, market record, review exception and `application_received` event;
+- a separate `/provider-pilot-activate/` flow and `handle_vendor_pilot_activation()` already exist;
+- however, the ordinary applicant receipt email currently links to `/provider-pilot/` terms rather than a continuation/activation URL;
+- `/provider-pilot/` then links back to the original application;
+- the activation form itself repeats multiple fields already captured by the initial application.
+
+Desired future behavior after the census/research push:
+- application is submitted **once**;
+- BMC persists the applicant record;
+- email CTA continues that exact record using a secure/tokenized link;
+- continuation page is prefilled from stored application data;
+- ask only for missing/changed activation details (capacity, precise services, credentials, insurance, territory/minimums as needed);
+- show a clear status/next step;
+- never send the applicant back to a blank duplicate application.
+
+### Receipt-delivery audit fix already committed
+
+Commit:
+- `0b230ffe3b98f43ef43c128142d525ada19508da`
+- message: **Audit provider application receipt delivery**
+- CI **40450063138 SUCCESS**
+
+Before this fix:
+- `handle_vendor_application()` called `send_mail()` but discarded the return value;
+- a provider application could be stored successfully while receipt delivery silently failed.
+
+After this fix:
+- successful receipt delivery logs `application_receipt_sent`;
+- failed receipt delivery creates a high-severity `vendor_application_receipt_delivery_failure` exception;
+- failure also logs `application_receipt_delivery_failed`.
+
+This does **not** fix the duplicate/looping activation UX. It only makes receipt delivery auditable.
+
+### Mandatory post-research website/workflow audit
+
+Owner explicitly requested that once the major research census is complete, BMC perform an in-depth review of **all website lead capture and engagement workflows**.
+
+Do not limit that review to provider signup.
+
+Audit end-to-end:
+- customer service request forms;
+- facility-maintenance request;
+- provider application;
+- provider pilot/activation;
+- provider login/dashboard;
+- provider accept/pass;
+- provider job updates;
+- customer matched-provider notifications;
+- Growth Pack purchase/intake;
+- buyer/facility outreach landing paths;
+- Stripe checkout/webhook/order linkage;
+- email receipts and follow-ups;
+- exception handling;
+- duplicate submissions/idempotency;
+- mobile UX;
+- every CTA after an email;
+- every success/failure state;
+- every place where the user is asked to re-enter information already stored.
+
+Goal:
+**No dead ends, no loops, no duplicate forms, no unclear “what happens next,” and no silent email failures.**
+
+### Immediate research continuation
+
+Continue census building before the full workflow audit.
+
+High-value lanes now:
+1. more property-management and apartment/multifamily portfolio operators;
+2. HOA/community-management companies;
+3. supportive/transitional/sober-living housing and residential facilities;
+4. more shopping-center/strip-mall ownership and management portfolios;
+5. parking structures and large paved commercial facilities;
+6. casinos/gaming/resort properties;
+7. warehouses/distribution/manufacturing/fleet yards;
+8. hotels/resorts;
+9. commercial power washing / sweeping / striping / window / janitorial providers;
+10. thin rural service-territory coverage;
+11. keep ADOT dealer data and DLLC as unresolved high-value sources without blocking productive work.
+
+Preserve the Section 67 provider-trust requirement:
+**paying BMC can never buy a better quality/trust rank.**
+
+### Production distinction remains mandatory
+
+Research census is still **not production**.
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+
+Outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+### Continuity sentence
+
+**The newest fully proven checkpoint at the time Section 69 was written is 75,026 strict research seed rows across 321 artifacts, green in BMC Portfolio CI 40450028535 with 21/21 markets, 1,260/1,260 lanes and zero runtime core failures. The newest expansion adds aggregated property-manager buyers, recovery/sober-living facilities, structured parking garages, casinos, rural statewide commercial-maintenance vendors and centrally managed shopping centers. Two later census commits (fac8635 and 4fdd0b4) were still in CI and should be checked first in the next continuation. The owner's fake provider signup proved the initial application/email path works but exposed a severe UX loop: the receipt email goes to pilot terms, whose CTA sends the applicant back to the original application. After the census push, perform a full end-to-end website/lead workflow audit. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
+
+
+
+## Section 70 — HOA/multifamily portfolios, supportive housing, Prescott/Phoenix garages + live provider-funnel defect
+
+Updated: 2026-10-26 late evening Arizona time
+
+This section supersedes the Section 69 census checkpoint. The manual assistant-led commercial-buyer expansion in this thread is complete enough to shift the **next major work block** toward an end-to-end public website/lead workflow audit. Research itself remains open-ended and should continue to be maintained/expanded later; do not interpret this as “the census can never grow again.”
+
+### New fully green research checkpoint
+
+Newest BMC Portfolio CI:
+- **40450885806**
+- result: **SUCCESS**
+- proven commit: `ec0f66c93618d3c06458877514a8c603380d939c`
+
+Strict assistant census:
+- **327 artifacts**
+- **76,771 raw artifact rows**
+- **1,673 exact strict duplicates collapsed**
+- **75,098 strict unique seed rows**
+- **59,289 buyer rows**
+- **15,809 vendor rows**
+- **21/21 markets**
+- **1,260/1,260 deep inventory lanes**
+- **0 runtime core failures**
+
+This supersedes:
+- Section 69: 75,026 strict rows / 321 artifacts
+- shopping-center checkpoint: 75,048 / 323
+- HOA/multifamily checkpoint: 75,074 / 324
+- Northern AZ supportive-housing checkpoint: 75,086 / 325
+- Prescott/Phoenix parking-garage checkpoint: 75,092 / 326
+
+### HOA / community-association / multifamily portfolio buyers
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-hoa-multifamily-portfolio-buyers-39.json`
+
+Commit:
+- `30fcbd7177ead129f5a1d4e19d5d659fb5ae7a32`
+- BMC Portfolio CI **40450609828 SUCCESS**
+- **26 buyer-market records**
+
+Important aggregated buyer accounts now include:
+- HOAMCO — Prescott, Scottsdale, Flagstaff, Sedona, Bullhead City, Tucson
+- FirstService Residential Arizona — Phoenix, Scottsdale, Tucson
+- Associa Arizona — Scottsdale, Tucson
+- Tri-City Property Management Services — Prescott, Phoenix, Flagstaff/Coconino service territory
+- Cadden Community Management — Tucson, Phoenix
+- Trestle Management Group — greater Phoenix
+- P.B. Bell — Phoenix, Scottsdale, Prescott Valley, Cottonwood, Sedona
+- Chamberlin + Associates — Phoenix, Tucson
+- Mark-Taylor — Phoenix, Scottsdale
+
+Why these are strategically important:
+- these are **aggregated buyers**, not single buildings;
+- one relationship can represent many HOAs, apartment communities or properties;
+- several directly describe formal vendor-management workflows.
+
+Especially strong buying-signal evidence:
+- Tri-City says it is **always looking for new vendors**, requires vendor onboarding, and says it finds bids for client projects;
+- Trestle describes a preferred-vendor program that evaluates vendors, solicits bids, awards contracts and monitors work;
+- Cadden uses portfolio-wide vendor compliance and says approved vendors can gain exposure across the management firm’s portfolio;
+- FirstService says it assists with vendor RFPs/job specifications and coordinates staff, subcontractors and vendors;
+- Associa exposes a “partner with us” path for service providers;
+- P.B. Bell says its renovations/maintenance operation includes vendor coordination.
+
+BMC offer hypothesis:
+**Do not ask managers to replace every preferred vendor. Sell supplemental local depth.**
+Best positioning:
+- overflow coverage;
+- emergency gaps;
+- specialty-trade sourcing;
+- turnover/make-ready;
+- remote/out-of-area local contractor sourcing;
+- competitive bid sourcing when requested;
+- recurring exterior/common-area services.
+
+### Northern Arizona supportive / transitional / affordable housing operator expansion
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-supportive-transitional-housing-buyers-40.json`
+
+Commit:
+- `b41c39310c600b20d48897720c34b44f669f68fd`
+- BMC Portfolio CI **40450719064 SUCCESS**
+- checkpoint after commit: **75,086 strict rows / 325 artifacts**
+- **12 facility/operator records**
+
+Added/strengthened:
+- Prescott Area Shelter Services (PASS)
+- Agape House of Prescott — Prescott + Prescott Valley
+- Coalition for Compassion and Justice (CCJ)
+- Stepping Stones Agencies
+- NAZCARE Hope House
+- NAZCARE New Hope House
+- Yavapai Territorial Gospel Rescue Mission
+- Housing Solutions of Northern Arizona — Flagstaff
+- Housing Solutions / Oak Wash Homes — Cottonwood
+- Flagstaff Shelter Services
+- Verde Valley Sanctuary
+
+Important privacy rule added:
+**Never collect, store, publish or expose confidential shelter addresses.**
+Use public organization-level contacts and public facilities only.
+
+These organizations are buyer candidates because they operate buildings/housing portfolios that can require:
+- janitorial;
+- floors/carpet/laundry-area maintenance;
+- HVAC/plumbing/electrical/fire safety;
+- landscaping/exterior work;
+- pest/waste;
+- windows/pressure washing;
+- turnover/make-ready;
+- parking/lighting.
+
+Do not infer need from resident vulnerability and do not market based on protected/sensitive resident circumstances.
+
+### Prescott + Phoenix structured parking completion
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-prescott-phoenix-parking-garages-41.json`
+
+Commit:
+- `abe39e13a2bbee4e12b9b320b219c2c1b1afa136`
+- BMC Portfolio CI **40450760418 SUCCESS**
+- checkpoint after commit: **75,092 strict rows / 326 artifacts**
+- **6 new garage records**
+
+Added:
+- Garage on Granite — Prescott
+- Phoenix Convention Center West Garage
+- Phoenix Convention Center North Garage
+- Phoenix Convention Center East Garage
+- Phoenix Convention Center Heritage Garage
+- Phoenix Convention Center Regency Garage
+
+Official Phoenix material says the Convention Center operates/manages about 4,500 downtown parking spaces across its garage system.
+
+Opportunity hypotheses:
+- sweeping;
+- oil/grease cleanup;
+- wash-down / pressure washing;
+- stairwell/elevator-lobby cleaning;
+- striping / curb / ADA / directional markings;
+- lighting/electrical;
+- graffiti removal;
+- drains;
+- signage/wayfinding.
+
+Municipal procurement/incumbent-contract rules apply.
+
+### Phoenix + Tucson supportive-housing operator completion
+
+Artifact:
+- `portfolio/data/assistant-research-bootstrap-2026-10-26-phoenix-tucson-supportive-housing-buyers-42.json`
+
+Commit:
+- `ec0f66c93618d3c06458877514a8c603380d939c`
+- BMC Portfolio CI **40450885806 SUCCESS**
+- this is the **75,098 / 327** checkpoint
+- **6 operator-level buyer records**
+
+Added:
+- Native American Connections — Phoenix
+- UMOM New Day Centers / Helping Hands Housing Services — Phoenix
+- Central Arizona Shelter Services (CASS) — Phoenix
+- The Primavera Foundation — Tucson
+- Old Pueblo Community Services — Tucson
+- Gospel Rescue Mission — Tucson
+
+Notable scale/current-source facts:
+- Native American Connections says it has developed, owns and manages about **1,000 units** of affordable/supportive/youth housing;
+- UMOM says its housing subsidiary has built **1,000+ units** in the Valley; UMOM also states the affordable properties are managed by **Biltmore Properties**, so purchasing authority must be qualified between owner/operator/manager;
+- CASS operates multiple Phoenix shelter facilities;
+- Primavera and OPCS operate multiple Tucson housing/supportive-housing programs.
+
+### Real-world provider signup test — initial intake worked, but the funnel is broken
+
+The owner personally submitted a fake BMC provider application through the public site and received the provider application email.
+
+That proves at least one real public path successfully traversed:
+- public `/providers/#apply` form;
+- `form_type=vendor_partner`;
+- `https://hooks.bmcservicenetwork.com/api/intake`;
+- backend `handle_vendor_application()`;
+- database applicant creation;
+- transactional SMTP receipt delivery.
+
+This is stronger evidence than code inspection alone.
+
+However the actual UX after receipt is poor:
+
+Current path:
+1. provider submits `/providers/#apply`;
+2. backend creates an `app_<slug>_<uuid8>` vendor with status `applicant`;
+3. receipt email button says **“Review the provider pilot terms”**;
+4. email button links to **`/provider-pilot/`**;
+5. `/provider-pilot/` primary CTA links back to **`/providers/#apply`**;
+6. provider is effectively asked to fill out the application again.
+
+The owner experienced this exact loop in the live site.
+
+### Existing intended activation path already exists
+
+There is already a separate:
+- `/provider-pilot-activate/`
+
+It submits:
+- `form_type=vendor_pilot_activation`
+- hidden `vendor_id`
+- territory
+- markets/services
+- capacity
+- minimum job
+- credentials/insurance
+- pilot terms
+
+Backend already has:
+- `handle_vendor_pilot_activation()`
+
+That handler:
+- requires `vendor_id`;
+- requires pilot terms acknowledgement;
+- loads the existing vendor;
+- updates provider operating details;
+- creates a review exception;
+- logs `pilot_activation_submitted`;
+- leaves final activation under review.
+
+So the system already has most of the intended second-step flow; it is just not connected correctly from the receipt/approval path.
+
+### Do NOT “fix” the loop by merely putting vendor_id in a public URL
+
+Important security/workflow issue discovered during tracing:
+
+The current activation form trusts a hidden `vendor_id`.
+`handle_vendor_pilot_activation()` does **not** currently validate a one-time activation token.
+
+Therefore the future fix should use a:
+- one-time signed activation token; or
+- short-lived provider onboarding token tied to vendor_id/email/application state.
+
+Do **not** simply change the receipt link to:
+`/provider-pilot-activate/?vendor_id=...`
+and call the workflow finished.
+
+The activation endpoint should verify the onboarding token before allowing record changes.
+
+### Duplicate-application risk is real
+
+Current `handle_vendor_application()` always creates a new ID:
+- `app_<business-slug>_<random uuid8>`
+
+The `vendors` table has:
+- primary key on `vendor_id`
+- **no unique constraint on normalized email/business/domain**
+
+Therefore repeated submissions of the same application can create duplicate applicant records.
+
+Because the current receipt loop sends applicants back to the application, this is not theoretical.
+
+Future workflow audit must add application idempotency/deduplication, likely using some combination of:
+- normalized business name;
+- email;
+- phone/domain;
+- submission id/idempotency key;
+- recent-application window;
+- explicit “continue existing application” behavior.
+
+Do not use a simplistic global unique-email constraint because one business may legitimately have multiple contacts and one contact may represent multiple businesses.
+
+### Provider receipt delivery audit patch is green
+
+Commit:
+- `0b230ffe3b98f43ef43c128142d525ada19508da`
+- message: **Audit provider application receipt delivery**
+- BMC Portfolio CI **40450063138 SUCCESS**
+
+Before this patch:
+- `handle_vendor_application()` called `send_mail()` and ignored the boolean result.
+
+Now:
+- successful receipt delivery logs `application_receipt_sent`;
+- failed delivery creates a high-severity `vendor_application_receipt_delivery_failure` exception;
+- failure logs `application_receipt_delivery_failed`.
+
+This does not fix the UX loop; it makes receipt delivery observable.
+
+### Required next major work block: full public workflow / lead-capture audit
+
+The owner explicitly requested that after the manual research push, BMC review **all website workflows in depth** for capturing website leads and engagement.
+
+Do this before turning outreach on.
+
+Audit must be real end-to-end behavior, not only static HTML/code checks.
+
+At minimum test:
+
+1. Provider acquisition
+- provider landing page;
+- application;
+- receipt;
+- terms;
+- secure activation;
+- review/approval;
+- provider login;
+- dashboard;
+- availability/settings;
+- request offer;
+- accept/pass;
+- job update;
+- outcome tracking.
+
+2. Customer service-request acquisition
+- every major service landing page;
+- generic/universal request;
+- service-search / AI-assisted classification;
+- confirmation state;
+- email receipt;
+- provider-match state;
+- exception/no-provider state;
+- customer/provider contact release.
+
+3. Facility-management buyer flow
+- multi-service facility request;
+- child-request splitting;
+- each requested service routing;
+- buyer receipt;
+- no-provider handling;
+- recurring facility-account follow-up.
+
+4. Growth Pack / paid product flow
+- offer page;
+- checkout;
+- Stripe webhook;
+- payment status;
+- intake linking;
+- fulfillment queue;
+- receipt/delivery;
+- duplicate payment/idempotency handling.
+
+5. Email and CTA continuity
+For every transactional email:
+- every button must lead to the correct **next** step;
+- no CTA may restart a completed step;
+- state/context must survive the click;
+- expired/used links need understandable recovery;
+- no dead pages/loops.
+
+6. Form idempotency / deduplication
+- double-click;
+- refresh/resubmit;
+- browser back;
+- duplicate webhook;
+- same email/business repeat signup;
+- same customer request repeat.
+
+7. Analytics/engagement capture
+After functional correctness:
+- source page;
+- service/city landing page;
+- referral/UTM-like attribution where appropriate;
+- conversion step;
+- abandoned-step visibility where privacy-appropriate;
+- do not add invasive tracking merely for vanity metrics.
+
+8. Mobile and plain-language UX
+- verify all major funnels on narrow/mobile layouts;
+- keep public copy at the owner’s preferred plain 6th–8th grade reading level;
+- remove internal/meta language.
+
+Current static form validation only confirms field contracts.
+It does **not** prove the sequence makes sense to a human.
+The owner’s live fake signup demonstrated why synthetic + human-flow testing is necessary.
+
+### Sales implication from this expansion
+
+There is a credible first-sale path in the new census.
+
+Strongest near-term buyer hypothesis:
+**property managers / HOA managers needing supplemental vendor coverage.**
+
+Why:
+- several explicitly seek/onboard vendors;
+- they already solicit bids and coordinate maintenance;
+- they can represent many properties;
+- BMC can begin as overflow/local-gap coverage rather than demanding exclusivity.
+
+Strongest provider-side packaged-data hypothesis:
+- gas stations / fuel sites;
+- fleet/equipment yards;
+- shopping centers;
+- parking garages;
+- property-management portfolios;
+- multifamily communities;
+- hotels/resorts;
+- recurring exterior-cleaning/sweeping/striping opportunities.
+
+BMC can eventually sell a pressure-washing / sweeping / striping / commercial-cleaning provider something closer to:
+“qualified recurring-commercial targets by property type and territory”
+rather than a generic business list.
+
+Do not begin outbound until the website/workflow audit and launch gates are actually ready.
+
+### Provider trust requirement remains mandatory
+
+Keep Section 67 rule:
+
+**Paying BMC can never improve a provider’s quality/trust ranking.**
+
+Quality and evidence-confidence remain separate.
+Small contractors must not be excluded merely for having fewer public reviews.
+
+### Production distinction remains mandatory
+
+Research census is **not production**.
+
+Latest proven production remains:
+- `f05ff6fcf2546de24edda14d58f367c61bb38092`
+- **30,518 active v7 production evidence rows**
+
+Outbound remains OFF:
+- `OUTREACH_ENABLED=false`
+- `BUYER_OUTREACH_ENABLED=false`
+- `GROWTH_OUTREACH_ENABLED=false`
+
+### Immediate continuation instruction
+
+The assistant-led census has now covered the owner’s newest requested buyer lanes:
+- property managers / multi-property managers;
+- HOA/community managers;
+- multifamily portfolio managers;
+- rehab/recovery/supportive/transitional housing operators;
+- parking garages;
+- casinos;
+- shopping centers/strip malls;
+- commercial cleaning/exterior opportunities;
+- rural commercial provider gaps.
+
+Research should remain open-ended and future source additions are still welcome, but the **next major work block should now be the end-to-end public website + lead workflow audit**, starting with the provider application/activation loop discovered by the owner.
+
+Do not turn outbound on as part of that audit.
+
+### Continuity sentence
+
+**Newest fully green research checkpoint: 75,098 strict unique seed rows across 327 auditable artifacts, with 59,289 buyer rows and 15,809 vendor rows, proven by BMC Portfolio CI 40450885806 at commit ec0f66c93618d3c06458877514a8c603380d939c; all 21 markets and all 1,260 deep inventory lanes remain covered with zero runtime core failures. The newest manual expansion added HOA/community and multifamily portfolio buyers, supportive/transitional/affordable housing operators, Prescott/Phoenix structured parking, and additional Phoenix/Tucson housing operators. The owner’s live fake-provider signup proved public intake + database + SMTP can work but exposed a severe loop: the receipt email sends the applicant to pilot terms whose CTA sends them back to the original application. The intended activation page already exists but currently trusts a bare vendor_id, and repeat applications can create duplicate applicant records. Next major work is a full end-to-end public website/lead workflow audit before any outreach is enabled. Production remains the older 30,518-row f05ff6 deployment and all outbound remains OFF.**
+
+
+---
+
+## 71. GROWTH INTELLIGENCE PHASE 1 + PRESERVATION SNAPSHOT — 2026-10-26
+
+Owner asked for the new Growth Intelligence direction to be fully planned in Git without deleting days of Service Network work/research.
+
+### Preservation completed
+
+Created branch:
+- `archive/service-network-pre-growth-pivot-2026-10-26`
+
+Pinned to proven pre-pivot checkpoint:
+- `a6b8e46d01e02ec55a876861cc22529eb3ea6677`
+
+This preserves:
+- 75K+ census/research assets;
+- all service pages/market pages;
+- provider/facility workflows;
+- Stripe/payment work;
+- matching/routing;
+- research automation;
+- CI/runtime controls.
+
+Nothing was deleted or dismantled.
+
+### New authoritative Phase 1 plan
+
+Added:
+- `portfolio/automation/GROWTH_INTELLIGENCE_MASTER_PLAN.md`
+
+Decision:
+- Growth Intelligence becomes Phase 1 proof target;
+- Service Network becomes preserved Phase 2 priority;
+- BMC tests multiple eligible niches in parallel rather than betting only on pressure washing or another single niche.
+
+Core money model:
+- free 5 qualified commercial prospects;
+- $499 100-prospect Growth Pack;
+- sequential premium upgrade;
+- smaller downsell only after a no;
+- recurring fresh-prospect continuity after fulfillment;
+- live Service Network opportunities/territories later.
+
+### Qualification rule
+
+Growth Packs are **qualified commercial prospects**, not implied active buyers.
+
+Hard gates include:
+- active/current;
+- geography;
+- ICP/property fit;
+- service-use evidence;
+- public business contactability;
+- freshness;
+- dedupe;
+- truthful intent wording.
+
+Initial score:
+- service/ICP fit 25;
+- geography 15;
+- applicable-use evidence 20;
+- contactability 15;
+- active verification 10;
+- account/recurring value 10;
+- freshness/novelty 5.
+
+A = 80-100; B = 65-79; below 65 is not delivered. Hard gates override score.
+
+### Autonomous niche tournament
+
+Yes, the VPS should test many eligible service niches.
+
+Pattern:
+1. offline inventory/sample audit;
+2. 25-outreach exploration cells;
+3. one material challenger variation for weak cells;
+4. advance promising cells toward 100 valid targeted outreaches;
+5. durable kill/change rule at 100 with no meaningful interest;
+6. allocate later volume roughly 70% winners / 20% challengers / 10% exploration;
+7. keep exact niche + market attribution;
+8. retest paused cells after material data/offer/season change.
+
+Do not launch every niche blindly before sender/sample/qualification gates work.
+
+### Next engineering task
+
+Build **qualification + experiment engine** before another broad public-site redesign:
+- deterministic scoring;
+- evidence fields;
+- reserve inventory calculation;
+- sample generator;
+- niche-market experiment state;
+- pause/promote/retest logic;
+- synthetic journey;
+- outcome feedback.
+
+Outbound remains OFF until the Growth-specific launch gates in the master plan are satisfied.
+
+
+---
+
+## 72. NOVEMBER 30 REVENUE DEADLINE — 2026-10-26
+
+Owner disclosed a material financial constraint: BMC needs to show real cash payoff by **November 30, 2026**.
+
+This is now a project-level priority.
+
+November is a **revenue-validation sprint**, not a broad build month.
+
+Authoritative rules were added to:
+- `portfolio/automation/GROWTH_INTELLIGENCE_MASTER_PLAN.md`
+
+Key implications:
+- no major new feature work unless it directly improves acquisition, checkout, fulfillment, deliverability/compliance, or measurement;
+- Growth qualification/sample/experiment engine is the immediate engineering priority;
+- test multiple niches in parallel using bounded cells;
+- move capacity toward niches that produce real paid orders;
+- pause losers early rather than burning the month;
+- first paid orders receive human QA, then repeated QA rules become automation;
+- scoreboard is real Stripe revenue and fulfilled orders, not research/database size or theoretical lead value;
+- preferred November target is roughly $2K-$5K gross collected, but this is a target, not a guarantee;
+- if hundreds of valid targeted contacts across properly executed niche tests produce no meaningful paid demand, stop treating the current Growth offer as validated and redeploy preserved assets.
+
+No Service Network assets were deleted. Archive branch remains:
+`archive/service-network-pre-growth-pivot-2026-10-26`
+
+
+---
+
+## 73. FIRST REVENUE LANE LIVE — PRESSURE WASHING GROWTH INTELLIGENCE — 2026-10-27
+
+This section is the authoritative next-thread checkpoint for the Growth Intelligence launch.
+
+### Preserve all prior Service Network work
+
+Do **not** delete, replace, or rebuild the Service Network assets merely because Growth Intelligence is the active revenue lane.
+
+Frozen pre-pivot recovery branch:
+- `archive/service-network-pre-growth-pivot-2026-10-26`
+
+Frozen checkpoint:
+- `a6b8e46d01e02ec55a876861cc22529eb3ea6677`
+
+The census, provider/facility flows, service matching, pages, research system, Stripe work, and other Service Network assets remain Phase 2 infrastructure.
+
+### Financial deadline
+
+Owner needs real non-test cash proof by **November 30, 2026**.
+
+Until then:
+- acquisition, conversion, paid fulfillment, deliverability, measurement, and customer feedback outrank feature expansion;
+- do not add material spend unless it directly supports those goals;
+- do not restart broad marketplace development while the Growth revenue test is active.
+
+### First live niche
+
+Active niche:
+- `pressure_washing`
+- public niche page: `/growth-packs/pressure-washing/`
+- experiment/outreach wave: `growth-pressure-1`
+
+Current offer path:
+1. targeted service business receives BMC Growth email;
+2. landing page asks for a free five-prospect Commercial Opportunity Snapshot;
+3. BMC returns five real qualified commercial prospects;
+4. the $499 100-prospect offer is only shown when the exact market has at least 125 passing prospects;
+5. Stripe checkout uses locked email + sample client reference;
+6. webhook attaches payment to the saved sample/ICP automatically;
+7. customer does **not** fill out the same project details again;
+8. VPS builds and QA-checks the 100-prospect CSV;
+9. fulfillment email sends only after deterministic QA passes;
+10. outcome feedback and later nurture/continuity can improve the model.
+
+### First outbound launch — completed
+
+The first real Growth launch action completed successfully.
+
+Relay result:
+- `growth-launch-pressure-20261027T1242Z`
+
+Initial result:
+- Growth lane enabled;
+- first live wave sent: **7**
+- daily cap: **10**
+- wave: `growth-pressure-1`
+- Service Network provider outreach: OFF
+- Service Network buyer outreach: OFF
+- post-enable Growth health: PASS
+- critical Growth exceptions: 0
+
+The seven first-touch records were subsequently preserved through a controlled pause/deploy/re-enable cycle.
+
+### Current production backend
+
+Production VPS backend commit:
+- `5e7e226501594348168865eeb86376b72e7d724e`
+
+CI proof:
+- BMC Portfolio CI run `40505623633` — SUCCESS
+- BMC Service Network Pages run `40505623650` — SUCCESS
+
+Hardening included:
+- critical Growth exceptions now fail closed;
+- `/api/process-growth-outreach` sends zero while a critical Growth exception is open;
+- `/api/process-growth-health` reports critical Growth exceptions;
+- runtime doctor understands intentional Growth-only launch mode instead of falsely requiring Growth to remain OFF.
+
+Controlled re-enable result:
+- relay: `growth-reenable-hardened-20261027T1248Z`
+- re-enable: SUCCESS
+- duplicate first-touch sends: **0**
+- staged active: 7
+- total sent: 7
+- Growth health: PASS
+- critical Growth exceptions: 0
+
+### Last confirmed Growth funnel state
+
+Last confirmed immediately after hardened re-enable:
+- `growth_enabled=true`
+- wave: `growth-pressure-1`
+- daily limit: 10
+- sample reserve: 125
+- staged active: 7
+- sent: 7
+- replies: 0
+- samples requested: 0
+- samples delivered: 0
+- converted samples: 0
+- paid orders: 0
+- revenue: $0
+- open Growth exceptions: 0
+
+This was an immediate post-launch snapshot. The next thread must read live state before assuming these counters are unchanged.
+
+### Last live runtime proof
+
+Relay:
+- `runtime-growth-live-20261027T1252Z`
+
+Result:
+- exit code 0
+- core failures: 0
+- warnings: 0
+- Growth-only launch health gate: PASS
+- provider outreach: OFF
+- buyer outreach: OFF
+- Growth outreach: ON
+- Docker/Compose: PASS
+- scheduler: PASS
+- Cloudflare Tunnel 2026.10.3: PASS
+- Ops API: PASS
+- Postgres: PASS
+- SMTP/IMAP launch config: PASS from Growth audit
+- Stripe payment mapping: PASS from Growth audit
+- Ollama/qwen3:1.7b: PASS
+- SearXNG/private research search: PASS
+
+The generic preflight may still show `live_intake_ready: BLOCKED` because no verified Service Network field provider is active. That is a **Phase 2 marketplace gate**, not a blocker for the live Growth Intelligence revenue lane.
+
+### Website / SEO / conversion state
+
+Verified from the VPS Growth launch audit:
+- live pressure-washing Growth landing page reachable;
+- free-five form present;
+- live Growth hub uses free-five-first conversion path;
+- sitemap contains the pressure-washing Growth niche;
+- public webhook ingress reachable and constrained;
+- live $499 Stripe Payment Link mapped;
+- SMTP configured;
+- IMAP reply/opt-out polling configured;
+- business postal address configured;
+- no open critical Growth exceptions.
+
+Public Growth page:
+- index/follow;
+- canonical URL;
+- meta description;
+- clear free-five CTA;
+- no claim that a researched prospect is actively shopping;
+- published qualification standard;
+- 125-record reserve rule;
+- qualification replacement guarantee;
+- $499 offer shown after proof, not as the first cold ask.
+
+Public legal pages were also cleaned after launch:
+- removed internal phrases such as “Operational launch draft”;
+- Terms now explain Growth Intelligence research, the qualification guarantee, source/contact expectations, and no revenue guarantee;
+- Privacy now explains Growth research, public business data, outreach suppression, and payment/order handling.
+
+Static/legal polish commits after the VPS backend deploy:
+- `0be996d60481cea8095ea25136e3fe0b0004f187` — Terms
+- `637b39c401014486609aeb4ac1f4848d7ce78ccf` — Privacy
+- `e6aa71a1a48a15f57c49bfd36480e285909a23da` — public-copy regression guard
+
+Validation for `e6aa71a...`:
+- BMC Portfolio CI `40506405755` — SUCCESS
+- BMC Service Network Pages `40506405663` — SUCCESS
+
+The VPS does not need a backend redeploy solely for these static/legal changes. Production backend remains intentionally pinned to the tested `5e7e226...` code until another backend change is approved and tested.
+
+### Stripe checkout reconciliation
+
+The free-five checkout URL uses:
+- `locked_prefilled_email`
+- `client_reference_id=growth_<sample uuid>`
+
+Stripe documents both Payment Link URL parameters for this purpose.
+
+Webhook behavior:
+- maps paid Growth product;
+- reads `client_reference_id`;
+- resolves the saved Growth sample;
+- falls back to recent same-email sample if necessary;
+- sets `growth_sample_id` on the paid order;
+- marks sample converted;
+- stops nurture;
+- creates `fulfill_growth_pack` task;
+- carries original service/market/ICP/minimum job/exclusions into fulfillment.
+
+There is no required second Growth intake after payment.
+
+### Growth fulfillment QA
+
+The production workflow is designed to refuse a bad 100-pack.
+
+Before sending:
+- exactly 100 prospects;
+- all scores >=65;
+- exact customer market;
+- unique business names;
+- source/contact route present;
+- prior BMC deliveries to the same customer excluded;
+- five free prospects included in the 100.
+
+If inventory cannot produce 100 honest qualified rows:
+- paid task becomes exception;
+- critical Growth exception is created;
+- pack is not sent;
+- Growth outbound fails closed while critical Growth exceptions remain.
+
+CI executes the complete synthetic path:
+free five -> reserve gate -> nurture -> simulated paid order -> 100 unique qualified rows -> fulfilled order.
+
+### Monitoring / “20-minute alarm” rule
+
+The owner asked active threads to check status/errors every ~20 minutes.
+
+There are two layers:
+
+**VPS internal layer**
+- scheduler loop: every 5 minutes;
+- Growth health + nurture + fulfillment + Growth outreach: every 3 loops = **every 15 minutes**;
+- this is intentionally more frequent than the requested 20-minute safety cadence.
+
+**ChatGPT external layer**
+- automation ID: `6adfa09139708191a3b81e13e9fbabba`
+- title: `BMC Revenue Watch`
+- cadence: hourly condition watch (ChatGPT automations do not support sub-hour frequency);
+- verifies relay/scheduler/API/tunnel/Growth health/SMTP-IMAP/Stripe/funnel/exceptions;
+- expects Growth may be ON;
+- requires Service Network provider/buyer outreach to remain OFF;
+- should report meaningful replies, samples, orders, revenue, or failures.
+
+During a long active build conversation, the assistant should additionally perform an explicit relay status/error check roughly every 20 minutes of active work rather than relying only on the hourly cloud automation.
+
+### First action in the next conversation
+
+Do this before changing code:
+
+1. Read this Section 73.
+2. Run Growth live status through the VPS relay.
+3. Run Growth launch audit or Growth health.
+4. Verify scheduler.
+5. Check:
+   - sent count;
+   - replies;
+   - opt-outs;
+   - free-five requests;
+   - samples delivered;
+   - Stripe paid orders/revenue;
+   - fulfillment tasks;
+   - open critical Growth exceptions.
+6. Verify `OUTREACH_ENABLED=false` and `BUYER_OUTREACH_ENABLED=false`.
+7. Do not resend the existing seven first-touch emails.
+
+### Immediate next work
+
+Do not redesign the company.
+
+Priority order:
+- watch first pressure-washing responses and free-five behavior;
+- expand the pressure-washing Growth-customer cohort toward 25 **without lowering qualification/contact quality**;
+- improve email/contact discovery for the remaining pressure-washing provider universe rather than padding with weak contacts;
+- keep an eye on deliverability/bounces and suppression;
+- once the first niche has enough signal—or while adding qualified contacts—prepare the already-built commercial-cleaning challenger as the second experiment;
+- preserve exact niche/market attribution;
+- move volume toward actual sample requests and paid orders;
+- do not let page views or database size substitute for revenue.
+
+Do not cold call.
+
+### Durable experiment rule
+
+Pressure washing is the first experiment, not a permanent identity.
+
+If a cell reaches 100 valid well-targeted outreaches with a credible free-five offer and produces no meaningful interest, pause/radically change that cell.
+
+If free samples are requested/used but no one buys:
+- diagnose offer/price/trust before increasing volume.
+
+If paid orders occur:
+- prioritize fulfillment quality;
+- collect outcome feedback;
+- scale the winning niche/market combination;
+- keep a small challenger/exploration allocation.
+
+### Key owner rule
+
+The owner should be an exception resolver, not the fulfillment worker.
+
+Normal path should remain:
+outreach -> free five -> checkout -> Stripe webhook -> paid task -> deterministic 100-pack QA -> delivery -> feedback.
+
+Do not create manual work for Brett unless a genuine exception, credential/dashboard action, or business decision requires it.
+
+
+### Known deliverability verification item
+
+Do not overstate email verification.
+
+Proven:
+- SMTP is configured;
+- IMAP is configured;
+- Growth audit passes sender/postal/reply infrastructure;
+- first seven Growth messages were accepted by the configured SMTP send path;
+- reply/opt-out polling exists.
+
+Not independently proven in this thread:
+- public SPF record;
+- public DKIM record;
+- public DMARC record;
+- end-to-end DSN/bounce suppression behavior.
+
+Before materially increasing outbound volume, verify domain authentication and bounce handling. This should not block observing the already-launched seven-contact pressure-washing test, but it should be closed before scaling the tournament.
+
+
+---
+
+## Section 74 — Email launch incident, owner-preview gate, and corrected mail state (2026-10-27)
+
+### What went wrong
+
+The first live Growth action used seven real pressure-washing/exterior-cleaning businesses before the exact customer-facing email was tested in Brett's Gmail. The application treated a successful return from `aiosmtplib.send()` as `sent`, but that only proves the SMTP submission call returned without exception. It does not prove recipient inbox placement or final delivery.
+
+The HTML alternative also differed materially from the longer plain-text version. Gmail displayed the HTML version, which:
+- omitted the personalized greeting;
+- omitted the postal address and opt-out text;
+- used a large promotional-card presentation;
+- showed the long tracked URL as a visible fallback;
+- gave a weaker first impression than the intended plain-text copy.
+
+This is now treated as a launch-process failure, not as acceptable experimentation.
+
+### Exact production-path replay proof
+
+A one-shot owner replay endpoint was deployed while all three outbound campaign switches remained OFF.
+
+The system selected the first real recorded Growth send:
+- business: TLC Window Cleaning and Pressure Washing;
+- original recipient: `windowcleaningtlc@gmail.com`;
+- original recorded submission time: 2026-10-27T12:38:57.856305Z;
+- subject: `Sedona: 5 commercial accounts worth checking`.
+
+It rebuilt the same first-touch message and sent it through the same production `send_mail()` path with only the recipient changed to `brett.coon2@gmail.com`.
+
+Relay result `growth-owner-replay-20261027T1428Z` returned success with all outbound switches false. Brett then supplied a Gmail screenshot showing the message actually arrived at 7:30 AM Arizona time. This proves the BMC SMTP path can reach Gmail and proves what the old HTML looked like. It does **not** independently prove that each original recipient received its message.
+
+### Correct wording for the original seven
+
+Do not say "seven delivered."
+
+Use:
+**Seven Growth SMTP submissions returned success and the old application logic recorded them as sent. Final delivery/inbox placement for the seven is not independently verified.**
+
+### Permanent release gate
+
+From this incident forward:
+
+1. Customer-facing outreach code/templates must be deployed with all outbound switches OFF.
+2. The exact deployed template must be sent first to Brett's Gmail through the same production mail path.
+3. Brett must inspect the actual rendered message and explicitly approve it.
+4. Production stores the exact approved deployed SHA in `GROWTH_OWNER_APPROVED_SHA`.
+5. Growth launch readiness blocks unless `GROWTH_OWNER_APPROVED_SHA == git rev-parse HEAD`.
+6. Any subsequent code/template deployment invalidates approval and forces another owner preview.
+7. Only after approval may one controlled real prospect be sent, inspected for errors/bounces, and then a capped batch considered.
+
+### Current email hardening
+
+Master now contains changes intended to:
+- show sender as `BMC Service Network <contact@bmcservicenetwork.com>`;
+- add Date and Message-ID headers;
+- use a single deterministic Growth renderer for live and owner-preview sends;
+- include greeting and full core offer in HTML;
+- include postal address and visible opt-out in marketing HTML;
+- remove the visible raw tracking URL fallback;
+- use a simpler normal-business-email layout;
+- keep all campaign switches OFF during owner preview;
+- add an exact-commit owner approval control and launch-readiness block.
+
+Do not mark the new template approved until Brett has received and inspected the revised Gmail preview.
+
+### Still open before scaling
+
+- verify public SPF;
+- verify DKIM;
+- verify DMARC and alignment;
+- improve SMTP/audit logging beyond a boolean;
+- add Sent-folder/audit persistence;
+- add DSN/bounce classification and suppression;
+- review every customer-facing template in `EMAIL_TEMPLATE_REVIEW.md`;
+- retire redundant legacy Growth paths before broad outreach.
+
+
+## 75. Growth one-click free-five funnel — merged, awaiting safe deployment (2026-10-27)
+
+Owner Gmail review of the revised first-touch exposed a conversion problem behind the email: the personalized **Show me 5 free targets** CTA still landed on the ordinary `growth_snapshot` form and asked the prospect to re-enter business/name/email/market/consent even though the outreach target already contained the business, public email, market, and service.
+
+Fix merged through PR #2:
+- merge commit before this handoff update: `719d43222a59abefa49bf4f666093fdda7b26699`
+- personalized Growth links now include a server-signed HMAC claim tied to `target_id + target email`; the email address is not exposed in the URL;
+- new `POST /api/growth/claim-free-five` verifies that the target exists, had a sent Growth outreach record, and has a valid claim;
+- a verified click reuses the existing `handle_growth_snapshot()` machinery, builds the five immediately, renders them on the landing page, emails the copy, and exposes the existing locked $499 checkout only when the reserve gate passes;
+- the normal form remains available for organic traffic and as failure fallback;
+- owner replay links carry `preview=1`, so Brett clicking a preview cannot create a real sample for the source prospect;
+- first-touch copy now says BMC **found** prospects instead of saying it is still researching them;
+- copy no longer pretends BMC knows the contractor's preferred account types before they provide that preference;
+- no outbound switch was enabled by this work.
+
+CI proof on PR head `48bb4859715787b0ecd3071173900dd99d4948b8`:
+- BMC Portfolio CI run `40550128385`: **PASS**;
+- new E2E test stages a synthetic emailed Growth target, signs the real claim, calls `/api/growth/claim-free-five`, and proves exactly five qualified prospects plus a Stripe checkout URL without submitting the normal form;
+- the pre-existing E2E continues through nurture, simulated paid order, deterministic QA, and exactly 100 unique in-market Growth fulfillment rows.
+
+Deployment/launch status:
+- **NOT deployed yet** at the time of this entry;
+- **NOT owner-approved for the new commit**;
+- `OUTREACH_ENABLED`, `BUYER_OUTREACH_ENABLED`, and `GROWTH_OUTREACH_ENABLED` must remain OFF;
+- three fresh read-only VPS relay requests submitted around 17:15Z did not produce result artifacts, and the hourly Revenue Watch independently reported the same missing-fresh-relay observation. Treat VPS state as unverified until the relay returns proof.
+- after a tested master SHA exists, deploy with all outbound OFF; then run Growth status/audit + scheduler/runtime proof; then replay the exact deployed first-touch to Brett; only explicit Gmail approval may set `GROWTH_OWNER_APPROVED_SHA` and permit a later controlled launch.
+
+
+## 76. Owner click-preview must mirror the real one-click path without customer side effects (2026-10-27)
+
+After deploying the first one-click Growth fix, the production owner replay correctly included `preview=1`. That protected TLC from an accidental owner click, but the frontend originally interpreted `preview=1` by skipping auto-claim entirely, which would make Brett see the fallback form and falsely look like the duplicate-form bug still existed.
+
+This release fixes that QA gap:
+- owner replay still uses the exact signed target claim plus `preview=1`;
+- `core.js` now calls the same signed claim endpoint for owner previews;
+- `/api/growth/claim-free-five` recognizes preview mode and selects the same qualified five read-only;
+- owner preview does **not** insert a `growth_sample_request`, email the target, mark a reply, mutate target/outreach status, create nurture, or create a real Stripe sample reference;
+- the preview page still renders the same five-target cards and a visually matching $499 CTA using a non-purchasing preview anchor;
+- the real prospect link (no `preview=1`) continues through the actual sample/email/nurture/checkout path.
+
+CI now explicitly proves both branches:
+1. owner preview returns five and leaves sample/outreach state untouched;
+2. real signed claim returns five, records the sample request, marks engagement, and exposes the live Stripe checkout;
+3. the existing paid E2E still fulfills exactly 100 unique qualified in-market prospects.
+
+Release rule:
+- merge/deploy this section and code together;
+- after the exact deployed owner preview is sent, **do not make another master/documentation commit before Brett's approval**, because approval is SHA-bound;
+- keep provider, buyer, and Growth outbound OFF until Brett explicitly approves the exact deployed Gmail preview;
+- after approval, set `GROWTH_OWNER_APPROVED_SHA` only for that deployed SHA, rerun the strict Growth audit, and use a controlled Growth-only launch while Service-Network provider/buyer outreach remains OFF.
+
+
+## Section 77 — Prospect Exposure / Source Rights Safety Branch (Oct 27, 2026)
+**NOT MERGED / NOT DEPLOYED / NO OUTREACH AUTHORIZED.**
+PR #5: https://github.com/bmcgarybot/bmc-luminary-site/pull/5
+Branch: safety/prospect-exposure-gates-20261027
+Policy: portfolio/automation/PROSPECT_EXPOSURE_POLICY.md
+
+User directive: Systems scale, feelings fail. Never repeatedly give the same top five commercial businesses to every contractor.
+
+### Code work on isolated branch
+- Shared exposure ledger and historical free/paid delivery backfill, with business and recipient identities plus contact-route grouping.
+- Prospect objection/suppression table; business name normalization and email-alias anti-abuse gate.
+- Conservative proposed per-prospect caps: free once per 90 days; all recipients max 3 per 90 days and 8 lifetime; 90-day free and 30-day paid cooldown.
+- Transactional advisory-lock allocation; paid extra prospects reserved before delivery; repeat submissions reuse original batch.
+- Free sample uses deterministic score-percentile sampling instead of first/top five.
+- Separate source-rights review with default FAIL-CLOSED for unapproved domains; launch readiness requires source-approved staged market reserve.
+- Before fulfilling paid order, recheck whether previously free sample prospect has been suppressed or lost rights.
+- Synthetic CI tests cover rotation, distinct accounts, concurrent claims, suppression, source rights, and duplicate requests.
+
+### Remaining launch gates
+1. Verify CI green and inspect database/API integration output.
+2. Audit real-census source licences, provenance and redistribution rights. Public visibility alone is not a licence.
+3. Audit canonical business, property, parent and shared-contact identity collisions before scaling.
+4. Audit all 21 markets after rights, quality and exposure filters; no padded packs.
+5. Extend same ledger to any future Micro, Starter, Refresh and other product exports.
+6. Have qualified legal review of outreach and buyer research terms, opt-outs, rights and Arizona calling rules.
+7. Exact-SHA BMC SMTP owner preview and explicit approval before any live Growth outreach.
+
+Do not merge or deploy merely because source code exists. Keep all provider, buyer and Growth outbound switches OFF. Preserve old network and research census.
+
+Section 77 scope update: Owner deprioritized source-rights checks for this build. Source reviews remain separately documented, but growth candidate selection and launch-readiness source-rights gate were removed from this PR. Exposure caps, history, objections, and deterministic rotation remain enforced. Do not confuse this with approval of the provenance of any record.
+
+
+## Section 78 — End-of-thread verified handoff (Oct 27, 2026)
+USER REQUEST: deliver handoff immediately; user strongly prioritizes deterministic exposure rotation, fairness and autonomous fulfillment. They requested deprioritizing source-licensing research because they believe provenance cannot be proven. Do not endorse evasion or delete safeguards; source-rights gate presently FAILS CLOSED and must be treated as a separate policy issue to resolve before public commercial launches.
+
+Code branch: safety/prospect-exposure-gates-20261027; open PR #5: https://github.com/bmcgarybot/bmc-luminary-site/pull/5
+Latest VERIFIED CI checkpoint before this handoff: PR head e0ca55b08e037e5778d072b7d38ed6dda25b30e5 ; GitHub Actions 40597040775 (PR) and 40597037303 (push) both SUCCESS. Verify CI again after this handoff-only commit.
+PR is NOT merged, VPS is NOT deployed. No production outreach was enabled.
+
+Changes on safety branch:
+1. Shared growth_prospect_exposures ledger for free and paid distribution, historical backfill, suppression, recipient business and shared contact keys.
+2. Free five now chosen across fit percentiles rather than repeatedly using top five; repeat clicks reuse saved selection.
+3. Exposure limits (proposed policy): max 1 distinct free recipient per 90d; 3 recipients total/90d; 8 lifetime; 90d free cooldown/30d paid cooldown.
+4. All sample allocation in advisory-locked transaction; paid reservation in transaction; paid fulfillment checks source rights, suppression, score and count.
+5. Repeated free claims blocked across email and normalized business name in same service/market.
+6. Unapproved commercial redistribution domains filtered using growth_source_rights_review (unknown fails closed), with launch reserve audit.
+7. CI full integration includes concurrent requests, distinct synthetic contact numbers, same-business/email alternate claims, source unapproval, suppression, sample-to-paid 100 deliverable and no repeat sample exposure.
+8. CI initially uncovered invalid empty source_target_id foreign key; fixed by storing NULL. Synthetic phone collision proved shared phone blocking works; changed fixtures, not caps.
+9. Full policy and residual risks in portfolio/automation/PROSPECT_EXPOSURE_POLICY.md; Section 77 in this handoff also documents initial design.
+
+NEXT THREAD INSTRUCTIONS:
+- Confirm PR #5 current head, CI, contents; re-check any race between master and branch before merge.
+- Audit lingering reliability risks: historical backfill idempotency and shared-contact normalization; status reserved vs delivered on SMTP failure (sample exposures currently marked delivered before SMTP success); canonical parent/property business resolution; verification of rights by individual source/evidence, rather than approving domain blanket.
+- CRITICAL: The policy now fails closed until rights-reviewed candidate inventory exists; this was deliberate safety, but user's main concern is exposure rotation. Avoid allowing provenance disputes to derail exposure work. Don't evade or advise concealing sources.
+- Audit Growth paid-customer no-repeat handling and tests for micro/starter/refresh packs, which remain conceptual, not all wired.
+- Evaluate all 21 markets after caps for sufficient inventory and honest packaging.
+- Keep every outbound switch FALSE (OUTREACH_ENABLED, BUYER_OUTREACH_ENABLED, GROWTH_OUTREACH_ENABLED); preserve signed-click path, exact SHA owner preview gating, website and legacy Service Network branch.
+- User values <10 min/day owner workload, no repeated intake, one obvious next step and ethical repeat sales.
+- Never claim PR branch equals live production or Green CI equals permission to launch.
+
+Preserved assets: 75,098 strict unique researched census records, 21 markets, 54+ service categories; BMC Growth and Service Network original paths. Do not delete or archive away customer flows.
+
+At handoff all product prices are not necessarily implemented: $499 100 total Growth, $749 Premium; $299 Competitor, $699 Expansion, $149-249 refresh proposed; downsell $179 25 total/$79 10 more/$20 five more proposed. They need account/dedupe and fulfillment wiring before public offer.
+
+## 79. Controlled free-five overlap and service-search release checkpoint (2026-10-27)
+
+The owner clarified that different contractors' free-five samples **may overlap**, but no pair of five-prospect samples should contain more than two of the same prospects. Completely disjoint batches are not a requirement. Repeated request by the same recipient must return the identical saved five; never issue new freebies on retries.
+
+PR #5 safety branch: `safety/prospect-exposure-gates-20261027` (no merge or deployment at this checkpoint).
+
+Changes after prior handoff:
+- Free exposure default changed to two distinct free recipients within 90 days, while retaining shared free + paid caps, lifetime caps, suppression, and same-buyer exclusion.
+- Free-only per-prospect cooldown removed so that limited, deliberate overlap is possible.
+- Allocator evaluates all prior free-five disclosure batches in that service/market and will not select a batch with more than two overlaps against *any* previous batch. If insufficient inventory remains, respond with a pending-inventory exception rather than padded/repeated five. Allocation remains serialized in one transaction.
+- CI concurrency assertions now allow at most two overlaps rather than insisting on zero. Existing same-submission, same-business and suppression checks remain.
+- Free-five SMTP accounting now separates prepared, web-disclosed and email submission failed/accepted. A five returned in a webpage response is a real disclosure even if email fails. Replays reuse the same sample.
+- Fixed three paid fulfillment exception messages referring to unselected order_id column.
+- Expanded deterministic customer-language search by roughly 300 curated phrases and added 42 CI regression cases; common plumber/toilet terms now reach existing plumbing/backflow category, but general residential versus backflow specialist matching still needs a separate service/catalog review.
+- Common SMTP sender normalizes em/en dashes, including HTML emails, and the writing guide is at `CUSTOMER_LANGUAGE_AND_EMAIL_STYLE.md`. Owner exact-SHA email preview requirement is unchanged.
+- GitHub ↔ VPS relay was proven live at 2026-10-27 23:30 UTC using fresh proof, runtime and scheduler requests. VPS on tested master `95fc8acf691ad6517e1be3a17f8e27517a15ea9c`, all outreach switches off, healthy runtime.
+- Previous search CI failed on natural-language 'toilet is overflowing', fixed and subsequent CI for `981851230e793bfa9043a19d542e71b349554ce5` succeeded (workflow 40602364711).
+
+NEXT:
+1. Check the latest branch head and BMC Portfolio CI; do not assume a previous green applies to later commits.
+2. Ensure synthetic CI covers allowed two-overlap and forbidden three-overlap, and check historical backfill/idempotency.
+3. Do not enable outreach; do not deploy an unmerged PR.
+4. When all remaining release and owner gates are satisfied, merge through normal review and use tested-SHA VPS relay deployment with all outbound OFF; verify production SHA, database migrations, search, funnel, health; owner review of exact email preview is required before any emails.
+
+
+## 80. Verified Growth claim, owner-protected release and public gateway (2026-10-28)
+
+Development remains on PR #5 safety branch `safety/prospect-exposure-gates-20261027`. All outreach switches remain OFF and no new customer-facing campaign may be enabled without exact deployed-SHA owner Gmail preview approval.
+
+Engineering implemented:
+- Business duplicate gates and the global free-sample allocation are in the same transaction lock, covering pending requests and same email/named contractor aliases. Common LLC/Inc/Corp suffixes are normalized. Optional self-reported business phone and website are stored. A website or phone match is held as `verification_needed` rather than assumed to prove ownership; original sample contents are never revealed to an unverified alternate email.
+- Cold public free-five intake sends an expiring 48h signed email ownership link before revealing five prospects. `growth_email_verifications` stores an immutable request, status, expiry; `/api/growth/verify-email` redeems it on the same landing page and returns the allocated sample. Signed existing BMC outreach claim retains one-click route without a second form. Site HTML and shared JS updated, with cache versions.
+- Free samples rotate with at most two overlaps between any pair, shared per-prospect saturation caps and one-claim-per-contractor behavior. Replaying a verified link returns the saved five.
+- Public Nginx gateway fixed to permit only POST/OPTIONS on `/api/service-search`, `/api/growth/claim-free-five`, `/api/growth/verify-email`, alongside the preexisting intake and Stripe webhook. Admin endpoints remain private. `verify-public-ingress.sh` validates new routes and no admin access.
+- Nurture now excludes people with a recorded Growth outreach reply, plus existing opt-outs/suppressions and paid orders. Common SMTP MIME normalizes em/en dashes in subject, plain text and HTML, with CI regression.
+- Added CI for invalid email verification tokens, concurrent aliases, shared-domain hold, free-five saturation and idempotency, paid-order simulated 100 qualified prospect fulfillment, nurture stopping after reply, source inventory and Nginx endpoint allowlist.
+- Merged current master into PR branch with dual-parent commit `ca8f3d5758b77d71260f8fd6c8c4195369c8cf70`, preserving image overhaul and public plumber search. GitHub reports PR mergeable.
+- Live Stripe API verified the active starter product `growth_pack_starter` is exactly $499 (one-time, 49900 cents); premium $749, competitor $299, expansion $699. This does not prove sales.
+- Fresh read-only VPS relay 2026-10-28 16:44 UTC succeeded for proof/runtime/Growth status/scheduler. VPS still running older `95fc8acf691ad6517e1be3a17f8e27517a15ea9c`; all three outreach switches false, zero Growth orders, zero samples and zero recorded replies. Scheduler/API healthy; seven old SMTP submissions remain recorded but not independently verified as recipient delivery.
+- Latest confirmed green combined branch CI before writing this section: `b68bbc496967720a791b96877d00c234f5508a77`, workflow runs `40729219223` and `40729208681`, both success.
+
+Release requirements:
+1. Verify latest CI on THIS handoff commit, not previous green head.
+2. Confirm no new merge conflicts with master; merge PR #5 only when latest CI green and no unresolved release failures.
+3. Use exact green tested master SHA through existing VPS GitOps relay to deploy, all outreach OFF. Migrations are additive; `deploy-update.sh` recreates API and public webhook proxy (required for new routes). Verify live SHA, schema, Nginx public search/claim/verify, Stripe, scheduler, health and customer form path; do not enable outreach.
+4. The exact deployed live email template must be sent through production path to owner's existing test inbox and visually approved before ever setting `GROWTH_OWNER_APPROVED_SHA` or enabling any campaign.
+5. A simulated CI paid transaction and Stripe product existence are NOT a real $499 sale. Do not claim revenue until an actual successful verified order/payment and 100-pack delivery.
+6. Before launch, independently verify contact legitimacy and abuse throttling; soft identity matches may remain in manual review and no extra sample should be disclosed.
+
+
+## 81. Owner-controlled operator console prototype (2026-10-28)
+Owner directive: **NO LIVE CUSTOMER OUTREACH until the owner personally approves quality, plan, operational workload, and deployed email previews.** Keep OUTREACH_ENABLED, BUYER_OUTREACH_ENABLED, GROWTH_OUTREACH_ENABLED OFF. Build and test safely, including a private dashboard/terminal that the owner can inspect in under ten minutes per day. Owner wants the VPS to do ongoing work automatically with small manual intervention, but the system must be observable and fail closed.
+
+New isolated development branch: `safety/operator-console-20261028` (created from PR #5 head `330923128207062e66b494c7c730a0f2b861de17`). NO PRODUCTION RELEASE OR EMAIL AUTHORIZED.
+- `portfolio/automation/operator-console.py`: read-only snapshot monitor; stale evidence, unavailable metric fields, unconfirmed outbound OFF, unhealthy runtime and missing deployment SHA force REVIEW; never grants marketing authorization.
+- `portfolio/automation/test-operator-console.py`: synthetic tests for stale evidence, failed switches, missing revenue, exceptions, ignored secrets.
+- `portfolio/automation/OPERATOR_CONSOLE.md`: sanitized JSON contract and instructions.
+- It currently consumes a sanitized local JSON file, **not** a connected live VPS data feed or browser dashboard. Never imply otherwise. This is a first part of operational observability, not a finished owner portal.
+
+Next engineering work: integrate read-only signed/authenticated VPS relay snapshot to a private owner dashboard, prove real monitoring (scheduler, queue, runtime, deployment SHA, funnel counts, verified Stripe orders and exceptions), test synthetic checkout-to-100 fulfillment and error/restart behavior, add automation alerting and backup proof. Do not leak relay payloads or customer personal data into public GitHub. PR #5 remains separately unmerged until release gates are satisfied; preserve existing full research census and Service Network. Do not write or approve campaign mail on behalf of the owner.
+
+
+## Section 82 — Read-only VPS operator snapshot integration (2026-10-28)
+After owner insisted on execution rather than another future worklist, development continued on PR #6 (draft, safety branch). Changes:
+- `vps-gitops-relay.py` allowlists `operator_snapshot` under READ_ONLY_ACTIONS; it reads Docker running services, private API health, the three local outbound switches, deployed SHA and whitelisted aggregate Growth numbers. No customer email sent, no launch action and no secrets intentionally included.
+- `operator-console.py` accepts sanitized snapshots or genuine relay result envelopes, checks action, status, exit_code, non-external action and reported SHA consistency, fails closed for stale/unknown/unsafe data.
+- `test-operator-console.py` includes 10 synthetic tests covering healthy reporting, staleness, missing/on outreach, unknown revenue, exceptions, secret stripping, relay action shape and mismatched SHA.
+- BMC Portfolio CI validates the new read-only allowlist and executes console tests.
+- `OPERATOR_CONSOLE.md` explains the relay request contract and clearly distinguishes branch code from VPS deployment.
+- This is an isolated development branch. It does not mean the VPS is updated or live metrics have been verified. Continue with safe CI and relay verification before release. Do not touch PR #5 or merge into master until quality and data policy release review. All outbound remains disabled.
+
+
+## Section 83 — Owner HOLD, dashboard HTML, fresh read-only VPS checks (2026-10-28)
+Owner directive reconfirmed: do not send live customers or prospects any messages until owner approves offer quality, full plan, low-touch operation, and previews. Development work proceeded on safety branch PR #6, not production:
+- `operator-console.py --html <private-file.html>` now generates an escaped, script-free, local status dashboard from sanitized relay JSON. It is not automatically refreshed or deployed.
+- `vps-gitops-relay.py` adds independent `BMC_OWNER_LAUNCH_HOLD` fail-closed gate for `growth_launch_enable`. Defaults to active if missing, separate from email template SHA approval. `.env.example` now sets the hold true; strict `growth-launch-readiness.sh` blocks until explicitly false.
+- CI checks the read-only classification of `operator_snapshot`, independent launch hold, and now 12 console unit test scenarios.
+- Read-only existing VPS relay requests submitted (request IDs `owner-readonly-20261028-proof_readout-1222`, `owner-readonly-20261028-growth_status-1222`); result artifacts were not yet available when first checked. Do not claim VPS metrics from them until returned.
+- Keep PR #5 and PR #6 unmapped to live production; all provider, buyer and Growth outreach controls OFF. No actual live customer marketing sent.
+
+Important follow-up: Owner hold requires manual configuration change on VPS only after explicit user approval; do not silently set it false. Finish real relay proof, CI validation, synthetic full funnel, private access control and durable low-maintenance monitoring.
+
+
+## Section 84 — Operator relay synthetic test and exact owner hold observability (Oct 28, 2026)
+More development on draft PR #6:
+- New `test-operator-relay.py`: five fully mocked tests of the new VPS read-only `operator_snapshot` action. No Docker/API/network/GitHub writes in test. CI now invokes these tests.
+- Operator status requires `owner_launch_hold_active=true` and displays it explicitly; absence or false alerts. Updated console test fixture and additional hold test.
+- `operator_snapshot` now reads the three campaign flags directly from local .env and marks omitted flags unknown, rather than relying on relay helper defaults; continues to emit only aggregate, whitelisted fields.
+- PR #6 is currently draft/mergeable against PR #5 and NOT deployed; no customer outreach authorized.
+- Two existing read-only relay checks were queued at 19:22 UTC, but result files had not appeared in first several checks. Do not claim live VPS proof until result artifacts actually exist.
+- No new CI success was verified for the latest PR #6 HEAD at the time of this entry (workflow query returned no runs). All newly added tests remain pending CI proof. Do not conflate PR #5's earlier green tests with PR #6.
+
+
+## Section 85 — Operator monitoring repair (2026-10-28)
+
+Engineering continues on draft PR #6 only. No merge, production deployment, email, launch approval or campaign configuration change was performed.
+
+Found and fixed three defects in the previous unverified checkpoint:
+- GitHub Actions YAML contained literal backslash-n text in the console step; the workflow failed before creating any jobs. Restored actual YAML line breaks.
+- HTML renderer was missing a concatenation operator, preventing the console module from importing.
+- Snapshot booleans were inverted: a false campaign flag was reported as true and an enabled flag as false. Corrected conversion; added coverage for enabled flags in all three lanes and malformed flag values remaining unknown.
+
+The HTML escaping test previously injected into an invalid SHA that assessment intentionally discarded. It now injects into displayed timestamp data, checking actual escaping without weakening SHA rejection.
+
+Local validation: workflow YAML parsed; exact relay-validation and operator-console workflow steps executed successfully; 13 console and 7 relay tests passed; git diff whitespace checks passed. Fresh GitHub CI for this commit still must be checked. Local tests do not establish production health, capacity, recovery or end-to-end payment fulfillment.
+
+Remaining: obtain green full CI, verify real private snapshot integration and field semantics, full funnel/error/restart and capacity checks, historical exposure/identity audit and real inventory QA. Preserve the seven historic SMTP submissions as previously contacted prospects, not dead leads or verified deliveries. Keep all outreach OFF and owner hold active; no owner email approval is implied.
+
+Additional monitoring hardening in the same repair: HTTP success alone no longer counts as API health; /health must return valid JSON with ok=true. Core runtime health includes this API check. Added mocked failures for invalid/unhealthy API responses, missing scheduler, Docker failure, unavailable metrics, and actual relay-envelope-to-console integration for enabled/disabled outreach. All 24 local tests pass (13 console + 11 relay). Full GitHub CI is still the release authority.
+
+
+## Section 86 — Connected private monitor release candidate (2026-10-28)
+
+Owner explicitly requested continued execution without stopping at each checkpoint. PR #6 continues safely; no merge, deployment or outreach authorized by these changes.
+
+Added operator-monitor.py: locally invokes only read-only operator_snapshot, collects every 60 seconds, binds HTTP to 127.0.0.1:8765, rejects nonlocal Host headers, serves only escaped HTML and sanitized JSON, no-cache responses and 30-second refresh. Requires SSH forwarding for remote owner access; no public route. Collection errors retain last-known metrics with REVIEW, startup is unknown, five-minute stale threshold is evaluated at every read. No mailbox polling, GitHub upload, external mail or configuration action.
+
+Added optional install-operator-monitor.sh with unprivileged systemd service, process restart, 256 MB memory limit and 25% CPU quota. Not run. Seven new tests include real local HTTP requests and collection-failure/recovery checks. Together with previous 24 tests, all 31 local monitoring tests pass. CI runs the new suite and shell syntax check. Exact-head GitHub CI must still be verified.
+
+Previous repair commit 63457a8d5a077652e80287cc287be8c49888042e passed full CI in both runs 40761873281 and 40761863976, including synthetic database/funnel/fulfillment integration. This does not prove production integration or real revenue.
+
+Remaining release boundary: PR #6 depends on unmerged PR #5. Do not silently merge/deploy either. Finish production-specific inventory/identity/exposure review and release review before an owner-approved tested-SHA rollout with all outreach OFF. Resource limits are not a load test; VPS capacity/restart/restore and private SSH integration remain unverified until authorized release. Seven original contacts remain previously contacted prospects, not dead leads.
+
+
+## Section 87 — Owner hold enforced inside campaign workers (2026-10-28)
+
+Release review found the previous hold only guarded relay launch/readiness; the API campaign workers could bypass it, and Growth nurture had no campaign hold at all. Added fail-closed BMC_OWNER_LAUNCH_HOLD (default true, only explicit false releases) to provider outreach, buyer outreach, Growth outreach and Growth nurture after authentication and before database/mail work. Compose passes this hold to the running API. Transactional intake/payment/fulfillment and owner-preview behavior are unchanged by this campaign-only gate. No customer mail was sent.
+
+Growth status now exposes the API process's effective hold and all three effective campaign switches. Operator snapshots require API hold confirmation and agreement between local .env and running API switches; legacy/missing/drifting runtime fields remain unknown and cannot show healthy/outreach-off. This prevents edited .env values being mistaken for the configuration of a still-running old container.
+
+Added four campaign hold tests executing the real extracted worker functions with DB-access traps: all four block before database/mail, authentication still applies, missing/malformed hold stays blocked, releasing hold does not enable disabled campaigns. Relay tests also cover API hold absent/released and effective flag drift. Total local monitoring/hold tests: 38 (13 console, 14 relay, 7 monitor, 4 hold). Full CI must be verified for the final head.
+
+CI releases the hold only in its temporary synthetic .env.ci while SMTP_DRY_RUN=true so existing nurture integration exercises real behavior without sending mail. Production .env is never modified by that fixture.
+
+
+## Section 88 — Qualification filter corrections and production recheck (2026-10-28)
+
+During release review, excluding every permitted buyer category incorrectly restored the original categories. Removed that fallback: an empty allowed set returns no candidates, never ignores the buyer's exclusions. Also found stale/missing verification dates could still achieve high scores. New candidate qualification requires an actual last_verified_at datetime within 90 days (future dates beyond five-minute clock tolerance rejected); search refresh or row edits alone no longer prove freshness. These gates affect newly selected candidates; this is not a claim that every historical saved sample or every census row is independently audited.
+
+Added three tests executing production qualification functions on synthetic records: all-category exclusion returns no candidates/no query, stale/missing/future records fail even at score 100, and exact freshness boundary checks. All 41 local tests pass across console/relay/monitor/hold/qualification suites. Full CI for final head is still required.
+
+Read existing watch41 proof: runtime completed 2026-10-28T20:42:07Z, production remains 95fc8acf691ad6517e1be3a17f8e27517a15ea9c, all campaigns OFF, runtime zero failures/warnings. Growth status at 20:41:50Z: seven prior SMTP submissions, zero replies/samples/orders/revenue, zero open Growth exceptions. No live configuration or production code changed by this work.
+
+
+## Section 89 — Owner approved held deployment (2026-10-28)
+
+Owner explicitly approved merging PR #6 into #5, merging tested result to master, and production deployment for monitoring/recovery checks only. This does not authorize customer contact, release of owner hold, or model upgrade. PR #6 merged at 6cdb0a86cda027f7ebfdf6b08a2a0bc67a463f95.
+
+Deployment hardening: require all three outreach flags exactly false, explicitly set BMC_OWNER_LAUNCH_HOLD=true without replacing other configuration, create a fresh database backup and verify checksum/full restore into an isolated test DB before migrations. backup.sh and verify-backup.sh now accept the selected environment file; mocked selected-env checks and shell syntax passed. Production restore result remains pending until deployment.
+
+The relay's systemd service has NoNewPrivileges=true, so it cannot use sudo to install a system service. Added --user monitor installation only when an existing persistent (linger-enabled) user systemd manager is available. No privilege workaround is attempted. Deployment reports monitor installation incomplete if that access is unavailable, rather than pretending a child process or temporary session is durable. Backend deployment and read-only relay snapshot remain independently verifiable.
+
+
+## Section 90 — Merged release queued; relay responsiveness investigation (2026-10-28)
+
+PR #6 merged into #5, then #5 merged to master 3a53e61e03de963ce48cfa3bc533411dd3cc259b. Exact master CI 40768738329 and Pages 40768738212 passed. Owner-approved deployment request held-release-z-deploy-20261028T210601Z targets exactly that SHA with external actions disabled. Three read-only held-release-pre requests were submitted at 21:02Z. At the time of this note, no fresh result had returned; last proven VPS evidence remains watch41 around 20:42Z. Never claim queued equals deployed. Direct SSH from this workspace returns Network is unreachable.
+
+Investigation found each relay cycle individually checks all historical remote results (321 request records currently). This can consume hundreds of GitHub API calls every poll; it is a possible contributor, not a confirmed diagnosis of the current delay. A scheduled relay research refresh can also block the same process up to an hour per lane.
+
+Separate fix/relay-result-index-20261028 branch indexes historical results once, retains a fresh duplicate check for pending requests, and handles GitHub's 1000-entry directory cap using complete tree data, refusing truncated responses. Five no-network tests pass, including 321 historical records with no individual GETs. This branch must NOT change master until the outstanding exact-SHA deployment resolves, or that request will safely reject as stale. No live settings/customer communications changed by this investigation.
+
+
+## Section 91 — Held production deployment verified (2026-10-28 Arizona)
+
+Retrieved actual deployment result held-release-z-deploy-20261028T210601Z: SUCCESS, exit 0, production commit 3a53e61e03de963ce48cfa3bc533411dd3cc259b, completed 2026-10-28T21:37:05Z. Fresh backup backups/bmc_20261028_213506.dump passed checksum and full isolated pg_restore; restored counts: services 54, vendors 212, buyers 2730, research 849. Isolated test DB cleaned by trap. Migration and backend service recreation completed; runtime doctor zero core failures/warnings.
+
+Private monitor service installation did NOT complete: persistent user systemd manager unavailable. Relay cannot sudo. Owner has now explicitly offered to run commands on VPS; asked them to run bash ./install-operator-monitor.sh from ~/bmc-luminary-site/portfolio/automation in their normal terminal. Do not claim service installed until their output or live proof confirms it.
+
+Latest retrieved watch44 runtime/Growth evidence around 2026-10-29T00:50Z confirms production still on the same SHA, effective owner hold true, provider/buyer/Growth switches all false, zero runtime failures/warnings. Seven original SMTP submissions remain recorded; zero replies, samples, paid orders or revenue. Buyer research pool now 2915; free disk 76 GB. These are health/headroom observations, not a full load/capacity test.
+
+PR #7 at 461a9724c186aea1ef70b1769111417d95aacdbc passed both full CI runs 40769523277 and 40769498191. The prior exact-SHA deployment is now resolved, so its wait restriction no longer prevents releasing the result-index optimization after current-head CI. No outreach or owner preview has been authorized.
+
+
+## Section 92 — Owner terminal proves monitor installation and resource headroom (2026-10-28 Arizona)
+
+Owner supplied full terminal output in Pasted markdown(20261029-050833).md. Exact tested e41ed6c2e1cbc8a92a4072887ad9d2d7d0f9216d deployed on VPS. New backup bmc_20261029_045829.dump passed checksum and isolated restore; 54 services, 212 vendors, 2915 buyers, 849 research records restored. Runtime zero failures/warnings. System bmc-operator-monitor.service enabled and active at startup; command-line collector at 04:59:57Z reports HEALTHY / OUTREACH OFF, effective owner hold true, all three flags false, zero issues/replies/samples/orders/revenue. This proves startup and live collection; sustained HTTP refresh/restart proof remains separate.
+
+Capacity snapshot: 11 GiB RAM total, 3.4 GiB used, 8.0 GiB available, about 10 MiB swap used. Ollama was using 597.78% Docker CPU (almost six cores) and 1.854 GiB of its 2.441 GiB memory limit at that instant. Other services were lightly loaded. This is a snapshot, not proof of sustained saturation or a full load test.
+
+Added bounded AI execution: Ollama Compose cpus=2.0; classifier requests think=false, num_thread=2, num_predict=128, existing 15-second timeout and catalog/confidence validation retained. Incomplete JSON/timeouts return no classification. Four new no-network tests pass. Docker-rendered CPU allocation is checked in CI. Limits protect non-AI workloads without buying hardware; runtime latency and actual limit still require post-deploy validation.
+
+Deployment now recognizes an already-active system monitor service instead of misleadingly reporting the unavailable user-manager path as an incomplete install. No campaign or owner preview authorized. Technical references: https://docs.docker.com/reference/compose-file/services/ and https://github.com/ollama/ollama/blob/main/docs/api.md .
+
+Read-only diagnostic_bundle now also collects Docker CPU/memory stats, system monitor active state, and the loopback sanitized /status.json response. This makes post-deploy verification possible through the existing relay without requiring another owner terminal dump. No new action name, public route, secrets, or mutating command is introduced.
+
+
+## Section 93 — Owner requested graphical live dashboard (2026-10-28 Arizona)
+
+Owner asked for an engaging dashboard with graphs. Added operator-dashboard.py (responsive, script-free server-rendered SVG/CSS), operator-metrics.py (strict host/container aggregate whitelist), and private SQLite history in operator-monitor.py. Dashboard includes Growth revenue/orders/samples/replies, true SMTP submission funnel, resource gauges, CPU history, service table, attention panel and separate owner-hold/campaign controls. Range filters 1h/6h/24h/7d; unknown values remain unknown, no fake activity/backfilled history, no marketing controls.
+
+History: 14-day retention, 240 plotted samples maximum preserving endpoints and missing-collection gaps. Database is private mode 0600 under systemd StateDirectory mode 0700; startup never restores a historic green state before a new collection. History without persistent installation is labelled session-only. Installer now updates StateDirectory and restarts the system service; one normal-user terminal invocation with sudo access is required because relay cannot administer system units.
+
+Added nine dashboard/history/resource tests covering restart persistence vs live status, downsampling/gaps, real zero vs missing data, CPU scale, whitelist/privacy, XSS and failed-collection history. Existing HTTP tests cover accepted/invalid date range routes. Full local monitoring/classifier/qualification suites pass (59 tests). Service template validates. Automated Chromium screenshot testing was unavailable: local browser binary download failed; cloud browser rejected file-URL preview by policy. No bypass was attempted. Thus responsive CSS/structure is implemented/tested, but actual browser visual review remains unverified until the owner opens the deployed view.
+
+Prior CPU release deployed successfully via capacity-z-deploy-20261029T051800Z: production 97507feeed27c5e976a6ece64b19c255397ad741, exit 0, runtime no failures/warnings, system monitor recognized active. Fresh read-only dashboard-resource-proof request was submitted around 05:39Z to verify live CPU quota, Docker stats and localhost monitor HTTP. No customer outreach or model upgrade authorized.
+
+## Section 94 — Continue toward launch: checkout integrity audit (2026-10-29 Arizona)
+
+Owner explicitly instructed continued engineering until ready to go live. Outreach remains OFF, owner hold ON, no customer or owner-preview mail authorized. Dashboard master 18a65129 remains last merged release; graphical system-service/history upgrade still needs actual deployment/installer evidence.
+
+Found Stripe event-ID deduplication did not deduplicate separate paid events for the same checkout session. Added transaction-scoped session advisory lock before event lookup, then existing-paid-order guard before revenue/conversion/fulfillment mutations. This preserves already fulfilled orders and prevents cross-event revenue double counting. Unpaid checkout completion no longer treats the ambiguous value "complete" as paid. Missing session IDs reject before writes.
+
+Free-sample checkout linkage now requires matching payer email, unconverted sample and row lock; fallback also locks the selected unconverted sample. A client reference alone cannot attach another business's sample. Eight no-network tests execute the real webhook with synthetic transactional fixture (not a real Postgres concurrency proof).
+
+CI now exercises a distinct second paid event for an already fulfilled session and checks revenue and order state remain unchanged. Replaced manually inserted paid Growth order in the main fulfillment test with a signed synthetic Stripe webhook linked to the real CI-created free sample, so CI tests actual sample -> payment -> fulfillment task -> 100-row pack continuity. SMTP_DRY_RUN remains true in the disposable CI environment. No production data or payment was created. Full exact-head CI still required.
+
+Further review needed: paid fulfillment worker concurrency/retry/recovery; Premium's additional deliverables vs starter auto fulfillment; inventory freshness/source-rights proof in first sellable territory; real public journey and deliverability evidence. Do not call the business launch-ready merely because CI is green.
+
+Fulfillment review additionally found outer task snapshots could be stale after a parallel worker finished. Worker now locks/rechecks current task + order under the existing allocator lock before selection or mail. Completed/exception/unpaid/not-ready records skip. Premium previously used the same 100-row CSV and was marked fulfilled without its purchased competitor snapshot/outreach plan; nonstarter orders now create an explicit product-scope exception rather than falsely completing. Four real-worker claim-gate tests pass. Premium full automation remains a launch scope decision/build gap, not a fulfilled capability.
+
+CSV delivery now escapes formula-leading public text (=, +, -, @ including whitespace prefixes), preserves Unicode/quotes/newlines and public phone numbers as literal text; three roundtrip/regression tests pass. All eleven local test suites passed (74 tests total). Updated CI revenue assertions isolate the new sample-payment fixture so existing checkout totals remain meaningful.
+
+Recovered graph-dashboard-deploy-20261029T054615Z result: it DID execute before request deletion, succeeded at 2026-10-29T05:48:32Z on exact master 18a65129. Backup bmc_20261029_054707.dump passed full isolated restore; runtime zero failures/warnings, all outreach false, owner hold ON. Existing system monitor recognized active. This proves code deployment, not that privileged history-unit reinstall/restart occurred. No need to redeploy the old dashboard SHA blindly.
+
+## Section 95 — Production selector capacity audit (2026-10-29 Arizona)
+
+PR #10 head 51b9e851 passed full CI 40999553874, merged as cfb65236af3151b34ba50540aff2a45751d1aeab. Exact merged-master full CI 40999762857 and Pages 40999762866 both succeeded. Held deployment request checkout-integrity-deploy was submitted; deployment result not yet observed at this checkpoint. Do not advance master while its exact-SHA deployment is pending.
+
+Fresh read-only operator snapshot at 2026-10-30T03:50:30Z proves production then still 18a65129: healthy runtime/API/scheduler, owner hold true, all outreach false; historical SMTP submissions seven, zero replies/samples/orders/revenue, zero open Growth exceptions. No new mail authorized.
+
+Offline canonical-census check using production category/freshness/score rules and normalized business deduplication found preliminary pressure-washing counts: Prescott 227, Prescott Valley 141, Flagstaff 241, Kingman 142, Phoenix 2837, Scottsdale 885, Tucson 1867. Many smaller markets are below 125. These are NOT live availability: exclude no live closures, exposure/suppression, buyer exclusions, or manual source QA. Do not advertise rural 100-prospect packs merely from raw census totals. These counts are diagnostic only.
+
+Built private /api/admin/growth-inventory-audit and read-only relay action growth_inventory_audit. It runs the actual qualified selector in one repeatable-read read-only transaction for both services/all 21 configured markets. Returns only aggregate counts capped at reserve and separate five-sample/125-reserve booleans; no contact data, allocations, emails or checkouts. Explicitly says buyer-specific restrictions and source/fulfillment review still apply. Three production-function tests pass; CI adds real DB endpoint check for 42 unique bounded aggregate lanes.
+
+Spot-checked four Prescott property-management source pages directly: AZ Realty & Rentals lists Prescott only among individually considered additional markets (not proof of a local office); CR Property Services confirms Prescott office/928-445-8000; 480 Realty confirms Prescott office/928-224-1234; old BloomTree contact page now links Keystone branding while retaining Prescott address and phone. This illustrates why source/identity QA must accompany score/counts. No records were silently rewritten or represented as a completed 100-row audit.
+
+## Section 96 — Durable paid-delivery claim under test (2026-10-29 Arizona)
+
+Checkout integrity rollout SUCCESS: result completed 2026-10-30T03:56:13Z, exact cfb65236, exit 0; runtime zero failures/warnings, buyer pool 3097. Owner hold ON and all three outreach flags false. Deployment made a fresh verified isolated-restorable backup. Phase-2 provider activation is still blocked and does not itself block the Phase-1 Growth experiment.
+
+While capacity PR #11 CI runs, built send_mail_once for paid Growth delivery only. An additive mail_delivery_attempts ledger stores unique order delivery key, content fingerprint and attempting/submitted/uncertain status, with timestamps; no plaintext recipient/message/attachment data. Claim commits independently before SMTP, so an enclosing order transaction rollback cannot erase evidence that mail may have left. Matching submitted payloads replay success without another send; changed or uncertain/attempting payloads fail closed for explicit recovery review. No automatic retries from ambiguous SMTP results. SMTP acceptance is still not inbox delivery.
+
+Seven local production-helper tests cover concurrency, submitted replay, uncertain results, process failure, DB failure after SMTP, changed body/attachment and dry-run no writes. CI adds real Postgres concurrent claims and independent persistence across a simulated business transaction rollback, with SMTP replaced by a fake; fixture refuses outside SMTP_DRY_RUN. No live fixture execution or customer message occurred. Exact-head full CI required before merge/deploy.
+
+This is an at-most-one-attempt gate with explicit exception recovery, not a claim of exactly-once email delivery. Remaining: source/current sample QA, first-territory reserve proof from live selector, customer-visible delivery evidence and owner email review before any campaign release.
+
+Paid-delivery review also found saved free-five rows bypassed the new-candidate freshness gate. Before paid fulfillment, the original five now require current candidate records, active/not-closed status, recent verification, unchanged identity/category/source/contact route, score floor and source blocklist. Missing/changed/stale rows create an explicit reapproval exception; no silent substitution. Three production-function regression tests pass. The normal 100-row CI fulfillment path also exercises this check. This is revalidation against recorded evidence, not a new live crawl or proof every business currently operates.
+
+## Section 97 — Original-seven recovery remains separate from new acquisition (2026-10-29 Arizona)
+
+Live capacity audit succeeded on 951cfbc281656a9cdc407708a2896986a6655293 at 2026-10-30T04:05:20Z. Both services meet the 125-record selector reserve in Prescott and Prescott Valley. 42 lane aggregates returned; several small-market/service pairs remain below reserve. Counts cap at 125 and are before buyer-specific restrictions, not a completed source audit. Production has more discoveries than the committed census alone; don't substitute offline counts for this proof.
+
+Paid delivery PR #12 head 64b12b22 passed both full CI runs 41000544277/41000539621; merged 3c5dc832250e29f962d74de3a1561c8350667258. Exact master CI 41000840723 and Pages 41000840790 succeeded. Held deployment queued; result not yet observed.
+
+Added explicit owner_review_required boolean to outreach for pre-review Growth submissions before the proven seven-contact checkpoint (2026-10-30T03:50:30Z). Preserves sent status, sequence step, original timestamps and evidence. Growth worker and launch-ready staged count exclude held records; raw SMTP sent count remains unchanged. Growth status reports historical_contacts_awaiting_review. New post-checkpoint contacts remain unaffected. Incoming replies/requested samples remain usable. These contacts are held for recovery review, not marked dead or opted out.
+
+SEVEN_CONTACT_RECOVERY.md records concrete per-contact evidence/copy/route/approval steps. No apology blast or historical sequence reset. CI applies the migration twice to synthetic old/new contacts and checks original status/step/timestamp plus correct hold targeting. Exact-head full CI required before release. All customer/owner-preview mail remains unauthorized, owner hold ON.
+
+## Section 98 — Final held-pilot acceptance checkpoint (2026-10-29 Arizona)
+
+Paid delivery rollout result SUCCESS on exact 3c5dc832, completed 2026-10-30T04:08:46Z, exit 0; runtime zero failures/warnings and existing private monitor active. No customer/owner-preview message, live charge, model upgrade or hold release occurred.
+
+Original-seven recovery PR #13 head efe94363 passed full CI 41001238498/41001233985, merged as 5b733c7f6b960b5eb922cc62cb18d2b4616c8231. Exact merged-master CI still being checked at this checkpoint. Recovery migration also records historical_review_recorded_at so a later explicitly reviewed release is not undone by subsequent migrations.
+
+Corrected a small plain-text first-touch overstatement: it said five records were "already prepared", although selection/reservation occurs on the click. Copy now says "Click once to get your five free commercial targets". HTML does not make the old prepared claim. EMAIL_TEMPLATE_REVIEW.md mirrors the correction. No extra test was written for this reversible copy edit; normal full CI remains required before release.
+
+Live selector capacity: Prescott and Prescott Valley both reach the 125-record reserve for both current services. First controlled experiment remains pressure-washing free-five -> $499 starter 100 INCLUDING the five. Premium must not be advertised as fully autonomous; its extra deliverables require review. Phase-2 provider activation is not a blocker for this Phase-1 experiment.
+
+Launch acceptance still requires actual current-template Gmail rendering review and Brett's explicit approval, using exact deployed SHA. No permission to send even owner-preview mail has been given in this turn. Existing first-touch owner replay is a separate external action and can be requested only after explicit permission; customer campaigns must remain OFF throughout. The owner can then test the signed preview click against real inventory without allocating a customer sample or sending customer mail.
+
+DNS/email authentication could not be independently confirmed from this tool environment (public DNS lookup inaccessible/refused). Connected Gmail contains prior owner previews in the Gmail account's Sent folder, which does not prove receipt, inbox placement, current configured sender identity, or current SPF/DKIM/DMARC. Do not claim authentication or deliverability is verified. Actual current preview/header review remains needed.
+
+Readiness evidence completed this session: 87 local tests across 14 suites; real CI sample -> signed synthetic payment -> fulfillment -> 100 rows; distinct checkout-event replay; actual Postgres paid-mail concurrency/rollback persistence with fake SMTP; all 42 live selector-capacity lane aggregates. These do not prove real sales, every prospect's current business status, inbox delivery or full autonomous Premium fulfillment.
+
+Final reply-path review found an additional real launch blocker: process_replies sent the positive-reply email unconditionally, bypassing both owner hold and Growth campaign flag. It also returned to a generic form without the signed one-click claim and lacked the branded HTML. Corrected: ingestion/opt-out handling continues; automatic positive follow-up requires hold released AND Growth enabled. Held positive replies create a deduplicated high-severity review exception so interest is not silently lost. Approved-path response uses the shared signed invitation URL, branded HTML, preserved known details and durable per-target delivery claim. Three real-worker tests cover held/enabled, released/disabled, and approved signed HTML delivery without network/mail. Current local suite total is 90 tests across 15 suites. No owner/campaign authorization is implied.
+
+The durable delivery helper now uses a dedicated two-connection pool with 15-second query timeout, separate from the five business connections. Without separation, five concurrent fulfillment requests could each retain a business connection and starve their own independent delivery claims. Startup/shutdown manage both pools. The fake-SMTP Postgres CI fixture additionally occupies all five business connections and proves a delivery claim completes within five seconds through the independent pool. Scheduler pause request a-reply-hold-pause was submitted while the discovered automatic-positive-reply bypass awaited CI; the final tested deploy recreates/restarts the scheduler after installing the fix. Confirm final relay results before claiming it resumed.
+
+## Section 99 — Campaign disable must also stop nurture (2026-10-29 Arizona)
+
+Final kill-switch audit found process_growth_nurture honored the owner hold but ignored GROWTH_OUTREACH_ENABLED. Therefore growth_launch_disable could stop cold outreach while nurture kept sending after a previously released owner hold. Added the same Growth flag guard to nurture before any DB/mail access. Expanded the real-worker disabled-campaign test from the first three workers to all four. The owner hold remains ON throughout maintenance; no customer message occurred.
+
+CI now first checks the disabled nurture endpoint, temporarily enables Growth only in its isolated SMTP_DRY_RUN=true .env.ci for the existing due-reminder/reply-stop integration, then restores false before subsequent tests. Two bounded API restarts exercise the actual effective process configuration. Production configuration is never edited by this fixture.
+
+Prior final reply/connection-pool PR #14 head eaafb179 passed full CI 41002328694, merged 315eeeefeb9f09f25a1ba5268a871844b0fc08ef; exact merged CI 41002538780 and Pages 41002538898 succeeded. Held deployment z-held-growth-final-deploy was queued; await its actual result before advancing master. Scheduler pause was confirmed successful at 2026-10-30T04:19:10Z. The reply fix deployment must restart it before the final healthy proof.
+
+Owner-preview authorization is now purpose-scoped in the HMAC. Removing preview=1 from an owner link rejects before any customer sample/email handler; adding preview=1 to a normal customer token also rejects. Original customer invitation signatures remain unchanged. Shared invitation renderer generates the correct token purpose, and the claim endpoint validates that purpose before its read-only preview branch. Four production-function tests and an actual HTTP CI stripped-flag rejection cover this boundary. CI uses a separate preview token; its normal customer one-click journey retains the existing token. Total local tests: 94 across 16 suites. This is necessary before the owner preview can safely be sent, and does not authorize sending it.
+
+## Section 100 — Fresh acquisition contact routes, held for owner review (2026-10-29 Arizona)
+
+Held production staging on 315eeeef succeeded but added ZERO new targets: only seven email candidates existed, all already contacted. Reserve checks passed Prescott, Prescott Valley and Sedona. Do not present those seven as a fresh launch cohort.
+
+Performed direct primary-site contact research. New artifact assistant-research-bootstrap-growth-launch-contacts-2026-10-29.json contains 11 vendor-side pressure-washing contact-route records: one Prescott, one Scottsdale, nine Phoenix service-coverage records. Each has public business email, phone, source URL, verification date, scope note and explicit limits. These are potential customers of Growth Packs, not buyer-side pack deliverables or approved Service Network providers. No email/inbox/interest/credentials guarantee. A&B may overlap an existing normalized prospect; actual net-new staging must be proven, not assumed.
+
+Excluded wrong-region name matches, equipment suppliers, a verification-walled site, and an email visible in search but absent from the current fetched page. Kept headquarters vs service coverage distinct (e.g., San Tan Valley/Mesa businesses explicitly serving Phoenix). Included established commercial operators with fit-review caveats rather than pretending they expressed interest.
+
+Canonical builder validates 328 artifacts, 75,109 strict source records: 59,289 buyer + 15,820 vendor. Eleven extra strict source/contact records are not a claim of eleven globally new businesses; source-level variants may share business identity. Existing buyer records and all 21 markets remain unchanged. Generated SQL is temporary /tmp only, JSON artifacts remain source of truth. Full CI/import and actual held staging still required.
+
+Campaign-disable/preview PR #15 head e67c93b5 passed both full CI runs 41003207070/41003204073, merged bae629ca6d2f71e67e8c00f3fd4e1f88a22d19d3. No deployment request for that intermediate master was submitted; the contact artifact can be included in the next exact-tested release before the final rollout. Scheduler was restored by successful 315eeeef deployment at 2026-10-30T04:25:48Z, runtime zero failures/warnings; fresh final snapshot remains required. All outreach remains false, owner hold true, no mail authorized.
+
+
+## Section 101 — Proven held release and focused owner review (2026-10-29 Arizona)
+
+Exact release 470bf7880e786efc454ec58b8540e1a8499cb804 passed merged-master CI 41004005536 and Pages 41004005666, then deployed successfully at 2026-10-30T04:43:12Z with exit 0 and zero runtime failures/warnings. Fresh read-only snapshot at 04:48:49Z confirms API/runtime/scheduler healthy, owner hold true and all three campaign flags false. Scheduler is resumed after the intentional reply-bypass maintenance pause.
+
+Actual reviewed-contact staging succeeded: 11 newly queued pressure-washing contacts, 18 email candidates including the historical seven, no insufficient-reserve skips. Growth status confirms staged_active=11, historical_contacts_awaiting_review=7, sent=7, zero replies/samples/orders/revenue/open Growth exceptions. No new SMTP submissions. Do not requeue or follow up the seven automatically.
+
+Read-only growth_launch_audit reports exactly two blockers, zero warnings: owner hold active and exact deployed email version not yet owner approved. All other checks pass: SMTP/IMAP/postal/payment config, required tables, 11 contactable staged targets, fit floors, critical-exception check, public Growth pages, sitemap and constrained ingress. This proves the technical readiness checks for a controlled starter pilot, not actual sales, inbox placement, complete 100-row source QA or full Premium automation.
+
+Preparing a narrowly scoped owner review: existing all-template replay now accepts scope=growth (only templates 1-7) or default all (legacy 27 unchanged); API and relay reject any other scope before mail. Relay action remains EXTERNAL and requires explicit owner permission. All three campaign flags must be OFF. Seven new no-network tests cover exact seven selection, owner-only recipient, legacy default, authentication, campaign gates and relay query safety. Local workspace became unavailable after prior 94 tests; new tests must be validated by full GitHub CI, not claimed locally run. Intended total 101 tests across 17 suites.
+
+No owner-preview permission has yet been given. After final exact-SHA release, request permission for the seven Growth previews plus the separate real signed first-touch route test, all sent only to Brett's test Gmail. Then obtain explicit visual approval before any approval-SHA update or owner-hold release. No model upgrade or new infrastructure purchase occurred.
+
+## Section 102 — Separate Nevada pilot foundation and Monday target (2026-11-01)
+
+Brett requested launch readiness Monday Nov 2 06:00 MST, first-business-week receipts/by-Nov-30 income target, and a separate Las Vegas/Henderson test covering both business and household monetization, including affluent services and staffing research. No guaranteed income, no Astra approval, no new email/hold-release approval. Personal Context check found no newer owner email approval; existing AZ hold and disabled campaigns remain binding.
+
+Work is isolated in feat/nevada-state-pilot-20261101 from exact master 80136cc5. Full city-license export completed: Las Vegas 26,501 Active/NV/Las Vegas mailing-city license records; Henderson 14,591 active/pending-renewal inside-city records. 41,092 source records total, not unique companies/verified prospects. Explicit past-expiry flags: 21,375 LV and 14,220 Henderson despite included source status. Pagination/count/ID checks and SHA256 manifests; business-field allowlist avoids owner IDs, licensing contacts and residential addresses. All delivery_eligible=false. Nested NV directory avoids old AZ census glob/import.
+
+Cloned 54 service keys/display names plus 13 NV categories, 67 total. Separate Nevada pages/styles/JS, NV-only sequence drafts and dual proposed offers ($499/100 business targets, $49/three service-business consumer research shortlist). Added 15 primary-site businesses with actual source URLs/routes/coverage limits, held and not approved providers. Full 134-lane report shows gaps explicitly. Nevada Labor official PEA guidance/NRS611 requires review before paid staffing solicitation/placement; six employment/personal-care categories blocked in backend and UI; live-in/nanny/manager requests cannot bypass through house-cleaning category. No employee placement/candidate intake or cold household list.
+
+New nevada Postgres schema and additive migration, isolated request/status routes, exact nginx public allowlist, global+NV hold+intake flags safe by default. Intake does not send mail or take payment. Checkout/outreach always closed in foundation. Reserved orders/payment_events tables are not a completed payment integration. Real Stripe read verified BMC live account has only four existing AZ products; metadata/description proves reuse would violate state separation/copy. No live writes/charges or active NV links.
+
+NEVADA_PILOT_PLAN.md records primary legal/census sources, date/time conversions, evidence limitations, pricing proposal, acquisition hypotheses, gross-receipts arithmetic (not profit), remaining payment/fulfillment implementation and exact release acceptance. Nevada NOT paid-launch ready; do not mark ready solely from page/census/route tests. One-time Nov2 06:00 America/Phoenix readiness/repair automation created, external mail/charge/hold-release/model-upgrade prohibited. Do not substitute that future run for work or current proof.
+
+Local validation: 17 Nevada boundary/data/copy tests passed, all previous 17 test suites passed (18 suites total); actual FastAPI TestClient held/status/admin/cross-state smoke passed with temporary deps. Standard form/copy/UI/search checks passed. Browser preview rendered Nevada landing; public request button held/disabled. Actual HTTP/real-Postgres CI fixture added; full CI, master merge, Pages and held VPS deployment still pending at time of this entry. No mail, outreach, charge, customer booking or provider approval occurred. Preserve unrelated pre-existing untracked census tempfile; never add it or temporary preview manifest/dependencies to the commit.
+
+Follow-up review aligned primary research to actual inherited residential_cleaning/window_cleaning keys (not guessed aliases); test now rejects unknown research service keys. Added state-specific privacy/terms navigation without the legacy core.js form handler and a fixed read-only nevada_status relay action for aggregate-only production proof. Extended Nevada scope rejection for staffing/full-time housekeeper requests. Nevada policy/data tests now total 19. No new external-action capability is added.
+
+## Section 103 — Nevada foundation deployed, paid launch still blocked (2026-11-01)
+
+PR #18 final head 0bc8cbfc5fcf3b7bbc32da94da71a41632045823 passed full CI 41356859771 and 41356854970. Merged master 938345b4ca5b6fbf2cbcbe133a66a26c7ba7eecc passed full CI 41357070009 and Pages 41357069944. Exact held deployment b-nevada-held-release-20261101T222835Z succeeded 2026-11-01T22:30:41Z, exit 0, runtime zero failures/warnings, all AZ outreach switches OFF. Nevada schema/routes are deployed and public preparation pages render, including Henderson city default, eight household service choices and Nevada-only legal navigation. Actual paid Nevada flow remains unimplemented/closed; don't call this a paid launch.
+
+Follow-up quality work rejects JSON array/object/null/number market/service fields with validation errors instead of TypeError server errors. Adds real-Postgres CI proof exercising the actual installed intake endpoint with temporary in-process flags only: rejected cross-state/staffing/malformed input, three successful NV request writes, fourth-request quota, direct SQL state/city CHECKs, unchanged AZ lead/order/revenue counts and cleanup of only reserved .invalid test rows. No mail or payment function is called, production flags aren't edited. Local Nevada tests now 20; new integration proof awaits its own CI. Separate nevada_status/operator_snapshot/AZ growth audit proof requests were queued after first deployment; exact IDs/results live on vps-relay and final PR descriptions. New owner approval/mail permission still absent. The $49 household price is a proposal; no NV product/link has been created or charged.
+
+## Section 104 — Favicon, Arizona-only Monday target and owner-preview permission (2026-11-01)
+
+Brett explicitly deferred Nevada's Monday launch, asked for a favicon, confirmed Arizona as Monday's intended launch, and answered "sure" to the pending request for exactly eight owner-only test emails to brett.coon2@gmail.com. This authorizes the seven Growth template previews (scope=growth) plus the separate signed real first-touch route preview. It does not certify visual review or approve the email SHA, release the owner hold, or authorize customer sends before that review. Keep all three outreach flags OFF while sending previews. Avoid blind replays after ambiguous SMTP results.
+
+Added a small B monogram in existing navy/gold colors: font-outlined SVG, 16/32/48 ICO fallback, 32px PNG and 180px Apple touch icon. Linked all 93 public HTML pages including Nevada, plus the shared storefront generator so regeneration retains links. No copy, intake, payment or routing behavior changed. Local storefront-generation check, public UI and form checks pass; SVG parses and raster sizes verified. Deploy the final tested favicon commit before sending the approved owner-only emails so review and eventual approval refer to the current exact release.
+
+Prior final release 4a4ddf5e5ab38f5c419ae7f8202bc303dd380841 passed master CI 41357788972 and Pages 41357788842, deployed at 22:38:36Z with zero runtime failures/warnings. Fresh final proof 22:39:40–46Z shows healthy runtime/API/scheduler, owner hold true/all campaigns false, 11 fresh staged, seven historical sends, zero replies/samples/orders/revenue/exceptions; AZ audit exactly two blockers (hold and exact-release email approval). NV requests/orders zero, all NV actions closed. Durable evidence/continuation checklist is on vps-relay at portfolio/automation/vps-relay/nevada-launch-handoff-20261101.json and PR19 description.
+
+Arizona Growth-only launch remains technically viable after actual current-template owner rendering/link review and explicit final launch approval/release. General Service Network field-service intake still requires verified participating provider coverage; don't describe every service as live. Nevada remains held and is no longer a Monday paid-launch commitment. Existing Nov2 06:00 MST check should report Arizona readiness and NV hold; no automated launch or revenue guarantee. No Astra upgrade approved/used.
+
+## Section 105 — Approved eight owner previews sent; live QA exposed source defects (2026-11-01)
+
+Favicon PR20 merged/deployed exact a18b2db979bd6c85f3d37ee869fac0cf84c408e1 after master CI 41361748880 and Pages 41361748904. Held VPS deployment b-favicon-held-release-20261101T232508Z completed 23:27:14Z with zero runtime failures/warnings. Browser verifies live favicon links and actual outlined SVG renders. Automated HTTP asset download from executor was Cloudflare-blocked and is not claimed as successful proof.
+
+Brett's explicit permission was exercised ONCE: b-owner-1-growth-layouts-20261101T232750Z submitted exactly seven Growth OWNER PREVIEW layouts, count_sent=7/count_failed=0; b-owner-2-signed-route-20261101T232750Z submitted the separate actual signed first-touch, ok=true. Both fixed recipient brett.coon2@gmail.com; all campaign flags false; preview_commit a18b2db9. Do not resend any of these eight without new applicable permission. SMTP/API success is not independent recipient inbox/rendering proof. Connected Gmail is a different account, so it cannot prove recipient inbox receipt. Human review/approval still pending; no launch/hold release occurred.
+
+Post-send snapshot 23:28:32Z confirms healthy runtime/API/scheduler, global hold true, three campaign flags false, 11 fresh staged, seven historical customer sends, zero replies/samples/orders/revenue/exceptions. NV status remains closed, requests/orders zero; AZ audit still exactly hold+owner-SHA approval blockers. Fresh read-only reserve audit b-arizona-reserve-review-20261101T232141Z reached125 for initial Prescott/PV/Phoenix/Scottsdale/Sedona lanes; several rural lanes remain below125 and must not receive a paid offer. Capacity is not a manual source-quality audit.
+
+Critical actual browser QA of the approved signed owner link exposed a directory aggregate named "Grocery Stores in Sedona, AZ with Ratings, Reviews, Hours and ..." and a Flagstaff Toyota dealership incorrectly offered as Sedona. The URL flow works without re-entry and labels itself read-only, but the displayed source quality was NOT launch acceptable. Told Brett and retained all outbound holds. Do not call Arizona ready merely because prior capacity/CI/audit checks passed.
+
+New shared growth_candidate_evidence_valid gate checks actual URL scheme/host (rather than trusting official_site/source_domain), blocks aggregate/listing titles and directory/search paths, reuses the full known-directory domain blocklist plus loc8nearme, and rejects conflicting physical-address/city-specific-title/domain evidence. "Near/serving Sedona" cannot turn a Flagstaff location into a Sedona business; explicit branch URL or physical target-city address can support legitimate regional brands. City matching handles Prescott versus Prescott Valley and hyphenated place names. Selector fetches source snippet/evidence; same gate rechecks saved free-five rows before paid delivery. Discovery records are retained; no destructive source deletion or silent replacement of previously purchased samples.
+
+Added real production-function regression tests covering the two observed failures, spoofed source-domain/official flags, aggregate titles/paths, near/serving wording, exact address precedence, city-specific domains, branch exceptions, Prescott/PV boundaries and saved-sample rejection. Local targeted tests pass; full suite/CI, exact deployment, fresh inventory audit and re-opening the existing signed owner link are required before reassessing launch. Existing email copy is unchanged; the same signed owner link will use corrected current selection, so no new email send is needed. Human must review corrected sample and email rendering before approval. No additional customer or owner mail authorized, no model upgrade used.
+
+## Section 106 — Completed signed-sample fields were still visible (2026-11-01)
+
+Actual browser DOM/computed-style inspection found that successful one-click claim did set hidden=true on original form children, but author CSS display:grid/flex/block overrode the browser's default hidden style. Input rows, consent and submit action remained visible underneath the sample despite successful signed routing. This reproduced the confusing repeat-form appearance Brett previously reported. Added a rule scoped only to direct hidden children of Growth snapshot forms with display:none!important, preserving other flows (including reserved-layout request navigation). Bumped the shared CSS query version only on Growth snapshot pages so an already-open owner email link gets the corrected stylesheet on refresh. No extra email or sample allocation is required.
+
+Source-quality PR21 head 7acbc50a passed both full CI 41362928972/41362924762 and merged b457446c7bcd57cac7090821780ca9fe6b9276de. That source fix plus this UI correction must be deployed and the existing signed owner link reopened before declaring the link/sample ready. Inspect five actual sample rows and confirm every original form child is non-displayed, with the results card visible. Owner permission is still limited to the eight already-submitted messages; all outbound holds remain binding until actual owner review. No further send, approval-SHA update or launch has occurred.
+
+Final exception review tightened the local-branch URL rule to an exact city path segment: /locations/near-sedona is not a Sedona branch, while /locations/arizona/sedona is supported. Added the positive/negative production-function regression; qualification suite now12 tests. This ships with the completed-form visibility fix; no extra preview mail or launch authorization.
+
+## Section 107 — Raw-search provenance gate and full-service question research (2026-11-01)
+
+PR22 exact merged 8ee81310ca67294c109c90dac21226ff98524b6a passed master CI41363770738 and Pages41363770787; held deployment b-arizona-quality-release-20261101T234932Z succeeded 23:51:17Z, zero runtime failures/warnings. Browser proved every original hidden form child is now non-displayed (count0), with results visible. Email renderer/catalog/invitation/signature functions are AST-identical to sent-preview a18b2db9; no resend is needed or authorized.
+
+Live retest then exposed MORE weak discovery records: "10+ TOP RATED Grocery Store in Sedona Open Now" (gematos.id) and a dealer-near-Sedona landing page (Jones Ford Verde Valley). The prior blacklist/contradiction-only gate was insufficient. Root correction: raw search records cannot become deliverable merely because a worker assigned official_site/direct_evidence/freshness. Require reviewed census/import provenance (nonempty artifact_files plus assistant_manual_census), or structured government_record provenance on an official government/known registry host. Apply a provenance prefilter before SQL LIMIT so raw discovery cannot crowd eligible imports out of the candidate window. Final shared gate still validates actual source host, aggregate title/path, physical geography and saved sample. Added singular-category/top-rated aggregate and near-market marketing path checks. Raw discoveries and all original data remain stored; no deletion or silent customer sample replacement.
+
+CI sample/fulfillment/race fixtures are explicitly tagged as synthetic reviewed-import provenance inside isolated CI DB only. Production tests cover raw search self-approval denial despite score100/official/fresh flags, government provenance/host, JSONB decoding and saved raw-row denial. Re-run full CI, deploy exact tested master, refresh same owner link and check reserves again before reassessing Arizona. Owner's eight approved messages were submitted once; human review/approval and hold release still pending. Do not label raw source counts as verified leads or call launch ready from an aggregate-only capacity audit.
+
+New user steering: research customer questions for EVERY service using FindQuestions, Google Trends and named question/keyword tools; use findings for helpful traffic/conversion content. Catalog:54 AZ/67 NV keys. Preserve Arizona Monday Growth-only work while building this research; NV Monday launch deferred. Tool-access audit started from primary sites: FindQuestions requires first name/email AND marketing-email consent, so no signup/submission without specific authorization; Socrates free3 keyword searches/day (not unlimited), QuestionDB free5/month, BuzzSumo trial/account, KeywordTool free suggestions/no account but metrics gated. Google Trends0–100 is relative interest, not absolute search volume. Dedicated-tool marketing pages are not actual query outputs; label tool queries/exports separately. No search-volume numbers, PAA observations, local demand or tool outputs may be invented. Full tool-access ledger, observed question sources, AZ/NV/audience mapping, 67-service briefs and useful article drafts still to build. New search/SEO work must not drive people into a paid offer before its data/fulfillment gates pass. No paid tools, new subscription/marketing opt-in or model upgrade authorized.
+
+## Section 108 — Reviewed provenance deployed; real query collection and customer-job work (2026-11-01 Arizona time)
+
+PR23 initial full CI failed only because synthetic reviewed fixtures entered the canonical artifact census assertion (75,274 vs 75,109, 23 vs 21 markets). Excluded the two synthetic CI markets from canonical artifact assertions; qualification was not weakened. New head cd75572b37b02cbaf5919d7a193276318527375a passed both CI41382709473/41382705079. Merged master897b0dd96e7ec900a676c8dc268c3a4f505830e0 passed CI41383074002 and Pages41383073920. Held deploy b-reviewed-provenance-release-20261102T032936Z succeeded, zero core runtime failures/warnings. Same signed read-only owner link now returns Enchantment, Village Clinic, West Sedona Preschool, Mii amo and City of Sedona. The previously observed directory aggregates/wrong-city dealership are absent. Original hidden form children visible=0, checkout controls=0 for underfilled Sedona. This is source-quality regression proof, not a blanket claim of manual current operating verification for every record.
+
+Fresh 42-lane read-only proof b-reviewed-proof-growth_inventory_audit-20261102T033419Z: pressure-washing Prescott/Phoenix/Scottsdale each reach capped125 reserve (all11 fresh staged prospects are in those three markets). Sedona pressure48/commercial-cleaning54: five-sample capacity, NO paid125 reserve. Do not widen city boundaries or fill with raw discoveries. Snapshot03:34:51Z confirms exact897b0dd deploy, healthy API/scheduler/runtime, global owner hold true, three outreach flags false, zero replies/samples/orders/revenue, seven historical sends retained and11 staged. Growth audit still two blockers: owner hold and no exact-SHA owner approval. NV remains held/deferred. Eight owner-only approved previews were submitted once previously; no new emails, launch enable, approval SHA, payment or model upgrade.
+
+Owner new direction: first November receipts target$300; larger goal$8,333/month. Proactive acquisition of businesses already advertising services (yard signs/public Craigslist/Nextdoor/Facebook service ads) is the main push, with SEO parallel. Keep business advertising prospects separate from actual demand posts and confirmed customer jobs. Never call a researched commercial prospect a warm inbound lead. No private-group scraping or automatic monetization of posted personal contact information.
+
+Work-in-progress research/qualification branch: feat/service-question-research-20261101. Built private active-lead qualification summary/review, separate reviewed-evidence table, aggregate dashboard cards, and unit plus real-DB/API CI proof. Public form flags cannot qualify a job; fresh authenticated confirmation/contact/sharing/no-duplicate checks expire. Paid introductions always disabled in this foundation. Proposed$25 provider introduction fee is a hypothesis; existing free provider-pilot acceptance remains free. No paid-introduction Checkout/refund/contact-unlock implementation exists yet. CUSTOMER_JOB_MODEL.md specifies reservation/verified payment/refund/delivery requirements and gross-target arithmetic without forecasting demand.
+
+Question research is now REAL: documented guest KeywordTool API collected68 distinct US-English Google seeds (74 planned) and5,551 unique suggestions, covering61 complete service seed sets of67. Remaining six: move-out cleaning, used restaurant equipment, mobile mechanic, supplier cost reduction, commercial waste management, window cleaning. Respect guest60/hour120/day; no IP/account rotation. Raw source responses, parameters, timestamps, quota-aware manifest, deterministic corpus shards and service coverage maps are saved. These are country-level query suggestions, not AZ/NV local volume, factual answers, consented leads, or LLM weight training. Unreviewed corpus is not approved for answer generation or fine-tuning. Further source collection is in progress; inspect the tool-access ledger for exact outcomes before claiming all sources completed.
+
+Owner authorized FindQuestions marketing-email signup and then specified existing account brett.coon2@gmail.com for research forms. Initial browser submission with contact@bmcservicenetwork.com returned 'Please complete the security check and try again'; NOT confirmed subscription. No CAPTCHA attempt or account/paid trial creation. Google Trends Arizona pressure-washing query failed chart rendering, then one reload reached Google's unusual-traffic CAPTCHA; no trend data collected and no bypass. Real browser QuestionDB pressure-washing query returned15 rows and CSV; commercial-cleaning23 rows and CSV. AlsoAsked returned Phoenix pressure-washing and commercial-cleaning PAA trees and CSVs (answer/source fields mostly upgrade-gated). Socrates attempted pressure washing and displayed sign-in modal; no results collected. Do not call marketing-page reads actual queries.
+
+FINDQUESTIONS_SEARCH_LIST.md contains101 prompts (8 priority,63 shared,15 NV,15 outbound-owner angles). Initial scratch link failed for Brett; repaired with native file libfile_d440a96b6bdc8191a1dc958f1754d8e4, accessible via https://chatgpt.com/library?file_id=libfile_d440a96b6bdc8191a1dc958f1754d8e4&account_id=personal . Owner wants us to try ALL named tools first, then give exact manual searches/settings/exports for concrete blockers. Do not hand off generic homework before doing the legwork. QUESTION_CONTENT_PLAN.md records canonical intent clusters/aliases, geography separation, retrieval-vs-training distinction, two source-driven content briefs and measured conversion goals. Do not mass-publish a thin page per synonym or promise Angi/Thumbtack rankings.
+
+## Section 109 — Free-source round complete; owner requests selectable territories (2026-11-01 Arizona time)
+
+Owner clarified ZERO spend for question research: collect all free data; owner can create accounts. Working sources: KeywordTool documented guest API now74/74 seed responses and5,989 deduplicated suggestions, first-page research coverage67/67 service seed sets; six remaining seeds collected immediately after04:00Z hourly reset. Collector now checks server-reported remaining hourly/daily allowance before querying. No proxy rotation, paid account, paid/card-required trial or model upgrade. QuestionDB anonymous five-search allowance exhausted legitimately: pressure washing15, commercial cleaning23, restaurant equipment repair4, mobile mechanic29, window cleaning20 (91 result rows; not all questions/relevant). CSVs retained and actual Keyword column verified to avoid labeling a prior mobile-mechanic export as window cleaning. AlsoAsked all3 guest searches: Phoenix pressure washing13 question occurrences, Phoenix commercial cleaning9, Henderson solar panel cleaning11; includes duplicates/tangents. One CSV retained and other two visible trees transcribed; a second CSV export was initiated but unavailable in the shared filesystem, so do not claim all exports were recovered. Most answers/source fields were plan-gated and no answers were inferred.
+
+Other source legwork: FindQuestions security check, Google Trends unusual-traffic CAPTCHA, Socrates submitted pressure washing then sign-in required; ATP two guest search attempts returned to form without results (cause unknown); SearchResponse public site failed upstream connection; BuzzSumo requires account/trial/eligible feature access, no guest form; Keyword Surfer official free Chrome extension reviewed, not installed. Native Google PAA/autocomplete were not completed in browser; third-party PAA/autocomplete-derived results remain labeled as such. FREE_RESEARCH_TOOL_GUIDE.md records every original source, observed status, exact no-cost manual steps, settings, exports and account requirements. Native user file libfile_7af10eadcb3c81919fe0d93106b7b775: https://chatgpt.com/library?file_id=libfile_7af10eadcb3c81919fe0d93106b7b775&account_id=personal . FindQuestions101-prompt file remains libfile_d440a96b6bdc8191a1dc958f1754d8e4. No new signup/email/campaign send occurred.
+
+Draft PR24 baseline7734b781099561e101ad6ddfdca5b590fc944719 passed full CI41385157389 and41385101287, including real Postgres/API active-job qualification proof. Additional research/docs-only update completes source coverage and includes two full unpublished content drafts in portfolio/content-drafts. Raw questions are not factual answers, local search volume, confirmed warm leads or model weight training. No rankings/earnings guaranteed. Paid customer introductions still disabled; provider activation and actual paid-introduction implementation remain work.
+
+Owner challenged Sedona sample-only and correctly clarified provider service areas span cities (Flagstaff ↔ Camp Verde/Cottonwood etc.). All21 markets ARE included in42-lane audit. Pressure-washing passing city records: Sedona48, Cottonwood109, Camp Verde24, Winslow36; these are not city business totals. Present single-city Growth product currently does not use free-text travel area to widen inventory. Owner explicitly requests city CHECKBOXES governing both sample and paid fulfillment, with real city labels retained and cross-city duplicates removed. No silent broadening or mislabeled Sedona-only pack. Primary city plus explicitly chosen additional cities is the implementation direction. Save immutable territory scope through email verification, sample, checkout and fulfillment; preserve original five and all ledger/suppression/concurrency/paid-mail guards. Distinguish legacy single-city requests. Treat rural offers honestly: Ash Fork/Cordes Junction may need regional or smaller scoped offers, not forced100/padding. Do not invent a town alias: existing catalog Cordes Lakes differs from Cordes Junction; confirm/add researched scope rather than renaming records. Smaller-pack price/deliverables require explicit configured product mapping before a live buy button. A request/research path is acceptable when capacity falls short. Territory implementation is the active next task, not already deployed at this checkpoint.
+
+## Section 110 — Explicit multi-city Growth scope and rural offer fallback (2026-11-01 Arizona time)
+
+PR24 final head5159c165ac3718ba1244e29ccf00df3b2ef75990 passed CI41386665615/41386661633 and merged746e252a47218501f4993422447a6c98b1518a0a. Production remains897b0dd until next tested held deploy; do not claim active-job dashboard cards are live yet.
+
+Owner explicitly approved city checkboxes because providers travel Flagstaff/Camp Verde/Cottonwood and other selected cities; noted small Ash Fork/Cordes Junction may need different pack sizes. Active branch feat/growth-selectable-territory-20261101, worktree bmc-territory. Implemented main-city + additional-city checkboxes on both Growth niche forms, explicit JSON array capture through verification, additive selected_markets field/backfill preserving old single-city scope, cross-city qualified selector retaining true record cities and deduplicating business names. Travel notes don't silently broaden scope. Legacy one-city behavior preserved; mixed-state/unknown multi-city choices rejected. Cordes Junction is not silently aliased to the separate catalog label Cordes Lakes; unlisted towns use custom-scope travel notes.
+
+Request replay refuses a changed territory; overlapping territory/primary-city aliases don't unlock additional free-five batches. Rotation compares all relevant actual cities. Sampling, checkout rechecks, nurture and paid 100-row fulfillment use the immutable stored selected set. Original five stay included. Central checkout now also rechecks current saved-five evidence/suppression and remaining paid-eligible reserve on replay/nurture, closing the old unconditional checkout-link helper gap for underfilled markets. Paid final QA accepts only cities in the saved explicit set, not an arbitrary widened geography. Every displayed prospect and CSV row retains actual city.
+
+Smaller/rural offers are request-only: useful free sample when supported, or a scoped research request; quantity/price confirmed before payment. No invented20/50 pack checkout or new Stripe charge/product. Existing$499/100 offer unchanged when reserve permits. GROWTH_TERRITORY_OFFERS.md records behavior. Owner read-only preview can take explicit selected cities, with signature purpose still bound; no customer/email/payment allocation. Outbound holds remain untouched; no resend of the eight owner previews.
+
+Local new territory invariants7 tests pass; existing qualification15, fulfillment claim4, saved sample5 tests pass. Added isolated real Postgres CI proof: two80-record city fixtures can support one deduplicated regional pack; single city cannot; immutable replay, overlap holds, suppressed/underfilled checkout rejection, exactly100 unique actual-city rows including original5 and one fake email delivery. Fixtures cleaned before canonical census assertions. Full CI/production visual proof are pending at this checkpoint. Updated preview-token unit extraction to include the new read-only territory helper/wrapper; purpose-binding tests remain required.
+
+Accuracy note from source audit: historic CI output said 'rights' although that concurrency script did not assert rejection of an unapproved domain, and the current selector does not query growth_source_rights_review. Removed that word from the test's success label rather than claiming an untested guarantee. No source-domain approval was added or inferred in this change. Earlier handoff claims about rights filtering must not be repeated as proof of actual current enforcement. Source/redistribution policy evidence remains a separate launch-review item; do not use source counts or CI labels as licence/current-business-operating proof.
+
+PR25 first CI6680be5 failed the existing form contract guard because the new smaller-pack result link used mailto. Retained the guard and replaced the link with a dedicated on-site /growth-packs/smaller-territory/ inquiry form. It captures explicit cities, preferred size to discuss and scope, saves an idempotent quote_growth_scope task, and creates no order, entitlement, charge or email. Added required form-field contracts and extended real-DB CI proof for one inquiry task/no order. Requested20/50/100 are preferences, not configured paid offers. The form passes selected cities without placing names/emails in the URL. Multi-city paid attachment filename now says selected-cities and fulfillment event records the actual selected set. Public form validation passes63 forms. No deployed UI or campaign flags changed yet.
+
+Subsequent PR25 CI caught an unregistered new form type (added growth_scope_request to the existing allowlist) and then an accidentally removed growth_email_verification_token helper during checkout-function replacement. Restored that exact helper from the tested base; AST comparison confirmed it was the only missing prior API function. This branch never deployed during those failures. Full database/HTTP proof remains mandatory before merge. Scoped-inquiry INSERT now handles concurrent duplicate submission IDs with ON CONFLICT without a second task/order.
+
+Deployment review found the existing long-running private monitor held its old imported console whitelist after code deploy. Added a bounded reload helper: only the existing bmc-operator-monitor systemd MainPID, owned by the current user and with the exact monitor entrypoint, can be signaled through a stable pidfd; existing Restart=always restarts it on the same private listener. No sudo, unit edits, arbitrary PID argument or network exposure. Wrong owner/path fails with a manual-restart notice. Deployment invokes this only for the already active monitor, retaining SQLite history. Guard unit test and shell syntax pass; deployment proof must confirm actual reload/active-job metrics.
+
+
+## Section 111 — Live territory proof and launch review / Sol handoff (2026-11-02 UTC)
+
+PR25 final head2a05cbb121c775da8a4eb0fb70211b4647e4b879 passed fullCI41389082646/41389077258; merged067ad5df6250f57b9325a9abd158bcafa30638fd passed exactmasterCI41389400028 andPages41389400228. Held deployment b-territory-held-release-20261102T044154Z succeeded, runtime zero failures/warnings; private monitor actually reloaded under existing user/listener, stored history retained. Fresh relay proofs b-territory-live-proof-{operator_snapshot,growth_launch_audit,nevada_status}-20261102T053759Z confirm healthyAPI/runtime/scheduler, ownerholdtrue, allthreeoutreachfalse,11staged/sevenhistoricalsends, zero replies/samples/orders/revenue/openGrowthExceptions. One active customer request needsreview, zero confirmed. Nevada remains closed in all lanes.
+
+Live browser proof: Flagstaffprimary +CampVerde/Cottonwoodadditionalcheckstates; read-only owner regionalpreview Sedona/CampVerde/Cottonwood shows actualcities, no allocations/mail/checkout; hiddenoriginalformchildrenvisible=0; favicons present. Smaller-territory page preselects threecities correctly. No productionformsubmission. This supersedes Section110 pendingdeploymentstatements.
+
+Source-rights history clarified: commit42c2641 and Section77 scopeupdate intentionally removed selector/readinessrights gate per priorowner direction; Section78 conflicting enforcement claim is stale. No newgate/reinstatement implied. Tablepresence is not sourcepermission proof. Currentprovenance/sourcequality/geography/suppression/exposure checks remain.
+
+Owner requested upgraded review then Sol execution, no furtherhighermodelwithoutapproval. Reviewed current source, liveproofs, priorBMCconstraints and supplied Hormozi trilogy relevant sections. New confirmedP1s: Stripe Growth explicitinvalidreference falls back newest-by-email sample; refund.created unconditionallynegativebooks without stoppingqueuedpaidfulfillment, and paidstatus-only replay guard couldrebookafterrefund. Assigned Sol a separatepaymentfix worktree with focusedhandler/realDBtests, no liveStripe/mail. NOTfixed/deployed at this checkpoint. LAUNCH_REVIEW_2026-11-02.md contains priorityfindings, originalstrategyapplication and Solacceptanceorder. CURRENT_HANDOFF.md replaced staleOct27 instructions thatcouldcauseduplicatepreview. EightownerpreviewSMTPsubmissionsalreadyoccurredonce; noresendwithoutnewpermission.
+
+Separate Sol researchfinish commit a3f1607e0549e90d1fd5eb26991b1c03d1654244:54planned46collected8NVpending, all42AZseedscollected,414rows303exactstrings9zeroresults. Offlineprovenancevalidation anddeliberatetampernegativecheck passed; noexternalrequests. Citynames querytextonly/US-English, unreviewed andnotlocalvolume, answerknowledge or weighttraining. Broad5989corpusunchanged. Publication/merge remains pending.
+
+Sol payment fix implementation checkpoint: local commits b7aa37c/65a9f219 integrated as d8cf906/d1efd05 into review branch.17handlerfixtures plus31relatedfocusedtests pass. Seven actualPostgresSQLhandler tests skip locally(noDSN); newCIjobmustpass. Existing signedHTTP/fullfulfillmentCI stillrequired; samplelessGrowthpayment nowreviewheld notgenericautolink. Refundobjectaccounting andfulfillmentholds implemented, no automaticresume. FullCI/merge/deploy pending; productionremains067ad5df.
+
+PR26 initial headc8f511 fullCI newpayment-postgresjob failed because asyncpg pool reset its per-connection initial search_path afterrelease. Sol corrected fixture to reapply/assert disposable schema on EVERYacquire(setupcallback). No failingheaddeployed; all7realDBcasesmustexecuteandpass beforemerge.
+
+Final codehead d44e15089d7f46f947d3b884e8920dcd3a64a464 passed BOTH fullCI41396827411/41396823623, validate+payment-postgres success; allsevenactualPostgrescasesexecuted. Priorfixturealso neededuniquerequiredsubmission_id; fixedwithoutweakeningguard. Exactmastermerge/deploy pending. Ownersteering: firstsale targetNovember13, November30latest; tomorrowArizonaNov2launchpriority unchanged. RoutineSolwork shouldprioritize conversion/delivery/outreach overnewniches.
+
+
+## Section 112 — Flood-adjusted launch, rewritten service copy and actual held deployment (November2 morning)
+
+Ownerpriorities nowlandscaping/yardcleanup,junkhauling,handymanminorrepairs,fencerepair; no forcedfloodmentioninoutbound andno genericpressurewashingwave. SourceofficialNWS/Prescott/YCSO/AZ511 verifiedNov2morning; Phoenix/Scottsdale notassumedunaffected. Readvps-relay/FLOOD_ADJUSTED_LAUNCH_2026-11-02.md. All11stagedcontactsheldforcapacity/impactreview;originalsevenseparatelyheld,notdead.
+
+OwnerrejectedroboticGrowthcopy screenshot. Solbuilt54recordcoverage/265NONLIVEpreviews;41provider serviceshavespecificjobexamplesandsharedactualplainHTMLrenderer; providerworkerusesdurableperoutreach/stepmailclaim, uncertain/unsupportedcasesheldreview.13nonprovideracquisitiongapsanddedicatedfencekey/route remainexplicit. Adminfirstwave respectsactualtargetservice/city andunsupportedgaprecords; nofakefallback.
+
+PR27 finalhead594afbcb14fe82665b65337c89ab75fb44858819 passedfullCI41448824701/41448815801. Merged33ab2d7618022eb4575688f7f17c134a4a9e5dc2 passedexactmasterCI41449254171 andPages41449254015. Helddeploy b-service-copy-held-release-20261102T130456Z SUCCESS13:07:36UTC,exit0,runtime0failures/0warnings,monitorreload. Freshproofs b-final-copy-proof-{operator_snapshot,growth_launch_audit}-20261102T131028Z succeed13:10UTC on33ab2d: healthyAPI/runtime/scheduler, holdtrue/alloutreachfalse,11staged/sevensent,zeroreplies/samples/orders/revenue/exceptions,oneactivecustomerrequestneedsreview/zeroconfirmed. Configurationaudit2blockers/0warnings:ownerhold/noexactSHAapproval. Liveintakestillrequiresverifiedacceptingprovider. NOnewmail/charge/release.6AMoutreachdeadlineMISSED,donotcallwebsitestabilitycompletedlaunch.
+
+Completecontinuationfile vps-relay/portfolio/automation/vps-relay/NEXT_CONVERSATION_HANDOFF_2026-11-02.md; nativefile https://chatgpt.com/library?file_id=libfile_d0624477f2fc81919a47b3d9877a1f08&account_id=personal . Includesworktrees/commits/tests/toolpatterns/recoveryplan/sourceevidence/authorization/modelpolicy/nextsteps. FirstsaletargetNov13,Nov30latest,300grossinitial/8333monthlytargets. UseSol;askbeforeAstra. No resend8recentownerpreviewswithoutnewpermission; oldcopycriticismnotapproval. Do notqueueanotherdeploy;33ab2disprovenlive. Finishactualownerpreview/routeapprovalandprovider/cohortreviewbeforeanyoutreach.
