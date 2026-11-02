@@ -3382,15 +3382,15 @@ async def growth_claim_free_five(request:Request):
     token=clean(p.get("claim"))
     if not target_id or not token:
         raise HTTPException(400,"This free-five link is incomplete.")
+    preview=str(p.get("preview") or "").lower() in ("1","true","yes")
     async with app.state.pool.acquire() as conn:
       async with conn.transaction():
         target=await conn.fetchrow("""select g.target_id,g.business_name,g.public_email,g.market,g.service_key,
             exists(select 1 from outreach o where o.entity_type='growth_customer' and o.entity_id=g.target_id
               and o.campaign='growth_sales' and o.sent_at is not null) as was_sent
           from growth_outreach_targets g where g.target_id=$1""",target_id)
-        if not target or not target["was_sent"]:
+        if not target or (not preview and not target["was_sent"]):
             raise HTTPException(404,"This free-five invitation is not active.")
-        preview=str(p.get("preview") or "").lower() in ("1","true","yes")
         if not growth_claim_valid(target_id,target["public_email"],token,owner_preview=preview):
             raise HTTPException(403,"This free-five link is invalid or expired.")
         if preview:
@@ -4537,6 +4537,43 @@ async def replay_first_growth_email_to_owner(x_bmc_admin_key:str|None=Header(def
       "template":"current_growth_first_touch",
       "campaign_switches":{"provider":OUTREACH_ENABLED,"buyer":BUYER_OUTREACH_ENABLED,"growth":GROWTH_OUTREACH_ENABLED}
     }
+
+@app.get("/api/admin/growth-preview-candidates")
+async def growth_preview_candidates(service_key:str="commercial_cleaning",x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    if service_key not in GROWTH_SERVICE_LABELS:
+        raise HTTPException(400,"Unsupported Growth service")
+    async with app.state.pool.acquire() as conn:
+        rows=await conn.fetch("""select g.target_id,g.business_name,g.public_email,g.market,g.service_key,
+            g.website,g.source_url,g.source_kind,o.status,o.owner_review_required
+          from growth_outreach_targets g join outreach o on o.entity_type='growth_customer'
+            and o.entity_id=g.target_id and o.campaign='growth_sales' and o.wave=$2
+          where g.service_key=$1 and o.status='queued' and g.market='Prescott'
+          order by g.fit_score desc,g.business_name limit 1""",service_key,GROWTH_WAVES[service_key])
+    return {"ok":True,"service_key":service_key,"records":[dict(r) for r in rows],
+      "note":"Research targets only. Confirm identity, scope, operation, territory and safe access before release."}
+
+@app.post("/api/admin/preview-growth-target-to-owner")
+async def preview_growth_target_to_owner(target_id:str,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    if not OWNER_LAUNCH_HOLD or OUTREACH_ENABLED or BUYER_OUTREACH_ENABLED or GROWTH_OUTREACH_ENABLED:
+        raise HTTPException(409,"Owner preview requires global hold and all campaigns off")
+    async with app.state.pool.acquire() as conn:
+        row=await conn.fetchrow("""select g.target_id,g.business_name,g.public_email,g.market,g.service_key,
+            g.source_url,g.source_kind,o.status,o.owner_review_required
+          from growth_outreach_targets g join outreach o on o.entity_type='growth_customer'
+            and o.entity_id=g.target_id and o.campaign='growth_sales' and o.wave=$2
+          where g.target_id=$1 and g.service_key='commercial_cleaning' and o.status='queued'
+          limit 1""",target_id,GROWTH_WAVES["commercial_cleaning"])
+    if not row:
+        raise HTTPException(404,"Queued commercial-cleaning target not found")
+    service_key,subject,body,html_body,landing=growth_outreach_message(row,1,owner_preview=True)
+    ok=await send_mail(OWNER_PREVIEW_RECIPIENT,subject,body,html_body)
+    return {"ok":bool(ok),"test_recipient":OWNER_PREVIEW_RECIPIENT,
+      "source_business":row["business_name"],"source_original_recipient":row["public_email"],
+      "source_url":row["source_url"],"market":row["market"],"service_key":service_key,
+      "subject":subject,"signed_button_in_email":bool(landing),
+      "owner_preview":True,"smtp_accepted":bool(ok),"inbox_rendering_verified":False}
 
 
 def owner_template_preview_catalog():
