@@ -59,12 +59,17 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.assertIn('coalesce(o.target_service_key,vs.service_key) as service_key',query)
         self.assertIn('svc.service_key=coalesce(o.target_service_key,vs.service_key)',query)
     def test_growth_is_short_human_and_honest_in_both_channels(self):
-        fn=next(n for n in SOURCE.body if isinstance(n,ast.FunctionDef) and n.name=='growth_outreach_message')
+        fns=[n for n in SOURCE.body if isinstance(n,ast.FunctionDef) and
+          n.name in ('growth_verified_opener','growth_outreach_message')]
         self.ns['growth_invitation_url']=lambda row,owner_preview=False:'https://preview.example.invalid/growth-packs/'+row['service_key']+'/?claim=NONLIVE'
-        exec(compile(ast.Module(body=[fn],type_ignores=[]),'production_growth_copy','exec'),self.ns)
+        self.ns['json_dict']=lambda x:x if isinstance(x,dict) else {}
+        exec(compile(ast.Module(body=fns,type_ignores=[]),'production_growth_copy','exec'),self.ns)
         for service,example in [('pressure_washing','commercial exterior'),('commercial_cleaning','janitorial cleaning')]:
             for step in (1,2):
-                row=dict(target_id='vendor:fixture',service_key=service,business_name='Very Long Business Name LLC',market='Phoenix')
+                row=dict(target_id='vendor:fixture',service_key=service,business_name='Very Long Business Name LLC',market='Phoenix',
+                  source_url='https://fixture.example.invalid',source_data={'reviewed_copy':{
+                    'fact':f'Your company offers {example} work around Phoenix.',
+                    'source_url':'https://fixture.example.invalid','service_key':service,'market':'Phoenix','approved':True}})
                 _,subject,plain,rendered,url=self.ns['growth_outreach_message'](row,step)
                 self.assertTrue(plain.startswith('Hello Very Long Business Name LLC team,\n\n'))
                 self.assertNotIn(subject,html.unescape(rendered))
@@ -82,11 +87,15 @@ class Tests(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(plain.count(url),1);self.assertIn(html.escape(url,quote=True),rendered)
                 self.assertLess(len(plain.split()),170)
         row=dict(target_id='vendor:v_prescott_americancrown',service_key='commercial_cleaning',
-          business_name='American Crown Commercial Cleaning',market='Prescott')
+          business_name='American Crown Commercial Cleaning',market='Prescott',
+          source_url='https://americancrowncc.com/')
         _,subject,plain,rendered,_=self.ns['growth_outreach_message'](row,1)
         self.assertEqual(subject,'A Prescott idea for American Crown')
         self.assertIn('offices and common areas across Yavapai County',plain)
         self.assertIn('Hello American Crown team,',rendered)
+        with self.assertRaisesRegex(ValueError,'source-backed'):
+            self.ns['growth_outreach_message'](dict(target_id='vendor:unreviewed',service_key='commercial_cleaning',
+              business_name='Unreviewed Co',market='Prescott',source_url='https://unreviewed.example'),1)
         with self.assertRaises(ValueError):self.ns['growth_outreach_message'](dict(service_key='landscaping'),1)
     async def test_live_sender_and_admin_preview_share_actual_html_without_smtp(self):
         nodes=[n for n in SOURCE.body if isinstance(n,ast.AsyncFunctionDef) and n.name in ('process_outreach','admin_outreach_wave_preview','provider_outreach_review','admin_first_wave')]

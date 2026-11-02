@@ -4422,6 +4422,27 @@ def growth_positive_reply_message(row):
       greeting=f"Hi {clean(row['business_name'])},",marketing=True)
     return subject,body,rendered
 
+def growth_verified_opener(row):
+    """Use reviewed, source-backed facts; never invent a website observation."""
+    service=clean(row["service_key"]);market=clean(row["market"])
+    target_id=clean(row["target_id"])
+    source=clean(row["source_url"]) if "source_url" in row else ""
+    if (target_id=="vendor:v_prescott_americancrown" and
+        service=="commercial_cleaning" and market=="Prescott" and
+        source.rstrip("/")=="https://americancrowncc.com"):
+        return ("I saw on your site that American Crown handles janitorial cleaning "
+          "for offices and common areas across Yavapai County.")
+    data=json_dict(row["source_data"]) if "source_data" in row else {}
+    reviewed=data.get("reviewed_copy")
+    if isinstance(reviewed,dict):
+        fact=clean(reviewed.get("fact"));url=clean(reviewed.get("source_url"))
+        if (fact and len(fact)<=220 and url.startswith("https://") and
+            url.rstrip("/")==source.rstrip("/") and
+            reviewed.get("service_key")==service and reviewed.get("market")==market and
+            reviewed.get("approved") is True):
+            return fact
+    return ""
+
 def growth_outreach_message(row,step,owner_preview=False):
     service_key=clean(row["service_key"])
     focus={
@@ -4433,12 +4454,11 @@ def growth_outreach_message(row,step,owner_preview=False):
     landing=growth_invitation_url(row,owner_preview=owner_preview)
     market=clean(row["market"])
     business=clean(row["business_name"])
-    opener=(f"I found {business} while looking at local companies offering {focus[service_key]} "
-      f"around {market}.")
+    opener=growth_verified_opener(row)
+    if not opener:
+        raise ValueError("Growth target needs a source-backed, reviewed opener")
     short_name=business
     if clean(row["target_id"])=="vendor:v_prescott_americancrown" and service_key=="commercial_cleaning":
-        opener=("I saw on your site that American Crown handles janitorial cleaning for offices "
-          "and common areas across Yavapai County.")
         short_name="American Crown"
     subject=(f"A {market} idea for {short_name}" if step==1 else f"Re: a {market} idea for {short_name}")
     greeting=f"Hello {short_name} team,"
@@ -4487,7 +4507,7 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
       if allowance<=0:
         return {"ok":True,"enabled":True,"sent":0,"message":"Growth daily outreach limit reached."}
       rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,o.target_market,o.target_service_key,
-          g.business_name,g.public_email,g.market,g.service_key,g.target_id,g.experiment_cell
+          g.business_name,g.public_email,g.market,g.service_key,g.target_id,g.experiment_cell,g.source_url,g.source_data
         from outreach o join growth_outreach_targets g on g.target_id=o.entity_id
         join growth_experiment_cells e on e.cell_key=g.experiment_cell
         where o.entity_type='growth_customer' and o.campaign='growth_sales' and o.wave=$2 and o.opt_out=false
@@ -4499,7 +4519,16 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
         limit $1""",allowance,GROWTH_OUTREACH_WAVE)
       for row in rows:
         step=1 if row["status"]=="queued" else 2
-        service_key,subject,body,html_body,landing=growth_outreach_message(row,step)
+        try:
+            service_key,subject,body,html_body,landing=growth_outreach_message(row,step)
+        except ValueError as exc:
+            await conn.execute("""update outreach set status='review',owner_review_required=true where outreach_id=$1""",row["outreach_id"])
+            await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+              select 'growth_copy_review','high',$1,$2 where not exists(
+                select 1 from exceptions where type='growth_copy_review' and status='open' and summary=$1)""",
+              f"Growth target {row['target_id']} needs source-backed copy: {exc}",
+              "Verify business identity, service, market, direct evidence and a truthful opener before any send")
+            continue
         # The independent delivery ledger survives a worker/business transaction
         # crash after SMTP acceptance. Never retry an uncertain or changed payload.
         ok=await send_mail_once(f"growth-outreach:{row['outreach_id']}:{step}",
@@ -4542,7 +4571,10 @@ async def replay_first_growth_email_to_owner(x_bmc_admin_key:str|None=Header(def
           limit 1""",GROWTH_OUTREACH_WAVE)
     if not row:
         raise HTTPException(404,"No Growth target row exists to render for owner preview.")
-    service_key,subject,body,html_body,landing=growth_outreach_message(row,1,owner_preview=True)
+    try:
+        service_key,subject,body,html_body,landing=growth_outreach_message(row,1,owner_preview=True)
+    except ValueError as exc:
+        raise HTTPException(409,f"Historical target needs copy review: {exc}") from exc
     ok=await send_mail(test_recipient,subject,body,html_body)
     return {
       "ok":bool(ok),
