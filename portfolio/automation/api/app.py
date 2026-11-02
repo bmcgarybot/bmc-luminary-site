@@ -4061,27 +4061,25 @@ def provider_outreach_parts(row,step,pilot=False):
     activation=pilot_activation_url(row)
     network="pilot" if pilot else "provider network"
     if step==1:
-        subject=f"{market}: taking on more {service.lower()} work?"
-        lines=[f"Is {business} taking on {examples} in {market}?",
-          f"BMC is building a local {network}. Tell us the area you cover, the jobs you want, your minimum job size and how much work you can take.",
-          "If a matching customer request comes in, you see the details before deciding. You can accept or pass.",
-          "Joining is free. Any future paid lead or territory terms will be shown before you choose. Passing does not create a charge."]
+        subject=f"A local note for {business}"
+        lines=[f"I'm Brett with BMC Service Network here in Prescott. I found {business} while researching {service.lower()} businesses serving {market}.",
+          f"We're putting together a local {network}. If someone asks us for {examples} in {market}, I want to know whether that work fits your team.",
+          "You can tell us the area you cover, the jobs you want, your minimum job size and your capacity. If a request comes in, you see its details and can accept or pass.",
+          "Joining is free. We cannot promise jobs. Any future paid terms will be shown before you choose, and passing creates no charge."]
     elif step==2:
-        subject=f"Re: {service.lower()} work in {market}"
-        lines=[f"Following up once. Does {business} have room for {examples} around {market}?",
-          "You choose your area, job types and capacity. We cannot promise work; you review any matching request before accepting or passing.",
-          f"There is no fee to join the {network}. Any future paid terms will be shown before you choose."]
+        subject=f"Re: a local note for {business}"
+        lines=[f"One useful detail for {business}: you can specify your area, minimum job size and capacity for {examples} around {market}.",
+          "You review the details of any matching request before accepting or passing. There is no fee to join, and we cannot promise work."]
     else:
-        subject=f"Last note: {market} {service.lower()} work"
-        lines=[f"Last note about {examples} in {market} for {business}.",
-          f"If you want to be considered when a matching request comes in, set your area and capacity below. Joining the {network} is free; any future paid terms will be shown before you choose.",
-          "If it is not useful, no action is needed. We will close this out."]
+        subject=f"Closing the loop with {business}"
+        lines=[f"I'll close out my note about {examples} around {market}.",
+          f"If the {network} becomes useful later, you can set your service area and capacity below. Joining is free; any future paid terms appear before you choose."]
     return subject,lines,activation
 
 def provider_outreach_copy(row,step,pilot=False,parts=None):
     subject,lines,activation=parts or provider_outreach_parts(row,step,pilot)
-    body="\n\n".join(["Hi,",*lines,"Set your provider preferences:\n"+activation,
-      "BMC Service Network\nBMC Luminary Ventures LLC\n"+BUSINESS_POSTAL_ADDRESS,
+    body="\n\n".join([f"Hello {clean(row['business_name'])} team,",*lines,"Set your provider preferences:\n"+activation,
+      "Brett\nBMC Service Network\nBMC Luminary Ventures LLC\n"+BUSINESS_POSTAL_ADDRESS,
       "This is a promotional email from BMC Service Network.",
       "Reply no if you do not want future BMC outreach."])
     return subject,body
@@ -4097,7 +4095,8 @@ def provider_outreach_message(row,step):
     parts=provider_outreach_parts(row,step,pilot)
     subject,lines,activation=parts
     subject,body=provider_outreach_copy(row,step,pilot,parts=parts)
-    rendered=workflow_email_html(subject,lines,"Set your provider preferences",activation,greeting="Hi,",marketing=True)
+    rendered=workflow_email_html("",lines,"Set your provider preferences",activation,
+      greeting=f"Hello {clean(row['business_name'])} team,",marketing=True)
     return subject,body,rendered
 
 async def provider_outreach_review(conn,row,step,reason):

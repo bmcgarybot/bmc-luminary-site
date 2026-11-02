@@ -51,6 +51,10 @@ class Tests(unittest.IsolatedAsyncioTestCase):
                     self.assertIn(activation,plain);self.assertIn(html.escape(activation,quote=True),rendered)
                     for line in lines:
                         self.assertIn(line,plain);self.assertIn(html.escape(line),rendered)
+                    self.assertNotIn(subject,html.unescape(rendered))
+                    if step==1:
+                        self.assertIn("I'm Brett with BMC Service Network",plain)
+                        self.assertIn("We cannot promise jobs",plain)
                     legacy='first_wave_vendor_copy' if wave=='pilot1' else 'vendor_recruitment_copy'
                     self.assertEqual(self.ns[legacy](row,step),(subject,plain))
     def test_first_wave_preview_uses_campaign_target_before_vendor_defaults(self):
