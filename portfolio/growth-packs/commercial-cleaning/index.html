@@ -41,17 +41,17 @@
 <input class="hidden" name="website" tabindex="-1" autocomplete="off">
 <input type="hidden" name="service_key" value="commercial_cleaning">
 <input type="hidden" name="source_target_id" value="">
-<div class="row"><div class="field"><label>Business name</label><input name="business_name" required autocomplete="organization"></div>
-<div class="field"><label>Your name</label><input name="contact_name" required autocomplete="name"></div></div>
-<div class="row"><div class="field"><label>Business email</label><input type="email" name="email" required autocomplete="email"></div>
-<div class="field"><label>Main target city</label><select name="market" data-market-select required><option value="">Choose your market</option></select></div></div>
-<div class="row"><div class="field"><label>Business website <span class="muted">(optional)</span></label><input name="business_website" type="url" placeholder="https://yourbusiness.com" autocomplete="url"></div>
-<div class="field"><label>Business phone <span class="muted">(optional)</span></label><input name="business_phone" type="tel" autocomplete="tel" placeholder="Business contact number"></div></div>
+<div class="row"><div class="field"><label for="commercial-cleaning-business-name">Business name</label><input id="commercial-cleaning-business-name" name="business_name" required autocomplete="organization"></div>
+<div class="field"><label for="commercial-cleaning-contact-name">Your name</label><input id="commercial-cleaning-contact-name" name="contact_name" required autocomplete="name"></div></div>
+<div class="row"><div class="field"><label for="commercial-cleaning-email">Business email</label><input id="commercial-cleaning-email" type="email" name="email" required autocomplete="email"></div>
+<div class="field"><label for="commercial-cleaning-market">Main target city</label><select id="commercial-cleaning-market" name="market" data-market-select required><option value="">Choose your market</option></select></div></div>
+<div class="row"><div class="field"><label for="commercial-cleaning-business-website">Business website <span class="muted">(optional)</span></label><input id="commercial-cleaning-business-website" name="business_website" type="url" placeholder="https://yourbusiness.com" autocomplete="url"></div>
+<div class="field"><label for="commercial-cleaning-business-phone">Business phone <span class="muted">(optional)</span></label><input id="commercial-cleaning-business-phone" name="business_phone" type="tel" autocomplete="tel" placeholder="Business contact number"></div></div>
 <fieldset class="growth-territory"><legend>Which other cities do you serve?</legend><p class="muted">Your main target city is included. Check any additional cities where you accept work. We keep each prospect's actual city on the list.</p><p class="muted">A town not listed? Mention it in the travel notes below so BMC can review a custom scope before making an offer.</p><div class="growth-city-options" data-growth-territory></div></fieldset>
-<div class="field"><label>How far do you normally travel?</label><input name="service_area" placeholder="Example: 30 miles from Phoenix, or Phoenix + Scottsdale"></div>
-<div class="field"><label>What kinds of commercial accounts do you want most?</label><textarea name="ideal_customer" placeholder="Example: medical offices, offices, schools, hotels, property managers"></textarea></div>
-<div class="row"><div class="field"><label>Minimum job or account size <span class="muted">(optional)</span></label><input name="minimum_job" placeholder="Example: $500+ jobs or recurring accounts"></div>
-<div class="field"><label>Anything we should exclude? <span class="muted">(optional)</span></label><input name="exclusions" placeholder="Example: residential, schools, downtown parking"></div></div>
+<div class="field"><label for="commercial-cleaning-service-area">How far do you normally travel?</label><input id="commercial-cleaning-service-area" name="service_area" placeholder="Example: 30 miles from Phoenix, or Phoenix + Scottsdale"></div>
+<div class="field"><label for="commercial-cleaning-ideal-customer">What kinds of commercial accounts do you want most?</label><textarea id="commercial-cleaning-ideal-customer" name="ideal_customer" placeholder="Example: medical offices, offices, schools, hotels, property managers"></textarea></div>
+<div class="row"><div class="field"><label for="commercial-cleaning-minimum-job">Minimum job or account size <span class="muted">(optional)</span></label><input id="commercial-cleaning-minimum-job" name="minimum_job" placeholder="Example: $500+ jobs or recurring accounts"></div>
+<div class="field"><label for="commercial-cleaning-exclusions">Anything we should exclude? <span class="muted">(optional)</span></label><input id="commercial-cleaning-exclusions" name="exclusions" placeholder="Example: residential, schools, downtown parking"></div></div>
 <label class="check"><input type="checkbox" name="consent" value="yes" required><span>Email me my five researched targets and related BMC follow-up about this request. I can opt out at any time.</span></label>
 <div class="notice" data-form-notice></div>
 <div class="actions"><button class="btn btn-primary" type="submit" data-label="Research my 5 free targets">Research my 5 free targets</button></div>

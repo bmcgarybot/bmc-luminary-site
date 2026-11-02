@@ -6987,6 +6987,11 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
             if not session_id:
                 raise HTTPException(400,"Missing checkout session ID")
             await conn.execute("select pg_advisory_xact_lock(hashtextextended($1,0))","stripe_checkout:"+session_id)
+        # One payment-intent lock orders checkout/refund delivery, including refunds
+        # arriving before Checkout. Signed events remain the durable receipt ledger.
+        payment_intent_id=clean(obj.get("payment_intent"))
+        if payment_intent_id:
+            await conn.execute("select pg_advisory_xact_lock(hashtextextended($1,0))","stripe_intent:"+payment_intent_id)
         if await conn.fetchval("select 1 from payment_events where stripe_event_id=$1",event_id):
             return {"received":True,"duplicate":True}
         product_key=await stripe_product_key(conn,obj)
@@ -7011,8 +7016,7 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
             if mode!="subscription" and paid:
                 # An already-paid session must never rebook revenue, reopen completed
                 # fulfillment, or increment experiment conversions on another event.
-                if await conn.fetchval("""select 1 from orders where stripe_checkout_session_id=$1
-                  and payment_status in ('paid','complete')""",object_id):
+                if await conn.fetchval("select 1 from orders where stripe_checkout_session_id=$1",object_id):
                     return {"received":True,"duplicate_checkout":True}
                 await record_revenue(conn,product_key,amount,currency,"stripe_checkout",f"Stripe event {event_id}; session {object_id}")
                 payment_intent_id=clean(obj.get("payment_intent"))
@@ -7025,23 +7029,42 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
                     amount_cents=excluded.amount_cents,currency=excluded.currency,payment_status=excluded.payment_status,
                     raw_payload=excluded.raw_payload,updated_at=now()
                   returning order_id""",
-                  product_key,object_id,payment_intent_id,customer_email,amount,currency,status,json.dumps(obj))
+                  product_key,object_id,payment_intent_id,customer_email,amount,currency,"paid",json.dumps(obj))
                 service_key=await conn.fetchval("select service_key from products where product_key=$1",product_key) if product_key else None
+                # A refund delivered first must still block subsequent fulfillment.
+                prior_refund=await conn.fetchval("""select 1 from payment_events
+                  where event_type in ('refund.created','refund.updated','refund.failed')
+                    and raw_payload->'data'->'object'->>'payment_intent'=$1 limit 1""",payment_intent_id) if payment_intent_id else False
                 growth_sample=None
-                if product_key in ("growth_pack_starter","growth_pack_premium"):
+                if product_key in ("growth_pack_starter","growth_pack_premium") and not prior_refund:
                     client_ref=clean(obj.get("client_reference_id"))
                     if client_ref.startswith("growth_"):
                         try:
                             sample_uuid=uuid.UUID(hex=client_ref.removeprefix("growth_"))
                             growth_sample=await conn.fetchrow("""select * from growth_sample_requests
                               where sample_id=$1 and lower(email)=lower($2)
-                                and converted_at is null for update""",sample_uuid,customer_email)
+                                and converted_at is null and status='delivered' for update""",sample_uuid,customer_email)
                         except (ValueError,TypeError):
                             growth_sample=None
-                    if not growth_sample and customer_email:
-                        growth_sample=await conn.fetchrow("""select * from growth_sample_requests
-                          where lower(email)=lower($1) and converted_at is null and created_at>=now()-interval '30 days'
-                          order by created_at desc limit 1 for update""",customer_email)
+                    if not client_ref and customer_email:
+                        candidates=await conn.fetch("""select * from growth_sample_requests
+                          where lower(email)=lower($1) and converted_at is null and status='delivered'
+                            and created_at>=now()-interval '30 days'
+                          order by sample_id for update""",customer_email)
+                        growth_sample=candidates[0] if len(candidates)==1 else None
+                    if growth_sample:
+                        sample_rows=await conn.fetch("select * from growth_sample_prospects where sample_id=$1",growth_sample["sample_id"])
+                        current_rows=await conn.fetch("select * from market_inventory_candidates where candidate_id=any($1::uuid[])",
+                          [r["candidate_id"] for r in sample_rows if r["candidate_id"]])
+                        current_by_id={str(r["candidate_id"]):dict(r) for r in current_rows}
+                        if len(sample_rows)!=5 or any(not growth_saved_sample_is_current(dict(r),current_by_id.get(str(r["candidate_id"])),
+                            growth_sample["provider_service_key"]) for r in sample_rows):
+                            growth_sample=None
+                    if not growth_sample:
+                        await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+                          values('growth_payment_scope_review','critical',$1,$2)""",
+                          f"Paid Growth order {order_id} has no unambiguous current delivered sample",
+                          "Verify payer, exact purchased territory and saved five before linking; never substitute another sample")
                     if growth_sample:
                         await conn.execute("""update orders set growth_sample_id=$2,status='ready_for_fulfillment',updated_at=now()
                           where order_id=$1""",order_id,growth_sample["sample_id"])
@@ -7058,7 +7081,7 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
                           where cell_key=$1""",growth_sample["experiment_cell"],amount)
                         await event(conn,"growth_sample",growth_sample["sample_id"],"paid",{"order_id":str(order_id),"product_key":product_key,"amount_cents":amount},"stripe")
                 recent=None
-                if customer_email and service_key:
+                if customer_email and service_key and product_key not in ("growth_pack_starter","growth_pack_premium") and not prior_refund:
                     recent=await conn.fetchrow("""select l.lead_id,l.submission_id
                       from leads l
                       where lower(l.email)=lower($1) and l.service_key=$2
@@ -7095,6 +7118,11 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
                     await event(conn,"order",order_id,"paid_intake_needed",{
                       "product_key":product_key,"email":customer_email
                     },"stripe")
+                if prior_refund:
+                    await conn.execute("update orders set payment_status='refund_review',status='payment_review',updated_at=now() where order_id=$1",order_id)
+                    await conn.execute("update tasks set status='blocked',updated_at=now() where order_id=$1 and status in ('open','queued','assigned','in_progress')",order_id)
+                    await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+                      values('refund_before_checkout','critical',$1,'Reconcile recorded refund lifecycle before any fulfillment')""",f"Order {order_id} received Checkout after a refund event")
                 await event(conn,"order",order_id,"paid",{"product_key":product_key,"amount_cents":amount,"email":customer_email},"stripe")
                 await event(conn,"payment",event_id,"payment_received",{"product_key":product_key,"amount_cents":amount,"email":customer_email,"order_id":str(order_id)},"stripe")
         elif event_type=="invoice.paid":
@@ -7112,11 +7140,37 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
                     status=excluded.status,current_period_end=excluded.current_period_end,cancel_at_period_end=excluded.cancel_at_period_end,
                     raw_payload=excluded.raw_payload,updated_at=now()""",
                   sid,product_key,customer_email,clean(obj.get("status")),period_dt,bool(obj.get("cancel_at_period_end")),json.dumps(obj))
-        elif event_type=="refund.created":
-            refunded=int(obj.get("amount") or obj.get("amount_refunded") or 0)
-            if refunded>0:
-                await record_revenue(conn,product_key,-refunded,currency,"stripe_refund",f"Stripe refund event {event_id}; object {object_id}")
-                await event(conn,"payment",event_id,"refund_recorded",{"product_key":product_key,"amount_cents":refunded},"stripe")
+        elif event_type in ("refund.created","refund.updated","refund.failed"):
+            # Refund object IDs, rather than event IDs, define monetary idempotency.
+            # Success is terminal; failed/cancelled refunds do not reduce revenue.
+            if not object_id:
+                raise HTTPException(400,"Missing refund object ID")
+            await conn.execute("select pg_advisory_xact_lock(hashtextextended($1,0))","stripe_refund:"+object_id)
+            prior=await conn.fetchval("""select 1 from payment_events where stripe_object_id=$1
+              and event_type in ('refund.created','refund.updated') and status='succeeded'
+              and stripe_event_id<>$2 limit 1""",object_id,event_id)
+            orders=await conn.fetch("""select * from orders where stripe_payment_intent_id=$1
+              order by order_id for update""",payment_intent_id) if payment_intent_id else []
+            refund_product=orders[0]["product_key"] if len(orders)==1 else product_key
+            if status=="succeeded" and not prior and amount>0:
+                await record_revenue(conn,refund_product,-amount,currency,"stripe_refund",f"Stripe refund {object_id}; event {event_id}")
+            refunded_total=await conn.fetchval("""select coalesce(sum(amount),0) from (
+              select stripe_object_id,max(amount_cents) as amount from payment_events
+              where event_type in ('refund.created','refund.updated') and status='succeeded'
+                and raw_payload->'data'->'object'->>'payment_intent'=$1
+              group by stripe_object_id) refunds""",payment_intent_id) if payment_intent_id else 0
+            for order in orders:
+                # Every matching order is held even if legacy rows reuse an intent.
+                # Failed/pending refunds require manual review before resumption.
+                state=("refunded" if refunded_total>=int(order["amount_cents"] or 0) else "partially_refunded") if refunded_total else "refund_review"
+                await conn.execute("update orders set payment_status=$2,status='payment_review',updated_at=now() where order_id=$1",order["order_id"],state)
+                await conn.execute("""update tasks set status='blocked',updated_at=now() where order_id=$1
+                  and status in ('open','queued','assigned','in_progress')""",order["order_id"])
+            await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+              values('stripe_refund_review','critical',$1,$2)""",
+              f"Refund {object_id}: {status}; payment intent {payment_intent_id or 'missing'}",
+              "Reconcile cumulative refunds and order scope before manually resuming any fulfillment")
+            await event(conn,"payment",event_id,"refund_recorded",{"product_key":refund_product,"amount_cents":amount,"status":status},"stripe")
     return {"received":True}
 
 
