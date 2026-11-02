@@ -1,3 +1,5 @@
+> **NOVEMBER 2 FLOOD OVERRIDE:** Read [FLOOD_ADJUSTED_LAUNCH_2026-11-02.md](FLOOD_ADJUSTED_LAUNCH_2026-11-02.md) first. Owner now prioritizes landscaping, junk hauling, handyman and fence repair research. No automatic generic pressure-washing launch; all outreach remains held pending recipient/offer/route review. Prior capacity counts are not post-flood operating verification.
+
 # Latest Arizona launch handoff — November 2, 2026 morning
 
 This post-deployment checkpoint supersedes pre-deployment production-state paragraphs in master CURRENT_HANDOFF/HANDOFF. Keep their operating rules.
