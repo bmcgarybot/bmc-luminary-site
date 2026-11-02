@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "b-reviewed-proof-growth_inventory_audit-20261102T033419Z",
+  "action": "growth_inventory_audit",
+  "created_at": "2026-11-02T03:34:19.550Z",
+  "expires_at": "2026-11-02T05:34:19.550Z",
+  "allow_external_actions": false,
+  "args": {}
+}
