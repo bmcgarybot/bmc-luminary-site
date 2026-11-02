@@ -3886,8 +3886,9 @@ async def handle_growth_scope_request(conn,p):
     existing=await conn.fetchval("select lead_id from leads where submission_id=$1",sid)
     if existing:return {"ok":True,"status":"scope_review","message":"Your territory request is already saved. No payment was taken."}
     lid=await conn.fetchval("""insert into leads(submission_id,form_type,market,service_key,customer_path,customer_name,business_name,email,scope,consent,status,raw_payload)
-      values($1,'growth_scope_request',$2,'growth_pack','growth_scope_quote',$3,$4,$5,$6,true,'scope_review',$7::jsonb) returning lead_id""",
+      values($1,'growth_scope_request',$2,'growth_pack','growth_scope_quote',$3,$4,$5,$6,true,'scope_review',$7::jsonb) on conflict(submission_id) do nothing returning lead_id""",
       sid,market,contact,business,email_addr,scope,json.dumps({**p,"selected_markets":territory,"requested_size":size}))
+    if not lid:return {"ok":True,"status":"scope_review","message":"Your territory request is already saved. No payment was taken."}
     await conn.execute("""insert into tasks(lead_id,service_key,task_type,status,priority,owner,summary,payload)
       values($1,'growth_pack','quote_growth_scope','open','normal','bmc_operator',$2,$3::jsonb)""",lid,
       "Review prospect-research scope for "+business+" in "+", ".join(territory),
