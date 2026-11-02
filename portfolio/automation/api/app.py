@@ -6916,7 +6916,21 @@ def reply_text(msg):
     return "\n".join(parts)[:10000]
 
 def classify_reply_text(body):
-    t=(body or "").lower()
+    # Classify only the new reply. Quoted campaign copy contains both opt-out
+    # instructions and positive keywords, neither of which expresses intent.
+    lines=[]
+    for line in (body or "").splitlines():
+        stripped=line.strip()
+        if (re.match(r"^On\b.*\bwrote:\s*$",stripped,re.I)
+            or re.match(r"^-+\s*(original|forwarded) message\s*-+$",stripped,re.I)
+            or re.match(r"^(From|Sent|Date):\s",stripped,re.I)
+            or stripped=="--"):
+            break
+        if not stripped.startswith(">"):
+            lines.append(stripped)
+    t=" ".join(lines).lower().strip()
+    if re.match(r"^(no|nope|stop|unsubscribe)\s*[.! ,]*(?:thanks|thank you)?\s*[.!]*$",t):
+        return "opt_out"
     optout=["unsubscribe","remove me","stop emailing","stop email","do not contact","don't contact","no thanks","not interested","take me off"]
     positive=["interested","tell me more","send me","sign me up","sounds good","let's talk","lets talk","yes please","call me","send the 5","send the five","free five","free 5","sample"]
     if any(x in t for x in optout): return "opt_out"

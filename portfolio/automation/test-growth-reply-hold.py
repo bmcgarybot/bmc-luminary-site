@@ -6,12 +6,35 @@ from email.utils import parseaddr
 import hashlib
 import hmac
 import html
+import re
 from pathlib import Path
 from types import SimpleNamespace
 import unittest
 import urllib.parse
 
 source=ast.parse(Path(__file__).with_name("api").joinpath("app.py").read_text())
+class ReplyIntentTests(unittest.TestCase):
+    def classify(self,text):
+        node=next(n for n in source.body if isinstance(n,ast.FunctionDef) and n.name=="classify_reply_text")
+        ns={"re":re}
+        exec(compile(ast.Module(body=[node],type_ignores=[]),"production_reply_classifier","exec"),ns)
+        return ns["classify_reply_text"](text)
+    def test_promised_short_opt_out(self):
+        for reply in ("no","No.","NO!","No, thank you.","stop"):
+            with self.subTest(reply=reply):self.assertEqual(self.classify(reply),"opt_out")
+    def test_new_reply_beats_quoted_campaign(self):
+        quoted="\n\nOn Mon, Nov 2, Brett wrote:\nHere are your free five. Reply unsubscribe to stop emailing."
+        self.assertEqual(self.classify("Yes please"+quoted),"positive")
+        self.assertEqual(self.classify("no"+quoted),"opt_out")
+        self.assertEqual(self.classify("Who are you?"+quoted),"other")
+    def test_inline_quotes_and_forwarded_copy_do_not_express_interest(self):
+        for reply in ("Who are you?\n> send me the sample", "Who are you?\n-----Original Message-----\nfree five",
+                      "Who are you?\nFrom: BMC <contact@example.test>\nfree five"):
+            with self.subTest(reply=reply):self.assertEqual(self.classify(reply),"other")
+    def test_substantive_negative_and_positive_replies(self):
+        self.assertEqual(self.classify("We are not interested in the sample."),"opt_out")
+        self.assertEqual(self.classify("Please send the five for our Prescott office."),"positive")
+        self.assertEqual(self.classify("No problem, send me the five."),"positive")
 class Context:
     def __init__(self,value):self.value=value
     async def __aenter__(self):return self.value
