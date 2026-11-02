@@ -23,8 +23,12 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
         self.schema='payment_test_'+uuid.uuid4().hex
         self.admin=await asyncpg.connect(DSN)
         await self.admin.execute('create schema '+self.schema)
-        async def init(conn): await conn.execute('set search_path to '+self.schema+',public')
-        self.pool=await asyncpg.create_pool(DSN,min_size=1,max_size=5,init=init)
+        # asyncpg resets session settings on release. Reapply isolation on every
+        # acquisition, including handler and scalar-query connections.
+        async def setup(conn):
+            await conn.execute('set search_path to '+self.schema+',public')
+            self.assertEqual(await conn.fetchval('select current_schema()'),self.schema)
+        self.pool=await asyncpg.create_pool(DSN,min_size=1,max_size=5,setup=setup)
         async with self.pool.acquire() as conn:
             await conn.execute(Path(__file__).with_name('schema.sql').read_text())
         source=ast.parse(Path(__file__).with_name('api').joinpath('app.py').read_text())
