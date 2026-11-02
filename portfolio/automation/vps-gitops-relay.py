@@ -47,7 +47,7 @@ LOCAL_RESULTS = STATE_DIR / "results"
 RESEARCH_SCHEDULE_FILE = STATE_DIR / "research-refresh-schedule.json"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "nevada_status"}
+READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
     "configure_owner_contact",
@@ -64,7 +64,7 @@ MUTATING_INTERNAL_ACTIONS = {
     "growth_stage_pressure_washing",
     "growth_stage_commercial_cleaning",
 }
-EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email", "owner_replay_all_email_templates"}
+EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates"}
 CONTROL_ACTIONS = {"growth_launch_disable", "growth_owner_preview_approve"}
 ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS
 
@@ -536,6 +536,19 @@ def admin_post(path: str, timeout: int = 360):
     except Exception as exc:
         raise RelayError(f"local admin POST {path} failed: {exc}") from exc
 
+def admin_get(path: str, timeout: int = 120):
+    env=app_env()
+    key=env.get("BMC_ADMIN_KEY","")
+    if not key or "CHANGE_ME" in key:
+        raise RelayError("BMC_ADMIN_KEY is not configured")
+    req=urllib.request.Request("http://127.0.0.1:8000"+path,
+        headers={"X-BMC-Admin-Key":key,"Accept":"application/json"})
+    try:
+        with urllib.request.urlopen(req,timeout=timeout) as resp:
+            return json.loads(resp.read(4_000_000).decode("utf-8","replace"))
+    except Exception as exc:
+        raise RelayError(f"local admin GET {path} failed: {exc}") from exc
+
 
 def execute(req: dict) -> dict:
     action = req["action"]
@@ -565,6 +578,25 @@ def execute(req: dict) -> dict:
         metadata["preview_commit"]=current_sha()
         stdout=json.dumps(replay,indent=2,default=str)
         stderr=""
+        exit_code=0 if replay.get("ok") else 1
+
+    elif action == "growth_preview_candidates":
+        if args:
+            raise RelayError("Candidate review action takes no arguments")
+        stdout=json.dumps(admin_get("/api/admin/growth-preview-candidates"),indent=2,default=str)
+
+    elif action == "growth_owner_target_preview":
+        state=outreach_state()
+        if app_env().get("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="true" or any(str(v).lower()!="false" for v in state.values()):
+            raise RelayError("Target preview requires owner hold and all campaigns OFF")
+        target_id=str(args.get("target_id") or "")
+        if set(args)!={"target_id"} or not re.fullmatch(r"(?:vendor|inventory):[A-Za-z0-9_-]{1,100}",target_id):
+            raise RelayError("A single staged target_id is required")
+        path="/api/admin/preview-growth-target-to-owner?"+urllib.parse.urlencode({"target_id":target_id})
+        replay=admin_post(path,timeout=120)
+        metadata["outreach_gate"]=state
+        metadata["preview_commit"]=current_sha()
+        stdout=json.dumps(replay,indent=2,default=str)
         exit_code=0 if replay.get("ok") else 1
 
     elif action == "growth_owner_replay_email":
