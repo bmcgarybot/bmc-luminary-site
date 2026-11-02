@@ -4479,13 +4479,18 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
       for row in rows:
         step=1 if row["status"]=="queued" else 2
         service_key,subject,body,html_body,landing=growth_outreach_message(row,step)
-        ok=await send_mail(row["public_email"],subject,body,html_body)
+        # The independent delivery ledger survives a worker/business transaction
+        # crash after SMTP acceptance. Never retry an uncertain or changed payload.
+        ok=await send_mail_once(f"growth-outreach:{row['outreach_id']}:{step}",
+          row["public_email"],subject,body,html_body)
         if not ok:
-            await conn.execute("update outreach set status='delivery_error' where outreach_id=$1",row["outreach_id"])
+            await conn.execute("update outreach set status='review',owner_review_required=true where outreach_id=$1",row["outreach_id"])
             await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
-              values('growth_outreach_delivery_failure','high',$1,$2)""",
-              f"Growth outreach email failed for {row['business_name']} ({row['public_email']})",
-              "Check SMTP/address before retrying this target")
+              select 'growth_outreach_delivery_review','critical',$1,$2
+              where not exists(select 1 from exceptions where type='growth_outreach_delivery_review'
+                and status='open' and summary=$1)""",
+              f"Growth outreach {row['outreach_id']} step {step} requires delivery review",
+              "Review the durable mail claim and SMTP evidence. Uncertain or changed messages must not be blindly resent. Preserve recipient history and obtain approval before recovery.")
             continue
         status="completed" if step>=2 else "sent"
         next_at=None if step>=2 else datetime.now(timezone.utc)+timedelta(days=4)
