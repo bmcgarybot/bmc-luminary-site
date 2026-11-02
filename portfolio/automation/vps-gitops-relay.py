@@ -50,6 +50,7 @@ REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "nevada_status"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
+    "configure_owner_contact",
     "market_inventory_step",
     "local_demand_step",
     "public_opportunities_step",
@@ -639,6 +640,41 @@ def execute(req: dict) -> dict:
         cp=run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api","scheduler","webhook_proxy"],timeout=300)
         stdout,stderr,exit_code=cp.stdout,cp.stderr,cp.returncode
         metadata["outreach_after"]=outreach_state()
+
+    elif action == "configure_owner_contact":
+        if args:
+            raise RelayError("Owner contact configuration accepts no request arguments")
+        if app_env().get("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="true":
+            raise RelayError("Owner launch hold must remain ON for contact configuration")
+        env_path=AUTOMATION / ENV_FILE
+        old_text=env_path.read_text()
+        old_mode=env_path.stat().st_mode
+        keys=("BUSINESS_POSTAL_ADDRESS","SMTP_REPLY_TO","OWNER_PREVIEW_RECIPIENT")
+        new={
+          "BUSINESS_POSTAL_ADDRESS":'"186 E. Sheldon St. #1144, Prescott, AZ 86301"',
+          "SMTP_REPLY_TO":"contact@bmcservicenetwork.com",
+          "OWNER_PREVIEW_RECIPIENT":"contact@bmcservicenetwork.com",
+        }
+        def restore():
+            tmp=env_path.with_suffix(env_path.suffix+".contact-rollback.tmp")
+            tmp.write_text(old_text)
+            os.chmod(tmp,old_mode)
+            tmp.replace(env_path)
+        set_env_values(new)
+        cp=run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api"],timeout=300)
+        if cp.returncode!=0:
+            restore()
+            raise RelayError("Contact configuration restart failed; prior settings restored")
+        health=run(["curl","-fsS","http://127.0.0.1:8000/health"],timeout=20)
+        if health.returncode!=0:
+            restore()
+            run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api"],timeout=300)
+            raise RelayError("Contact configuration health check failed; prior settings restored")
+        effective=app_env()
+        if effective.get("BUSINESS_POSTAL_ADDRESS")!="186 E. Sheldon St. #1144, Prescott, AZ 86301" or any(not effective.get(key) for key in keys):
+            raise RelayError("Contact configuration missing after restart")
+        stdout=json.dumps({"contact_configured":True,"postal":"1Postal Prescott #1144","reply_to":effective["SMTP_REPLY_TO"],"owner_preview_recipient":effective["OWNER_PREVIEW_RECIPIENT"],"outreach":outreach_state()},indent=2)
+        stderr=""; exit_code=0
 
     elif action == "growth_launch_audit":
         cp=run(["bash","./growth-launch-readiness.sh",ENV_FILE,"report"],timeout=300)
