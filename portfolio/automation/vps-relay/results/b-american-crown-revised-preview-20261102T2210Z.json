@@ -1,0 +1,28 @@
+{
+  "action": "growth_owner_target_preview",
+  "allow_external_actions": true,
+  "completed_at": "2026-11-02T22:10:13.294623+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "a925765edf8844cdaa79c4e367a05f886e8a7b2d",
+  "git_commit_before": "a925765edf8844cdaa79c4e367a05f886e8a7b2d",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    },
+    "preview_commit": "a925765edf8844cdaa79c4e367a05f886e8a7b2d"
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "ed520aaedfb12f4992675c62883f470a99f5af8c",
+  "request_id": "b-american-crown-revised-preview-20261102T2210Z",
+  "request_sha256": "89b0ee2e12fd7e2fc8966422621c821cbc9e52b5e6829a68ee0e7d9558dfbe27",
+  "started_at": "2026-11-02T22:10:12.042004+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"ok\": true,\n  \"test_recipient\": \"contact@bmcservicenetwork.com\",\n  \"source_business\": \"American Crown Commercial Cleaning\",\n  \"source_original_recipient\": \"donna@americancrowncc.com\",\n  \"source_url\": \"https://americancrowncc.com/\",\n  \"market\": \"Prescott\",\n  \"service_key\": \"commercial_cleaning\",\n  \"subject\": \"A Prescott idea for American Crown\",\n  \"signed_button_in_email\": true,\n  \"owner_preview\": true,\n  \"smtp_accepted\": true,\n  \"inbox_rendering_verified\": false\n}",
+  "version": 1
+}
