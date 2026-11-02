@@ -1567,7 +1567,8 @@ jobs:
           assert "activation_token=" in provider["activation_url"]
           assert "activation_token=" in provider["body"]
           assert "Joining is free." in provider["body"]
-          assert "Any future paid lead or territory terms will be shown before you choose." in provider["body"]
+          assert "Any future paid terms will be shown before you choose, and passing creates no charge." in provider["body"]
+          assert "BMC Service Network" in provider["body"]
           assert provider["template_status"]=="supported_service" and provider["review_required"] is False
           assert "<!doctype html>" in provider["html_body"]
           for gap in (x for x in data["records"] if x.get("template_status")=="unsupported_service"):
