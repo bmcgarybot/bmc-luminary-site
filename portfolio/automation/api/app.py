@@ -4538,7 +4538,7 @@ def owner_template_preview_catalog():
     """Representative rendered previews of every current email template/variant in EMAIL_TEMPLATE_REVIEW.md."""
     market="Sedona"; business="TLC Window Cleaning and Pressure Washing"
     service="commercial pressure washing / exterior cleaning"; contact="Taylor"
-    postal=BUSINESS_POSTAL_ADDRESS or "430 South Montezuma Street, Prescott, AZ 86301"
+    postal=BUSINESS_POSTAL_ADDRESS
     sample_targets=[
       ("Sedona Pines Resort","Hotel / Lodging",92,"Large exterior surfaces and recurring guest-facing cleanliness needs.","Offer a property walk-through and recurring exterior-cleaning plan.","info@sedonapines.com","https://example.com/sedona-pines"),
       ("Red Rock Retail Center","Retail / Shopping",88,"High-traffic storefronts and sidewalks benefit from scheduled exterior cleaning.","Lead with entrances, sidewalks, dumpster-pad and storefront cleaning.","928-555-0102","https://example.com/red-rock-retail"),
