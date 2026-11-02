@@ -1,0 +1,394 @@
+{
+  "retrieved_at": "2026-11-02T03:25:04.023125+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "home organization",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 83 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+    "data": [
+      {
+        "string": "home organization",
+        "volume": 9900,
+        "trend": -33,
+        "cpc": 3.82,
+        "cmp": 0.99,
+        "top_of_page_bid_low": 0.55,
+        "top_of_page_bid_high": 5.8,
+        "top_of_page_bid": "$0.55 - $5.80",
+        "metrics_status": "included"
+      },
+      {
+        "string": "are home organizers worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are home organizers in demand",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are home owner associations good",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are home owner associations mandatory",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are home owners associations non profit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can t leave home organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can t leave home organization microsoft",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can a group home be a nonprofit organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how can i repurpose detergent lids for home organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how can i use a laundry basket for home organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can you hire someone to organize your home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to organize home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can a group home be non profit",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is home organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did home free change members",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did home depot support blm",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did home depot change ownership",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did the home owners loan corporation work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do home organization services cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do people charge for home organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do home organizers clean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do home organizers make money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do home owner",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does home organization cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does home organization mean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does home depot donate to nonprofit organizations",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what organizations does home depot support",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does icloud backup home screen organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how does adhd affect home organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does homegoods have organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is home organizing business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have to home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how adhd affects home organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to leave home organization windows 11",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to start a home organization business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to change home organization microsoft",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much to charge for home organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to home organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is home organization in ikea",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is home organization services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what industry is home organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is home of the brave organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is home depot organization id",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is a nursing home a nonprofit organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the 2 foot rule in home organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is a home care organization in california",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should home ownership be encouraged",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is home organizing a good business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "was organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is home an organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "was the home of",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "was home alone an orphanage",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is a home care organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the two foot rule in home organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what type of organization is home depot",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is home depot's organization id for workday",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to buy home organization stuff",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to buy cheap home organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are home organization services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what type of organization is the home depot",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which organization helps the homeless the most",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is home of the brave organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what organization is who",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who home care",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "whose organization",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "whose homes",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is home organization important",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why organize your home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why home ownership matters",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why home management",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will home owners",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would you rather work from home or in an office",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would home",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 83,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 83 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    },
+    "display_note": "When displaying these results in a table, include a \"Top of Page Bid\" column using the top_of_page_bid value. Top of Page Bid is a different metric from CPC (cpc is Bing-only average cost-per-click)."
+  }
+}

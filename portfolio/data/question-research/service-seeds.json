@@ -1,0 +1,806 @@
+[
+  {
+    "service_key": "pressure_washing",
+    "display_name": "Pressure Washing",
+    "seeds": [
+      "pressure washing"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "auto_glass",
+    "display_name": "Windshield & Auto Glass",
+    "seeds": [
+      "windshield replacement"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "auto_repair_shop",
+    "display_name": "Auto Repair Shop",
+    "seeds": [
+      "auto repair"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "backflow_plumbing",
+    "display_name": "Backflow & Commercial Plumbing",
+    "seeds": [
+      "backflow testing"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "coffee_water",
+    "display_name": "Office Coffee & Water",
+    "seeds": [
+      "office coffee service",
+      "office water delivery"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "commercial_cleaning",
+    "display_name": "Commercial Cleaning",
+    "seeds": [
+      "commercial cleaning"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "competitor_intel",
+    "display_name": "Check Local Competitors",
+    "seeds": [
+      "competitor analysis"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "duct_vent",
+    "display_name": "Duct & Dryer Vent Cleaning",
+    "seeds": [
+      "air duct cleaning",
+      "dryer vent cleaning"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "electrical_service",
+    "display_name": "Electrician",
+    "seeds": [
+      "electrician"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "epoxy_flooring",
+    "display_name": "Epoxy & Concrete Floors",
+    "seeds": [
+      "epoxy flooring"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "equipment_quotes",
+    "display_name": "Get Equipment Quotes",
+    "seeds": [
+      "equipment purchasing"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "errand_service",
+    "display_name": "Errands and personal shopping",
+    "seeds": [
+      "errand service"
+    ],
+    "states": [
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "estate_maintenance",
+    "display_name": "Estate upkeep and vendor coordination",
+    "seeds": [
+      "home watch service",
+      "estate management"
+    ],
+    "states": [
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "facility_maintenance",
+    "display_name": "Building Maintenance Help",
+    "seeds": [
+      "facility maintenance"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "fire_safety",
+    "display_name": "Fire Safety Service",
+    "seeds": [
+      "fire extinguisher inspection"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "fleet_washing",
+    "display_name": "Fleet Washing",
+    "seeds": [
+      "fleet washing"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "floor_carpet",
+    "display_name": "Floor & Carpet Cleaning",
+    "seeds": [
+      "commercial carpet cleaning"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "garage_door",
+    "display_name": "Garage Door Repair",
+    "seeds": [
+      "garage door repair"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "grease_drain",
+    "display_name": "Grease Trap & Drain Cleaning",
+    "seeds": [
+      "grease trap cleaning",
+      "commercial drain cleaning"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "groundskeeping",
+    "display_name": "Groundskeeping and estate landscape care",
+    "seeds": [
+      "landscape maintenance"
+    ],
+    "states": [
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "growth_pack",
+    "display_name": "Find New Customers",
+    "seeds": [
+      "business leads"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "handyman_repairs",
+    "display_name": "Handyman",
+    "seeds": [
+      "handyman services"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "home_organization",
+    "display_name": "Home and closet organization",
+    "seeds": [
+      "home organization"
+    ],
+    "states": [
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "home_staging",
+    "display_name": "Home Staging",
+    "seeds": [
+      "home staging"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "home_watch",
+    "display_name": "Seasonal home watch",
+    "seeds": [
+      "home watch service"
+    ],
+    "states": [
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "hood_exhaust",
+    "display_name": "Hood Cleaning",
+    "seeds": [
+      "commercial hood cleaning"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "house_manager_staffing",
+    "display_name": "Household and estate managers",
+    "seeds": [
+      "household staffing"
+    ],
+    "states": [
+      "NV"
+    ],
+    "availability": "licensing_hold"
+  },
+  {
+    "service_key": "housekeeper_staffing",
+    "display_name": "Employed housekeepers",
+    "seeds": [
+      "hiring a housekeeper"
+    ],
+    "states": [
+      "NV"
+    ],
+    "availability": "licensing_hold"
+  },
+  {
+    "service_key": "housekeeping_service",
+    "display_name": "Maid and housekeeping service businesses",
+    "seeds": [
+      "house cleaning"
+    ],
+    "states": [
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "hvac_heat",
+    "display_name": "Heating & Air",
+    "seeds": [
+      "HVAC repair"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "ice_machine",
+    "display_name": "Ice Machine Repair",
+    "seeds": [
+      "commercial ice machine"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "junk_hauling",
+    "display_name": "Junk Removal",
+    "seeds": [
+      "junk removal"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "landscaping",
+    "display_name": "Landscaping & Yard Cleanup",
+    "seeds": [
+      "landscape maintenance"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "linen_laundry",
+    "display_name": "Linen & Laundry Service",
+    "seeds": [
+      "commercial laundry service"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "locksmith_access",
+    "display_name": "Locks & Access Control",
+    "seeds": [
+      "commercial locksmith"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "market_expansion",
+    "display_name": "Research a New Market",
+    "seeds": [
+      "market research for small business"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "mobile_detailing",
+    "display_name": "Mobile Detailing",
+    "seeds": [
+      "mobile car detailing"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "mobile_pet_grooming",
+    "display_name": "Mobile Pet Grooming",
+    "seeds": [
+      "mobile dog grooming"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "mobile_tire_battery",
+    "display_name": "Mobile Tire & Battery",
+    "seeds": [
+      "mobile tire service",
+      "car battery replacement"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "nanny_staffing",
+    "display_name": "Nannies and babysitters",
+    "seeds": [
+      "hiring a nanny"
+    ],
+    "states": [
+      "NV"
+    ],
+    "availability": "licensing_hold"
+  },
+  {
+    "service_key": "parking_lot",
+    "display_name": "Parking Lot Cleaning & Striping",
+    "seeds": [
+      "parking lot cleaning",
+      "parking lot striping"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "personal_assistant_staffing",
+    "display_name": "Household personal assistants",
+    "seeds": [
+      "household staffing",
+      "personal concierge"
+    ],
+    "states": [
+      "NV"
+    ],
+    "availability": "licensing_hold"
+  },
+  {
+    "service_key": "pest_control",
+    "display_name": "Pest Control",
+    "seeds": [
+      "pest control"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "pet_sitting",
+    "display_name": "Pet Sitting & Dog Walking",
+    "seeds": [
+      "pet sitting",
+      "dog walking"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "pet_waste",
+    "display_name": "Pet Waste Cleanup",
+    "seeds": [
+      "pet waste removal"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "pool_desert_property",
+    "display_name": "Pool & Outdoor Property Care",
+    "seeds": [
+      "pool cleaning"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "private_chef_staffing",
+    "display_name": "Private chefs",
+    "seeds": [
+      "private chef"
+    ],
+    "states": [
+      "NV"
+    ],
+    "availability": "licensing_hold"
+  },
+  {
+    "service_key": "quote_sourcing",
+    "display_name": "Get Business Quotes",
+    "seeds": [
+      "request for quotation"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "realtor_listing_prep",
+    "display_name": "Get a Home Ready to Sell",
+    "seeds": [
+      "home staging",
+      "preparing home for sale"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "residential_cleaning",
+    "display_name": "House Cleaning",
+    "seeds": [
+      "house cleaning"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "restaurant_equipment",
+    "display_name": "Restaurant Equipment Repair",
+    "seeds": [
+      "restaurant equipment repair"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "restaurant_maintenance",
+    "display_name": "Restaurant Maintenance Help",
+    "seeds": [
+      "restaurant maintenance"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "restaurant_repair",
+    "display_name": "Restaurant Repair",
+    "seeds": [
+      "restaurant equipment repair"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "rural_property",
+    "display_name": "Septic, Grading & Wells",
+    "seeds": [
+      "septic tank pumping",
+      "land grading",
+      "well pump repair",
+      "water hauling"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "senior_personal_care",
+    "display_name": "In-home personal care",
+    "seeds": [
+      "home care agency"
+    ],
+    "states": [
+      "NV"
+    ],
+    "availability": "licensing_hold"
+  },
+  {
+    "service_key": "sign_lighting",
+    "display_name": "Sign & Lighting Repair",
+    "seeds": [
+      "commercial sign repair"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "snow_service",
+    "display_name": "Snow Removal",
+    "seeds": [
+      "snow removal"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "solar_panel_cleaning",
+    "display_name": "Solar panel cleaning",
+    "seeds": [
+      "solar panel cleaning"
+    ],
+    "states": [
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "str_property_care",
+    "display_name": "Rental Property Care",
+    "seeds": [
+      "vacation rental property maintenance"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "towing_roadside",
+    "display_name": "Towing & Roadside Help",
+    "seeds": [
+      "roadside assistance",
+      "towing service"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "tree_service",
+    "display_name": "Tree Service & Brush Clearing",
+    "seeds": [
+      "tree removal"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "turnover_cleaning",
+    "display_name": "Move-Out Cleaning",
+    "seeds": [
+      "move out cleaning"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "used_equipment",
+    "display_name": "Buy or Sell Used Restaurant Equipment",
+    "seeds": [
+      "used restaurant equipment"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "vehicle_services",
+    "display_name": "Mobile Mechanic & Vehicle Service",
+    "seeds": [
+      "mobile mechanic"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "vendor_savings",
+    "display_name": "Cut Vendor Costs",
+    "seeds": [
+      "supplier cost reduction"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "waste_audit",
+    "display_name": "Cut Waste & Recycling Costs",
+    "seeds": [
+      "commercial waste management"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  },
+  {
+    "service_key": "window_cleaning",
+    "display_name": "Window Cleaning",
+    "seeds": [
+      "window cleaning"
+    ],
+    "states": [
+      "AZ",
+      "NV"
+    ],
+    "availability": "research_only"
+  }
+]

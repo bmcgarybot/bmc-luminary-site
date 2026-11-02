@@ -1,0 +1,730 @@
+{
+  "retrieved_at": "2026-11-02T03:41:06.571133+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "roadside assistance",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 167 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+    "data": [
+      {
+        "string": "roadside assistance",
+        "volume": 201000,
+        "trend": -33,
+        "cpc": 9.97,
+        "cmp": 0.59,
+        "top_of_page_bid_low": 2.91,
+        "top_of_page_bid_high": 8.58,
+        "top_of_page_bid": "$2.91 - $8.58",
+        "metrics_status": "included"
+      },
+      {
+        "string": "what are roadside assistance services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are the best roadside assistance plans",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are the roadside assistance companies",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are the best roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is roadside assist worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you have roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are roadside assistance mechanics",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are roadside",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does roadside assistance count against you",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can roadside assistance come to your house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can roadside assistance patch a tire",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can roadside assistance replace a tire",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can roadside assistance bring a spare tire",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can roadside assistance change a battery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can roadside assistance unlock my car",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can roadside assistance plug a tire",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can roadside assistance charge an electric car",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can roadside assistance jump your car",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can roadside assistance bring you a tire",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does roadside assistance ask for.id",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why did roadside assistance call me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when did roadside assistance start",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when did aaa roadside assistance start",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who does roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is roadside assistance worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does roadside assistance count as claim",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does roadside assistance cover at home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does roadside assistance come to home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do roadside assistance claims affect your insurance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do roadside assistance change tires",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do roadside assistance fix flat tires",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do roadside assistance bring gas",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do roadside assistance tow cars",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do roadside assistance make good money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do roadside assistance plug tires",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do roadside assistance bring tires",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do roadside assistance change batteries",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do roadside assistance patch tires",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does roadside assistance count as a claim",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does roadside assistance cover towing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does roadside assistance count as a claim state farm",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does roadside assistance cover locked keys in car",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does roadside assistance cover rental cars",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does roadside assistance cover towing from home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does roadside assistance cover flat tires",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does roadside assistance fix flat tires",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does roadside assistance count as a claim progressive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does roadside assistance cover lost keys",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what insurance has roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who has roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does progressive has roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which card has roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does progressive have roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does aarp have roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does geico have roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does state farm have roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does allstate have roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does usaa have roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do i have roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does tesla have roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does t mobile have roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how roadside assistance works",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is aaa roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is nrma roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is roadside assistance with progressive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is tesla roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is racq roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is aa roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is rac roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is allstate roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is roadside assistance free with state farm",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is roadside assistance free with progressive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is roadside assistance free",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is roadside assistance free with geico",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is roadside assistance the same as towing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is roadside assistance free with insurance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is roadside assistance considered a claim",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is roadside assistance a claim on your insurance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is roadside assistance free with tesla",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should roadside assistance cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long should roadside assistance take",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you tip aaa roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you tip roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i get roadside assistance insurance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i tip aaa roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i get roadside assistance for rental car",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i get roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i add roadside assistance to my insurance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i tip roadside assistance guy",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what was the roadside assistance on amazing race",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does lincoln have roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what roadside assistance is free",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what roadside assistance do i have",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what roadside assistance is better than aaa",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what roadside assistance is best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is roadside assistance dangerous",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what roadside assistance does state farm offer",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what roadside assistance does aaa offer",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what roadside assistance covers",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what roadside assistance does usaa offer",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what roadside assistance does state farm use",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what roadside assistance does progressive use",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what roadside assistance does geico offer",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what roadside assistance does admiral use",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to call roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to call aaa for roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to use roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long does roadside assistance take",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long does it take for roadside assistance to come",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does roadside assistance do",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when is roadside assistance available",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when does roadside assistance start",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when does roadside assistance open",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when you have roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to get roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to buy roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to call for roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is agero roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to use roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where can i buy roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where does roadside assistance take your car",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where is roadside assistance located",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which roadside assistance is best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which roadside assistance is best in canada",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which roadside assistance is best in uk",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which roadside assistance is best in australia",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which credit cards offer roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which aaa app is for roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which is the cheapest roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which is the best roadside assistance company",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which is the best roadside assistance program",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who to call for roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is the best roadside assistance uk",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is the best roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is admiral roadside assistance with",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is budget direct roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is toyota roadside assistance with",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is the cheapest roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is the best roadside assistance company",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is hyundai roadside assistance with",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who provides roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which roadside assistance to call",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is roadside assistance important",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is roadside assistance so expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is roadside assistance so slow",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is roadside assistance taking so long",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why does roadside assistance take so long",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will roadside assistance come to my house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will roadside assistance change a tire",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will roadside assistance change a battery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will roadside assistance bring you gas",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will roadside assistance tow my car home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will roadside assistance tow to my house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will roadside assistance put air in tire",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will roadside assistance patch a tire",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will roadside assistance plug a tire",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will roadside assistance bring a new battery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much would roadside assistance cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why would roadside assistance call me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do i need aaa if i have roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do i need roadside assistance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will roadside assistance give you a ride",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will roadside assistance come to my home",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 167,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 167 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    },
+    "display_note": "When displaying these results in a table, include a \"Top of Page Bid\" column using the top_of_page_bid value. Top of Page Bid is a different metric from CPC (cpc is Bing-only average cost-per-click)."
+  }
+}

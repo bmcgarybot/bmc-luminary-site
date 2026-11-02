@@ -1,0 +1,150 @@
+{
+  "retrieved_at": "2026-11-02T03:23:41.515294+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "office water delivery",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+    "data": [
+      {
+        "string": "office water delivery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are water delivery services worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are office water dispensers safe",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are office water coolers safe",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can you deliver water",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does office depot sell water",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does office depot have water",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have water delivered",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have water delivered to your home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how does water delivery service work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how do office water dispensers work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is water delivery",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is water delivery worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is water delivery service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how does water delivery work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is office depot water good",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is water delivery a good business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is a water delivery service worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which water delivery service is best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which companies deliver water",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who deliver water to your house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who delivers water to your home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who delivers water to your house",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is water delivery so expensive",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 24,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    }
+  }
+}

@@ -1,0 +1,206 @@
+{
+  "retrieved_at": "2026-11-02T03:25:49.091099+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "commercial laundry service",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+    "data": [
+      {
+        "string": "commercial laundry service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are commercial laundry services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what industry is a laundry service in",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does commercial laundry cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is commercial laundry",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how does commercial laundry work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is commercial laundry a good business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are laundry services profitable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are commercial washers clean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is commercial laundry profitable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are commercial washers good",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can i use a commercial washing machine at home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can i use a commercial washer in my home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how does a commercial laundry service work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is commercial laundry business profitable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is commercial laundry detergent better",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do commercial washers last longer",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do commercial washers clean better",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do laundromats have commercial washers",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do commercial washers wash better",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does commercial laundry service mean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does commercial laundry service cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is commercial laundry service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to start a commercial laundry service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is commercial laundry service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is laundry service a good business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should laundry",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is a commercial laundry service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where can i use a commercial washer",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which commercial washing machine is best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which laundry service pays the most",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who uses laundry services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who owns laundry service agency",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who owns laundry",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why are commercial washers so expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why are commercial washing machines so expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why are commercial washers so fast",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is laundry service so expensive",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 38,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    }
+  }
+}

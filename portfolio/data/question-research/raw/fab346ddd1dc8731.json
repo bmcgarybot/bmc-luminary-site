@@ -1,0 +1,501 @@
+{
+  "retrieved_at": "2026-11-02T03:24:42.594706+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "garage door repair",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 2 of 108 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+    "data": [
+      {
+        "string": "garage door repair",
+        "volume": 246000,
+        "trend": -33,
+        "cpc": 50.63,
+        "cmp": 0.57,
+        "top_of_page_bid_low": 14.27,
+        "top_of_page_bid_high": 84.99,
+        "top_of_page_bid": "$14.27 - $84.99",
+        "metrics_status": "included"
+      },
+      {
+        "string": "are garage door repairs expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much are garage door repairs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can a damaged garage door be repaired",
+        "volume": 30,
+        "trend": 0,
+        "cpc": 18.9,
+        "cmp": 0.62,
+        "top_of_page_bid_low": 5.38,
+        "top_of_page_bid_high": 24.12,
+        "top_of_page_bid": "$5.38 - $24.12",
+        "metrics_status": "included"
+      },
+      {
+        "string": "should i repair or replace my garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does fixing a garage door cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does a garage door cost to repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are garage door openers repairable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are garage doors expensive to fix",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can a dented garage door be repaired",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can a garage door be repaired",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can you repair a garage door panel",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can a bent garage door be repaired",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can a cracked garage door be repaired",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can you repair a garage door spring",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to repair a damaged garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can garage doors be fixed",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did my garage door spring break",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did garage rehab get cancelled",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is garage door repair dangerous",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is garage repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do garage door repairs cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do garage door repairman make",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does home depot do garage door repairs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does lowes do garage door repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do garage door repairmen make",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does costco do garage door repairs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long do garage door repairs take",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do you tip garage door repairman",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do i tip garage door repairman",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do you tip garage door repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does garage door repair cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does garage door repair usually cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long does garage door repair take",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who does garage door repairs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who does garage door repair near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does garage door repair typically cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does home insurance cover garage door repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is garage door repair expensive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can garage doors be repaired",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have garage door springs replaced",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does it cost to have garage door repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does it cost to have garage door fixed",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does it cost to repair a garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to repair garage door spring",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to repair garage door cable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to repair garage door opener",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to repair garage door panel",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to repair liftmaster garage door opener",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to repair genie garage door opener",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to repair garage door frame",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to repair garage door dent",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is garage door repair a good business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is garage door repair covered by homeowners insurance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is garage door repair cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is a garage door spring repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the average cost to repair a garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is garage door cable repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is garage door opener repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is the best garage door repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should garage door repair cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should a garage door spring repair cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should you tip a garage door repairman",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should i tip garage door repairman",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how often should you replace your garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should garage doors be serviced",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should garage door openers be serviced",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does garage door repair cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the cost to repair garage door spring",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the cost of garage door repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is garage door repair",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what garage door do i have",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when to repair garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when garage door opener doesn't work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when garage door closes then reopens",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when garage",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to repair garage door opener",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to repair garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to get garage door opener fixed",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to get garage doors near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to fix garage door opener",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which garage door company is the best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which garage door do i have",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which garage door is the best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which garage door is better",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which garage door opener is good",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who repairs garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who can fix garage doors near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who fixes garage doors in my area",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who repairs garage doors near me",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who repairs garage",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why garage door open",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why garage door not working",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why garage door doesn't open",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much will it cost to repair a garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will garage doors",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will garage doors open without power",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will garage door work with broken spring",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will garage door open with broken spring",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much would it cost to repair a garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would garage door",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who would fix a garage door",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 108,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 2 of 108 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    },
+    "display_note": "When displaying these results in a table, include a \"Top of Page Bid\" column using the top_of_page_bid value. Top of Page Bid is a different metric from CPC (cpc is Bing-only average cost-per-click)."
+  }
+}

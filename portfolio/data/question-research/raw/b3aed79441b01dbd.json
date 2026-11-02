@@ -1,0 +1,314 @@
+{
+  "retrieved_at": "2026-11-02T03:29:39.026764+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "restaurant maintenance",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+    "data": [
+      {
+        "string": "restaurant maintenance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are restaurant services",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are restaurants manufacturing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are restaurant service business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are restaurant managers exempt",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are restaurant managers underpaid",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can restaurant managers keep tips",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can restaurants make servers clean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can restaurant have mandatory tip",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can restaurant owners make money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can restaurant manager take tips",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did restaurant work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did restaurants",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did restaurant depot open today",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did maintenance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does restaurant maintenance do",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how often should a restaurant kitchen be cleaned",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to maintain a restaurant",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do restaurant managers work hourly",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do restaurant managers make tips",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do restaurant managers work full time",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do restaurant managers work everyday",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do restaurant managers get breaks",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does restaurant service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does restaurant make money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does maintenance required",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to maintain restaurant equipment",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how restaurants operate",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how are restaurants managed",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how restaurant owner",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is restaurant maintenance",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is a restaurant maintenance technician",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how often do restaurants fail",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is restaurant manual labor",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is restaurant management difficult",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is restaurant management hard",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should restaurant managers get tips",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "should restaurant",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is maintenance in a restaurant",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what can get a restaurant shut down",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why do restaurants take menu away",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what restaurant management",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when a restaurant",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when do restaurant managers work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when a restaurant runs out of food",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which restaurant management",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which restaurant servers make the most",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which restaurant makes the most money as a server",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who in restaurant",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who rates restaurants cleanliness",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who cleans restaurant",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who manages a restaurant",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "whose restaurant",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why restaurant management",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is restaurant management important",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why restaurant fail",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why restaurant menu",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will a restaurant",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will restaurants survive",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will restaurants go out of business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will restaurant impossible come back",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would a restaurant be a service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would a restaurant",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would a restaurant be considered a service",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would restaurants be considered retail",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 65,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result returns keyword text only (no cached metrics were available for these keywords). Keyword Tool Pro returns search volume, trend, competition, CPC, and Top of Page Bid on every keyword, with live data for uncached terms.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    }
+  }
+}

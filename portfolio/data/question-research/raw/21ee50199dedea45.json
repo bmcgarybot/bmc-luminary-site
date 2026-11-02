@@ -1,0 +1,442 @@
+{
+  "retrieved_at": "2026-11-02T03:23:48.231467+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "competitor analysis",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 95 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+    "data": [
+      {
+        "string": "competitor analysis",
+        "volume": 6600,
+        "trend": -33,
+        "cpc": 24.36,
+        "cmp": 0.13,
+        "top_of_page_bid_low": 4.91,
+        "top_of_page_bid_high": 19.36,
+        "top_of_page_bid": "$4.91 - $19.36",
+        "metrics_status": "included"
+      },
+      {
+        "string": "what are competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are competitor analysis tools",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why are competitor analysis important",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are the benefits of competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are the components of competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are the disadvantages of competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are the advantages of competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what are the steps of competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why do a competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are competitors",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how can i do competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can competitors",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can competitors be a stakeholder",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did competitor",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "did ai competitors",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to do competitor analysis for social media",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to do competitor analysis in digital marketing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to do competitor analysis for a product",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how do you do competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to do competitor analysis in semrush",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to do competitor analysis in marketing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to do competitor analysis on instagram",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does competitor analysis mean",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how does competitor analysis help a business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does competitor analysis involve",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does competitor analysis look like",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long does a competitor analysis take",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does competitor analysis mean in business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who does competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does competitor analysis focus on",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does competitor analysis do",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how does chatgpt help with competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does buffer have competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do you have competitor analysis experience",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "have competitors",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is it competitor analysis or competitive analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how many competitors in competitive analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how competitor analysis is done",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to do competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to make a competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to write a competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to do a competitor analysis marketing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to present competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is competitor analysis qualitative or quantitative",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is competitor analysis secondary research",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is competitor analysis primary or secondary",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is competitor analysis internal or external",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is competitor analysis part of market research",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is competitor analysis micro or macro",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is competitor analysis in marketing",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is competitor analysis important",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is competitor analysis in business plan",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what should competitor analysis include",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why should competitor analysis be updated periodically",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what should be in a competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what should a competitor analysis look.like",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how long should a competitor analysis be",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do i need a competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "was a competitor",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is competitor analysis used for",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is competitor analysis called",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is competitor analysis in seo",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is competitor analysis in business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the meaning of competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what to write in competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is competitor backlink analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is competitor analysis example",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when competitors",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when is competitor analysis used",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "when conducting a competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to find competitors of a company",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to find competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to find competitor information",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where are competitor's strengths",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which ai is best for competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which framework is used for competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which tool is best for competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which is competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which tool is used for competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which competitor products below have a product positioning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which is a strategy for competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who competitors",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why competitor analysis is important",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is competitor analysis important for a business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why conduct competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why is competitor analysis good",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why analyze competitors",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why will competitors want to see final accounts",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "would be competitors",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why would a company perform a competitor analysis",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what should a competitor analysis look like",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what does a competitor analysis consist of",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 95,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 95 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    },
+    "display_note": "When displaying these results in a table, include a \"Top of Page Bid\" column using the top_of_page_bid value. Top of Page Bid is a different metric from CPC (cpc is Bing-only average cost-per-click)."
+  }
+}

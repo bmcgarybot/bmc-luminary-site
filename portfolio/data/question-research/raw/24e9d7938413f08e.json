@@ -1,0 +1,278 @@
+{
+  "retrieved_at": "2026-11-02T03:24:37.407276+00:00",
+  "source": "https://mcp.keywordtool.io/guest",
+  "arguments": {
+    "keyword": "commercial carpet cleaning",
+    "platform": "google",
+    "category": "web",
+    "country": "United States",
+    "language": "English",
+    "type": "questions",
+    "limit": 1000,
+    "next_page": 0
+  },
+  "response": {
+    "success": true,
+    "notice": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 54 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+    "data": [
+      {
+        "string": "commercial carpet cleaning",
+        "volume": 14800,
+        "trend": -87,
+        "cpc": 7.08,
+        "cmp": 0.95,
+        "top_of_page_bid_low": 1.55,
+        "top_of_page_bid_high": 17.58,
+        "top_of_page_bid": "$1.55 - $17.58",
+        "metrics_status": "included"
+      },
+      {
+        "string": "are commercial carpet cleaners better",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is commercial carpet cleaning worth it",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are carpet cleaning companies profitable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are carpet cleaning businesses profitable",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "are carpet cleaners licensed",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where can i rent a commercial carpet cleaning machine",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is commercial carpet cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can commercial carpet get wet",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "can i use commercial carpet in my home",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do commercial carpet cleaners work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what do commercial carpet cleaners use",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to do commercial carpet cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much do you charge for commercial carpet cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how do commercial carpet cleaners work",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do carpet cleaning business make money",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "do carpet cleaners charge tax",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does commercial carpet cleaning cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much does a commercial carpet cleaning machine cost",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "does commercial carpet have padding",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is commercial carpet good for home use",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is commercial carpet cheaper than residential",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much to charge for commercial carpet cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is a commercial carpet cleaning machine",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to get commercial carpet cleaning jobs",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to start a commercial carpet cleaning business",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to get commercial carpet cleaning contracts",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to secure intial commercial carpet cleaning clients",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how to price commercial carpet cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "is commercial carpet cleaning taxable in florida",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much is commercial carpet cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the best commercial carpet cleaning machine",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the going rate for commercial carpet cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the best commercial carpet cleaning solution",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how much should i charge for commercial carpet cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how often should commercial carpet be cleaned",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how often should commercial carpet be shampooed",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how often should commercial carpet be replaced",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to buy commercial carpet cleaner",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where can i buy a commercial carpet cleaner",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where to rent a commercial carpet cleaner",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "where can i buy commercial carpet",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "what is the best commercial carpet cleaner to buy",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "which carpet cleaning company is the best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who clean carpet",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who rents commercial carpet cleaners",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who cleans carpet in my area",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "who is the carpet cleaning company",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why carpet cleaning is important",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why carpet cleaning is the best",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "why carpet cleaning",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will carpet cleaners remove mold",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "will carpet cleaning cause mold",
+        "metrics_status": "requires Pro"
+      },
+      {
+        "string": "how does a commercial carpet cleaner work",
+        "metrics_status": "requires Pro"
+      }
+    ],
+    "total_count": 54,
+    "pagination": {
+      "current_page": 0,
+      "has_more": false,
+      "next_page": null
+    },
+    "metadata": {
+      "platform": "google",
+      "country": "United States",
+      "language": "English"
+    },
+    "guest_info": {
+      "message": "Guest access: this result includes full metrics (search volume, trend, competition, CPC, Top of Page Bid) on 1 of 54 keywords; the rest show keyword text only. Keyword Tool Pro returns full metrics on every keyword.",
+      "limitations": [
+        "First 5 keywords show volume, trend, competition, CPC (Bing only), and Top of Page Bid (Google only) if cached",
+        "Remaining keywords show keyword strings only",
+        "Google and Bing platforms only",
+        "60 requests per hour",
+        "120 requests per day"
+      ]
+    },
+    "upgrade_available": true,
+    "pro_plan": {
+      "name": "Keyword Tool Pro",
+      "benefits": [
+        "Full metrics (volume, trend, competition, CPC, Top of Page Bid) on all keywords - not just the first 5",
+        "Higher rate limits and more requests per day",
+        "Bulk search volume analysis (up to 1,000 keywords)",
+        "Competitor URL keyword analysis",
+        "Live data fetching for uncached keywords"
+      ],
+      "pricing": "From $88/month, or $68/month billed annually",
+      "url": "https://keywordtool.io/pro"
+    },
+    "display_note": "When displaying these results in a table, include a \"Top of Page Bid\" column using the top_of_page_bid value. Top of Page Bid is a different metric from CPC (cpc is Bing-only average cost-per-click)."
+  }
+}

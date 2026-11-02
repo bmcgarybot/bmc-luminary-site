@@ -9,6 +9,7 @@ import sys
 import importlib.util
 
 SWITCHES=("OUTREACH_ENABLED","BUYER_OUTREACH_ENABLED","GROWTH_OUTREACH_ENABLED")
+ACTIVE_JOB_METRICS=("active_requests","confirmed_requests_in_window","needs_review_in_window")
 METRICS=("paid_orders","revenue_cents","samples_requested","samples_delivered","replies","open_growth_exceptions","staged_active","sent")
 
 def decode_snapshot(payload):
@@ -67,7 +68,7 @@ def assess(s, now=None, max_age_minutes=90):
       "observed_at":s.get("observed_at"),"age_minutes":round(age,1) if age is not None else None,
       "deployed_sha":sha,"owner_launch_hold_active":s.get("owner_launch_hold_active") is True,
       "outreach_switches":{k:switches.get(k) for k in SWITCHES},
-      "growth":metrics,"issues":issues,"marketing_authorized":False,
+      "growth":metrics,"active_jobs":{k:s.get("active_jobs",{}).get(k) if isinstance(s.get("active_jobs"),dict) and type(s["active_jobs"].get(k)) is int and s["active_jobs"][k]>=0 else None for k in ACTIVE_JOB_METRICS},"issues":issues,"marketing_authorized":False,
       "resources":load_module("operator_metrics","operator-metrics.py").sanitize(s.get("resources"))}
 
 def load_module(name,filename):

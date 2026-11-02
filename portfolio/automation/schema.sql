@@ -1220,3 +1220,15 @@ update outreach set owner_review_required=true,historical_review_recorded_at=now
 where entity_type='growth_customer' and campaign='growth_sales'
   and historical_review_recorded_at is null
   and sent_at is not null and sent_at < '2026-10-30T03:50:30Z'::timestamptz;
+
+-- Confirmed customer jobs are distinct from scraped ads and researched prospects.
+-- Only the authenticated review route writes these findings; public payload flags do not qualify a lead.
+create table if not exists warm_lead_reviews (
+  lead_id uuid primary key references leads(lead_id) on delete cascade,
+  contact_verified boolean not null,
+  job_confirmed boolean not null,
+  sharing_confirmed boolean not null,
+  not_duplicate boolean not null,
+  evidence_note text not null check(length(evidence_note) between 10 and 1000),
+  reviewed_at timestamptz not null default now()
+);

@@ -1,0 +1,11 @@
+{
+  "services": 67,
+  "unique_collected_seeds": 68,
+  "unique_suggestions": 5551,
+  "complete_service_seed_sets": 61,
+  "partial_services": 0,
+  "pending_services": 6,
+  "local_demand_verified": false,
+  "llm_weights_trained": false,
+  "pages_published": 0
+}
