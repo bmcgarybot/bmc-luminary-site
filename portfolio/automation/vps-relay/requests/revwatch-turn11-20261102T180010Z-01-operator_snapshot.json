@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "revwatch-turn11-20261102T180010Z-01-operator_snapshot",
+  "action": "operator_snapshot",
+  "created_at": "2026-11-02T18:00:10.000Z",
+  "expires_at": "2026-11-02T19:30:10.000Z",
+  "allow_external_actions": false,
+  "args": {}
+}
