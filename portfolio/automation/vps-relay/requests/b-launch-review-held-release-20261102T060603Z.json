@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "b-launch-review-held-release-20261102T060603Z",
+  "action": "deploy_update",
+  "created_at": "2026-11-02T06:06:03.561Z",
+  "expires_at": "2026-11-02T08:06:03.561Z",
+  "allow_external_actions": false,
+  "required_ci_sha": "7dfb4a34fdda179dee9add53d73d4f8fa39001ab",
+  "args": {}
+}
