@@ -60,8 +60,8 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
             await conn.execute("insert into services(service_key,display_name) values('growth_pack','Growth')")
             await conn.execute("insert into products(product_key,service_key,display_name,billing_type) values('growth_pack_starter','growth_pack','Growth','one_time')")
             for i in (1,2):
-                await conn.execute("""insert into growth_sample_requests(sample_id,business_name,contact_name,email,provider_service_key,market,status)
-                  values($1,'Fixture','Owner','owner@example.com','pressure_washing',$2,'delivered')""",uuid.UUID(int=i),'Market '+str(i))
+                await conn.execute("""insert into growth_sample_requests(sample_id,submission_id,business_name,contact_name,email,provider_service_key,market,status)
+                  values($1,$2,'Fixture','Owner','owner@example.com','pressure_washing',$3,'delivered')""",uuid.UUID(int=i),'ci-payment-sample-'+str(i),'Market '+str(i))
         obj=self.checkout(); obj['metadata']={'product_key':'growth_pack_starter'}
         return obj
     async def test_invalid_explicit_reference_cannot_select_other_territory(self):
