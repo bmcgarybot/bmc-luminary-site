@@ -30,10 +30,13 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      - name: Stage reviewed public website files
+        run: python3 portfolio/automation/build-public-site.py "$RUNNER_TEMP/bmc-public-site"
+
       - name: Upload BMC Service Network site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./portfolio
+          path: ${{ runner.temp }}/bmc-public-site
 
       - name: Deploy BMC Service Network
         id: deployment
