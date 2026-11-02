@@ -134,3 +134,10 @@ Next reversible work: prepare a service/territory-specific preview with correct 
 ### Mailbox code draft — November 2, 2026, 19:42 UTC
 
 Draft PR30 https://github.com/bmcgarybot/bmc-luminary-site/pull/30 head f42ca08d2c494b79891bd3193f16dd557979c4c3 is BRANCH ONLY. It adds explicit SMTP Reply-To and routes both owner preview endpoints to configurable OWNER_PREVIEW_RECIPIENT, defaulting to contact@bmcservicenetwork.com. Local 8 focused tests pass, including actual MIME header capture and preview-scope hold checks; diff check clean. PR CI/merge/deploy not yet verified. It does not set the postal footer, send mail, change holds, or make the new 1Postal mailbox active. Existing production still uses the old hardcoded owner preview destination and has no explicit Reply-To. Do not call this live or trigger preview with the old endpoint. New owner-only preview permission is scoped to the contact mailbox, but the content/envelope/signed route must be prepared before exercising it.
+
+
+### Postal choice correction — November 2, 2026, 19:44 UTC
+
+Owner explicitly directs use of the new 1Postal mailbox address NOW for BMC outbound footers, even while his mailbox paperwork awaits approval. This supersedes the prior instruction to wait for activation or use the Montezuma address. Exact owner-supplied address is in the conversation attachment; do not publish it in this public handoff. Before an actual preview/customer send, set BUSINESS_POSTAL_ADDRESS in the private VPS environment to the owner-supplied 1Postal address and verify rendered MIME/footer. Do not silently leave the old Montezuma address in the review. No VPS configuration change has been proven yet.
+
+PR30 draft advanced to head 9659449ecda0f8a8102460fe4e2bac3c291fe91a. Besides Reply-To/owner preview recipient, it now passes those settings through Docker Compose and removes the hardcoded Montezuma fallback from the owner template catalog. Eight local focused tests pass, diff clean; Docker CLI unavailable locally, CI queued/in progress at check. Branch only, not merged/VPS deployed. All campaign holds remain.
