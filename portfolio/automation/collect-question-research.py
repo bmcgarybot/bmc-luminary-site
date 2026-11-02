@@ -20,6 +20,12 @@ def main():
     # Do not persist IP identifiers, session headers or tokens.
     print(json.dumps({'quota':quota}),flush=True)
     if a.quota_only:return
+    limits=quota.get('quota_info',{}).get('limits',{})
+    allowance=min(limits.get('hourly',{}).get('remaining',0),limits.get('daily',{}).get('remaining',0))
+    a.max_calls=min(max(0,a.max_calls),max(0,int(allowance)))
+    if quota.get('quota_info',{}).get('limit_reached') or a.max_calls==0:
+        print(json.dumps({'status':'waiting_for_provider_quota','quota_resets_at':quota.get('quota_resets_at')}),flush=True)
+        return
     seeds=json.loads((OUT/'service-seeds.json').read_text())
     queries=list(dict.fromkeys(q for service in seeds for q in service['seeds']))
     manifest={'source':'https://keywordtool.io/mcp/guest','geography':'United States; not measured AZ/NV demand','updated_at':now(),'queries':[]}

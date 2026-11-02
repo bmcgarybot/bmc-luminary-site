@@ -1243,11 +1243,11 @@
       "NV"
     ],
     "availability": "research_only",
-    "collection_status": "pending",
-    "collected_seeds": [],
-    "pending_seeds": [
+    "collection_status": "complete_first_page",
+    "collected_seeds": [
       "move out cleaning"
     ],
+    "pending_seeds": [],
     "local_demand_verified": false,
     "search_alias_review_status": "pending",
     "publishing_status": "draft"
@@ -1263,11 +1263,11 @@
       "NV"
     ],
     "availability": "research_only",
-    "collection_status": "pending",
-    "collected_seeds": [],
-    "pending_seeds": [
+    "collection_status": "complete_first_page",
+    "collected_seeds": [
       "used restaurant equipment"
     ],
+    "pending_seeds": [],
     "local_demand_verified": false,
     "search_alias_review_status": "pending",
     "publishing_status": "draft"
@@ -1283,11 +1283,11 @@
       "NV"
     ],
     "availability": "research_only",
-    "collection_status": "pending",
-    "collected_seeds": [],
-    "pending_seeds": [
+    "collection_status": "complete_first_page",
+    "collected_seeds": [
       "mobile mechanic"
     ],
+    "pending_seeds": [],
     "local_demand_verified": false,
     "search_alias_review_status": "pending",
     "publishing_status": "draft"
@@ -1303,11 +1303,11 @@
       "NV"
     ],
     "availability": "research_only",
-    "collection_status": "pending",
-    "collected_seeds": [],
-    "pending_seeds": [
+    "collection_status": "complete_first_page",
+    "collected_seeds": [
       "supplier cost reduction"
     ],
+    "pending_seeds": [],
     "local_demand_verified": false,
     "search_alias_review_status": "pending",
     "publishing_status": "draft"
@@ -1323,11 +1323,11 @@
       "NV"
     ],
     "availability": "research_only",
-    "collection_status": "pending",
-    "collected_seeds": [],
-    "pending_seeds": [
+    "collection_status": "complete_first_page",
+    "collected_seeds": [
       "commercial waste management"
     ],
+    "pending_seeds": [],
     "local_demand_verified": false,
     "search_alias_review_status": "pending",
     "publishing_status": "draft"
@@ -1343,11 +1343,11 @@
       "NV"
     ],
     "availability": "research_only",
-    "collection_status": "pending",
-    "collected_seeds": [],
-    "pending_seeds": [
+    "collection_status": "complete_first_page",
+    "collected_seeds": [
       "window cleaning"
     ],
+    "pending_seeds": [],
     "local_demand_verified": false,
     "search_alias_review_status": "pending",
     "publishing_status": "draft"

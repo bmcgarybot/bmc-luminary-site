@@ -1,0 +1,25 @@
+{
+  "source": "https://alsoasked.com/",
+  "collection_method": "visible question tree transcription",
+  "query": "solar panel cleaning",
+  "location": "Henderson, Nevada",
+  "country": "United States",
+  "language": "English",
+  "retrieved_at": "2026-11-02T03:58:19.001001+00:00",
+  "questions": [
+    "Is solar panel cleaning needed?",
+    "What is the 20% rule for solar panels?",
+    "What are the five most common problems with solar panels?",
+    "What is the average cost of solar panel cleaning?",
+    "Can I clean my solar panels myself?",
+    "Is Dawn dish soap good for cleaning solar panels?",
+    "Why is it hard to sell a house with solar panels?",
+    "Will my homeowners insurance go up if I get solar panels?",
+    "What is the average lifespan of a solar panel?",
+    "Why is it hard to sell a house with solar panels?",
+    "Is solar still worth it in 2026?"
+  ],
+  "answer_content_collected": false,
+  "local_search_volume_verified": false,
+  "notes": "Question suggestions are observed; answers and source links mostly upgrade-gated. No technical or pricing answers inferred."
+}

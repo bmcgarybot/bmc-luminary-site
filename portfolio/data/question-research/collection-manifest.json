@@ -1,7 +1,7 @@
 {
   "source": "https://keywordtool.io/mcp/guest",
   "geography": "United States; not measured AZ/NV demand",
-  "updated_at": "2026-11-02T03:41:16.651995+00:00",
+  "updated_at": "2026-11-02T04:00:52.642694+00:00",
   "queries": [
     {
       "seed": "pressure washing",
@@ -306,80 +306,78 @@
     {
       "seed": "home care agency",
       "path": "data/question-research/raw/a8000c6a0c03410c.json",
-      "status": "collected",
-      "returned_count": 91
+      "status": "collected"
     },
     {
       "seed": "commercial sign repair",
       "path": "data/question-research/raw/b7df2d170c924bf0.json",
-      "status": "collected",
-      "returned_count": 4
+      "status": "collected"
     },
     {
       "seed": "snow removal",
       "path": "data/question-research/raw/e6beeff690d0f8f0.json",
-      "status": "collected",
-      "returned_count": 128
+      "status": "collected"
     },
     {
       "seed": "solar panel cleaning",
       "path": "data/question-research/raw/9ac600731ba28591.json",
-      "status": "collected",
-      "returned_count": 102
+      "status": "collected"
     },
     {
       "seed": "vacation rental property maintenance",
       "path": "data/question-research/raw/242a24b89699b08a.json",
-      "status": "collected",
-      "returned_count": 24
+      "status": "collected"
     },
     {
       "seed": "roadside assistance",
       "path": "data/question-research/raw/71091954789c1587.json",
-      "status": "collected",
-      "returned_count": 167
+      "status": "collected"
     },
     {
       "seed": "towing service",
       "path": "data/question-research/raw/0f8a5aeba96363c6.json",
-      "status": "collected",
-      "returned_count": 91
+      "status": "collected"
     },
     {
       "seed": "tree removal",
       "path": "data/question-research/raw/bf953d43433164d9.json",
-      "status": "collected",
-      "returned_count": 136
+      "status": "collected"
     },
     {
       "seed": "move out cleaning",
       "path": "data/question-research/raw/8c277d4f5a581814.json",
-      "status": "pending"
+      "status": "collected",
+      "returned_count": 71
     },
     {
       "seed": "used restaurant equipment",
       "path": "data/question-research/raw/623fcceea2bd78ac.json",
-      "status": "pending"
+      "status": "collected",
+      "returned_count": 51
     },
     {
       "seed": "mobile mechanic",
       "path": "data/question-research/raw/dcaef26e9de002bf.json",
-      "status": "pending"
+      "status": "collected",
+      "returned_count": 124
     },
     {
       "seed": "supplier cost reduction",
       "path": "data/question-research/raw/8765a0c6df42d4a5.json",
-      "status": "pending"
+      "status": "collected",
+      "returned_count": 21
     },
     {
       "seed": "commercial waste management",
       "path": "data/question-research/raw/33817cdfd461f652.json",
-      "status": "pending"
+      "status": "collected",
+      "returned_count": 54
     },
     {
       "seed": "window cleaning",
       "path": "data/question-research/raw/3e775f8187ba93e0.json",
-      "status": "pending"
+      "status": "collected",
+      "returned_count": 125
     }
   ]
 }

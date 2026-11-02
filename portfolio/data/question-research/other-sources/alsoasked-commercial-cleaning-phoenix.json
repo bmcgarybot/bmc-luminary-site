@@ -1,0 +1,23 @@
+{
+  "source": "https://alsoasked.com/",
+  "collection_method": "visible question tree transcription",
+  "query": "commercial cleaning",
+  "location": "Phoenix, Arizona",
+  "country": "United States",
+  "language": "English",
+  "retrieved_at": "2026-11-02T03:58:19.000561+00:00",
+  "questions": [
+    "How much can you charge for commercial cleaning?",
+    "What is the 20 minute rule in cleaning?",
+    "What do janitorial services include?",
+    "Is $50 an hour too much for cleaning?",
+    "How much should I charge for 5 hours of cleaning?",
+    "Is $50 an hour good for house cleaning?",
+    "What is the 5 5 5 rule for cleaning?",
+    "How much should I charge for a 3 hour clean?",
+    "How much do janitors get paid?"
+  ],
+  "answer_content_collected": false,
+  "local_search_volume_verified": false,
+  "notes": "Question suggestions are observed; answers and source links mostly upgrade-gated. No technical or pricing answers inferred."
+}
