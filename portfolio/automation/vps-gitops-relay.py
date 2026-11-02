@@ -665,8 +665,14 @@ def execute(req: dict) -> dict:
         if cp.returncode!=0:
             restore()
             raise RelayError("Contact configuration restart failed; prior settings restored")
-        health=run(["curl","-fsS","http://127.0.0.1:8000/health"],timeout=20)
-        if health.returncode!=0:
+        healthy=False
+        for _ in range(30):
+            health=run(["curl","-fsS","http://127.0.0.1:8000/health"],timeout=10)
+            if health.returncode==0:
+                healthy=True
+                break
+            time.sleep(1)
+        if not healthy:
             restore()
             run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api"],timeout=300)
             raise RelayError("Contact configuration health check failed; prior settings restored")

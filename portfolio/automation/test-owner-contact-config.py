@@ -56,10 +56,35 @@ class ContactConfigTests(unittest.TestCase):
             with patch.dict(execute.__globals__,dict(AUTOMATION=Path(directory),ENV_FILE=".env",
                 app_env=lambda:{"BMC_OWNER_LAUNCH_HOLD":"true"},set_env_values=set_values,
                 run=lambda *args,**kwargs:SimpleNamespace(returncode=1,stdout="",stderr=""),
-                current_sha=lambda:"a"*40,current_branch=lambda:"master",assert_outreach_off=lambda:{})):
+                current_sha=lambda:"a"*40,current_branch=lambda:"master",assert_outreach_off=lambda:{},
+                time=SimpleNamespace(sleep=lambda n:None))):
                 with self.assertRaises(relay["RelayError"]):
                     execute({"action":"configure_owner_contact","args":{}})
             self.assertEqual(env.read_text(),original)
+
+    def test_api_startup_can_pass_after_first_health_probe(self):
+        relay=runpy.run_path(str(Path(__file__).with_name("vps-gitops-relay.py")),run_name="contact_test")
+        execute=relay["execute"]
+        with tempfile.TemporaryDirectory() as directory:
+            env=Path(directory)/".env"
+            env.write_text("BMC_OWNER_LAUNCH_HOLD=true\n")
+            values={"BMC_OWNER_LAUNCH_HOLD":"true"}
+            probes=[]
+            def set_values(change):
+                values.update({key:value.strip('"') for key,value in change.items()})
+                env.write_text("\n".join(f"{key}={value}" for key,value in change.items())+"\n")
+            def run(command,**kwargs):
+                if command[0]=="curl":
+                    probes.append(1)
+                    return SimpleNamespace(returncode=1 if len(probes)==1 else 0,stdout="",stderr="")
+                return SimpleNamespace(returncode=0,stdout="",stderr="")
+            with patch.dict(execute.__globals__,dict(AUTOMATION=Path(directory),ENV_FILE=".env",
+                app_env=lambda:values.copy(),set_env_values=set_values,run=run,
+                current_sha=lambda:"a"*40,current_branch=lambda:"master",assert_outreach_off=lambda:{},
+                outreach_state=lambda:{},time=SimpleNamespace(sleep=lambda n:None))):
+                result=execute({"request_id":"contact-fixture","action":"configure_owner_contact","args":{}})
+            self.assertEqual(result["status"],"success")
+            self.assertEqual(len(probes),2)
 
 
 if __name__=="__main__":
