@@ -89,5 +89,13 @@ class Tests(durable['Tests']):
         self.assertEqual((await self.work())['sent'], 0)
         self.assertEqual(self.calls, 0)
         self.assertEqual(self.conn.records, {})
+    async def test_worker_unreviewed_copy_enters_review_without_smtp(self):
+        def unreviewed(row,step):
+            raise ValueError('Growth target needs a source-backed, reviewed opener')
+        self.ns['growth_outreach_message']=unreviewed
+        self.assertEqual((await self.work())['sent'],0)
+        self.assertEqual(self.calls,0)
+        self.assertTrue(any("status='review',owner_review_required=true" in q[0] for q in self.business.writes))
+        self.assertTrue(any("'growth_copy_review','high'" in q[0] for q in self.business.writes))
 
 if __name__ == '__main__': unittest.main()

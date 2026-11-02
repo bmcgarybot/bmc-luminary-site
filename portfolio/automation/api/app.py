@@ -748,11 +748,13 @@ def workflow_email_html(title,body_lines,button_label=None,button_url=None,greet
         safe_url=html.escape(clean(button_url),quote=True)
         button=f"<p style='margin:22px 0 24px'><a href='{safe_url}' style='display:inline-block;background:#1557d6;color:#fff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:7px'>{html.escape(clean(button_label))}</a></p>"
     postal=html.escape(BUSINESS_POSTAL_ADDRESS) if BUSINESS_POSTAL_ADDRESS else ""
+    heading=(f"<p style='margin:0 0 22px;font-size:20px;line-height:1.3;font-weight:700'>"
+      f"{html.escape(clean(title))}</p>") if clean(title) else ""
     optout=""
     if marketing:
         optout="<p style='margin:10px 0 0;font-size:12px;line-height:1.5;color:#6b7280'>This is a promotional email from BMC Service Network.<br>Reply <strong>no</strong> if you do not want future BMC outreach.</p>"
     footer_address=f"<br>{postal}" if postal else ""
-    return f"""<!doctype html><html><body style='margin:0;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1f2937'><div style='max-width:620px;margin:0 auto;padding:28px 20px'><div style='padding:0'><p style='margin:0 0 22px;font-size:20px;line-height:1.3;font-weight:700'>{html.escape(clean(title))}</p>{hello}{rows}{button}<div style='border-top:1px solid #e5e7eb;margin-top:28px;padding-top:18px'><p style='margin:0;font-size:12px;line-height:1.5;color:#6b7280'>BMC Service Network<br>BMC Luminary Ventures LLC{footer_address}</p>{optout}</div></div></div></body></html>"""
+    return f"""<!doctype html><html><body style='margin:0;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1f2937'><div style='max-width:620px;margin:0 auto;padding:28px 20px'><div style='padding:0'>{heading}{hello}{rows}{button}<div style='border-top:1px solid #e5e7eb;margin-top:28px;padding-top:18px'><p style='margin:0;font-size:12px;line-height:1.5;color:#6b7280'>BMC Service Network<br>BMC Luminary Ventures LLC{footer_address}</p>{optout}</div></div></div></body></html>"""
 
 async def service_display_name(conn,service_key):
     row=await conn.fetchrow("select display_name from services where service_key=$1",service_key)
@@ -3450,7 +3452,9 @@ async def stage_growth_service(conn,service_key,max_targets=25):
     inventory=await conn.fetch("""select 'inventory:'||candidate_id::text as target_id,business_name,lower(public_email) public_email,
           public_phone,null::text website,source_url,market,'deep_inventory' source_kind,
           case when verification_status in ('direct_evidence','government_record','credential_corroborated') then 80 else 70 end fit_score,
-          jsonb_build_object('candidate_id',candidate_id,'source_tier',source_tier,'verification_status',verification_status) source_data
+          jsonb_build_object('candidate_id',candidate_id,'source_tier',source_tier,
+            'verification_status',verification_status,'official_site',official_site,
+            'research_note',snippet,'last_verified_at',last_verified_at) source_data
         from market_inventory_candidates
         where side='vendor' and category_key=$1 and status='discovered' and closed_at is null
           and coalesce(public_email,'')<>''
@@ -4057,27 +4061,25 @@ def provider_outreach_parts(row,step,pilot=False):
     activation=pilot_activation_url(row)
     network="pilot" if pilot else "provider network"
     if step==1:
-        subject=f"{market}: taking on more {service.lower()} work?"
-        lines=[f"Is {business} taking on {examples} in {market}?",
-          f"BMC is building a local {network}. Tell us the area you cover, the jobs you want, your minimum job size and how much work you can take.",
-          "If a matching customer request comes in, you see the details before deciding. You can accept or pass.",
-          "Joining is free. Any future paid lead or territory terms will be shown before you choose. Passing does not create a charge."]
+        subject=f"A local note for {business}"
+        lines=[f"I'm Brett with BMC Service Network here in Prescott. I found {business} while researching {service.lower()} businesses serving {market}.",
+          f"We're putting together a local {network}. If someone asks us for {examples} in {market}, I want to know whether that work fits your team.",
+          "You can tell us the area you cover, the jobs you want, your minimum job size and your capacity. If a request comes in, you see its details and can accept or pass.",
+          "Joining is free. We cannot promise jobs. Any future paid terms will be shown before you choose, and passing creates no charge."]
     elif step==2:
-        subject=f"Re: {service.lower()} work in {market}"
-        lines=[f"Following up once. Does {business} have room for {examples} around {market}?",
-          "You choose your area, job types and capacity. We cannot promise work; you review any matching request before accepting or passing.",
-          f"There is no fee to join the {network}. Any future paid terms will be shown before you choose."]
+        subject=f"Re: a local note for {business}"
+        lines=[f"One useful detail for {business}: you can specify your area, minimum job size and capacity for {examples} around {market}.",
+          "You review the details of any matching request before accepting or passing. There is no fee to join, and we cannot promise work."]
     else:
-        subject=f"Last note: {market} {service.lower()} work"
-        lines=[f"Last note about {examples} in {market} for {business}.",
-          f"If you want to be considered when a matching request comes in, set your area and capacity below. Joining the {network} is free; any future paid terms will be shown before you choose.",
-          "If it is not useful, no action is needed. We will close this out."]
+        subject=f"Closing the loop with {business}"
+        lines=[f"I'll close out my note about {examples} around {market}.",
+          f"If the {network} becomes useful later, you can set your service area and capacity below. Joining is free; any future paid terms appear before you choose."]
     return subject,lines,activation
 
 def provider_outreach_copy(row,step,pilot=False,parts=None):
     subject,lines,activation=parts or provider_outreach_parts(row,step,pilot)
-    body="\n\n".join(["Hi,",*lines,"Set your provider preferences:\n"+activation,
-      "BMC Service Network\nBMC Luminary Ventures LLC\n"+BUSINESS_POSTAL_ADDRESS,
+    body="\n\n".join([f"Hello {clean(row['business_name'])} team,",*lines,"Set your provider preferences:\n"+activation,
+      "Brett\nBMC Service Network\nBMC Luminary Ventures LLC\n"+BUSINESS_POSTAL_ADDRESS,
       "This is a promotional email from BMC Service Network.",
       "Reply no if you do not want future BMC outreach."])
     return subject,body
@@ -4093,7 +4095,8 @@ def provider_outreach_message(row,step):
     parts=provider_outreach_parts(row,step,pilot)
     subject,lines,activation=parts
     subject,body=provider_outreach_copy(row,step,pilot,parts=parts)
-    rendered=workflow_email_html(subject,lines,"Set your provider preferences",activation,greeting="Hi,",marketing=True)
+    rendered=workflow_email_html("",lines,"Set your provider preferences",activation,
+      greeting=f"Hello {clean(row['business_name'])} team,",marketing=True)
     return subject,body,rendered
 
 async def provider_outreach_review(conn,row,step,reason):
@@ -4420,27 +4423,85 @@ def growth_positive_reply_message(row):
       greeting=f"Hi {clean(row['business_name'])},",marketing=True)
     return subject,body,rendered
 
+def growth_verified_opener(row):
+    """Use reviewed, source-backed facts; never invent a website observation."""
+    service=clean(row["service_key"]);market=clean(row["market"])
+    target_id=clean(row["target_id"])
+    source=clean(row["source_url"]) if "source_url" in row else ""
+    if (target_id=="vendor:v_prescott_americancrown" and
+        service=="commercial_cleaning" and market=="Prescott" and
+        source.rstrip("/")=="https://americancrowncc.com"):
+        return ("I saw on your site that American Crown handles janitorial cleaning "
+          "for offices and common areas across Yavapai County.")
+    data=json_dict(row["source_data"]) if "source_data" in row else {}
+    if (("source_kind" in row and clean(row["source_kind"])=="deep_inventory") and
+        data.get("source_tier")=="direct" and data.get("verification_status")=="direct_evidence"
+        and data.get("official_site") is True and source.startswith("https://")):
+        try:
+            verified=datetime.fromisoformat(clean(data.get("last_verified_at")).replace("Z","+00:00"))
+            if verified.tzinfo is None: verified=verified.replace(tzinfo=timezone.utc)
+            host=(urllib.parse.urlparse(source).hostname or "").lower().removeprefix("www.")
+            email_domain=clean(row["public_email"]).lower().rsplit("@",1)[-1]
+            note=clean(data.get("research_note")).lower()
+            nouns={
+              "commercial_cleaning":(("offices","offices"),("restaurants","restaurants"),
+                ("common areas","common areas"),("hotels","hotels"),("warehouses","warehouses")),
+              "pressure_washing":(("patios","patios"),("storefronts","storefronts"),
+                ("parking","parking areas"),("exterior","exterior surfaces"))
+            }
+            detail=next((label for needle,label in nouns.get(service,()) if needle in note),"")
+            if (timedelta(0)<=datetime.now(timezone.utc)-verified<=timedelta(days=30)
+                and (host==email_domain or email_domain.endswith("."+host))
+                and market.lower() in note and detail):
+                return f"Your site mentions {GROWTH_SERVICE_LABELS[service]} for {detail} around {market}."
+        except (TypeError,ValueError,OverflowError):
+            pass
+    reviewed=data.get("reviewed_copy")
+    if isinstance(reviewed,dict):
+        fact=clean(reviewed.get("fact"));url=clean(reviewed.get("source_url"))
+        if (fact and len(fact)<=220 and url.startswith("https://") and
+            url.rstrip("/")==source.rstrip("/") and
+            reviewed.get("service_key")==service and reviewed.get("market")==market and
+            reviewed.get("approved") is True):
+            return fact
+    return ""
+
 def growth_outreach_message(row,step,owner_preview=False):
     service_key=clean(row["service_key"])
-    examples={
-      "pressure_washing":"shopfronts, restaurant patios or apartment walkways",
-      "commercial_cleaning":"offices, shops or shared apartment areas"
+    focus={
+      "pressure_washing":"commercial exterior and surface cleaning",
+      "commercial_cleaning":"janitorial cleaning for offices and shared spaces"
     }
-    if service_key not in examples:
+    if service_key not in focus:
         raise ValueError("Growth outreach is limited to the two supported services")
     landing=growth_invitation_url(row,owner_preview=owner_preview)
     market=clean(row["market"])
-    question=f"Do you take on {examples[service_key]} around {market}?"
-    subject=(f"{market}: five businesses you could pitch" if step==1 else f"Re: five businesses in {market}")
-    lines=[question if step==1 else f"One follow-up: are you looking for more work at {examples[service_key]} around {market}?",
-      "BMC can research five local businesses you could pitch, free. You get who they are, how to contact them and why they might fit your work.",
-      "These are researched businesses to approach, not people who have asked for a quote.",
-      "The five are yours to use with no obligation. If you want more, $499 buys 100 businesses total, including those five. No retainer or sales call."]
-    body="\n\n".join(["Hi,",*lines,"See the five businesses:\n"+landing,
-      "BMC Service Network\nBMC Luminary Ventures LLC\n"+BUSINESS_POSTAL_ADDRESS,
+    business=clean(row["business_name"])
+    opener=growth_verified_opener(row)
+    if not opener:
+        raise ValueError("Growth target needs a source-backed, reviewed opener")
+    short_name=business
+    if clean(row["target_id"])=="vendor:v_prescott_americancrown" and service_key=="commercial_cleaning":
+        short_name="American Crown"
+    subject=(f"A {market} idea for {short_name}" if step==1 else f"Re: a {market} idea for {short_name}")
+    greeting=f"Hello {short_name} team,"
+    if step==1:
+        lines=[
+          f"I'm Brett with BMC Service Network here in Prescott. {opener}",
+          f"I research potential commercial accounts for local service companies. I can show you five businesses around {market} that may fit your work, with public contact details and a reason each might be worth approaching. They haven't requested quotes, and we haven't contacted them.",
+          "The five are free. If useful, an optional list of 100 total, including those five, is $499. No subscription or obligation."
+        ]
+    else:
+        lines=[
+          f"I sent a note about five free, researched businesses around {market} that may fit your {focus[service_key]} work.",
+          "The list includes public contact routes and a reason each may fit. They have not requested a quote. If this isn't useful for your team, no need to respond."
+        ]
+    label="Review the five researched businesses"
+    body="\n\n".join([greeting,*lines,label+":\n"+landing,
+      "Brett\nBMC Service Network\nBMC Luminary Ventures LLC\n"+BUSINESS_POSTAL_ADDRESS,
       "This is a promotional email from BMC Service Network.",
       "Reply no if you do not want future BMC outreach."])
-    html_body=workflow_email_html(subject,lines,"See the five businesses",landing,greeting="Hi,",marketing=True)
+    html_body=workflow_email_html("",lines,label,landing,greeting=greeting,marketing=True)
     return service_key,subject,body,html_body,landing
 
 
@@ -4469,7 +4530,7 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
       if allowance<=0:
         return {"ok":True,"enabled":True,"sent":0,"message":"Growth daily outreach limit reached."}
       rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,o.target_market,o.target_service_key,
-          g.business_name,g.public_email,g.market,g.service_key,g.target_id,g.experiment_cell
+          g.business_name,g.public_email,g.market,g.service_key,g.target_id,g.experiment_cell,g.source_url,g.source_kind,g.source_data
         from outreach o join growth_outreach_targets g on g.target_id=o.entity_id
         join growth_experiment_cells e on e.cell_key=g.experiment_cell
         where o.entity_type='growth_customer' and o.campaign='growth_sales' and o.wave=$2 and o.opt_out=false
@@ -4481,7 +4542,16 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
         limit $1""",allowance,GROWTH_OUTREACH_WAVE)
       for row in rows:
         step=1 if row["status"]=="queued" else 2
-        service_key,subject,body,html_body,landing=growth_outreach_message(row,step)
+        try:
+            service_key,subject,body,html_body,landing=growth_outreach_message(row,step)
+        except ValueError as exc:
+            await conn.execute("""update outreach set status='review',owner_review_required=true where outreach_id=$1""",row["outreach_id"])
+            await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+              select 'growth_copy_review','high',$1,$2 where not exists(
+                select 1 from exceptions where type='growth_copy_review' and status='open' and summary=$1)""",
+              f"Growth target {row['target_id']} needs source-backed copy: {exc}",
+              "Verify business identity, service, market, direct evidence and a truthful opener before any send")
+            continue
         # The independent delivery ledger survives a worker/business transaction
         # crash after SMTP acceptance. Never retry an uncertain or changed payload.
         ok=await send_mail_once(f"growth-outreach:{row['outreach_id']}:{step}",
@@ -4524,7 +4594,10 @@ async def replay_first_growth_email_to_owner(x_bmc_admin_key:str|None=Header(def
           limit 1""",GROWTH_OUTREACH_WAVE)
     if not row:
         raise HTTPException(404,"No Growth target row exists to render for owner preview.")
-    service_key,subject,body,html_body,landing=growth_outreach_message(row,1,owner_preview=True)
+    try:
+        service_key,subject,body,html_body,landing=growth_outreach_message(row,1,owner_preview=True)
+    except ValueError as exc:
+        raise HTTPException(409,f"Historical target needs copy review: {exc}") from exc
     ok=await send_mail(test_recipient,subject,body,html_body)
     return {
       "ok":bool(ok),

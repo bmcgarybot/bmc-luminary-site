@@ -4,6 +4,7 @@ import ast
 from datetime import datetime,timedelta,timezone
 import html
 import json
+import urllib.parse
 from pathlib import Path
 import runpy
 from types import SimpleNamespace
@@ -50,6 +51,10 @@ class Tests(unittest.IsolatedAsyncioTestCase):
                     self.assertIn(activation,plain);self.assertIn(html.escape(activation,quote=True),rendered)
                     for line in lines:
                         self.assertIn(line,plain);self.assertIn(html.escape(line),rendered)
+                    self.assertNotIn(subject,html.unescape(rendered))
+                    if step==1:
+                        self.assertIn("I'm Brett with BMC Service Network",plain)
+                        self.assertIn("We cannot promise jobs",plain)
                     legacy='first_wave_vendor_copy' if wave=='pilot1' else 'vendor_recruitment_copy'
                     self.assertEqual(self.ns[legacy](row,step),(subject,plain))
     def test_first_wave_preview_uses_campaign_target_before_vendor_defaults(self):
@@ -59,21 +64,56 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.assertIn('coalesce(o.target_service_key,vs.service_key) as service_key',query)
         self.assertIn('svc.service_key=coalesce(o.target_service_key,vs.service_key)',query)
     def test_growth_is_short_human_and_honest_in_both_channels(self):
-        fn=next(n for n in SOURCE.body if isinstance(n,ast.FunctionDef) and n.name=='growth_outreach_message')
+        fns=[n for n in SOURCE.body if isinstance(n,ast.FunctionDef) and
+          n.name in ('growth_verified_opener','growth_outreach_message')]
         self.ns['growth_invitation_url']=lambda row,owner_preview=False:'https://preview.example.invalid/growth-packs/'+row['service_key']+'/?claim=NONLIVE'
-        exec(compile(ast.Module(body=[fn],type_ignores=[]),'production_growth_copy','exec'),self.ns)
-        for service,example in [('pressure_washing','restaurant patios'),('commercial_cleaning','shared apartment areas')]:
+        self.ns['json_dict']=lambda x:x if isinstance(x,dict) else {}
+        self.ns.update(datetime=datetime,timedelta=timedelta,timezone=timezone,
+          urllib=SimpleNamespace(parse=urllib.parse),GROWTH_SERVICE_LABELS={
+            'commercial_cleaning':'commercial cleaning / janitorial','pressure_washing':'commercial pressure washing / exterior cleaning'})
+        exec(compile(ast.Module(body=fns,type_ignores=[]),'production_growth_copy','exec'),self.ns)
+        for service,example in [('pressure_washing','commercial exterior'),('commercial_cleaning','janitorial cleaning')]:
             for step in (1,2):
-                row=dict(service_key=service,business_name='Very Long Business Name LLC',market='Phoenix')
+                row=dict(target_id='vendor:fixture',service_key=service,business_name='Very Long Business Name LLC',market='Phoenix',
+                  source_url='https://fixture.example.invalid',source_data={'reviewed_copy':{
+                    'fact':f'Your company offers {example} work around Phoenix.',
+                    'source_url':'https://fixture.example.invalid','service_key':service,'market':'Phoenix','approved':True}})
                 _,subject,plain,rendered,url=self.ns['growth_outreach_message'](row,step)
-                self.assertTrue(plain.startswith('Hi,\n\n'));self.assertNotIn(row['business_name'],plain)
+                self.assertTrue(plain.startswith('Hello Very Long Business Name LLC team,\n\n'))
+                self.assertNotIn(subject,html.unescape(rendered))
                 for content in (plain,html.unescape(rendered)):
-                    for text in (example,'Phoenix','$499','100 businesses total, including those five','no obligation','not people who have asked for a quote','See the five businesses'):
+                    for text in (example,'Phoenix','Review the five researched businesses','haven\'t requested quotes' if step==1 else 'not requested a quote'):
                         self.assertIn(text,content)
-                    for text in ('strong commercial prospects','public contact route','practical outreach angle','—'):
+                    for text in ('strong commercial prospects','practical outreach angle','—'):
                         self.assertNotIn(text,content)
+                if step==1:
+                    self.assertIn('BMC Service Network here in Prescott',plain)
+                    self.assertIn('$499',plain);self.assertIn('100 total, including those five',plain)
+                    self.assertIn('no subscription or obligation',plain.lower())
+                else:
+                    self.assertNotIn('$499',plain)
                 self.assertEqual(plain.count(url),1);self.assertIn(html.escape(url,quote=True),rendered)
                 self.assertLess(len(plain.split()),170)
+        row=dict(target_id='vendor:v_prescott_americancrown',service_key='commercial_cleaning',
+          business_name='American Crown Commercial Cleaning',market='Prescott',
+          source_url='https://americancrowncc.com/')
+        _,subject,plain,rendered,_=self.ns['growth_outreach_message'](row,1)
+        self.assertEqual(subject,'A Prescott idea for American Crown')
+        self.assertIn('offices and common areas across Yavapai County',plain)
+        self.assertIn('Hello American Crown team,',rendered)
+        with self.assertRaisesRegex(ValueError,'source-backed'):
+            self.ns['growth_outreach_message'](dict(target_id='vendor:unreviewed',service_key='commercial_cleaning',
+              business_name='Unreviewed Co',market='Prescott',source_url='https://unreviewed.example'),1)
+        direct=dict(target_id='inventory:fixture',service_key='commercial_cleaning',
+          business_name='Fixture Janitorial',market='Prescott',source_kind='deep_inventory',
+          source_url='https://fixture.example',public_email='hello@fixture.example',
+          source_data={'source_tier':'direct','verification_status':'direct_evidence',
+            'official_site':True,'research_note':'Direct site lists Prescott offices and restaurants for cleaning.',
+            'last_verified_at':datetime.now(timezone.utc).isoformat()})
+        self.assertIn('offices around Prescott',self.ns['growth_outreach_message'](direct,1)[2])
+        direct['source_data']['last_verified_at']=(datetime.now(timezone.utc)-timedelta(days=31)).isoformat()
+        with self.assertRaisesRegex(ValueError,'source-backed'):
+            self.ns['growth_outreach_message'](direct,1)
         with self.assertRaises(ValueError):self.ns['growth_outreach_message'](dict(service_key='landscaping'),1)
     async def test_live_sender_and_admin_preview_share_actual_html_without_smtp(self):
         nodes=[n for n in SOURCE.body if isinstance(n,ast.AsyncFunctionDef) and n.name in ('process_outreach','admin_outreach_wave_preview','provider_outreach_review','admin_first_wave')]
