@@ -657,7 +657,7 @@ async def send_mail(to,subject,body,html_body=None,attachments=None):
         return False
 
 async def send_mail_once(delivery_key,to,subject,body,html_body=None,attachments=None):
-    """Durable paid-delivery claim; uncertain SMTP outcomes require review, never blind retry."""
+    """Durable delivery claim; uncertain SMTP outcomes require review, never blind retry."""
     if not to:
         return False
     if SMTP_DRY_RUN:
@@ -4000,127 +4000,108 @@ def provider_service_label(row):
     raw=clean(row["service_key"])
     return raw.replace("_"," ").replace(" service","").strip().title() or "local service"
 
-def first_wave_vendor_copy(row,step):
+PROVIDER_JOB_EXAMPLES={
+  "restaurant_repair": "urgent restaurant repairs",
+  "commercial_cleaning": "office cleaning, shop floors or shared apartment areas",
+  "tree_service": "tree trimming, brush clearing or storm cleanup",
+  "junk_hauling": "furniture removal, debris hauling or property cleanouts",
+  "landscaping": "yard cleanups, trimming or regular landscape care",
+  "rural_property": "septic work, grading or well repairs",
+  "snow_service": "snow clearing for driveways, parking lots or walkways",
+  "towing_roadside": "towing, jump starts or roadside help",
+  "vehicle_services": "mobile diagnostics, maintenance or vehicle repairs",
+  "auto_repair_shop": "shop-based vehicle repairs or maintenance",
+  "pet_waste": "yard pet-waste cleanup or regular pickup",
+  "pool_desert_property": "pool cleaning or outdoor property care",
+  "str_property_care": "rental turnovers or routine property checks",
+  "hvac_heat": "heating repairs, AC service or system maintenance",
+  "ice_machine": "ice-machine repairs, cleaning or maintenance",
+  "hood_exhaust": "restaurant hood or exhaust cleaning",
+  "grease_drain": "grease-trap service or drain cleaning",
+  "window_cleaning": "shopfront, office or residential window cleaning",
+  "pressure_washing": "shopfronts, restaurant patios or apartment walkways",
+  "pest_control": "pest inspections, treatment or prevention",
+  "restaurant_equipment": "restaurant cooking or refrigeration equipment repairs",
+  "floor_carpet": "carpet cleaning or hard-floor care",
+  "fire_safety": "fire-safety inspections or equipment service",
+  "backflow_plumbing": "backflow testing or commercial plumbing repairs",
+  "sign_lighting": "sign repairs, lighting faults or fixture replacement",
+  "locksmith_access": "lock repairs, rekeying or access-control work",
+  "duct_vent": "air-duct or dryer-vent cleaning",
+  "fleet_washing": "truck, van or commercial fleet washing",
+  "mobile_tire_battery": "mobile tire changes or battery replacement",
+  "parking_lot": "parking-lot sweeping, cleanup or striping",
+  "epoxy_flooring": "epoxy flooring or concrete floor finishing",
+  "mobile_detailing": "mobile interior or exterior vehicle detailing",
+  "auto_glass": "windshield repairs or auto-glass replacement",
+  "pet_sitting": "pet sitting, drop-in visits or dog walking",
+  "mobile_pet_grooming": "mobile baths, grooming or nail trims",
+  "turnover_cleaning": "move-out, move-in or rental turnover cleaning",
+  "garage_door": "garage-door repairs or opener service",
+  "electrical_service": "electrical repairs, fixtures or troubleshooting",
+  "handyman_repairs": "small repairs, drywall, doors or punch lists",
+  "residential_cleaning": "regular house cleaning or one-time deep cleans",
+  "home_staging": "occupied or vacant home staging"
+}
+
+def provider_outreach_parts(row,step,pilot=False):
     market=clean(row["market"]) or "your area"
     service=provider_service_label(row)
+    examples=PROVIDER_JOB_EXAMPLES.get(clean(row["service_key"]))
+    if not examples:
+        raise ValueError("No reviewed provider outreach examples for this service")
     business=clean(row["business_name"])
     activation=pilot_activation_url(row)
+    network="pilot" if pilot else "provider network"
     if step==1:
-        subject=f"{market}: open to a few more {service.lower()} jobs?"
-        body=f"""Hi {business},
-
-Are you open to a few more {service.lower()} jobs in {market} if you can see the job details before deciding?
-
-BMC Service Network is opening a small provider pilot in Arizona. There is no fee to join.
-
-You tell us:
-- where you work
-- the jobs you want
-- your minimum job size
-- how much work you can take
-
-When a matching customer request comes in, you can review the job type, area, timing, and customer notes before deciding. If it fits, accept it. If it does not, pass. Passing does not create a charge.
-
-During the pilot, some opportunities may be free or discounted. If BMC introduces paid leads or territory options later, the price and terms will be shown before you choose to participate.
-
-Join the pilot here:
-{activation}
-
-No sales call is required.
-
-BMC Luminary Ventures LLC
-{BUSINESS_POSTAL_ADDRESS}
-
-Reply no if you do not want future outreach."""
-    elif step==2:
-        subject=f"Re: more {service.lower()} work in {market}"
-        body=f"""Hi {business},
-
-Just following up once.
-
-If you want more {service.lower()} work in {market}, BMC lets you set the area, job types, minimum job size, and capacity you want. You see the customer request before deciding whether it fits.
-
-There is no fee to join the pilot:
-{activation}
-
-BMC Luminary Ventures LLC
-{BUSINESS_POSTAL_ADDRESS}
-
-Reply no if you do not want future outreach."""
-    else:
-        subject=f"Closing this out: {market} {service.lower()} pilot"
-        body=f"""Hi {business},
-
-Last note from me.
-
-If you want to be considered for local {service.lower()} requests in {market}, you can join the free BMC pilot here:
-{activation}
-
-If not, no action is needed and we will close this out.
-
-BMC Luminary Ventures LLC
-{BUSINESS_POSTAL_ADDRESS}
-
-Reply no to suppress future outreach."""
-    return subject,body
-
-def vendor_recruitment_copy(row,step):
-    market=clean(row["market"]) or "your area"
-    service=provider_service_label(row)
-    business=clean(row["business_name"])
-    signal=clean(row["association_signal"])
-    credibility=f" I found your business through {signal}." if signal else ""
-    activation=pilot_activation_url(row)
-    if step==1:
-        subject=f"{market}: want more {service.lower()} jobs?"
-        body=f"""Hi {business},
-
-Are you open to more {service.lower()} work in {market}?{credibility}
-
-BMC Service Network is opening its provider network in Arizona. There is no fee to join.
-
-You tell us where you work, what jobs you want, your minimum job size, and your capacity. When a matching customer request comes in, you review the job details first and decide whether to accept it or pass.
-
-Set your provider preferences here:
-{activation}
-
-Some early opportunities may be free or discounted. If BMC introduces paid leads or territory options later, the price and terms will be shown before you choose to participate.
-
-BMC Luminary Ventures LLC
-{BUSINESS_POSTAL_ADDRESS}
-
-Reply no if you do not want future outreach."""
+        subject=f"{market}: taking on more {service.lower()} work?"
+        lines=[f"Is {business} taking on {examples} in {market}?",
+          f"BMC is building a local {network}. Tell us the area you cover, the jobs you want, your minimum job size and how much work you can take.",
+          "If a matching customer request comes in, you see the details before deciding. You can accept or pass.",
+          "Joining is free. Any future paid lead or territory terms will be shown before you choose. Passing does not create a charge."]
     elif step==2:
         subject=f"Re: {service.lower()} work in {market}"
-        body=f"""Hi {business},
-
-Following up once in case more {service.lower()} work in {market} would be useful.
-
-Joining the BMC provider network is free. You set the jobs and area you want, your minimum job size, and your capacity, then review matching requests before accepting or passing.
-
-Your provider setup link:
-{activation}
-
-BMC Luminary Ventures LLC
-{BUSINESS_POSTAL_ADDRESS}
-
-Reply no if you do not want future outreach."""
+        lines=[f"Following up once. Does {business} have room for {examples} around {market}?",
+          "You choose your area, job types and capacity. We cannot promise work; you review any matching request before accepting or passing.",
+          f"There is no fee to join the {network}. Any future paid terms will be shown before you choose."]
     else:
         subject=f"Last note: {market} {service.lower()} work"
-        body=f"""Hi {business},
+        lines=[f"Last note about {examples} in {market} for {business}.",
+          f"If you want to be considered when a matching request comes in, set your area and capacity below. Joining the {network} is free; any future paid terms will be shown before you choose.",
+          "If it is not useful, no action is needed. We will close this out."]
+    return subject,lines,activation
 
-Last note from me.
-
-If you want BMC to consider your business for matching {service.lower()} requests in {market}, your provider setup link is here:
-{activation}
-
-If not, no action is needed.
-
-BMC Luminary Ventures LLC
-{BUSINESS_POSTAL_ADDRESS}
-
-Reply no to suppress future outreach."""
+def provider_outreach_copy(row,step,pilot=False,parts=None):
+    subject,lines,activation=parts or provider_outreach_parts(row,step,pilot)
+    body="\n\n".join(["Hi,",*lines,"Set your provider preferences:\n"+activation,
+      "BMC Service Network\nBMC Luminary Ventures LLC\n"+BUSINESS_POSTAL_ADDRESS,
+      "This is a promotional email from BMC Service Network.",
+      "Reply no if you do not want future BMC outreach."])
     return subject,body
+
+def first_wave_vendor_copy(row,step):
+    return provider_outreach_copy(row,step,pilot=True)
+
+def vendor_recruitment_copy(row,step):
+    return provider_outreach_copy(row,step,pilot=False)
+
+def provider_outreach_message(row,step):
+    pilot=clean(row.get("wave"))=="pilot1"
+    parts=provider_outreach_parts(row,step,pilot)
+    subject,lines,activation=parts
+    subject,body=provider_outreach_copy(row,step,pilot,parts=parts)
+    rendered=workflow_email_html(subject,lines,"Set your provider preferences",activation,greeting="Hi,",marketing=True)
+    return subject,body,rendered
+
+async def provider_outreach_review(conn,row,step,reason):
+    summary=f"Provider outreach {row['outreach_id']} step {step}: {reason}"
+    async with conn.transaction():
+        await conn.execute("update outreach set status='review' where outreach_id=$1",row["outreach_id"])
+        await conn.execute("""insert into exceptions(type,vendor_id,severity,summary,recommended_action)
+          select 'provider_outreach_review',$1,'critical',$2,$3
+          where not exists(select 1 from exceptions where type='provider_outreach_review' and status='open' and summary=$2)""",
+          row["entity_id"],summary,"Review the service scope and durable mail claim before any manual retry. Never automatically resend an uncertain submission.")
+
 
 @app.get("/api/admin/outreach-wave-preview")
 async def admin_outreach_wave_preview(
@@ -4161,7 +4142,13 @@ async def admin_outreach_wave_preview(
           limit $2""",wave,limit)
         for row in rows:
             step=1 if row["status"]=="queued" else min(3,int(row["sequence_step"] or 1)+1)
-            subject,body=(first_wave_vendor_copy(row,step) if row["wave"]=="pilot1" else vendor_recruitment_copy(row,step))
+            try:
+                subject,body,html_body=provider_outreach_message(row,step)
+            except ValueError:
+                records.append({"outreach_id":str(row["outreach_id"]),"service_key":row["service_key"],
+                  "business_name":row["business_name"],"step":step,"template_status":"unsupported_service",
+                  "body":None,"html_body":None,"review_required":True})
+                continue
             records.append({
               "outreach_id":str(row["outreach_id"]),
               "entity_id":row["entity_id"],
@@ -4172,7 +4159,8 @@ async def admin_outreach_wave_preview(
               "step":step,
               "status":row["status"],
               "subject":subject,
-              "body":body
+              "body":body,
+              "html_body":html_body
             })
       else:
         rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,o.wave,
@@ -4246,9 +4234,18 @@ async def process_outreach(x_bmc_admin_key:str|None=Header(default=None)):
         limit $1""",allowance,OUTREACH_WAVE)
       for row in rows:
         step=1 if row["status"]=="queued" else int(row["sequence_step"])+1
-        subject,body=(first_wave_vendor_copy(row,step) if row["wave"]=="pilot1" else vendor_recruitment_copy(row,step))
-        ok=await send_mail(row["public_email"],subject,body)
-        if not ok: continue
+        try:
+            subject,body,html_body=provider_outreach_message(row,step)
+        except ValueError:
+            await provider_outreach_review(conn,row,step,"unsupported service template")
+            continue
+        try:
+            ok=await send_mail_once(f"provider-outreach:{row['outreach_id']}:{step}",row["public_email"],subject,body,html_body)
+        except Exception:
+            ok=False
+        if not ok:
+            await provider_outreach_review(conn,row,step,"delivery uncertain or payload changed")
+            continue
         next_at=datetime.now(timezone.utc)+(timedelta(days=4) if step==1 else timedelta(days=7))
         status="completed" if step>=3 else "sent"
         await conn.execute("""update outreach set sequence_step=$2,status=$3,subject=$4,body=$5,sent_at=now(),
@@ -4422,68 +4419,25 @@ def growth_positive_reply_message(row):
 
 def growth_outreach_message(row,step,owner_preview=False):
     service_key=clean(row["service_key"])
-    service_label=GROWTH_SERVICE_LABELS.get(service_key,service_key.replace("_"," "))
+    examples={
+      "pressure_washing":"shopfronts, restaurant patios or apartment walkways",
+      "commercial_cleaning":"offices, shops or shared apartment areas"
+    }
+    if service_key not in examples:
+        raise ValueError("Growth outreach is limited to the two supported services")
     landing=growth_invitation_url(row,owner_preview=owner_preview)
-    business=clean(row["business_name"])
     market=clean(row["market"])
-    if step==1:
-        subject=f"{market}: 5 commercial accounts worth checking"
-        body=f"""Hi {business},
-
-I found several {market} businesses that look like strong commercial prospects for {service_label}.
-
-Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the kind of commercial work your business does — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.
-
-Click once to get your five free commercial targets:
-{landing}
-
-You do not need to re-enter your business, email, market, or service. If the five look useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required.
-
-This is a promotional email from BMC Service Network.
-
-BMC Service Network
-BMC Luminary Ventures LLC
-{BUSINESS_POSTAL_ADDRESS}
-
-Reply no if you do not want future outreach."""
-        html_body=workflow_email_html(
-          subject,
-          [
-            f"I found several {market} businesses that look like strong commercial prospects for {service_label}.",
-            "Instead of asking you to buy a list cold, BMC will show you five real businesses that fit the kind of commercial work your business does — free. Each one includes why it fits, a public contact route, the source, and a practical outreach angle.",
-            "If the five look useful, the full pack is 100 total qualified commercial prospects for $499. No retainer and no sales call required."
-          ],
-          "Show me 5 free targets",landing,
-          greeting=f"Hi {business},",marketing=True
-        )
-    else:
-        subject=f"Re: 5 free commercial targets in {market}"
-        body=f"""Hi {business},
-
-One follow-up on the five free commercial targets.
-
-Your invitation already knows the business, market, and service tied to this email. Click once to see the five:
-{landing}
-
-The five are yours to use. You only pay if you decide you want the full 100-prospect pack.
-
-This is a promotional email from BMC Service Network.
-
-BMC Service Network
-BMC Luminary Ventures LLC
-{BUSINESS_POSTAL_ADDRESS}
-
-Reply no if you do not want future outreach."""
-        html_body=workflow_email_html(
-          subject,
-          [
-            "One follow-up on the five free commercial targets.",
-            "Your invitation already knows the business, market, and service tied to this email. Click once to see the five.",
-            "The five are yours to use. You only pay if you decide you want the full 100-prospect pack."
-          ],
-          "Show me 5 free targets",landing,
-          greeting=f"Hi {business},",marketing=True
-        )
+    question=f"Do you take on {examples[service_key]} around {market}?"
+    subject=(f"{market}: five businesses you could pitch" if step==1 else f"Re: five businesses in {market}")
+    lines=[question if step==1 else f"One follow-up: are you looking for more work at {examples[service_key]} around {market}?",
+      "BMC can research five local businesses you could pitch, free. You get who they are, how to contact them and why they might fit your work.",
+      "These are researched businesses to approach, not people who have asked for a quote.",
+      "The five are yours to use with no obligation. If you want more, $499 buys 100 businesses total, including those five. No retainer or sales call."]
+    body="\n\n".join(["Hi,",*lines,"See the five businesses:\n"+landing,
+      "BMC Service Network\nBMC Luminary Ventures LLC\n"+BUSINESS_POSTAL_ADDRESS,
+      "This is a promotional email from BMC Service Network.",
+      "Reply no if you do not want future BMC outreach."])
+    html_body=workflow_email_html(subject,lines,"See the five businesses",landing,greeting="Hi,",marketing=True)
     return service_key,subject,body,html_body,landing
 
 
@@ -6606,20 +6560,28 @@ async def admin_first_wave(x_bmc_admin_key:str|None=Header(default=None)):
     records=[]
     async with app.state.pool.acquire() as conn:
         vendors=await conn.fetch("""select o.entity_id,o.wave,v.business_name,v.public_email,v.public_phone,v.website,v.source_url,v.status,v.association_signal,
-          vm.market,vs.service_key,svc.display_name as service_name
+          o.target_market,o.target_service_key,
+          coalesce(o.target_market,vm.market) as market,coalesce(o.target_service_key,vs.service_key) as service_key,svc.display_name as service_name
           from outreach o join vendors v on v.vendor_id=o.entity_id
           left join lateral (select market from vendor_markets where vendor_id=v.vendor_id order by market limit 1) vm on true
           left join lateral (select service_key from vendor_services where vendor_id=v.vendor_id order by service_key limit 1) vs on true
-          left join services svc on svc.service_key=vs.service_key
+          left join services svc on svc.service_key=coalesce(o.target_service_key,vs.service_key)
           where o.entity_type='vendor' and o.wave='pilot1'
           order by o.created_at,o.entity_id""")
         for row in vendors:
-            subject,body=first_wave_vendor_copy(row,1)
+            try:
+                subject,body,html_body=provider_outreach_message(row,1)
+                activation=next(line for line in body.splitlines() if line.startswith(PILOT_ACTIVATION_URL+"?"))
+                template_status="supported_service"
+            except ValueError:
+                subject=body=html_body=activation=None
+                template_status="unsupported_service"
             records.append({"side":"vendor","entity_id":row["entity_id"],"business_name":row["business_name"],
               "email":row["public_email"],"public_phone":row["public_phone"],"website":row["website"],"source_url":row["source_url"],
               "status":row["status"],"association_signal":row["association_signal"],"market":row["market"],
               "service_key":row["service_key"],"service_name":row["service_name"],"subject":subject,"body":body,
-              "activation_url":pilot_activation_url(row)})
+              "html_body":html_body,"template_status":template_status,"review_required":template_status=="unsupported_service",
+              "activation_url":activation})
         buyers=await conn.fetch("""select o.entity_id,b.business_name,b.public_email,b.market,b.buyer_type,b.campaign,b.likely_services
           from outreach o join buyers b on b.buyer_id=o.entity_id
           where o.entity_type='buyer' and o.wave='pilot1'

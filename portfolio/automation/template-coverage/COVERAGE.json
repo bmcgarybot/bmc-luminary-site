@@ -1,0 +1,1161 @@
+{
+  "fixture_only": true,
+  "network_calls": 0,
+  "smtp_calls": 0,
+  "production_records_changed": 0,
+  "campaigns_enabled": false,
+  "source_sha256": "3233aa88b6ca45bae3a77f1aa071e0396810f56513bccf9c1a322ff101d49d53",
+  "registry_sha256": "39639988087fae346736aee1380f891bbe05510c1a892bd144cb394937e9fd12",
+  "actual_service_count": 54,
+  "registry_declared_count": 53,
+  "mode_counts": {
+    "provider_match": 41,
+    "internal_delivery": 5,
+    "managed_sourcing": 5,
+    "managed_concierge": 2,
+    "facility_split": 1
+  },
+  "preview_count": 265,
+  "provider_sequence_previews": 246,
+  "services": [
+    {
+      "service_key": "restaurant_repair",
+      "display_name": "Restaurant Repair",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Help with an urgent restaurant repair.",
+      "preview_count": 6,
+      "preview_ids": [
+        "restaurant_repair-pilot-1",
+        "restaurant_repair-pilot-2",
+        "restaurant_repair-pilot-3",
+        "restaurant_repair-recruitment-1",
+        "restaurant_repair-recruitment-2",
+        "restaurant_repair-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "growth_pack",
+      "display_name": "Find New Customers",
+      "fulfillment_mode": "internal_delivery",
+      "status": "TRANSACTIONAL_RECEIPT_ONLY_TAILORED_OUTREACH_GAP",
+      "registry_offer": "Get a researched list of 100 businesses to contact.",
+      "preview_count": 1,
+      "preview_ids": [
+        "growth_pack-transactional_intake_receipt-1"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "No verified service-specific acquisition campaign demonstrated; transactional acknowledgement is not outreach coverage.",
+        "Receipt does not name business; business-specific acquisition copy is missing.",
+        "Operational intake/payment routing and fulfillment are not certified by this offline preview.",
+        "Existing Growth sales/free-five copy is separately niche-gated; this report does not extend $499/free-five offers to any service."
+      ]
+    },
+    {
+      "service_key": "commercial_cleaning",
+      "display_name": "Commercial Cleaning",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Regular or one-time cleaning for businesses and buildings.",
+      "preview_count": 8,
+      "preview_ids": [
+        "commercial_cleaning-pilot-1",
+        "commercial_cleaning-pilot-2",
+        "commercial_cleaning-pilot-3",
+        "commercial_cleaning-recruitment-1",
+        "commercial_cleaning-recruitment-2",
+        "commercial_cleaning-recruitment-3",
+        "commercial_cleaning-supported_niche_growth_outreach-1",
+        "commercial_cleaning-supported_niche_growth_outreach-2"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "tree_service",
+      "display_name": "Tree Service & Brush Clearing",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Tree removal, trimming, dead trees, brush clearing, and defensible space.",
+      "preview_count": 6,
+      "preview_ids": [
+        "tree_service-pilot-1",
+        "tree_service-pilot-2",
+        "tree_service-pilot-3",
+        "tree_service-recruitment-1",
+        "tree_service-recruitment-2",
+        "tree_service-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "junk_hauling",
+      "display_name": "Junk Removal",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Remove junk, furniture, debris, and cleanout piles.",
+      "preview_count": 6,
+      "preview_ids": [
+        "junk_hauling-pilot-1",
+        "junk_hauling-pilot-2",
+        "junk_hauling-pilot-3",
+        "junk_hauling-recruitment-1",
+        "junk_hauling-recruitment-2",
+        "junk_hauling-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "landscaping",
+      "display_name": "Landscaping & Yard Cleanup",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Yard cleanup, trimming, regular care, and overgrowth.",
+      "preview_count": 6,
+      "preview_ids": [
+        "landscaping-pilot-1",
+        "landscaping-pilot-2",
+        "landscaping-pilot-3",
+        "landscaping-recruitment-1",
+        "landscaping-recruitment-2",
+        "landscaping-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "rural_property",
+      "display_name": "Septic, Grading & Wells",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Septic, grading, wells, water, and dirt work.",
+      "preview_count": 6,
+      "preview_ids": [
+        "rural_property-pilot-1",
+        "rural_property-pilot-2",
+        "rural_property-pilot-3",
+        "rural_property-recruitment-1",
+        "rural_property-recruitment-2",
+        "rural_property-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "snow_service",
+      "display_name": "Snow Removal",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Snow removal for homes and private property.",
+      "preview_count": 6,
+      "preview_ids": [
+        "snow_service-pilot-1",
+        "snow_service-pilot-2",
+        "snow_service-pilot-3",
+        "snow_service-recruitment-1",
+        "snow_service-recruitment-2",
+        "snow_service-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "towing_roadside",
+      "display_name": "Towing & Roadside Help",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Towing, jump starts, lockouts, and roadside help.",
+      "preview_count": 6,
+      "preview_ids": [
+        "towing_roadside-pilot-1",
+        "towing_roadside-pilot-2",
+        "towing_roadside-pilot-3",
+        "towing_roadside-recruitment-1",
+        "towing_roadside-recruitment-2",
+        "towing_roadside-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "vehicle_services",
+      "display_name": "Mobile Mechanic & Vehicle Service",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Mobile mechanic and other vehicle help.",
+      "preview_count": 6,
+      "preview_ids": [
+        "vehicle_services-pilot-1",
+        "vehicle_services-pilot-2",
+        "vehicle_services-pilot-3",
+        "vehicle_services-recruitment-1",
+        "vehicle_services-recruitment-2",
+        "vehicle_services-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "auto_repair_shop",
+      "display_name": "Auto Repair Shop",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Brakes, check-engine lights, maintenance, diagnostics, suspension, exhaust, and general auto repair.",
+      "preview_count": 6,
+      "preview_ids": [
+        "auto_repair_shop-pilot-1",
+        "auto_repair_shop-pilot-2",
+        "auto_repair_shop-pilot-3",
+        "auto_repair_shop-recruitment-1",
+        "auto_repair_shop-recruitment-2",
+        "auto_repair_shop-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "pet_waste",
+      "display_name": "Pet Waste Cleanup",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Regular or one-time pet waste cleanup.",
+      "preview_count": 6,
+      "preview_ids": [
+        "pet_waste-pilot-1",
+        "pet_waste-pilot-2",
+        "pet_waste-pilot-3",
+        "pet_waste-recruitment-1",
+        "pet_waste-recruitment-2",
+        "pet_waste-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "pool_desert_property",
+      "display_name": "Pool & Outdoor Property Care",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Pools, irrigation, and outdoor property care.",
+      "preview_count": 6,
+      "preview_ids": [
+        "pool_desert_property-pilot-1",
+        "pool_desert_property-pilot-2",
+        "pool_desert_property-pilot-3",
+        "pool_desert_property-recruitment-1",
+        "pool_desert_property-recruitment-2",
+        "pool_desert_property-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "str_property_care",
+      "display_name": "Rental Property Care",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Turnovers, repairs, and vendor help for rentals.",
+      "preview_count": 6,
+      "preview_ids": [
+        "str_property_care-pilot-1",
+        "str_property_care-pilot-2",
+        "str_property_care-pilot-3",
+        "str_property_care-recruitment-1",
+        "str_property_care-recruitment-2",
+        "str_property_care-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "hvac_heat",
+      "display_name": "Heating & Air",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Heating, cooling, tune-ups, heat pumps, and replacement.",
+      "preview_count": 6,
+      "preview_ids": [
+        "hvac_heat-pilot-1",
+        "hvac_heat-pilot-2",
+        "hvac_heat-pilot-3",
+        "hvac_heat-recruitment-1",
+        "hvac_heat-recruitment-2",
+        "hvac_heat-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "ice_machine",
+      "display_name": "Ice Machine Repair",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Repair, cleaning, maintenance, and replacement.",
+      "preview_count": 6,
+      "preview_ids": [
+        "ice_machine-pilot-1",
+        "ice_machine-pilot-2",
+        "ice_machine-pilot-3",
+        "ice_machine-recruitment-1",
+        "ice_machine-recruitment-2",
+        "ice_machine-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "hood_exhaust",
+      "display_name": "Hood Cleaning",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Clean kitchen hoods, ducts, fans, and exhaust systems.",
+      "preview_count": 6,
+      "preview_ids": [
+        "hood_exhaust-pilot-1",
+        "hood_exhaust-pilot-2",
+        "hood_exhaust-pilot-3",
+        "hood_exhaust-recruitment-1",
+        "hood_exhaust-recruitment-2",
+        "hood_exhaust-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "grease_drain",
+      "display_name": "Grease Trap & Drain Cleaning",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Grease traps, drains, and regular service.",
+      "preview_count": 6,
+      "preview_ids": [
+        "grease_drain-pilot-1",
+        "grease_drain-pilot-2",
+        "grease_drain-pilot-3",
+        "grease_drain-recruitment-1",
+        "grease_drain-recruitment-2",
+        "grease_drain-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "window_cleaning",
+      "display_name": "Window Cleaning",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Window cleaning for offices, stores, and other buildings.",
+      "preview_count": 6,
+      "preview_ids": [
+        "window_cleaning-pilot-1",
+        "window_cleaning-pilot-2",
+        "window_cleaning-pilot-3",
+        "window_cleaning-recruitment-1",
+        "window_cleaning-recruitment-2",
+        "window_cleaning-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "pressure_washing",
+      "display_name": "Pressure Washing",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Wash sidewalks, walls, dumpster pads, and other outdoor areas.",
+      "preview_count": 8,
+      "preview_ids": [
+        "pressure_washing-pilot-1",
+        "pressure_washing-pilot-2",
+        "pressure_washing-pilot-3",
+        "pressure_washing-recruitment-1",
+        "pressure_washing-recruitment-2",
+        "pressure_washing-recruitment-3",
+        "pressure_washing-supported_niche_growth_outreach-1",
+        "pressure_washing-supported_niche_growth_outreach-2"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "pest_control",
+      "display_name": "Pest Control",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Regular pest control for businesses and buildings.",
+      "preview_count": 6,
+      "preview_ids": [
+        "pest_control-pilot-1",
+        "pest_control-pilot-2",
+        "pest_control-pilot-3",
+        "pest_control-recruitment-1",
+        "pest_control-recruitment-2",
+        "pest_control-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "restaurant_equipment",
+      "display_name": "Restaurant Equipment Repair",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Repair cooking, dish, prep, and holding equipment.",
+      "preview_count": 6,
+      "preview_ids": [
+        "restaurant_equipment-pilot-1",
+        "restaurant_equipment-pilot-2",
+        "restaurant_equipment-pilot-3",
+        "restaurant_equipment-recruitment-1",
+        "restaurant_equipment-recruitment-2",
+        "restaurant_equipment-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "used_equipment",
+      "display_name": "Buy or Sell Used Restaurant Equipment",
+      "fulfillment_mode": "managed_sourcing",
+      "status": "TRANSACTIONAL_RECEIPT_ONLY_TAILORED_OUTREACH_GAP",
+      "registry_offer": "Find, buy, sell, or clear out used restaurant equipment.",
+      "preview_count": 1,
+      "preview_ids": [
+        "used_equipment-transactional_intake_receipt-1"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "No verified service-specific acquisition campaign demonstrated; transactional acknowledgement is not outreach coverage.",
+        "Receipt does not name business; business-specific acquisition copy is missing.",
+        "Operational intake/payment routing and fulfillment are not certified by this offline preview."
+      ]
+    },
+    {
+      "service_key": "equipment_quotes",
+      "display_name": "Get Equipment Quotes",
+      "fulfillment_mode": "managed_sourcing",
+      "status": "TRANSACTIONAL_RECEIPT_ONLY_TAILORED_OUTREACH_GAP",
+      "registry_offer": "Compare prices from more than one equipment seller.",
+      "preview_count": 1,
+      "preview_ids": [
+        "equipment_quotes-transactional_intake_receipt-1"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "No verified service-specific acquisition campaign demonstrated; transactional acknowledgement is not outreach coverage.",
+        "Receipt does not name business; business-specific acquisition copy is missing.",
+        "Operational intake/payment routing and fulfillment are not certified by this offline preview."
+      ]
+    },
+    {
+      "service_key": "vendor_savings",
+      "display_name": "Cut Vendor Costs",
+      "fulfillment_mode": "internal_delivery",
+      "status": "TRANSACTIONAL_RECEIPT_ONLY_TAILORED_OUTREACH_GAP",
+      "registry_offer": "Review regular service bills and compare other options.",
+      "preview_count": 1,
+      "preview_ids": [
+        "vendor_savings-transactional_intake_receipt-1"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "No verified service-specific acquisition campaign demonstrated; transactional acknowledgement is not outreach coverage.",
+        "Receipt does not name business; business-specific acquisition copy is missing.",
+        "Operational intake/payment routing and fulfillment are not certified by this offline preview."
+      ]
+    },
+    {
+      "service_key": "restaurant_maintenance",
+      "display_name": "Restaurant Maintenance Help",
+      "fulfillment_mode": "managed_concierge",
+      "status": "TRANSACTIONAL_RECEIPT_ONLY_TAILORED_OUTREACH_GAP",
+      "registry_offer": "Repairs and regular restaurant maintenance.",
+      "preview_count": 1,
+      "preview_ids": [
+        "restaurant_maintenance-transactional_intake_receipt-1"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "No verified service-specific acquisition campaign demonstrated; transactional acknowledgement is not outreach coverage.",
+        "Receipt does not name business; business-specific acquisition copy is missing.",
+        "Operational intake/payment routing and fulfillment are not certified by this offline preview."
+      ]
+    },
+    {
+      "service_key": "linen_laundry",
+      "display_name": "Linen & Laundry Service",
+      "fulfillment_mode": "managed_sourcing",
+      "status": "TRANSACTIONAL_RECEIPT_ONLY_TAILORED_OUTREACH_GAP",
+      "registry_offer": "Linen, towels, mats, uniforms, and laundry service.",
+      "preview_count": 1,
+      "preview_ids": [
+        "linen_laundry-transactional_intake_receipt-1"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "No verified service-specific acquisition campaign demonstrated; transactional acknowledgement is not outreach coverage.",
+        "Receipt does not name business; business-specific acquisition copy is missing.",
+        "Operational intake/payment routing and fulfillment are not certified by this offline preview."
+      ]
+    },
+    {
+      "service_key": "floor_carpet",
+      "display_name": "Floor & Carpet Cleaning",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Carpet, tile, stripping, waxing, and floor care.",
+      "preview_count": 6,
+      "preview_ids": [
+        "floor_carpet-pilot-1",
+        "floor_carpet-pilot-2",
+        "floor_carpet-pilot-3",
+        "floor_carpet-recruitment-1",
+        "floor_carpet-recruitment-2",
+        "floor_carpet-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "fire_safety",
+      "display_name": "Fire Safety Service",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Fire extinguisher and suppression service.",
+      "preview_count": 6,
+      "preview_ids": [
+        "fire_safety-pilot-1",
+        "fire_safety-pilot-2",
+        "fire_safety-pilot-3",
+        "fire_safety-recruitment-1",
+        "fire_safety-recruitment-2",
+        "fire_safety-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "backflow_plumbing",
+      "display_name": "Backflow & Commercial Plumbing",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Backflow testing and commercial plumbing work.",
+      "preview_count": 6,
+      "preview_ids": [
+        "backflow_plumbing-pilot-1",
+        "backflow_plumbing-pilot-2",
+        "backflow_plumbing-pilot-3",
+        "backflow_plumbing-recruitment-1",
+        "backflow_plumbing-recruitment-2",
+        "backflow_plumbing-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "sign_lighting",
+      "display_name": "Sign & Lighting Repair",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Fix signs, outdoor lights, and parking lot lights.",
+      "preview_count": 6,
+      "preview_ids": [
+        "sign_lighting-pilot-1",
+        "sign_lighting-pilot-2",
+        "sign_lighting-pilot-3",
+        "sign_lighting-recruitment-1",
+        "sign_lighting-recruitment-2",
+        "sign_lighting-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "locksmith_access",
+      "display_name": "Locks & Access Control",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Locks, rekeys, door hardware, and access control.",
+      "preview_count": 6,
+      "preview_ids": [
+        "locksmith_access-pilot-1",
+        "locksmith_access-pilot-2",
+        "locksmith_access-pilot-3",
+        "locksmith_access-recruitment-1",
+        "locksmith_access-recruitment-2",
+        "locksmith_access-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "duct_vent",
+      "display_name": "Duct & Dryer Vent Cleaning",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Clean ducts, dryer vents, and exhaust vents.",
+      "preview_count": 6,
+      "preview_ids": [
+        "duct_vent-pilot-1",
+        "duct_vent-pilot-2",
+        "duct_vent-pilot-3",
+        "duct_vent-recruitment-1",
+        "duct_vent-recruitment-2",
+        "duct_vent-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "fleet_washing",
+      "display_name": "Fleet Washing",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Regular washing for trucks, vans, and fleets.",
+      "preview_count": 6,
+      "preview_ids": [
+        "fleet_washing-pilot-1",
+        "fleet_washing-pilot-2",
+        "fleet_washing-pilot-3",
+        "fleet_washing-recruitment-1",
+        "fleet_washing-recruitment-2",
+        "fleet_washing-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "mobile_tire_battery",
+      "display_name": "Mobile Tire & Battery",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Tire and battery help at your location.",
+      "preview_count": 6,
+      "preview_ids": [
+        "mobile_tire_battery-pilot-1",
+        "mobile_tire_battery-pilot-2",
+        "mobile_tire_battery-pilot-3",
+        "mobile_tire_battery-recruitment-1",
+        "mobile_tire_battery-recruitment-2",
+        "mobile_tire_battery-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "coffee_water",
+      "display_name": "Office Coffee & Water",
+      "fulfillment_mode": "managed_sourcing",
+      "status": "TRANSACTIONAL_RECEIPT_ONLY_TAILORED_OUTREACH_GAP",
+      "registry_offer": "Coffee, drinking water, machines, and break-room service.",
+      "preview_count": 1,
+      "preview_ids": [
+        "coffee_water-transactional_intake_receipt-1"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "No verified service-specific acquisition campaign demonstrated; transactional acknowledgement is not outreach coverage.",
+        "Receipt does not name business; business-specific acquisition copy is missing.",
+        "Operational intake/payment routing and fulfillment are not certified by this offline preview."
+      ]
+    },
+    {
+      "service_key": "waste_audit",
+      "display_name": "Cut Waste & Recycling Costs",
+      "fulfillment_mode": "internal_delivery",
+      "status": "TRANSACTIONAL_RECEIPT_ONLY_TAILORED_OUTREACH_GAP",
+      "registry_offer": "Review trash and recycling costs and service.",
+      "preview_count": 1,
+      "preview_ids": [
+        "waste_audit-transactional_intake_receipt-1"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "No verified service-specific acquisition campaign demonstrated; transactional acknowledgement is not outreach coverage.",
+        "Receipt does not name business; business-specific acquisition copy is missing.",
+        "Operational intake/payment routing and fulfillment are not certified by this offline preview."
+      ]
+    },
+    {
+      "service_key": "competitor_intel",
+      "display_name": "Check Local Competitors",
+      "fulfillment_mode": "internal_delivery",
+      "status": "TRANSACTIONAL_RECEIPT_ONLY_TAILORED_OUTREACH_GAP",
+      "registry_offer": "See who you compete with and what they are doing in your market.",
+      "preview_count": 1,
+      "preview_ids": [
+        "competitor_intel-transactional_intake_receipt-1"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "No verified service-specific acquisition campaign demonstrated; transactional acknowledgement is not outreach coverage.",
+        "Receipt does not name business; business-specific acquisition copy is missing.",
+        "Operational intake/payment routing and fulfillment are not certified by this offline preview."
+      ]
+    },
+    {
+      "service_key": "market_expansion",
+      "display_name": "Research a New Market",
+      "fulfillment_mode": "internal_delivery",
+      "status": "TRANSACTIONAL_RECEIPT_ONLY_TAILORED_OUTREACH_GAP",
+      "registry_offer": "Check a new city before spending money to expand there.",
+      "preview_count": 1,
+      "preview_ids": [
+        "market_expansion-transactional_intake_receipt-1"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "No verified service-specific acquisition campaign demonstrated; transactional acknowledgement is not outreach coverage.",
+        "Receipt does not name business; business-specific acquisition copy is missing.",
+        "Operational intake/payment routing and fulfillment are not certified by this offline preview."
+      ]
+    },
+    {
+      "service_key": "quote_sourcing",
+      "display_name": "Get Business Quotes",
+      "fulfillment_mode": "managed_sourcing",
+      "status": "TRANSACTIONAL_RECEIPT_ONLY_TAILORED_OUTREACH_GAP",
+      "registry_offer": "Get help finding and comparing business quotes.",
+      "preview_count": 1,
+      "preview_ids": [
+        "quote_sourcing-transactional_intake_receipt-1"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "No verified service-specific acquisition campaign demonstrated; transactional acknowledgement is not outreach coverage.",
+        "Receipt does not name business; business-specific acquisition copy is missing.",
+        "Operational intake/payment routing and fulfillment are not certified by this offline preview."
+      ]
+    },
+    {
+      "service_key": "parking_lot",
+      "display_name": "Parking Lot Cleaning & Striping",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Sweeping, striping, and parking lot upkeep.",
+      "preview_count": 6,
+      "preview_ids": [
+        "parking_lot-pilot-1",
+        "parking_lot-pilot-2",
+        "parking_lot-pilot-3",
+        "parking_lot-recruitment-1",
+        "parking_lot-recruitment-2",
+        "parking_lot-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "epoxy_flooring",
+      "display_name": "Epoxy & Concrete Floors",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Coat, repair, or polish garage, shop, and concrete floors.",
+      "preview_count": 6,
+      "preview_ids": [
+        "epoxy_flooring-pilot-1",
+        "epoxy_flooring-pilot-2",
+        "epoxy_flooring-pilot-3",
+        "epoxy_flooring-recruitment-1",
+        "epoxy_flooring-recruitment-2",
+        "epoxy_flooring-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "mobile_detailing",
+      "display_name": "Mobile Detailing",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Car and fleet detailing at your location.",
+      "preview_count": 6,
+      "preview_ids": [
+        "mobile_detailing-pilot-1",
+        "mobile_detailing-pilot-2",
+        "mobile_detailing-pilot-3",
+        "mobile_detailing-recruitment-1",
+        "mobile_detailing-recruitment-2",
+        "mobile_detailing-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "auto_glass",
+      "display_name": "Windshield & Auto Glass",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Windshield repair, replacement, and other auto glass work.",
+      "preview_count": 6,
+      "preview_ids": [
+        "auto_glass-pilot-1",
+        "auto_glass-pilot-2",
+        "auto_glass-pilot-3",
+        "auto_glass-recruitment-1",
+        "auto_glass-recruitment-2",
+        "auto_glass-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "pet_sitting",
+      "display_name": "Pet Sitting & Dog Walking",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Dog walks, pet sitting, and drop-in visits.",
+      "preview_count": 6,
+      "preview_ids": [
+        "pet_sitting-pilot-1",
+        "pet_sitting-pilot-2",
+        "pet_sitting-pilot-3",
+        "pet_sitting-recruitment-1",
+        "pet_sitting-recruitment-2",
+        "pet_sitting-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "mobile_pet_grooming",
+      "display_name": "Mobile Pet Grooming",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Pet grooming that comes to you.",
+      "preview_count": 6,
+      "preview_ids": [
+        "mobile_pet_grooming-pilot-1",
+        "mobile_pet_grooming-pilot-2",
+        "mobile_pet_grooming-pilot-3",
+        "mobile_pet_grooming-recruitment-1",
+        "mobile_pet_grooming-recruitment-2",
+        "mobile_pet_grooming-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "turnover_cleaning",
+      "display_name": "Move-Out Cleaning",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Clean a home or rental between tenants, guests, or owners.",
+      "preview_count": 6,
+      "preview_ids": [
+        "turnover_cleaning-pilot-1",
+        "turnover_cleaning-pilot-2",
+        "turnover_cleaning-pilot-3",
+        "turnover_cleaning-recruitment-1",
+        "turnover_cleaning-recruitment-2",
+        "turnover_cleaning-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "garage_door",
+      "display_name": "Garage Door Repair",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Fix doors, springs, openers, tracks, and overhead doors.",
+      "preview_count": 6,
+      "preview_ids": [
+        "garage_door-pilot-1",
+        "garage_door-pilot-2",
+        "garage_door-pilot-3",
+        "garage_door-recruitment-1",
+        "garage_door-recruitment-2",
+        "garage_door-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "facility_maintenance",
+      "display_name": "Building Maintenance Help",
+      "fulfillment_mode": "facility_split",
+      "status": "EXISTING_FACILITY_BUYER_COPY_PLUS_RECEIPT_REQUIRES_REVIEW",
+      "registry_offer": "Cleaning, repairs, and ongoing building work.",
+      "preview_count": 3,
+      "preview_ids": [
+        "facility_maintenance-transactional_intake_receipt-1",
+        "facility_maintenance-existing_facility_buyer_outreach-1",
+        "facility_maintenance-existing_facility_buyer_outreach-2"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "No verified service-specific acquisition campaign demonstrated; transactional acknowledgement is not outreach coverage.",
+        "Receipt does not name business; business-specific acquisition copy is missing.",
+        "Operational intake/payment routing and fulfillment are not certified by this offline preview.",
+        "Facility buyer wording is generic building-vendor copy, not specialized maintenance scope assurance."
+      ]
+    },
+    {
+      "service_key": "electrical_service",
+      "display_name": "Electrician",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Outlets, breakers, panels, lights, wiring, and EV chargers.",
+      "preview_count": 6,
+      "preview_ids": [
+        "electrical_service-pilot-1",
+        "electrical_service-pilot-2",
+        "electrical_service-pilot-3",
+        "electrical_service-recruitment-1",
+        "electrical_service-recruitment-2",
+        "electrical_service-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "handyman_repairs",
+      "display_name": "Handyman",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Small repairs, drywall, doors, mounting, fixtures, and punch lists.",
+      "preview_count": 6,
+      "preview_ids": [
+        "handyman_repairs-pilot-1",
+        "handyman_repairs-pilot-2",
+        "handyman_repairs-pilot-3",
+        "handyman_repairs-recruitment-1",
+        "handyman_repairs-recruitment-2",
+        "handyman_repairs-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "residential_cleaning",
+      "display_name": "House Cleaning",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Regular cleaning, deep cleaning, and one-time cleaning.",
+      "preview_count": 6,
+      "preview_ids": [
+        "residential_cleaning-pilot-1",
+        "residential_cleaning-pilot-2",
+        "residential_cleaning-pilot-3",
+        "residential_cleaning-recruitment-1",
+        "residential_cleaning-recruitment-2",
+        "residential_cleaning-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "home_staging",
+      "display_name": "Home Staging",
+      "fulfillment_mode": "provider_match",
+      "status": "SERVICE_EXAMPLES_IN_PROVIDER_COPY_REQUIRES_REVIEW",
+      "registry_offer": "Get an occupied or empty home ready for photos and showings.",
+      "preview_count": 6,
+      "preview_ids": [
+        "home_staging-pilot-1",
+        "home_staging-pilot-2",
+        "home_staging-pilot-3",
+        "home_staging-recruitment-1",
+        "home_staging-recruitment-2",
+        "home_staging-recruitment-3"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "Specific service job examples are present; licensing limits and recipient suitability still require review.",
+        "Provider campaign and admin preview use the same plain/HTML message helper; actual SMTP delivery is untested.",
+        "Live signed activation path, recipient suitability and fulfillment capacity are not tested."
+      ]
+    },
+    {
+      "service_key": "realtor_listing_prep",
+      "display_name": "Get a Home Ready to Sell",
+      "fulfillment_mode": "managed_concierge",
+      "status": "TRANSACTIONAL_RECEIPT_ONLY_TAILORED_OUTREACH_GAP",
+      "registry_offer": "Cleaning, repairs, junk removal, staging, and yard work before a sale.",
+      "preview_count": 1,
+      "preview_ids": [
+        "realtor_listing_prep-transactional_intake_receipt-1"
+      ],
+      "approved_for_send": false,
+      "gaps": [
+        "No verified service-specific acquisition campaign demonstrated; transactional acknowledgement is not outreach coverage.",
+        "Receipt does not name business; business-specific acquisition copy is missing.",
+        "Operational intake/payment routing and fulfillment are not certified by this offline preview."
+      ]
+    }
+  ],
+  "fence_gap": "No standalone fence key/display name in registry. Fence research artifacts exist, but do not establish routing, approved scope, price, template, or fulfillment. Do not relabel as handyman/landscaping without review.",
+  "recovery_priority": [
+    "landscaping",
+    "junk_hauling",
+    "handyman_repairs",
+    "fence: missing routable registry key"
+  ],
+  "live_path_status": "NOT TESTED: fixture token is intentionally invalid, example.invalid host prevents live action. No SMTP/MIME, DNS, signed activation, payment or production queue validation."
+}
