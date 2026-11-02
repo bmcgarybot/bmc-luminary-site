@@ -748,11 +748,13 @@ def workflow_email_html(title,body_lines,button_label=None,button_url=None,greet
         safe_url=html.escape(clean(button_url),quote=True)
         button=f"<p style='margin:22px 0 24px'><a href='{safe_url}' style='display:inline-block;background:#1557d6;color:#fff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:7px'>{html.escape(clean(button_label))}</a></p>"
     postal=html.escape(BUSINESS_POSTAL_ADDRESS) if BUSINESS_POSTAL_ADDRESS else ""
+    heading=(f"<p style='margin:0 0 22px;font-size:20px;line-height:1.3;font-weight:700'>"
+      f"{html.escape(clean(title))}</p>") if clean(title) else ""
     optout=""
     if marketing:
         optout="<p style='margin:10px 0 0;font-size:12px;line-height:1.5;color:#6b7280'>This is a promotional email from BMC Service Network.<br>Reply <strong>no</strong> if you do not want future BMC outreach.</p>"
     footer_address=f"<br>{postal}" if postal else ""
-    return f"""<!doctype html><html><body style='margin:0;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1f2937'><div style='max-width:620px;margin:0 auto;padding:28px 20px'><div style='padding:0'><p style='margin:0 0 22px;font-size:20px;line-height:1.3;font-weight:700'>{html.escape(clean(title))}</p>{hello}{rows}{button}<div style='border-top:1px solid #e5e7eb;margin-top:28px;padding-top:18px'><p style='margin:0;font-size:12px;line-height:1.5;color:#6b7280'>BMC Service Network<br>BMC Luminary Ventures LLC{footer_address}</p>{optout}</div></div></div></body></html>"""
+    return f"""<!doctype html><html><body style='margin:0;background:#ffffff;font-family:Arial,Helvetica,sans-serif;color:#1f2937'><div style='max-width:620px;margin:0 auto;padding:28px 20px'><div style='padding:0'>{heading}{hello}{rows}{button}<div style='border-top:1px solid #e5e7eb;margin-top:28px;padding-top:18px'><p style='margin:0;font-size:12px;line-height:1.5;color:#6b7280'>BMC Service Network<br>BMC Luminary Ventures LLC{footer_address}</p>{optout}</div></div></div></body></html>"""
 
 async def service_display_name(conn,service_key):
     row=await conn.fetchrow("select display_name from services where service_key=$1",service_key)
@@ -4422,25 +4424,41 @@ def growth_positive_reply_message(row):
 
 def growth_outreach_message(row,step,owner_preview=False):
     service_key=clean(row["service_key"])
-    examples={
-      "pressure_washing":"shopfronts, restaurant patios or apartment walkways",
-      "commercial_cleaning":"offices, shops or shared apartment areas"
+    focus={
+      "pressure_washing":"commercial exterior and surface cleaning",
+      "commercial_cleaning":"janitorial cleaning for offices and shared spaces"
     }
-    if service_key not in examples:
+    if service_key not in focus:
         raise ValueError("Growth outreach is limited to the two supported services")
     landing=growth_invitation_url(row,owner_preview=owner_preview)
     market=clean(row["market"])
-    question=f"Do you take on {examples[service_key]} around {market}?"
-    subject=(f"{market}: five businesses you could pitch" if step==1 else f"Re: five businesses in {market}")
-    lines=[question if step==1 else f"One follow-up: are you looking for more work at {examples[service_key]} around {market}?",
-      "BMC can research five local businesses you could pitch, free. You get who they are, how to contact them and why they might fit your work.",
-      "These are researched businesses to approach, not people who have asked for a quote.",
-      "The five are yours to use with no obligation. If you want more, $499 buys 100 businesses total, including those five. No retainer or sales call."]
-    body="\n\n".join(["Hi,",*lines,"See the five businesses:\n"+landing,
-      "BMC Service Network\nBMC Luminary Ventures LLC\n"+BUSINESS_POSTAL_ADDRESS,
+    business=clean(row["business_name"])
+    opener=(f"I found {business} while looking at local companies offering {focus[service_key]} "
+      f"around {market}.")
+    short_name=business
+    if clean(row["target_id"])=="vendor:v_prescott_americancrown" and service_key=="commercial_cleaning":
+        opener=("I saw on your site that American Crown handles janitorial cleaning for offices "
+          "and common areas across Yavapai County.")
+        short_name="American Crown"
+    subject=(f"A {market} idea for {short_name}" if step==1 else f"Re: a {market} idea for {short_name}")
+    greeting=f"Hello {short_name} team,"
+    if step==1:
+        lines=[
+          f"I'm Brett with BMC Service Network here in Prescott. {opener}",
+          f"I research potential commercial accounts for local service companies. I can show you five businesses around {market} that may fit your work, with public contact details and a reason each might be worth approaching. They haven't requested quotes, and we haven't contacted them.",
+          "The five are free. If useful, an optional list of 100 total, including those five, is $499. No subscription or obligation."
+        ]
+    else:
+        lines=[
+          f"I sent a note about five free, researched businesses around {market} that may fit your {focus[service_key]} work.",
+          "The list includes public contact routes and a reason each may fit. They have not requested a quote. If this isn't useful for your team, no need to respond."
+        ]
+    label="Review the five researched businesses"
+    body="\n\n".join([greeting,*lines,label+":\n"+landing,
+      "Brett\nBMC Service Network\nBMC Luminary Ventures LLC\n"+BUSINESS_POSTAL_ADDRESS,
       "This is a promotional email from BMC Service Network.",
       "Reply no if you do not want future BMC outreach."])
-    html_body=workflow_email_html(subject,lines,"See the five businesses",landing,greeting="Hi,",marketing=True)
+    html_body=workflow_email_html("",lines,label,landing,greeting=greeting,marketing=True)
     return service_key,subject,body,html_body,landing
 
 

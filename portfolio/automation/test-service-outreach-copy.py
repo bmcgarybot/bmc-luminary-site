@@ -62,18 +62,31 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         fn=next(n for n in SOURCE.body if isinstance(n,ast.FunctionDef) and n.name=='growth_outreach_message')
         self.ns['growth_invitation_url']=lambda row,owner_preview=False:'https://preview.example.invalid/growth-packs/'+row['service_key']+'/?claim=NONLIVE'
         exec(compile(ast.Module(body=[fn],type_ignores=[]),'production_growth_copy','exec'),self.ns)
-        for service,example in [('pressure_washing','restaurant patios'),('commercial_cleaning','shared apartment areas')]:
+        for service,example in [('pressure_washing','commercial exterior'),('commercial_cleaning','janitorial cleaning')]:
             for step in (1,2):
-                row=dict(service_key=service,business_name='Very Long Business Name LLC',market='Phoenix')
+                row=dict(target_id='vendor:fixture',service_key=service,business_name='Very Long Business Name LLC',market='Phoenix')
                 _,subject,plain,rendered,url=self.ns['growth_outreach_message'](row,step)
-                self.assertTrue(plain.startswith('Hi,\n\n'));self.assertNotIn(row['business_name'],plain)
+                self.assertTrue(plain.startswith('Hello Very Long Business Name LLC team,\n\n'))
+                self.assertNotIn(subject,html.unescape(rendered))
                 for content in (plain,html.unescape(rendered)):
-                    for text in (example,'Phoenix','$499','100 businesses total, including those five','no obligation','not people who have asked for a quote','See the five businesses'):
+                    for text in (example,'Phoenix','Review the five researched businesses','haven\'t requested quotes' if step==1 else 'not requested a quote'):
                         self.assertIn(text,content)
-                    for text in ('strong commercial prospects','public contact route','practical outreach angle','—'):
+                    for text in ('strong commercial prospects','practical outreach angle','—'):
                         self.assertNotIn(text,content)
+                if step==1:
+                    self.assertIn('BMC Service Network here in Prescott',plain)
+                    self.assertIn('$499',plain);self.assertIn('100 total, including those five',plain)
+                    self.assertIn('no subscription or obligation',plain.lower())
+                else:
+                    self.assertNotIn('$499',plain)
                 self.assertEqual(plain.count(url),1);self.assertIn(html.escape(url,quote=True),rendered)
                 self.assertLess(len(plain.split()),170)
+        row=dict(target_id='vendor:v_prescott_americancrown',service_key='commercial_cleaning',
+          business_name='American Crown Commercial Cleaning',market='Prescott')
+        _,subject,plain,rendered,_=self.ns['growth_outreach_message'](row,1)
+        self.assertEqual(subject,'A Prescott idea for American Crown')
+        self.assertIn('offices and common areas across Yavapai County',plain)
+        self.assertIn('Hello American Crown team,',rendered)
         with self.assertRaises(ValueError):self.ns['growth_outreach_message'](dict(service_key='landscaping'),1)
     async def test_live_sender_and_admin_preview_share_actual_html_without_smtp(self):
         nodes=[n for n in SOURCE.body if isinstance(n,ast.AsyncFunctionDef) and n.name in ('process_outreach','admin_outreach_wave_preview','provider_outreach_review','admin_first_wave')]
