@@ -8,7 +8,7 @@ import re
 import unittest
 import urllib.parse
 source=ast.parse(Path(__file__).with_name("api").joinpath("app.py").read_text())
-names={"growth_saved_sample_is_current","growth_candidate_is_fresh","growth_prospect_key","clean","growth_candidate_evidence_valid","json_dict"}
+names={"growth_saved_sample_is_current","growth_candidate_is_fresh","growth_prospect_key","clean","growth_candidate_evidence_valid","json_dict","growth_customer_url"}
 nodes=[n for n in source.body if isinstance(n,ast.FunctionDef) and n.name in names]
 ns=dict(json=json,urllib=urllib,DEFAULT_SOURCE_NATIVE_MARKETS=("Prescott","Prescott Valley","Sedona","Flagstaff"),re=re,datetime=datetime,timedelta=timedelta,timezone=timezone,
     GROWTH_SOURCE_BLOCKLIST=("blocked.example",),growth_candidate_score=lambda *args:100)

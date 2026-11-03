@@ -46,6 +46,11 @@ jobs:
           grep -q 'allow_external_actions' vps-gitops-relay.py
           ! grep -q 'shell=True' vps-gitops-relay.py
 
+      - name: Validate private prospect PDF deliverables
+        run: |
+          python -m pip install reportlab==4.4.9 pypdf==6.10.0
+          python3 portfolio/automation/test-growth-pdf.py
+
       - name: Validate read-only operator console
         run: |
           python3 -m py_compile portfolio/automation/operator-console.py

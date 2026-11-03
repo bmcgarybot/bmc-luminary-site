@@ -1,4 +1,5 @@
-import os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, urllib.error, hmac, hashlib, time, html, random, csv, io
+from growth_pdf import sample_pdf_response
+import base64, os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, urllib.error, hmac, hashlib, time, html, random, csv, io
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 from email.utils import parseaddr, formataddr, make_msgid, format_datetime
@@ -2641,6 +2642,22 @@ def growth_candidate_is_fresh(row,now=None):
     age=(now or datetime.now(timezone.utc))-verified
     return -timedelta(minutes=5)<=age<=timedelta(days=90)
 
+def growth_customer_url(value):
+    """Customer links must be readable pages, never registry/API downloads."""
+    url=clean(value)
+    try:
+        parsed=urllib.parse.urlsplit(url)
+        host=(parsed.hostname or "").lower()
+    except ValueError:
+        return ""
+    if parsed.scheme not in ("http","https") or not host or parsed.username or parsed.password:
+        return ""
+    if (host in ("data.cms.gov","hsapps.azdhs.gov") or host.endswith(".arcgis.com") or
+        re.search(r"(?:\.(?:json|csv|xml|zip)(?:$|[/?])|/(?:api|rest|query|download)(?:/|$))",parsed.path,re.I) or
+        re.search(r"(?:^|&)(?:f|format)=(?:p?json|csv|xml)(?:&|$)",parsed.query,re.I)):
+        return ""
+    return url
+
 def growth_candidate_evidence_valid(row,market):
     """Do not turn a directory or contradictory location into a qualified buyer.
 
@@ -2649,6 +2666,8 @@ def growth_candidate_evidence_valid(row,market):
     Preserve discovery rows; exclude them only from sample/paid selection.
     """
     if clean(row.get("market")).casefold()!=clean(market).casefold():
+        return False
+    if not growth_customer_url(row.get("source_url")):
         return False
     try:
         parsed=urllib.parse.urlparse(clean(row.get("source_url")))
@@ -2669,7 +2688,7 @@ def growth_candidate_evidence_valid(row,market):
     # Search-result titles and an auto-assigned official_site flag do not
     # establish an individual business or its physical territory. Keep those
     # rows for research; they need a reviewed import or structured source.
-    if not (curated or government):
+    if not (curated and row.get("official_site")):
         return False
     name=clean(row.get("business_name"))
     if re.search(r"\b(?:directory|ratings,? reviews|with reviews|hours and|top \d+|best \d+|top rated)\b",name,re.I):
@@ -2732,6 +2751,9 @@ def growth_candidate_score(row,service_key):
 def growth_fit_reason(row,service_key):
     label=clean(row.get("category_label")) or clean(row.get("category_key")).replace("_"," ")
     market=clean(row.get("market"))
+    detail=clean(row.get("snippet"))
+    if row.get("official_site") and detail:
+        return detail[:700]
     if service_key=="pressure_washing":
         return f"{label} in {market}; this property type can have exterior, pedestrian, parking, loading, or waste-area surfaces that may need recurring or project cleaning."
     return f"{label} in {market}; this business type commonly operates customer, staff, office, public, or facility space that may need recurring or project cleaning."
@@ -2751,15 +2773,15 @@ def growth_sales_angle(row,service_key):
         }
         return angles.get(category,"Lead with a specific exterior-cleaning use case and offer a simple site walk or quote.")
     angles={
-      "medical_centers":"Lead with reliable recurring service, clear scope, and minimal disruption to staff and patients.",
-      "property_management":"Lead with multi-property coverage, turns, common areas, and overflow janitorial capacity.",
+      "medical_centers":"Ask the office manager who handles non-clinical offices, reception and restrooms. Offer a walkthrough for that scope; confirm required cleaning standards before quoting clinical work.",
+      "property_management":"Ask the property manager whether common-area cleaning, move-out turns or backup coverage is handled in-house. Offer a walkthrough of one property and a written scope before discussing a wider portfolio.",
       "schools":"Lead with scheduled cleaning around occupancy and high-traffic common areas.",
       "schools_education":"Lead with scheduled cleaning around occupancy and high-traffic common areas.",
-      "hotels_motels":"Lead with guest-facing cleanliness, recurring schedules, and overflow/deep-clean capacity.",
+      "hotels_motels":"Ask the general manager or housekeeping manager whether they use outside help for lobby deep cleaning, meeting-room resets or overflow work. Offer a walkthrough of one area and a quote around their occupancy schedule.",
       "warehouses_industrial":"Lead with offices, break rooms, restrooms, and scheduled facility cleaning.",
       "grocery":"Lead with recurring high-traffic cleaning and dependable off-hours scheduling."
     }
-    return angles.get(category,"Lead with dependable commercial cleaning, a clear scope, and an easy quote process.")
+    return angles.get(category,"Ask the office or facilities manager who handles their shared spaces and whether they consider backup cleaning vendors. Offer a short walkthrough and a written scope for one area.")
 
 # Exposure-control policy: business research is not an interested service buyer.
 # Values are conservative experiment defaults, not legal safe harbors.
@@ -2880,6 +2902,7 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
             coalesce(public_email,'')<>'' or coalesce(public_phone,'')<>'' or official_site=true
           )
         order by
+          case when official_site=true and source_tier='direct' then 0 else 1 end,
           case when verification_status in ('direct_evidence','government_record') then 0
                when verification_status in ('credential_corroborated','corroborated') then 1 else 2 end,
           case when coalesce(public_email,'')<>'' then 0 when coalesce(public_phone,'')<>'' then 1 else 2 end,
@@ -3073,13 +3096,19 @@ async def growth_select_rotated_sample(conn,rows,recipient_key,service_key,marke
 def growth_sample_public_rows(rows):
     out=[]
     for r in rows:
-        contact=clean(r.get("public_email")) or clean(r.get("public_phone")) or clean(r.get("source_url"))
+        website=growth_customer_url(r.get("source_url"))
+        email_addr=clean(r.get("public_email"))
+        if not re.fullmatch(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}",email_addr): email_addr=""
+        phone=clean(r.get("public_phone"))
+        if not 10<=len(re.sub(r"\D","",phone))<=15 or re.search(r"[{}<>]",phone): phone=""
+        contact=email_addr or phone or ("Use the business website" if website else "Contact details need review")
         out.append({
           "business_name":clean(r.get("business_name")),"market":clean(r.get("market")),
           "category":clean(r.get("category_label")) or clean(r.get("category_key")).replace("_"," ").title(),
           "fit_score":int(r.get("fit_score") or 0),"grade":clean(r.get("grade")),
           "fit_reason":clean(r.get("fit_reason")),"sales_angle":clean(r.get("sales_angle")),
-          "contact_route":contact,"source_url":clean(r.get("source_url"))
+          "contact_route":contact,"public_email":email_addr,"public_phone":phone,
+          "website_url":website,"source_url":website
         })
     return out
 
@@ -3269,7 +3298,7 @@ async def handle_growth_snapshot(conn,p):
         payload=payload if isinstance(payload,list) else []
         checkout=await growth_sample_checkout(conn,email_addr,existing["sample_id"],service_key)
         return {"ok":True,"status":clean(existing["status"]),"sample_id":str(existing["sample_id"]),
-          "sample":payload,"checkout_url":checkout,"selected_markets":growth_request_territory(existing),"message":"Your commercial opportunity snapshot is already saved."}
+          "sample":payload,**sample_pdf_response(payload,existing["business_name"],GROWTH_SERVICE_LABELS[existing["provider_service_key"]],growth_request_territory(existing),str(existing["sample_id"]),existing["sample_generated_at"]),"checkout_url":checkout,"selected_markets":growth_request_territory(existing),"message":"Your commercial opportunity snapshot is already saved."}
 
     # A different submission/email must not unlock another free five for the
     # same named contractor. This is anti-abuse only, not account authentication.
@@ -3370,6 +3399,7 @@ async def handle_growth_snapshot(conn,p):
           r["source_url"],r["source_domain"],r["verification_status"])
     public_rows=growth_sample_public_rows(sample)
     territory_label=", ".join(territory)
+    pdf_response=sample_pdf_response(public_rows,business,GROWTH_SERVICE_LABELS[service_key],territory,str(sample_id))
     checkout=""
     if len(rows)>=GROWTH_SAMPLE_MIN_RESERVE:
         checkout=await growth_sample_checkout(conn,email_addr,sample_id,service_key)
@@ -3379,27 +3409,23 @@ async def handle_growth_snapshot(conn,p):
       sample_generated_at=now(),sample_sent_at=null,next_nurture_at=null,updated_at=now()
       where sample_id=$1""",sample_id,json.dumps(public_rows))
 
-    flat=[]
+    intro=f"Here are the five commercial prospects prepared for {business} in {territory_label}. Your BMC prospect brief is attached as a PDF, so you can save it and work through it at your own pace."
+    details=[]
     for idx,x in enumerate(public_rows,1):
-        flat.extend([f"{idx}. {x['business_name']} — {x['category']} — fit {x['fit_score']}/100",
-          f"Why it fits: {x['fit_reason']}",f"Public contact route: {x['contact_route']}",
-          f"Suggested angle: {x['sales_angle']}",f"Source: {x['source_url']}",""])
-    if checkout:
-        flat.extend(["If these are the kinds of accounts you want, the $499 pack includes 100 total qualified commercial prospects built to the same standard.",checkout])
-    else:
-        flat.append("This market does not yet have the 125-prospect reserve BMC requires before selling a 100-prospect pack. We will not pad a paid pack with weaker rows.")
-    flat.extend(["","Qualification guarantee: if a delivered prospect fails the published territory/activity/type/contact standard, BMC replaces it.","Reply no at any time to stop follow-up."])
-    body=f"Hi {contact},\n\nHere are five commercial targets for {business} in {territory_label}.\n\n"+"\n".join(flat)+f"\n\nThis is a promotional email from BMC Service Network.\n\nBMC Service Network\nBMC Luminary Ventures LLC\n{BUSINESS_POSTAL_ADDRESS}"
-    html_body=workflow_email_html("Your 5 commercial targets",[
-      f"Here are five commercial targets for {business} in {territory_label}.",
-      *[f"{i}. {x['business_name']} · {x['category']} · fit {x['fit_score']}/100\n{x['fit_reason']}\nContact: {x['contact_route']}" for i,x in enumerate(public_rows,1)],
-      "If these fit the work you want, the full pack is 100 total qualified prospects for $499." if checkout else "BMC is not offering the 100-prospect pack in this exact market until the reserve inventory clears our quality gate.",
-      "Qualification guarantee: wrong territory, inactive business, wrong property type, duplicate, or missing promised contact route gets replaced."
-    ],"Get the full 100 for $499",checkout,greeting=f"Hi {contact},",marketing=True) if checkout else workflow_email_html("Your 5 commercial targets",[
-      f"Here are five commercial targets for {business} in {territory_label}.",
-      *[f"{i}. {x['business_name']} · {x['category']} · fit {x['fit_score']}/100\n{x['fit_reason']}" for i,x in enumerate(public_rows,1)]
-    ],greeting=f"Hi {contact},",marketing=True)
-    submitted=await send_mail(email_addr,f"Your 5 commercial targets in {territory_label}",body,html_body)
+        details.append(f"{idx}. {x['business_name']} — {x['category']}\nWhy this business: {x['fit_reason']}\nSuggested first conversation: {x['sales_angle']}\nPublic contact: {x['contact_route']}\nBusiness website: {x['website_url']}")
+    terms="These are researched businesses to approach. They have not requested quotes, and no buying interest or job is confirmed. The five are yours to use free, with no obligation."
+    offer=("If this shortlist fits the work you want, the optional $499 pack includes 100 total researched commercial prospects, including these five."
+      if checkout else "We are reviewing whether this territory can support a full pack to the same standard. No paid pack is available for this territory yet.")
+    guarantee="If a delivered prospect fails our published territory, activity, business type or contact standard, reply and we will replace it."
+    body=f"Hi {contact},\n\n"+"\n\n".join([intro,*details,terms,offer,guarantee])
+    if checkout: body+="\n\nView the 100-prospect offer: "+checkout
+    body+=f"\n\nQuestions about the fit? Reply to this email.\n\nBMC Service Network\nBMC Luminary Ventures LLC\n{BUSINESS_POSTAL_ADDRESS}"
+    html_body=workflow_email_html("Your five-prospect brief",[intro,*details,terms,offer,guarantee,
+      "Questions about the fit? Reply to this email."],
+      "View the 100-prospect offer" if checkout else None,checkout or None,
+      greeting=f"Hi {contact},",marketing=True)
+    submitted=await send_mail(email_addr,f"Your 5 commercial targets in {territory_label}",body,html_body,
+      attachments=[(pdf_response["download_filename"],base64.b64decode(pdf_response["download_pdf_base64"]),"application","pdf")])
     # Both response branches disclose the five prospects IN THE HTTP RESPONSE,
     # regardless of whether SMTP accepted the email. Never release or rotate
     # these five on an email failure: that would leak a second set on retry.
@@ -3418,7 +3444,7 @@ async def handle_growth_snapshot(conn,p):
           f"SMTP did not accept Growth sample {sample_id} for {email_addr}",
           "Keep the five disclosed prospects reserved for this customer; retry emailing the saved sample only")
         await event(conn,"growth_sample",sample_id,"web_disclosed_email_failed",{"email":email_addr,"smtp_accepted":False})
-        return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"sample":public_rows,
+        return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"sample":public_rows,**pdf_response,
           "checkout_url":checkout,"selected_markets":territory,"message":"Your five targets are ready on this page, but the email copy needs a delivery retry."}
     await conn.execute("""update growth_sample_requests
       set status='delivered',sample_sent_at=now(),next_nurture_at=now()+interval '2 days',updated_at=now()
@@ -3426,7 +3452,7 @@ async def handle_growth_snapshot(conn,p):
     await event(conn,"growth_sample",sample_id,"web_disclosed_smtp_accepted",
       {"email":email_addr,"service_key":service_key,"market":market,"qualified_pool":len(rows),
        "smtp_accepted":True,"inbox_delivery_verified":False})
-    return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"sample":public_rows,
+    return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"sample":public_rows,**pdf_response,
       "checkout_url":checkout,"selected_markets":territory,"qualified_pool":len(rows),
       "message":"Your five commercial targets are ready. We also emailed a copy so you can use them later."}
 
@@ -3460,7 +3486,7 @@ async def growth_claim_free_five(request:Request):
                   "message":"Owner preview: this market does not currently have five qualified rows."}
             public_rows=growth_sample_public_rows(growth_select_representative_sample(rows,target["public_email"]))
             return {"ok":True,"status":"sample_ready","sample_id":"owner-preview",
-              "sample":public_rows,
+              "sample":public_rows,**sample_pdf_response(public_rows,target["business_name"],GROWTH_SERVICE_LABELS[target["service_key"]],territory,"owner-preview",preview=True),
               "checkout_url":"#owner-preview-checkout" if len(rows)>=GROWTH_SAMPLE_MIN_RESERVE else "",
               "qualified_pool":len(rows),"selected_markets":territory,"preview":True,
               "message":"Owner preview only — no customer sample, email, reply, or checkout was created."}
@@ -4537,7 +4563,7 @@ def growth_outreach_message(row,step,owner_preview=False):
     short_name=business
     if clean(row["target_id"])=="vendor:v_prescott_americancrown" and service_key=="commercial_cleaning":
         short_name="American Crown"
-    subject=(f"A {market} idea for {short_name}" if step==1 else f"Re: a {market} idea for {short_name}")
+    subject=(f"Five commercial prospects for {short_name} in {market}" if step==1 else f"Your five {market} commercial prospects")
     greeting=f"Hello {short_name} team,"
     if step==1:
         lines=[
