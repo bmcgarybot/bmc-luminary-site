@@ -84,6 +84,16 @@ class RuntimeTests(unittest.TestCase):
             self.assertEqual(commands[0][-2:],['restart','ops_api'])
             self.assertNotIn('up',commands[0])
             self.assertEqual(env['GROWTH_OUTREACH_ENABLED'],'false')
+    def test_deployment_lock_pauses_probes_repairs_and_alerts(self):
+        import fcntl
+        with tempfile.TemporaryDirectory() as folder:
+            state_dir=pathlib.Path(folder)
+            with (state_dir/'maintenance.lock').open('a') as maintenance:
+                fcntl.flock(maintenance,fcntl.LOCK_EX|fcntl.LOCK_NB)
+                def forbidden(*a,**k):raise AssertionError('Maintenance must pause the watchdog')
+                g=watch['main'].__globals__
+                with patch.dict(g,STATE_DIR=state_dir,STATE_FILE=state_dir/'state.json',read_env=lambda:{},collect=forbidden,send_alert=forbidden),patch('sys.argv',['watchdog.py']):
+                    self.assertEqual(watch['main'](),0)
     def test_configuration_drift_prevents_repairs(self):
         with tempfile.TemporaryDirectory() as folder:
             state_dir=pathlib.Path(folder)

@@ -2,6 +2,14 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
+# Coordinate with the host watchdog; it must not fight an authorized deployment.
+WATCHDOG_STATE="$HOME/.local/state/bmc-watchdog"
+umask 077
+mkdir -p "$WATCHDOG_STATE"
+chmod 700 "$WATCHDOG_STATE"
+exec 9>"$WATCHDOG_STATE/maintenance.lock"
+flock -x 9
+
 ENV_FILE="${1:-.env}"
 
 if [ ! -f "$ENV_FILE" ]; then

@@ -3,6 +3,7 @@
 import argparse, base64, datetime as dt, fcntl, hashlib, hmac, importlib.util
 import json, os, pathlib, re, smtplib, ssl, subprocess, time, urllib.request, urllib.error
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import ExitStack
 from email.message import EmailMessage
 from email.utils import make_msgid
 
@@ -217,7 +218,7 @@ def main():
     os.umask(0o077)
     STATE_DIR.mkdir(parents=True,exist_ok=True,mode=0o700)
     os.chmod(STATE_DIR,0o700)
-    with (STATE_DIR/"lock").open("a") as lock:
+    with (STATE_DIR/"lock").open("a") as lock, ExitStack() as resources:
         os.chmod(STATE_DIR/"lock",0o600)
         try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         except BlockingIOError:print(json.dumps({"busy":True}));return 0
@@ -229,6 +230,10 @@ def main():
                 "autofix":env.get("WATCHDOG_AUTOFIX")=="true","last_check":state.get("last_check"),"private_alert_audit_available":(STATE_DIR/"alert-attempts.jsonl").exists(),
                 "last_report":state.get("last_report"),"pending_alert":state.get("pending_notice"),
                 "test_alert_smtp_accepted":state.get("test_alert_smtp_accepted",False)}));return 0
+        maintenance=resources.enter_context((STATE_DIR/"maintenance.lock").open("a"))
+        try:fcntl.flock(maintenance,fcntl.LOCK_SH|fcntl.LOCK_NB)
+        except BlockingIOError:
+            print(json.dumps({"maintenance_active":True,"repairs_paused":True,"alerts_paused":True}));return 0
         checks,metrics,growth,consistent=collect(env,state)
         now=time.time();repairs=[]
         if not args.report and not args.json and not args.test_alert and consistent:
