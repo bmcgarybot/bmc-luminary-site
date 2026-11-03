@@ -277,4 +277,7 @@ def install(app,require_admin,search,markets,secret,enabled=True):
             jobs=await conn.fetch('select market,status,count(*) records from official_research_jobs group by market,status order by market,status')
             inventory=await conn.fetch("select market,side,category_key,count(*) records from market_inventory_candidates where evidence->>'researched_by'=$1 and status='discovered' and closed_at is null group by market,side,category_key",VERSION)
             errors=await conn.fetch("select error_code,count(*) records from official_research_jobs where status='needs_review' group by error_code order by count(*) desc limit 12")
-        return {'ok':True,'worker':VERSION,'jobs':[dict(x) for x in jobs],'primary_site_verified':[dict(x) for x in inventory],'review_reasons':[dict(x) for x in errors],'outreach_sent':0}
+        from pathlib import Path
+        image_catalog=json.loads(Path(__file__).with_name('service_images.json').read_text())
+        imagery={'assigned':len(image_catalog['services']),'needs_review':[k for k,v in image_catalog['services'].items() if v['review_status']=='needs_review']}
+        return {'ok':True,'worker':VERSION,'imagery':imagery,'jobs':[dict(x) for x in jobs],'primary_site_verified':[dict(x) for x in inventory],'review_reasons':[dict(x) for x in errors],'outreach_sent':0}
