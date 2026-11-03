@@ -1,3 +1,23 @@
+# Verified continuation — 2026-11-03 18:16 UTC
+
+Supersedes conflicting older notes. Outreach remains held.
+
+- Actual deployed release e62610ba7a484d464b77b5cc96ae31ea4adc4b44, PR45–46, exact master CI41690846183 and Pages41690845888 passed. Deployment result b-phoenix-click-repair-deploy-20261103T181047Z succeeded 18:13:29 UTC; independent snapshot b-phoenix-zfinal-operator-snapshot-20261103T181239Z verified same SHA 18:13:35 UTC.
+- Owner hold ON; all three outreach switches OFF. Exact growth-cleaning-1 Phoenix scope has nine IDs (api/growth_phoenix_cohort.json). The eleven pressure-washing contacts are excluded. Recipient approvals remain pending, including historic contact holds.
+- Nine original preview messages and attachments are confirmed in the contact mailbox's Private Email inbox, not Gmail. No duplicates sent. Old message wording is preserved. Revised “Hey, this is Brett with BMC Service Network” copy is in the owner review artifact; it has not been newly emailed or claimed as inbox-rendered.
+- All nine live signed owner journeys rechecked after deployment: five saved Phoenix prospects each, working PDF buttons, correctly bound owner-preview checkout URLs. One actual revised Stripe checkout rendered the live $499 product and locked owner mailbox; no payment.
+- official-pdf-v2 preserves v1 history and uses source/name/market-bound facility labels and researched openings. Alliance replaces certificate-failing Cole D Sorenson with Tiffany & Bosco Phoenix. Broken source held; Changing Hands Phoenix independently researched as a reserve replacement.
+- Fresh live QA exposed source_url omitted from the claim query; PR46 fixes it with a route regression. Positive auto-replies also require exact configured recipient membership and cleared review. Held/unreviewed replies are recorded without sending.
+- Stripe read-only evidence: $499 starter and distinct legacy $749 premium active. New $149/25, $350 upgrade and $250 strategy links inactive; no approved recipient offers or paid parent orders. Implementation is not activation.
+- Phoenix cleaning selector meets capped 125 reserve after correction. This is automated capacity, not verified demand. Paid orders0, revenue$0, customer samples0, replies0, historical sent7. Confirmed active providers0; incomplete market scans and research inventory do not establish operational coverage.
+- PHOENIX_SOURCE_RECHECK_2026-11-03.json preserves actual official-source checks and failures/limits.
+- RECOVERY_CANDIDATE_REVIEW_2026-11-03.json contains five held/uncontacted candidates and proposed introductions. Official ROC checks: Verde Valley Handyman333112 Active R-62; Licensed Handyman349772 Active R-62; Davis Fence233707 Active CR-14. The handyman companies share a qualifying party: do not infer two crews. Acceptance, insurance, capacity, exact job eligibility and access remain unconfirmed; fencing is manual inquiry only.
+- Local review files: review/BMC_Phoenix_Actual_Message_And_Click_Review.html and review/BMC_Recovery_Candidate_Review.html in the Business time workspace. These contain private signed owner links; do not publish or resend them. Existing work was inspected and preserved; the local source-recheck JSON remains recoverable and is also saved as relay evidence.
+- New active owner request: improve VPS business metrics, bounded recovery, monitoring and operational email escalation. Owner designated a private alert recipient in chat; keep that address in VPS configuration, not repository documentation. Existing 14-day private metrics history and five-minute watchdog need stronger journey probes, recovery and alert retry handling.
+- No approval, charge, provider activation or outreach release performed. Exact-cohort owner review/release remains required. No historic resends.
+
+---
+
 ## FINAL VERIFIED OFFER RELEASE — 2026-11-03 03:50 UTC
 
 Newest production/VPS/master release: 5aaa64ad56cd4bf2c09385fffef36e406114546b. PR43 completes the receipt-reporting followup mentioned below: all five Growth product keys are now counted in paid-order/revenue summaries. Real PostgreSQL regression executes the production query against five paid tiers plus unrelated/unpaid exclusions; PASS. Exact-master Portfolio CI41573830370 (both jobs) and Pages41573830351 SUCCESS. Held deploy b-receipt-summary-deploy-20261103T034633Z SUCCESS at03:48:38UTC; runtime0failures/0warnings. This is a new accounting correction release, not a repeat of the previous offer deployment.
