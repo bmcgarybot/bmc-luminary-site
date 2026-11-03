@@ -98,7 +98,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
           business_name='American Crown Commercial Cleaning',market='Prescott',
           source_url='https://americancrowncc.com/')
         _,subject,plain,rendered,_=self.ns['growth_outreach_message'](row,1)
-        self.assertEqual(subject,'A Prescott idea for American Crown')
+        self.assertEqual(subject,'Five commercial prospects for American Crown in Prescott')
         self.assertIn('offices and common areas across Yavapai County',plain)
         self.assertIn('Hello American Crown team,',rendered)
         with self.assertRaisesRegex(ValueError,'source-backed'):

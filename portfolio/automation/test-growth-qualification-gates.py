@@ -12,7 +12,7 @@ import urllib.parse
 
 SOURCE=ast.parse(Path(__file__).with_name("api").joinpath("app.py").read_text())
 NAMES={"clean","growth_category_terms","growth_selected_categories","growth_candidate_is_fresh",
-       "growth_qualified_candidates","growth_prospect_key","growth_candidate_evidence_valid","json_dict"}
+       "growth_qualified_candidates","growth_prospect_key","growth_candidate_evidence_valid","json_dict","growth_customer_url","growth_sample_public_rows"}
 nodes=[node for node in SOURCE.body if isinstance(node,(ast.FunctionDef,ast.AsyncFunctionDef)) and node.name in NAMES]
 async def exposure_passthrough(conn,rows,*args): return rows
 ns={"json":json,"urllib":urllib,"DEFAULT_SOURCE_NATIVE_MARKETS":("Prescott","Prescott Valley","Sedona","Flagstaff"),"datetime":datetime,"timezone":timezone,"timedelta":timedelta,"hashlib":hashlib,"re":re,
@@ -74,12 +74,29 @@ class Tests(unittest.TestCase):
         row=self.evidence_row(evidence=json.dumps({"artifact_files":["reviewed.json"],"researched_by":"assistant_manual_census"}))
         self.assertTrue(ns['growth_candidate_evidence_valid'](row,'Sedona'))
         row.update(source_url='https://data.cms.gov/record',source_tier='government_registry',verification_status='government_record',evidence={'source_key':'cms_clia'})
-        self.assertTrue(ns['growth_candidate_evidence_valid'](row,'Sedona'))
+        self.assertFalse(ns['growth_candidate_evidence_valid'](row,'Sedona'))
         row['source_url']='https://unreviewed.example/record'
         self.assertFalse(ns['growth_candidate_evidence_valid'](row,'Sedona'))
     def test_actual_url_host_cannot_be_overridden_by_official_flag_or_domain(self):
         for url in ['https://www.loc8nearme.com/a','https://sub.yelp.com/b','javascript:alert(1)']:
             self.assertFalse(ns['growth_candidate_evidence_valid'](self.evidence_row(source_url=url,source_domain='hilton.com'),'Sedona'))
+
+    def test_registry_downloads_never_become_customer_links_or_contacts(self):
+        for url in ('https://data.cms.gov/data-viewer.json','https://services1.arcgis.com/a/FeatureServer/0/query?f=json',
+                    'https://agency.gov/api/data','https://agency.gov/records.csv','https://agency.gov/records?format=json'):
+            row=self.evidence_row(source_url=url,public_email=url,public_phone='{"phone":123}')
+            self.assertFalse(ns['growth_candidate_evidence_valid'](row,'Sedona'))
+            public=ns['growth_sample_public_rows']([row])[0]
+            self.assertEqual(public['source_url'],'')
+            self.assertEqual(public['public_email'],'')
+            self.assertNotIn(url,public['contact_route'])
+
+    def test_readable_business_site_keeps_real_contact_fields(self):
+        row=self.evidence_row(public_email='manager@hotel.example',public_phone='928-555-0100')
+        public=ns['growth_sample_public_rows']([row])[0]
+        self.assertEqual(public['website_url'],row['source_url'])
+        self.assertEqual(public['public_email'],'manager@hotel.example')
+        self.assertEqual(public['public_phone'],'928-555-0100')
 
     def test_aggregate_titles_and_paths_fail_on_unknown_domains(self):
         for name,url in [('Restaurants in Sedona','https://unlisted.example/city'),

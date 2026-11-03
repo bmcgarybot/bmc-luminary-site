@@ -302,23 +302,39 @@
         const item=document.createElement("div");
         item.className="soft-panel";
         const h=document.createElement("h4");
-        h.textContent=(index+1)+". "+(row.business_name||"Commercial prospect")+" · "+(row.market||"")+" · "+(row.fit_score||0)+"/100";
+        h.textContent=(index+1)+". "+(row.business_name||"Commercial prospect")+" · "+(row.market||"");
         const why=document.createElement("p");
         why.textContent=row.fit_reason||"Qualified commercial fit.";
         const contact=document.createElement("p");
-        contact.textContent="Public contact route: "+(row.contact_route||"See source");
+        contact.textContent="Contact: "+(row.contact_route||"Contact details need review");
         const angle=document.createElement("p");
-        angle.textContent="Suggested angle: "+(row.sales_angle||"Lead with the relevant commercial use case.");
+        angle.textContent="Suggested first conversation: "+(row.sales_angle||"Contact the business to confirm who manages this service.");
         item.append(h,why,contact,angle);
         if(row.source_url && /^https?:\/\//i.test(row.source_url)){
           const source=document.createElement("a");
           source.href=row.source_url;source.target="_blank";source.rel="noopener";
-          source.textContent="View source";
+          source.textContent="Visit business website";
           item.appendChild(source);
         }
         sampleWrap.appendChild(item);
       });
       card.appendChild(sampleWrap);
+      if(response.download_pdf_base64 && response.download_filename){
+        const download=document.createElement("button");
+        download.type="button";download.className="btn btn-primary";
+        download.textContent="Download your five prospects (PDF)";
+        download.addEventListener("click",function(){
+          try{
+            const bytes=Uint8Array.from(atob(response.download_pdf_base64),c=>c.charCodeAt(0));
+            const url=URL.createObjectURL(new Blob([bytes],{type:"application/pdf"}));
+            const link=document.createElement("a");link.href=url;link.download=response.download_filename;
+            document.body.appendChild(link);link.click();link.remove();
+            setTimeout(()=>URL.revokeObjectURL(url),60000);
+          }catch(error){download.textContent="Download unavailable — please contact BMC";}
+        });
+        card.appendChild(download);
+      }
+
       if(response.checkout_url && /^https:\/\/buy\.stripe\.com\//i.test(response.checkout_url)){
         const actions=document.createElement("div");actions.className="actions";
         const checkout=document.createElement("a");checkout.className="btn btn-primary";
