@@ -969,3 +969,25 @@ form[data-form-type="growth_snapshot"] > [hidden]{display:none!important}
 .growth-territory legend{font-weight:700;padding:0 6px}
 .growth-city-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px 16px}
 .growth-city-options .check{margin:0;align-items:flex-start}
+
+/* Growth samples must shrink within grid tracks, including long source/contact text. */
+.growth-seller-page .form-shell{grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr)}
+.growth-seller-page .form-shell>*{min-width:0;max-width:100%}
+.growth-seller-page .submission-success,.growth-sample-results,.growth-sample-results .soft-panel{min-width:0;max-width:100%;overflow-wrap:anywhere}
+.growth-sample-results{display:grid;gap:16px;margin-top:24px}
+.growth-sample-results .soft-panel{padding:20px;background:#fffdf8;border:1px solid #d8ded7;border-radius:16px}
+.growth-sample-results h4{font-size:1.15rem;line-height:1.35;margin:0 0 12px}
+.growth-contact-link{display:inline-flex;align-items:center;min-height:44px;padding:8px 12px;border:1px solid #bccbc0;border-radius:8px;font-weight:700;max-width:100%;box-sizing:border-box}
+.growth-seller-page .submission-success .btn{white-space:normal;max-width:100%;box-sizing:border-box}
+@media(max-width:760px){
+ .growth-seller-page .form-shell{grid-template-columns:minmax(0,1fr)}
+ .growth-seller-page .editorial-intro h2{font-size:clamp(1.6rem,7vw,2.2rem);line-height:1.12}
+ .growth-seller-page .editorial-intro p{font-size:1rem;line-height:1.5}
+ .growth-seller-page .request-card{padding:16px;min-width:0}
+ .growth-seller-page .submission-success{padding:16px}
+ .growth-seller-page .submission-success h3{font-size:1.5rem}
+ .growth-seller-page .submission-success p,.growth-seller-page .submission-success li{font-size:1rem;line-height:1.55}
+ .growth-seller-page .submission-success ol{margin-left:0;padding-left:22px}
+ .growth-sample-results .soft-panel{padding:14px}
+ .growth-seller-page .submission-success .btn{width:100%;min-height:48px}
+}

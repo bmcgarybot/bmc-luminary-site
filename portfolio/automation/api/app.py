@@ -1,4 +1,4 @@
-from growth_pdf import sample_pdf_response
+from growth_pdf import sample_pdf_response, render_sample_pdf
 import base64, os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, urllib.error, hmac, hashlib, time, html, random, csv, io
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
@@ -673,7 +673,7 @@ async def email_preferences(request:Request):
             await conn.execute("""update growth_sample_requests set next_nurture_at=null,
               status=case when converted_at is null then 'suppressed' else status end,updated_at=now()
               where lower(email)=$1""",address)
-        content="<h1>You're unsubscribed.</h1><p>You will no longer receive BMC marketing emails at this address.</p>"
+        content="<h1>You're unsubscribed.</h1><p>Thanks for taking a look. You will no longer receive BMC marketing emails at this address.</p><p>Your free research is still yours to keep. If your needs change, you can find us at <a href='https://bmcservicenetwork.com/'>bmcservicenetwork.com</a>.</p>"
     else:
         # GET is read-only so mail scanners cannot silently unsubscribe people.
         content="<h1>Stop BMC marketing emails?</h1><p>Confirm below. No login is needed.</p><form method='post'><button type='submit'>Stop receiving these emails</button></form>"
@@ -3768,45 +3768,29 @@ async def process_growth_nurture(x_bmc_admin_key:str|None=Header(default=None)):
             continue
         step=int(row["nurture_step"] or 0)+1
         if step==1:
-            subject=f"Want the other 95 commercial targets in {territory_label}?"
-            body=f"""Hi {row['contact_name']},
-
-You asked BMC for five commercial targets for {row['business_name']} in {territory_label}.
-
-If those are the kinds of accounts you want, the full $499 Growth Pack gives you 100 total qualified commercial prospects built to the same standard — not a raw contact dump.
-
-{checkout}
-
-Qualification guarantee: wrong territory, inactive business, wrong property type, duplicate, or missing promised contact route gets replaced.
-
-This is a promotional email from BMC Service Network.
-
-BMC Luminary Ventures LLC
-{BUSINESS_POSTAL_ADDRESS}
-
-Reply no if you do not want another follow-up."""
+            subject=f"Which of your five {territory_label} prospects fits best?"
+            lines=[
+              f"You now have five researched businesses for {row['business_name']}. Start with the one closest to the work you want more of.",
+              'Use its suggested approach to ask: "Who handles outside vendors for this work, and what would you need from us to consider a quote?" That gives you a useful next step without assuming they are hiring.',
+              "Are these the kinds of accounts you want? Reply with the business that fits best, or tell us what to change about the targeting before buying more.",
+              "If the fit is right, the full pack is $499 for 100 researched prospects total, including your original five. Each includes the reason it fits, a public contact route, a source, and an opening approach. No subscription.",
+              "These are researched potential accounts, not requested quotes or guaranteed jobs. Qualifying errors in territory, activity, property type, duplicates, or promised contact routes are replaced."
+            ]
+            button="Get 100 total prospects — $499"
         else:
-            subject=f"Last note on the {territory_label} commercial prospect pack"
-            body=f"""Hi {row['contact_name']},
-
-Last follow-up on the commercial targets BMC researched for {row['business_name']}.
-
-If you want the full 100-prospect pack, it is here:
-{checkout}
-
-If not, no problem — the five free targets are yours to use.
-
-This is a promotional email from BMC Service Network.
-
-BMC Luminary Ventures LLC
-{BUSINESS_POSTAL_ADDRESS}
-
-Reply no to stop future BMC outreach."""
-        ok=await send_mail(row["email"],subject,body,workflow_email_html(subject,[
-          "BMC already researched your five free commercial targets.",
-          "The full $499 pack contains 100 total qualified prospects built to the same published standard.",
-          "There is no retainer and no sales call required."
-        ],"Get the full 100 for $499",checkout,greeting=f"Hi {row['contact_name']},",marketing=True))
+            subject=f"A smaller first step for {row['business_name']}?"
+            lines=[
+              "Your five free prospects are yours to keep. If they fit but 100 is more than you need, reply 'smaller pack' and we will review a narrower scope with you before any payment.",
+              "If the targeting is off, tell us the account type or city you would prefer. More names will not help if they are the wrong businesses.",
+              "If you are ready for the full pack, it is $499 for 100 total researched prospects, including the five you already have. No subscription and no required sales call.",
+              "This is the last scheduled follow-up about your sample. You can use the research whenever you are ready."
+            ]
+            button="Get 100 total prospects — $499"
+        body="\n\n".join([f"Hi {row['contact_name']},",*lines,button,checkout,
+          "BMC Service Network","This is a promotional email from BMC Service Network.",
+          "BMC Luminary Ventures LLC",BUSINESS_POSTAL_ADDRESS])
+        ok=await send_mail(row["email"],subject,body,workflow_email_html(subject,lines,
+          button,checkout,greeting=f"Hi {row['contact_name']},",marketing=True))
         if ok:
             next_at=None if step>=2 else datetime.now(timezone.utc)+timedelta(days=3)
             await conn.execute("""update growth_sample_requests set nurture_step=$2,next_nurture_at=$3,
@@ -3984,6 +3968,7 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
                 int(x["fit_score"]),x["grade"],x["fit_reason"],x["sales_angle"],x.get("public_email"),x.get("public_phone"),
                 x["source_url"],x.get("source_domain"),x.get("verification_status"))
           attachment=growth_csv_bytes(final)
+          paid_pdf=render_sample_pdf(final,row["business_name"],GROWTH_SERVICE_LABELS.get(row["provider_service_key"],row["provider_service_key"]),territory,str(row["paid_order_id"]),paid=True)
           subject=f"Your BMC Growth Pack — 100 commercial prospects in {territory_label}"
           body=f"""Hi {row['contact_name']},
 
@@ -4001,11 +3986,11 @@ BMC Luminary Ventures LLC
 {BUSINESS_POSTAL_ADDRESS}"""
           attachment_name="BMC-Growth-Pack-"+("selected-cities" if len(territory)>1 else row["market"].replace(" ","-"))+".csv"
           ok=await send_mail_once("growth-order:"+str(row["paid_order_id"]),row["customer_email"],subject,body,workflow_email_html(subject,[
-            "Your 100-prospect Growth Pack is attached as a CSV you can open in Excel, Google Sheets, or Numbers.",
+            "Your 100-prospect Growth Pack is attached as a branded PDF and a CSV you can open in Excel, Google Sheets, or Numbers.",
             "The five free targets are included in the 100.",
             "Every row passed BMC's territory, fit, contact/source, activity, score, and duplicate checks.",
             "Reply with bad-fit rows and the reason. Qualifying mistakes are replaced."
-          ]),[(attachment_name,attachment,"text","csv")])
+          ]),[(attachment_name,attachment,"text","csv"),(attachment_name.removesuffix(".csv")+".pdf",paid_pdf,"application","pdf")])
           if not ok:
               await conn.execute("update tasks set status='exception',updated_at=now() where task_id=$1",row["task_id"])
               await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
