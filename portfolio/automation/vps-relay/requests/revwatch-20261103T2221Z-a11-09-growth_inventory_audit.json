@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "request_id": "revwatch-20261103T2221Z-a11-09-growth_inventory_audit",
+  "action": "growth_inventory_audit",
+  "created_at": "2026-11-03T22:22:06.437Z",
+  "allow_external_actions": false,
+  "args": {}
+}
