@@ -33,6 +33,7 @@ import tempfile
 import time
 import urllib.parse
 import urllib.request
+import urllib.error
 
 BASE="https://www.whereorg.com"
 BOOTSTRAP_TAG="assistant_curated_whereorg_bootstrap_v1"
@@ -379,7 +380,7 @@ def run_psql(payload:str,env:dict,env_file:str):
       input=payload,text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE
     )
 
-def fetch(url:str,timeout:int=30):
+def fetch(url:str,timeout:int=12):
     req=urllib.request.Request(url,headers={
       "User-Agent":"BMC-Service-Network-Research/1.0 (+https://bmcservicenetwork.com)",
       "Accept":"text/html,application/xhtml+xml",
@@ -398,7 +399,12 @@ def main():
     ap.add_argument("--max-pages-per-market",type=int,default=1500)
     ap.add_argument("--delay",type=float,default=0.25)
     ap.add_argument("--dry-run",action="store_true")
+    ap.add_argument("--checkpoint-dir",default="")
+    ap.add_argument("--stats-file",default="")
+    ap.add_argument("--max-errors",type=int,default=8)
     args=ap.parse_args()
+    checkpoints={}
+
 
     selected=set(x.strip() for x in args.markets.split(",") if x.strip())
     markets=[(m,s) for m,s in MARKETS.items() if not selected or m in selected]
@@ -416,6 +422,16 @@ def main():
         stats["by_market"][market]=mstat
         queue=[]
         queued=set()
+        failures={}
+        checkpoint=Path(args.checkpoint_dir)/(slug+".json") if args.checkpoint_dir else None
+        if checkpoint and checkpoint.exists():
+            try:
+                prior=json.loads(checkpoint.read_text())
+                if prior.get('queue'):
+                    queue=[tuple(x) for x in prior['queue']]
+                    queued=set(prior.get('queued',[]));failures=prior.get('failures',{})
+            except (OSError,ValueError,TypeError):pass
+        resumed=bool(queue)
 
         def enqueue(url,feed_key):
             if not url or url in queued:
@@ -424,10 +440,10 @@ def main():
 
         # Start with curated broad feeds, then discover subcategory pages from
         # both the market root and every successfully fetched category page.
-        for feed_key,_,_,_ in FEEDS:
+        for feed_key,_,_,_ in ([] if resumed else FEEDS):
             enqueue(f"{BASE}/businesses/{feed_key}-in-{slug}-az",feed_key)
         try:
-            root=fetch(f"{BASE}/{slug}-az")
+            root=fetch(f"{BASE}/{slug}-az") if not resumed else ""
             for u,k in discover_category_pages(root,slug):
                 enqueue(u,k)
         except Exception as exc:
@@ -437,8 +453,8 @@ def main():
         # A high technical ceiling protects against malformed cyclic navigation;
         # it is not a business/research target. The queue otherwise runs until all
         # discovered category and pagination pages have been exhausted.
-        page_ceiling=max(100,int(args.max_pages_per_market or 1500))
-        while queue and pages<page_ceiling:
+        page_ceiling=max(1,min(1500,int(args.max_pages_per_market or 1500)))
+        while queue and pages<page_ceiling and stats["feeds_failed"]<max(1,args.max_errors):
             url,feed_key=queue.pop(0); pages+=1
             stats["feeds_attempted"]+=1
             try:
@@ -471,11 +487,15 @@ def main():
                     mstat["classified"]+=1; stats["classified"]+=1
             except Exception as exc:
                 stats["feeds_failed"]+=1
-                stats["errors"].append({"market":market,"feed":feed_key,"error":str(exc)[:220]})
+                if len(stats['errors'])<30:stats["errors"].append({"market":market,"feed":feed_key,"error":str(exc)[:220]})
+                failures[url]=failures.get(url,0)+1
+                if failures[url]<3 and not (isinstance(exc,urllib.error.HTTPError) and exc.code==404):queue.append((url,feed_key))
             if args.delay>0:time.sleep(args.delay)
         mstat["pages_discovered"]=len(queued)
         mstat["pages_fetched"]=pages
         mstat["pages_remaining_at_safety_ceiling"]=len(queue)
+        if checkpoint:checkpoints[checkpoint]={'queue':queue,'queued':sorted(queued),'failures':failures}
+
 
     print(json.dumps(stats,indent=2))
     if args.dry_run:
@@ -527,6 +547,13 @@ on conflict(side,market,category_key,source_url,business_name) do update set
         print(cp.stdout)
         print(cp.stderr,file=sys.stderr)
         raise SystemExit(cp.returncode)
+    for path,state in checkpoints.items():
+        path.parent.mkdir(parents=True,exist_ok=True)
+        temp=path.with_suffix('.tmp');temp.write_text(json.dumps(state));temp.replace(path)
+    if args.stats_file:
+        path=Path(args.stats_file);path.parent.mkdir(parents=True,exist_ok=True)
+        temp=path.with_suffix('.tmp');temp.write_text(json.dumps(stats));temp.replace(path)
+    if stats['feeds_ok']==0:raise SystemExit(2)
     print(f"Inserted/updated {len(records)} discovery candidates.")
     print(cp.stdout[-3000:])
 

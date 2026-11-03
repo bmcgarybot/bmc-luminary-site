@@ -25,6 +25,8 @@ ns={"format_business_phone":format_business_phone,"present_prospect_rows":presen
     "growth_candidate_score":lambda row,service:100,
     "growth_fit_reason":lambda row,service:"Synthetic fit",
     "growth_sales_angle":lambda row,service:"Synthetic angle"}
+from official_research import auto_evidence_valid
+ns['auto_evidence_valid']=auto_evidence_valid
 exec(compile(ast.Module(body=nodes,type_ignores=[]),"real_qualification_gates","exec"),ns)
 
 class Connection:

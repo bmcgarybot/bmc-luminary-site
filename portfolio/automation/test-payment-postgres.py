@@ -87,6 +87,37 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(row['paid_orders'],5)
         self.assertEqual(row['revenue_cents'],199700)
 
+    async def test_native_primary_research_is_durable_and_never_sends_or_accepts_providers(self):
+        import official_research as module
+        from unittest.mock import patch
+        routes={}
+        class App:
+            state=SimpleNamespace(pool=self.pool)
+            def post(self,path):
+                def register(fn):routes[path]=fn;return fn
+                return register
+        async def search(*args):raise AssertionError('Direct source does not need a discovery search')
+        with patch.dict(sys.modules,{'fastapi':SimpleNamespace(Header=lambda **kwargs:None)}):
+            module.install(App(),lambda key:None,search,['Phoenix'],'test-secret')
+        cid=uuid.uuid4()
+        async with self.pool.acquire() as conn:
+            await conn.execute("""insert into market_inventory_candidates(candidate_id,side,market,category_key,category_label,business_name,source_url,source_domain,public_phone,official_site,status,evidence)
+              values($1,'buyer','Phoenix','dental','Dental practice','Desert Dental Phoenix','https://desertdental.example/contact','desertdental.example','6025550111',true,'discovered','{}')""",cid)
+        entity={'@type':'Dentist','name':'Desert Dental','url':'https://desertdental.example/contact','telephone':'6025550111','address':{'streetAddress':'100 Central Avenue','addressLocality':'Phoenix','addressRegion':'AZ','postalCode':'85004'}}
+        document='<script type="application/ld+json">'+json.dumps(entity)+'</script>'
+        with patch.object(module,'fetch_page',return_value=('https://desertdental.example/contact',document,'a'*64)) as fetch:
+            outcomes=await asyncio.gather(routes['/api/process-official-research']('fixture'),routes['/api/process-official-research']('fixture'))
+            self.assertEqual(sum(o['inspected'] for o in outcomes),1);self.assertEqual(fetch.call_count,1)
+            self.assertEqual(sum(o['verified'] for o in outcomes),1)
+        async with self.pool.acquire() as conn:
+            native=dict(await conn.fetchrow("select * from market_inventory_candidates where evidence->>'researched_by'='vps_primary_site_v1'"))
+            self.assertTrue(module.auto_evidence_valid(native,'test-secret'))
+            self.assertEqual(await conn.fetchval("select count(*) from official_research_jobs where status='verified'"),1)
+            self.assertEqual(await conn.fetchval('select count(*) from outreach'),0)
+            self.assertEqual(await conn.fetchval('select count(*) from orders'),0)
+            self.assertEqual(await conn.fetchval("select count(*) from vendors where status in ('pilot','active')"),0)
+        self.assertEqual((await routes['/api/process-official-research']('fixture'))['inspected'],0)
+
     async def seed_bound_offer(self):
         obj=await self.seed_growth()
         oid=uuid.uuid4()

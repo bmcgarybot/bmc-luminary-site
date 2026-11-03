@@ -1,3 +1,4 @@
+from official_research import auto_evidence_valid, install as install_official_research
 from growth_pdf import sample_pdf_response, render_sample_pdf, present_prospect_rows, prospect_presentation, format_business_phone
 import growth_offers
 from ops_metrics import business_metrics
@@ -2740,7 +2741,8 @@ def growth_candidate_evidence_valid(row,market):
     # Search-result titles and an auto-assigned official_site flag do not
     # establish an individual business or its physical territory. Keep those
     # rows for research; they need a reviewed import or structured source.
-    if not (curated and row.get("official_site")):
+    native=auto_evidence_valid(row,globals().get("ADMIN_KEY", ""))
+    if not ((curated or native) and row.get("official_site")):
         return False
     # A national/city store index is not the individual property's evidence page.
     path=parsed.path.lower().rstrip("/")
@@ -2951,7 +2953,7 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
     categories=growth_selected_categories(service_key,ideal_customer,exclusions)
     if service_key not in GROWTH_SERVICE_LABELS or not categories:
         return []
-    rows=await conn.fetch("""select candidate_id,market,category_key,category_label,business_name,source_url,source_domain,
+    rows=await conn.fetch("""select candidate_id,side,market,category_key,category_label,business_name,source_url,source_domain,
           public_email,public_phone,official_site,source_tier,verification_status,last_verified_at,last_seen_at,updated_at,snippet,evidence
         from market_inventory_candidates
         where side='buyer' and market=$1 and category_key=any($2::text[])
@@ -2962,6 +2964,7 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
             (evidence->>'researched_by'='assistant_manual_census'
               and jsonb_typeof(evidence->'artifact_files')='array'
               and evidence->'artifact_files'<>'[]'::jsonb)
+            or (evidence->>'researched_by'='vps_primary_site_v1')
             or (source_tier in ('government','government_registry') and verification_status='government_record')
           )
           and (
@@ -5890,6 +5893,7 @@ async def process_market_inventory(x_bmc_admin_key:str|None=Header(default=None)
                     closed_at=excluded.closed_at,
                     closure_reason=excluded.closure_reason,
                     updated_at=now()
+                  where coalesce(market_inventory_candidates.evidence->>'researched_by','') not in ('assistant_manual_census','vps_primary_site_v1')
                   returning candidate_id""",
                   lane["side"],lane["market"],lane["category_key"],lane["category_label"],
                   result["title"][:240],result["url"],result["domain"],result["snippet"],query,page,
@@ -7852,3 +7856,6 @@ async def process_growth_offer_invitations(x_bmc_admin_key:str|None=Header(defau
             await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
               values('growth_offer_invitation_review','high',$1,'Review the offer and durable mail attempt before resuming')""",str(exc))
     return {"ok":True,"sent":sent,"held":False}
+
+# Research-only worker; never creates outreach, orders, or accepted providers.
+install_official_research(app,require_admin,search_research_web,DEFAULT_SOURCE_NATIVE_MARKETS,ADMIN_KEY,enabled=RESEARCH_SEARCH_ENABLED)

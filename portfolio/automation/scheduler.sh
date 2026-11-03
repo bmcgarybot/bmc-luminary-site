@@ -13,6 +13,7 @@ post(){
 i=0
 while true; do
   post /api/process-expired
+  post /api/process-official-research 240
 
   if [ $((i % 3)) -eq 0 ]; then
     post /api/agent-cycle

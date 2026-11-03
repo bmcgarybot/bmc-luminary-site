@@ -1306,3 +1306,13 @@ create table if not exists growth_purchase_offers (
 );
 
 alter table growth_purchase_offers add column if not exists invited_at timestamptz;
+
+-- Primary-site research provenance and resumable work, separate from customer state.
+create table if not exists official_research_jobs (
+ candidate_id uuid primary key references market_inventory_candidates(candidate_id) on delete cascade,
+ market text not null,status text not null default 'queued',attempts integer not null default 0,
+ last_attempt_at timestamptz,next_attempt_at timestamptz not null default now(),
+ verified_candidate_id uuid references market_inventory_candidates(candidate_id) on delete set null,
+ error_code text
+);
+create index if not exists idx_official_research_due on official_research_jobs(next_attempt_at,status);

@@ -28,7 +28,7 @@ jobs:
           ns=runpy.run_path("vps-gitops-relay.py",run_name="bmc_relay_ci")
           expected={
               "proof_readout","launch_audit","runtime_doctor","diagnostic_bundle","scheduler_status","search_quality_probe","research_refresh_status",
-              "growth_status","growth_launch_audit","operator_snapshot","growth_inventory_audit","growth_preview_candidates","nevada_status","business_metrics","ops_monitor_status",
+              "growth_status","growth_launch_audit","operator_snapshot","growth_inventory_audit","growth_preview_candidates","nevada_status","business_metrics","ops_monitor_status","preparation_status","official_research_step",
               "deploy_update","configure_owner_contact","configure_growth_review_scope","prepare_ops_configuration","configure_ops_monitoring","ops_alert_test","market_inventory_step","local_demand_step",
               "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","inventory_closure_step","research_refresh_install","scheduler_start","scheduler_stop",
               "growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_launch_enable","growth_launch_disable","growth_owner_replay_email","growth_owner_target_preview","owner_replay_all_email_templates","growth_owner_preview_approve"
@@ -51,6 +51,7 @@ jobs:
           python -m pip install reportlab==4.4.9 pypdf==6.10.0
           python3 portfolio/automation/test-growth-pdf.py
           python3 portfolio/automation/test-growth-offers.py
+          python3 portfolio/automation/test-official-research.py
 
       - name: Verify Growth mobile sample rendering
         run: |
@@ -226,6 +227,7 @@ jobs:
         working-directory: portfolio/automation
         run: |
           python3 -m py_compile assistant-directory-bootstrap.py assistant-homversa-bootstrap.py build-assistant-research-seed.py
+          python3 test-directory-cursor.py
           python3 build-assistant-research-seed.py --output /tmp/bmc-assistant-census-seed.sql --summary-json 2>/tmp/bmc-assistant-census-summary.json
           cat /tmp/bmc-assistant-census-summary.json
           python3 - <<'PY'

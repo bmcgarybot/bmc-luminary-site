@@ -45,16 +45,25 @@ mark_failure(){
 }
 
 run_directory(){
-  key="directory_graph"
-  if [ "$(is_due "$key" "$DIRECTORY_INTERVAL")" != "yes" ]; then return 0; fi
-  echo "[research-refresher] directory refresh starting"
+  # One resumable city batch, not a statewide all-in-memory crawl.
+  dbq "update research_refresh_state set last_status='partitioned',last_error=null,updated_at=now() where source_key='directory_graph' and last_status<>'partitioned';" >/dev/null
+  market="$(dbq "select market from (select p.market,max(s.last_started_at) started,max(s.last_status) status from market_inventory_progress p left join research_refresh_state s on s.source_key='directory_graph:'||p.market group by p.market) m where started is null or started<now()-make_interval(secs=>case when status='success' then ${DIRECTORY_INTERVAL} when status='failed' then 7200 else 900 end) order by started nulls first,case when market='Phoenix' then 0 when market in ('Prescott','Cottonwood','Camp Verde','Sedona') then 1 else 2 end,market limit 1;")"
+  [ -n "$market" ] || return 0
+  safe_market="$(printf '%s' "$market" | sed "s/'/''/g")"
+  key="directory_graph:${safe_market}"
   mark_started "$key"
-  if python3 /app/assistant-directory-bootstrap.py /dev/null --max-per-feed 500 --max-pages-per-market 1500 --delay 0.20; then
-    mark_success "$key"
-    echo "[research-refresher] directory refresh complete"
+  echo "[research-refresher] bounded directory batch starting: $market"
+  if python3 /app/assistant-directory-bootstrap.py /dev/null --markets "$market" --max-per-feed 100 --max-pages-per-market 12 --max-errors 4 --checkpoint-dir /var/lib/bmc-research/directory --stats-file /var/lib/bmc-research/directory-last.json --delay 0.35; then
+    remaining="$(python3 -c 'import json; d=json.load(open("/var/lib/bmc-research/directory-last.json")); print(sum(v.get("pages_remaining_at_safety_ceiling",0) for v in d["by_market"].values()))')"
+    if [ "$remaining" -eq 0 ]; then
+      mark_success "$key"
+    else
+      dbq "update research_refresh_state set last_status='partial',last_error=null,updated_at=now() where source_key='${key}';" >/dev/null
+    fi
+    echo "[research-refresher] directory batch saved; pending pages: $remaining"
   else
     mark_failure "$key"
-    echo "[research-refresher] directory refresh FAILED"
+    echo "[research-refresher] source unavailable; saved cursor retained, city backs off for two hours"
   fi
 }
 
