@@ -1,0 +1,21 @@
+{
+  "action": "research_refresh_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-03T23:47:56.760025+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "a4dd04b47e823ed4b8d09a1c6ca9201cde88e61b",
+  "git_commit_before": "a4dd04b47e823ed4b8d09a1c6ca9201cde88e61b",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "50c2b81a15f1eccf0c800654dd44bd9dca0ffe96",
+  "request_id": "a-native-check-research-refresh-status-20261103T234659Z",
+  "request_sha256": "6701957a00ba955882688117913bd8a6023fc6e10c12975add6bd348dc3170bf",
+  "started_at": "2026-11-03T23:47:56.365238+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "BMC Docker research refresher\nNAME                       IMAGE                    COMMAND                  SERVICE              CREATED         STATUS         PORTS\nbmc-research_refresher-1   bmc-research_refresher   \"/bin/sh /app/resear\u2026\"   research_refresher   4 minutes ago   Up 4 minutes   \n\nRefresh source state:\ndirectory_graph|partitioned|started=2026-11-03 21:09:41.303759+00|success=2026-10-30 23:54:02.019235+00|failure=2026-11-03 20:54:41.122295+00\ndirectory_graph:Phoenix|partial|started=2026-11-03 23:43:55.397682+00|success=|failure=\nlicensed_trades|success|started=2026-11-02 23:37:56.172143+00|success=2026-11-02 23:39:29.607528+00|failure=\n\nRecent refresher log:\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | INSERT 0 1\nresearch_refresher-1  | COMMIT\nresearch_refresher-1  | \nresearch_refresher-1  | [research-refresher] directory batch saved; pending pages: 274\n",
+  "version": 1
+}
