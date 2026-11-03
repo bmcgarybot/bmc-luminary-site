@@ -64,4 +64,30 @@ class PreviewTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(error.exception.status_code,409)
         self.assertEqual(sent,[])
 
+class ClaimTests(unittest.IsolatedAsyncioTestCase):
+    async def test_new_signed_preview_receives_selected_recipient_source(self):
+        from types import SimpleNamespace
+        source=ast.parse(Path(__file__).with_name("api").joinpath("app.py").read_text())
+        node=next(n for n in source.body if isinstance(n,ast.AsyncFunctionDef) and n.name=="growth_claim_free_five")
+        node.decorator_list=[]
+        class Conn(Connection):
+            async def fetchrow(self,sql,*args):
+                columns=sql.split("exists",1)[0]
+                row=dict(target_id="target",public_email="fixture@example.test",market="Phoenix",service_key="commercial_cleaning")
+                if "g.source_url" in columns:row["source_url"]="https://example.test/contact"
+                return row
+        async def sample(conn,target,territory,rows):
+            self.assertEqual(target["source_url"],"https://example.test/contact")
+            return {"preview":True,"sample":rows}
+        async def candidates(*args,**kwargs):return [dict(candidate_id=str(i)) for i in range(5)]
+        class Request:
+            async def json(self):return {"target_id":"target","claim":"signed","preview":"1"}
+        ns=dict(Request=Request,clean=lambda v:str(v or "").strip(),HTTPException=HTTPError,
+            growth_claim_valid=lambda *a,**k:True,growth_territory_markets=lambda *a:["Phoenix"],
+            growth_qualified_territory_candidates=candidates,growth_owner_sample=sample,
+            app=SimpleNamespace(state=SimpleNamespace(pool=SimpleNamespace(acquire=lambda:Acquire(Conn())))))
+        exec(compile(ast.Module(body=[node],type_ignores=[]),"production_claim","exec"),ns)
+        result=await ns["growth_claim_free_five"](Request())
+        self.assertTrue(result["preview"]);self.assertEqual(len(result["sample"]),5)
+
 if __name__=="__main__":unittest.main()
