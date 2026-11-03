@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "b-mobile-nurture-deploy-20261103T023238Z",
+  "action": "deploy_update",
+  "allow_external_actions": false,
+  "required_ci_sha": "f1b1e0979b13bc1c8b054a7bc2b1fa94840e9206",
+  "created_at": "2026-11-03T02:32:38.692Z",
+  "expires_at": "2026-11-03T03:32:38.692Z",
+  "args": {}
+}
