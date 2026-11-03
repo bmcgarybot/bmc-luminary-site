@@ -3547,7 +3547,7 @@ async def growth_claim_free_five(request:Request):
     preview=str(p.get("preview") or "").lower() in ("1","true","yes")
     async with app.state.pool.acquire() as conn:
       async with conn.transaction():
-        target=await conn.fetchrow("""select g.target_id,g.business_name,g.public_email,g.market,g.service_key,
+        target=await conn.fetchrow("""select g.target_id,g.business_name,g.public_email,g.market,g.service_key,g.source_url,
             exists(select 1 from outreach o where o.entity_type='growth_customer' and o.entity_id=g.target_id
               and o.campaign='growth_sales' and o.sent_at is not null) as was_sent
           from growth_outreach_targets g where g.target_id=$1""",target_id)
@@ -7143,7 +7143,7 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                 msg=email.message_from_bytes(raw)
                 sender=parseaddr(msg.get("From",""))[1].lower().strip()
                 if not sender: continue
-                row=await conn.fetchrow("""select o.outreach_id,o.entity_type,o.entity_id
+                row=await conn.fetchrow("""select o.outreach_id,o.entity_type,o.entity_id,o.owner_review_required
                   from outreach o
                   where (o.entity_type='vendor' and o.entity_id in (select vendor_id from vendors where lower(public_email)=lower($1)))
                      or (o.entity_type='buyer' and o.entity_id in (select buyer_id from buyers where lower(public_email)=lower($1)))
@@ -7170,7 +7170,9 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                               where cell_key=$1""",target["experiment_cell"])
                             # Reply ingestion continues during a hold, but customer
                             # follow-up remains behind the same owner/campaign gates.
-                            if not OWNER_LAUNCH_HOLD and GROWTH_OUTREACH_ENABLED:
+                            if (not OWNER_LAUNCH_HOLD and GROWTH_OUTREACH_ENABLED
+                                and str(target["target_id"]) in GROWTH_OUTREACH_TARGET_IDS
+                                and not row.get("owner_review_required",True)):
                                 subject,reply_body,reply_html=growth_positive_reply_message(target)
                                 ok=await send_mail_once("growth-positive:"+str(target["target_id"]),sender,
                                   subject,reply_body,reply_html)

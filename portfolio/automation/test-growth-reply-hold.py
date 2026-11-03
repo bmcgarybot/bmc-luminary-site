@@ -49,7 +49,7 @@ class Box:
 class Connection:
     def __init__(self):self.writes=[]
     async def fetchrow(self,sql,*args):
-        if "select o.outreach_id" in sql:return dict(outreach_id="outreach",entity_type="growth_customer",entity_id="target")
+        if "select o.outreach_id" in sql:return dict(outreach_id="outreach",entity_type="growth_customer",entity_id="target",owner_review_required=False)
         if "select sample_id" in sql:return None
         if "growth_outreach_targets" in sql:return dict(target_id="target",business_name="Fixture",
             public_email="owner@example.test",market="Test",service_key="pressure_washing",experiment_cell="cell")
@@ -68,7 +68,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             hashlib=hashlib,hmac=hmac,html=html,urllib=SimpleNamespace(parse=urllib.parse),
             ADMIN_KEY="fixture-secret",PUBLIC_SITE_URL="https://example.test",BUSINESS_POSTAL_ADDRESS="Fixture postal",
             GROWTH_LANDING_PATHS={"pressure_washing":"/growth-packs/pressure-washing/"},
-            OWNER_LAUNCH_HOLD=hold,GROWTH_OUTREACH_ENABLED=enabled,IMAP_ENABLED=True,IMAP_HOST="fixture",
+            OWNER_LAUNCH_HOLD=hold,GROWTH_OUTREACH_ENABLED=enabled,GROWTH_OUTREACH_TARGET_IDS=("target",),IMAP_ENABLED=True,IMAP_HOST="fixture",
             IMAP_USER="fixture",IMAP_PASSWORD="fixture",IMAP_FOLDER="INBOX",IMAP_PORT=993,
             imaplib=SimpleNamespace(IMAP4_SSL=lambda *args:Box()),
             reply_text=lambda msg:"Yes please",classify_reply_text=lambda text:"positive",event=event,send_mail_once=send,
@@ -83,6 +83,22 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(any("growth_reply_awaiting_review" in s for s,*args in conn.writes))
     async def test_disabled_campaign_never_sends_positive_reply(self):
         ns,conn,sent=self.load(False,False)
+        await ns["process_replies"]("fixture")
+        self.assertEqual(sent,[])
+    async def test_outside_exact_cohort_never_sends_positive_reply(self):
+        ns,conn,sent=self.load(False,True)
+        ns["GROWTH_OUTREACH_TARGET_IDS"]=("another-target",)
+        await ns["process_replies"]("fixture")
+        self.assertEqual(sent,[])
+        self.assertTrue(any("growth_reply_awaiting_review" in s for s,*args in conn.writes))
+    async def test_owner_review_required_never_sends_positive_reply(self):
+        ns,conn,sent=self.load(False,True)
+        original=conn.fetchrow
+        async def fetchrow(sql,*args):
+            row=await original(sql,*args)
+            if row and "outreach_id" in row:row["owner_review_required"]=True
+            return row
+        conn.fetchrow=fetchrow
         await ns["process_replies"]("fixture")
         self.assertEqual(sent,[])
     async def test_approved_path_uses_html_signed_claim_and_durable_key(self):
