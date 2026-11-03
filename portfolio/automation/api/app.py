@@ -2690,6 +2690,15 @@ def growth_candidate_evidence_valid(row,market):
     # rows for research; they need a reviewed import or structured source.
     if not (curated and row.get("official_site")):
         return False
+    # A national/city store index is not the individual property's evidence page.
+    path=parsed.path.lower().rstrip("/")
+    if ("/storelocator/" in path or "/store-locator/cvs-pharmacy-locations/" in path
+        or (host=="frysfood.com" and path=="/stores/grocery/az/phoenix")
+        or (host=="local.safeway.com" and path=="/safeway/az/phoenix.html")
+        or (host=="sprouts.com" and path=="/stores/az")
+        or (host=="marriott.com" and path.startswith("/en-us/destinations/"))
+        or host.startswith("careers.") or ".careers." in host):
+        return False
     name=clean(row.get("business_name"))
     if re.search(r"\b(?:directory|ratings,? reviews|with reviews|hours and|top \d+|best \d+|top rated)\b",name,re.I):
         return False
@@ -3594,7 +3603,11 @@ async def stage_growth_service(conn,service_key,max_targets=25):
         seen_emails.add(email_addr)
         if market not in pool_cache:
             pool_cache[market]=len(await growth_qualified_candidates(conn,service_key,market,limit=GROWTH_SAMPLE_MIN_RESERVE))
-        if pool_cache[market]<GROWTH_SAMPLE_MIN_RESERVE:
+        owner_sample_only=(OWNER_LAUNCH_HOLD and not OUTREACH_ENABLED and not BUYER_OUTREACH_ENABLED and not GROWTH_OUTREACH_ENABLED
+          and market=="Phoenix" and service_key=="commercial_cleaning" and email_addr=="admin@ec-phoenix.com"
+          and clean(row.get("source_url")).rstrip("/")=="https://www.environmentcontrol.com/locations/phoenix"
+          and pool_cache[market]>=5)
+        if pool_cache[market]<GROWTH_SAMPLE_MIN_RESERVE and not owner_sample_only:
             skipped_inventory+=1
             continue
         cell=f"{service_key}:{market}"
@@ -3614,6 +3627,9 @@ async def stage_growth_service(conn,service_key,max_targets=25):
           select 'growth_customer',$1,'growth_sales',$2,'email',0,'queued',now(),false,$3,$4
           where not exists(select 1 from outreach where entity_type='growth_customer' and entity_id=$1 and campaign='growth_sales' and wave=$2)
           returning outreach_id""",row["target_id"],wave,market,service_key)
+        if owner_sample_only:
+            await conn.execute("""update outreach set owner_review_required=true
+              where entity_type='growth_customer' and entity_id=$1 and campaign='growth_sales' and wave=$2 and status='queued'""",row["target_id"],wave)
         if inserted:
             staged+=1
         if staged>=max_targets:
