@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "a-native-research-snapshot-20261103T234423Z",
+  "action": "operator_snapshot",
+  "allow_external_actions": false,
+  "created_at": "2026-11-03T23:44:23.222Z",
+  "expires_at": "2026-11-04T00:44:23.222Z",
+  "args": {}
+}
