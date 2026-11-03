@@ -1,0 +1,21 @@
+{
+  "action": "research_refresh_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-03T18:11:02.905247+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "c3d70ef5aa057f4d4fbf60798db953e94260b8cb",
+  "git_commit_before": "c3d70ef5aa057f4d4fbf60798db953e94260b8cb",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "68fcdf609a4be4a4ce5947d94420d54722bf08d0",
+  "request_id": "revwatch-20261103T1809Z-10-research_refresh_status",
+  "request_sha256": "a67c512e6647c81d7b3e0d39cffefd837b4ab2589d50b9f2ea557188336395a8",
+  "started_at": "2026-11-03T18:11:02.557268+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "BMC Docker research refresher\nNAME                       IMAGE                                                                     COMMAND                  SERVICE              CREATED        STATUS        PORTS\nbmc-research_refresher-1   sha256:726be837942ca84cb5a463deec7ac7362f80d661270b3142ef2347a11ffa25be   \"/bin/sh /app/resear\u2026\"   research_refresher   29 hours ago   Up 29 hours   \n\nRefresh source state:\ndirectory_graph|running|started=2026-11-03 14:04:47.842106+00|success=2026-10-30 23:54:02.019235+00|failure=2026-11-03 13:49:47.683771+00\nlicensed_trades|success|started=2026-11-02 23:37:56.172143+00|success=2026-11-02 23:39:29.607528+00|failure=\n\nRecent refresher log:\nresearch_refresher-1  |     {\nresearch_refresher-1  |       \"market\": \"Williamson Valley\",\nresearch_refresher-1  |       \"feed\": \"manufacturing\",\nresearch_refresher-1  |       \"error\": \"HTTP Error 404: Not Found\"\nresearch_refresher-1  |     },\nresearch_refresher-1  |     {\nresearch_refresher-1  |       \"market\": \"Williamson Valley\",\nresearch_refresher-1  |       \"feed\": \"transportation-services\",\nresearch_refresher-1  |       \"error\": \"HTTP Error 404: Not Found\"\nresearch_refresher-1  |     },\nresearch_refresher-1  |     {\nresearch_refresher-1  |       \"market\": \"Williamson Valley\",\nresearch_refresher-1  |       \"feed\": \"storage\",\nresearch_refresher-1  |       \"error\": \"HTTP Error 404: Not Found\"\nresearch_refresher-1  |     },\nresearch_refresher-1  |     {\nresearch_refresher-1  |       \"market\": \"Winslow\",\nresearch_refresher-1  |       \"feed\": \"automotive-services\",\nresearch_refresher-1  |       \"error\": \"cannot unpack non-iterable NoneType object\"\nresearch_refresher-1  |     },\nresearch_refresher-1  |     {\nresearch_refresher-1  |       \"market\": \"Winslow\",\nresearch_refresher-1  |       \"feed\": \"consumer-services\",\nresearch_refresher-1  |       \"error\": \"cannot unpack non-iterable NoneType object\"\nresearch_refresher-1  |     },\nresearch_refresher-1  |     {\nresearch_refresher-1  |       \"market\": \"Winslow\",\nresearch_refresher-1  |       \"feed\": \"real-estate\",\nresearch_refresher-1  |       \"error\": \"HTTP Error 404: Not Found\"\nresearch_refresher-1  |     },\nresearch_refresher-1  |     {\nresearch_refresher-1  |       \"market\": \"Winslow\",\nresearch_refresher-1  |       \"feed\": \"non-profit-organizations\",\nresearch_refresher-1  |       \"error\": \"HTTP Error 404: Not Found\"\nresearch_refresher-1  |     }\nresearch_refresher-1  |   ],\nresearch_refresher-1  |   \"empty_feeds\": []\nresearch_refresher-1  | Killed\nresearch_refresher-1  | }[research-refresher] directory refresh FAILED\nresearch_refresher-1  | [research-refresher] directory refresh starting\n",
+  "version": 1
+}
