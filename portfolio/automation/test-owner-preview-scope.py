@@ -64,7 +64,8 @@ class MailHeaderTests(unittest.IsolatedAsyncioTestCase):
         captured=[]
         class SMTP:
             async def send(self,msg,**kwargs):captured.append(msg)
-        ns=dict(EmailMessage=EmailMessage,formataddr=formataddr,format_datetime=format_datetime,
+        async def observe(*args):pass
+        ns=dict(hashlib=__import__("hashlib"),record_mail_observation=observe,EmailMessage=EmailMessage,formataddr=formataddr,format_datetime=format_datetime,
             make_msgid=make_msgid,datetime=datetime,timezone=timezone,clean=str.strip,
             SMTP_DRY_RUN=False,SMTP_HOST="smtp.example.test",SMTP_PORT=587,SMTP_USER="",
             SMTP_PASSWORD="",SMTP_FROM="contact@bmcservicenetwork.com",

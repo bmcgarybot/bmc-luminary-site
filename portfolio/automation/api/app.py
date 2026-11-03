@@ -1,5 +1,6 @@
 from growth_pdf import sample_pdf_response, render_sample_pdf
 import growth_offers
+from ops_metrics import business_metrics
 from pathlib import Path
 GROWTH_REVIEW_PACKETS=__import__("json").loads(Path(__file__).with_name("growth_review_packets.json").read_text())
 GROWTH_REVIEW_PROSPECTS=__import__("json").loads(Path(__file__).with_name("growth_review_prospects.json").read_text())
@@ -619,6 +620,30 @@ app.add_middleware(CORSMiddleware,allow_origins=[
     "https://bmcservicenetwork.com","https://www.bmcservicenetwork.com"
 ],allow_credentials=False,allow_methods=["POST","GET"],allow_headers=["*"])
 
+async def record_api_operation(route,status,elapsed_ms):
+    async with app.state.delivery_pool.acquire() as conn:
+        await conn.execute("""insert into api_operation_metrics(route,requests,failures,total_duration_ms,last_status,last_observed_at,last_success_at)
+          values($1,1,$2,$3,$4,now(),case when $4<400 then now() else null end)
+          on conflict(route) do update set requests=api_operation_metrics.requests+1,
+          failures=api_operation_metrics.failures+excluded.failures,
+          total_duration_ms=api_operation_metrics.total_duration_ms+excluded.total_duration_ms,
+          last_status=excluded.last_status,last_observed_at=excluded.last_observed_at,
+          last_success_at=coalesce(excluded.last_success_at,api_operation_metrics.last_success_at)""",
+          route,1 if status>=400 else 0,max(0,int(elapsed_ms)),status)
+
+@app.middleware("http")
+async def observe_api_operation(request,call_next):
+    started=time.monotonic();status=500
+    try:
+        response=await call_next(request);status=response.status_code
+        return response
+    finally:
+        # Framework route templates only: never raw paths, IDs, query tokens or bodies.
+        route=getattr(request.scope.get("route"),"path","")
+        if route.startswith("/api/"):
+            try:await asyncio.wait_for(record_api_operation(route,status,(time.monotonic()-started)*1000),timeout=2)
+            except Exception:print("BMC operation metrics write failed",flush=True)
+
 @app.on_event("startup")
 async def startup():
     app.state.pool=await asyncpg.create_pool(DB_DSN,min_size=1,max_size=5)
@@ -684,10 +709,19 @@ async def email_preferences(request:Request):
         content="<h1>Stop BMC marketing emails?</h1><p>Confirm below. No login is needed.</p><form method='post'><button type='submit'>Stop receiving these emails</button></form>"
     return HTMLResponse("<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'><title>BMC email preferences</title></head><body style='font-family:Arial,sans-serif;max-width:580px;margin:60px auto;padding:20px'><p>BMC Service Network</p>"+content+"</body></html>",headers={"Cache-Control":"no-store","Referrer-Policy":"no-referrer","X-Robots-Tag":"noindex, nofollow"})
 
+async def record_mail_observation(key,direction,status,fingerprint,classification=None):
+    async with app.state.delivery_pool.acquire() as conn:
+        await conn.execute("""insert into mail_observations(message_key,direction,status,payload_sha256,classification)
+          values($1,$2,$3,$4,$5) on conflict(message_key) do update
+          set status=excluded.status,classification=coalesce(excluded.classification,mail_observations.classification),updated_at=now()""",
+          key,direction,status,fingerprint,classification)
+
 async def send_mail(to,subject,body,html_body=None,attachments=None):
     if not to: return False
     if SMTP_DRY_RUN: return True
     if not SMTP_HOST or "CHANGE_ME" in SMTP_HOST: return False
+    audit_key=None
+    fingerprint=None
     try:
         body,html_body,unsubscribe_url=email_unsubscribe_content(to,body,html_body)
         msg=EmailMessage()
@@ -713,10 +747,21 @@ async def send_mail(to,subject,body,html_body=None,attachments=None):
         for attachment in (attachments or []):
             filename,data,maintype,subtype=attachment
             msg.add_attachment(data,maintype=maintype,subtype=subtype,filename=filename)
+        audit_key="outbound:"+str(msg["Message-ID"])
+        fingerprint=hashlib.sha256(msg.as_bytes()).hexdigest()
+        # Fail closed before SMTP if we cannot durably record the attempt.
+        await record_mail_observation(audit_key,"outbound","attempting",fingerprint)
         await aiosmtplib.send(msg,hostname=SMTP_HOST,port=SMTP_PORT,username=SMTP_USER or None,
             password=SMTP_PASSWORD or None,start_tls=SMTP_STARTTLS)
+        try:
+            await record_mail_observation(audit_key,"outbound","smtp_accepted",fingerprint)
+        except Exception:
+            pass  # Persisted 'attempting' remains unresolved and must alert, not retry.
         return True
     except Exception:
+        if audit_key:
+            try: await record_mail_observation(audit_key,"outbound","uncertain",fingerprint)
+            except Exception: pass
         return False
 
 async def send_mail_once(delivery_key,to,subject,body,html_body=None,attachments=None):
@@ -3692,6 +3737,12 @@ async def growth_runtime_status(conn):
       "config_ready":config_ready,"staged_active":int(staged or 0),"sent":int(sent or 0),"replies":int(replies or 0),
       "samples_requested":int(samples or 0),"samples_delivered":int(delivered or 0),"converted_samples":int(converted or 0),
       "paid_orders":int(paid["paid_orders"] or 0),"revenue_cents":int(paid["revenue_cents"] or 0),"open_growth_exceptions":int(open_errors or 0)}
+
+@app.post("/api/admin/business-metrics")
+async def admin_business_metrics(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    async with app.state.pool.acquire() as conn:
+        return await business_metrics(conn)
 
 @app.post("/api/admin/growth-inventory-audit")
 async def admin_growth_inventory_audit(x_bmc_admin_key:str|None=Header(default=None)):
@@ -7132,17 +7183,40 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
     box=imaplib.IMAP4_SSL(IMAP_HOST,IMAP_PORT)
     try:
         box.login(IMAP_USER,IMAP_PASSWORD); box.select(IMAP_FOLDER)
-        status,data=box.search(None,"UNSEEN")
-        ids=(data[0].split() if status=="OK" and data and data[0] else [])[-100:]
         async with app.state.pool.acquire() as conn:
+          async with conn.transaction():
+            mailbox_key=hashlib.sha256((IMAP_HOST+"\n"+IMAP_USER+"\n"+IMAP_FOLDER).encode()).hexdigest()
+            locked=await conn.fetchval("select pg_try_advisory_xact_lock(hashtextextended($1,0))", "imap:"+mailbox_key)
+            if not locked:return {"ok":True,"enabled":True,"processed":0,"matched":0,"busy":True}
+            validity_data=box.response("UIDVALIDITY")[1]
+            next_data=box.response("UIDNEXT")[1]
+            if not validity_data or not next_data:raise HTTPException(503,"Stable mailbox UID metadata unavailable")
+            validity=validity_data[0].decode();latest=int(next_data[0])-1
+            cursor=await conn.fetchrow("select uidvalidity,last_uid from mailbox_poll_state where mailbox_key=$1",mailbox_key)
+            if not cursor or cursor["uidvalidity"]!=validity:
+                if cursor:
+                    await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+                      values('mailbox_identity_changed','high','Mailbox UID identity changed; historic mail was not replayed',
+                      'Review the mailbox continuity gap before any manual replay. Outreach remains subject to owner hold.')""")
+                await conn.execute("""insert into mailbox_poll_state(mailbox_key,uidvalidity,last_uid)
+                  values($1,$2,$3) on conflict(mailbox_key) do update set uidvalidity=$2,last_uid=$3,updated_at=now()""",mailbox_key,validity,max(0,latest))
+                return {"ok":True,"enabled":True,"processed":0,"matched":0,"baseline_established":True,"historic_mail_not_replayed":True}
+            status,data=box.uid("search",None,"UID",str(cursor["last_uid"]+1)+":*")
+            if status!="OK":raise HTTPException(502,"Mailbox search failed; saved position retained")
+            ids=sorted(int(x) for x in (data[0].split() if data and data[0] else []) if int(x)>cursor["last_uid"])[:100]
             for mid in ids:
-                status,msgdata=box.fetch(mid,"(RFC822)")
-                if status!="OK" or not msgdata: continue
+                status,msgdata=box.uid("fetch",str(mid),"(BODY.PEEK[])")
+                if status!="OK" or not msgdata:raise HTTPException(502,"Mailbox fetch failed; saved position retained")
                 raw=next((x[1] for x in msgdata if isinstance(x,tuple)),None)
-                if not raw: continue
+                if not raw:raise HTTPException(502,"Mailbox message unavailable; saved position retained")
                 msg=email.message_from_bytes(raw)
                 sender=parseaddr(msg.get("From",""))[1].lower().strip()
-                if not sender: continue
+                inbound_fingerprint=hashlib.sha256(raw).hexdigest()
+                inbound_key="inbound:"+inbound_fingerprint
+                await record_mail_observation(inbound_key,"inbound","received",inbound_fingerprint,
+                    "delivery_failure" if msg.get_content_type()=="multipart/report" or sender.split("@",1)[0] in ("mailer-daemon","postmaster") else None)
+                processed+=1
+                if not sender:continue
                 row=await conn.fetchrow("""select o.outreach_id,o.entity_type,o.entity_id,o.owner_review_required
                   from outreach o
                   where (o.entity_type='vendor' and o.entity_id in (select vendor_id from vendors where lower(public_email)=lower($1)))
@@ -7151,11 +7225,11 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                   order by o.created_at desc limit 1""",sender)
                 sample=await conn.fetchrow("""select sample_id from growth_sample_requests where lower(email)=lower($1)
                   order by created_at desc limit 1""",sender)
-                processed+=1
-                if not row and not sample:
-                    box.store(mid,"+FLAGS","\\Seen")
-                    continue
+                if not row and not sample:continue
                 body=reply_text(msg); classification=classify_reply_text(body)
+                if msg.get_content_type()=="multipart/report" or sender.split("@",1)[0] in ("mailer-daemon","postmaster"):
+                    classification="delivery_failure"
+                await record_mail_observation(inbound_key,"inbound","received",inbound_fingerprint,classification)
                 if row:
                     await conn.execute("""update outreach set replied_at=now(),reply_type=$2,
                       status=case when $2='opt_out' then 'suppressed' else 'replied' end,
@@ -7194,7 +7268,9 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                       where lower(email)=lower($1) and converted_at is null""",sender)
                 elif sample:
                     await event(conn,"growth_sample",sample["sample_id"],"reply_received",{"classification":classification,"email":sender})
-                box.store(mid,"+FLAGS","\\Seen"); matched+=1
+                matched+=1
+            if ids:
+                await conn.execute("update mailbox_poll_state set last_uid=$2,updated_at=now() where mailbox_key=$1",mailbox_key,max(ids))
     finally:
         try: box.logout()
         except Exception: pass

@@ -1,245 +1,314 @@
 #!/usr/bin/env python3
-import json, os, pathlib, smtplib, ssl, subprocess, sys, urllib.request, urllib.error
-from datetime import datetime, timezone
+"""Host watchdog: private metrics, bounded restarts, durable owner alerts. No campaign authority."""
+import argparse, base64, datetime as dt, fcntl, hashlib, hmac, importlib.util
+import json, os, pathlib, re, smtplib, ssl, subprocess, time, urllib.request, urllib.error
+from concurrent.futures import ThreadPoolExecutor
 from email.message import EmailMessage
+from email.utils import make_msgid
 
 ROOT=pathlib.Path(__file__).resolve().parent
-ENV_FILE=ROOT/".env"
 STATE_DIR=pathlib.Path.home()/".local/state/bmc-watchdog"
 STATE_FILE=STATE_DIR/"state.json"
-REPORT_ONLY="--report" in sys.argv
+FLAGS=("OUTREACH_ENABLED","BUYER_OUTREACH_ENABLED","GROWTH_OUTREACH_ENABLED","BMC_OWNER_LAUNCH_HOLD")
+
+def module(name,filename):
+    spec=importlib.util.spec_from_file_location(name,ROOT/filename)
+    obj=importlib.util.module_from_spec(spec);spec.loader.exec_module(obj);return obj
+
+policy=module("ops_policy","ops-policy.py")
 
 def read_env():
-    env={}
-    if not ENV_FILE.exists():
-        return env
-    for raw in ENV_FILE.read_text().splitlines():
-        line=raw.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        k,v=line.split("=",1)
-        env[k.strip()]=v.strip().strip('"').strip("'")
-    return env
+    result={}
+    for line in (ROOT/".env").read_text().splitlines():
+        if line.strip() and not line.lstrip().startswith("#") and "=" in line:
+            key,value=line.split("=",1);result[key.strip()]=value.strip().strip('"').strip("'")
+    return result
 
-ENV=read_env()
-
-def run(cmd, timeout=20):
+def run(cmd,timeout=8,input=None):
     try:
-        p=subprocess.run(cmd,cwd=ROOT,text=True,capture_output=True,timeout=timeout)
+        p=subprocess.run(cmd,cwd=ROOT,text=True,capture_output=True,timeout=timeout,input=input)
         return p.returncode,p.stdout.strip(),p.stderr.strip()
-    except Exception as e:
-        return 99,"",str(e)
+    except Exception as exc:return 99,"",type(exc).__name__
 
-def http_code(url, method="GET", timeout=15):
-    req=urllib.request.Request(url,method=method,headers={"User-Agent":"BMC-Watchdog/1.0"})
+def db_json(env,sql):
+    rc,out,_=run(["docker","exec","-i","-e","PGOPTIONS=-c statement_timeout=10000","bmc-postgres-1",
+        "psql","-v","ON_ERROR_STOP=1","-U",env["POSTGRES_USER"],"-d",env["POSTGRES_DB"],"-Atc",sql])
+    if rc:raise RuntimeError("Database observation unavailable")
+    return json.loads(out)
+
+def http(url,payload=None,env=None,timeout=5):
+    headers={"User-Agent":"Mozilla/5.0 BMC-Operations-Monitor","Accept":"application/json"}
+    if env:headers["X-BMC-Admin-Key"]=env.get("BMC_ADMIN_KEY") or env.get("ADMIN_KEY","")
+    data=json.dumps(payload).encode() if payload is not None else None
+    if data:headers["Content-Type"]="application/json"
     try:
-        with urllib.request.urlopen(req,timeout=timeout) as r:
-            return int(r.status),None
-    except urllib.error.HTTPError as e:
-        return int(e.code),None
-    except Exception as e:
-        return None,str(e)
+        with urllib.request.urlopen(urllib.request.Request(url,data=data,headers=headers),timeout=timeout) as response:
+            content=response.read(2_000_000);code=response.status
+            try:value=json.loads(content)
+            except ValueError:value=None
+            return code,value
+    except urllib.error.HTTPError as exc:return exc.code,None
+    except Exception:return None,None
 
-def http_json(url, payload=None, timeout=15):
-    data=None
-    headers={"User-Agent":"BMC-Watchdog/1.0","Accept":"application/json"}
-    method="GET"
-    if payload is not None:
-        data=json.dumps(payload).encode("utf-8")
-        headers["Content-Type"]="application/json"
-        method="POST"
-    req=urllib.request.Request(url,data=data,method=method,headers=headers)
+def load_state():
+    try:return json.loads(STATE_FILE.read_text())
+    except (OSError,ValueError):return {}
+
+def save_state(state):
+    tmp=STATE_FILE.with_suffix(".tmp");tmp.write_text(json.dumps(state,indent=2)+"\n")
+    os.chmod(tmp,0o600);tmp.replace(STATE_FILE)
+
+def container_flags_match(env):
+    values={k:env.get(k,"").strip().lower() for k in FLAGS}
+    if any(v not in ("true","false") for v in values.values()):return False
+    if values[FLAGS[3]]=="true" and any(values[k]=="true" for k in FLAGS[:3]):return False
+    expected=[k+"="+v for k,v in values.items()]
+    # Ask Docker only for these exact booleans; never dump its full secret environment.
+    conditions=" ".join('(eq . "'+value+'")' for value in expected)
+    template='{{range .Config.Env}}{{if or '+conditions+'}}{{println .}}{{end}}{{end}}'
+    rc,out,_=run(["docker","inspect","--format",template,"bmc-ops_api-1"])
+    return rc==0 and sorted(out.splitlines())==sorted(expected)
+
+def collect(env,state):
+    probes={
+      "api":("http://127.0.0.1:8000/health",None,None),
+      "n8n":("http://127.0.0.1:5678/healthz",None,None),
+      "public":("https://bmcservicenetwork.com/",None,None),
+      "ingress":("https://hooks.bmcservicenetwork.com/",None,None),
+      "metrics":("http://127.0.0.1:8000/api/admin/business-metrics",{},env),
+      "growth":("http://127.0.0.1:8000/api/admin/growth-status",{},env),
+      "agent":("http://127.0.0.1:8000/api/admin/agent-status",None,env)}
+    with ThreadPoolExecutor(max_workers=7) as executor:
+        futures={name:executor.submit(http,*args) for name,args in probes.items()}
+        readings={name:future.result() for name,future in futures.items()}
+    checks=[]
+    def add(name,ok,detail):checks.append(dict(name=name,ok=bool(ok),detail=detail))
+    rc,out,_=run(["docker","ps","--format","{{.Names}}"])
+    running=set(out.splitlines()) if rc==0 else set()
+    services={"Postgres":"postgres","Ops API":"ops_api","Scheduler":"scheduler","n8n":"n8n",
+              "SearXNG":"searxng","Webhook gateway":"webhook_proxy","Cloudflare ingress":"cloudflared"}
+    if env.get("LOCAL_AI_ENABLED","false").lower()=="true":services["Local AI / Ollama"]="ollama"
+    for name,service in services.items():
+        present="bmc-"+service+"-1" in running
+        add(name,present,"running" if present else "container unavailable")
+    health,_=readings["api"]
+    next(c for c in checks if c["name"]=="Ops API").update(ok=health==200,detail="HTTP "+str(health))
+    for name,url in (("n8n","http://127.0.0.1:5678/healthz"),("Public website","https://bmcservicenetwork.com/")):
+        code,_=readings["n8n" if name=="n8n" else "public"];existing=next((c for c in checks if c["name"]==name),None)
+        if existing:existing.update(ok=code==200,detail="HTTP "+str(code))
+        else:add(name,code==200,"HTTP "+str(code))
+    code,_=readings["ingress"]
+    next(c for c in checks if c["name"]=="Cloudflare ingress").update(ok=code==404,detail="HTTP "+str(code)+" (404 expected)")
+    rc,out,_=run(["docker","inspect","-f","{{.State.Health.Status}}","bmc-postgres-1"])
+    next(c for c in checks if c["name"]=="Postgres").update(ok=rc==0 and out=="healthy",detail=out or "unknown")
+    rc,out,_=run(["df","-Pk",str(ROOT)])
+    try:free=int(out.splitlines()[-1].split()[3])//1024//1024
+    except (IndexError,ValueError):free=None
+    add("Disk space",free is not None and free>=15,str(free)+" GB free")
+    backups=list((ROOT/"backups").glob("*.dump"))
+    newest=max((p.stat().st_mtime for p in backups),default=0)
+    add("Database backup freshness",time.time()-newest<36*3600,"latest backup age hours: "+str(round((time.time()-newest)/3600,1)) if newest else "no backup found")
+    code,metrics=readings["metrics"]
+    add("Business metrics",code==200 and isinstance(metrics,dict),"HTTP "+str(code))
+    if isinstance(metrics,dict):
+        for name,value in (("Unresolved outbound mail",metrics.get("mail",{}).get("unresolved")),
+                           ("Paid research fulfillment overdue",metrics.get("orders",{}).get("growth_paid_unfulfilled_over_30m")),
+                           ("High-priority business exceptions",metrics.get("exceptions",{}).get("high_priority"))):
+            add(name,type(value) is int and value==0,str(value)+" recorded")
+    if isinstance(metrics,dict):
+        by_route={row["route"]:row for row in metrics.get("api_operations",[])}
+        for route in ("/api/process-replies","/api/agent-cycle"):
+            stamp=by_route.get(route,{}).get("last_success_at")
+            try:age=time.time()-dt.datetime.fromisoformat(stamp).timestamp()
+            except (TypeError,ValueError):age=None
+            add("Worker freshness "+route,(age is not None and age<2700 and by_route[route].get("last_status",500)<400) or (route not in by_route and time.time()-state.get("configured_at",0)<900),"last successful run age seconds: "+str(round(age) if age is not None else "unknown"))
+    code,growth=readings["growth"]
+    expected={k:env.get(k,"").strip().lower() for k in FLAGS}
+    live=(growth or {}).get("outreach_switches",{})
+    safe=(not (expected[FLAGS[3]]=="true" and any(expected[k]=="true" for k in FLAGS[:3]))
+          and expected[FLAGS[3]] in ("true","false") and code==200 and all(expected[k] in ("true","false") and live.get(k)==(expected[k]=="true") for k in FLAGS[:3])
+          and type((growth or {}).get("owner_launch_hold_active")) is bool
+          and growth["owner_launch_hold_active"]==(expected[FLAGS[3]]=="true"))
+    offline_confirmed=code!=200 and container_flags_match(env)
+    safe=safe or offline_confirmed
+    add("Owner alert configuration",bool(state.get("monitor_configured") and env.get("WATCHDOG_EMAIL")),"configured privately" if state.get("monitor_configured") else "not configured")
+    add("Campaign configuration consistency",safe,"API unavailable; container flags independently match configuration" if offline_confirmed else ("configuration agrees with running API" if safe else "unknown or drift: do not repair automatically"))
+    # Verify a real saved owner click path, never a customer invitation or email.
+    # One recipient per cycle covers nine within 45 minutes without heavy polling.
+    if state.get("monitor_configured"):
+        try:
+            cohort=json.loads((ROOT/"api/growth_phoenix_cohort.json").read_text())
+            index=int(state.get("preview_probe_index",0))%len(cohort["target_ids"])
+            target_id=cohort["target_ids"][index]
+            # Only a locally known allowlisted ID is embedded; no arbitrary SQL.
+            if not re.fullmatch(r"inventory:[0-9a-f-]{36}",target_id):raise ValueError("Invalid scope")
+            target=db_json(env,"select json_build_object('email',public_email) from growth_outreach_targets where target_id='"+target_id+"';")
+            key=env.get("BMC_ADMIN_KEY") or env.get("ADMIN_KEY","")
+            claim=hmac.new(key.encode(),("owner-preview\n"+target_id+"\n"+target["email"].strip().lower()).encode(),hashlib.sha256).hexdigest()[:40]
+            code,sample=http("https://hooks.bmcservicenetwork.com/api/growth/claim-free-five",
+                {"target_id":target_id,"claim":claim,"preview":"1"},timeout=10)
+            valid=(code==200 and isinstance(sample,dict) and sample.get("preview") is True
+                   and len(sample.get("sample",[]))==5 and bool(sample.get("download_pdf_base64"))
+                   and "client_reference_id=owner_preview_" in sample.get("checkout_url",""))
+            add("Phoenix owner sample journey",valid,"recipient index "+str(index+1)+": HTTP "+str(code))
+            state["preview_probe_index"]=index+1
+        except Exception:add("Phoenix owner sample journey",False,"probe unavailable; no customer action attempted")
+    code,tasks=readings["agent"]
+    add("Internal operator agent",code==200 and isinstance(tasks,dict),"HTTP "+str(code))
+    return checks,metrics,growth,safe
+
+def alert_audit(message_id,status):
     try:
-        with urllib.request.urlopen(req,timeout=timeout) as r:
-            raw=r.read(1_000_000).decode("utf-8","replace")
-            return int(r.status),json.loads(raw),None
-    except urllib.error.HTTPError as e:
-        return int(e.code),None,None
-    except Exception as e:
-        return None,None,str(e)
+        path=STATE_DIR/"alert-attempts.jsonl"
+        with path.open("a") as stream:
+            os.chmod(path,0o600)
+            stream.write(json.dumps({"at":dt.datetime.now(dt.timezone.utc).isoformat(),"message_id":message_id,"status":status})+"\n")
+            stream.flush();os.fsync(stream.fileno())
+    except OSError:print("Operational alert audit unavailable",flush=True)
 
-def db_scalar(sql):
-    user=ENV.get("POSTGRES_USER","")
-    db=ENV.get("POSTGRES_DB","")
-    if not user or not db:
-        return None,"database env missing"
-    rc,out,err=run(["docker","exec","-i","bmc-postgres-1","psql","-U",user,"-d",db,"-Atc",sql])
-    return (out if rc==0 else None),(err if rc else None)
-
-checks=[]
-def add(name,ok,detail,severity="failure"):
-    checks.append({"name":name,"ok":bool(ok),"detail":detail,"severity":severity})
-
-# Core containers: deliberately independent of n8n so n8n can be monitored from outside itself.
-rc,out,err=run(["docker","ps","--format","{{.Names}}"])
-running=set(out.splitlines()) if rc==0 else set()
-expected=[
-    "bmc-postgres-1","bmc-ops_api-1","bmc-scheduler-1","bmc-n8n-1",
-    "bmc-searxng-1","bmc-webhook_proxy-1","bmc-cloudflared-1"
-]
-if ENV.get("LOCAL_AI_ENABLED","false").lower()=="true":
-    expected.append("bmc-ollama-1")
-missing=[x for x in expected if x not in running]
-add("Docker services",not missing,"all core services running" if not missing else "missing: "+", ".join(missing))
-
-# Postgres health.
-rc,out,err=run(["docker","inspect","-f","{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}","bmc-postgres-1"])
-add("Postgres",rc==0 and out=="healthy",out or err or "unavailable")
-
-# Local app and n8n health.
-code,err=http_code("http://127.0.0.1:8000/health")
-add("Ops API",code==200,f"HTTP {code}" if code else err or "unreachable")
-
-search_code,search_data,search_err=http_json(
-    "http://127.0.0.1:8000/api/service-search",
-    {"query":"fix my fryer"},
-    timeout=8
-)
-search_key=((search_data or {}).get("match") or {}).get("service_key")
-add(
-    "Intelligent service search",
-    search_code==200 and search_key=="restaurant_equipment",
-    f"'fix my fryer' -> {search_key}" if search_code==200 else (search_err or f"HTTP {search_code}"),
-    "failure"
-)
-code,err=http_code("http://127.0.0.1:5678/healthz")
-add("n8n",code==200,f"HTTP {code}" if code else err or "unreachable")
-
-# Local AI is required only when configured; deterministic search still handles known phrases.
-if ENV.get("LOCAL_AI_ENABLED","false").lower()=="true":
-    code,err=http_code("http://127.0.0.1:11434/api/tags",timeout=6)
-    add("Local AI / Ollama",code==200,f"HTTP {code}" if code else err or "unreachable","failure")
-
-# Research is useful but not launch-critical.
-code,err=http_code("http://127.0.0.1:8888/")
-add("SearXNG",code in (200,302,303),f"HTTP {code}" if code else err or "unreachable","warning")
-
-# Public surfaces.
-code,err=http_code("https://bmcservicenetwork.com/")
-add("Public website",code==200,f"HTTP {code}" if code else err or "unreachable")
-code,err=http_code("https://hooks.bmcservicenetwork.com/")
-add("Cloudflare ingress",code==404,f"HTTP {code} (expected 404 at root)" if code else err or "unreachable")
-
-# Disk pressure.
-rc,out,err=run(["df","-Pk",str(ROOT)])
-try:
-    line=out.splitlines()[-1].split()
-    free_gb=int(line[3])//1024//1024
-    add("Disk space",free_gb>=15,f"{free_gb} GB free","failure" if free_gb<10 else "warning")
-except Exception:
-    add("Disk space",False,err or "could not read disk space","warning")
-
-# BMC business exceptions. These are operational events, not necessarily infrastructure failures.
-open_ex,out_err=db_scalar("select count(*) from exceptions where status='open';")
-try:
-    open_exceptions=int(open_ex)
-except Exception:
-    open_exceptions=None
-add("Open BMC exceptions",open_exceptions is not None,f"{open_exceptions if open_exceptions is not None else 'unknown'} open", "warning")
-
-# Best-effort n8n execution failures. Schema may vary by version, so this never takes the stack down.
-reg,regerr=db_scalar("select to_regclass('public.execution_entity');")
-n8n_failures=None
-n8n_latest=""
-if reg and reg.strip()=="execution_entity":
-    val,qerr=db_scalar('select count(*) from execution_entity where status in (\'error\',\'crashed\') and "startedAt" > now()-interval \'15 minutes\';')
-    try:
-        n8n_failures=int(val)
-    except Exception:
-        n8n_failures=None
-    if n8n_failures:
-        latest,_=db_scalar('select id||\' | \'||status||\' | workflow=\'||"workflowId" from execution_entity where status in (\'error\',\'crashed\') and "startedAt" > now()-interval \'15 minutes\' order by "startedAt" desc limit 5;')
-        n8n_latest=latest or ""
-    add("Recent n8n workflow failures",n8n_failures==0,f"{n8n_failures} in last 15 minutes"+(("; "+n8n_latest.replace("\n","; ")) if n8n_latest else ""),"failure")
-else:
-    add("Recent n8n workflow failures",True,"execution table not available; container health still monitored","warning")
-
-failures=[c for c in checks if not c["ok"] and c["severity"]=="failure"]
-warnings=[c for c in checks if not c["ok"] and c["severity"]=="warning"]
-
-status="HEALTHY" if not failures else "ISSUE"
-signature=json.dumps({
-    "status":status,
-    "failures":[(c["name"],c["detail"]) for c in failures],
-    "warnings":[(c["name"],c["detail"]) for c in warnings],
-    "open_exceptions":open_exceptions,
-    "n8n_failures":n8n_failures
-},sort_keys=True)
-
-STATE_DIR.mkdir(parents=True,exist_ok=True)
-previous={}
-try:
-    previous=json.loads(STATE_FILE.read_text())
-except Exception:
-    pass
-
-now=datetime.now(timezone.utc).isoformat()
-report_lines=[
-    f"BMC Ops Watchdog — {status}",
-    f"Checked: {now}",
-    "",
-]
-for c in checks:
-    mark="PASS" if c["ok"] else ("FAIL" if c["severity"]=="failure" else "WARN")
-    report_lines.append(f"{mark}  {c['name']}: {c['detail']}")
-report_lines += [
-    "",
-    "If you need ChatGPT to troubleshoot, run:",
-    "cd ~/bmc-luminary-site/portfolio/automation && python3 ./ops-watchdog.py --report",
-    "",
-    "Then paste the report into the BMC business conversation."
-]
-report="\n".join(report_lines)
-
-if REPORT_ONLY:
-    print(report)
-    raise SystemExit(0 if not failures else 2)
-
-# Alert only on state/signature changes so a persistent outage does not spam every five minutes.
-changed=previous.get("signature")!=signature
-recovered=previous.get("status")=="ISSUE" and status=="HEALTHY"
-should_mail=changed and (status=="ISSUE" or recovered)
-
-def send_alert(subject,body):
-    host=ENV.get("SMTP_HOST","")
-    port=int(ENV.get("SMTP_PORT","587") or "587")
-    user=ENV.get("SMTP_USER","")
-    password=ENV.get("SMTP_PASSWORD","")
-    sender=ENV.get("SMTP_FROM") or user
-    recipient=ENV.get("WATCHDOG_EMAIL") or sender
-    starttls=(ENV.get("SMTP_STARTTLS","true").lower()=="true")
-    if not all([host,user,password,sender,recipient]):
-        return False,"SMTP configuration incomplete"
-    msg=EmailMessage()
-    msg["From"]=sender
-    msg["To"]=recipient
-    msg["Subject"]=subject
+def send_alert(env,subject,body,message_id):
+    recipient=env.get("WATCHDOG_EMAIL","")
+    if not re.fullmatch(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}",recipient):return False
+    msg=EmailMessage();msg["From"]=env.get("SMTP_FROM") or env.get("SMTP_USER","")
+    msg["To"]=recipient;msg["Subject"]=subject;msg["Message-ID"]=message_id
     msg.set_content(body)
+    alert_audit(message_id,"attempting")
     try:
-        with smtplib.SMTP(host,port,timeout=20) as smtp:
+        with smtplib.SMTP(env["SMTP_HOST"],int(env.get("SMTP_PORT","587")),timeout=8) as smtp:
             smtp.ehlo()
-            if starttls:
-                smtp.starttls(context=ssl.create_default_context())
-                smtp.ehlo()
-            smtp.login(user,password)
-            smtp.send_message(msg)
-        return True,"sent"
-    except Exception as e:
-        return False,str(e)
+            if env.get("SMTP_STARTTLS","true").lower()=="true":smtp.starttls(context=ssl.create_default_context());smtp.ehlo()
+            smtp.login(env["SMTP_USER"],env["SMTP_PASSWORD"]);smtp.send_message(msg)
+        alert_audit(message_id,"smtp_accepted")
+        return True
+    except Exception:
+        alert_audit(message_id,"uncertain");return False
 
-mail_result=None
-if should_mail:
-    subject=f"[BMC Watchdog] {'RECOVERED' if recovered else 'ACTION NEEDED'}"
-    mail_result=send_alert(subject,report)
+def prepare_key():
+    private=STATE_DIR/"configuration-key.pem";public=STATE_DIR/"configuration-public.pem"
+    if not private.exists():
+        rc,_,_=run(["openssl","genpkey","-algorithm","RSA","-pkeyopt","rsa_keygen_bits:3072","-out",str(private)],timeout=60)
+        if rc:raise RuntimeError("Unable to prepare private configuration transfer")
+        os.chmod(private,0o600)
+    rc,pem,_=run(["openssl","pkey","-in",str(private),"-pubout"])
+    if rc:raise RuntimeError("Unable to read public configuration key")
+    return {"public_key":pem,"purpose":"VPS-only encrypted operational configuration"}
 
-STATE_FILE.write_text(json.dumps({
-    "checked_at":now,
-    "status":status,
-    "signature":signature,
-    "mail_result":mail_result
-},indent=2)+"\n")
+def configure(ciphertext):
+    raw=base64.b64decode(ciphertext,validate=True)
+    p=subprocess.run(["openssl","pkeyutl","-decrypt","-inkey",str(STATE_DIR/"configuration-key.pem"),
+        "-pkeyopt","rsa_padding_mode:oaep","-pkeyopt","rsa_oaep_md:sha256"],input=raw,capture_output=True,timeout=10)
+    if p.returncode:raise ValueError("Encrypted configuration could not be read")
+    data=json.loads(p.stdout)
+    if set(data)!={"alert_email","autofix"} or type(data["autofix"]) is not bool or not re.fullmatch(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}",data["alert_email"]):
+        raise ValueError("Invalid operational configuration")
+    path=ROOT/".env";lines=path.read_text().splitlines()
+    keys={"WATCHDOG_EMAIL":data["alert_email"],"WATCHDOG_AUTOFIX":str(data["autofix"]).lower()}
+    for key,value in keys.items():
+        lines=[line for line in lines if not line.startswith(key+"=")];lines.append(key+"="+value)
+    tmp=path.with_suffix(".ops-config.tmp");tmp.write_text("\n".join(lines)+"\n");os.chmod(tmp,path.stat().st_mode);tmp.replace(path)
+    state=load_state();state["monitor_configured"]=True;state["configured_at"]=time.time();save_state(state)
+    return {"configured":True,"alert_recipient_configured":True,"autofix":data["autofix"]}
 
-print(report)
-if mail_result:
-    print("\nAlert email:",mail_result[1])
-raise SystemExit(0 if not failures else 2)
+def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    for flag in ("report","json","status","prepare-config","test-alert"):parser.add_argument("--"+flag,action="store_true")
+    parser.add_argument("--configure-encrypted")
+    args=parser.parse_args()
+    os.umask(0o077)
+    STATE_DIR.mkdir(parents=True,exist_ok=True,mode=0o700)
+    os.chmod(STATE_DIR,0o700)
+    with (STATE_DIR/"lock").open("a") as lock:
+        os.chmod(STATE_DIR/"lock",0o600)
+        try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        except BlockingIOError:print(json.dumps({"busy":True}));return 0
+        if args.prepare_config:print(json.dumps(prepare_key()));return 0
+        if args.configure_encrypted:print(json.dumps(configure(args.configure_encrypted)));return 0
+        env=read_env();state=load_state()
+        if args.status:
+            print(json.dumps({"configured":bool(state.get("monitor_configured")),"recipient_configured":bool(env.get("WATCHDOG_EMAIL")),
+                "autofix":env.get("WATCHDOG_AUTOFIX")=="true","last_check":state.get("last_check"),"private_alert_audit_available":(STATE_DIR/"alert-attempts.jsonl").exists(),
+                "last_report":state.get("last_report"),"pending_alert":state.get("pending_notice"),
+                "test_alert_smtp_accepted":state.get("test_alert_smtp_accepted",False)}));return 0
+        checks,metrics,growth,consistent=collect(env,state)
+        now=time.time();repairs=[]
+        if not args.report and not args.json and not args.test_alert and consistent:
+            plan=policy.repair_plan(checks,state,now,env.get("WATCHDOG_AUTOFIX")=="true")
+            for service in plan:
+                if service not in policy.SERVICES.values():continue
+                entry={"at":now,"service":service,"command_ok":None};repairs.append(entry)
+                state.setdefault("repairs",[]).append(entry)
+                save_state(state)  # Claim the bounded attempt before touching a service.
+                rc,_,_=run(["docker","compose","--env-file",".env","--profile","tunnel","--profile","local-ai","restart",service],timeout=20)
+                entry["command_ok"]=rc==0
+            for entry in repairs:
+                urls={"ops_api":"http://127.0.0.1:8000/health","n8n":"http://127.0.0.1:5678/healthz",
+                      "cloudflared":"https://hooks.bmcservicenetwork.com/","searxng":"http://127.0.0.1:8888/",
+                      "ollama":"http://127.0.0.1:11434/api/tags"}
+                service=entry["service"]
+                if service in urls:
+                    code,_=http(urls[service]);verified=code==(404 if service=="cloudflared" else 200)
+                else:
+                    rc,names,_=run(["docker","ps","--format","{{.Names}}"])
+                    verified=rc==0 and "bmc-"+service+"-1" in names.splitlines()
+                entry["verified_healthy"]=verified
+                for check in checks:
+                    if policy.SERVICES.get(check["name"])==service and not check["name"].startswith("Worker freshness"):
+                        check.update(ok=verified,detail="bounded restart verification: "+str(verified))
+                # Failed worker heartbeat stays failed until a successful real cycle.
+
+            if any(read_env().get(k)!=env.get(k) for k in FLAGS):
+                checks.append({"name":"Campaign settings changed during recovery","ok":False,"detail":"manual review required"})
+        state["repairs"]=[r for r in state.get("repairs",[]) if r.get("at",0)>now-7*86400]
+        problems=[c for c in checks if not c["ok"]]
+        report={"observed_at":dt.datetime.now(dt.timezone.utc).isoformat(),"status":"ACTION NEEDED" if problems else "HEALTHY",
+            "checks":checks,"business_metrics":metrics,"growth_scope":{"wave":(growth or {}).get("wave"),
+            "recipient_scope_count":(growth or {}).get("recipient_scope_count"),"owner_hold":(growth or {}).get("owner_launch_hold_active"),
+            "outreach_switches":(growth or {}).get("outreach_switches")},"repairs":repairs}
+        if args.json:print(json.dumps(report));return int(bool(problems))*2
+        lines=["BMC VPS "+report["status"],"Checked: "+report["observed_at"],""]
+        lines += [("PASS " if c["ok"] else "CHECK ")+c["name"]+": "+c["detail"] for c in checks]
+        lines += ["","Bounded recovery: "+json.dumps(repairs),"",("Help needed: share this report in your BMC maintenance chat." if problems else "No action is needed for these checks."),
+                  "No customer outreach, charges, refunds, provider approvals, credential changes or code deployments were authorized by this monitor.",
+                  "If the VPS or its mail provider is entirely offline, it cannot send an alert. Independent external monitoring is still required."]
+        body="\n".join(lines)
+        if args.report:print(body);return int(bool(problems))*2
+        decision=policy.alert_decision(checks,state,now)
+        if args.test_alert:
+            if not state.get("monitor_configured"):raise RuntimeError("Configure the designated owner alert recipient first")
+            if state.get("test_alert_attempted_at") and not state.get("test_alert_smtp_accepted"):
+                print(json.dumps({"test_alert_smtp_accepted":False,"uncertain_prior_attempt":True,"duplicate_avoided":True}));return 2
+            if not state.get("test_alert_smtp_accepted"):
+                state["test_alert_attempted_at"]=now;save_state(state)
+                accepted=send_alert(env,"[BMC VPS] Operational alert test",body,make_msgid(domain="bmcservicenetwork.com"))
+                state["test_alert_smtp_accepted"]=accepted
+                state["test_alert_attempted_at"]=now
+            else:accepted=True
+            save_state(state);print(json.dumps({"test_alert_smtp_accepted":accepted,"duplicate_avoided":accepted and bool(state.get("test_alert_attempted_at",0)<now)}));return 0 if accepted else 2
+        if decision["send"] and state.get("monitor_configured"):
+            policy.record_alert(state,decision,now,False);save_state(state)
+            accepted=send_alert(env,"[BMC VPS] "+("ACTION NEEDED" if problems else "RECOVERED"),body,make_msgid(domain="bmcservicenetwork.com"))
+            policy.record_alert(state,decision,now,accepted)
+        state.update(last_check=report["observed_at"],last_report=report)
+        save_state(state)
+        history=STATE_DIR/"history.jsonl"
+        with history.open("a") as stream:stream.write(json.dumps(report)+"\n")
+        os.chmod(history,0o600)
+        # Bound private operational history; detailed commerce ledgers stay in PostgreSQL.
+        if history.stat().st_size>20_000_000:
+            rows=history.read_text().splitlines()[-4032:];history.write_text("\n".join(rows)+"\n")
+        print(body);return int(bool(problems))*2
+
+if __name__=="__main__":
+    try:raise SystemExit(main())
+    except Exception as exc:
+        # An independent SMTP path can ask for help even when the API/database fails.
+        try:
+            env=read_env();state=load_state();now=time.time()
+            check={"name":"Watchdog internal error","ok":False,"detail":type(exc).__name__}
+            decision=policy.alert_decision([check],state,now)
+            if state.get("monitor_configured") and decision["send"] and not any(x in __import__("sys").argv for x in ("--report","--json","--status","--prepare-config","--configure-encrypted")):
+                accepted=send_alert(env,"[BMC VPS] Monitor needs help","The host watchdog could not finish: "+type(exc).__name__+". Review the timer journal; preserve outreach settings.",make_msgid(domain="bmcservicenetwork.com"))
+                policy.record_alert(state,decision,now,accepted);save_state(state)
+        except Exception:pass
+        print(json.dumps({"error":"Operational monitor could not complete","error_type":type(exc).__name__}))
+        raise SystemExit(2)

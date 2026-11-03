@@ -1212,6 +1212,39 @@ create table if not exists mail_delivery_attempts (
   updated_at timestamptz not null default now()
 );
 
+-- Every API SMTP attempt is committed independently before network transmission.
+-- No message body, subject or mailbox address is retained in this metrics ledger.
+create table if not exists mail_observations (
+  message_key text primary key,
+  direction text not null check(direction in ('inbound','outbound')),
+  status text not null check(status in ('attempting','smtp_accepted','uncertain','received')),
+  payload_sha256 text not null,
+  classification text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+create index if not exists idx_mail_observations_status on mail_observations(direction,status,created_at);
+
+create table if not exists api_operation_metrics (
+  route text primary key,
+  requests bigint not null default 0,
+  failures bigint not null default 0,
+  total_duration_ms bigint not null default 0,
+  last_status integer,
+  last_observed_at timestamptz,
+  last_success_at timestamptz
+);
+
+-- UID cursor observes new mail even if a human reads it before the poll.
+-- First activation starts at current UIDNEXT; historical mail is not replayed.
+create table if not exists mailbox_poll_state (
+  mailbox_key text primary key,
+  uidvalidity text not null,
+  last_uid bigint not null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
 -- Preserve the seven pre-review Growth contacts without automatically following
 -- them up when a new wave starts. Historical status and SMTP evidence stay intact.
 alter table outreach add column if not exists owner_review_required boolean not null default false;

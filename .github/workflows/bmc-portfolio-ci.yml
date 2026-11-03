@@ -28,8 +28,8 @@ jobs:
           ns=runpy.run_path("vps-gitops-relay.py",run_name="bmc_relay_ci")
           expected={
               "proof_readout","launch_audit","runtime_doctor","diagnostic_bundle","scheduler_status","search_quality_probe","research_refresh_status",
-              "growth_status","growth_launch_audit","operator_snapshot","growth_inventory_audit","growth_preview_candidates","nevada_status",
-              "deploy_update","configure_owner_contact","configure_growth_review_scope","market_inventory_step","local_demand_step",
+              "growth_status","growth_launch_audit","operator_snapshot","growth_inventory_audit","growth_preview_candidates","nevada_status","business_metrics","ops_monitor_status",
+              "deploy_update","configure_owner_contact","configure_growth_review_scope","prepare_ops_configuration","configure_ops_monitoring","ops_alert_test","market_inventory_step","local_demand_step",
               "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","inventory_closure_step","research_refresh_install","scheduler_start","scheduler_stop",
               "growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_launch_enable","growth_launch_disable","growth_owner_replay_email","growth_owner_target_preview","owner_replay_all_email_templates","growth_owner_preview_approve"
           }
@@ -65,6 +65,7 @@ jobs:
           python3 portfolio/automation/test-operator-relay.py
           python3 portfolio/automation/test-relay-result-index.py
           python3 -m py_compile portfolio/automation/operator-monitor.py
+          python3 portfolio/automation/test-ops-supervisor.py
           python3 portfolio/automation/test-operator-monitor.py
           python3 portfolio/automation/test-monitor-reload.py
           python3 portfolio/automation/test-operator-dashboard.py
@@ -1031,6 +1032,8 @@ jobs:
               prior=m.aiosmtplib.send
               dry=m.SMTP_DRY_RUN
               host=m.SMTP_HOST
+              delivery_pool=await m.asyncpg.create_pool(m.DB_DSN,min_size=1,max_size=2)
+              m.app.state.delivery_pool=delivery_pool
               try:
                   m.aiosmtplib.send=capture
                   m.SMTP_DRY_RUN=False
@@ -1048,6 +1051,7 @@ jobs:
                   m.aiosmtplib.send=prior
                   m.SMTP_DRY_RUN=dry
                   m.SMTP_HOST=host
+                  await delivery_pool.close()
           asyncio.run(check())
           PY
 
