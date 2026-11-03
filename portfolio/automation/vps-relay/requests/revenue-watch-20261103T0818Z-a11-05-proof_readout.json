@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "revenue-watch-20261103T0818Z-a11-05-proof_readout",
+  "action": "proof_readout",
+  "created_at": "2026-11-03T08:18:42.374Z",
+  "expires_at": "2026-11-03T09:03:42.374Z",
+  "allow_external_actions": false,
+  "args": {}
+}
