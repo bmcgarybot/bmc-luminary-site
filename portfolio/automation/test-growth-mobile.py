@@ -18,7 +18,7 @@ with sync_playwright() as p:
     page=browser.new_page()
     page.route('**/*',lambda route:route.abort())
     page.route('https://bmc.example.test/**',lambda route:route.fulfill(body=page_html,content_type='text/html'))
-    for width in (320,375,390,768,1280):
+    for width in (320,375,390,601,768,1280):
         page.set_viewport_size({'width':width,'height':844})
         page.goto('https://bmc.example.test/growth-packs/commercial-cleaning/')
         page.add_script_tag(content=render)
@@ -40,12 +40,12 @@ with sync_playwright() as p:
         print(f'PASS {width}px: personalized results first; no overflow; contacts; PDF before sample')
     # Full delayed signed-link flow starts at the old anchor and an old scroll position.
     import json,time
-    payload=dict(status='sample_ready',business_name='Verified Phoenix Cleaning',research_scope='Offices and schools in Phoenix.',selected_markets=['Phoenix'],preview=True,download_filename='fixture.pdf',download_pdf_base64='JVBERi0xLjQ=',sample=[dict(business_name='Researched Phoenix Office',market='Phoenix',fit_reason='Office scope.',contact_route='6025550123')])
+    payload=dict(status='sample_ready',business_name='Verified Phoenix Cleaning',research_scope='Offices and schools in Phoenix.',selected_markets=['Phoenix'],preview=True,checkout_url='https://buy.stripe.com/fixture',download_filename='fixture.pdf',download_pdf_base64='JVBERi0xLjQ=',sample=[dict(business_name='Researched Phoenix Office',market='Phoenix',fit_reason='Office scope.',contact_route='6025550123')])
     def claim(route):
         time.sleep(.25)
         route.fulfill(body=json.dumps(payload),content_type='application/json',headers={'Access-Control-Allow-Origin':'*'})
     page.route('https://hooks.bmcservicenetwork.com/api/growth/claim-free-five',claim)
-    for width in (375,390,1280):
+    for width in (375,390,601,1280):
         page.set_viewport_size(dict(width=width,height=844))
         page.goto('https://bmc.example.test/growth-packs/commercial-cleaning/?target=fixture&claim=fixture&business=Wrong+URL+Name&preview=1#free5')
         page.add_script_tag(content=js)
@@ -55,6 +55,18 @@ with sync_playwright() as p:
         assert 'Wrong URL Name' not in page.locator('#your-prospects').inner_text()
         assert 'Offices and schools' in page.locator('.growth-research-scope').inner_text()
         assert not page.locator('.mobile-sticky-cta').is_visible()
+        assert not page.locator('#full-pack').is_visible()
+        assert not page.locator('nav a[href="#free5"]').is_visible()
+        assert page.get_by_role('link',name='Get the other 95 — $499',exact=True).count()==1
+        assert '100 total' in page.locator('[data-success-card]').inner_text()
+        assert page.locator('.owner-checkout-warning').is_visible()
         assert page.evaluate('location.hash')=='#your-prospects'
         print(f'PASS {width}px delayed signed link: verified company heading visible below nav, no extra CTA')
+    payload['preview']=False
+    page.goto('https://bmc.example.test/growth-packs/commercial-cleaning/?target=fixture&claim=fixture#free5')
+    page.add_script_tag(content=js)
+    page.wait_for_selector('#your-prospects .growth-sample-results')
+    assert page.locator('.owner-checkout-warning').count()==0
+    assert page.get_by_role('link',name='Get the other 95 — $499',exact=True).count()==1
+    print('PASS customer path: remaining 95 pricing, original five retained, no owner-only warning')
     browser.close()

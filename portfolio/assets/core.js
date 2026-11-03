@@ -356,7 +356,13 @@
       if(response.checkout_url && /^https:\/\/buy\.stripe\.com\//i.test(response.checkout_url)){
         const actions=document.createElement("div");actions.className="actions";
         const checkout=document.createElement("a");checkout.className="btn btn-primary";
-        checkout.href=response.checkout_url;checkout.textContent=response.preview?"Inspect live $499 checkout — do not pay":"Get the full 100 for $499";
+        checkout.href=response.checkout_url;checkout.textContent="Get the other 95 — $499";
+        const included=document.createElement("p");included.id="growth-upgrade";included.textContent="Your original five are included: 100 total researched prospects. No subscription.";
+        card.appendChild(included);
+        if(response.preview){
+          const warning=document.createElement("p");warning.className="owner-checkout-warning";
+          warning.textContent="Owner preview: checkout is live. Inspect only; do not pay.";card.appendChild(warning);
+        }
         actions.appendChild(checkout);card.appendChild(actions);
       }else if(!response.preview){
         const options=document.createElement("p");
@@ -377,7 +383,9 @@
       results.replaceChildren(card);
       document.body.classList.remove("growth-results-loading");
       document.body.classList.add("growth-results-ready");
-      document.querySelectorAll('a[href="#free5"]').forEach(function(link){link.href="#your-prospects";link.textContent="Your five prospects";});
+      document.querySelectorAll('a[href="#full-pack"]').forEach(function(link){
+        if(response.checkout_url){link.href="#growth-upgrade";link.textContent="Get the other 95";}else{link.hidden=true;}
+      });
       history.replaceState(null,"",location.pathname+location.search+"#your-prospects");
       heading.tabIndex=-1;heading.focus({preventScroll:true});
       requestAnimationFrame(function(){requestAnimationFrame(function(){
