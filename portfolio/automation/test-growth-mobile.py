@@ -59,6 +59,11 @@ with sync_playwright() as p:
         assert page.evaluate('location.hash')==''
         primary=page.locator('.customer-hero .btn-primary')
         assert primary.inner_text()=='Show me my 5 free targets'
+        assert page.locator('.customer-hero h1').evaluate('(el)=>el.getBoundingClientRect().bottom <= innerHeight'), f'Headline below opening screen at {width}'
+        assert primary.evaluate('(el)=>el.getBoundingClientRect().bottom <= innerHeight'), f'Primary action below opening screen at {width}'
+        if width > 850:
+            assert page.locator('.growth-hero-offer').evaluate('(el)=>el.getBoundingClientRect().right > innerWidth / 2')
+            assert page.locator('.hero-photo').evaluate('(el)=>el.getBoundingClientRect().top >= document.querySelector(".growth-hero-offer").getBoundingClientRect().bottom')
         assert page.evaluate('history.scrollRestoration')=='manual'
         primary.click()
         page.wait_for_function("document.querySelector('[data-success-card] h3').getBoundingClientRect().top >= document.querySelector('body > nav').getBoundingClientRect().bottom && document.querySelector('[data-success-card] h3').getBoundingClientRect().top < 250")
