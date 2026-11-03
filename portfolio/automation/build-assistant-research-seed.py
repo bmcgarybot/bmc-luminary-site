@@ -58,6 +58,8 @@ def merged_record(entries):
     best = max(records, key=rank).copy()
     best["official"] = any(bool(r.get("official")) for r in records)
     best["official_registry"] = any(bool(r.get("official_registry")) for r in records)
+    # A research hold survives enrichment until explicitly cleared in reviewed data.
+    best["qualification_hold"] = any(bool(r.get("qualification_hold")) for r in records)
     for field in ("email", "phone", "domain", "roc_license", "trade", "verified_date"):
         if not best.get(field):
             best[field] = next((r.get(field) for r in records if r.get(field)), None)
@@ -128,6 +130,7 @@ def render_row(entries):
         "verification_status": verification_status,
         "researched_by": "assistant_manual_census",
     }
+    evidence["qualification_hold"] = bool(r.get("qualification_hold"))
     if official_registry:
         evidence["official_registry"] = True
     for field in ("roc_license", "trade", "verified_date"):
