@@ -3419,7 +3419,7 @@ async def handle_growth_snapshot(conn,p):
     guarantee="If a delivered prospect fails our published territory, activity, business type or contact standard, reply and we will replace it."
     body=f"Hi {contact},\n\n"+"\n\n".join([intro,*details,terms,offer,guarantee])
     if checkout: body+="\n\nView the 100-prospect offer: "+checkout
-    body+=f"\n\nQuestions about the fit? Reply to this email.\n\nBMC Service Network\nBMC Luminary Ventures LLC\n{BUSINESS_POSTAL_ADDRESS}"
+    body+=f"\n\nQuestions about the fit? Reply to this email.\n\nThis is a promotional email from BMC Service Network.\n\nBMC Service Network\nBMC Luminary Ventures LLC\n{BUSINESS_POSTAL_ADDRESS}"
     html_body=workflow_email_html("Your five-prospect brief",[intro,*details,terms,offer,guarantee,
       "Questions about the fit? Reply to this email."],
       "View the 100-prospect offer" if checkout else None,checkout or None,
