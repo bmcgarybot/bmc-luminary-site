@@ -1,3 +1,13 @@
+## OWNER REVIEW FIXES IN PROGRESS — November 2, 2026, 7:25 p.m. Arizona
+
+User requested implementation of mobile/contact/nurture fixes and complete offer ladder. PR40 https://github.com/bmcgarybot/bmc-luminary-site/pull/40 head 07fa56a13d3acc1d360847a2e3b38f92167c479f contains mobile min-width/wrapping and asset-version fixes, tap-to-call/email contacts, PDF before cards, shared HTML/plaintext nurture copy, passive website link after unsubscribe, and deterministic branded paid 100-prospect PDF alongside CSV. NOT merged/deployed yet. First CI failed because form validator banned every mailto string; fixed to ban automatic navigation only. Current CI running; real-component browser tests added at 320/375/390/768/1280. Local browser installation failed, so do not claim local visual verification.
+
+Revised review file regenerated locally; must save current revision before sharing as current. Prior owner preview must not be resent unchanged. No template approval or outreach release. All holds remain.
+
+Launch operating limit: prepare up to10 individually reviewed Phoenix commercial-cleaning recipients first; then up to25 after delivery/reply checks. These are LIMITS, not verified ready counts. Only Environment Control Phoenix has complete verified owner preview. Each recipient gets5 tailored frozen prospects,100 total for499. Phoenix125 inventory eligibility checkpoint does not imply10 recipients ready or confirmed customer demand. Next territory priorities Prescott/Prescott Valley and Verde Valley, landscaping/junk/minorhandyman/fence, only after dedicated service and inventory checks; do not reuse cleaning workflow.
+
+Remaining implementation: 25total/$149 downsell and $350 upgrade to100 with original25 preserved, $250 strategy add-on (749total) and verified competitor/outreach-plan delivery; no live products/checkout created yet. New offer terms were authorized for implementation by user's "Implement them" but NOT customer release. Current smaller-pack path is manual scoped inquiry, not149 checkout. Paid PDF worker added; fullCI and visual test pending. Original7 history preserved; receipts lastverified0.
+
 ## VERIFIED LIVE OFFER AND OWNER PREVIEW — November 2, 2026, 6:25 p.m. Arizona
 
 - VPS exactrelease3684cb5b634502af75b8708830a7a291a0966546 deployed successfully by b-phoenix-offer-deploy-20261103T012043Z; exact-master CI41558815256 and Pages41558815297 passed. Runtime doctor0failures/0warnings. Independent b-phoenix-offer-zoperator_snapshot-20261103T012058Z at01:22:38UTC confirms sameSHA, healthyAPI/runtime/scheduler,globalholdtrue/allthreeoutreachfalse. Receipts0/orders0/samples0/replies0/exceptions0; originalsent7 preserved.
