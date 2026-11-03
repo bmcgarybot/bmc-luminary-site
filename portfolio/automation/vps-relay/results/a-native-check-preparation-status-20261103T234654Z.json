@@ -1,0 +1,21 @@
+{
+  "action": "preparation_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-03T23:47:54.300318+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "a4dd04b47e823ed4b8d09a1c6ca9201cde88e61b",
+  "git_commit_before": "a4dd04b47e823ed4b8d09a1c6ca9201cde88e61b",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "b655d1f36e22b6b963cba82ac68588792b895b13",
+  "request_id": "a-native-check-preparation-status-20261103T234654Z",
+  "request_sha256": "7c48a9748c28a2ae9f82fdedef409998f9b97db133003f9d8d3ac6caaa1fc0bc",
+  "started_at": "2026-11-03T23:47:54.190846+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"ok\": true,\n  \"worker\": \"vps_primary_site_v1\",\n  \"imagery\": {\n    \"assigned\": 54,\n    \"needs_review\": []\n  },\n  \"jobs\": [\n    {\n      \"market\": \"Ash Fork\",\n      \"status\": \"needs_review\",\n      \"records\": 2\n    },\n    {\n      \"market\": \"Bullhead City\",\n      \"status\": \"needs_review\",\n      \"records\": 2\n    },\n    {\n      \"market\": \"Camp Verde\",\n      \"status\": \"needs_review\",\n      \"records\": 2\n    },\n    {\n      \"market\": \"Chino Valley\",\n      \"status\": \"needs_review\",\n      \"records\": 2\n    },\n    {\n      \"market\": \"Cordes Lakes\",\n      \"status\": \"needs_review\",\n      \"records\": 2\n    },\n    {\n      \"market\": \"Phoenix\",\n      \"status\": \"needs_review\",\n      \"records\": 19\n    },\n    {\n      \"market\": \"Phoenix\",\n      \"status\": \"verified\",\n      \"records\": 1\n    }\n  ],\n  \"primary_site_verified\": [\n    {\n      \"market\": \"Phoenix\",\n      \"side\": \"vendor\",\n      \"category_key\": \"junk_hauling\",\n      \"records\": 1\n    }\n  ],\n  \"review_reasons\": [\n    {\n      \"error_code\": \"structured_identity_location_or_contact_unproven\",\n      \"records\": 21\n    },\n    {\n      \"error_code\": \"http_403\",\n      \"records\": 3\n    },\n    {\n      \"error_code\": \"not_html\",\n      \"records\": 3\n    },\n    {\n      \"error_code\": \"http_404\",\n      \"records\": 1\n    },\n    {\n      \"error_code\": \"page_too_large\",\n      \"records\": 1\n    }\n  ],\n  \"outreach_sent\": 0\n}",
+  "version": 1
+}
