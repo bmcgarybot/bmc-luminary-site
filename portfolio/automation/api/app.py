@@ -2679,6 +2679,8 @@ def growth_candidate_evidence_valid(row,market):
     if any(host==d or host.endswith("."+d) for d in GROWTH_SOURCE_BLOCKLIST):
         return False
     evidence=json_dict(row.get("evidence"))
+    if evidence.get("qualification_hold"):
+        return False
     curated=(evidence.get("researched_by")=="assistant_manual_census"
       and isinstance(evidence.get("artifact_files"),list) and bool(evidence["artifact_files"]))
     government=(clean(row.get("source_tier")) in ("government","government_registry")

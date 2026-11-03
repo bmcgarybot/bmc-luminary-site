@@ -145,6 +145,11 @@ class Tests(unittest.TestCase):
         row=self.evidence_row(business_name='Flagstaff Regional Clinic',source_url='https://clinic.example/locations/sedona/')
         self.assertTrue(ns['growth_candidate_evidence_valid'](row,'Sedona'))
 
+    def test_manual_research_hold_overrides_official_evidence(self):
+        row=self.evidence_row()
+        row['evidence']['qualification_hold']=True
+        self.assertFalse(ns['growth_candidate_evidence_valid'](row,'Sedona'))
+
     def test_verification_boundary(self):
         now=datetime(2026,10,28,tzinfo=timezone.utc)
         for age,expected in ((timedelta(days=90),True),(timedelta(days=90,seconds=1),False),(-timedelta(minutes=6),False)):
