@@ -7775,17 +7775,25 @@ async def process_growth_offer_invitations(x_bmc_admin_key:str|None=Header(defau
     require_admin(x_bmc_admin_key)
     if OWNER_LAUNCH_HOLD or not GROWTH_OUTREACH_ENABLED:
         return {"ok":True,"sent":0,"held":True}
+    scope=tuple(globals().get("GROWTH_OUTREACH_TARGET_IDS",()))
+    if not scope:return {"ok":True,"sent":0,"held":True,"message":"An exact reviewed recipient scope is required."}
     sent=0
     async with app.state.pool.acquire() as conn:
       offers=await conn.fetch("""select f.offer_id from growth_purchase_offers f join products p on p.product_key=f.product_key
-        where f.status='approved' and f.approved_at is not null and f.invited_at is null and f.expires_at>now()
+        join growth_sample_requests s on s.sample_id=f.sample_id
+        join growth_outreach_targets g on g.target_id=s.source_target_id
+        where s.source_target_id=any($1::text[]) and lower(f.email)=lower(s.email)
+          and lower(f.email)=lower(g.public_email) and f.status='approved' and f.approved_at is not null and f.invited_at is null and f.expires_at>now()
           and p.active=true and coalesce(p.payment_link_url,'')<>''
           and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(f.email))
-        order by f.created_at limit 5""")
+        order by f.created_at limit 5""",list(scope))
       for item in offers:
        async with conn.transaction():
         await growth_lock_exposure_allocator(conn)
         offer=await conn.fetchrow("select * from growth_purchase_offers where offer_id=$1 for update",item['offer_id'])
+        scoped=await conn.fetchval("""select exists(select 1 from growth_sample_requests s join growth_outreach_targets g on g.target_id=s.source_target_id
+          where s.sample_id=$1 and s.source_target_id=any($2::text[]) and lower(s.email)=lower($3) and lower(g.public_email)=lower($3))""",offer['sample_id'],list(scope),offer['email'])
+        if not scoped:continue
         if offer['status']!='approved' or offer['invited_at'] or offer['expires_at']<=datetime.now(timezone.utc):continue
         if await conn.fetchval("select 1 from outreach_suppressions where lower(email)=lower($1)",offer['email']):continue
         product=await conn.fetchrow("select * from products where product_key=$1 and active=true",offer['product_key'])
