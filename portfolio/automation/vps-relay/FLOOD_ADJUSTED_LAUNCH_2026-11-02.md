@@ -1,3 +1,11 @@
+## Launch-critical release checkpoint — 2026-11-03 01:21 UTC
+
+PR39 merged as3684cb5b634502af75b8708830a7a291a0966546. Exact-master Portfolio CI41558815256 (validate/payment-postgres) and Pages41558815297 SUCCESS. Local reviewed Phoenix commercial-cleaning reserve125 comprises120 newly researched official-site records plusfive sample records;20 questionable legacy rows explicitly qualification-held and preserved. No buying intent, verified decision-maker, post-storm operation or safe-access claim.
+
+Held deployment b-phoenix-offer-deploy-20261103T012043Z queued; results NOT yet verified. Postchecks b-phoenix-offer-zoperator_snapshot-20261103T012058Z and b-phoenix-offer-zgrowth_inventory_audit-20261103T012059Z queued. Do not duplicate deploy or call backend live before reading these. Last independently verified VPS bef62dc5 at01:18UTC, healthy runtime/API/scheduler, allholds;0receipts/orders/samples/replies, historicalsent7.
+
+Next strictly launch-critical: verify deploy and125 live reserve, stage held commercial-cleaning target Environment Control Phoenix, obtain exacttargetID, send ONE distinct authorized owner preview to contact@bmcservicenetwork.com with matchingPDF/signedbutton/live checkout inspection. No customer send/charge/approval/release. Actual owner mail-client/button approval and explicitrelease still required.
+
 ## VERIFIED LIVE CHECKPOINT — November 2, 2026, 5:28 p.m. Arizona
 
 - VPS deploy b-private-pdf-deploy-20261103T002559Z SUCCEEDED at 2026-11-03T00:28:07Z, exact release bef62dc5f0703c02b5d548a6017dc7b78c482bfc. Runtime doctor 0 failures/0 warnings. Exact-master CI41552525967 both jobs and Pages41552525843 passed.
