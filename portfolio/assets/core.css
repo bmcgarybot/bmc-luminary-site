@@ -991,3 +991,12 @@ form[data-form-type="growth_snapshot"] > [hidden]{display:none!important}
  .growth-sample-results .soft-panel{padding:14px}
  .growth-seller-page .submission-success .btn{width:100%;min-height:48px}
 }
+
+/* Signed samples open as a company-specific research brief at the top. */
+.growth-personalized-results{padding-top:24px;padding-bottom:32px;scroll-margin-top:90px}
+.growth-personalized-results .submission-success{display:block;margin:0;width:100%}
+.growth-personalized-results h3{font-size:clamp(1.5rem,4vw,2.2rem);line-height:1.2;margin-top:0}
+.growth-research-scope{font-weight:600}
+.growth-results-ready > .customer-hero,.growth-results-loading > .customer-hero,
+.growth-results-ready #free5,.growth-results-loading #free5,
+.growth-results-ready .mobile-sticky-cta,.growth-results-loading .mobile-sticky-cta{display:none!important}

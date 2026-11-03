@@ -278,6 +278,8 @@
         "You do not need to submit the same request again."
       ];
     }
+    const hasSample=formType==="growth_snapshot" && Array.isArray(response.sample) && response.sample.length;
+    if(hasSample && response.business_name)title="Five researched prospects prepared for "+response.business_name+".";
     card.replaceChildren();
     const heading=document.createElement("h3");
     heading.textContent=title;
@@ -291,10 +293,14 @@
     });
     card.appendChild(heading);
     card.appendChild(message);
+    if(hasSample && response.research_scope){
+      const scope=document.createElement("p");scope.className="growth-research-scope";
+      scope.textContent="Research focus: "+response.research_scope;card.appendChild(scope);
+    }
     if(formType==="growth_snapshot" && Array.isArray(response.selected_markets)){
       const territory=document.createElement("p");territory.textContent="Your selected territory: "+response.selected_markets.join(", ");card.appendChild(territory);
     }
-    card.appendChild(list);
+    if(!hasSample)card.appendChild(list);
     if(formType==="growth_snapshot" && Array.isArray(response.sample) && response.sample.length){
       const sampleWrap=document.createElement("div");
       sampleWrap.className="growth-sample-results";
@@ -344,7 +350,7 @@
             setTimeout(()=>URL.revokeObjectURL(url),60000);
           }catch(error){download.textContent="Download unavailable — please contact BMC";}
         });
-        card.insertBefore(download,list);
+        card.insertBefore(download,sampleWrap);
       }
 
       if(response.checkout_url && /^https:\/\/buy\.stripe\.com\//i.test(response.checkout_url)){
@@ -360,7 +366,33 @@
       }
     }
     card.classList.add("show");
-    card.scrollIntoView({behavior:"smooth",block:"center"});
+    if(hasSample){
+      let results=document.getElementById("your-prospects");
+      if(!results){
+        results=document.createElement("section");results.id="your-prospects";
+        results.className="wrap growth-personalized-results";
+        const nav=document.querySelector("body > nav");
+        if(nav)nav.insertAdjacentElement("afterend",results);else document.body.prepend(results);
+      }
+      results.replaceChildren(card);
+      document.body.classList.remove("growth-results-loading");
+      document.body.classList.add("growth-results-ready");
+      document.querySelectorAll('a[href="#free5"]').forEach(function(link){link.href="#your-prospects";link.textContent="Your five prospects";});
+      history.replaceState(null,"",location.pathname+location.search+"#your-prospects");
+      heading.tabIndex=-1;heading.focus({preventScroll:true});
+      requestAnimationFrame(function(){requestAnimationFrame(function(){
+        const nav=document.querySelector("body > nav");
+        const offset=nav?nav.getBoundingClientRect().height:0;
+        const previous=document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior="auto";
+        window.scrollTo(0,Math.max(0,results.getBoundingClientRect().top+window.scrollY-offset-16));
+        document.documentElement.style.scrollBehavior=previous;
+      });});
+    }else{
+      document.body.classList.remove("growth-results-loading");
+      const loading=document.getElementById("your-prospects");if(loading)loading.remove();
+      card.scrollIntoView({behavior:"smooth",block:"start"});
+    }
   }
 
   async function maybeClaimGrowthSample(){
@@ -375,6 +407,17 @@
     const payload={target_id:target,claim:claim,preview:q.get("preview")||"",page:location.href,referrer:document.referrer||""};
     if(q.get("preview")==="1" && q.get("markets"))payload.selected_markets=q.get("markets").split(",").map(function(city){return city.trim()}).filter(Boolean);
     ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(function(k){if(q.get(k))payload[k]=q.get(k)});
+    let loading=document.getElementById("your-prospects");
+    if(!loading){
+      loading=document.createElement("section");loading.id="your-prospects";loading.className="wrap growth-personalized-results";
+      const status=document.createElement("p");status.setAttribute("role","status");status.textContent="Preparing your researched prospects…";loading.appendChild(status);
+      const nav=document.querySelector("body > nav");if(nav)nav.insertAdjacentElement("afterend",loading);else document.body.prepend(loading);
+    }
+    document.body.classList.add("growth-results-loading");
+    history.replaceState(null,"",location.pathname+location.search+"#your-prospects");
+    const oldScrollBehavior=document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior="auto";window.scrollTo(0,0);
+    document.documentElement.style.scrollBehavior=oldScrollBehavior;
     if(note){note.textContent="Building your 5 researched commercial targets…";note.classList.add("show");}
     try{
       const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
@@ -386,6 +429,8 @@
       [...form.children].forEach(function(el){if(!el.matches("[data-success-card]"))el.hidden=true;});
     }catch(err){
       console.error(err);
+      document.body.classList.remove("growth-results-loading");
+      const loading=document.getElementById("your-prospects");if(loading)loading.remove();
       if(note){
         note.textContent="We couldn't load the one-click sample automatically. Your invitation details are still saved below, so you can use the form without starting from scratch.";
         note.classList.add("show");
