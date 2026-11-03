@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "revenue-watch-20261103T082701Z-auto11-07-diagnostic_bundle",
+  "action": "diagnostic_bundle",
+  "created_at": "2026-11-03T08:27:01.720Z",
+  "expires_at": "2026-11-03T09:12:01.720Z",
+  "allow_external_actions": false,
+  "args": {}
+}
