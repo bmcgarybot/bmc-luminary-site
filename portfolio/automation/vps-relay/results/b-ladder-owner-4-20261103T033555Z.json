@@ -1,0 +1,28 @@
+{
+  "action": "growth_owner_target_preview",
+  "allow_external_actions": true,
+  "completed_at": "2026-11-03T03:37:12.889382+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "40be4ac1c0f6c9fdc2b709145ff83f33cf53725b",
+  "git_commit_before": "40be4ac1c0f6c9fdc2b709145ff83f33cf53725b",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    },
+    "preview_commit": "40be4ac1c0f6c9fdc2b709145ff83f33cf53725b"
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "826dc4ac03c2a122962310db9aa6fda6872605ef",
+  "request_id": "b-ladder-owner-4-20261103T033555Z",
+  "request_sha256": "e665bc0336a30869e0d54a54a9d5c279de5fc994450c219b23827097c05339e6",
+  "started_at": "2026-11-03T03:37:11.234249+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"ok\": true,\n  \"test_recipient\": \"contact@bmcservicenetwork.com\",\n  \"source_business\": \"JAG Janitorial Services\",\n  \"source_original_recipient\": \"info@jagjanitorialservices.com\",\n  \"source_url\": \"https://jagjanitorialservices.com/contact/\",\n  \"market\": \"Phoenix\",\n  \"service_key\": \"commercial_cleaning\",\n  \"subject\": \"Five Phoenix accounts to review for JAG Janitorial Services\",\n  \"signed_button_in_email\": true,\n  \"preview_id\": \"ddb6a5bc-1d60-4ae3-b7f9-b8d5b28daece\",\n  \"pdf_attached\": true,\n  \"checkout_available\": true,\n  \"owner_preview\": true,\n  \"smtp_accepted\": true,\n  \"inbox_rendering_verified\": false\n}",
+  "version": 1
+}
