@@ -94,7 +94,7 @@
       "kind": "stock_photo"
     },
     "ice_machine": {
-      "src": "/assets/images/ice-machine-service-illustration-v1.webp",
+      "src": "/assets/images/ice-machine-service-illustration-v1.webp?v=published-20261103",
       "alt": "Illustration of a technician inspecting a commercial ice machine",
       "review_status": "reviewed_contextual",
       "kind": "generated_illustration"
@@ -202,7 +202,7 @@
       "kind": "stock_photo"
     },
     "fleet_washing": {
-      "src": "/assets/images/fleet-washing-illustration-v1.webp",
+      "src": "/assets/images/fleet-washing-illustration-v1.webp?v=published-20261103",
       "alt": "Illustration of a worker washing an unbranded delivery van outdoors",
       "review_status": "reviewed_contextual",
       "kind": "generated_illustration"
@@ -256,7 +256,7 @@
       "kind": "stock_photo"
     },
     "mobile_detailing": {
-      "src": "/assets/images/fleet-washing-illustration-v1.webp",
+      "src": "/assets/images/fleet-washing-illustration-v1.webp?v=published-20261103",
       "alt": "Illustration of a worker washing an unbranded delivery van outdoors",
       "review_status": "reviewed_contextual",
       "kind": "generated_illustration"
