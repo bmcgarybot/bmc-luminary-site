@@ -6,7 +6,7 @@
   const images={
     restaurant_equipment:"https://images.pexels.com/photos/28704740/pexels-photo-28704740.jpeg?auto=compress&cs=tinysrgb&w=900",
     restaurant_repair:"https://images.pexels.com/photos/28704740/pexels-photo-28704740.jpeg?auto=compress&cs=tinysrgb&w=900",
-    ice_machine:"https://images.pexels.com/photos/28704740/pexels-photo-28704740.jpeg?auto=compress&cs=tinysrgb&w=900",
+    ice_machine:"/assets/images/ice-machine-service-illustration-v1.webp",
     restaurant_maintenance:"https://images.pexels.com/photos/28704740/pexels-photo-28704740.jpeg?auto=compress&cs=tinysrgb&w=900",
     equipment_quotes:"https://images.pexels.com/photos/6375553/pexels-photo-6375553.jpeg?auto=compress&cs=tinysrgb&w=900",
     used_equipment:"https://images.pexels.com/photos/6375553/pexels-photo-6375553.jpeg?auto=compress&cs=tinysrgb&w=900",
@@ -29,7 +29,7 @@
     auto_glass:"https://images.pexels.com/photos/19773544/pexels-photo-19773544.jpeg?auto=compress&cs=tinysrgb&w=900",
     pet_sitting:"https://images.pexels.com/photos/9354904/pexels-photo-9354904.jpeg?auto=compress&cs=tinysrgb&w=900",
     mobile_pet_grooming:"https://images.pexels.com/photos/6131568/pexels-photo-6131568.jpeg?auto=compress&cs=tinysrgb&w=900",
-    pet_waste:"https://images.pexels.com/photos/11400229/pexels-photo-11400229.jpeg?auto=compress&cs=tinysrgb&w=900",
+    pet_waste:"https://images.pexels.com/photos/9354904/pexels-photo-9354904.jpeg?auto=compress&cs=tinysrgb&w=900",
     vendor_savings:"https://images.pexels.com/photos/8297220/pexels-photo-8297220.jpeg?auto=compress&cs=tinysrgb&w=900",
     quote_sourcing:"https://images.pexels.com/photos/7433837/pexels-photo-7433837.jpeg?auto=compress&cs=tinysrgb&w=900",
     growth_pack:"https://images.pexels.com/photos/6248959/pexels-photo-6248959.jpeg?auto=compress&cs=tinysrgb&w=900",
@@ -41,7 +41,7 @@
     pool_desert_property:"https://images.pexels.com/photos/6436202/pexels-photo-6436202.jpeg?auto=compress&cs=tinysrgb&w=900",
     hood_exhaust:"https://images.pexels.com/photos/10511959/pexels-photo-10511959.jpeg?auto=compress&cs=tinysrgb&w=900",
     grease_drain:"https://images.pexels.com/photos/15945555/pexels-photo-15945555.jpeg?auto=compress&cs=tinysrgb&w=900",
-    window_cleaning:"https://images.pexels.com/photos/13755909/pexels-photo-13755909.jpeg?auto=compress&cs=tinysrgb&w=900",
+    window_cleaning:"https://images.pexels.com/photos/4098315/pexels-photo-4098315.jpeg?auto=compress&cs=tinysrgb&w=900",
     pressure_washing:"https://images.pexels.com/photos/12919779/pexels-photo-12919779.jpeg?auto=compress&cs=tinysrgb&w=900",
     pest_control:"https://images.pexels.com/photos/4099468/pexels-photo-4099468.jpeg?auto=compress&cs=tinysrgb&w=900",
     linen_laundry:"https://images.pexels.com/photos/8774639/pexels-photo-8774639.jpeg?auto=compress&cs=tinysrgb&w=900",
@@ -51,12 +51,12 @@
     sign_lighting:"https://images.pexels.com/photos/16368418/pexels-photo-16368418.jpeg?auto=compress&cs=tinysrgb&w=900",
     locksmith_access:"https://images.pexels.com/photos/35287856/pexels-photo-35287856.jpeg?auto=compress&cs=tinysrgb&w=900",
     duct_vent:"https://images.pexels.com/photos/16628050/pexels-photo-16628050.jpeg?auto=compress&cs=tinysrgb&w=900",
-    fleet_washing:"https://images.pexels.com/photos/27312708/pexels-photo-27312708.jpeg?auto=compress&cs=tinysrgb&w=900",
+    fleet_washing:"/assets/images/fleet-washing-illustration-v1.webp",
     mobile_tire_battery:"https://images.pexels.com/photos/17600886/pexels-photo-17600886.jpeg?auto=compress&cs=tinysrgb&w=900",
     coffee_water:"https://images.pexels.com/photos/11206191/pexels-photo-11206191.jpeg?auto=compress&cs=tinysrgb&w=900",
     parking_lot:"https://images.pexels.com/photos/33966251/pexels-photo-33966251.jpeg?auto=compress&cs=tinysrgb&w=900",
     epoxy_flooring:"https://images.pexels.com/photos/36230768/pexels-photo-36230768.jpeg?auto=compress&cs=tinysrgb&w=900",
-    mobile_detailing:"https://images.pexels.com/photos/27312708/pexels-photo-27312708.jpeg?auto=compress&cs=tinysrgb&w=900",
+    mobile_detailing:"/assets/images/fleet-washing-illustration-v1.webp",
     garage_door:"https://images.pexels.com/photos/7996765/pexels-photo-7996765.jpeg?auto=compress&cs=tinysrgb&w=900",
   };
 
@@ -125,6 +125,10 @@
     const r=await fetch(DATA_URL,{cache:"no-store"});
     if(!r.ok)throw new Error("Could not load service list");
     const data=await r.json();
+    const photoResponse=await fetch("/data/service-images.json",{cache:"no-store"});
+    if(!photoResponse.ok)throw new Error("Could not load service imagery");
+    const photos=await photoResponse.json();
+    for(const [key,photo] of Object.entries(photos.services||{}))images[key]=photo.src;
     cache=data.services||[];
     return cache;
   }
@@ -144,6 +148,10 @@
       clearTimeout(timer);
       if(!r.ok)return null;
       const data=await r.json();
+    const photoResponse=await fetch("/data/service-images.json",{cache:"no-store"});
+    if(!photoResponse.ok)throw new Error("Could not load service imagery");
+    const photos=await photoResponse.json();
+    for(const [key,photo] of Object.entries(photos.services||{}))images[key]=photo.src;
       if(!data||!data.match)return null;
       const keys=[data.match.service_key].concat((data.related||[]).map(x=>x.service_key));
       const results=[];

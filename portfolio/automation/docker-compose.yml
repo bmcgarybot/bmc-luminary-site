@@ -117,6 +117,8 @@ services:
       RESEARCH_REFRESH_POLL_SECONDS: ${RESEARCH_REFRESH_POLL_SECONDS:-900}
       DIRECTORY_REFRESH_INTERVAL_SECONDS: ${DIRECTORY_REFRESH_INTERVAL_SECONDS:-86400}
       LICENSED_REFRESH_INTERVAL_SECONDS: ${LICENSED_REFRESH_INTERVAL_SECONDS:-604800}
+    volumes:
+      - bmc_research_state:/var/lib/bmc-research
     networks: [bmc_internal]
 
   scheduler:
@@ -227,3 +229,4 @@ volumes:
   bmc_n8n:
   bmc_ollama:
   bmc_searxng_cache:
+  bmc_research_state:

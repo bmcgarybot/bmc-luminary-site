@@ -1,0 +1,331 @@
+{
+  "version": 1,
+  "reviewed_at": "2026-11-03",
+  "policy": "Use the assigned image for this service. Unknown services or needs_review require visual review; never infer crew, credentials or completed jobs from illustrative imagery.",
+  "services": {
+    "restaurant_repair": {
+      "src": "https://images.pexels.com/photos/28704740/pexels-photo-28704740.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Restaurant Repair illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "growth_pack": {
+      "src": "https://images.pexels.com/photos/6248959/pexels-photo-6248959.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Find New Customers illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "commercial_cleaning": {
+      "src": "https://images.pexels.com/photos/4098315/pexels-photo-4098315.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Commercial Cleaning illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "tree_service": {
+      "src": "https://images.pexels.com/photos/31127615/pexels-photo-31127615.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Tree Service & Brush Clearing illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "junk_hauling": {
+      "src": "https://images.pexels.com/photos/33222182/pexels-photo-33222182.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Junk Removal illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "landscaping": {
+      "src": "https://images.pexels.com/photos/9029162/pexels-photo-9029162.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Landscaping & Yard Cleanup illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "rural_property": {
+      "src": "https://images.pexels.com/photos/37636298/pexels-photo-37636298.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Septic, Grading & Wells illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "snow_service": {
+      "src": "https://images.pexels.com/photos/11508827/pexels-photo-11508827.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Snow Removal illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "towing_roadside": {
+      "src": "https://images.pexels.com/photos/8931963/pexels-photo-8931963.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Towing & Roadside Help illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "vehicle_services": {
+      "src": "https://images.pexels.com/photos/17429096/pexels-photo-17429096.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Mobile Mechanic & Vehicle Service illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "auto_repair_shop": {
+      "src": "https://images.pexels.com/photos/8985613/pexels-photo-8985613.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Auto Repair Shop illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "pet_waste": {
+      "src": "https://images.pexels.com/photos/9354904/pexels-photo-9354904.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Dog being walked outdoors; illustrative pet-service context",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "pool_desert_property": {
+      "src": "https://images.pexels.com/photos/6436202/pexels-photo-6436202.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Pool & Outdoor Property Care illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "str_property_care": {
+      "src": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=78",
+      "alt": "Rental Property Care illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "hvac_heat": {
+      "src": "https://images.pexels.com/photos/5463575/pexels-photo-5463575.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Heating & Air illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "ice_machine": {
+      "src": "/assets/images/ice-machine-service-illustration-v1.webp",
+      "alt": "Illustration of a technician inspecting a commercial ice machine",
+      "review_status": "reviewed_contextual",
+      "kind": "generated_illustration"
+    },
+    "hood_exhaust": {
+      "src": "https://images.pexels.com/photos/10511959/pexels-photo-10511959.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Hood Cleaning illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "grease_drain": {
+      "src": "https://images.pexels.com/photos/15945555/pexels-photo-15945555.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Grease Trap & Drain Cleaning illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "window_cleaning": {
+      "src": "https://images.pexels.com/photos/4098315/pexels-photo-4098315.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Worker cleaning a glass surface",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "pressure_washing": {
+      "src": "https://images.pexels.com/photos/12919779/pexels-photo-12919779.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Pressure Washing illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "pest_control": {
+      "src": "https://images.pexels.com/photos/4099468/pexels-photo-4099468.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Pest Control illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "restaurant_equipment": {
+      "src": "https://images.pexels.com/photos/28704740/pexels-photo-28704740.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Restaurant Equipment Repair illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "used_equipment": {
+      "src": "https://images.pexels.com/photos/6375553/pexels-photo-6375553.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Buy or Sell Used Restaurant Equipment illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "equipment_quotes": {
+      "src": "https://images.pexels.com/photos/6375553/pexels-photo-6375553.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Get Equipment Quotes illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "vendor_savings": {
+      "src": "https://images.pexels.com/photos/8297220/pexels-photo-8297220.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Cut Vendor Costs illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "restaurant_maintenance": {
+      "src": "https://images.pexels.com/photos/28704740/pexels-photo-28704740.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Restaurant Maintenance Help illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "linen_laundry": {
+      "src": "https://images.pexels.com/photos/8774639/pexels-photo-8774639.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Linen & Laundry Service illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "floor_carpet": {
+      "src": "https://images.pexels.com/photos/4107278/pexels-photo-4107278.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Floor & Carpet Cleaning illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "fire_safety": {
+      "src": "https://images.pexels.com/photos/34206461/pexels-photo-34206461.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Fire Safety Service illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "backflow_plumbing": {
+      "src": "https://images.pexels.com/photos/32588548/pexels-photo-32588548.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Backflow & Commercial Plumbing illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "sign_lighting": {
+      "src": "https://images.pexels.com/photos/16368418/pexels-photo-16368418.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Sign & Lighting Repair illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "locksmith_access": {
+      "src": "https://images.pexels.com/photos/35287856/pexels-photo-35287856.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Locks & Access Control illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "duct_vent": {
+      "src": "https://images.pexels.com/photos/16628050/pexels-photo-16628050.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Duct & Dryer Vent Cleaning illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "fleet_washing": {
+      "src": "/assets/images/fleet-washing-illustration-v1.webp",
+      "alt": "Illustration of a worker washing an unbranded delivery van outdoors",
+      "review_status": "reviewed_contextual",
+      "kind": "generated_illustration"
+    },
+    "mobile_tire_battery": {
+      "src": "https://images.pexels.com/photos/17600886/pexels-photo-17600886.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Mobile Tire & Battery illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "coffee_water": {
+      "src": "https://images.pexels.com/photos/11206191/pexels-photo-11206191.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Office Coffee & Water illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "waste_audit": {
+      "src": "https://images.pexels.com/photos/6591432/pexels-photo-6591432.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Cut Waste & Recycling Costs illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "competitor_intel": {
+      "src": "https://images.pexels.com/photos/7693733/pexels-photo-7693733.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Check Local Competitors illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "market_expansion": {
+      "src": "https://images.pexels.com/photos/7651734/pexels-photo-7651734.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Research a New Market illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "quote_sourcing": {
+      "src": "https://images.pexels.com/photos/7433837/pexels-photo-7433837.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Get Business Quotes illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "parking_lot": {
+      "src": "https://images.pexels.com/photos/33966251/pexels-photo-33966251.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Parking Lot Cleaning & Striping illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "epoxy_flooring": {
+      "src": "https://images.pexels.com/photos/36230768/pexels-photo-36230768.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Epoxy & Concrete Floors illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "mobile_detailing": {
+      "src": "/assets/images/fleet-washing-illustration-v1.webp",
+      "alt": "Illustration of a worker washing an unbranded delivery van outdoors",
+      "review_status": "reviewed_contextual",
+      "kind": "generated_illustration"
+    },
+    "auto_glass": {
+      "src": "https://images.pexels.com/photos/19773544/pexels-photo-19773544.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Windshield & Auto Glass illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "pet_sitting": {
+      "src": "https://images.pexels.com/photos/9354904/pexels-photo-9354904.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Pet Sitting & Dog Walking illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "mobile_pet_grooming": {
+      "src": "https://images.pexels.com/photos/6131568/pexels-photo-6131568.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Mobile Pet Grooming illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "turnover_cleaning": {
+      "src": "https://images.pexels.com/photos/5591854/pexels-photo-5591854.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Move-Out Cleaning illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "garage_door": {
+      "src": "https://images.pexels.com/photos/7996765/pexels-photo-7996765.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Garage Door Repair illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "facility_maintenance": {
+      "src": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=78",
+      "alt": "Building Maintenance Help illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "electrical_service": {
+      "src": "https://images.pexels.com/photos/27928760/pexels-photo-27928760.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Electrician illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "handyman_repairs": {
+      "src": "https://images.pexels.com/photos/4981812/pexels-photo-4981812.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Handyman illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "residential_cleaning": {
+      "src": "https://images.pexels.com/photos/5591854/pexels-photo-5591854.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "House Cleaning illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "home_staging": {
+      "src": "https://images.pexels.com/photos/8927361/pexels-photo-8927361.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Home Staging illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    },
+    "realtor_listing_prep": {
+      "src": "https://images.pexels.com/photos/5591854/pexels-photo-5591854.jpeg?auto=compress&cs=tinysrgb&w=900",
+      "alt": "Get a Home Ready to Sell illustrative service image",
+      "review_status": "reviewed_contextual",
+      "kind": "stock_photo"
+    }
+  }
+}
