@@ -81,7 +81,9 @@
         "classification": "R-62 Minor Home Improvements",
         "status": "Active",
         "source": "https://azroc.my.site.com/AZRoc/s/contractor-search?licenseId=a0o8y000000xyUlAAI",
-        "limits": "Registry status/classification only; provider acceptance, insurance, capacity, exact job scope and safe access unconfirmed."
+        "limits": "Registry status/classification only; provider acceptance, insurance, capacity, exact job scope and safe access unconfirmed.",
+        "qualifying_party": "Matthew Joseph Schneberger",
+        "capacity_note": "The same qualifying party appears on both handyman registrations. Do not infer two independent crews or double-count coverage."
       }
     },
     {
@@ -139,7 +141,9 @@
         "classification": "R-62 Minor Home Improvements",
         "status": "Active",
         "source": "https://azroc.my.site.com/AZRoc/s/contractor-search?licenseId=a0ot0000001QsncAAC",
-        "limits": "Registry status/classification only; provider acceptance, insurance, capacity, exact job scope and safe access unconfirmed."
+        "limits": "Registry status/classification only; provider acceptance, insurance, capacity, exact job scope and safe access unconfirmed.",
+        "qualifying_party": "Matthew Joseph Schneberger",
+        "capacity_note": "The same qualifying party appears on both handyman registrations. Do not infer two independent crews or double-count coverage."
       }
     }
   ],
