@@ -1,0 +1,28 @@
+{
+  "action": "growth_owner_target_preview",
+  "allow_external_actions": true,
+  "completed_at": "2026-11-03T03:37:02.484202+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "40be4ac1c0f6c9fdc2b709145ff83f33cf53725b",
+  "git_commit_before": "40be4ac1c0f6c9fdc2b709145ff83f33cf53725b",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    },
+    "preview_commit": "40be4ac1c0f6c9fdc2b709145ff83f33cf53725b"
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "edac56a9ba9e378d493c5a1cea6610f735336b1b",
+  "request_id": "b-ladder-owner-1-20261103T033552Z",
+  "request_sha256": "da578559762f6d4e95931834fde34f75a2ee6b291e4782f2c519c9fee93e51a5",
+  "started_at": "2026-11-03T03:37:00.780818+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"ok\": true,\n  \"test_recipient\": \"contact@bmcservicenetwork.com\",\n  \"source_business\": \"Alliance Commercial Cleaning Services\",\n  \"source_original_recipient\": \"info@alliancecommercialaz.com\",\n  \"source_url\": \"https://www.alliancecommercialaz.com/contact/\",\n  \"market\": \"Phoenix\",\n  \"service_key\": \"commercial_cleaning\",\n  \"subject\": \"Five Phoenix accounts to review for Alliance Commercial Cleaning Services\",\n  \"signed_button_in_email\": true,\n  \"preview_id\": \"e275f7ab-e5b9-4ee6-bb4a-0ac49e08923d\",\n  \"pdf_attached\": true,\n  \"checkout_available\": true,\n  \"owner_preview\": true,\n  \"smtp_accepted\": true,\n  \"inbox_rendering_verified\": false\n}",
+  "version": 1
+}
