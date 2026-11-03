@@ -1,0 +1,21 @@
+{
+  "action": "ops_alert_test",
+  "allow_external_actions": true,
+  "completed_at": "2026-11-03T18:59:29.030168+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "8c2126a225f929448a675b807a656659600602ef",
+  "git_commit_before": "8c2126a225f929448a675b807a656659600602ef",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "00dbec93523042f1fca591d5eceb29de99e31b99",
+  "request_id": "b-ops-alert-test-20261103T185853Z",
+  "request_sha256": "40812a54e1926806cf25ecf4236b70fad6bc7c58e014633b61d8ee7752e8564b",
+  "started_at": "2026-11-03T18:59:26.765670+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"test_alert_smtp_accepted\": true, \"duplicate_avoided\": false}\n",
+  "version": 1
+}
