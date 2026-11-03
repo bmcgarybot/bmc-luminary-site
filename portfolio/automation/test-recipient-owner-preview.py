@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """A queued, service-specific owner preview never emails the candidate."""
 import ast
+import uuid
+import base64
 from pathlib import Path
 import unittest
 
@@ -8,14 +10,18 @@ class HTTPError(Exception):
     def __init__(self,status,detail):self.status_code=status
 
 class Connection:
+    def transaction(self):return Acquire(self)
+    async def execute(self,*args):pass
     async def fetchrow(self,*args):
+        if "mail_attempted_at,mail_accepted_at" in args[0]:return dict(mail_attempted_at=None,mail_accepted_at=None)
         return dict(target_id="vendor:fixture",business_name="Fixture Cleaning",
             public_email="fixture@example.test",market="Prescott",
             service_key="commercial_cleaning",source_url="https://example.test",
             source_kind="normalized_vendor",status="queued",owner_review_required=False)
 
 class Acquire:
-    async def __aenter__(self):return Connection()
+    def __init__(self,conn=None):self.conn=conn or Connection()
+    async def __aenter__(self):return self.conn
     async def __aexit__(self,*args):pass
 
 class Pool:
@@ -28,8 +34,10 @@ class PreviewTests(unittest.IsolatedAsyncioTestCase):
             and n.name=="preview_growth_target_to_owner")
         node.decorator_list=[]
         sent=[]
-        async def mail(*args):sent.append(args);return True
-        ns=dict(Header=lambda **kwargs:None,require_admin=lambda key:None,
+        async def mail(*args,**kwargs):sent.append(args);return True
+        async def candidates(*args,**kwargs):return [1]*5
+        async def sample(*args):return dict(preview_id=str(uuid.uuid4()),download_filename="sample.pdf",download_pdf_base64=base64.b64encode(b"%PDF-test").decode(),checkout_url="https://buy.stripe.com/test")
+        ns=dict(uuid=uuid,base64=base64,growth_qualified_territory_candidates=candidates,growth_owner_sample=sample,Header=lambda **kwargs:None,require_admin=lambda key:None,
             OWNER_LAUNCH_HOLD=True,OUTREACH_ENABLED=False,
             BUYER_OUTREACH_ENABLED=False,GROWTH_OUTREACH_ENABLED=False,
             OWNER_PREVIEW_RECIPIENT="contact@bmcservicenetwork.com",

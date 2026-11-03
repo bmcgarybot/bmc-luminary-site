@@ -1,0 +1,92 @@
+{
+  "generated_at": "2026-11-03T00:50:00Z",
+  "purpose": "Official-site enrichment of existing Phoenix research; owner-review offer only.",
+  "safety": "No outreach, provider acceptance, approval or confirmed demand. Manual storm/access review remains required.",
+  "count": 6,
+  "records": [
+    {
+      "side": "buyer",
+      "market": "Phoenix",
+      "category_key": "hotels_motels",
+      "category_label": "hotels motels",
+      "business_name": "AC Hotel Phoenix Downtown",
+      "url": "https://www.marriott.com/en-us/hotels/phxad-ac-hotel-phoenix-downtown/overview/",
+      "domain": "www.marriott.com",
+      "phone": "6022581771",
+      "email": null,
+      "official": true,
+      "verified_date": "2026-11-03",
+      "note": "Official hotel page: 414 North 5th Street, Phoenix AZ 85004; AC Kitchen, AC Lounge, fitness and event spaces. Ask hotel operations about approved vendors for defined event-turnover or common-area deep cleaning. Phone is the hotel, not the airport. Research candidate only; no buying interest, outsourcing need, current capacity or safe access confirmed."
+    },
+    {
+      "side": "buyer",
+      "market": "Phoenix",
+      "category_key": "hotels_motels",
+      "category_label": "hotels motels",
+      "business_name": "Arizona Grand Resort & Spa",
+      "url": "https://www.arizonagrandresort.com/contact-us/",
+      "domain": "www.arizonagrandresort.com",
+      "phone": "6024389000",
+      "email": null,
+      "official": true,
+      "verified_date": "2026-11-03",
+      "note": "Official contact page: 8000 S Arizona Grand Parkway, Phoenix AZ 85044. Resort site describes suites and meeting spaces. Ask operations about vendor onboarding for specific event-turnover or deep-clean projects; existing housekeeping is not evidence of an opening. Research candidate only; no buying interest, outsourcing need, current capacity or safe access confirmed."
+    },
+    {
+      "side": "buyer",
+      "market": "Phoenix",
+      "category_key": "hotels_motels",
+      "category_label": "hotels motels",
+      "business_name": "Hilton Phoenix Tapatio Cliffs Resort",
+      "url": "https://www.hilton.com/en/hotels/phxtcpr-hilton-phoenix-tapatio-cliffs-resort/hotel-location/",
+      "domain": "www.hilton.com",
+      "phone": "6028667500",
+      "email": "enjoy.tapatiocliffs@hilton.com",
+      "official": true,
+      "verified_date": "2026-11-03",
+      "note": "Official location page: 11111 North 7th Street, Phoenix AZ 85020. Public general hotel contact. Ask operations who handles approved commercial cleaning vendors; exclude pool, spa and restoration work from the suggested scope. Research candidate only; no buying interest, outsourcing need, current capacity or safe access confirmed."
+    },
+    {
+      "side": "buyer",
+      "market": "Phoenix",
+      "category_key": "hotels_motels",
+      "category_label": "hotels motels",
+      "business_name": "DoubleTree by Hilton Phoenix Midtown",
+      "url": "https://www.hilton.com/en/hotels/phxardt-doubletree-phoenix-midtown/hotel-info/",
+      "domain": "www.hilton.com",
+      "phone": "6022799811",
+      "email": "PHXAR_FD@hilton.com",
+      "official": true,
+      "verified_date": "2026-11-03",
+      "note": "Official hotel page: 4000 N Central Avenue, Phoenix AZ 85012; restaurant, meeting rooms and fitness facilities. Published front-desk email is a routing contact, not a purchasing decision-maker. Ask for operations or event-services vendor onboarding. Research candidate only; no buying interest, outsourcing need, current capacity or safe access confirmed."
+    },
+    {
+      "side": "buyer",
+      "market": "Phoenix",
+      "category_key": "property_management",
+      "category_label": "property management",
+      "business_name": "CBRE Phoenix",
+      "url": "https://www.cbre.com/offices/corporate/phoenix",
+      "domain": "www.cbre.com",
+      "phone": "6027355555",
+      "email": null,
+      "official": true,
+      "verified_date": "2026-11-03",
+      "note": "Official Phoenix office: 2575 East Camelback Road Suite 500, Phoenix AZ 85016. CBRE property-management role corroborated at https://www.cbre.com/people/andi-stjohn (Arizona property management; public phone 6027355622). Ask about vendor onboarding for Phoenix managed properties only; do not count the office as a confirmed cleaning job. Research candidate only; no buying interest, outsourcing need, current capacity or safe access confirmed."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "commercial_cleaning",
+      "category_label": "commercial cleaning",
+      "business_name": "Environment Control Phoenix",
+      "url": "https://www.environmentcontrol.com/locations/phoenix",
+      "domain": "www.environmentcontrol.com",
+      "phone": "6028641825",
+      "email": "admin@ec-phoenix.com",
+      "official": true,
+      "verified_date": "2026-11-03",
+      "note": "Official Phoenix location page publishes this email and address, 2802 W Northern Ave Suite 1, Phoenix AZ 85051, and describes commercial cleaning for offices, healthcare and industrial facilities. Published services establish scope, not availability, qualifications for a specific job, or acceptance as a BMC provider. Research candidate only; no buying interest, outsourcing need, current capacity or safe access confirmed."
+    }
+  ]
+}

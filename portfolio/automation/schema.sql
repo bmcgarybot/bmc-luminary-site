@@ -1236,3 +1236,19 @@ create table if not exists warm_lead_reviews (
 -- Provider-chosen Growth territory. Existing samples remain their original single city.
 alter table growth_sample_requests add column if not exists selected_markets text[] not null default '{}';
 update growth_sample_requests set selected_markets=array[market] where cardinality(selected_markets)=0;
+
+-- Owner review artifacts are separate from customer requests, demand and receipts.
+create table if not exists growth_owner_previews (
+  preview_id uuid primary key default gen_random_uuid(),
+  target_id text not null,
+  version text not null,
+  selected_markets text[] not null,
+  candidate_ids uuid[] not null,
+  sample_payload jsonb not null,
+  business_name text not null,
+  service_key text not null,
+  created_at timestamptz not null default now(),
+  mail_attempted_at timestamptz,
+  mail_accepted_at timestamptz,
+  unique(target_id,version)
+);

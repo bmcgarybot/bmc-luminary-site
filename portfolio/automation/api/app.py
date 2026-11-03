@@ -3456,6 +3456,46 @@ async def handle_growth_snapshot(conn,p):
       "checkout_url":checkout,"selected_markets":territory,"qualified_pool":len(rows),
       "message":"Your five commercial targets are ready. We also emailed a copy so you can use them later."}
 
+async def growth_owner_sample(conn,target,territory,rows):
+    # A versioned review artifact never changes its five or creates customer demand.
+    version="official-pdf-v1"
+    await conn.execute("select pg_advisory_xact_lock(hashtextextended($1,0))","owner_preview:"+target["target_id"])
+    saved=await conn.fetchrow("select * from growth_owner_previews where target_id=$1 and version=$2",target["target_id"],version)
+    if saved and list(saved["selected_markets"])!=list(territory):
+        raise HTTPException(409,"This owner preview has a saved territory. A new review version is required to change it.")
+    if not saved:
+        chosen=growth_select_representative_sample(rows,target["public_email"])
+        if (target["market"]=="Phoenix" and target["service_key"]=="commercial_cleaning"
+            and clean(target["public_email"]).lower()=="admin@ec-phoenix.com"):
+            # Exact official pages manually reviewed for this recipient, not five rotating registry hits.
+            websites=[
+              "https://www.marriott.com/en-us/hotels/phxad-ac-hotel-phoenix-downtown/overview/",
+              "https://www.arizonagrandresort.com/contact-us/",
+              "https://www.hilton.com/en/hotels/phxtcpr-hilton-phoenix-tapatio-cliffs-resort/hotel-location/",
+              "https://www.hilton.com/en/hotels/phxardt-doubletree-phoenix-midtown/hotel-info/",
+              "https://www.cbre.com/offices/corporate/phoenix"]
+            by_url={clean(x["source_url"]):x for x in rows}
+            if not all(u in by_url for u in websites):
+                raise HTTPException(409,"The five reviewed Phoenix records have not all cleared the live qualification gate.")
+            chosen=[by_url[u] for u in websites]
+        public_rows=growth_sample_public_rows(chosen)
+        saved=await conn.fetchrow("""insert into growth_owner_previews(target_id,version,selected_markets,candidate_ids,sample_payload,business_name,service_key)
+          values($1,$2,$3,$4,$5::jsonb,$6,$7) returning *""",target["target_id"],version,territory,
+          [x["candidate_id"] for x in chosen],json.dumps(public_rows),target["business_name"],target["service_key"])
+    public_rows=saved["sample_payload"]
+    if isinstance(public_rows,str):public_rows=json.loads(public_rows)
+    current_ids={str(x["candidate_id"]) for x in rows}
+    eligible=len(rows)>=GROWTH_SAMPLE_MIN_RESERVE and all(str(x) in current_ids for x in saved["candidate_ids"])
+    base=await conn.fetchval("select payment_link_url from products where product_key='growth_pack_starter' and active=true") if eligible else ""
+    checkout=growth_checkout_url(clean(base),OWNER_PREVIEW_RECIPIENT,saved["preview_id"],saved["service_key"])
+    checkout=checkout.replace("client_reference_id=growth_","client_reference_id=owner_preview_")
+    return {"ok":True,"status":"sample_ready","sample_id":"owner-preview",
+      "preview_id":str(saved["preview_id"]),"sample":public_rows,
+      **sample_pdf_response(public_rows,saved["business_name"],GROWTH_SERVICE_LABELS[saved["service_key"]],territory,
+        "owner-preview-"+str(saved["preview_id"]),saved["created_at"],preview=True),
+      "checkout_url":checkout,"qualified_pool":len(rows),"selected_markets":territory,"preview":True,
+      "message":"Owner review: these five are saved for this preview. Checkout is live; inspect only and do not pay. No customer sample or approval has been recorded."}
+
 @app.post("/api/growth/claim-free-five")
 async def growth_claim_free_five(request:Request):
     """Turn a signed outreach click into the free-five sample without asking for known details again."""
@@ -3478,18 +3518,13 @@ async def growth_claim_free_five(request:Request):
         if preview:
             territory=growth_territory_markets(target["market"],p.get("selected_markets"))
             rows=await growth_qualified_territory_candidates(
-              conn,target["service_key"],territory,limit=GROWTH_SAMPLE_MIN_RESERVE
+              conn,target["service_key"],territory,limit=1000
             )
             if len(rows)<5:
                 return {"ok":True,"status":"sample_pending","sample_id":"owner-preview",
                   "sample":[],"checkout_url":"","qualified_pool":len(rows),"preview":True,
                   "message":"Owner preview: this market does not currently have five qualified rows."}
-            public_rows=growth_sample_public_rows(growth_select_representative_sample(rows,target["public_email"]))
-            return {"ok":True,"status":"sample_ready","sample_id":"owner-preview",
-              "sample":public_rows,**sample_pdf_response(public_rows,target["business_name"],GROWTH_SERVICE_LABELS[target["service_key"]],territory,"owner-preview",preview=True),
-              "checkout_url":"#owner-preview-checkout" if len(rows)>=GROWTH_SAMPLE_MIN_RESERVE else "",
-              "qualified_pool":len(rows),"selected_markets":territory,"preview":True,
-              "message":"Owner preview only — no customer sample, email, reply, or checkout was created."}
+            return await growth_owner_sample(conn,target,territory,rows)
         submission_id="growth_claim_"+hashlib.sha256(target_id.encode("utf-8")).hexdigest()[:32]
         payload={
           "form_type":"growth_snapshot",
@@ -4513,6 +4548,11 @@ def growth_verified_opener(row):
         source.rstrip("/")=="https://americancrowncc.com"):
         return ("I saw on your site that American Crown handles janitorial cleaning "
           "for offices and common areas across Yavapai County.")
+    if (service=="commercial_cleaning" and market=="Phoenix" and "public_email" in row and
+        clean(row["public_email"]).lower()=="admin@ec-phoenix.com" and
+        source.rstrip("/")=="https://www.environmentcontrol.com/locations/phoenix"):
+        return ("Your Phoenix location lists commercial offices among the facilities you clean. "
+          "I focused this research on local commercial properties and public operations contacts.")
     data=json_dict(row["source_data"]) if "source_data" in row else {}
     if (("source_kind" in row and clean(row["source_kind"])=="deep_inventory") and
         data.get("source_tier")=="direct" and data.get("verification_status")=="direct_evidence"
@@ -4698,11 +4738,11 @@ async def growth_preview_candidates(service_key:str="commercial_cleaning",x_bmc_
         raise HTTPException(400,"Unsupported Growth service")
     async with app.state.pool.acquire() as conn:
         rows=await conn.fetch("""select g.target_id,g.business_name,g.public_email,g.market,g.service_key,
-            g.website,g.source_url,g.source_kind,o.status,o.owner_review_required
+            g.website,g.source_url,g.source_kind,g.source_data,o.status,o.owner_review_required
           from growth_outreach_targets g join outreach o on o.entity_type='growth_customer'
             and o.entity_id=g.target_id and o.campaign='growth_sales' and o.wave=$2
-          where g.service_key=$1 and o.status='queued' and g.market='Prescott'
-          order by g.fit_score desc,g.business_name limit 1""",service_key,GROWTH_WAVES[service_key])
+          where g.service_key=$1 and o.status='queued' and g.market in ('Prescott','Phoenix')
+          order by g.fit_score desc,g.business_name limit 10""",service_key,GROWTH_WAVES[service_key])
     return {"ok":True,"service_key":service_key,"records":[dict(r) for r in rows],
       "note":"Research targets only. Confirm identity, scope, operation, territory and safe access before release."}
 
@@ -4712,20 +4752,33 @@ async def preview_growth_target_to_owner(target_id:str,x_bmc_admin_key:str|None=
     if not OWNER_LAUNCH_HOLD or OUTREACH_ENABLED or BUYER_OUTREACH_ENABLED or GROWTH_OUTREACH_ENABLED:
         raise HTTPException(409,"Owner preview requires global hold and all campaigns off")
     async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
         row=await conn.fetchrow("""select g.target_id,g.business_name,g.public_email,g.market,g.service_key,
-            g.source_url,g.source_kind,o.status,o.owner_review_required
+            g.source_url,g.source_kind,g.source_data,o.status,o.owner_review_required
           from growth_outreach_targets g join outreach o on o.entity_type='growth_customer'
             and o.entity_id=g.target_id and o.campaign='growth_sales' and o.wave=$2
           where g.target_id=$1 and g.service_key='commercial_cleaning' and o.status='queued'
           limit 1""",target_id,GROWTH_WAVES["commercial_cleaning"])
-    if not row:
-        raise HTTPException(404,"Queued commercial-cleaning target not found")
-    service_key,subject,body,html_body,landing=growth_outreach_message(row,1,owner_preview=True)
-    ok=await send_mail(OWNER_PREVIEW_RECIPIENT,subject,body,html_body)
+        if not row:raise HTTPException(404,"Queued commercial-cleaning target not found")
+        territory=[row["market"]]
+        rows=await growth_qualified_territory_candidates(conn,row["service_key"],territory,limit=1000)
+        if len(rows)<5:raise HTTPException(409,"Five qualified prospects are required before sending a preview")
+        sample=await growth_owner_sample(conn,row,territory,rows)
+        preview_id=uuid.UUID(sample["preview_id"])
+        prior=await conn.fetchrow("select mail_attempted_at,mail_accepted_at from growth_owner_previews where preview_id=$1",preview_id)
+        if prior["mail_attempted_at"]:
+            return {"ok":bool(prior["mail_accepted_at"]),"already_attempted":True,"smtp_accepted":bool(prior["mail_accepted_at"]),"preview_id":str(preview_id),"note":"No duplicate sent. Inspect the original attempt before authorizing a new version."}
+        service_key,subject,body,html_body,landing=growth_outreach_message(row,1,owner_preview=True)
+        await conn.execute("update growth_owner_previews set mail_attempted_at=now() where preview_id=$1",preview_id)
+      # The durable attempt precedes SMTP: a timeout cannot silently resend the same review.
+      attachment=(sample["download_filename"],base64.b64decode(sample["download_pdf_base64"]),"application","pdf")
+      ok=await send_mail(OWNER_PREVIEW_RECIPIENT,subject,body,html_body,attachments=[attachment])
+      if ok:await conn.execute("update growth_owner_previews set mail_accepted_at=now() where preview_id=$1",preview_id)
     return {"ok":bool(ok),"test_recipient":OWNER_PREVIEW_RECIPIENT,
       "source_business":row["business_name"],"source_original_recipient":row["public_email"],
       "source_url":row["source_url"],"market":row["market"],"service_key":service_key,
       "subject":subject,"signed_button_in_email":bool(landing),
+      "preview_id":str(preview_id),"pdf_attached":True,"checkout_available":bool(sample["checkout_url"]),
       "owner_preview":True,"smtp_accepted":bool(ok),"inbox_rendering_verified":False}
 
 
@@ -7177,6 +7230,14 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
         await conn.execute("""insert into payment_events(stripe_event_id,event_type,stripe_object_id,product_key,customer_email,amount_cents,currency,status,raw_payload)
           values($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb)""",
           event_id,event_type,object_id,product_key,customer_email,amount,currency,status,json.dumps(evt))
+
+        if (event_type in ("checkout.session.completed","checkout.session.async_payment_succeeded")
+            and clean(obj.get("client_reference_id")).startswith("owner_preview_")):
+            await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+              values('owner_preview_payment','critical',$1,$2)""",
+              f"Owner checkout inspection received Stripe event {event_id}; status {status}; amount {amount}",
+              "Review the real Stripe receipt and arrange refund if paid. Never fulfill this as a customer order or count it as customer demand.")
+            return {"received":True,"owner_preview":True,"manual_review":True}
 
         if event_type in ("checkout.session.completed","checkout.session.async_payment_succeeded") and not product_key:
             await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
