@@ -7,10 +7,13 @@ from pathlib import Path
 import re
 import unittest
 import urllib.parse
+import sys
+sys.path.insert(0,str(Path(__file__).parent/"api"))
+from official_research import auto_evidence_valid
 source=ast.parse(Path(__file__).with_name("api").joinpath("app.py").read_text())
 names={"growth_saved_sample_is_current","growth_candidate_is_fresh","growth_prospect_key","clean","growth_candidate_evidence_valid","json_dict","growth_customer_url"}
 nodes=[n for n in source.body if isinstance(n,ast.FunctionDef) and n.name in names]
-ns=dict(json=json,urllib=urllib,DEFAULT_SOURCE_NATIVE_MARKETS=("Prescott","Prescott Valley","Sedona","Flagstaff"),re=re,datetime=datetime,timedelta=timedelta,timezone=timezone,
+ns=dict(auto_evidence_valid=auto_evidence_valid,json=json,urllib=urllib,DEFAULT_SOURCE_NATIVE_MARKETS=("Prescott","Prescott Valley","Sedona","Flagstaff"),re=re,datetime=datetime,timedelta=timedelta,timezone=timezone,
     GROWTH_SOURCE_BLOCKLIST=("blocked.example",),growth_candidate_score=lambda *args:100)
 exec(compile(ast.Module(body=nodes,type_ignores=[]),"production_sample_recheck","exec"),ns)
 class Tests(unittest.TestCase):
