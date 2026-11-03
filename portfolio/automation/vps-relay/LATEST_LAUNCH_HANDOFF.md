@@ -1,3 +1,7 @@
+## Launch-critical checkpoint — 2026-11-03 01:16 UTC
+
+PR39 https://github.com/bmcgarybot/bmc-luminary-site/pull/39 head e641e986f51eff5270380ce0301675459233585d adds120 fresh official-site Phoenix records plus qualification_hold support and20 held legacy rows. Local gate returns125 with allfive selected sample URLs eligible;19qualification tests and deterministic seed generation pass. CI41558522404/41558516993 running. NOT merged/imported/deployed yet. No owner preview sent yet. Last live VPS remains bef62dc5. Next: passCI, merge, exact-masterCI, single helddeploy, snapshot/inventory, heldstageEnvironmentControlPhoenix, candidateID, one owner preview with PDF/live review checkout. All outreach held; owner approval and release absent. User requests only launch-critical work; avoid further expansion beyond fulfilling this offer. Receipts lastverified0.
+
 ## CURRENT VERIFIED WORK CHECKPOINT — November 3, 2026, 01:10 UTC
 
 - PR38 is merged as 6cd2aa340554376eab0b5c4b7a6bfe0e4a7b2a7a. Exact-master Portfolio CI41556533128 and Pages41556533131 both completed successfully. VPS deployment of this release has NOT been requested; last verified VPS remains bef62dc5f0703c02b5d548a6017dc7b78c482bfc.
