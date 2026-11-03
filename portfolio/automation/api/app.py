@@ -7466,6 +7466,10 @@ async def growth_offer_payload_current(conn,offer):
         ancestor=await conn.fetchrow("""select o.* from growth_purchase_offers f join orders o on o.order_id=f.parent_order_id
           where f.paid_order_id=$1 for update of o""",parent["order_id"])
         growth_offers.validate_parent("growth_upgrade_75",dict(ancestor) if ancestor else None,offer["email"],offer["sample_id"])
+    if offer["product_key"]=="growth_pack_25":
+        sample_state=await conn.fetchrow("select converted_at,order_id,status from growth_sample_requests where sample_id=$1 for update",offer["sample_id"])
+        if not sample_state or (sample_state["converted_at"] and sample_state["order_id"]!=offer["paid_order_id"]):
+            raise ValueError("This sample already belongs to another paid order")
     rows=payload.get("rows",[])
     if rows:
         originals=[dict(x) for x in (await conn.fetch("select * from growth_order_prospects where order_id=$1",parent["order_id"]) if parent else await conn.fetch("select * from growth_sample_prospects where sample_id=$1",offer["sample_id"]))]
@@ -7568,6 +7572,8 @@ async def bind_growth_purchase_offer(conn,order_id,product_key,email,amount,curr
         await conn.execute("update growth_purchase_offers set status='paid',paid_order_id=$2,updated_at=now() where offer_id=$1",oid,order_id)
         await conn.execute("update orders set growth_sample_id=$2,status='ready_for_fulfillment',updated_at=now() where order_id=$1",order_id,offer["sample_id"])
         await conn.execute("update growth_sample_requests set next_nurture_at=null,updated_at=now() where sample_id=$1",offer["sample_id"])
+        if product_key=="growth_pack_25":
+            await conn.execute("update growth_sample_requests set status='converted',converted_at=now(),order_id=$2 where sample_id=$1",offer["sample_id"],order_id)
         await conn.execute("""insert into tasks(order_id,service_key,task_type,status,priority,owner,summary,payload)
           values($1,'growth_pack','fulfill_growth_offer','open','high','bmc_operator','Deliver reviewed Growth offer',$2::jsonb)""",order_id,json.dumps({"offer_id":str(oid)}))
     except (ValueError,TypeError,KeyError) as exc:
