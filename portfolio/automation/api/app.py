@@ -3665,7 +3665,7 @@ async def growth_runtime_status(conn):
     delivered=await conn.fetchval("select count(*) from growth_sample_requests where status in ('delivered','converted','fulfilled')")
     converted=await conn.fetchval("select count(*) from growth_sample_requests where converted_at is not null")
     paid=await conn.fetchrow("""select count(*)::int as paid_orders,coalesce(sum(amount_cents),0)::bigint as revenue_cents from orders
-      where product_key in ('growth_pack_starter','growth_pack_premium') and payment_status in ('paid','complete')""")
+      where product_key in ('growth_pack_starter','growth_pack_premium','growth_pack_25','growth_upgrade_75','growth_strategy_addon') and payment_status in ('paid','complete')""")
     open_errors=await conn.fetchval("""select count(*) from exceptions where status='open' and type like 'growth_%'""")
     smtp_ready=bool(SMTP_HOST and SMTP_USER and SMTP_PASSWORD and "CHANGE_ME" not in SMTP_HOST+SMTP_USER+SMTP_PASSWORD)
     imap_ready=bool(IMAP_ENABLED and IMAP_HOST and IMAP_USER and IMAP_PASSWORD)

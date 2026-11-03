@@ -44,6 +44,22 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
             verify_stripe_signature=lambda *args:None,event=event,HTTPException=RuntimeError,growth_offers=growth_offers,
             app=SimpleNamespace(state=SimpleNamespace(pool=self.pool)))
         exec(compile(ast.Module(body=nodes,type_ignores=[]),'production_payment_handler','exec'),self.ns)
+
+    async def test_growth_receipt_summary_includes_all_offer_tiers(self):
+        source=ast.parse(Path(__file__).with_name('api').joinpath('app.py').read_text())
+        fn=next(n for n in source.body if isinstance(n,ast.AsyncFunctionDef) and n.name=='growth_runtime_status')
+        query=next(n.value for n in ast.walk(fn) if isinstance(n,ast.Constant) and isinstance(n.value,str) and 'as paid_orders' in n.value)
+        async with self.pool.acquire() as conn:
+            await conn.execute("insert into services(service_key,display_name) values('growth_pack','Growth')")
+            tiers={'growth_pack_starter':49900,'growth_pack_premium':74900,'growth_pack_25':14900,'growth_upgrade_75':35000,'growth_strategy_addon':25000,'unrelated':90000}
+            for key,amount in tiers.items():
+                await conn.execute("insert into products(product_key,service_key,display_name,billing_type) values($1,'growth_pack',$1,'one_time')",key)
+                await conn.execute("insert into orders(product_key,amount_cents,payment_status) values($1,$2,'paid')",key,amount)
+            await conn.execute("insert into orders(product_key,amount_cents,payment_status) values('growth_pack_25',14900,'unpaid')")
+            row=await conn.fetchrow(query)
+        self.assertEqual(row['paid_orders'],5)
+        self.assertEqual(row['revenue_cents'],199700)
+
     async def seed_bound_offer(self):
         obj=await self.seed_growth()
         oid=uuid.uuid4()
