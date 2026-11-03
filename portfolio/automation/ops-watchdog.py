@@ -58,6 +58,17 @@ def save_state(state):
     tmp=STATE_FILE.with_suffix(".tmp");tmp.write_text(json.dumps(state,indent=2)+"\n")
     os.chmod(tmp,0o600);tmp.replace(STATE_FILE)
 
+def container_flags_match(env):
+    values={k:env.get(k,"").strip().lower() for k in FLAGS}
+    if any(v not in ("true","false") for v in values.values()):return False
+    if values[FLAGS[3]]=="true" and any(values[k]=="true" for k in FLAGS[:3]):return False
+    expected=[k+"="+v for k,v in values.items()]
+    # Ask Docker only for these exact booleans; never dump its full secret environment.
+    conditions=" ".join('(eq . "'+value+'")' for value in expected)
+    template='{{range .Config.Env}}{{if or '+conditions+'}}{{println .}}{{end}}{{end}}'
+    rc,out,_=run(["docker","inspect","--format",template,"bmc-ops_api-1"])
+    return rc==0 and sorted(out.splitlines())==sorted(expected)
+
 def collect(env,state):
     probes={
       "api":("http://127.0.0.1:8000/health",None,None),
@@ -118,8 +129,10 @@ def collect(env,state):
           and expected[FLAGS[3]] in ("true","false") and code==200 and all(expected[k] in ("true","false") and live.get(k)==(expected[k]=="true") for k in FLAGS[:3])
           and type((growth or {}).get("owner_launch_hold_active")) is bool
           and growth["owner_launch_hold_active"]==(expected[FLAGS[3]]=="true"))
+    offline_confirmed=code!=200 and container_flags_match(env)
+    safe=safe or offline_confirmed
     add("Owner alert configuration",bool(state.get("monitor_configured") and env.get("WATCHDOG_EMAIL")),"configured privately" if state.get("monitor_configured") else "not configured")
-    add("Campaign configuration consistency",safe,"configuration agrees with running API" if safe else "unknown or drift: do not repair automatically")
+    add("Campaign configuration consistency",safe,"API unavailable; container flags independently match configuration" if offline_confirmed else ("configuration agrees with running API" if safe else "unknown or drift: do not repair automatically"))
     # Verify a real saved owner click path, never a customer invitation or email.
     # One recipient per cycle covers nine within 45 minutes without heavy polling.
     if state.get("monitor_configured"):

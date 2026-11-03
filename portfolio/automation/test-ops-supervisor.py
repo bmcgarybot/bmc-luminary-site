@@ -37,6 +37,18 @@ class PolicyTests(unittest.TestCase):
         state={};d=policy['alert_decision'](a,state,100000);policy['record_alert'](state,d,100000,True)
         self.assertFalse(policy['alert_decision'](b,state,101000)['send'])
 class ConfigurationTests(unittest.TestCase):
+    def test_offline_api_recovery_requires_independent_exact_container_flags(self):
+        env={key:'false' for key in watch['FLAGS']};env['BMC_OWNER_LAUNCH_HOLD']='true'
+        output='\n'.join(key+'='+value for key,value in env.items())
+        g=watch['container_flags_match'].__globals__;calls=[]
+        def inspect(cmd,**kw):calls.append(cmd);return 0,output,''
+        with patch.dict(g,run=inspect):self.assertTrue(watch['container_flags_match'](env))
+        self.assertIn('OUTREACH_ENABLED=false',calls[0][3]);self.assertNotIn('SMTP_PASSWORD',calls[0][3])
+        with patch.dict(g,run=lambda *a,**k:(0,output.replace('GROWTH_OUTREACH_ENABLED=false',''),'')):
+            self.assertFalse(watch['container_flags_match'](env))
+        env['GROWTH_OUTREACH_ENABLED']='true'
+        with patch.dict(g,run=lambda *a,**k:(_ for _ in ()).throw(AssertionError('Must reject before inspection'))):
+            self.assertFalse(watch['container_flags_match'](env))
     def test_encrypted_recipient_stays_on_host_and_campaign_settings_survive(self):
         with tempfile.TemporaryDirectory() as folder:
             root=pathlib.Path(folder);state=root/'state';state.mkdir()
