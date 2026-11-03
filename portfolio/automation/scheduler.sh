@@ -22,6 +22,8 @@ while true; do
     post /api/process-growth-health
     post /api/process-growth-nurture
     post /api/process-growth-fulfillment 240
+    post /api/process-growth-offers 240
+    post /api/process-growth-offer-invitations
     post /api/process-growth-outreach
   fi
 

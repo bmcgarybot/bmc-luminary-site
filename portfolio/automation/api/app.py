@@ -1,4 +1,7 @@
 from growth_pdf import sample_pdf_response, render_sample_pdf
+import growth_offers
+from pathlib import Path
+GROWTH_REVIEW_PACKETS=__import__("json").loads(Path(__file__).with_name("growth_review_packets.json").read_text())
 import base64, os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, urllib.error, hmac, hashlib, time, html, random, csv, io
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
@@ -3496,6 +3499,13 @@ async def growth_owner_sample(conn,target,territory,rows):
             if not all(u in by_url for u in websites):
                 raise HTTPException(409,"The five reviewed Phoenix records have not all cleared the live qualification gate.")
             chosen=[by_url[u] for u in websites]
+        packet=globals().get("GROWTH_REVIEW_PACKETS",{}).get(clean(target["public_email"]).lower())
+        if packet and target["market"]=="Phoenix" and target["service_key"]=="commercial_cleaning":
+            if clean(target["source_url"])!=packet["source_url"]:raise HTTPException(409,"Recipient source changed; review required")
+            by_url={clean(x["source_url"]):x for x in rows}
+            if len(packet["sample_urls"])!=5 or not all(u in by_url for u in packet["sample_urls"]):
+                raise HTTPException(409,"The reviewed five have not all cleared current inventory checks")
+            chosen=[by_url[u] for u in packet["sample_urls"]]
         public_rows=growth_sample_public_rows(chosen)
         saved=await conn.fetchrow("""insert into growth_owner_previews(target_id,version,selected_markets,candidate_ids,sample_payload,business_name,service_key)
           values($1,$2,$3,$4,$5::jsonb,$6,$7) returning *""",target["target_id"],version,territory,
@@ -3629,7 +3639,7 @@ async def stage_growth_service(conn,service_key,max_targets=25):
           select 'growth_customer',$1,'growth_sales',$2,'email',0,'queued',now(),false,$3,$4
           where not exists(select 1 from outreach where entity_type='growth_customer' and entity_id=$1 and campaign='growth_sales' and wave=$2)
           returning outreach_id""",row["target_id"],wave,market,service_key)
-        if owner_sample_only:
+        if owner_sample_only or inserted:
             await conn.execute("""update outreach set owner_review_required=true
               where entity_type='growth_customer' and entity_id=$1 and campaign='growth_sales' and wave=$2 and status='queued'""",row["target_id"],wave)
         if inserted:
@@ -4607,7 +4617,11 @@ def growth_outreach_message(row,step,owner_preview=False):
     landing=growth_invitation_url(row,owner_preview=owner_preview)
     market=clean(row["market"])
     business=clean(row["business_name"])
+    packet=globals().get("GROWTH_REVIEW_PACKETS",{}).get(clean(row.get("public_email") if isinstance(row,dict) else row["public_email"]).lower())
+    if packet and (market!="Phoenix" or service_key!="commercial_cleaning" or clean(row["source_url"])!=packet["source_url"]):
+        raise ValueError("Reviewed recipient service, territory or source changed")
     opener=growth_verified_opener(row)
+    if packet:opener=packet["opener"]
     if not opener:
         raise ValueError("Growth target needs a source-backed, reviewed opener")
     short_name=business
@@ -4629,6 +4643,13 @@ def growth_outreach_message(row,step,owner_preview=False):
           f"I sent a note about five free, researched businesses around {market} that may fit your {focus[service_key]} work.",
           "The list includes public contact routes and a reason each may fit. They have not requested a quote. If this isn't useful for your team, no need to respond."
         ]
+    if packet and step==1:
+        subject=packet["subject"]
+        lines=["I'm Brett with BMC Service Network. We research local commercial accounts so service businesses can spend less time building lists and more time having useful conversations.",
+          packet["opener"],
+          f"I put together five Phoenix businesses to review against that scope. For example, {packet['example_name']} has a published local contact route; the brief explains the facility fit and who to ask about vendor onboarding. Each entry includes its business website and a suggested first conversation.",
+          "You can keep the five free, as a PDF and an online brief. If the fit is useful, $499 buys 100 total, including those five. These are researched prospects, not businesses that requested a quote, and sales are not guaranteed.",
+          "Would a different facility type be more useful? Reply with the work you want more of."]
     label="Review the five researched businesses"
     body="\n\n".join([greeting,*lines,label+":\n"+landing,
       "Brett\nBMC Service Network\nBMC Luminary Ventures LLC\n"+BUSINESS_POSTAL_ADDRESS,
@@ -7283,6 +7304,10 @@ async def stripe_webhook(request:Request,stripe_signature:str|None=Header(defaul
                 prior_refund=await conn.fetchval("""select 1 from payment_events
                   where event_type in ('refund.created','refund.updated','refund.failed')
                     and raw_payload->'data'->'object'->>'payment_intent'=$1 limit 1""",payment_intent_id) if payment_intent_id else False
+                if product_key in ("growth_pack_25","growth_upgrade_75","growth_strategy_addon"):
+                    await bind_growth_purchase_offer(conn,order_id,product_key,customer_email,amount,currency,obj,prior_refund)
+                    await event(conn,"order",order_id,"paid",{"product_key":product_key,"amount_cents":amount},"stripe")
+                    return {"received":True,"growth_offer":True}
                 growth_sample=None
                 if product_key in ("growth_pack_starter","growth_pack_premium") and not prior_refund:
                     client_ref=clean(obj.get("client_reference_id"))
@@ -7429,3 +7454,253 @@ install_nevada_pilot(app, require_admin)
 # Private customer-request qualification; paid introductions remain disabled.
 from warm_leads import register as register_warm_leads
 register_warm_leads(app, ADMIN_KEY)
+
+
+async def growth_offer_payload_current(conn,offer):
+    payload=json_dict(offer["payload"])
+    if growth_offers.offer_digest(payload)!=offer["payload_sha256"]:
+        raise ValueError("Offer contents changed after preparation")
+    parent=await conn.fetchrow("select * from orders where order_id=$1 for update",offer["parent_order_id"]) if offer["parent_order_id"] else None
+    growth_offers.validate_parent(offer["product_key"],dict(parent) if parent else None,offer["email"],offer["sample_id"])
+    if parent and parent["product_key"]=="growth_upgrade_75":
+        ancestor=await conn.fetchrow("""select o.* from growth_purchase_offers f join orders o on o.order_id=f.parent_order_id
+          where f.paid_order_id=$1 for update of o""",parent["order_id"])
+        growth_offers.validate_parent("growth_upgrade_75",dict(ancestor) if ancestor else None,offer["email"],offer["sample_id"])
+    if offer["product_key"]=="growth_pack_25":
+        sample_state=await conn.fetchrow("select converted_at,order_id,status from growth_sample_requests where sample_id=$1 for update",offer["sample_id"])
+        if not sample_state or (sample_state["converted_at"] and sample_state["order_id"]!=offer["paid_order_id"]):
+            raise ValueError("This sample already belongs to another paid order")
+    rows=payload.get("rows",[])
+    if rows:
+        originals=[dict(x) for x in (await conn.fetch("select * from growth_order_prospects where order_id=$1",parent["order_id"]) if parent else await conn.fetch("select * from growth_sample_prospects where sample_id=$1",offer["sample_id"]))]
+        growth_offers.validate_rows(offer["product_key"],rows,originals,payload["territory"])
+        current=await conn.fetch("select * from market_inventory_candidates where candidate_id=any($1::uuid[])",
+          [uuid.UUID(str(r["candidate_id"])) for r in rows])
+        by_id={str(r["candidate_id"]):dict(r) for r in current}
+        if any(not growth_saved_sample_is_current(r,by_id.get(str(r["candidate_id"])),payload["service_key"]) for r in rows):
+            raise ValueError("Prospect evidence changed; manual review required")
+        # Frozen originals are intentionally already exposed to THIS recipient.
+        # Recheck suppression directly, then apply allocation limits only to new rows.
+        blocked=await conn.fetchval("""select count(*) from growth_prospect_suppressions
+          where lifted_at is null and prospect_key=any($1::text[])""",
+          list({k for r in rows for k in (growth_prospect_key(r),growth_contact_key(r),
+            'email:'+clean(r.get('public_email')).lower(),
+            'phone:'+re.sub(r'[^0-9]','',clean(r.get('public_phone')))[-10:]) if k}))
+        if blocked:raise ValueError("A saved prospect is suppressed")
+        original_ids={str(r["candidate_id"]) for r in originals}
+        eligible=await growth_qualified_territory_candidates(conn,payload["service_key"],payload["territory"],
+          payload.get("ideal_customer",""),payload.get("exclusions",""),limit=10000,
+          recipient_key=offer["email"],delivery_kind="paid",
+          recipient_business_key=growth_recipient_business_key(payload["business"]))
+        eligible_ids={str(r["candidate_id"]) for r in eligible}|original_ids
+        if any(str(r["candidate_id"]) not in eligible_ids for r in rows):
+            raise ValueError("A saved prospect is no longer eligible")
+    if offer["product_key"]=="growth_strategy_addon":growth_offers.validate_strategy(payload.get("strategy"))
+    return payload
+
+@app.post("/api/admin/growth-offers/prepare")
+async def prepare_growth_purchase_offer(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    p=await request.json()
+    tier=clean(p.get("product_key"))
+    if tier not in growth_offers.TIERS:raise HTTPException(400,"Unknown offer")
+    try:sid=uuid.UUID(str(p.get("sample_id")))
+    except ValueError:raise HTTPException(400,"A saved customer sample is required")
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        await growth_lock_exposure_allocator(conn)
+        sample=await conn.fetchrow("select * from growth_sample_requests where sample_id=$1 for update",sid)
+        if not sample or sample["status"] not in ("delivered","fulfilled","converted"):
+            raise HTTPException(409,"A delivered customer sample is required; owner previews are not demand")
+        existing=await conn.fetchrow("select * from growth_purchase_offers where sample_id=$1 and product_key=$2",sid,tier)
+        if existing:return {"ok":True,"offer_id":str(existing["offer_id"]),"status":existing["status"],"unchanged":True}
+        parent=None
+        if tier!="growth_pack_25":
+            try:pid=uuid.UUID(str(p.get("parent_order_id")))
+            except ValueError:raise HTTPException(400,"A parent order is required")
+            parent=await conn.fetchrow("select * from orders where order_id=$1 for update",pid)
+        try:growth_offers.validate_parent(tier,dict(parent) if parent else None,sample["email"],sid)
+        except ValueError as exc:raise HTTPException(409,str(exc))
+        if tier=="growth_pack_25" and (sample["converted_at"] or sample["status"]!="delivered"):
+            raise HTTPException(409,"This sample already has a purchase")
+        territory=growth_request_territory(sample)
+        originals=[];final=[]
+        if tier!="growth_strategy_addon":
+            originals=[dict(x) for x in (await conn.fetch("select * from growth_order_prospects where order_id=$1 order by business_name",parent["order_id"]) if parent else await conn.fetch("select * from growth_sample_prospects where sample_id=$1 order by business_name",sid))]
+            candidates=await growth_qualified_territory_candidates(conn,sample["provider_service_key"],territory,sample["ideal_customer"],sample["exclusions"],
+              limit=200,exclude_ids={str(x["candidate_id"]) for x in originals},exclude_names={clean(x["business_name"]).lower() for x in originals},
+              recipient_key=sample["email"],delivery_kind="paid",recipient_business_key=growth_recipient_business_key(sample["business_name"]))
+            final=originals+candidates[:growth_offers.TIERS[tier]["count"]-len(originals)]
+            try:growth_offers.validate_rows(tier,final,originals,territory)
+            except ValueError as exc:raise HTTPException(409,str(exc))
+        else:
+            try:growth_offers.validate_strategy(p.get("strategy"))
+            except ValueError as exc:raise HTTPException(409,str(exc))
+        payload=json.loads(json.dumps({"business":sample["business_name"],"service_key":sample["provider_service_key"],"territory":territory,
+          "ideal_customer":sample["ideal_customer"],"exclusions":sample["exclusions"],"rows":final,"strategy":p.get("strategy") if tier=="growth_strategy_addon" else None},default=str))
+        oid=await conn.fetchval("""insert into growth_purchase_offers(sample_id,parent_order_id,product_key,email,payload,payload_sha256,expires_at)
+          values($1,$2,$3,$4,$5::jsonb,$6,now()+interval '7 days') returning offer_id""",
+          sid,parent["order_id"] if parent else None,tier,sample["email"],json.dumps(payload),growth_offers.offer_digest(payload))
+        return {"ok":True,"offer_id":str(oid),"status":"draft","amount_cents":growth_offers.TIERS[tier]["amount"],
+          "prospect_count":len(final),"checkout_url":"","message":"Prepared for owner review. No approval, payment or customer email recorded."}
+
+@app.get("/api/growth/offers/{offer_id}")
+async def get_growth_purchase_offer(offer_id:uuid.UUID,token:str=""):
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        offer=await conn.fetchrow("select * from growth_purchase_offers where offer_id=$1 for update",offer_id)
+        if not offer:raise HTTPException(404,"Offer unavailable")
+        product=await conn.fetchrow("select * from products where product_key=$1 and active=true",offer["product_key"])
+        try:
+            if not product:raise ValueError("This offer is not available for purchase yet")
+            url=growth_offers.checkout_url(dict(offer),product["payment_link_url"],ADMIN_KEY,token)
+            payload=await growth_offer_payload_current(conn,offer)
+        except ValueError as exc:raise HTTPException(409,str(exc))
+        return HTMLResponse(growth_offers.offer_page(dict(offer),payload,url),headers={
+          "Cache-Control":"no-store","Referrer-Policy":"no-referrer","X-Robots-Tag":"noindex, nofollow"})
+
+async def bind_growth_purchase_offer(conn,order_id,product_key,email,amount,currency,obj,prior_refund):
+    try:
+        if prior_refund:raise ValueError("Refund lifecycle requires review")
+        ref=clean(obj.get("client_reference_id"))
+        if not ref.startswith("growth_offer_"):raise ValueError("Missing bound offer reference")
+        oid=uuid.UUID(ref.removeprefix("growth_offer_"))
+        offer=await conn.fetchrow("select * from growth_purchase_offers where offer_id=$1 for update",oid)
+        if not offer:raise ValueError("Offer not found")
+        growth_offers.validate_payment(dict(offer),product_key,email,amount,currency)
+        await growth_offer_payload_current(conn,offer)
+        await conn.execute("update growth_purchase_offers set status='paid',paid_order_id=$2,updated_at=now() where offer_id=$1",oid,order_id)
+        await conn.execute("update orders set growth_sample_id=$2,status='ready_for_fulfillment',updated_at=now() where order_id=$1",order_id,offer["sample_id"])
+        await conn.execute("update growth_sample_requests set next_nurture_at=null,updated_at=now() where sample_id=$1",offer["sample_id"])
+        if product_key=="growth_pack_25":
+            await conn.execute("update growth_sample_requests set status='converted',converted_at=now(),order_id=$2 where sample_id=$1",offer["sample_id"],order_id)
+        await conn.execute("""insert into tasks(order_id,service_key,task_type,status,priority,owner,summary,payload)
+          values($1,'growth_pack','fulfill_growth_offer','open','high','bmc_operator','Deliver reviewed Growth offer',$2::jsonb)""",order_id,json.dumps({"offer_id":str(oid)}))
+    except (ValueError,TypeError,KeyError) as exc:
+        await conn.execute("update orders set status='payment_review',updated_at=now() where order_id=$1",order_id)
+        await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+          values('growth_offer_payment_review','critical',$1,'Reconcile scope and payment before delivery or refund; never substitute another offer')""",f"Order {order_id}: {exc}")
+
+@app.post("/api/process-growth-offers")
+async def process_growth_purchase_offers(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    if not GROWTH_AUTO_FULFILL_ENABLED:return {"ok":True,"enabled":False,"fulfilled":0}
+    fulfilled=0;exceptions=0
+    async with app.state.pool.acquire() as conn:
+      tasks=await conn.fetch("select task_id,order_id from tasks where task_type='fulfill_growth_offer' and status in ('open','queued') order by created_at limit 5")
+      for task in tasks:
+       async with conn.transaction():
+        await growth_lock_exposure_allocator(conn)
+        state=await conn.fetchrow("""select t.status task_status,o.* from tasks t join orders o on o.order_id=t.order_id
+          where t.task_id=$1 for update of t,o""",task["task_id"])
+        if not state or state["task_status"] not in ("open","queued") or state["status"]!='ready_for_fulfillment' or state["payment_status"] not in ('paid','complete'):continue
+        offer=await conn.fetchrow("select * from growth_purchase_offers where paid_order_id=$1 for update",task["order_id"])
+        try:
+            if not offer or offer["status"]!='paid':raise ValueError("No bound paid offer")
+            payload=await growth_offer_payload_current(conn,offer)
+            tier=offer["product_key"];rows=payload.get("rows",[])
+            if tier=='growth_strategy_addon':
+                attachments=[('BMC-Strategy-Plan.pdf',growth_offers.strategy_pdf(payload,str(offer['offer_id'])),'application','pdf')]
+                desc='Your competitor snapshot and outreach plan are attached as a branded PDF.'
+            else:
+                count=growth_offers.TIERS[tier]['count']
+                if len(rows)!=count:raise ValueError('Delivery quantity does not match the purchase')
+                data=render_sample_pdf(rows,payload['business'],GROWTH_SERVICE_LABELS[payload['service_key']],payload['territory'],str(task['order_id']),prepared_at=offer['created_at'],paid=True,paid_count=count)
+                attachments=[(f'BMC-{count}-Prospects.pdf',data,'application','pdf'),(f'BMC-{count}-Prospects.csv',growth_csv_bytes(rows),'text','csv')]
+                desc=f'Your {count} researched prospects are attached as a branded PDF and spreadsheet. Your original prospects are included.'
+                for x in rows:
+                    await conn.execute("""insert into growth_order_prospects(order_id,candidate_id,business_name,market,category_key,category_label,fit_score,grade,fit_reason,sales_angle,public_email,public_phone,source_url,source_domain,verification_status)
+                      values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) on conflict(order_id,business_name) do nothing""",
+                      task['order_id'],uuid.UUID(x['candidate_id']),x['business_name'],x['market'],x['category_key'],x['category_label'],int(x['fit_score']),x['grade'],x['fit_reason'],x['sales_angle'],x.get('public_email'),x.get('public_phone'),x['source_url'],x.get('source_domain'),x.get('verification_status'))
+                await growth_record_exposures(conn,rows,offer['email'],payload['service_key'],'paid','order:'+str(task['order_id']),'reserved',growth_recipient_business_key(payload['business']))
+            subject='Your BMC '+growth_offers.TIERS[tier]['name']
+            lines=[desc,growth_offers.TERMS,'Reply with questions or qualifying errors for replacement.','contact@bmcservicenetwork.com']
+            ok=await send_mail_once('growth-order:'+str(task['order_id']),offer['email'],subject,'\n\n'.join(lines)+'\n\n'+BUSINESS_POSTAL_ADDRESS,workflow_email_html(subject,lines),attachments)
+            if not ok:raise ValueError('Delivery submission failed or is uncertain; inspect durable mail record before retry')
+            await conn.execute("update growth_purchase_offers set status='fulfilled',updated_at=now() where offer_id=$1",offer['offer_id'])
+            await conn.execute("update orders set status='fulfilled',updated_at=now() where order_id=$1",task['order_id'])
+            await conn.execute("update tasks set status='completed',updated_at=now() where task_id=$1",task['task_id'])
+            await conn.execute("update growth_order_prospects set delivered_at=now() where order_id=$1",task['order_id'])
+            await conn.execute("update growth_prospect_exposures set status='delivered',delivered_at=now() where delivery_ref=$1",'order:'+str(task['order_id']))
+            await conn.execute("update growth_sample_requests set status='fulfilled',converted_at=coalesce(converted_at,now()),next_nurture_at=null,updated_at=now() where sample_id=$1",offer['sample_id'])
+            fulfilled+=1
+        except (ValueError,TypeError,KeyError) as exc:
+            exceptions+=1
+            await conn.execute("update tasks set status='exception',updated_at=now() where task_id=$1",task['task_id'])
+            await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+              values('growth_offer_delivery_review','critical',$1,'Review the frozen deliverable and durable mail attempt before resuming; never silently replace records or blindly resend')""",f"Order {task['order_id']}: {exc}")
+    return {"ok":True,"fulfilled":fulfilled,"exceptions":exceptions}
+
+@app.post("/api/admin/growth-offers/{offer_id}/approve")
+async def approve_growth_purchase_offer(offer_id:uuid.UUID,request:Request,x_bmc_admin_key:str|None=Header(default=None)):
+    """Explicit per-offer review only; never called by a scheduler or a payment."""
+    require_admin(x_bmc_admin_key)
+    p=await request.json()
+    if p.get("approval_statement")!="I approve this exact reviewed offer":
+        raise HTTPException(400,"Explicit approval of this exact offer is required")
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        await growth_lock_exposure_allocator(conn)
+        offer=await conn.fetchrow("select * from growth_purchase_offers where offer_id=$1 for update",offer_id)
+        if not offer or offer["status"]!="draft":raise HTTPException(409,"Only a draft offer can be approved")
+        if p.get("reviewed_payload_sha256")!=offer["payload_sha256"]:
+            raise HTTPException(409,"The reviewed payload does not match this offer")
+        if offer["expires_at"]<=datetime.now(timezone.utc):raise HTTPException(409,"Offer expired; prepare a newly reviewed scope")
+        try:await growth_offer_payload_current(conn,offer)
+        except ValueError as exc:raise HTTPException(409,str(exc))
+        await conn.execute("update growth_purchase_offers set status='approved',approved_at=now(),updated_at=now() where offer_id=$1",offer_id)
+        await conn.execute("update growth_sample_requests set next_nurture_at=null,updated_at=now() where sample_id=$1",offer["sample_id"])
+        await event(conn,"growth_offer",offer_id,"owner_approved",{"payload_sha256":offer["payload_sha256"]})
+        return {"ok":True,"status":"approved","outreach_released":False,
+          "review_url":urllib.parse.urlsplit(WEBHOOK_URL)._replace(path="",query="",fragment="").geturl()+"/api/growth/offers/"+str(offer_id)+"?"+urllib.parse.urlencode({"token":growth_offers.signed_token(ADMIN_KEY,str(offer_id),offer["email"])})}
+
+@app.get("/api/admin/growth-offers/{offer_id}/review")
+async def review_growth_purchase_offer(offer_id:uuid.UUID,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    async with app.state.pool.acquire() as conn:
+        offer=await conn.fetchrow("select * from growth_purchase_offers where offer_id=$1",offer_id)
+        if not offer:raise HTTPException(404,"Offer not found")
+        payload=json_dict(offer["payload"])
+        url=urllib.parse.urlsplit(WEBHOOK_URL)._replace(path="",query="",fragment="").geturl()+"/api/growth/offers/"+str(offer_id)+"?"+urllib.parse.urlencode({"token":growth_offers.signed_token(ADMIN_KEY,str(offer_id),offer["email"])})
+        unsub=urllib.parse.urlsplit(WEBHOOK_URL)._replace(path="",query="",fragment="").geturl()+"/api/email-preferences?"+urllib.parse.urlencode({"email":offer["email"],"token":email_unsubscribe_token(offer["email"])})
+        return {"ok":True,"status":offer["status"],"payload_sha256":offer["payload_sha256"],"payload":payload,
+          "email":growth_offers.offer_email(offer["product_key"],payload["business"],", ".join(payload["territory"]),url,unsub),
+          "note":"Private owner review only. This read does not approve or send the offer."}
+
+@app.post("/api/process-growth-offer-invitations")
+async def process_growth_offer_invitations(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    if OWNER_LAUNCH_HOLD or not GROWTH_OUTREACH_ENABLED:
+        return {"ok":True,"sent":0,"held":True}
+    sent=0
+    async with app.state.pool.acquire() as conn:
+      offers=await conn.fetch("""select f.offer_id from growth_purchase_offers f join products p on p.product_key=f.product_key
+        where f.status='approved' and f.approved_at is not null and f.invited_at is null and f.expires_at>now()
+          and p.active=true and coalesce(p.payment_link_url,'')<>''
+          and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(f.email))
+        order by f.created_at limit 5""")
+      for item in offers:
+       async with conn.transaction():
+        await growth_lock_exposure_allocator(conn)
+        offer=await conn.fetchrow("select * from growth_purchase_offers where offer_id=$1 for update",item['offer_id'])
+        if offer['status']!='approved' or offer['invited_at'] or offer['expires_at']<=datetime.now(timezone.utc):continue
+        if await conn.fetchval("select 1 from outreach_suppressions where lower(email)=lower($1)",offer['email']):continue
+        product=await conn.fetchrow("select * from products where product_key=$1 and active=true",offer['product_key'])
+        if not product:continue
+        try:
+            payload=await growth_offer_payload_current(conn,offer)
+            token=growth_offers.signed_token(ADMIN_KEY,str(offer['offer_id']),offer['email'])
+            growth_offers.checkout_url(dict(offer),product['payment_link_url'],ADMIN_KEY,token)
+            origin=urllib.parse.urlsplit(WEBHOOK_URL)._replace(path='',query='',fragment='').geturl()
+            link=origin+'/api/growth/offers/'+str(offer['offer_id'])+'?'+urllib.parse.urlencode({'token':token})
+            unsub=origin+'/api/email-preferences?'+urllib.parse.urlencode({'email':offer['email'],'token':email_unsubscribe_token(offer['email'])})
+            message=growth_offers.offer_email(offer['product_key'],payload['business'],', '.join(payload['territory']),link,unsub)
+            ok=await send_mail_once('growth-offer-invite:'+str(offer['offer_id']),offer['email'],message['subject'],message['text'],message['html'])
+            if not ok:raise ValueError('Mail submission failed or uncertain; inspect durable delivery record')
+            await conn.execute("update growth_purchase_offers set invited_at=now(),updated_at=now() where offer_id=$1",offer['offer_id'])
+            sent+=1
+        except (ValueError,KeyError,TypeError) as exc:
+            await conn.execute("update growth_purchase_offers set status='exception',updated_at=now() where offer_id=$1",offer['offer_id'])
+            await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+              values('growth_offer_invitation_review','high',$1,'Review the offer and durable mail attempt before resuming')""",str(exc))
+    return {"ok":True,"sent":sent,"held":False}

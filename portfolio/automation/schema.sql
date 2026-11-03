@@ -1252,3 +1252,24 @@ create table if not exists growth_owner_previews (
   mail_accepted_at timestamptz,
   unique(target_id,version)
 );
+
+
+-- Bound offer drafts are not approvals and cannot generate a payable URL.
+create table if not exists growth_purchase_offers (
+  offer_id uuid primary key default gen_random_uuid(),
+  sample_id uuid not null references growth_sample_requests(sample_id),
+  parent_order_id uuid references orders(order_id),
+  product_key text not null check(product_key in ('growth_pack_25','growth_upgrade_75','growth_strategy_addon')),
+  email text not null,
+  payload jsonb not null,
+  payload_sha256 text not null,
+  status text not null default 'draft' check(status in ('draft','approved','paid','fulfilled','cancelled','exception')),
+  approved_at timestamptz,
+  expires_at timestamptz not null,
+  paid_order_id uuid unique references orders(order_id),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique(sample_id,product_key)
+);
+
+alter table growth_purchase_offers add column if not exists invited_at timestamptz;

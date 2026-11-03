@@ -12,6 +12,10 @@ from pathlib import Path
 from types import SimpleNamespace
 import unittest
 import uuid
+import sys
+sys.path.insert(0,str(Path(__file__).parent/"api"))
+import growth_offers
+from datetime import timedelta
 from datetime import datetime, timezone
 
 DSN=os.environ.get('PAYMENT_TEST_DATABASE_URL')
@@ -32,14 +36,55 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
         async with self.pool.acquire() as conn:
             await conn.execute(Path(__file__).with_name('schema.sql').read_text())
         source=ast.parse(Path(__file__).with_name('api').joinpath('app.py').read_text())
-        names={'stripe_webhook','stripe_product_key','stripe_email','nested','record_revenue','clean'}
+        names={'stripe_webhook','stripe_product_key','stripe_email','nested','record_revenue','clean','bind_growth_purchase_offer'}
         nodes=[n for n in source.body if isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef)) and n.name in names]
         for n in nodes: n.decorator_list=[]
         async def event(*args): pass
         self.ns=dict(Request=object,Header=lambda **kw:None,json=json,uuid=uuid,datetime=datetime,timezone=timezone,
-            verify_stripe_signature=lambda *args:None,event=event,HTTPException=RuntimeError,
+            verify_stripe_signature=lambda *args:None,event=event,HTTPException=RuntimeError,growth_offers=growth_offers,
             app=SimpleNamespace(state=SimpleNamespace(pool=self.pool)))
         exec(compile(ast.Module(body=nodes,type_ignores=[]),'production_payment_handler','exec'),self.ns)
+    async def seed_bound_offer(self):
+        obj=await self.seed_growth()
+        oid=uuid.uuid4()
+        async with self.pool.acquire() as conn:
+            await conn.execute("insert into products(product_key,service_key,display_name,billing_type) values('growth_pack_25','growth_pack','25 prospects','one_time')")
+            await conn.execute("""insert into growth_purchase_offers(offer_id,sample_id,product_key,email,payload,payload_sha256,status,approved_at,expires_at)
+              values($1,$2,'growth_pack_25','owner@example.com','{}','fixture','approved',now(),now()+interval '1 day')""",oid,uuid.UUID(int=1))
+        # Evidence validation has independent qualification tests; this isolates
+        # real transaction, payment binding, replay and task ownership behavior.
+        async def evidence(conn,offer):return {}
+        self.ns['growth_offer_payload_current']=evidence
+        obj.update(metadata={'product_key':'growth_pack_25'},amount_total=14900,client_reference_id='growth_offer_'+str(oid))
+        return obj,oid
+    async def test_bound_offer_paid_once_and_no_generic_intake(self):
+        obj,oid=await self.seed_bound_offer()
+        await asyncio.gather(self.send('evt_offer_a','checkout.session.completed',obj),self.send('evt_offer_b','checkout.session.async_payment_succeeded',obj))
+        self.assertEqual(await self.scalar("select count(*) from tasks where task_type='fulfill_growth_offer'"),1)
+        self.assertEqual(await self.scalar('select count(*) from tasks'),1)
+        self.assertEqual(await self.scalar('select status from growth_purchase_offers'),'paid')
+        self.assertEqual(await self.scalar('select sum(amount_cents) from revenue_events'),14900)
+        self.assertEqual(await self.scalar('select status from orders'),'ready_for_fulfillment')
+    async def test_bound_offer_wrong_amount_quarantined(self):
+        obj,oid=await self.seed_bound_offer();obj['amount_total']=100
+        await self.send('evt_offer_bad','checkout.session.completed',obj)
+        self.assertEqual(await self.scalar('select status from orders'),'payment_review')
+        self.assertEqual(await self.scalar('select count(*) from tasks'),0)
+        self.assertEqual(await self.scalar('select status from growth_purchase_offers'),'approved')
+    async def test_second_checkout_for_same_offer_cannot_deliver_twice(self):
+        obj,oid=await self.seed_bound_offer()
+        await self.send('evt_offer_first','checkout.session.completed',obj)
+        obj.update(id='cs_second',payment_intent='pi_second')
+        await self.send('evt_offer_second','checkout.session.completed',obj)
+        self.assertEqual(await self.scalar("select count(*) from tasks where task_type='fulfill_growth_offer'"),1)
+        self.assertEqual(await self.scalar("select count(*) from orders where status='payment_review'"),1)
+    async def test_refund_before_offer_checkout_never_fulfills(self):
+        obj,oid=await self.seed_bound_offer()
+        await self.send('evt_offer_refund','refund.created',self.refund())
+        await self.send('evt_offer_after_refund','checkout.session.completed',obj)
+        self.assertEqual(await self.scalar('select status from orders'),'payment_review')
+        self.assertEqual(await self.scalar('select count(*) from tasks'),0)
+
     async def asyncTearDown(self):
         await self.pool.close()
         await self.admin.execute('drop schema '+self.schema+' cascade')

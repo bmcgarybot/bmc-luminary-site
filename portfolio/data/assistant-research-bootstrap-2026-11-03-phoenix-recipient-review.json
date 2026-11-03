@@ -1,0 +1,110 @@
+{
+  "count": 8,
+  "purpose": "Eight additional held recipient research records; not approval or customer demand",
+  "records": [
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "commercial_cleaning",
+      "category_label": "Commercial cleaning",
+      "business_name": "Alliance Commercial Cleaning Services",
+      "url": "https://www.alliancecommercialaz.com/contact/",
+      "email": "info@alliancecommercialaz.com",
+      "phone": "6026072500",
+      "official": true,
+      "verified_date": "2026-11-03",
+      "note": "Your site lists professional offices, retail stores and fitness studios across Greater Phoenix. Research candidate only. Capacity, qualifications, post-flood operation and safe access unconfirmed. Not an accepted BMC provider."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "commercial_cleaning",
+      "category_label": "Commercial cleaning",
+      "business_name": "Gen X Cleaning Services",
+      "url": "https://www.genxcleaningservices.com/contact-phoenix-commercial-cleaning",
+      "email": "info@genxcleaningservices.com",
+      "phone": "4806252297",
+      "official": true,
+      "verified_date": "2026-11-03",
+      "note": "Your Phoenix service list includes offices, schools and churches alongside janitorial work. Research candidate only. Capacity, qualifications, post-flood operation and safe access unconfirmed. Not an accepted BMC provider."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "commercial_cleaning",
+      "category_label": "Commercial cleaning",
+      "business_name": "Incomparable Commercial Cleaning",
+      "url": "https://incomparablecommercialcleaning.com/contact",
+      "email": "incomparablecommercialcleaning@gmail.com",
+      "phone": "5208401643",
+      "official": true,
+      "verified_date": "2026-11-03",
+      "note": "Your site lists Phoenix coverage and commercial, medical-office and dental-office cleaning. Research candidate only. Capacity, qualifications, post-flood operation and safe access unconfirmed. Not an accepted BMC provider."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "commercial_cleaning",
+      "category_label": "Commercial cleaning",
+      "business_name": "JAG Janitorial Services",
+      "url": "https://jagjanitorialservices.com/contact/",
+      "email": "info@jagjanitorialservices.com",
+      "phone": "8553932686",
+      "official": true,
+      "verified_date": "2026-11-03",
+      "note": "Your Phoenix team offers office janitorial work and asks for facility scope and frequency before quoting. Research candidate only. Capacity, qualifications, post-flood operation and safe access unconfirmed. Not an accepted BMC provider."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "commercial_cleaning",
+      "category_label": "Commercial cleaning",
+      "business_name": "Katharos Commercial Cleaning",
+      "url": "https://www.kccpro.com/contact",
+      "email": "lvelo@kccpro.com",
+      "phone": "6235227380",
+      "official": true,
+      "verified_date": "2026-11-03",
+      "note": "Your site describes office, industrial and post-construction cleaning, with Phoenix listed on your contact page. Research candidate only. Capacity, qualifications, post-flood operation and safe access unconfirmed. Not an accepted BMC provider."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "commercial_cleaning",
+      "category_label": "Commercial cleaning",
+      "business_name": "KEEPERS Commercial Cleaning",
+      "url": "https://www.keeperscleanusa.com/areas-we-serve/phoenix/",
+      "email": "info@keeperscleanaz.com",
+      "phone": "4803067100",
+      "official": true,
+      "verified_date": "2026-11-03",
+      "note": "Your Phoenix page describes office, warehouse and hospitality cleaning. Research candidate only. Capacity, qualifications, post-flood operation and safe access unconfirmed. Not an accepted BMC provider."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "commercial_cleaning",
+      "category_label": "Commercial cleaning",
+      "business_name": "LJ\u2019s Cleaning Solutions",
+      "url": "https://ljscleaningsolutions.com/contact/",
+      "email": "info@ljscleaningsolutions.com",
+      "phone": "8006144042",
+      "official": true,
+      "verified_date": "2026-11-03",
+      "note": "Your Phoenix headquarters and commercial cleaning services give this research a clear local starting point. Research candidate only. Capacity, qualifications, post-flood operation and safe access unconfirmed. Not an accepted BMC provider."
+    },
+    {
+      "side": "vendor",
+      "market": "Phoenix",
+      "category_key": "commercial_cleaning",
+      "category_label": "Commercial cleaning",
+      "business_name": "Luxe Janitorial Services",
+      "url": "https://www.luxejanitorialservices.com/",
+      "email": "Admin@luxejanitorialservice.com",
+      "phone": "6236939863",
+      "official": true,
+      "verified_date": "2026-11-03",
+      "note": "Your site pairs Phoenix commercial janitorial care with property-turnover and post-construction cleaning. Research candidate only. Capacity, qualifications, post-flood operation and safe access unconfirmed. Not an accepted BMC provider."
+    }
+  ]
+}

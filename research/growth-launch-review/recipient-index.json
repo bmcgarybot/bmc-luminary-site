@@ -1,0 +1,54 @@
+{
+  "additional_review_packages": 8,
+  "existing_complete_preview": "Environment Control Phoenix",
+  "status": "held; no signed journeys or customer messages created",
+  "excluded": [
+    {
+      "business": "Mister Klean AZ",
+      "reason": "Core business is fleet detailing; not a janitorial fit",
+      "source": "https://misterkleanaz.com/core-business/"
+    }
+  ],
+  "recipients": [
+    {
+      "business": "Alliance Commercial Cleaning Services",
+      "email": "info@alliancecommercialaz.com",
+      "status": "owner_review_draft"
+    },
+    {
+      "business": "Gen X Cleaning Services",
+      "email": "info@genxcleaningservices.com",
+      "status": "owner_review_draft"
+    },
+    {
+      "business": "Katharos Commercial Cleaning",
+      "email": "lvelo@kccpro.com",
+      "status": "owner_review_draft"
+    },
+    {
+      "business": "LJ\u2019s Cleaning Solutions",
+      "email": "info@ljscleaningsolutions.com",
+      "status": "owner_review_draft"
+    },
+    {
+      "business": "KEEPERS Commercial Cleaning",
+      "email": "info@keeperscleanaz.com",
+      "status": "owner_review_draft"
+    },
+    {
+      "business": "Incomparable Commercial Cleaning",
+      "email": "incomparablecommercialcleaning@gmail.com",
+      "status": "owner_review_draft"
+    },
+    {
+      "business": "JAG Janitorial Services",
+      "email": "info@jagjanitorialservices.com",
+      "status": "owner_review_draft"
+    },
+    {
+      "business": "Luxe Janitorial Services",
+      "email": "Admin@luxejanitorialservice.com",
+      "status": "owner_review_draft"
+    }
+  ]
+}

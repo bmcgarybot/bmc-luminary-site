@@ -1,0 +1,39 @@
+{
+  "business": "Environment Control Phoenix",
+  "service_key": "commercial_cleaning",
+  "territory": [
+    "Phoenix"
+  ],
+  "strategy": {
+    "competitors": [
+      {
+        "name": "Alliance Commercial Cleaning Services",
+        "source_url": "https://www.alliancecommercialaz.com/contact/",
+        "observed_offer": "Lists offices, retail, fitness, deep cleaning and day porter services in Greater Phoenix.",
+        "implication": "A broad service list alone will not distinguish an office-cleaning pitch. Test a specific scope and a clear account-management process.",
+        "checked_at": "2026-11-03"
+      },
+      {
+        "name": "Gen X Cleaning Services",
+        "source_url": "https://www.genxcleaningservices.com/contact-phoenix-commercial-cleaning",
+        "observed_offer": "Positions multiple commercial facility services through one provider across Phoenix and nearby cities.",
+        "implication": "Make coordination easy: one contact, written scope, and a clear response process. Only promise response times the team can support.",
+        "checked_at": "2026-11-03"
+      },
+      {
+        "name": "Luxe Janitorial Services",
+        "source_url": "https://www.luxejanitorialservices.com/",
+        "observed_offer": "Combines commercial janitorial work with construction turnover for contractors and property managers.",
+        "implication": "Separate recurring office work from one-time turnover offers. A precise project scope is more credible than a general cleaning pitch.",
+        "checked_at": "2026-11-03"
+      }
+    ],
+    "positioning": "For Environment Control Phoenix: lead with a defined office/common-area scope and a straightforward walkthrough, not an unsupported claim to be the cheapest or best. Verify crew capacity, insurance and any specialist requirements before promising a start date. Proposed message: A clear cleaning scope, a named contact, and a schedule built around your building.",
+    "priorities": "1. Public office and property-management contacts: determine who controls the contract and which Phoenix properties are eligible. 2. Hotels: explore a limited common-area or event-reset scope through vendor onboarding; existing housekeeping is not a buying signal. 3. Medical/industrial sites only after qualification and access review. Start with the five frozen sample accounts; do not replace them silently. Ask the customer to exclude existing accounts before adding research.",
+    "first_email": "Subject: Who handles cleaning vendors for [property]?\nHi [verified name or operations team],\nI’m [name] with Environment Control Phoenix. I saw [specific fact from the property’s official page]. We provide commercial cleaning in Phoenix. Are you the right person to ask about your process for reviewing cleaning vendors for [specific area]? If you consider outside vendors, I can arrange a short walkthrough and send a written scope around your operating hours.\n[Verified sender and postal address]\n[Small opt-out link]",
+    "follow_up": "Subject: Re: Who handles cleaning vendors for [property]?\nHi [name],\nOne detail that may help: we can start by discussing [specific bounded scope], rather than asking you to change an entire arrangement. If vendor review is handled elsewhere, could you point me to that team? If this is not relevant, let me know and I will close the loop.\n[Verified sender and postal address]\n[Small opt-out link]",
+    "phone_opener": "Hi, this is [name] with Environment Control Phoenix. Is now a bad time for one routing question? Who handles the process for considering outside cleaning vendors for this property? If they do: ask whether there is a review window and what documentation they require. Do not suggest that the business requested a quote.",
+    "reply_handling": "Interested: confirm property, scope, schedule, purchasing authority and vendor requirements before offering a walkthrough. Already covered: ask once whether they keep a backup vendor list; respect a no. Price request: gather scope before quoting. Wrong person: ask for the appropriate public contact or process. Not interested/unsubscribe: suppress immediately and stop the sequence. Storm/access concern: manual review; no dispatch or automatic checkout assumptions.",
+    "four_week_plan": "Week 1: confirm target service, crew capacity, existing-customer exclusions and sender details; prioritize the five free accounts and verify contacts before sending. Week 2: run a small approved outreach batch and log delivery, replies and routing corrections. Week 3: follow up once only with recipients who have not declined or opted out; compare facility types by useful conversations, not opens. Week 4: review actual walkthroughs, quotes and wins; expand only the account types with useful responses. This is a proposed customer execution plan, not BMC sending outreach on the customer’s behalf."
+  }
+}
