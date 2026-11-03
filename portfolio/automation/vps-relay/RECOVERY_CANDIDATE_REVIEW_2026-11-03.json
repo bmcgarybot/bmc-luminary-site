@@ -59,7 +59,7 @@
       "phone": "928-239-3640",
       "source": "https://www.licensedhandyman.biz/service-area",
       "evidence": "Direct service-area page explicitly lists Dewey and Humboldt. Main site describes small repairs and publishes ROC 349772. The license/insurance page links document images; current validity was not established.",
-      "gaps": "No direct email verified. Confirm small-repair scope, current credential status, insurance dates, current slots and site access; no assumed structural/electrical/water-restoration qualification.",
+      "gaps": "No direct email verified. Confirm small-repair scope, current job eligibility under R-62, insurance dates, current slots and site access; no assumed structural/electrical/water-restoration qualification.",
       "subject": "Dewey-Humboldt: taking small repair jobs?",
       "lines": [
         "Hey, this is Brett with BMC Service Network. We’re building a local provider network. You would see the repair details before choosing whether to take a request. Joining is free.",
@@ -74,7 +74,15 @@
       "live_signed_invitation": null,
       "plain": "Hello Licensed Handyman, Inc. team,\n\nHey, this is Brett with BMC Service Network. We’re building a local provider network. You would see the repair details before choosing whether to take a request. Joining is free.\n\nDo you have room for small door, drywall or punch-list repairs in Dewey-Humboldt?\n\nWhich small repairs fit your crew, and when could you assess one? We’ll check the job scope, qualifications and access before any referral.\n\nWe are checking capacity, not offering a confirmed job.\n\nBrett\nBMC Service Network\nBMC Luminary Ventures LLC\n186 E. Sheldon St. #1144, Prescott, AZ 86301\n\nThis is a promotional email from BMC Service Network.\nReply no if you do not want future BMC outreach.",
       "send_ready": false,
-      "rechecked_at": "2026-11-03"
+      "rechecked_at": "2026-11-03",
+      "registry_check": {
+        "observed_at": "2026-11-03T18:08:51.138Z",
+        "license": "349772",
+        "classification": "R-62 Minor Home Improvements",
+        "status": "Active",
+        "source": "https://azroc.my.site.com/AZRoc/s/contractor-search?licenseId=a0o8y000000xyUlAAI",
+        "limits": "Registry status/classification only; provider acceptance, insurance, capacity, exact job scope and safe access unconfirmed."
+      }
     },
     {
       "name": "Davis Fence Company / Davis Fence LLC",
@@ -84,7 +92,7 @@
       "phone": "928-708-0036",
       "source": "https://www.davisfenceco.net/start-your-fencing-installation",
       "evidence": "Direct contact page lists fence repair and gates, Prescott-area coverage, this email and phone, and ROC 233707. BBB links Davis Fence Company to Davis Fence LLC. The website has inconsistent ZIP codes, so mailing address remains unresolved.",
-      "gaps": "Confirm repair sizes/materials, current credential/insurance status, materials, current assessment slots and ground/access conditions. No dedicated BMC fence key, intake route or matching workflow exists.",
+      "gaps": "Confirm repair sizes/materials, job eligibility under CR-14 and current insurance, materials, current assessment slots and ground/access conditions. No dedicated BMC fence key, intake route or matching workflow exists.",
       "subject": "Prescott: taking fence and gate repairs?",
       "lines": [
         "Hey, this is Brett with BMC Service Network. We’re checking which local businesses want this work. Which fence materials and repair sizes do you take, and when could you assess a new request?",
@@ -98,7 +106,15 @@
       "live_signed_invitation": null,
       "plain": "Hello Davis Fence Company / Davis Fence LLC team,\n\nHey, this is Brett with BMC Service Network. We’re checking which local businesses want this work. Which fence materials and repair sizes do you take, and when could you assess a new request?\n\nDo you take small fence or gate repairs in Prescott, such as panels, posts or latches?\n\nThis is a capacity inquiry, not a job offer. Fence requests would need manual review; we are not promising automated matching.\n\nBrett\nBMC Service Network\nBMC Luminary Ventures LLC\n186 E. Sheldon St. #1144, Prescott, AZ 86301\n\nThis is a promotional email from BMC Service Network.\nReply no if you do not want future BMC outreach.",
       "send_ready": false,
-      "rechecked_at": "2026-11-03"
+      "rechecked_at": "2026-11-03",
+      "registry_check": {
+        "observed_at": "2026-11-03T18:08:51.138Z",
+        "license": "233707",
+        "classification": "CR-14 Fencing",
+        "status": "Active",
+        "source": "https://azroc.my.site.com/AZRoc/s/contractor-search?licenseId=a0ot0000000NYoxAAG",
+        "limits": "Registry status/classification only; provider acceptance, insurance, capacity, exact job scope and safe access unconfirmed."
+      }
     },
     {
       "name": "Verde Valley Handyman, LLC",
@@ -108,7 +124,7 @@
       "phone": "928-202-4727",
       "source": "https://verdehandyman.com/",
       "evidence": "Official site lists small to medium repair work, door/window replacement, drywall and finish carpentry; published Cottonwood office and phone; serves Cottonwood, Camp Verde, Clarkdale, Sedona and nearby areas.",
-      "gaps": "Site claims ROC333112 and insurance; current registry status/classification and insurance documents not independently verified. No public email verified. Capacity, provider acceptance, requested job scope and route/site access unconfirmed.",
+      "gaps": "Site claims ROC333112 and insurance; registry status is Active/R-62 as checked; insurance documents remain unverified. No public email verified. Capacity, provider acceptance, requested job scope and route/site access unconfirmed.",
       "status": "HELD / UNCONTACTED / NOT ACCEPTED",
       "capacity_confirmed": false,
       "qualified_provider": false,
@@ -116,7 +132,15 @@
       "live_signed_invitation": null,
       "send_ready": false,
       "subject": "A small-repair introduction for Verde Valley Handyman",
-      "plain": "Hello Verde Valley Handyman team,\n\nHey, this is Brett with BMC Service Network. Your site describes small to medium repairs and lists Cottonwood, Camp Verde and other Verde Valley communities.\n\nWe're preparing a local provider network. You would review the actual job details and decide whether the work fits your team. Joining is free, and we cannot promise jobs.\n\nIf this is relevant, which minor door, drywall or finish-carpentry repairs do you want more of, and what area and assessment availability fit your crew? We would confirm qualifications, scope and access before any referral.\n\nBrett\nBMC Service Network\nBMC Luminary Ventures LLC\n186 E. Sheldon St. #1144, Prescott, AZ 86301\n\nThis is a promotional email from BMC Service Network.\nReply no if you do not want future BMC outreach."
+      "plain": "Hello Verde Valley Handyman team,\n\nHey, this is Brett with BMC Service Network. Your site describes small to medium repairs and lists Cottonwood, Camp Verde and other Verde Valley communities.\n\nWe're preparing a local provider network. You would review the actual job details and decide whether the work fits your team. Joining is free, and we cannot promise jobs.\n\nIf this is relevant, which minor door, drywall or finish-carpentry repairs do you want more of, and what area and assessment availability fit your crew? We would confirm qualifications, scope and access before any referral.\n\nBrett\nBMC Service Network\nBMC Luminary Ventures LLC\n186 E. Sheldon St. #1144, Prescott, AZ 86301\n\nThis is a promotional email from BMC Service Network.\nReply no if you do not want future BMC outreach.",
+      "registry_check": {
+        "observed_at": "2026-11-03T18:08:51.135Z",
+        "license": "333112",
+        "classification": "R-62 Minor Home Improvements",
+        "status": "Active",
+        "source": "https://azroc.my.site.com/AZRoc/s/contractor-search?licenseId=a0ot0000001QsncAAC",
+        "limits": "Registry status/classification only; provider acceptance, insurance, capacity, exact job scope and safe access unconfirmed."
+      }
     }
   ],
   "other_candidates": [
