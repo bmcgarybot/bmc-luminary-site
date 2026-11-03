@@ -1,0 +1,21 @@
+{
+  "action": "research_refresh_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-03T22:53:24.939650+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "cc9bbb13bc864fbf70f96d611f544cca5faf091c",
+  "git_commit_before": "cc9bbb13bc864fbf70f96d611f544cca5faf091c",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "c16040bcca033309343c6b776bfb9401fbe9f8cf",
+  "request_id": "a-expansion-baseline-research-refresh-status-20261103T225235Z",
+  "request_sha256": "7b1a9d5d2eaf9a49009f2618a73548af19b230d4852b9aff61a402817b5278dd",
+  "started_at": "2026-11-03T22:53:24.564338+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "BMC Docker research refresher\nNAME                       IMAGE                                                                     COMMAND                  SERVICE              CREATED        STATUS        PORTS\nbmc-research_refresher-1   sha256:726be837942ca84cb5a463deec7ac7362f80d661270b3142ef2347a11ffa25be   \"/bin/sh /app/resear\u2026\"   research_refresher   34 hours ago   Up 34 hours   \n\nRefresh source state:\ndirectory_graph|running|started=2026-11-03 21:09:41.303759+00|success=2026-10-30 23:54:02.019235+00|failure=2026-11-03 20:54:41.122295+00\nlicensed_trades|success|started=2026-11-02 23:37:56.172143+00|success=2026-11-02 23:39:29.607528+00|failure=\n\nRecent refresher log:\nresearch_refresher-1  |     {\nresearch_refresher-1  |       \"market\": \"Winslow\",\nresearch_refresher-1  |       \"feed\": \"professional-services\",\nresearch_refresher-1  |       \"error\": \"HTTP Error 503: Service Unavailable\"\nresearch_refresher-1  |     },\nresearch_refresher-1  |     {\nresearch_refresher-1  |       \"market\": \"Winslow\",\nresearch_refresher-1  |       \"feed\": \"non-profit-organizations\",\nresearch_refresher-1  |       \"error\": \"HTTP Error 404: Not Found\"\nresearch_refresher-1  |     },\nresearch_refresher-1  |     {\nresearch_refresher-1  |       \"market\": \"Winslow\",\nresearch_refresher-1  |       \"feed\": \"storage\",\nresearch_refresher-1  |       \"error\": \"HTTP Error 503: Service Unavailable\"\nresearch_refresher-1  |     },\nresearch_refresher-1  |     {\nresearch_refresher-1  |       \"market\": \"Winslow\",\nresearch_refresher-1  |       \"feed\": \"home-health-care-services-3\",\nresearch_refresher-1  |       \"error\": \"HTTP Error 503: Service Unavailable\"\nresearch_refresher-1  |     },\nresearch_refresher-1  |     {\nresearch_refresher-1  |       \"market\": \"Winslow\",\nresearch_refresher-1  |       \"feed\": \"kidney-dialysis-centers-3\",\nresearch_refresher-1  |       \"error\": \"HTTP Error 503: Service Unavailable\"\nresearch_refresher-1  |     },\nresearch_refresher-1  |     {\nresearch_refresher-1  |       \"market\": \"Winslow\",\nresearch_refresher-1  |       \"feed\": \"offices-and-clinics-of-dentists\",\nresearch_refresher-1  |       \"error\": \"The read operation timed out\"\nresearch_refresher-1  |     },\nresearch_refresher-1  |     {\nresearch_refresher-1  |       \"market\": \"Winslow\",\nresearch_refresher-1  |       \"feed\": \"offices-and-clinics-of-doctors-of-medicine\",\nresearch_refresher-1  |       \"error\": \"HTTP Error 503: Service Unavailable\"\nresearch_refresher-1  |     }\nresearch_refresher-1  |   ],\nresearch_refresher-1  |   \"empty_feeds\": []\nresearch_refresher-1  | Killed\nresearch_refresher-1  | }[research-refresher] directory refresh FAILED\nresearch_refresher-1  | [research-refresher] directory refresh starting\n",
+  "version": 1
+}
