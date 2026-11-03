@@ -1,0 +1,82 @@
+{
+  "reviewed_at": "2026-11-03T00:19:00Z",
+  "status": "owner_review_only_not_imported_or_sent",
+  "recipient": {
+    "business": "American Crown Commercial Cleaning",
+    "service": "commercial_cleaning",
+    "territory": [
+      "Prescott"
+    ],
+    "website": "https://americancrowncc.com/",
+    "evidence": "Official site lists janitorial, event/venue and lobbies/common-area cleaning, with Prescott among its service markets.",
+    "capacity": "Not confirmed; current crew availability, service constraints and safe access require review."
+  },
+  "prospects": [
+    {
+      "business_name": "Prescott Resort and Conference Center",
+      "website": "https://www.prescottresort.com/",
+      "public_email": "info@prescottresort.com",
+      "public_phone": "928-227-2313",
+      "evidence": "Official site describes 160 rooms and 17,000 square feet of meetings/events, with dining and shared guest amenities.",
+      "suggested_conversation": "Ask the operations or housekeeping manager whether event turnover or periodic common-area deep cleaning is ever outsourced. Start with a defined event space and schedule, not replacing their housekeeping team.",
+      "contact_role": "General hotel contact; request routing to operations/housekeeping.",
+      "demand": "No outsourcing need or buying interest verified."
+    },
+    {
+      "business_name": "Hassayampa Inn",
+      "website": "https://www.hassayampainn.com/",
+      "public_email": null,
+      "public_phone": null,
+      "evidence": "Official site describes downtown Prescott hotel/dining and an existing cleaning process for public spaces and back-of-house areas.",
+      "suggested_conversation": "Ask management whether they use outside specialists for periodic detailed work around public areas while their team handles daily cleaning. Confirm permitted methods for historic surfaces.",
+      "contact_role": "Use official business website; older cached gm email not freshly corroborated.",
+      "demand": "Existing in-house cleaning is acknowledged; no current outside-vendor need verified."
+    },
+    {
+      "business_name": "Hotel St. Michael",
+      "website": "https://stmichaelhotel.com/",
+      "public_email": null,
+      "public_phone": "928-776-1999",
+      "evidence": "Official site identifies Prescott rooms and suites at the historic Whiskey Row hotel.",
+      "suggested_conversation": "Ask the property manager about approved vendors for scheduled lobby/common-area deep cleaning or overflow work, with methods suitable for historic finishes.",
+      "contact_role": "Public hotel phone; ask for property manager. Cached frontdesk email not found on current page.",
+      "demand": "No open job or procurement interest verified."
+    },
+    {
+      "business_name": "Prescott Unified School District",
+      "website": "https://www.prescottschools.com/district-info/departments/purchasing",
+      "public_email": "cathy.moody@prescottschools.com",
+      "public_phone": "928-445-5400 ext. 70108",
+      "evidence": "Official purchasing page names Cathy Moody, Director of Purchasing, and describes competitive vendor bidding.",
+      "suggested_conversation": "Ask Purchasing how to register for suitable contracted cleaning, event or break-period projects and which insurance/access requirements apply. Follow the district process; do not approach campuses without authorization.",
+      "contact_role": "Purchasing director published on official page.",
+      "demand": "Longer-cycle procurement prospect; no cleaning solicitation verified."
+    },
+    {
+      "business_name": "Yavapai College — Prescott scope only",
+      "website": "https://www.yc.edu/v6/procurement/",
+      "public_email": "procurement@yc.edu",
+      "public_phone": "928-776-2194",
+      "evidence": "Official Procurement & Contract Services page supports suppliers and lists supplier registration through the Arizona State Procurement Portal. The page currently lists no open or upcoming solicitations.",
+      "suggested_conversation": "Ask Procurement which Prescott department handles small cleaning projects and how to register for future relevant opportunities. Confirm campus scope, insurance and vendor requirements before quoting.",
+      "contact_role": "Procurement contact replaces the inappropriate admissions route in the older research artifact.",
+      "demand": "Future supplier-route prospect, not immediate demand; do not present as an open bid."
+    }
+  ],
+  "terms": "Five free researched prospects. Optional $499 for 100 total including the five only if reviewed territory supports the quality reserve. This research note does not establish that reserve.",
+  "limits": [
+    "Not the saved customer five; no sample claim or delivery recorded.",
+    "No outreach or contact with these businesses occurred.",
+    "No post-flood operating capacity or safe access inferred from websites.",
+    "Do not offer the two public-institution prospects as quick-win jobs.",
+    "No email addresses guessed."
+  ],
+  "sources": [
+    "https://americancrowncc.com/",
+    "https://www.prescottresort.com/",
+    "https://www.hassayampainn.com/",
+    "https://stmichaelhotel.com/",
+    "https://www.prescottschools.com/district-info/departments/purchasing",
+    "https://www.yc.edu/v6/procurement/"
+  ]
+}
