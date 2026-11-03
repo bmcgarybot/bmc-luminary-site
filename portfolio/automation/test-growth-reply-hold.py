@@ -59,6 +59,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
     def load(self,hold=True,enabled=False):
         conn=Connection();sent=[]
         async def event(*args):pass
+        async def observe(*args):pass
         async def send(*args):sent.append(args);return True
         names={"clean","growth_claim_token","growth_invitation_url","growth_positive_reply_message","workflow_email_html","process_replies"}
         nodes=[n for n in source.body if isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef)) and n.name in names]
@@ -66,7 +67,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             if isinstance(node,ast.AsyncFunctionDef):node.decorator_list=[]
         ns=dict(Header=lambda **kw:None,require_admin=lambda key:None,email=email,parseaddr=parseaddr,
             hashlib=hashlib,hmac=hmac,html=html,urllib=SimpleNamespace(parse=urllib.parse),
-            ADMIN_KEY="fixture-secret",PUBLIC_SITE_URL="https://example.test",BUSINESS_POSTAL_ADDRESS="Fixture postal",
+            record_mail_observation=observe,ADMIN_KEY="fixture-secret",PUBLIC_SITE_URL="https://example.test",BUSINESS_POSTAL_ADDRESS="Fixture postal",
             GROWTH_LANDING_PATHS={"pressure_washing":"/growth-packs/pressure-washing/"},
             OWNER_LAUNCH_HOLD=hold,GROWTH_OUTREACH_ENABLED=enabled,GROWTH_OUTREACH_TARGET_IDS=("target",),IMAP_ENABLED=True,IMAP_HOST="fixture",
             IMAP_USER="fixture",IMAP_PASSWORD="fixture",IMAP_FOLDER="INBOX",IMAP_PORT=993,

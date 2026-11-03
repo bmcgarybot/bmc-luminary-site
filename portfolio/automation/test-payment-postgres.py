@@ -45,6 +45,33 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
             app=SimpleNamespace(state=SimpleNamespace(pool=self.pool)))
         exec(compile(ast.Module(body=nodes,type_ignores=[]),'production_payment_handler','exec'),self.ns)
 
+    async def test_business_metrics_use_real_schema_and_distinguish_unknown_delivery(self):
+        from ops_metrics import business_metrics
+        async with self.pool.acquire() as conn:
+            await conn.execute("insert into mail_observations(message_key,direction,status,payload_sha256) values('test-mail','outbound','smtp_accepted','hash')")
+            metrics=await business_metrics(conn)
+        self.assertEqual(metrics["mail"]["smtp_accepted"],1)
+        self.assertEqual(metrics["orders"]["paid_orders"],0)
+        self.assertIsNone(metrics["limits"]["inbox_delivery"])
+        self.assertEqual(metrics["paid_amounts_by_currency"],[])
+    async def test_mail_observation_survives_business_rollback_and_deduplicates_receipt(self):
+        source=ast.parse(Path(__file__).with_name('api').joinpath('app.py').read_text())
+        nodes=[n for n in source.body if isinstance(n,ast.AsyncFunctionDef) and n.name in ('record_mail_observation','record_api_operation')]
+        ns=dict(app=SimpleNamespace(state=SimpleNamespace(delivery_pool=self.pool)))
+        exec(compile(ast.Module(body=nodes,type_ignores=[]),'production_metrics','exec'),ns)
+        async with self.pool.acquire() as conn:
+            tx=conn.transaction();await tx.start()
+            await ns['record_mail_observation']('inbound:hash','inbound','received','hash','positive')
+            await tx.rollback()
+        await ns['record_mail_observation']('inbound:hash','inbound','received','hash')
+        self.assertEqual(await self.scalar('select count(*) from mail_observations'),1)
+        self.assertEqual(await self.scalar('select classification from mail_observations'),'positive')
+        await ns['record_api_operation']('/api/fixture',200,12)
+        await ns['record_api_operation']('/api/fixture',500,25)
+        self.assertEqual(await self.scalar('select requests from api_operation_metrics'),2)
+        self.assertEqual(await self.scalar('select failures from api_operation_metrics'),1)
+        self.assertIsNotNone(await self.scalar('select last_success_at from api_operation_metrics'))
+
     async def test_growth_receipt_summary_includes_all_offer_tiers(self):
         source=ast.parse(Path(__file__).with_name('api').joinpath('app.py').read_text())
         fn=next(n for n in source.body if isinstance(n,ast.AsyncFunctionDef) and n.name=='growth_runtime_status')

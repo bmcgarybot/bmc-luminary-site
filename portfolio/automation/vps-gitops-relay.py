@@ -47,9 +47,11 @@ LOCAL_RESULTS = STATE_DIR / "results"
 RESEARCH_SCHEDULE_FILE = STATE_DIR / "research-refresh-schedule.json"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status"}
+READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
+    "prepare_ops_configuration",
+    "configure_ops_monitoring",
     "configure_owner_contact",
     "configure_growth_review_scope",
     "market_inventory_step",
@@ -65,7 +67,7 @@ MUTATING_INTERNAL_ACTIONS = {
     "growth_stage_pressure_washing",
     "growth_stage_commercial_cleaning",
 }
-EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates"}
+EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates", "ops_alert_test"}
 CONTROL_ACTIONS = {"growth_launch_disable", "growth_owner_preview_approve"}
 ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS
 
@@ -622,6 +624,38 @@ def execute(req: dict) -> dict:
         stdout=json.dumps({"ok":True,"approved_sha":sha,"message":"Owner preview approved for this exact deployed commit only."},indent=2)
         stderr=""
         exit_code=0
+
+    elif action == "prepare_ops_configuration":
+        if args:raise RelayError("Operational key preparation takes no arguments")
+        cp=run(["python3","./ops-watchdog.py","--prepare-config"],timeout=90)
+        stdout,stderr,exit_code=cp.stdout,cp.stderr,cp.returncode
+
+    elif action == "configure_ops_monitoring":
+        encrypted=args.get("ciphertext","")
+        if set(args)!={"ciphertext"} or not isinstance(encrypted,str) or not re.fullmatch(r"[A-Za-z0-9+/=]{256,2048}",encrypted):
+            raise RelayError("Only VPS-encrypted operational configuration is accepted")
+        cp=run(["python3","./ops-watchdog.py","--configure-encrypted",encrypted],timeout=30)
+        if cp.returncode:raise RelayError("Private operational configuration failed; recipient was not published")
+        install=run(["bash","./install-watchdog.sh","--user"],timeout=90)
+        stdout=cp.stdout+"\n"+install.stdout
+        stderr=install.stderr;exit_code=install.returncode
+
+    elif action == "ops_monitor_status":
+        if args:raise RelayError("Operational status takes no arguments")
+        cp=run(["python3","./ops-watchdog.py","--status"],timeout=30)
+        status=json.loads(cp.stdout) if cp.returncode==0 else {"status_unavailable":True}
+        status["system_timer_active"]=run(["systemctl","is-active","--quiet","bmc-watchdog.timer"],timeout=10).returncode==0
+        status["user_timer_active"]=run(["systemctl","--user","is-active","--quiet","bmc-watchdog.timer"],timeout=10).returncode==0
+        stdout=json.dumps(status);stderr="";exit_code=cp.returncode
+
+    elif action == "business_metrics":
+        if args:raise RelayError("Business metrics takes no arguments")
+        stdout=json.dumps(admin_post("/api/admin/business-metrics",timeout=45));stderr="";exit_code=0
+
+    elif action == "ops_alert_test":
+        if args:raise RelayError("Operational alert test takes no recipient arguments")
+        cp=run(["python3","./ops-watchdog.py","--test-alert"],timeout=180)
+        stdout,stderr,exit_code=cp.stdout,cp.stderr,cp.returncode
 
     elif action == "configure_growth_review_scope":
         if app_env().get("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="true":
