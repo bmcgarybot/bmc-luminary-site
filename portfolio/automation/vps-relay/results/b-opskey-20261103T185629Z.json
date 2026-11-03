@@ -1,0 +1,27 @@
+{
+  "action": "prepare_ops_configuration",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-03T18:57:24.353330+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "8c2126a225f929448a675b807a656659600602ef",
+  "git_commit_before": "8c2126a225f929448a675b807a656659600602ef",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "c23a6c9c546cd27dd9f2f6aaabaad3a7e12c3c89",
+  "request_id": "b-opskey-20261103T185629Z",
+  "request_sha256": "74723622f0073589df8fb5137b20df021bc59ac970c477f8359ad426523a6cda",
+  "started_at": "2026-11-03T18:57:24.134006+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"public_key\": \"-----BEGIN PUBLIC KEY-----\\nMIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA6ml9ZwTFJ9ONzvBEwUAQ\\nWXNEv2hohQORIs1vyXYa5KskptFhKyKc40km2E+CT5oczD79HmSIJpLjEHLJ7yt7\\nk+pOJnx3c22rfHI/1JkzCpMQdvmS2qDQERUd3dtOgL31QlmDaOhrWMxiTDxphb0K\\n8ecZcdYdgu4nNBvSGuEml25zu9btUUFYXm+M0RpTXFVGDQ5OdUvAQl9pjjPq67Vv\\n3ZPgwlk61nyRtjtI7kpTfKYb4RhAHOq5pjNeLNw6/2iGGLWUnAWwis2OlREiRmfy\\nLYWKhveoN0fgyEc0TM7hJYkA+AVxNmO+xYrkhKdyfCox2B4KU0snC3rOXe88aInh\\nTRf+7UTvkBo4kFLK5jfjxj/BGNUi0ix0N7yKlsGhOFgLLrHKj7X/JTtdzlEevlgF\\nHrOwauyaUayHiQsOjxTD07e4WxwEWJ2GNlTtAGZCsy/wFyLUkGoOJZ2Y3ODh6iEj\\novMZ2hqW7JvBxaacY/2qSyQQSw3yeR5LtT92mVhUnITpAgMBAAE=\\n-----END PUBLIC KEY-----\", \"purpose\": \"VPS-only encrypted operational configuration\"}\n",
+  "version": 1
+}
