@@ -1,5 +1,7 @@
 from growth_pdf import sample_pdf_response, render_sample_pdf
 import growth_offers
+from pathlib import Path
+GROWTH_REVIEW_PACKETS=__import__("json").loads(Path(__file__).with_name("growth_review_packets.json").read_text())
 import base64, os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, urllib.error, hmac, hashlib, time, html, random, csv, io
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
@@ -3497,6 +3499,13 @@ async def growth_owner_sample(conn,target,territory,rows):
             if not all(u in by_url for u in websites):
                 raise HTTPException(409,"The five reviewed Phoenix records have not all cleared the live qualification gate.")
             chosen=[by_url[u] for u in websites]
+        packet=globals().get("GROWTH_REVIEW_PACKETS",{}).get(clean(target["public_email"]).lower())
+        if packet and target["market"]=="Phoenix" and target["service_key"]=="commercial_cleaning":
+            if clean(target["source_url"])!=packet["source_url"]:raise HTTPException(409,"Recipient source changed; review required")
+            by_url={clean(x["source_url"]):x for x in rows}
+            if len(packet["sample_urls"])!=5 or not all(u in by_url for u in packet["sample_urls"]):
+                raise HTTPException(409,"The reviewed five have not all cleared current inventory checks")
+            chosen=[by_url[u] for u in packet["sample_urls"]]
         public_rows=growth_sample_public_rows(chosen)
         saved=await conn.fetchrow("""insert into growth_owner_previews(target_id,version,selected_markets,candidate_ids,sample_payload,business_name,service_key)
           values($1,$2,$3,$4,$5::jsonb,$6,$7) returning *""",target["target_id"],version,territory,
@@ -3630,7 +3639,7 @@ async def stage_growth_service(conn,service_key,max_targets=25):
           select 'growth_customer',$1,'growth_sales',$2,'email',0,'queued',now(),false,$3,$4
           where not exists(select 1 from outreach where entity_type='growth_customer' and entity_id=$1 and campaign='growth_sales' and wave=$2)
           returning outreach_id""",row["target_id"],wave,market,service_key)
-        if owner_sample_only:
+        if owner_sample_only or inserted:
             await conn.execute("""update outreach set owner_review_required=true
               where entity_type='growth_customer' and entity_id=$1 and campaign='growth_sales' and wave=$2 and status='queued'""",row["target_id"],wave)
         if inserted:
@@ -4608,7 +4617,11 @@ def growth_outreach_message(row,step,owner_preview=False):
     landing=growth_invitation_url(row,owner_preview=owner_preview)
     market=clean(row["market"])
     business=clean(row["business_name"])
+    packet=globals().get("GROWTH_REVIEW_PACKETS",{}).get(clean(row.get("public_email") if isinstance(row,dict) else row["public_email"]).lower())
+    if packet and (market!="Phoenix" or service_key!="commercial_cleaning" or clean(row["source_url"])!=packet["source_url"]):
+        raise ValueError("Reviewed recipient service, territory or source changed")
     opener=growth_verified_opener(row)
+    if packet:opener=packet["opener"]
     if not opener:
         raise ValueError("Growth target needs a source-backed, reviewed opener")
     short_name=business
@@ -4630,6 +4643,13 @@ def growth_outreach_message(row,step,owner_preview=False):
           f"I sent a note about five free, researched businesses around {market} that may fit your {focus[service_key]} work.",
           "The list includes public contact routes and a reason each may fit. They have not requested a quote. If this isn't useful for your team, no need to respond."
         ]
+    if packet and step==1:
+        subject=packet["subject"]
+        lines=["I'm Brett with BMC Service Network. We research local commercial accounts so service businesses can spend less time building lists and more time having useful conversations.",
+          packet["opener"],
+          f"I put together five Phoenix businesses to review against that scope. For example, {packet['example_name']} has a published local contact route; the brief explains the facility fit and who to ask about vendor onboarding. Each entry includes its business website and a suggested first conversation.",
+          "You can keep the five free, as a PDF and an online brief. If the fit is useful, $499 buys 100 total, including those five. These are researched prospects, not businesses that requested a quote, and sales are not guaranteed.",
+          "Would a different facility type be more useful? Reply with the work you want more of."]
     label="Review the five researched businesses"
     body="\n\n".join([greeting,*lines,label+":\n"+landing,
       "Brett\nBMC Service Network\nBMC Luminary Ventures LLC\n"+BUSINESS_POSTAL_ADDRESS,

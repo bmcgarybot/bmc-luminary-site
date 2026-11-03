@@ -60,6 +60,28 @@ class Tests(unittest.TestCase):
             for channel in ('html','text'):
                 self.assertIn(price,m[channel]);self.assertIn('https://example.com/stop',m[channel]);self.assertIn('not quote requests',m[channel])
             self.assertIn('A &amp; B',m['html'])
+    def test_reviewed_recipient_packets_are_distinct_and_scope_bound(self):
+        import ast,json
+        path=Path(__file__).parent/'api'
+        packets=json.loads((path/'growth_review_packets.json').read_text())
+        source=ast.parse((path/'app.py').read_text())
+        node=next(n for n in source.body if isinstance(n,ast.FunctionDef) and n.name=='growth_outreach_message')
+        ns=dict(GROWTH_REVIEW_PACKETS=packets,clean=lambda x:str(x or '').strip(),growth_verified_opener=lambda row:'',
+          growth_invitation_url=lambda *a,**kw:'https://example.test/signed-review',
+          workflow_email_html=lambda title,lines,*a,**kw:'\n'.join(lines),BUSINESS_POSTAL_ADDRESS='Fixture address')
+        exec(compile(ast.Module(body=[node],type_ignores=[]),'real_outreach','exec'),ns)
+        sets=[]
+        for email,packet in packets.items():
+            row=dict(public_email=email,business_name=packet['business'],source_url=packet['source_url'],service_key='commercial_cleaning',market='Phoenix',target_id='fixture')
+            service,subject,body,html,url=ns['growth_outreach_message'](row,1,owner_preview=True)
+            self.assertEqual(subject,packet['subject']);self.assertIn(packet['example_name'],body);self.assertIn(packet['opener'],html)
+            self.assertEqual(len(packet['sample_urls']),5);sets.append(set(packet['sample_urls']))
+            row['market']='Prescott'
+            with self.assertRaises(ValueError):ns['growth_outreach_message'](row,1,owner_preview=True)
+        self.assertEqual(len(sets),8)
+        for i,a in enumerate(sets):
+            for b in sets[i+1:]:self.assertLessEqual(len(a & b),2)
+
     def test_digest_binds_content(self):
         a={'rows':rows(25)};b=copy.deepcopy(a);b['rows'][0]['fit_reason']='Changed'
         self.assertNotEqual(g.offer_digest(a),g.offer_digest(b))
