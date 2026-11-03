@@ -125,10 +125,13 @@
     const r=await fetch(DATA_URL,{cache:"no-store"});
     if(!r.ok)throw new Error("Could not load service list");
     const data=await r.json();
-    const photoResponse=await fetch("/data/service-images.json",{cache:"no-store"});
-    if(!photoResponse.ok)throw new Error("Could not load service imagery");
-    const photos=await photoResponse.json();
-    for(const [key,photo] of Object.entries(photos.services||{}))images[key]=photo.src;
+    try{
+      const photoResponse=await fetch("/data/service-images.json",{cache:"no-store"});
+      if(photoResponse.ok){
+        const photos=await photoResponse.json();
+        for(const [key,photo] of Object.entries(photos.services||{}))if(photo.src)images[key]=photo.src;
+      }
+    }catch(e){/* Keep the bundled reviewed image map if the catalog is temporarily unavailable. */}
     cache=data.services||[];
     return cache;
   }
