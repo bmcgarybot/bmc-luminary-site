@@ -3583,6 +3583,37 @@ async def growth_owner_sample(conn,target,territory,rows):
       "checkout_url":checkout,"qualified_pool":len(rows),"selected_markets":territory,"preview":True,
       "message":"Owner review: these five are saved for this preview. Checkout is live; inspect only and do not pay. No customer sample or approval has been recorded."}
 
+async def growth_owner_full_pack(conn,target,territory,rows,sample):
+    """Owner-token-only, read-only full deliverable preview; no order or exposure writes."""
+    saved=await conn.fetchrow("select candidate_ids from growth_owner_previews where preview_id=$1 and target_id=$2",uuid.UUID(sample["preview_id"]),target["target_id"])
+    by_id={str(r["candidate_id"]):dict(r) for r in rows}
+    ids=list(saved["candidate_ids"]) if saved else []
+    if len(ids)!=5 or any(str(cid) not in by_id for cid in ids):
+        raise HTTPException(409,"The original five require review before a full-pack preview")
+    originals=[by_id[str(cid)] for cid in ids]
+    candidates=await growth_qualified_territory_candidates(conn,target["service_key"],territory,
+      limit=GROWTH_SAMPLE_MIN_RESERVE+100,exclude_ids={str(cid) for cid in ids},
+      exclude_names={clean(r["business_name"]).lower() for r in originals},
+      recipient_key=target["public_email"],delivery_kind="paid",
+      recipient_business_key=growth_recipient_business_key(target["business_name"]))
+    final=originals+list(candidates[:95])
+    # Reuse all quantity, identity, contact, territory, score and original-row gates.
+    try:
+        growth_offers.validate_rows("growth_pack_25",final[:25],originals,territory)
+        growth_offers.validate_rows("growth_upgrade_75",final,final[:25],territory)
+    except ValueError as exc:raise HTTPException(409,"Full-pack preview unavailable: "+str(exc))
+    public=growth_sample_public_rows(final)
+    prepared=datetime.now(timezone.utc)
+    pdf=render_sample_pdf(public,target["business_name"],GROWTH_SERVICE_LABELS[target["service_key"]],territory,
+      "owner-full-pack-"+sample["preview_id"],prepared_at=prepared,preview=True,paid=True,paid_count=100)
+    stem="BMC-"+re.sub(r"[^A-Za-z0-9]+","-",target["business_name"]).strip("-")+"-100-Prospects-Owner-Review"
+    return {"ok":True,"status":"owner_pack_ready","preview":True,"business_name":target["business_name"],
+      "selected_markets":territory,"prepared_at":prepared.isoformat(),"pack_count":100,"original_five_preserved":True,
+      "sample":public,"download_filename":stem+".pdf","download_pdf_base64":base64.b64encode(pdf).decode(),
+      "download_csv_filename":stem+".csv","download_csv_base64":base64.b64encode(growth_csv_bytes(final)).decode(),
+      "checkout_url":"","customer_order_created":False,"customer_delivery_recorded":False,
+      "message":"Owner-only full-pack review from current live inventory. Not a paid order or customer delivery. Availability is rechecked at purchase and fulfillment."}
+
 @app.post("/api/growth/claim-free-five")
 async def growth_claim_free_five(request:Request):
     """Turn a signed outreach click into the free-five sample without asking for known details again."""
@@ -3611,7 +3642,10 @@ async def growth_claim_free_five(request:Request):
                 return {"ok":True,"status":"sample_pending","sample_id":"owner-preview",
                   "sample":[],"checkout_url":"","qualified_pool":len(rows),"preview":True,
                   "message":"Owner preview: this market does not currently have five qualified rows."}
-            return await growth_owner_sample(conn,target,territory,rows)
+            sample=await growth_owner_sample(conn,target,territory,rows)
+            if str(p.get("pack_count") or "")=="100":
+                return await growth_owner_full_pack(conn,target,territory,rows,sample)
+            return sample
         submission_id="growth_claim_"+hashlib.sha256(target_id.encode("utf-8")).hexdigest()[:32]
         payload={
           "form_type":"growth_snapshot",

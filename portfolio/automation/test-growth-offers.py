@@ -119,6 +119,35 @@ class Tests(unittest.TestCase):
                 self.assertNotEqual(ns['growth_sales_angle'](bad,'commercial_cleaning'),d['sales_angle'])
         self.assertGreater(len({d['sales_angle'] for d in details.values()}),4)
 
+    def test_live_inventory_owner_full_pack_preserves_five_and_never_writes(self):
+        import ast,asyncio,base64,re,uuid,json
+        from datetime import datetime,timezone
+        source=ast.parse((Path(__file__).parent/'api/app.py').read_text())
+        node=next(n for n in source.body if isinstance(n,ast.AsyncFunctionDef) and n.name=='growth_owner_full_pack')
+        data=rows(100)
+        for i,r in enumerate(data):r.update(candidate_id=str(uuid.UUID(int=i+1)),grade='A',category_label='Office')
+        class Conn:
+            async def fetchrow(self,*args):return dict(candidate_ids=[r['candidate_id'] for r in data[:5]])
+        class HTTPError(Exception):pass
+        async def candidates(*args,**kwargs):
+            self.assertEqual(kwargs['delivery_kind'],'paid');self.assertEqual(kwargs['recipient_key'],'owner@example.com')
+            return data[5:]
+        ns=dict(uuid=uuid,datetime=datetime,timezone=timezone,re=re,base64=base64,growth_offers=g,
+          HTTPException=HTTPError,GROWTH_SAMPLE_MIN_RESERVE=125,GROWTH_SERVICE_LABELS={'commercial_cleaning':'Cleaning'},
+          clean=lambda x:str(x or '').strip(),growth_recipient_business_key=lambda x:x.lower(),
+          growth_qualified_territory_candidates=candidates,growth_sample_public_rows=lambda r:r,
+          render_sample_pdf=render_sample_pdf,growth_csv_bytes=lambda r:json.dumps(r).encode())
+        exec(compile(ast.Module(body=[node],type_ignores=[]),'owner_full_pack','exec'),ns)
+        target=dict(target_id='fixture',public_email='owner@example.com',business_name='Fixture Cleaning',service_key='commercial_cleaning')
+        sample=dict(preview_id=str(uuid.UUID(int=200)))
+        out=asyncio.run(ns['growth_owner_full_pack'](Conn(),target,['Phoenix'],data,sample))
+        self.assertEqual(len(out['sample']),100);self.assertEqual(out['sample'][:5],data[:5])
+        self.assertFalse(out['customer_order_created']);self.assertFalse(out['customer_delivery_recorded']);self.assertEqual(out['checkout_url'],'')
+        text='\n'.join(p.extract_text() for p in PdfReader(io.BytesIO(base64.b64decode(out['download_pdf_base64']))).pages)
+        self.assertIn('100-prospect Growth Pack',text);self.assertIn('OWNER REVIEW COPY',text);self.assertIn('Business 99',text)
+        data.pop()
+        with self.assertRaises(HTTPError):asyncio.run(ns['growth_owner_full_pack'](Conn(),target,['Phoenix'],data,sample))
+
     def test_digest_binds_content(self):
         a={'rows':rows(25)};b=copy.deepcopy(a);b['rows'][0]['fit_reason']='Changed'
         self.assertNotEqual(g.offer_digest(a),g.offer_digest(b))
