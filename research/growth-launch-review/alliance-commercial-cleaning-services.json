@@ -14,18 +14,18 @@
   "qualifications": "Not independently verified; service claims only",
   "safe_access": "Manual review required before field activity",
   "subject": "Five Phoenix accounts to review for Alliance Commercial Cleaning Services",
-  "initial_email": "Hi Alliance Commercial Cleaning Services team,\n\nHey, this is Brett with BMC Service Network. We research local commercial accounts so service businesses can spend less time building lists and more time having useful conversations.\n\nYour site lists professional offices, retail stores and fitness studios across Greater Phoenix.\n\nI put together five Phoenix businesses to review against that scope. For example, Law Office of Cole D Sorenson has a published local contact route; the brief explains the facility fit and who to ask about vendor onboarding. Each entry includes its business website and a suggested first conversation.\n\nYou can keep the five free, as a PDF and an online brief. If the fit is useful, $499 buys 100 total, including those five. These are researched prospects—not businesses that requested a quote—and sales are not guaranteed.\n\n[Button: View my five Phoenix prospects]\n\nWould a different facility type be more useful? Reply with the work you want more of.\n\nBrett\nBMC Service Network\ncontact@bmcservicenetwork.com\nBMC Luminary Ventures LLC · 186 E. Sheldon St. #1144, Prescott, AZ 86301\n\n[Small footer: Stop these emails]",
+  "initial_email": "Hi Alliance Commercial Cleaning Services team,\n\nHey, this is Brett with BMC Service Network. We research local commercial accounts so service businesses can spend less time building lists and more time having useful conversations.\n\nYour site lists professional offices, retail stores and fitness studios across Greater Phoenix.\n\nI put together five Phoenix businesses to review against that scope. For example, Tiffany & Bosco Phoenix has a published local contact route; the brief explains the facility fit and who to ask about vendor onboarding. Each entry includes its business website and a suggested first conversation.\n\nYou can keep the five free, as a PDF and an online brief. If the fit is useful, $499 buys 100 total, including those five. These are researched prospects—not businesses that requested a quote—and sales are not guaranteed.\n\n[Button: View my five Phoenix prospects]\n\nWould a different facility type be more useful? Reply with the work you want more of.\n\nBrett\nBMC Service Network\ncontact@bmcservicenetwork.com\nBMC Luminary Ventures LLC · 186 E. Sheldon St. #1144, Prescott, AZ 86301\n\n[Small footer: Stop these emails]",
   "sample": [
     {
-      "business_name": "Law Office of Cole D Sorenson",
+      "business_name": "Tiffany & Bosco Phoenix",
       "market": "Phoenix",
       "category": "Professional office",
-      "fit_reason": "Official business page confirms 1419 N 3rd St, Phoenix, AZ 85004. Law firm publishes a physical Phoenix office and general contact. Ask office administration whether suite cleaning is tenant-controlled and what confidentiality/access procedures apply. Do not use legal intake forms or imply a need for legal services; count firm once. Public contact is a routing contact, not confirmed buying intent. Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.",
-      "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas.",
-      "public_email": "cole@cds-law.com",
-      "public_phone": "6023748009",
-      "website_url": "https://www.cds-law.com/contact-us/",
-      "source_url": "https://www.cds-law.com/contact-us/"
+      "fit_reason": "Official Phoenix office page lists Central Arts Plaza, 1850 North Central Avenue, 24th floor, Phoenix AZ 85004 and a general office phone. Ask office administration whether suite cleaning is tenant-controlled or part of building management, and what confidentiality and access rules apply. No current vendor need or buying intent is confirmed.",
+      "sales_angle": "Call the general office line and ask who manages suite-cleaning vendors. Confirm whether the firm or building buys the service before offering a walkthrough; do not use legal intake or attorney contact forms.",
+      "public_email": null,
+      "public_phone": "6022556000",
+      "website_url": "https://www.tblaw.com/location/phoenix-az/",
+      "source_url": "https://www.tblaw.com/location/phoenix-az/"
     },
     {
       "business_name": "Modern Manor",
@@ -73,5 +73,6 @@
     }
   ],
   "live_signed_journey": "v1 delivered to owner only; v2 review prepared with corrected labels and facility-specific openings; no resend or approval",
-  "existing_customer_exclusions": "Recipient must identify existing customers; no exclusivity promised"
+  "existing_customer_exclusions": "Recipient must identify existing customers; no exclusivity promised",
+  "revision_note": "v2 replaces the law-office record whose official HTTPS contact page failed browser certificate validation. Original v1 mail/PDF remains preserved; revised five require owner review."
 }

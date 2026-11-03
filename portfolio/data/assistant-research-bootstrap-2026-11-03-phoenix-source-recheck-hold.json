@@ -1,0 +1,35 @@
+{
+  "count": 2,
+  "records": [
+    {
+      "side": "buyer",
+      "market": "Phoenix",
+      "category_key": "insurance_professional",
+      "category_label": "insurance professional",
+      "business_name": "Law Office of Cole D Sorenson",
+      "url": "https://www.cds-law.com/contact-us/",
+      "domain": "www.cds-law.com",
+      "phone": "6023748009",
+      "email": "cole@cds-law.com",
+      "official": true,
+      "verified_date": "2026-11-03",
+      "note": "Official business page confirms 1419 N 3rd St, Phoenix, AZ 85004. Law firm publishes a physical Phoenix office and general contact. Ask office administration whether suite cleaning is tenant-controlled and what confidentiality/access procedures apply. Do not use legal intake forms or imply a need for legal services; count firm once. Public contact is a routing contact, not confirmed buying intent. Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.",
+      "qualification_hold": true,
+      "review_reason": "2026-11-03: official HTTPS contact page fails browser certificate validation; exclude from new samples and packs until reviewed. Preserve historical payloads."
+    },
+    {
+      "side": "buyer",
+      "market": "Phoenix",
+      "category_key": "retail",
+      "category_label": "Retail bookstore",
+      "business_name": "Changing Hands Bookstore - Phoenix",
+      "url": "https://changinghands.com/store/2",
+      "domain": "changinghands.com",
+      "phone": "6022740067",
+      "email": null,
+      "official": true,
+      "verified_date": "2026-11-03",
+      "note": "Official Phoenix store page confirms 300 West Camelback Road, Phoenix AZ 85013 and 602-274-0067. Customer-facing bookstore with an events area and published opening hours. Call the public store number only to ask who handles facilities and whether cleaning is purchased locally; do not use the book-order email for sales. Confirm display-safe cleaning and event-hour access before proposing a walkthrough. This is a researched prospect, not a quote request, confirmed need or accepted job."
+    }
+  ]
+}

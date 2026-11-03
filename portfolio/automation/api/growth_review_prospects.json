@@ -89,12 +89,6 @@
     "category": "Professional office",
     "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
   },
-  "https://www.cds-law.com/contact-us/": {
-    "business_name": "Law Office of Cole D Sorenson",
-    "market": "Phoenix",
-    "category": "Professional office",
-    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
-  },
   "https://www.modernmanorphx.com/": {
     "business_name": "Modern Manor",
     "market": "Phoenix",
@@ -238,5 +232,11 @@
     "market": "Phoenix",
     "category": "Professional office",
     "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://www.tblaw.com/location/phoenix-az/": {
+    "business_name": "Tiffany & Bosco Phoenix",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Call the general office line and ask who manages suite-cleaning vendors. Confirm whether the firm or building buys the service before offering a walkthrough; do not use legal intake or attorney contact forms."
   }
 }
