@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "request_id": "a-native-proof-20261103T234522Z",
+  "action": "official_research_step",
+  "allow_external_actions": false,
+  "created_at": "2026-11-03T23:45:22.357Z",
+  "expires_at": "2026-11-04T00:45:22.357Z",
+  "args": {
+    "iterations": 4,
+    "pause_seconds": 2
+  }
+}
