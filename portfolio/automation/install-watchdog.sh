@@ -4,11 +4,16 @@ cd "$(dirname "$0")"
 ROOT="$(pwd)"
 USER_NAME="$(id -un)"
 
-chmod +x ./ops-watchdog.py
 
 if [ "${1:-}" = "--user" ]; then
   # An existing system timer already executes this deployed path; never duplicate it.
   if systemctl is-active --quiet bmc-watchdog.timer; then
+    SERVICE_USER="$(systemctl show --property=User --value bmc-watchdog.service)"
+    SERVICE_COMMAND="$(systemctl show --property=ExecStart --value bmc-watchdog.service)"
+    if [ "$SERVICE_USER" != "$USER_NAME" ] || [[ "$SERVICE_COMMAND" != *"$ROOT/ops-watchdog.py"* ]]; then
+      echo "Existing watchdog timer uses a different user or code path; administrator review required."
+      exit 2
+    fi
     echo "Existing persistent system watchdog timer is active; using deployed code."
     exit 0
   fi

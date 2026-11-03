@@ -214,7 +214,9 @@ def main():
     for flag in ("report","json","status","prepare-config","test-alert"):parser.add_argument("--"+flag,action="store_true")
     parser.add_argument("--configure-encrypted")
     args=parser.parse_args()
+    os.umask(0o077)
     STATE_DIR.mkdir(parents=True,exist_ok=True,mode=0o700)
+    os.chmod(STATE_DIR,0o700)
     with (STATE_DIR/"lock").open("a") as lock:
         os.chmod(STATE_DIR/"lock",0o600)
         try:fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
