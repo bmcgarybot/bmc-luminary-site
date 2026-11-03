@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "b-ops-scheduled-proof-20261103T190122Z",
+  "action": "ops_monitor_status",
+  "allow_external_actions": false,
+  "created_at": "2026-11-03T19:01:23.003Z",
+  "expires_at": "2026-11-03T20:01:23.003Z",
+  "args": {}
+}
