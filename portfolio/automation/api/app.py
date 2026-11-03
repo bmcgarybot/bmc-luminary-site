@@ -3968,7 +3968,7 @@ async def process_growth_fulfillment(x_bmc_admin_key:str|None=Header(default=Non
                 int(x["fit_score"]),x["grade"],x["fit_reason"],x["sales_angle"],x.get("public_email"),x.get("public_phone"),
                 x["source_url"],x.get("source_domain"),x.get("verification_status"))
           attachment=growth_csv_bytes(final)
-          paid_pdf=render_sample_pdf(final,row["business_name"],GROWTH_SERVICE_LABELS.get(row["provider_service_key"],row["provider_service_key"]),territory,str(row["paid_order_id"]),paid=True)
+          paid_pdf=render_sample_pdf(final,row["business_name"],GROWTH_SERVICE_LABELS.get(row["provider_service_key"],row["provider_service_key"]),territory,str(row["paid_order_id"]),prepared_at=row["created_at"],paid=True)
           subject=f"Your BMC Growth Pack — 100 commercial prospects in {territory_label}"
           body=f"""Hi {row['contact_name']},
 

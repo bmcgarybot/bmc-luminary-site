@@ -45,7 +45,7 @@ def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at
     out = io.BytesIO()
     doc = SimpleDocTemplate(out, pagesize=(612, 792), rightMargin=45, leftMargin=45,
                            topMargin=64, bottomMargin=58, title='Your commercial prospect brief',
-                           author='BMC Service Network')
+                           author='BMC Service Network', invariant=1)
     styles = {
         'title': ParagraphStyle('title', fontName='BMCBold', fontSize=24, leading=29, textColor=NAVY, spaceAfter=12),
         'heading': ParagraphStyle('heading', fontName='BMCBold', fontSize=13, leading=17, textColor=NAVY, spaceAfter=7, keepWithNext=True),

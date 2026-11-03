@@ -52,7 +52,8 @@ def main()->int:
             if form_type not in ("vendor_response","job_update","vendor_pilot_activation","vendor_partner","growth_snapshot") and "scope" not in names:
                 failures.append(f"{path.relative_to(ROOT)} [{form_type}] missing scope/details field")
     core=(ROOT / "assets/core.js").read_text(errors="ignore")
-    if "mailto:" in core or "location.href=\"mailto:" in core:
+    # Contact anchors are intentional; automatic mailto navigation on failure is not.
+    if re.search(r"(?:location(?:\.href)?\s*=|location\.(?:assign|replace)\s*\()\s*['\"]mailto:", core):
         failures.append("assets/core.js: public form failures must not redirect customers into mailto")
 
     if failures:
