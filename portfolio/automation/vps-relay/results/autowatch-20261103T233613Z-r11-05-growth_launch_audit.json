@@ -1,0 +1,21 @@
+{
+  "action": "growth_launch_audit",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-03T23:37:26.655425+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "cc9bbb13bc864fbf70f96d611f544cca5faf091c",
+  "git_commit_before": "cc9bbb13bc864fbf70f96d611f544cca5faf091c",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "66f5d73f0a934cdb15da4fdfbbd34ea008bff09b",
+  "request_id": "autowatch-20261103T233613Z-r11-05-growth_launch_audit",
+  "request_sha256": "dcc72bc085341cb847991637212511adaebc6d90d2c53d95ca7c8d1742100885",
+  "started_at": "2026-11-03T23:37:23.873108+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "BMC Growth launch readiness\n===========================\nBLOCK Owner launch hold is active (default safe)\nCommit: cc9bbb13bc864fbf70f96d611f544cca5faf091c\nSelected launch wave: growth-cleaning-1\nPASS  Exact recipient scope is configured; broader queued contacts are excluded\n\nPASS  Service-Network provider outreach remains OFF\nPASS  Service-Network buyer outreach remains OFF\nPASS  SMTP is configured\nPASS  IMAP reply/opt-out monitoring is configured\nPASS  Business postal address is configured\nBLOCK Owner preview is not approved for this exact deployed commit (approved=none, current=cc9bbb13bc864fbf70f96d611f544cca5faf091c)\nPASS  Database table growth_experiment_cells is deployed\nPASS  Database table growth_outreach_targets is deployed\nPASS  Database table growth_sample_requests is deployed\nPASS  Database table growth_sample_prospects is deployed\nPASS  Database table growth_order_prospects is deployed\nPASS  Database table growth_prospect_exposures is deployed\nPASS  Database table growth_prospect_suppressions is deployed\nPASS  Database table growth_source_rights_review is deployed\nPASS  Live $499 Growth Pack payment link is mapped\n  active staged Growth targets: 0\nBLOCK No staged targets exist for selected Growth wave\nPASS  Staged Growth targets pass email/fit floor\nPASS  No open critical Growth exceptions\nPASS  Private Growth status endpoint is healthy\nGrowth status:\n  growth_enabled: False\n  wave: growth-cleaning-1\n  daily_limit: 10\n  sample_reserve: 125\n  staged_active: 5\n  sent: 7\n  replies: 0\n  samples_requested: 0\n  samples_delivered: 0\n  paid_orders: 0\n  revenue_cents: 0\n  open_growth_exceptions: 0\nPASS  Live selected Growth landing page is reachable and has the free-five form\nPASS  Live Growth hub uses the free-five conversion path\nPASS  Public sitemap contains the selected Growth niche\nPASS  Public webhook ingress is constrained and reachable\n\nGrowth audit summary: blockers=3 warnings=0\nGrowth lane is NOT ready to enable.\n",
+  "version": 1
+}
