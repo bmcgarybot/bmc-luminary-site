@@ -151,10 +151,6 @@
       clearTimeout(timer);
       if(!r.ok)return null;
       const data=await r.json();
-    const photoResponse=await fetch("/data/service-images.json",{cache:"no-store"});
-    if(!photoResponse.ok)throw new Error("Could not load service imagery");
-    const photos=await photoResponse.json();
-    for(const [key,photo] of Object.entries(photos.services||{}))images[key]=photo.src;
       if(!data||!data.match)return null;
       const keys=[data.match.service_key].concat((data.related||[]).map(x=>x.service_key));
       const results=[];
