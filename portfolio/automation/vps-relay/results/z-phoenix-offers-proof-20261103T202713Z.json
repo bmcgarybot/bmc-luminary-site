@@ -1,0 +1,21 @@
+{
+  "action": "operator_snapshot",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-03T20:28:53.962250+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "b75980293115556bd0973735c84db8d477bde67d",
+  "git_commit_before": "b75980293115556bd0973735c84db8d477bde67d",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "5381648fd6534fa57434c9f5900f8ea46b20ea26",
+  "request_id": "z-phoenix-offers-proof-20261103T202713Z",
+  "request_sha256": "0cdc903fb26b43c61d70dd25b67233431db30f6967ff80ce692fc9d0d7da6fe0",
+  "started_at": "2026-11-03T20:28:53.748032+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"observed_at\": \"2026-11-03T20:28:53.957323+00:00\",\n  \"deployed_sha\": \"b75980293115556bd0973735c84db8d477bde67d\",\n  \"owner_launch_hold_active\": true,\n  \"runtime_healthy\": true,\n  \"scheduler_healthy\": true,\n  \"api_healthy\": true,\n  \"outreach_switches\": {\n    \"OUTREACH_ENABLED\": false,\n    \"BUYER_OUTREACH_ENABLED\": false,\n    \"GROWTH_OUTREACH_ENABLED\": false\n  },\n  \"growth\": {\n    \"paid_orders\": 0,\n    \"revenue_cents\": 0,\n    \"samples_requested\": 0,\n    \"samples_delivered\": 0,\n    \"replies\": 0,\n    \"open_growth_exceptions\": 0,\n    \"staged_active\": 5,\n    \"sent\": 7\n  },\n  \"active_jobs\": {\n    \"active_requests\": 1,\n    \"confirmed_requests_in_window\": 0,\n    \"needs_review_in_window\": 1\n  },\n  \"health_error\": null\n}",
+  "version": 1
+}
