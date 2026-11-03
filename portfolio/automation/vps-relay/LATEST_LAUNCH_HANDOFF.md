@@ -1,3 +1,13 @@
+## VERIFIED FIXES DEPLOYED — November 2, 2026
+
+PR40 merged/deployed f1b1e0979b13bc1c8b054a7bc2b1fa94840e9206. Exact-master CI41566446117 bothjobs SUCCESS; Pages41566446145 SUCCESS. Relay b-mobile-nurture-deploy-20261103T023238Z SUCCESS, runtime0failures/0warnings, threeoutreachOFF. Independent postcheck b-mobile-postdeploy-20261103T023409Z requested; read result. No customer send/charge/approval/release.
+
+Live fixes: mobile grid/wrapping and assetversion; formattedtel/mailto; PDFbutton beforecards; sharedHTML/plaintext nurture; passivewebsite afterunsubscribe; deterministic branded100-prospectpaidPDF alongsideCSV. Real-componentbrowser tests320/375/390/768/1280 PASS (overflow/contact/PDFplacement). PDF100records/reject99/sample/privacy/qualification/suppression/durablemail/payment testsPASS. Reviewfile libfile_3b92efda5ea08191b0afdcb8272a6ee1 updatedversion2; directlocalfilelink avoids user'sloginwall. Noownerresend.
+
+Fresh02:28UTC predeploy snapshot: healthyAPI/runtime/scheduler,holdtrue,threeflagsfalse,0receipts/orders/samples/replies/exceptions,11staged7historicalsent. Candidate readout onlyTWOqueuedcleaningrecipients: EnvironmentControlPhoenix andAmericanCrownPrescott. OnlyPhoenix has125eligiblepaidreserveandcompleteownerpreview. Firstbatch10 is CAP, notreadycount; later25subjectreadiness. Otherterritories/servicesheld.
+
+STILL UNFINISHED:149for25checkout;350upgrade preserving25;250strategyaddon/749total and reviewedcompetitor/outreachdeliverable; additionalrecipient-specificsamples. Userauthorizedimplementationbutnotrelease. Current smaller-packfollowupusesexistingmanualscopeinquirywithoutpricepromise. Continue these; don'tsayallworkcomplete. No automatic broader launch on genericcontinue.
+
 ## OWNER REVIEW FIXES IN PROGRESS — November 2, 2026, 7:25 p.m. Arizona
 
 User requested implementation of mobile/contact/nurture fixes and complete offer ladder. PR40 https://github.com/bmcgarybot/bmc-luminary-site/pull/40 head 07fa56a13d3acc1d360847a2e3b38f92167c479f contains mobile min-width/wrapping and asset-version fixes, tap-to-call/email contacts, PDF before cards, shared HTML/plaintext nurture copy, passive website link after unsubscribe, and deterministic branded paid 100-prospect PDF alongside CSV. NOT merged/deployed yet. First CI failed because form validator banned every mailto string; fixed to ban automatic navigation only. Current CI running; real-component browser tests added at 320/375/390/768/1280. Local browser installation failed, so do not claim local visual verification.
