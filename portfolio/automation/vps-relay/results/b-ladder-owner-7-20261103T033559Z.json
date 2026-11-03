@@ -1,0 +1,28 @@
+{
+  "action": "growth_owner_target_preview",
+  "allow_external_actions": true,
+  "completed_at": "2026-11-03T03:37:23.072591+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "40be4ac1c0f6c9fdc2b709145ff83f33cf53725b",
+  "git_commit_before": "40be4ac1c0f6c9fdc2b709145ff83f33cf53725b",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    },
+    "preview_commit": "40be4ac1c0f6c9fdc2b709145ff83f33cf53725b"
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "5b577cfc70e6105f8c96bcd915db7d908266839e",
+  "request_id": "b-ladder-owner-7-20261103T033559Z",
+  "request_sha256": "00391d8b8c09f5f6443a7d8f0b7026750e8071f726cc77e7b58ec011270bc603",
+  "started_at": "2026-11-03T03:37:21.403433+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"ok\": true,\n  \"test_recipient\": \"contact@bmcservicenetwork.com\",\n  \"source_business\": \"LJ\\u2019s Cleaning Solutions\",\n  \"source_original_recipient\": \"info@ljscleaningsolutions.com\",\n  \"source_url\": \"https://ljscleaningsolutions.com/contact/\",\n  \"market\": \"Phoenix\",\n  \"service_key\": \"commercial_cleaning\",\n  \"subject\": \"Five Phoenix accounts to review for LJ\\u2019s Cleaning Solutions\",\n  \"signed_button_in_email\": true,\n  \"preview_id\": \"2a168a26-734e-4b26-8c86-f85f324b5cb2\",\n  \"pdf_attached\": true,\n  \"checkout_available\": true,\n  \"owner_preview\": true,\n  \"smtp_accepted\": true,\n  \"inbox_rendering_verified\": false\n}",
+  "version": 1
+}
