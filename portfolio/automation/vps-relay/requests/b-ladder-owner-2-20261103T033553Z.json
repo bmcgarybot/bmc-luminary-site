@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "request_id": "b-ladder-owner-2-20261103T033553Z",
+  "action": "growth_owner_target_preview",
+  "allow_external_actions": true,
+  "created_at": "2026-11-03T03:35:53.426Z",
+  "expires_at": "2026-11-03T04:35:53.426Z",
+  "args": {
+    "target_id": "inventory:4324e59d-dd75-44d3-af27-87692b141909"
+  }
+}
