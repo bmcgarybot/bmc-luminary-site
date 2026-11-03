@@ -1,0 +1,27 @@
+{
+  "action": "official_research_step",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-03T23:45:50.179959+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "a4dd04b47e823ed4b8d09a1c6ca9201cde88e61b",
+  "git_commit_before": "a4dd04b47e823ed4b8d09a1c6ca9201cde88e61b",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "a540734a453d032c3583ca06217494c31298705e",
+  "request_id": "a-native-proof-20261103T234522Z",
+  "request_sha256": "47140a4a2809a9514eba1e5562e5f6e16c69e8c6ae952fb763649c93ac8fff4f",
+  "started_at": "2026-11-03T23:45:31.191131+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"iterations\": 4,\n  \"responses\": [\n    {\n      \"ok\": true,\n      \"worker\": \"vps_primary_site_v1\",\n      \"inspected\": 6,\n      \"verified\": 0,\n      \"needs_review\": 6,\n      \"outreach_sent\": 0,\n      \"providers_accepted\": 0,\n      \"customer_orders_created\": 0\n    },\n    {\n      \"ok\": true,\n      \"worker\": \"vps_primary_site_v1\",\n      \"inspected\": 6,\n      \"verified\": 0,\n      \"needs_review\": 6,\n      \"outreach_sent\": 0,\n      \"providers_accepted\": 0,\n      \"customer_orders_created\": 0\n    },\n    {\n      \"ok\": true,\n      \"worker\": \"vps_primary_site_v1\",\n      \"inspected\": 6,\n      \"verified\": 1,\n      \"needs_review\": 5,\n      \"outreach_sent\": 0,\n      \"providers_accepted\": 0,\n      \"customer_orders_created\": 0\n    },\n    {\n      \"ok\": true,\n      \"worker\": \"vps_primary_site_v1\",\n      \"inspected\": 6,\n      \"verified\": 0,\n      \"needs_review\": 6,\n      \"outreach_sent\": 0,\n      \"providers_accepted\": 0,\n      \"customer_orders_created\": 0\n    }\n  ]\n}",
+  "version": 1
+}
