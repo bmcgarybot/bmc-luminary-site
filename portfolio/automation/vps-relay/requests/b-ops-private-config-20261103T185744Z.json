@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "request_id": "b-ops-private-config-20261103T185744Z",
+  "action": "configure_ops_monitoring",
+  "allow_external_actions": false,
+  "created_at": "2026-11-03T18:57:44.228Z",
+  "expires_at": "2026-11-03T19:57:44.228Z",
+  "args": {
+    "ciphertext": "IfxL/rgB3c3fqr0hJOxZsz9nQCn/HDg/4i3ftXx482AW3oH16yqnSTpIfxKN71io0LIKWJTYrSrHGbeFjhSoVi6Qoihz5MPP4Rj4TlQ3zP3wuqCfcWWaYbvGLQvLnehlbTnhhaD30FoAe4ioCDaRYGUWoWGEL+ef3z1bu/v/ssL0rXMiM8g/l8JRCFMsJPHuU8luRivW8T5unnibYhDEAkOx0GRetJ3f+ETut0yw8tGEF+oft+AQ8Fi0ESR71ceqI2oSj7zKXs4Wcf3hiPVBs2gq5dwVdYKGyjvD7xyPuTPmdX+o13V8J/B2F88yk8m00/bsmYXHBQtPQJlHlf2xRZHU8HxAdYAmCEPNFVem6c3pPBrb8hMWpgCx2ttfx6RLXpVJHL2d+EhFU2FphsnCLf6HbfjHjcmtFfLQiTNRF7vASvTgz1zDhFnMQsrPfz3PK3QzVPF8/8CCoEQyZVmruvl1eSvCUHvJMkCvXlkAUoVRSVyqm1gar+KT5amm1T5x"
+  }
+}
