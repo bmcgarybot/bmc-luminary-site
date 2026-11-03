@@ -7,11 +7,11 @@ from pathlib import Path
 import unittest
 import sys
 sys.path.insert(0,str(Path(__file__).parent/"api"))
-from growth_pdf import prospect_presentation
+from growth_pdf import prospect_presentation, format_business_phone
 
 source=ast.parse(Path(__file__).with_name("api").joinpath("app.py").read_text())
 nodes=[n for n in source.body if isinstance(n,ast.FunctionDef) and n.name in ("growth_csv_cell","growth_csv_bytes")]
-ns=dict(prospect_presentation=prospect_presentation,csv=csv,io=io,clean=lambda v:str(v or "").strip())
+ns=dict(format_business_phone=format_business_phone,prospect_presentation=prospect_presentation,csv=csv,io=io,clean=lambda v:str(v or "").strip())
 exec(compile(ast.Module(body=nodes,type_ignores=[]),"production_csv","exec"),ns)
 class Tests(unittest.TestCase):
     def test_formula_prefixes_are_literal_text(self):
@@ -29,6 +29,6 @@ class Tests(unittest.TestCase):
         parsed=list(csv.reader(io.StringIO(data.decode("utf-8-sig"))))
         self.assertEqual(len(parsed),2);self.assertEqual(len(parsed[1]),15)
         self.assertEqual(parsed[1][2],row["business_name"])
-        self.assertEqual(parsed[1][7],"'"+row["public_phone"])
+        self.assertEqual(parsed[1][7],"(928) 555-0100")
         self.assertEqual(parsed[1][9],"'=1+1")
 if __name__=="__main__":unittest.main()

@@ -5,7 +5,7 @@ from pathlib import Path
 from datetime import datetime,timedelta,timezone
 sys.path.insert(0,str(Path(__file__).parent/'api'))
 import growth_offers as g
-from growth_pdf import render_sample_pdf, present_prospect_rows, prospect_presentation
+from growth_pdf import render_sample_pdf, present_prospect_rows, prospect_presentation, format_business_phone
 from pypdf import PdfReader
 
 def rows(n):
@@ -107,7 +107,7 @@ class Tests(unittest.TestCase):
         details=json.loads((path/'growth_review_prospects.json').read_text())
         source=ast.parse((path/'app.py').read_text())
         nodes=[n for n in source.body if isinstance(n,ast.FunctionDef) and n.name in ('growth_sales_angle','growth_sample_public_rows')]
-        ns=dict(present_prospect_rows=present_prospect_rows,GROWTH_REVIEW_PROSPECTS=details,clean=lambda x:str(x or '').strip(),re=re,growth_customer_url=lambda x:x)
+        ns=dict(format_business_phone=format_business_phone,present_prospect_rows=present_prospect_rows,GROWTH_REVIEW_PROSPECTS=details,clean=lambda x:str(x or '').strip(),re=re,growth_customer_url=lambda x:x)
         exec(compile(ast.Module(body=nodes,type_ignores=[]),'reviewed_details','exec'),ns)
         for url,d in details.items():
             row=dict(d,source_url=url,official_site=True,category_key='insurance_professional',category_label='insurance professional')
@@ -155,7 +155,7 @@ class Tests(unittest.TestCase):
         view=prospect_presentation(row)
         self.assertIn('2575 East Camelback',view['location'])
         self.assertEqual(view['supporting_sources'][0]['url'],'https://www.cbre.com/people/andi-stjohn')
-        self.assertEqual(view['supporting_contacts'][0]['phone'],'6027355622')
+        self.assertEqual(view['supporting_contacts'][0]['phone'],'(602) 735-5622')
         self.assertNotIn('corroborated',' '.join(view['fit_points']))
         self.assertNotIn('Research candidate only',str(view))
         pdf=PdfReader(io.BytesIO(render_sample_pdf([row]*5,'Customer','Cleaning',['Phoenix'],'fixture')))

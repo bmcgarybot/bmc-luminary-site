@@ -1,4 +1,4 @@
-from growth_pdf import sample_pdf_response, render_sample_pdf, present_prospect_rows, prospect_presentation
+from growth_pdf import sample_pdf_response, render_sample_pdf, present_prospect_rows, prospect_presentation, format_business_phone
 import growth_offers
 from ops_metrics import business_metrics
 from pathlib import Path
@@ -3165,7 +3165,7 @@ def growth_sample_public_rows(rows):
         website=growth_customer_url(r.get("source_url"))
         email_addr=clean(r.get("public_email"))
         if not re.fullmatch(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}",email_addr): email_addr=""
-        phone=clean(r.get("public_phone"))
+        phone=format_business_phone(clean(r.get("public_phone")))
         if not 10<=len(re.sub(r"\D","",phone))<=15 or re.search(r"[{}<>]",phone): phone=""
         contact=email_addr or phone or ("Use the business website" if website else "Contact details need review")
         reviewed=globals().get("GROWTH_REVIEW_PROSPECTS",{}).get(clean(r.get("source_url")),{})
@@ -3954,9 +3954,9 @@ def growth_csv_bytes(rows):
         view=prospect_presentation(r)
         writer.writerow([growth_csv_cell(value) for value in [
           r["grade"],r["fit_score"],r["business_name"],r["market"],r["category_label"],
-          " ".join(view["fit_points"]),clean(r.get("public_email")),clean(r.get("public_phone")),r["source_url"],
+          " ".join(view["fit_points"]),clean(r.get("public_email")),format_business_phone(r.get("public_phone")),r["source_url"],
           " ".join(view["approach_points"]),clean(r.get("verification_status")),view["location"]," ".join(view["scope_notes"]),
-          "\n".join(x["url"] for x in view["supporting_sources"]),"; ".join(x["label"]+": "+x["phone"] for x in view["supporting_contacts"]) ]])
+          "\n".join(x["url"] for x in view["supporting_sources"]),"; ".join(x["label"]+": "+format_business_phone(x["phone"]) for x in view["supporting_contacts"]) ]])
     return out.getvalue().encode("utf-8-sig")
 
 @app.post("/api/process-growth-fulfillment")

@@ -38,6 +38,14 @@ def safe_website(value):
     except ValueError:
         return ''
 
+def format_business_phone(value):
+    text=str(value or '').strip()
+    digits=re.sub(r'\D','',text)
+    if len(digits)==11 and digits.startswith('1'):digits=digits[1:]
+    if len(digits)==10:return '('+digits[:3]+') '+digits[3:6]+'-'+digits[6:]
+    return text
+
+
 def prospect_presentation(row):
     """Customer-readable structure from existing evidence; never add a research claim."""
     text=str(row.get('fit_reason') or '').strip()
@@ -73,14 +81,16 @@ def prospect_presentation(row):
           'Offer a walkthrough of one property and a written cleaning scope before discussing a wider portfolio.']
         actions=[];notes=['Keep the inquiry focused on Phoenix managed properties.']
         links=[dict(x,label='Arizona property-management contact profile') for x in links]
-        supporting_contacts=[{'label':'Published property-management contact','phone':'6027355622'}]
+        supporting_contacts=[{'label':'Published property-management contact','phone':format_business_phone('6027355622')}]
     if not fit:
         # The address alone is location evidence, not proof of cleaning demand.
         fit=['This '+str(row.get('category') or row.get('category_label') or 'commercial property').replace('_',' ')+' is listed in '+str(row.get('market') or 'the selected territory')+'. Review the scope below with its operations team.']
     for point in actions:
         if point not in approach:approach.append(point)
-    return {'location':location,'fit_points':fit,'approach_points':approach,
-      'scope_notes':notes,'supporting_sources':links,'supporting_contacts':supporting_contacts}
+    def pretty_text(value):
+        return re.sub(r'(?<!\w)(?:\+?1[ .-]?)?\(?\d{3}\)?[ .-]?\d{3}[ .-]?\d{4}(?!\d)',lambda m:format_business_phone(m.group(0)),value)
+    return {'location':pretty_text(location),'fit_points':[pretty_text(x) for x in fit],'approach_points':[pretty_text(x) for x in approach],
+      'scope_notes':[pretty_text(x) for x in notes],'supporting_sources':links,'supporting_contacts':supporting_contacts}
 
 
 def present_prospect_rows(rows):
