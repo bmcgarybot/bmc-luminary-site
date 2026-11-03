@@ -53,7 +53,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
                         self.assertIn(line,plain);self.assertIn(html.escape(line),rendered)
                     self.assertNotIn(subject,html.unescape(rendered))
                     if step==1:
-                        self.assertIn("I'm Brett with BMC Service Network",plain)
+                        self.assertIn("Hey, this is Brett with BMC Service Network.",plain)
                         self.assertIn("We cannot promise jobs",plain)
                     legacy='first_wave_vendor_copy' if wave=='pilot1' else 'vendor_recruitment_copy'
                     self.assertEqual(self.ns[legacy](row,step),(subject,plain))
@@ -87,7 +87,9 @@ class Tests(unittest.IsolatedAsyncioTestCase):
                     for text in ('strong commercial prospects','practical outreach angle','—'):
                         self.assertNotIn(text,content)
                 if step==1:
-                    self.assertIn('BMC Service Network here in Prescott',plain)
+                    self.assertIn('Hey, this is Brett with BMC Service Network.',plain)
+                    self.assertNotIn('here in Prescott',plain)
+                    self.assertNotIn('here in Prescott',rendered)
                     self.assertIn('$499',plain);self.assertIn('100 total, including those five',plain)
                     self.assertIn('no subscription or obligation',plain.lower())
                 else:
