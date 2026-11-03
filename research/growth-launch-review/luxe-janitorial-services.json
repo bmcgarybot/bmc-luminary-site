@@ -1,0 +1,77 @@
+{
+  "business": "Luxe Janitorial Services",
+  "email": "Admin@luxejanitorialservice.com",
+  "phone": "6236939863",
+  "service": "commercial_cleaning",
+  "territory": [
+    "Phoenix"
+  ],
+  "source_url": "https://www.luxejanitorialservices.com/",
+  "observed": "Your site pairs Phoenix commercial janitorial care with property-turnover and post-construction cleaning.",
+  "checked_at": "2026-11-03",
+  "status": "owner_review_draft",
+  "capacity": "unconfirmed",
+  "qualifications": "Not independently verified; service claims only",
+  "safe_access": "Manual review required before field activity",
+  "subject": "Five Phoenix accounts to review for Luxe Janitorial Services",
+  "initial_email": "Hi Luxe Janitorial Services team,\n\nI’m Brett with BMC Service Network. We research local commercial accounts so service businesses can spend less time building lists and more time having useful conversations.\n\nYour site pairs Phoenix commercial janitorial care with property-turnover and post-construction cleaning.\n\nI put together five Phoenix businesses to review against that scope. For example, Larry B Betts CPA has a published local contact route; the brief explains the facility fit and who to ask about vendor onboarding. Each entry includes its business website and a suggested first conversation.\n\nYou can keep the five free, as a PDF and an online brief. If the fit is useful, $499 buys 100 total, including those five. These are researched prospects—not businesses that requested a quote—and sales are not guaranteed.\n\n[Button: View my five Phoenix prospects]\n\nWould a different facility type be more useful? Reply with the work you want more of.\n\nBrett\nBMC Service Network\ncontact@bmcservicenetwork.com\nBMC Luminary Ventures LLC · 186 E. Sheldon St. #1144, Prescott, AZ 86301\n\n[Small footer: Stop these emails]",
+  "sample": [
+    {
+      "business_name": "Larry B Betts CPA",
+      "market": "Phoenix",
+      "category": "insurance professional",
+      "fit_reason": "Official business page confirms 7330 N 16th St B102, Phoenix, AZ 85020. Published office inbox is suitable for administrative routing. Ask who handles suite cleaning and document-security requirements. Public contact is a routing contact, not confirmed buying intent. Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.",
+      "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas.",
+      "public_email": "office@phxcpa.com",
+      "public_phone": "6022160076",
+      "website_url": "https://www.phxcpa.com/contact.htm",
+      "source_url": "https://www.phxcpa.com/contact.htm"
+    },
+    {
+      "business_name": "Modern Arizona",
+      "market": "Phoenix",
+      "category": "retail",
+      "fit_reason": "Official business page confirms 5740 N 7th St, Phoenix, AZ 85012. Ask store management about retail-floor care around furniture displays and off-hours access. Public contact is a routing contact, not confirmed buying intent. Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.",
+      "sales_angle": "Ask the location manager whether cleaning is purchased locally or through corporate facilities. Offer a store-specific walkthrough only if they consider local vendors.",
+      "public_email": "modernarizona.phx@gmail.com",
+      "public_phone": "6028881577",
+      "website_url": "https://www.modernarizonaphx.com/about",
+      "source_url": "https://www.modernarizonaphx.com/about"
+    },
+    {
+      "business_name": "Willows",
+      "market": "Phoenix",
+      "category": "retail",
+      "fit_reason": "Official business page confirms 5625 E Indian School Rd, Phoenix, AZ 85018. Ask showroom management about display-safe floor/common-area cleaning; exclude furniture treatment. Public contact is a routing contact, not confirmed buying intent. Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.",
+      "sales_angle": "Ask the location manager whether cleaning is purchased locally or through corporate facilities. Offer a store-specific walkthrough only if they consider local vendors.",
+      "public_email": "info@willowsdesign.com",
+      "public_phone": "6023341345",
+      "website_url": "https://willowsdesign.com/contact/",
+      "source_url": "https://willowsdesign.com/contact/"
+    },
+    {
+      "business_name": "American Title Service Agency",
+      "market": "Phoenix",
+      "category": "insurance professional",
+      "fit_reason": "Official business page confirms 2929 E Camelback Rd Suite 200, Phoenix, AZ 85016. Administrative office is listed separately from escrow branches. Ask administration about office-service purchasing; count the agency once. Public contact is a routing contact, not confirmed buying intent. Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.",
+      "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas.",
+      "public_email": null,
+      "public_phone": "6024247200",
+      "website_url": "https://americantitleserviceagency.com/contact-us/",
+      "source_url": "https://americantitleserviceagency.com/contact-us/"
+    },
+    {
+      "business_name": "BeachFleischman Phoenix",
+      "market": "Phoenix",
+      "category": "insurance professional",
+      "fit_reason": "Official business page confirms 2201 E Camelback Rd Suite 200, Phoenix, AZ 85016. Firm publishes a Phoenix office and general inbox. Ask administration whether local suite services are firm-managed or landlord-managed; count firm once. Public contact is a routing contact, not confirmed buying intent. Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.",
+      "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas.",
+      "public_email": "info@beachfleischman.com",
+      "public_phone": "6022657011",
+      "website_url": "https://beachfleischman.com/locations/phoenix-arizona/",
+      "source_url": "https://beachfleischman.com/locations/phoenix-arizona/"
+    }
+  ],
+  "live_signed_journey": "NOT PREPARED; must bind these exact five in VPS before sending",
+  "existing_customer_exclusions": "Recipient must identify existing customers; no exclusivity promised"
+}

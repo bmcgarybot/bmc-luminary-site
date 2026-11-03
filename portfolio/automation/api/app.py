@@ -7440,23 +7440,37 @@ async def growth_offer_payload_current(conn,offer):
     payload=json_dict(offer["payload"])
     if growth_offers.offer_digest(payload)!=offer["payload_sha256"]:
         raise ValueError("Offer contents changed after preparation")
+    parent=await conn.fetchrow("select * from orders where order_id=$1 for update",offer["parent_order_id"]) if offer["parent_order_id"] else None
+    growth_offers.validate_parent(offer["product_key"],dict(parent) if parent else None,offer["email"],offer["sample_id"])
+    if parent and parent["product_key"]=="growth_upgrade_75":
+        ancestor=await conn.fetchrow("""select o.* from growth_purchase_offers f join orders o on o.order_id=f.parent_order_id
+          where f.paid_order_id=$1 for update of o""",parent["order_id"])
+        growth_offers.validate_parent("growth_upgrade_75",dict(ancestor) if ancestor else None,offer["email"],offer["sample_id"])
     rows=payload.get("rows",[])
     if rows:
+        originals=[dict(x) for x in (await conn.fetch("select * from growth_order_prospects where order_id=$1",parent["order_id"]) if parent else await conn.fetch("select * from growth_sample_prospects where sample_id=$1",offer["sample_id"]))]
+        growth_offers.validate_rows(offer["product_key"],rows,originals,payload["territory"])
         current=await conn.fetch("select * from market_inventory_candidates where candidate_id=any($1::uuid[])",
           [uuid.UUID(str(r["candidate_id"])) for r in rows])
         by_id={str(r["candidate_id"]):dict(r) for r in current}
         if any(not growth_saved_sample_is_current(r,by_id.get(str(r["candidate_id"])),payload["service_key"]) for r in rows):
             raise ValueError("Prospect evidence changed; manual review required")
-        # The normal selector applies current prospect suppressions and exposure limits.
+        # Frozen originals are intentionally already exposed to THIS recipient.
+        # Recheck suppression directly, then apply allocation limits only to new rows.
+        blocked=await conn.fetchval("""select count(*) from growth_prospect_suppressions
+          where lifted_at is null and prospect_key=any($1::text[])""",
+          list({k for r in rows for k in (growth_prospect_key(r),growth_contact_key(r),
+            'email:'+clean(r.get('public_email')).lower(),
+            'phone:'+re.sub(r'[^0-9]','',clean(r.get('public_phone')))[-10:]) if k}))
+        if blocked:raise ValueError("A saved prospect is suppressed")
+        original_ids={str(r["candidate_id"]) for r in originals}
         eligible=await growth_qualified_territory_candidates(conn,payload["service_key"],payload["territory"],
           payload.get("ideal_customer",""),payload.get("exclusions",""),limit=10000,
           recipient_key=offer["email"],delivery_kind="paid",
           recipient_business_key=growth_recipient_business_key(payload["business"]))
-        eligible_ids={str(r["candidate_id"]) for r in eligible}
+        eligible_ids={str(r["candidate_id"]) for r in eligible}|original_ids
         if any(str(r["candidate_id"]) not in eligible_ids for r in rows):
             raise ValueError("A saved prospect is no longer eligible")
-    parent=await conn.fetchrow("select * from orders where order_id=$1 for update",offer["parent_order_id"]) if offer["parent_order_id"] else None
-    growth_offers.validate_parent(offer["product_key"],dict(parent) if parent else None,offer["email"],offer["sample_id"])
     if offer["product_key"]=="growth_strategy_addon":growth_offers.validate_strategy(payload.get("strategy"))
     return payload
 
@@ -7518,8 +7532,8 @@ async def get_growth_purchase_offer(offer_id:uuid.UUID,token:str=""):
             url=growth_offers.checkout_url(dict(offer),product["payment_link_url"],ADMIN_KEY,token)
             payload=await growth_offer_payload_current(conn,offer)
         except ValueError as exc:raise HTTPException(409,str(exc))
-        return {"ok":True,"name":growth_offers.TIERS[offer["product_key"]]["name"],"amount_cents":growth_offers.TIERS[offer["product_key"]]["amount"],
-          "business":payload["business"],"territory":payload["territory"],"terms":growth_offers.TERMS,"checkout_url":url}
+        return HTMLResponse(growth_offers.offer_page(dict(offer),payload,url),headers={
+          "Cache-Control":"no-store","Referrer-Policy":"no-referrer","X-Robots-Tag":"noindex, nofollow"})
 
 async def bind_growth_purchase_offer(conn,order_id,product_key,email,amount,currency,obj,prior_refund):
     try:

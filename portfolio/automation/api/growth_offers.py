@@ -121,7 +121,14 @@ def strategy_pdf(payload, reference):
     from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
     from reportlab.lib.styles import getSampleStyleSheet
     validate_strategy(payload['strategy'])
+    from growth_pdf import NAVY, TEAL
     out=io.BytesIO();styles=getSampleStyleSheet();s=payload['strategy']
+    for name in ('BodyText','Title','Heading1','Heading2'):
+        styles[name].fontName='BMCRegular' if name=='BodyText' else 'BMCBold'
+        styles[name].textColor=NAVY
+    styles['BodyText'].fontSize=10;styles['BodyText'].leading=15
+    styles['Title'].textColor=TEAL
+    styles['Heading2'].keepWithNext=True
     story=[]
     def add(text,style='BodyText'):
         story.append(Paragraph(escape(str(text)).replace('\n','<br/>'),styles[style]));story.append(Spacer(1,10))
@@ -136,3 +143,11 @@ def strategy_pdf(payload, reference):
     add(POSTAL);add('Questions: contact@bmcservicenetwork.com');add('Reference: '+reference)
     SimpleDocTemplate(out,title='BMC strategy plan',author='BMC Service Network',invariant=1).build(story)
     return out.getvalue()
+
+
+def offer_page(offer,payload,url):
+    tier=offer['product_key'];product=TIERS[tier]
+    description={'growth_pack_25':'25 total prospects, including your five free prospects. Branded PDF and CSV. One-time payment of $149.',
+      'growth_upgrade_75':'Keep your original 25 and add 75: 100 total. Branded PDF and CSV. One-time upgrade of $350; total paid for all 100 is $499.',
+      'growth_strategy_addon':'Three-competitor snapshot, positioning, account priorities, opening email, follow-up, phone opener, reply guidance and four-week plan. Branded PDF. One-time payment of $250; $749 total with the full prospect pack.'}[tier]
+    return '<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>BMC Growth offer</title></head><body style="margin:0;background:#f5f7f9;font:16px/1.6 Arial;color:#15334b"><main style="max-width:620px;margin:auto;padding:24px;overflow-wrap:anywhere"><p style="color:#007e87;font-weight:bold">BMC SERVICE NETWORK</p><h1 style="font-size:28px">'+escape(product['name'])+'</h1><p>Prepared for '+escape(payload['business'])+' · '+escape(', '.join(payload['territory']))+'</p><p>'+escape(description)+'</p><p>'+escape(TERMS)+'</p><p>Your reviewed deliverable is prepared before payment. It will be submitted to your verified email after Stripe confirms payment. Reply to contact@bmcservicenetwork.com for delivery help or qualifying-error replacements.</p><p><a href="'+escape(url,quote=True)+'" style="display:inline-block;background:#007e87;color:white;text-decoration:none;padding:14px 20px;border-radius:6px">Continue to secure checkout — $'+str(product['amount']//100)+'</a></p><p>No subscription. No automatic upgrade.</p><p style="font-size:12px">'+escape(POSTAL)+'</p></main></body></html>'
