@@ -25,3 +25,7 @@ print(f"PASS: {len(wanted)} service categories have assigned search-card images"
 catalog=json.loads((ROOT/"data/service-images.json").read_text())
 assert catalog==json.loads((ROOT/"automation/api/service_images.json").read_text()), "VPS image catalog differs"
 assert {key:value["src"] for key,value in catalog["services"].items()}==assigned, "Image catalog differs from search cards"
+
+public=set((ROOT/"automation/public-site-files.txt").read_text().splitlines())
+assert "data/service-images.json" in public, "Image catalog omitted from public artifact"
+assert all(v.lstrip("/") in public for v in assigned.values() if v.startswith("/assets/")), "Local image omitted from public artifact"

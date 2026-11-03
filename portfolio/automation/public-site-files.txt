@@ -107,3 +107,6 @@ vendor-partner/index.html
 vendor-savings-audit/index.html
 waste-recycling-audit/index.html
 windshield-auto-glass/index.html
+data/service-images.json
+assets/images/fleet-washing-illustration-v1.webp
+assets/images/ice-machine-service-illustration-v1.webp

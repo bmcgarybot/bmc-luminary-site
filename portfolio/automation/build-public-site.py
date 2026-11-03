@@ -20,7 +20,7 @@ def build(destination):
             raise ValueError('Unsafe manifest path')
         if relative.parts[0] in {'automation', 'content-drafts', 'synthetic-e2e', 'seo'}:
             raise ValueError('Internal path in public manifest')
-        if relative.parts[0] == 'data' and name not in {'data/services.json', 'data/billing.json'}:
+        if relative.parts[0] == 'data' and name not in {'data/services.json', 'data/billing.json', 'data/service-images.json'}:
             raise ValueError('Unreviewed data in public manifest')
         source = SOURCE / relative
         if any(part.is_symlink() for part in [source, *source.parents]) or not source.is_file():
