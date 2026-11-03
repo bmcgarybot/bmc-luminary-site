@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "b-ops-monitor-deploy-20261103T185304Z",
+  "action": "deploy_update",
+  "required_ci_sha": "8c2126a225f929448a675b807a656659600602ef",
+  "allow_external_actions": false,
+  "created_at": "2026-11-03T18:53:04.750Z",
+  "expires_at": "2026-11-03T19:53:04.750Z",
+  "args": {}
+}
