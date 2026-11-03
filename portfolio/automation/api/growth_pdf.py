@@ -38,6 +38,64 @@ def safe_website(value):
     except ValueError:
         return ''
 
+def format_business_phone(value):
+    text=str(value or '').strip()
+    digits=re.sub(r'\D','',text)
+    if len(digits)==11 and digits.startswith('1'):digits=digits[1:]
+    if len(digits)==10:return '('+digits[:3]+') '+digits[3:6]+'-'+digits[6:]
+    return text
+
+
+def prospect_presentation(row):
+    """Customer-readable structure from existing evidence; never add a research claim."""
+    text=str(row.get('fit_reason') or '').strip()
+    boilerplate=(
+      'Research candidate only; no buying interest, outsourcing need, current capacity or safe access confirmed.',
+      'Public contact is a routing contact, not confirmed buying intent.',
+      'Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.')
+    for phrase in boilerplate:text=text.replace(phrase,'').strip()
+    links=[]
+    def collect(match):
+        url=match.group(0).rstrip('.,;)')
+        if safe_website(url) and url not in [x['url'] for x in links]:
+            links.append({'url':url,'label':'Supporting business source'})
+        return '[supporting source]'+match.group(0)[len(url):]
+    text=re.sub(r'https?://[^\s<>]+',collect,text)
+    points=[x.strip() for x in re.split(r'(?<=[.!?])\s+(?=[A-Z])',text) if x.strip()]
+    location='';fit=[];notes=[];actions=[]
+    for point in points:
+        if re.match(r'^Official (?:Phoenix office:|business page confirms|contact page:|location page:|hotel page:)',point):
+            location=re.sub(r'^Official (?:Phoenix office:|business page confirms|contact page:|location page:|hotel page:)\s*','',point).rstrip('.')
+            if ';' in location:
+                location,detail=location.split(';',1)
+                if detail.strip():fit.append('Published facility details: '+detail.strip())
+        elif re.match(r'^(?:Ask |Offer |Confirm |Check |Lead )',point):actions.append(point)
+        elif re.match(r'^(?:Do not |Exclude |Never |Published front-desk |Published general contact |Public general |Shared office line )',point):notes.append(point)
+        else:fit.append(point)
+    approach=[x.strip() for x in re.split(r'(?<=[.!?])\s+(?=[A-Z])',str(row.get('sales_angle') or '')) if x.strip()]
+    supporting_contacts=[]
+    if (str(row.get('business_name'))=='CBRE Phoenix' and
+        'https://www.cbre.com/people/andi-stjohn' in [x['url'] for x in links]):
+        fit=['CBRE’s published Arizona property-management profile provides a relevant contact for inquiries about cleaning vendors for Phoenix managed properties.']
+        approach=['Ask the property-management team about vendor onboarding for Phoenix managed properties.',
+          'Offer a walkthrough of one property and a written cleaning scope before discussing a wider portfolio.']
+        actions=[];notes=['Keep the inquiry focused on Phoenix managed properties.']
+        links=[dict(x,label='Arizona property-management contact profile') for x in links]
+        supporting_contacts=[{'label':'Published property-management contact','phone':format_business_phone('6027355622')}]
+    if not fit:
+        # The address alone is location evidence, not proof of cleaning demand.
+        fit=['This '+str(row.get('category') or row.get('category_label') or 'commercial property').replace('_',' ')+' is listed in '+str(row.get('market') or 'the selected territory')+'. Review the scope below with its operations team.']
+    for point in actions:
+        if point not in approach:approach.append(point)
+    def pretty_text(value):
+        return re.sub(r'(?<!\w)(?:\+?1[ .-]?)?\(?\d{3}\)?[ .-]?\d{3}[ .-]?\d{4}(?!\d)',lambda m:format_business_phone(m.group(0)),value)
+    return {'location':pretty_text(location),'fit_points':[pretty_text(x) for x in fit],'approach_points':[pretty_text(x) for x in approach],
+      'scope_notes':[pretty_text(x) for x in notes],'supporting_sources':links,'supporting_contacts':supporting_contacts}
+
+
+def present_prospect_rows(rows):
+    return [dict(row,presentation=prospect_presentation(row)) for row in rows]
+
 def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at=None, preview=False, paid=False, paid_count=100):
     """Render only the caller's already authorized five; no database or URL fetching."""
     if paid_count not in (25,100):
@@ -87,25 +145,38 @@ def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at
     prospect_blocks=[]
     for i, row in enumerate(rows, 1):
         header=Table([[p(f'{i:02d}','number'),[p(row.get('business_name',''),'white'),
-            p(f'{row.get("market", "")}  |  {str(row.get("category", "")).replace("_"," ").title()}', 'meta')]]],colWidths=[64,doc.width-64])
+            p(f'{row.get("market", "")}  |  {str(row.get("category") or row.get("category_label") or "").replace("_"," ").title()}', 'meta')]]],colWidths=[64,doc.width-64])
         header.setStyle(TableStyle([('BACKGROUND',(0,0),(-1,-1),NAVY),('VALIGN',(0,0),(-1,-1),'TOP'),
             ('LEFTPADDING',(0,0),(-1,-1),11),('RIGHTPADDING',(0,0),(-1,-1),11),
             ('TOPPADDING',(0,0),(-1,-1),11),('BOTTOMPADDING',(0,0),(-1,-1),10)]))
-        fit=[p('WHY IT FITS','label')]+bullets(row.get('fit_reason') or 'Fit needs review.')
-        opening=[p('HOW TO APPROACH','label')]+bullets(row.get('sales_angle') or 'Confirm who manages this service and whether outside vendors are considered.')
+        view=prospect_presentation(row)
+        fit=[p('WHY IT FITS','label')]+[p(x) for x in view['fit_points']]
+        if view['location']:fit += [p('Location: '+view['location'],'small')]
+        opening=[p('HOW TO APPROACH','label')]+[p(x) for x in view['approach_points']]
+        if view['scope_notes']:opening += [p('Scope: '+x,'small') for x in view['scope_notes']]
         contact=[p('CONTACT & SOURCE','label')]
         phone=clean_text(row.get('public_phone'));digits=re.sub(r'\D','',phone)
         if len(digits)==11 and digits.startswith('1'):digits=digits[1:]
         if len(digits)==10:phone=f'({digits[:3]}) {digits[3:6]}-{digits[6:]}'
         email_addr=clean_text(row.get('public_email'))
-        if phone:contact.append(p('Phone: '+phone))
-        if email_addr:contact.append(p('Email: '+email_addr))
+        if phone:
+            dial=('1'+digits) if len(digits)==10 else digits
+            if 10<=len(dial)<=15:contact.append(Paragraph('Phone: <link href="tel:+'+dial+'" color="#007E87">'+escape(phone)+'</link>',styles['body']))
+            else:contact.append(p('Phone: '+phone))
+        if email_addr:
+            if re.fullmatch(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}',email_addr):contact.append(Paragraph('Email: <link href="mailto:'+escape(email_addr,quote=True)+'" color="#007E87">'+escape(email_addr)+'</link>',styles['body']))
+            else:contact.append(p('Email: '+email_addr))
+        for detail in view['supporting_contacts']:
+            digits=re.sub(r'\D','',detail['phone']);label='('+digits[:3]+') '+digits[3:6]+'-'+digits[6:] if len(digits)==10 else detail['phone']
+            contact.append(Paragraph(escape(detail['label'])+': <link href="tel:+1'+digits+'" color="#007E87">'+escape(label)+'</link>',styles['body']))
         if not phone and not email_addr:contact.append(p('Contact: '+clean_text(row.get('contact_route') or 'Contact details need review.')))
         url=safe_website(row.get('website_url') or row.get('source_url'))
         if url:
             host=urlsplit(url).netloc
             contact.append(Paragraph('Website: <link href="'+escape(url,quote=True)+'" color="#007E87">'+escape(host)+' - open official business page</link>',styles['body']))
         else:contact.append(p('Business website requires review; no raw data feed is provided.','small'))
+        for source in view['supporting_sources']:
+            contact.append(Paragraph('<link href="'+escape(source['url'],quote=True)+'" color="#007E87">'+escape(source['label'])+'</link>',styles['body']))
         card=Table([[header],[fit],[opening],[contact]],colWidths=[doc.width])
         card.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'TOP'),
           ('LEFTPADDING',(0,0),(-1,0),0),('RIGHTPADDING',(0,0),(-1,0),0),

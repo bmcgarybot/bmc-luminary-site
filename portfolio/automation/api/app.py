@@ -1,4 +1,4 @@
-from growth_pdf import sample_pdf_response, render_sample_pdf
+from growth_pdf import sample_pdf_response, render_sample_pdf, present_prospect_rows, prospect_presentation, format_business_phone
 import growth_offers
 from ops_metrics import business_metrics
 from pathlib import Path
@@ -3165,7 +3165,7 @@ def growth_sample_public_rows(rows):
         website=growth_customer_url(r.get("source_url"))
         email_addr=clean(r.get("public_email"))
         if not re.fullmatch(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}",email_addr): email_addr=""
-        phone=clean(r.get("public_phone"))
+        phone=format_business_phone(clean(r.get("public_phone")))
         if not 10<=len(re.sub(r"\D","",phone))<=15 or re.search(r"[{}<>]",phone): phone=""
         contact=email_addr or phone or ("Use the business website" if website else "Contact details need review")
         reviewed=globals().get("GROWTH_REVIEW_PROSPECTS",{}).get(clean(r.get("source_url")),{})
@@ -3180,7 +3180,7 @@ def growth_sample_public_rows(rows):
           "contact_route":contact,"public_email":email_addr,"public_phone":phone,
           "website_url":website,"source_url":website
         })
-    return out
+    return present_prospect_rows(out)
 
 async def growth_sample_checkout(conn,email,sample_id,service_key):
     # Recheck on every offer/replay/nurture, not only on the initial sample.
@@ -3365,7 +3365,7 @@ async def handle_growth_snapshot(conn,p):
         if isinstance(payload,str):
             try: payload=json.loads(payload)
             except json.JSONDecodeError: payload=[]
-        payload=payload if isinstance(payload,list) else []
+        payload=present_prospect_rows(payload) if isinstance(payload,list) else []
         checkout=await growth_sample_checkout(conn,email_addr,existing["sample_id"],service_key)
         return {"ok":True,"status":clean(existing["status"]),"sample_id":str(existing["sample_id"]),
           "business_name":existing["business_name"],"research_scope":clean(existing.get("ideal_customer")),
@@ -3570,6 +3570,7 @@ async def growth_owner_sample(conn,target,territory,rows):
           [x["candidate_id"] for x in chosen],json.dumps(public_rows),target["business_name"],target["service_key"])
     public_rows=saved["sample_payload"]
     if isinstance(public_rows,str):public_rows=json.loads(public_rows)
+    public_rows=present_prospect_rows(public_rows)
     current_ids={str(x["candidate_id"]) for x in rows}
     eligible=len(rows)>=GROWTH_SAMPLE_MIN_RESERVE and all(str(x) in current_ids for x in saved["candidate_ids"])
     base=await conn.fetchval("select payment_link_url from products where product_key='growth_pack_starter' and active=true") if eligible else ""
@@ -3948,12 +3949,14 @@ def growth_csv_cell(value):
 def growth_csv_bytes(rows):
     out=io.StringIO()
     writer=csv.writer(out)
-    writer.writerow(["Priority","Fit score","Business","Market","Type","Why it fits","Public email","Public phone","Source","Suggested outreach angle","Verification"])
+    writer.writerow(["Priority","Fit score","Business","Market","Type","Why it fits","Public email","Public phone","Source","Suggested outreach angle","Verification","Location","Scope notes","Supporting source links","Supporting contacts"])
     for r in rows:
+        view=prospect_presentation(r)
         writer.writerow([growth_csv_cell(value) for value in [
           r["grade"],r["fit_score"],r["business_name"],r["market"],r["category_label"],
-          r["fit_reason"],clean(r.get("public_email")),clean(r.get("public_phone")),r["source_url"],
-          r["sales_angle"],clean(r.get("verification_status"))]])
+          " ".join(view["fit_points"]),clean(r.get("public_email")),format_business_phone(r.get("public_phone")),r["source_url"],
+          " ".join(view["approach_points"]),clean(r.get("verification_status")),view["location"]," ".join(view["scope_notes"]),
+          "\n".join(x["url"] for x in view["supporting_sources"]),"; ".join(x["label"]+": "+format_business_phone(x["phone"]) for x in view["supporting_contacts"]) ]])
     return out.getvalue().encode("utf-8-sig")
 
 @app.post("/api/process-growth-fulfillment")

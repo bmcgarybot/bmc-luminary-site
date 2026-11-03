@@ -25,7 +25,8 @@ class Tests(unittest.TestCase):
         for term in ['Recipient A','sample-a','$499','including these five','not requested quotes']:
             self.assertIn(term,text)
         links=[a.get_object()['/A']['/URI'] for p in pdf.pages for a in p.get('/Annots',[]) if '/A' in a.get_object()]
-        self.assertEqual(links,[f'https://example.com/business-{i}' for i in range(1,6)])
+        self.assertEqual([u for u in links if u.startswith('https://')],[f'https://example.com/business-{i}' for i in range(1,6)])
+        self.assertTrue(all(u.startswith(('https://','tel:','mailto:')) for u in links))
         self.assertEqual(result['download_filename'],'BMC-Recipient-A-Five-Prospects.pdf')
     def test_paid_pdf_contains_all_100_without_free_offer(self):
         records=[]

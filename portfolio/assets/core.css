@@ -1030,3 +1030,9 @@ form[data-form-type="growth_snapshot"] > [hidden]{display:none!important}
  .growth-seller-page .customer-hero .hero-sub{font-size:1rem;line-height:1.43;margin-bottom:15px}
  .growth-seller-page .customer-hero .editorial-kicker{margin-bottom:12px}
 }
+
+.growth-research-block{margin:16px 0;padding-top:12px;border-top:1px solid #d4dfdf}
+.growth-research-block h5{font-size:.88rem;color:#007e87;text-transform:uppercase;letter-spacing:.04em;margin:0 0 9px}
+.growth-research-block ul{padding-left:20px;margin:0;display:grid;gap:9px}
+.growth-research-block li{line-height:1.55;overflow-wrap:anywhere}
+.growth-location{font-size:.9rem;color:#526675}

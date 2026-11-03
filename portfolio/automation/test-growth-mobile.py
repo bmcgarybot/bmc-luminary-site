@@ -43,6 +43,7 @@ with sync_playwright() as p:
     # Full delayed signed-link flow starts at the old anchor and an old scroll position.
     import json,time
     payload=dict(status='sample_ready',business_name='Verified Phoenix Cleaning',research_scope='Offices and schools in Phoenix.',selected_markets=['Phoenix'],preview=True,checkout_url='https://buy.stripe.com/fixture',download_filename='fixture.pdf',download_pdf_base64='JVBERi0xLjQ=',sample=[dict(business_name='Researched Phoenix Office',market='Phoenix',fit_reason='Office scope.',contact_route='6025550123')])
+    payload['sample'][0]['presentation']=dict(location='Phoenix office',fit_points=['A Phoenix office relevant to routine cleaning.'],approach_points=['Ask the property manager about vendor onboarding.'],scope_notes=['Phoenix properties only.'],supporting_sources=[dict(url='https://www.cbre.com/people/andi-stjohn',label='Property-management contact profile')],supporting_contacts=[dict(label='Property-management contact',phone='6027355622')])
     def claim(route):
         time.sleep(.25)
         route.fulfill(body=json.dumps(payload),content_type='application/json',headers={'Access-Control-Allow-Origin':'*'})
@@ -57,6 +58,8 @@ with sync_playwright() as p:
         assert page.locator('.customer-hero').is_visible()
         assert 'verified phoenix cleaning' in page.locator('.customer-hero .editorial-kicker').inner_text().lower(), (page.locator('.customer-hero .editorial-kicker').inner_text(),page.locator('[data-success-card] h3').inner_text(),errors,page.evaluate('({hash:location.hash,y:scrollY,classes:document.body.className})'))
         assert page.evaluate('location.hash')==''
+        assert page.locator('a[href="https://www.cbre.com/people/andi-stjohn"]').inner_text()=='Property-management contact profile'
+        assert page.locator('a[href="tel:+16027355622"]').inner_text()=='Property-management contact: (602) 735-5622'
         primary=page.locator('.customer-hero .btn-primary')
         assert primary.inner_text()=='Show me my 5 free targets'
         assert page.locator('.customer-hero h1').evaluate('(el)=>el.getBoundingClientRect().bottom <= innerHeight'), f'Headline below opening screen at {width}'

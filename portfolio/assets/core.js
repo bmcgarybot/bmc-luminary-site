@@ -304,13 +304,24 @@
     if(formType==="growth_snapshot" && Array.isArray(response.sample) && response.sample.length){
       const sampleWrap=document.createElement("div");
       sampleWrap.className="growth-sample-results";
+      const researchNotice=document.createElement("p");researchNotice.className="growth-research-notice";researchNotice.textContent="These are researched businesses to approach. They have not requested quotes. Confirm current needs, vendor requirements and access before offering work.";sampleWrap.appendChild(researchNotice);
       response.sample.forEach(function(row,index){
         const item=document.createElement("div");
         item.className="soft-panel";
         const h=document.createElement("h4");
         h.textContent=(index+1)+". "+(row.business_name||"Commercial prospect")+" · "+(row.market||"");
-        const why=document.createElement("p");
-        why.textContent=row.fit_reason||"Qualified commercial fit.";
+        const view=row.presentation||{};
+        function points(title,values){
+          const block=document.createElement("div");block.className="growth-research-block";
+          const heading=document.createElement("h5");heading.textContent=title;block.appendChild(heading);
+          const ul=document.createElement("ul");values.forEach(function(value){const li=document.createElement("li");li.textContent=value;ul.appendChild(li);});block.appendChild(ul);return block;
+        }
+        const why=points("Why it fits",view.fit_points||[row.fit_reason||"Qualified commercial fit."]);
+        if(view.location){const location=document.createElement("p");location.className="growth-location";location.textContent="Location: "+view.location;why.appendChild(location);}
+        (view.supporting_sources||[]).forEach(function(evidence){
+          if(!/^https?:\/\//i.test(evidence.url))return;
+          const p=document.createElement("p"),link=document.createElement("a");link.href=evidence.url;link.textContent=evidence.label||"Supporting business source";link.target="_blank";link.rel="noopener";p.appendChild(link);why.appendChild(p);
+        });
         const contact=document.createElement("p");
         contact.className="growth-contact";
         const route=String(row.contact_route||row.public_email||row.public_phone||"").trim();
@@ -325,8 +336,12 @@
           link.textContent=phone?"Call ("+national.slice(0,3)+") "+national.slice(3,6)+"-"+national.slice(6):"Email "+route;
           contact.appendChild(link);
         }else{contact.textContent="Contact: "+(route||"Contact details need review");}
-        const angle=document.createElement("p");
-        angle.textContent="Suggested first conversation: "+(row.sales_angle||"Contact the business to confirm who manages this service.");
+        const angle=points("How to approach",view.approach_points||[row.sales_angle||"Contact the business to confirm who manages this service."]);
+        if((view.scope_notes||[]).length)angle.appendChild(points("Scope to confirm",view.scope_notes));
+        (view.supporting_contacts||[]).forEach(function(detail){
+          const digits=String(detail.phone||"").replace(/\D/g,"");if(digits.length!==10)return;
+          const link=document.createElement("a");link.href="tel:+1"+digits;link.textContent=detail.label+": ("+digits.slice(0,3)+") "+digits.slice(3,6)+"-"+digits.slice(6);contact.append(document.createElement("br"),link);
+        });
         item.append(h,why,contact,angle);
         if(row.source_url && /^https?:\/\//i.test(row.source_url)){
           const source=document.createElement("a");
