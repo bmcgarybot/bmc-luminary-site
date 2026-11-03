@@ -18,11 +18,12 @@ on conflict(product_key) do update set
   active=excluded.active,
   updated_at=now();
 
--- Offer ladder remains inactive until explicit owner approval and release.
+-- Owner authorized payment-option activation for the Phoenix launch on 2026-11-03.
+-- Customer offers still require exact deliverable approval; outreach remains separately held.
 insert into products(product_key,service_key,display_name,billing_type,amount_cents,currency,stripe_product_id,stripe_price_id,stripe_payment_link_id,payment_link_url,active)
 values
-('growth_pack_25','growth_pack','25-Prospect Growth Pack','one_time',14900,'usd','bmc_growth_pack_25_v1','price_1UXY2wQU2BLM8GhLg7J1yW9h','plink_1UXY4CQU2BLM8GhLP6P2JxGJ','https://buy.stripe.com/4gMcN7bhn0XhbtpcdO1oI04',false),
-('growth_upgrade_75','growth_pack','Upgrade from 25 to 100','one_time',35000,'usd','bmc_growth_upgrade_75_v1','price_1UXY3QQU2BLM8GhLYUBb6QYz','plink_1UXY4GQU2BLM8GhLeJZ5GmkW','https://buy.stripe.com/00w8wRgBH9tNeFBdhS1oI05',false),
-('growth_strategy_addon','growth_pack','Growth Strategy Add-on','one_time',25000,'usd','bmc_growth_strategy_addon_v1','price_1UXY3RQU2BLM8GhLSk4GrttO','plink_1UXY4JQU2BLM8GhL3RO36sZB','https://buy.stripe.com/14AeVfdpv8pJdBx2De1oI06',false)
-on conflict(product_key) do update set stripe_product_id=excluded.stripe_product_id,stripe_price_id=excluded.stripe_price_id,stripe_payment_link_id=excluded.stripe_payment_link_id,payment_link_url=excluded.payment_link_url,amount_cents=excluded.amount_cents,updated_at=now();
+('growth_pack_25','growth_pack','25-Prospect Growth Pack','one_time',14900,'usd','bmc_growth_pack_25_v1','price_1UXY2wQU2BLM8GhLg7J1yW9h','plink_1UXY4CQU2BLM8GhLP6P2JxGJ','https://buy.stripe.com/4gMcN7bhn0XhbtpcdO1oI04',true),
+('growth_upgrade_75','growth_pack','Upgrade from 25 to 100','one_time',35000,'usd','bmc_growth_upgrade_75_v1','price_1UXY3QQU2BLM8GhLYUBb6QYz','plink_1UXY4GQU2BLM8GhLeJZ5GmkW','https://buy.stripe.com/00w8wRgBH9tNeFBdhS1oI05',true),
+('growth_strategy_addon','growth_pack','Growth Strategy Add-on','one_time',25000,'usd','bmc_growth_strategy_addon_v1','price_1UXY3RQU2BLM8GhLSk4GrttO','plink_1UXY4JQU2BLM8GhL3RO36sZB','https://buy.stripe.com/14AeVfdpv8pJdBx2De1oI06',true)
+on conflict(product_key) do update set stripe_product_id=excluded.stripe_product_id,stripe_price_id=excluded.stripe_price_id,stripe_payment_link_id=excluded.stripe_payment_link_id,payment_link_url=excluded.payment_link_url,amount_cents=excluded.amount_cents,active=excluded.active,updated_at=now();
 
