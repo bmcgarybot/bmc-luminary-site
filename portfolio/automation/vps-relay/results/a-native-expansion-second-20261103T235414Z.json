@@ -1,0 +1,27 @@
+{
+  "action": "official_research_step",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-03T23:55:38.487418+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "a4dd04b47e823ed4b8d09a1c6ca9201cde88e61b",
+  "git_commit_before": "a4dd04b47e823ed4b8d09a1c6ca9201cde88e61b",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "2c712ce230c403bffa93403154d288a61dc65761",
+  "request_id": "a-native-expansion-second-20261103T235414Z",
+  "request_sha256": "600a82c37b586c3767646513d91d32991079e898f90c0913f550a8f03a2a9860",
+  "started_at": "2026-11-03T23:54:50.828646+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"iterations\": 8,\n  \"responses\": [\n    {\n      \"ok\": true,\n      \"worker\": \"vps_primary_site_v1\",\n      \"inspected\": 6,\n      \"verified\": 0,\n      \"needs_review\": 6,\n      \"outreach_sent\": 0,\n      \"providers_accepted\": 0,\n      \"customer_orders_created\": 0\n    },\n    {\n      \"ok\": true,\n      \"worker\": \"vps_primary_site_v1\",\n      \"inspected\": 6,\n      \"verified\": 1,\n      \"needs_review\": 5,\n      \"outreach_sent\": 0,\n      \"providers_accepted\": 0,\n      \"customer_orders_created\": 0\n    },\n    {\n      \"ok\": true,\n      \"worker\": \"vps_primary_site_v1\",\n      \"inspected\": 6,\n      \"verified\": 0,\n      \"needs_review\": 6,\n      \"outreach_sent\": 0,\n      \"providers_accepted\": 0,\n      \"customer_orders_created\": 0\n    },\n    {\n      \"ok\": true,\n      \"worker\": \"vps_primary_site_v1\",\n      \"inspected\": 6,\n      \"verified\": 0,\n      \"needs_review\": 6,\n      \"outreach_sent\": 0,\n      \"providers_accepted\": 0,\n      \"customer_orders_created\": 0\n    },\n    {\n      \"ok\": true,\n      \"worker\": \"vps_primary_site_v1\",\n      \"inspected\": 6,\n      \"verified\": 1,\n      \"needs_review\": 5,\n      \"outreach_sent\": 0,\n      \"providers_accepted\": 0,\n      \"customer_orders_created\": 0\n    },\n    {\n      \"ok\": true,\n      \"worker\": \"vps_primary_site_v1\",\n      \"inspected\": 6,\n      \"verified\": 0,\n      \"needs_review\": 6,\n      \"outreach_sent\": 0,\n      \"providers_accepted\": 0,\n      \"customer_orders_created\": 0\n    },\n    {\n      \"ok\": true,\n      \"worker\": \"vps_primary_site_v1\",\n      \"inspected\": 6,\n      \"verified\": 2,\n      \"needs_review\": 4,\n      \"outreach_sent\": 0,\n      \"providers_accepted\": 0,\n      \"customer_orders_created\": 0\n    },\n    {\n      \"ok\": true,\n      \"worker\": \"vps_primary_site_v1\",\n      \"inspected\": 6,\n      \"verified\": 0,\n      \"needs_review\": 6,\n      \"outreach_sent\": 0,\n      \"providers_accepted\": 0,\n      \"customer_orders_created\": 0\n    }\n  ]\n}",
+  "version": 1
+}
