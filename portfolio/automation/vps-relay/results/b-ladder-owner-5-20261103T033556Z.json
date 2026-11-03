@@ -1,0 +1,28 @@
+{
+  "action": "growth_owner_target_preview",
+  "allow_external_actions": true,
+  "completed_at": "2026-11-03T03:37:16.460324+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "40be4ac1c0f6c9fdc2b709145ff83f33cf53725b",
+  "git_commit_before": "40be4ac1c0f6c9fdc2b709145ff83f33cf53725b",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    },
+    "preview_commit": "40be4ac1c0f6c9fdc2b709145ff83f33cf53725b"
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "220f9a4689e9688a4f31e48738b521afc5452bda",
+  "request_id": "b-ladder-owner-5-20261103T033556Z",
+  "request_sha256": "9fac4de016079dc974656a0f7ba06079c2e888b9023c4306ccd916bef68eed8e",
+  "started_at": "2026-11-03T03:37:14.780872+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"ok\": true,\n  \"test_recipient\": \"contact@bmcservicenetwork.com\",\n  \"source_business\": \"KEEPERS Commercial Cleaning\",\n  \"source_original_recipient\": \"info@keeperscleanaz.com\",\n  \"source_url\": \"https://www.keeperscleanusa.com/areas-we-serve/phoenix/\",\n  \"market\": \"Phoenix\",\n  \"service_key\": \"commercial_cleaning\",\n  \"subject\": \"Five Phoenix accounts to review for KEEPERS Commercial Cleaning\",\n  \"signed_button_in_email\": true,\n  \"preview_id\": \"246684e7-aa86-476f-805a-297fb5aaae3f\",\n  \"pdf_attached\": true,\n  \"checkout_available\": true,\n  \"owner_preview\": true,\n  \"smtp_accepted\": true,\n  \"inbox_rendering_verified\": false\n}",
+  "version": 1
+}
