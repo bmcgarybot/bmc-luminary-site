@@ -5,7 +5,7 @@ from pathlib import Path
 from datetime import datetime,timedelta,timezone
 sys.path.insert(0,str(Path(__file__).parent/'api'))
 import growth_offers as g
-from growth_pdf import render_sample_pdf
+from growth_pdf import render_sample_pdf, present_prospect_rows, prospect_presentation
 from pypdf import PdfReader
 
 def rows(n):
@@ -107,7 +107,7 @@ class Tests(unittest.TestCase):
         details=json.loads((path/'growth_review_prospects.json').read_text())
         source=ast.parse((path/'app.py').read_text())
         nodes=[n for n in source.body if isinstance(n,ast.FunctionDef) and n.name in ('growth_sales_angle','growth_sample_public_rows')]
-        ns=dict(GROWTH_REVIEW_PROSPECTS=details,clean=lambda x:str(x or '').strip(),re=re,growth_customer_url=lambda x:x)
+        ns=dict(present_prospect_rows=present_prospect_rows,GROWTH_REVIEW_PROSPECTS=details,clean=lambda x:str(x or '').strip(),re=re,growth_customer_url=lambda x:x)
         exec(compile(ast.Module(body=nodes,type_ignores=[]),'reviewed_details','exec'),ns)
         for url,d in details.items():
             row=dict(d,source_url=url,official_site=True,category_key='insurance_professional',category_label='insurance professional')
@@ -147,6 +147,22 @@ class Tests(unittest.TestCase):
         self.assertIn('100-prospect Growth Pack',text);self.assertIn('OWNER REVIEW COPY',text);self.assertIn('Business 99',text)
         data.pop()
         with self.assertRaises(HTTPError):asyncio.run(ns['growth_owner_full_pack'](Conn(),target,['Phoenix'],data,sample))
+
+    def test_customer_research_notes_become_readable_evidence_and_links(self):
+        row=dict(business_name='CBRE Phoenix',market='Phoenix',category='property management',
+          fit_reason='Official Phoenix office: 2575 East Camelback Road Suite 500, Phoenix AZ 85016. CBRE property-management role corroborated at https://www.cbre.com/people/andi-stjohn (Arizona property management; public phone 6027355622). Ask about vendor onboarding for Phoenix managed properties only; do not count the office as a confirmed cleaning job. Research candidate only; no buying interest, outsourcing need, current capacity or safe access confirmed.',
+          sales_angle='Ask the property manager about cleaning.',public_phone='6027355555',source_url='https://www.cbre.com/offices/corporate/phoenix')
+        view=prospect_presentation(row)
+        self.assertIn('2575 East Camelback',view['location'])
+        self.assertEqual(view['supporting_sources'][0]['url'],'https://www.cbre.com/people/andi-stjohn')
+        self.assertEqual(view['supporting_contacts'][0]['phone'],'6027355622')
+        self.assertNotIn('corroborated',' '.join(view['fit_points']))
+        self.assertNotIn('Research candidate only',str(view))
+        pdf=PdfReader(io.BytesIO(render_sample_pdf([row]*5,'Customer','Cleaning',['Phoenix'],'fixture')))
+        text='\n'.join(p.extract_text() for p in pdf.pages)
+        self.assertIn('(602) 735-5622',text);self.assertNotIn('corroborated',text)
+        urls=[a.get_object()['/A'].get('/URI') for p in pdf.pages for a in p.get('/Annots',[]) if '/A' in a.get_object()]
+        self.assertIn('https://www.cbre.com/people/andi-stjohn',urls)
 
     def test_digest_binds_content(self):
         a={'rows':rows(25)};b=copy.deepcopy(a);b['rows'][0]['fit_reason']='Changed'

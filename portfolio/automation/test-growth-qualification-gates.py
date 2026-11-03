@@ -15,7 +15,10 @@ NAMES={"clean","growth_category_terms","growth_selected_categories","growth_cand
        "growth_qualified_candidates","growth_prospect_key","growth_candidate_evidence_valid","json_dict","growth_customer_url","growth_sample_public_rows"}
 nodes=[node for node in SOURCE.body if isinstance(node,(ast.FunctionDef,ast.AsyncFunctionDef)) and node.name in NAMES]
 async def exposure_passthrough(conn,rows,*args): return rows
-ns={"json":json,"urllib":urllib,"DEFAULT_SOURCE_NATIVE_MARKETS":("Prescott","Prescott Valley","Sedona","Flagstaff"),"datetime":datetime,"timezone":timezone,"timedelta":timedelta,"hashlib":hashlib,"re":re,
+import sys
+sys.path.insert(0,str(Path(__file__).parent/"api"))
+from growth_pdf import present_prospect_rows
+ns={"present_prospect_rows":present_prospect_rows,"json":json,"urllib":urllib,"DEFAULT_SOURCE_NATIVE_MARKETS":("Prescott","Prescott Valley","Sedona","Flagstaff"),"datetime":datetime,"timezone":timezone,"timedelta":timedelta,"hashlib":hashlib,"re":re,
     "GROWTH_BUYER_CATEGORIES":{"pressure_washing":["restaurants","retail"]},
     "GROWTH_SERVICE_LABELS":{"pressure_washing":"Pressure washing"},"GROWTH_SOURCE_BLOCKLIST":("loc8nearme.com","yelp.com"),
     "growth_exposure_filter":exposure_passthrough,
