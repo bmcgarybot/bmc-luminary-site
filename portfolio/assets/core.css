@@ -997,12 +997,13 @@ form[data-form-type="growth_snapshot"] > [hidden]{display:none!important}
 .growth-personalized-results .submission-success{display:block;margin:0;width:100%}
 .growth-personalized-results h3{font-size:clamp(1.5rem,4vw,2.2rem);line-height:1.2;margin-top:0}
 .growth-research-scope{font-weight:600}
-.growth-results-ready > .customer-hero,.growth-results-loading > .customer-hero,
 .growth-results-ready #free5,.growth-results-loading #free5,
 .growth-results-ready .mobile-sticky-cta,.growth-results-loading .mobile-sticky-cta{display:none!important}
 
-.growth-results-ready > section:not(#your-prospects):not(#standard),
+.growth-results-ready #full-pack,
 .growth-results-ready a[href="#free5"],.growth-results-ready a[hidden]{display:none!important}
 .owner-checkout-warning{font-weight:700;color:#725012;background:#fff5d6;padding:12px;border-radius:8px}
 
 #growth-upgrade{scroll-margin-top:100px}
+
+.growth-results-ready .customer-hero .editorial-kicker{font-size:1rem;line-height:1.4;font-weight:700}

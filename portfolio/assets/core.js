@@ -377,8 +377,9 @@
       if(!results){
         results=document.createElement("section");results.id="your-prospects";
         results.className="wrap growth-personalized-results";
+        const intro=document.querySelector(".customer-hero");
         const nav=document.querySelector("body > nav");
-        if(nav)nav.insertAdjacentElement("afterend",results);else document.body.prepend(results);
+        if(intro)intro.insertAdjacentElement("afterend",results);else if(nav)nav.insertAdjacentElement("afterend",results);else document.body.prepend(results);
       }
       results.replaceChildren(card);
       document.body.classList.remove("growth-results-loading");
@@ -386,19 +387,40 @@
       document.querySelectorAll('a[href="#full-pack"]').forEach(function(link){
         if(response.checkout_url){link.href="#growth-upgrade";link.textContent="Get the other 95";}else{link.hidden=true;}
       });
-      history.replaceState(null,"",location.pathname+location.search+"#your-prospects");
-      heading.tabIndex=-1;heading.focus({preventScroll:true});
-      requestAnimationFrame(function(){requestAnimationFrame(function(){
-        const nav=document.querySelector("body > nav");
-        const offset=nav?nav.getBoundingClientRect().height:0;
-        const previous=document.documentElement.style.scrollBehavior;
-        document.documentElement.style.scrollBehavior="auto";
-        window.scrollTo(0,Math.max(0,results.getBoundingClientRect().top+window.scrollY-offset-16));
-        document.documentElement.style.scrollBehavior=previous;
-      });});
+      const intro=document.querySelector(".customer-hero");
+      if(intro){
+        const kicker=intro.querySelector(".editorial-kicker");
+        if(kicker && response.business_name)kicker.textContent="Prepared for "+response.business_name;
+        const summary=intro.querySelector(".hero-sub");
+        if(summary && response.business_name)summary.textContent="We've prepared five researched commercial prospects for "+response.business_name+" in "+(response.selected_markets||[]).join(", ")+", with public contacts, source evidence and a reason each fits your work.";
+        const primary=intro.querySelector(".btn-primary");
+        if(primary){primary.href="#your-prospects";primary.textContent="Show me my 5 free targets";}
+      }
+      const query=new URLSearchParams(location.search);
+      const invitation=!!((query.get("target") && query.get("claim")) || query.get("verify_id"));
+      // Only a deliberate button click (or a manual form submission) moves to results.
+      // Initial signed-link loads and refreshes stay at the personalized introduction.
+      if(!invitation || location.hash==="#your-prospects"){
+        heading.tabIndex=-1;heading.focus({preventScroll:true});
+        requestAnimationFrame(function(){requestAnimationFrame(function(){
+          const nav=document.querySelector("body > nav");
+          const offset=nav?nav.getBoundingClientRect().height:0;
+          const previous=document.documentElement.style.scrollBehavior;
+          document.documentElement.style.scrollBehavior="auto";
+          window.scrollTo(0,Math.max(0,results.getBoundingClientRect().top+window.scrollY-offset-16));
+          document.documentElement.style.scrollBehavior=previous;
+        });});
+      }else if(document.body.dataset.growthLandingInteracted!=="true"){
+        requestAnimationFrame(function(){requestAnimationFrame(function(){
+          const previous=document.documentElement.style.scrollBehavior;
+          document.documentElement.style.scrollBehavior="auto";window.scrollTo(0,0);
+          document.documentElement.style.scrollBehavior=previous;
+        });});
+      }
     }else{
       document.body.classList.remove("growth-results-loading");
       const loading=document.getElementById("your-prospects");if(loading)loading.remove();
+      const primary=document.querySelector(".customer-hero .btn-primary");if(primary)primary.href="#free5";
       card.scrollIntoView({behavior:"smooth",block:"start"});
     }
   }
@@ -408,6 +430,9 @@
     const target=q.get("target"),claim=q.get("claim");
     if(!target||!claim)return;
     if("scrollRestoration" in history)history.scrollRestoration="manual";
+    ["wheel","touchstart","pointerdown","keydown"].forEach(function(type){
+      window.addEventListener(type,function(){document.body.dataset.growthLandingInteracted="true";},{once:true,passive:true});
+    });
     const form=document.querySelector('form[data-form-type="growth_snapshot"]');
     if(!form)return;
     const note=form.querySelector("[data-form-notice]");
@@ -420,10 +445,12 @@
     if(!loading){
       loading=document.createElement("section");loading.id="your-prospects";loading.className="wrap growth-personalized-results";
       const status=document.createElement("p");status.setAttribute("role","status");status.textContent="Preparing your researched prospects…";loading.appendChild(status);
-      const nav=document.querySelector("body > nav");if(nav)nav.insertAdjacentElement("afterend",loading);else document.body.prepend(loading);
+      const intro=document.querySelector(".customer-hero");
+      const nav=document.querySelector("body > nav");if(intro)intro.insertAdjacentElement("afterend",loading);else if(nav)nav.insertAdjacentElement("afterend",loading);else document.body.prepend(loading);
     }
     document.body.classList.add("growth-results-loading");
-    history.replaceState(null,"",location.pathname+location.search+"#your-prospects");
+    history.replaceState(null,"",location.pathname+location.search);
+    const primary=document.querySelector(".customer-hero .btn-primary");if(primary){primary.href="#your-prospects";primary.textContent="Show me my 5 free targets";}
     const oldScrollBehavior=document.documentElement.style.scrollBehavior;
     document.documentElement.style.scrollBehavior="auto";window.scrollTo(0,0);
     document.documentElement.style.scrollBehavior=oldScrollBehavior;
@@ -440,6 +467,7 @@
       console.error(err);
       document.body.classList.remove("growth-results-loading");
       const loading=document.getElementById("your-prospects");if(loading)loading.remove();
+      const primary=document.querySelector(".customer-hero .btn-primary");if(primary)primary.href="#free5";
       if(note){
         note.textContent="We couldn't load the one-click sample automatically. Your invitation details are still saved below, so you can use the form without starting from scratch.";
         note.classList.add("show");
