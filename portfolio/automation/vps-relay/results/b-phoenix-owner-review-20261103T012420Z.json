@@ -1,0 +1,28 @@
+{
+  "action": "growth_owner_target_preview",
+  "allow_external_actions": true,
+  "completed_at": "2026-11-03T01:25:02.887392+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "3684cb5b634502af75b8708830a7a291a0966546",
+  "git_commit_before": "3684cb5b634502af75b8708830a7a291a0966546",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    },
+    "preview_commit": "3684cb5b634502af75b8708830a7a291a0966546"
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "608e9285682e8d3f798a5fb46523361725bb2ac1",
+  "request_id": "b-phoenix-owner-review-20261103T012420Z",
+  "request_sha256": "384696fbb28fc7f39f3037945716d26d2e3583233e02222299627a1fd093fef5",
+  "started_at": "2026-11-03T01:25:01.283910+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"ok\": true,\n  \"test_recipient\": \"contact@bmcservicenetwork.com\",\n  \"source_business\": \"Environment Control Phoenix\",\n  \"source_original_recipient\": \"admin@ec-phoenix.com\",\n  \"source_url\": \"https://www.environmentcontrol.com/locations/phoenix\",\n  \"market\": \"Phoenix\",\n  \"service_key\": \"commercial_cleaning\",\n  \"subject\": \"Five commercial prospects for Environment Control Phoenix in Phoenix\",\n  \"signed_button_in_email\": true,\n  \"preview_id\": \"5ba79438-6edb-447c-8927-ce7217a71029\",\n  \"pdf_attached\": true,\n  \"checkout_available\": true,\n  \"owner_preview\": true,\n  \"smtp_accepted\": true,\n  \"inbox_rendering_verified\": false\n}",
+  "version": 1
+}
