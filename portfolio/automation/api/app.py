@@ -53,6 +53,7 @@ OWNER_LAUNCH_HOLD=os.getenv("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="fa
 GROWTH_OUTREACH_ENABLED=os.getenv("GROWTH_OUTREACH_ENABLED","false").lower()=="true"
 GROWTH_OUTREACH_DAILY_LIMIT=env_int("GROWTH_OUTREACH_DAILY_LIMIT",10)
 GROWTH_OUTREACH_WAVE=os.getenv("GROWTH_OUTREACH_WAVE","growth-pressure-1").strip() or "growth-pressure-1"
+GROWTH_OUTREACH_TARGET_IDS=tuple(x.strip() for x in os.getenv("GROWTH_OUTREACH_TARGET_IDS","").split(",") if x.strip())
 GROWTH_SAMPLE_MIN_RESERVE=max(100,env_int("GROWTH_SAMPLE_MIN_RESERVE",125))
 GROWTH_AUTO_FULFILL_ENABLED=os.getenv("GROWTH_AUTO_FULFILL_ENABLED","true").lower()=="true"
 BUSINESS_POSTAL_ADDRESS=os.getenv("BUSINESS_POSTAL_ADDRESS","").strip()
@@ -3685,6 +3686,7 @@ async def growth_runtime_status(conn):
     return {"ok":True,"owner_launch_hold_active":OWNER_LAUNCH_HOLD,
       "outreach_switches":{"OUTREACH_ENABLED":OUTREACH_ENABLED,"BUYER_OUTREACH_ENABLED":BUYER_OUTREACH_ENABLED,"GROWTH_OUTREACH_ENABLED":GROWTH_OUTREACH_ENABLED},
       "growth_enabled":GROWTH_OUTREACH_ENABLED,"wave":GROWTH_OUTREACH_WAVE,
+      "recipient_scope_count":len(globals().get("GROWTH_OUTREACH_TARGET_IDS",())),
       "daily_limit":GROWTH_OUTREACH_DAILY_LIMIT,"sample_reserve":GROWTH_SAMPLE_MIN_RESERVE,"historical_contacts_awaiting_review":int(review_required or 0),
       "config":{"smtp":smtp_ready,"imap":imap_ready,"postal":postal_ready,"payment_link":int(links or 0)>=1},
       "config_ready":config_ready,"staged_active":int(staged or 0),"sent":int(sent or 0),"replies":int(replies or 0),
@@ -4678,6 +4680,9 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
                 "message":"Owner launch hold is active."}
     if not GROWTH_OUTREACH_ENABLED:
         return {"ok":True,"enabled":False,"sent":0,"message":"Growth outreach is disabled."}
+    scope=tuple(globals().get("GROWTH_OUTREACH_TARGET_IDS",()))
+    if not scope:
+        return {"ok":True,"enabled":False,"sent":0,"blocked":True,"message":"An exact reviewed recipient scope is required."}
     if not BUSINESS_POSTAL_ADDRESS or "CHANGE_ME" in BUSINESS_POSTAL_ADDRESS:
         raise HTTPException(409,"BUSINESS_POSTAL_ADDRESS must be configured before Growth outreach can send.")
     if not (IMAP_ENABLED and IMAP_HOST and IMAP_USER and IMAP_PASSWORD):
@@ -4699,13 +4704,14 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
         from outreach o join growth_outreach_targets g on g.target_id=o.entity_id
         join growth_experiment_cells e on e.cell_key=g.experiment_cell
         where o.entity_type='growth_customer' and o.campaign='growth_sales' and o.wave=$2 and o.opt_out=false
-          and o.owner_review_required=false
+          and o.owner_review_required=false and o.entity_id=any($3::text[])
           and g.status not in ('suppressed','bad_fit') and e.status in ('exploring','winner','challenger')
           and (o.status='queued' or (o.status='sent' and o.next_followup_at<=now() and o.sequence_step<2))
           and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(g.public_email))
         order by case when o.status='queued' then 0 else 1 end,g.fit_score desc,coalesce(o.next_followup_at,o.created_at) asc
-        limit $1""",allowance,GROWTH_OUTREACH_WAVE)
+        limit $1""",allowance,GROWTH_OUTREACH_WAVE,list(scope))
       for row in rows:
+        if row["target_id"] not in scope:continue
         step=1 if row["status"]=="queued" else 2
         try:
             service_key,subject,body,html_body,landing=growth_outreach_message(row,step)

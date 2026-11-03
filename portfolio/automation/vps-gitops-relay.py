@@ -51,6 +51,7 @@ READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnos
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
     "configure_owner_contact",
+    "configure_growth_review_scope",
     "market_inventory_step",
     "local_demand_step",
     "public_opportunities_step",
@@ -622,11 +623,46 @@ def execute(req: dict) -> dict:
         stderr=""
         exit_code=0
 
+    elif action == "configure_growth_review_scope":
+        if app_env().get("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="true":
+            raise RelayError("Review scope configuration requires owner hold ON")
+        cohort=json.loads((AUTOMATION/"api/growth_phoenix_cohort.json").read_text())
+        requested=args.get("target_ids")
+        if set(args)!={"wave","target_ids"} or args.get("wave")!=cohort["wave"] or not isinstance(requested,list) or len(requested)!=len(set(requested)) or set(requested)!=set(cohort["target_ids"]):
+            raise RelayError("Review scope must match the exact nine-recipient Phoenix cohort")
+        candidates=admin_get("/api/admin/growth-preview-candidates").get("records",[])
+        by_id={r["target_id"]:r for r in candidates}
+        if any(t not in by_id or by_id[t]["market"]!="Phoenix" or by_id[t]["service_key"]!="commercial_cleaning" or by_id[t]["status"]!="queued" for t in requested):
+            raise RelayError("A cohort recipient is no longer queued in the reviewed Phoenix cleaning scope")
+        env_path=AUTOMATION/ENV_FILE
+        old_text=env_path.read_text();old_mode=env_path.stat().st_mode
+        set_env_values({"GROWTH_OUTREACH_WAVE":cohort["wave"],"GROWTH_OUTREACH_TARGET_IDS":",".join(sorted(requested))})
+        cp=run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api","scheduler","webhook_proxy"],timeout=300)
+        healthy=False
+        if cp.returncode==0:
+            for _ in range(30):
+                if run(["curl","-fsS","http://127.0.0.1:8000/health"],timeout=10).returncode==0:
+                    healthy=True;break
+                time.sleep(1)
+        if not healthy:
+            tmp=env_path.with_suffix(env_path.suffix+".scope-rollback.tmp")
+            tmp.write_text(old_text);os.chmod(tmp,old_mode);tmp.replace(env_path)
+            run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api","scheduler","webhook_proxy"],timeout=300)
+            raise RelayError("Review scope health check failed; prior configuration restored")
+        stdout=json.dumps({"review_scope_configured":True,"wave":cohort["wave"],"target_count":len(requested),"owner_launch_hold_active":True,"outreach":assert_outreach_off(),"approved":False,"sent":0},indent=2)
+        exit_code=0
+
     elif action == "growth_launch_enable":
         # Separate owner-controlled hold: technical/email approval never authorizes launch.
         # Only an explicit manual VPS configuration change after owner review may release it.
         if app_env().get("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="false":
             raise RelayError("OWNER LAUNCH HOLD: no customer outreach authorized")
+        cohort=json.loads((AUTOMATION/"api/growth_phoenix_cohort.json").read_text())
+        configured=sorted(x for x in app_env().get("GROWTH_OUTREACH_TARGET_IDS","").split(",") if x)
+        if (set(args)!={"wave","target_ids"} or args.get("wave")!=cohort["wave"]
+            or not isinstance(args.get("target_ids"),list) or sorted(args["target_ids"])!=configured
+            or configured!=sorted(cohort["target_ids"]) or app_env().get("GROWTH_OUTREACH_WAVE")!=cohort["wave"]):
+            raise RelayError("Launch requires the exact configured Phoenix cohort; broad or historic waves are refused")
         state=outreach_state()
         if str(state.get("OUTREACH_ENABLED","")).lower()!="false" or str(state.get("BUYER_OUTREACH_ENABLED","")).lower()!="false":
             raise RelayError("Growth-only launch requires provider and buyer Service-Network outreach to remain OFF")
@@ -639,7 +675,7 @@ def execute(req: dict) -> dict:
         set_env_values({
           "GROWTH_OUTREACH_ENABLED":"true",
           "GROWTH_OUTREACH_DAILY_LIMIT":"10",
-          "GROWTH_OUTREACH_WAVE":"growth-pressure-1",
+          "GROWTH_OUTREACH_WAVE":cohort["wave"],
           "GROWTH_SAMPLE_MIN_RESERVE":"125",
           "GROWTH_AUTO_FULFILL_ENABLED":"true",
         })
