@@ -1,3 +1,25 @@
+## Offer ladder and recipient review checkpoint — 2026-11-03 03:15 UTC
+
+PR 41: https://github.com/bmcgarybot/bmc-luminary-site/pull/41 . Latest head ddbf63f434bfe7c4a7a2d4bf589282c3fe0dae7e; final CI pending. Not merged or deployed. Earlier head 673eb20691c099a06603ec1bf7828a21c50f821f passed both CI runs, including the added real PostgreSQL payment binding tests. Local offer tests: 9 passed, plus existing PDF, qualification, territory, durable mail, owner preview, reply-hold and unsubscribe checks.
+
+Implemented behind draft/approval gates: $149 for 25 total including free five; $350 upgrade preserving original 25 and adding 75; $250 strategy add-on after fulfilled 100 pack. Frozen payload hash, exact recipient/price/currency checks, parent ownership/refund checks, original-row preservation, current source/suppression/exposure checks, payment replay protection, branded PDF/CSV delivery, strategy PDF, private mobile offer page. Explicit per-offer review/approval endpoints exist but HAVE NOT BEEN INVOKED. No owner approval recorded. No customer send or charge.
+
+Stripe authentication retry recovered. Three products/prices and Payment Links created, ALL products and links returned active=false. Seed rows inactive. Do not duplicate catalog creation:
+- growth_pack_25: bmc_growth_pack_25_v1 / price_1UXY2wQU2BLM8GhLg7J1yW9h / plink_1UXY4CQU2BLM8GhLP6P2JxGJ.
+- growth_upgrade_75: bmc_growth_upgrade_75_v1 / price_1UXY3QQU2BLM8GhLYUBb6QYz / plink_1UXY4GQU2BLM8GhLeJZ5GmkW.
+- growth_strategy_addon: bmc_growth_strategy_addon_v1 / price_1UXY3RQU2BLM8GhLSk4GrttO / plink_1UXY4JQU2BLM8GhL3RO36sZB.
+Product activation was used only to create links, then links and products were disabled immediately. No payment or customer delivery occurred.
+
+Eight additional Phoenix cleaning recipient review packets with 40 distinct selected prospect businesses: Alliance, Gen X, Katharos, LJ's, KEEPERS, Incomparable, JAG, Luxe. Official contact/service/territory pages checked. Mister Klean excluded because core service is fleet detailing. All capacity, qualification and safe access remain unconfirmed. These are NOT eight live signed journeys or approved recipients yet. Runtime catalog binds exact five URLs to each recipient and refuses changed source/scope; new staged records require owner review. Recipient data seed added but not deployed/imported yet. Existing Environment Control Phoenix saved preview remains unchanged.
+
+Review artifact: libfile_2cdca95c67ec81918414e2147e4a3b53, version 2, BMC_Offer_Ladder_And_Recipient_Review.html. Local /workspace/scratch/627ca3a7afe5/review/BMC_Offer_Ladder_And_Recipient_Review.html. Contains 3 new offer emails, 8 researched recipient drafts, exact runtime HTML/plaintext, existing 8-message sequence, 8 sample PDFs and 1 strategy PDF as embedded downloads. Review links clearly non-live. No additional owner email sent. Actual mail-client rendering/click approval still required.
+
+Fresh independent production snapshot b-growth-ladder-snapshot-20261103T030600Z completed 03:07:11 UTC: exact f1b1e0979b13bc1c8b054a7bc2b1fa94840e9206, API/runtime/scheduler healthy, owner hold true, all three outreach switches false. 0 paid orders, receipts, samples, replies, open Growth exceptions; 11 staged, original historical sent 7 intact. One unconfirmed request remains review-only.
+
+NWS Phoenix and AZ511 checked; official pages still describe elevated flows / flood-related road closures. Individual expired warnings must not be called active. Research/access notes in research/growth-launch-review/access-check-20261103.md. Manual storm/access review remains; no automatic storm checkout block claimed.
+
+Next: verify final CI, merge and exact-master CI, one held deploy and fresh checks; stage the eight new held recipients and verify exact sample binding without sending customer messages. Activation, approval, and customer release require explicit user authorization. Dedicated landscaping/junk/minor-handyman/fence workflows remain outside this cleaning offer; Nevada deferred. Do not call the whole business launched.
+
 ## POSTDEPLOY VERIFIED — November 2, 2026, 7:35 p.m. Arizona
 
 Independent b-mobile-postdeploy-20261103T023409Z succeeded at02:35:01UTC: exactf1b1e0979b13bc1c8b054a7bc2b1fa94840e9206, runtime/API/schedulerhealthy,ownerholdtrue,threeoutreachfalse,0paidorders/receipts/customer samples/replies/openGrowth exceptions. Originalhistoricalsent7 preserved. Remaining work below unchanged; no approval or customer release.
