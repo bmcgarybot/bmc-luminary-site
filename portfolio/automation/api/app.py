@@ -7624,3 +7624,38 @@ async def process_growth_purchase_offers(x_bmc_admin_key:str|None=Header(default
             await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
               values('growth_offer_delivery_review','critical',$1,'Review the frozen deliverable and durable mail attempt before resuming; never silently replace records or blindly resend')""",f"Order {task['order_id']}: {exc}")
     return {"ok":True,"fulfilled":fulfilled,"exceptions":exceptions}
+
+@app.post("/api/admin/growth-offers/{offer_id}/approve")
+async def approve_growth_purchase_offer(offer_id:uuid.UUID,request:Request,x_bmc_admin_key:str|None=Header(default=None)):
+    """Explicit per-offer review only; never called by a scheduler or a payment."""
+    require_admin(x_bmc_admin_key)
+    p=await request.json()
+    if p.get("approval_statement")!="I approve this exact reviewed offer":
+        raise HTTPException(400,"Explicit approval of this exact offer is required")
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        await growth_lock_exposure_allocator(conn)
+        offer=await conn.fetchrow("select * from growth_purchase_offers where offer_id=$1 for update",offer_id)
+        if not offer or offer["status"]!="draft":raise HTTPException(409,"Only a draft offer can be approved")
+        if p.get("reviewed_payload_sha256")!=offer["payload_sha256"]:
+            raise HTTPException(409,"The reviewed payload does not match this offer")
+        if offer["expires_at"]<=datetime.now(timezone.utc):raise HTTPException(409,"Offer expired; prepare a newly reviewed scope")
+        try:await growth_offer_payload_current(conn,offer)
+        except ValueError as exc:raise HTTPException(409,str(exc))
+        await conn.execute("update growth_purchase_offers set status='approved',approved_at=now(),updated_at=now() where offer_id=$1",offer_id)
+        await event(conn,"growth_offer",offer_id,"owner_approved",{"payload_sha256":offer["payload_sha256"]})
+        return {"ok":True,"status":"approved","outreach_released":False,
+          "review_url":urllib.parse.urlsplit(WEBHOOK_URL)._replace(path="",query="",fragment="").geturl()+"/api/growth/offers/"+str(offer_id)+"?"+urllib.parse.urlencode({"token":growth_offers.signed_token(ADMIN_KEY,str(offer_id),offer["email"])})}
+
+@app.get("/api/admin/growth-offers/{offer_id}/review")
+async def review_growth_purchase_offer(offer_id:uuid.UUID,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    async with app.state.pool.acquire() as conn:
+        offer=await conn.fetchrow("select * from growth_purchase_offers where offer_id=$1",offer_id)
+        if not offer:raise HTTPException(404,"Offer not found")
+        payload=json_dict(offer["payload"])
+        url=urllib.parse.urlsplit(WEBHOOK_URL)._replace(path="",query="",fragment="").geturl()+"/api/growth/offers/"+str(offer_id)+"?"+urllib.parse.urlencode({"token":growth_offers.signed_token(ADMIN_KEY,str(offer_id),offer["email"])})
+        unsub=urllib.parse.urlsplit(WEBHOOK_URL)._replace(path="",query="",fragment="").geturl()+"/api/email-preferences?"+urllib.parse.urlencode({"email":offer["email"],"token":email_unsubscribe_token(offer["email"])})
+        return {"ok":True,"status":offer["status"],"payload_sha256":offer["payload_sha256"],"payload":payload,
+          "email":growth_offers.offer_email(offer["product_key"],payload["business"],", ".join(payload["territory"]),url,unsub),
+          "note":"Private owner review only. This read does not approve or send the offer."}
