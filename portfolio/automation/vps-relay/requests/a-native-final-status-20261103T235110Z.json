@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "a-native-final-status-20261103T235110Z",
+  "action": "preparation_status",
+  "allow_external_actions": false,
+  "created_at": "2026-11-03T23:51:10.303Z",
+  "expires_at": "2026-11-04T00:51:10.303Z",
+  "args": {}
+}
