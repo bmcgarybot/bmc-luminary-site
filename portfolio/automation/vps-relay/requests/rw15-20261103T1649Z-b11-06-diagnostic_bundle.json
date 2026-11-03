@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "rw15-20261103T1649Z-b11-06-diagnostic_bundle",
+  "action": "diagnostic_bundle",
+  "created_at": "2026-11-03T16:49:07.000Z",
+  "expires_at": "2026-11-03T17:39:07.000Z",
+  "allow_external_actions": false,
+  "args": {}
+}
