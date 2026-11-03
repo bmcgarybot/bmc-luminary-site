@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "b-opsstatusfirst-20261103T185639Z",
+  "action": "ops_monitor_status",
+  "allow_external_actions": false,
+  "created_at": "2026-11-03T18:56:39.759Z",
+  "expires_at": "2026-11-03T19:56:39.759Z",
+  "args": {}
+}
