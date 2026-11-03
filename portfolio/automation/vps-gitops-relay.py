@@ -645,7 +645,7 @@ def execute(req: dict) -> dict:
         cp=run(["python3","./ops-watchdog.py","--status"],timeout=30)
         status=json.loads(cp.stdout) if cp.returncode==0 else {"status_unavailable":True}
         status["system_timer_active"]=run(["systemctl","is-active","--quiet","bmc-watchdog.timer"],timeout=10).returncode==0
-        status["user_timer_active"]=run(["systemctl","--user","is-active","--quiet","bmc-watchdog.timer"],timeout=10).returncode==0
+        status["user_timer_active"]=run(["env","XDG_RUNTIME_DIR=/run/user/"+str(os.getuid()),"DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/"+str(os.getuid())+"/bus","systemctl","--user","is-active","--quiet","bmc-watchdog.timer"],timeout=10).returncode==0
         stdout=json.dumps(status);stderr="";exit_code=cp.returncode
 
     elif action == "business_metrics":

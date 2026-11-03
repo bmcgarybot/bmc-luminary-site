@@ -42,13 +42,20 @@ class Context:
 class Box:
     def login(self,*args):pass
     def select(self,*args):pass
-    def search(self,*args):return "OK",[b"1"]
+    def response(self,name):return name,[b"42" if name=="UIDVALIDITY" else b"2"]
+    def uid(self,command,*args):
+        if command=="search":return "OK",[b"1"]
+        if command=="fetch":return self.fetch(*args)
+        raise AssertionError(command)
     def fetch(self,*args):return "OK",[(b"",b"From: owner@example.test\r\nSubject: Re: Five\r\n\r\nYes please")]
     def store(self,*args):pass
     def logout(self):pass
 class Connection:
-    def __init__(self):self.writes=[]
+    def __init__(self):self.writes=[];self.cursor=dict(uidvalidity="42",last_uid=0)
+    def transaction(self):return Context(self)
+    async def fetchval(self,*args):return True
     async def fetchrow(self,sql,*args):
+        if "mailbox_poll_state" in sql:return self.cursor
         if "select o.outreach_id" in sql:return dict(outreach_id="outreach",entity_type="growth_customer",entity_id="target",owner_review_required=False)
         if "select sample_id" in sql:return None
         if "growth_outreach_targets" in sql:return dict(target_id="target",business_name="Fixture",
@@ -76,6 +83,27 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             app=SimpleNamespace(state=SimpleNamespace(pool=SimpleNamespace(acquire=lambda:Context(conn)))))
         exec(compile(ast.Module(body=nodes,type_ignores=[]),"production_growth_reply","exec"),ns)
         return ns,conn,sent
+    async def test_initial_poll_sets_baseline_without_replaying_historic_mail(self):
+        ns,conn,sent=self.load();conn.cursor=None
+        result=await ns["process_replies"]("fixture")
+        self.assertTrue(result["baseline_established"]);self.assertEqual(result["processed"],0)
+        self.assertEqual(sent,[])
+        self.assertFalse(any("update outreach" in s for s,*a in conn.writes))
+    async def test_uid_identity_change_asks_for_review_without_historic_replay(self):
+        ns,conn,sent=self.load();conn.cursor=dict(uidvalidity="old",last_uid=100)
+        result=await ns["process_replies"]("fixture")
+        self.assertTrue(result["historic_mail_not_replayed"])
+        self.assertTrue(any("mailbox_identity_changed" in s for s,*a in conn.writes))
+        self.assertEqual(sent,[])
+    async def test_already_read_new_uid_is_processed_without_changing_seen_flag(self):
+        ns,conn,sent=self.load();box=Box()
+        def forbidden(*a):raise AssertionError("Do not rely on unread flags or change them")
+        box.search=forbidden;box.store=forbidden
+        ns["imaplib"]=SimpleNamespace(IMAP4_SSL=lambda *a:box)
+        result=await ns["process_replies"]("fixture")
+        self.assertEqual(result["processed"],1)
+        self.assertTrue(any("set last_uid" in s for s,*a in conn.writes))
+        self.assertEqual(sent,[])
     async def test_owner_hold_records_reply_without_sending_even_when_flag_enabled(self):
         ns,conn,sent=self.load(True,True)
         result=await ns["process_replies"]("fixture")

@@ -7183,21 +7183,40 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
     box=imaplib.IMAP4_SSL(IMAP_HOST,IMAP_PORT)
     try:
         box.login(IMAP_USER,IMAP_PASSWORD); box.select(IMAP_FOLDER)
-        status,data=box.search(None,"UNSEEN")
-        ids=(data[0].split() if status=="OK" and data and data[0] else [])[-100:]
         async with app.state.pool.acquire() as conn:
+          async with conn.transaction():
+            mailbox_key=hashlib.sha256((IMAP_HOST+"\n"+IMAP_USER+"\n"+IMAP_FOLDER).encode()).hexdigest()
+            locked=await conn.fetchval("select pg_try_advisory_xact_lock(hashtextextended($1,0))", "imap:"+mailbox_key)
+            if not locked:return {"ok":True,"enabled":True,"processed":0,"matched":0,"busy":True}
+            validity_data=box.response("UIDVALIDITY")[1]
+            next_data=box.response("UIDNEXT")[1]
+            if not validity_data or not next_data:raise HTTPException(503,"Stable mailbox UID metadata unavailable")
+            validity=validity_data[0].decode();latest=int(next_data[0])-1
+            cursor=await conn.fetchrow("select uidvalidity,last_uid from mailbox_poll_state where mailbox_key=$1",mailbox_key)
+            if not cursor or cursor["uidvalidity"]!=validity:
+                if cursor:
+                    await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+                      values('mailbox_identity_changed','high','Mailbox UID identity changed; historic mail was not replayed',
+                      'Review the mailbox continuity gap before any manual replay. Outreach remains subject to owner hold.')""")
+                await conn.execute("""insert into mailbox_poll_state(mailbox_key,uidvalidity,last_uid)
+                  values($1,$2,$3) on conflict(mailbox_key) do update set uidvalidity=$2,last_uid=$3,updated_at=now()""",mailbox_key,validity,max(0,latest))
+                return {"ok":True,"enabled":True,"processed":0,"matched":0,"baseline_established":True,"historic_mail_not_replayed":True}
+            status,data=box.uid("search",None,"UID",str(cursor["last_uid"]+1)+":*")
+            if status!="OK":raise HTTPException(502,"Mailbox search failed; saved position retained")
+            ids=sorted(int(x) for x in (data[0].split() if data and data[0] else []) if int(x)>cursor["last_uid"])[:100]
             for mid in ids:
-                status,msgdata=box.fetch(mid,"(BODY.PEEK[])")
-                if status!="OK" or not msgdata: continue
+                status,msgdata=box.uid("fetch",str(mid),"(BODY.PEEK[])")
+                if status!="OK" or not msgdata:raise HTTPException(502,"Mailbox fetch failed; saved position retained")
                 raw=next((x[1] for x in msgdata if isinstance(x,tuple)),None)
-                if not raw: continue
+                if not raw:raise HTTPException(502,"Mailbox message unavailable; saved position retained")
                 msg=email.message_from_bytes(raw)
                 sender=parseaddr(msg.get("From",""))[1].lower().strip()
-                if not sender: continue
                 inbound_fingerprint=hashlib.sha256(raw).hexdigest()
                 inbound_key="inbound:"+inbound_fingerprint
                 await record_mail_observation(inbound_key,"inbound","received",inbound_fingerprint,
                     "delivery_failure" if msg.get_content_type()=="multipart/report" or sender.split("@",1)[0] in ("mailer-daemon","postmaster") else None)
+                processed+=1
+                if not sender:continue
                 row=await conn.fetchrow("""select o.outreach_id,o.entity_type,o.entity_id,o.owner_review_required
                   from outreach o
                   where (o.entity_type='vendor' and o.entity_id in (select vendor_id from vendors where lower(public_email)=lower($1)))
@@ -7206,10 +7225,7 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                   order by o.created_at desc limit 1""",sender)
                 sample=await conn.fetchrow("""select sample_id from growth_sample_requests where lower(email)=lower($1)
                   order by created_at desc limit 1""",sender)
-                processed+=1
-                if not row and not sample:
-                    box.store(mid,"+FLAGS","\\Seen")
-                    continue
+                if not row and not sample:continue
                 body=reply_text(msg); classification=classify_reply_text(body)
                 if msg.get_content_type()=="multipart/report" or sender.split("@",1)[0] in ("mailer-daemon","postmaster"):
                     classification="delivery_failure"
@@ -7252,7 +7268,9 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                       where lower(email)=lower($1) and converted_at is null""",sender)
                 elif sample:
                     await event(conn,"growth_sample",sample["sample_id"],"reply_received",{"classification":classification,"email":sender})
-                box.store(mid,"+FLAGS","\\Seen"); matched+=1
+                matched+=1
+            if ids:
+                await conn.execute("update mailbox_poll_state set last_uid=$2,updated_at=now() where mailbox_key=$1",mailbox_key,max(ids))
     finally:
         try: box.logout()
         except Exception: pass

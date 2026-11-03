@@ -37,7 +37,7 @@ async def business_metrics(conn):
           count(*) filter(where status='open' and created_at<now()-interval '24 hours') as older_than_24h
           from exceptions""",
         "requests": """select count(*) as total,
-          count(*) filter(where created_at>now()-interval '24 hours') as last_24h
+          count(*) filter(where submitted_at>now()-interval '24 hours') as last_24h
           from leads""",
         "providers": """select count(*) filter(where status='active') as active_records,
           count(*) filter(where status='prospect') as research_prospects from vendors""",
@@ -54,6 +54,8 @@ async def business_metrics(conn):
           group by type,severity order by count(*) desc limit 25""")]
         result["durable_delivery_claims"]=[dict(r) for r in await conn.fetch("""
           select status,count(*) as count from mail_delivery_attempts group by status""")]
+        result["mailbox_polling"]=[dict(r) for r in await conn.fetch("""
+          select created_at::text as baseline_at,updated_at::text as last_position_update from mailbox_poll_state""")]
         result["api_operations"]=[dict(r) for r in await conn.fetch("""
           select route,requests,failures,last_status,last_observed_at::text,last_success_at::text,
             total_duration_ms/NULLIF(requests,0) as mean_duration_ms
@@ -61,7 +63,7 @@ async def business_metrics(conn):
     result["limits"]={
         "smtp_accepted":"Server acceptance only; not inbox delivery or a human read.",
         "inbox_delivery":None,"email_opens":None,"human_reads":None,
-        "mail_history":"Central mail ledger starts at deployment; older evidence is separate, never backfilled as observed.",
+        "mail_history":"Central ledger starts at deployment. UID polling starts at the current mailbox position, regardless of read flags; historic mail is not replayed.",
         "paid_amounts":"Database paid/complete order amounts by currency; not independently reconciled bank settlement or profit.",
         "providers":"Active database records are not proof of current crew availability or complete market coverage.",
         "clicks":"Recorded sample requests are not unique humans; owner probes are excluded from customer sample counts.",

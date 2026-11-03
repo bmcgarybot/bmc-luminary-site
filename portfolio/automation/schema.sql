@@ -1235,6 +1235,16 @@ create table if not exists api_operation_metrics (
   last_success_at timestamptz
 );
 
+-- UID cursor observes new mail even if a human reads it before the poll.
+-- First activation starts at current UIDNEXT; historical mail is not replayed.
+create table if not exists mailbox_poll_state (
+  mailbox_key text primary key,
+  uidvalidity text not null,
+  last_uid bigint not null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
 -- Preserve the seven pre-review Growth contacts without automatically following
 -- them up when a new wave starts. Historical status and SMTP evidence stay intact.
 alter table outreach add column if not exists owner_review_required boolean not null default false;

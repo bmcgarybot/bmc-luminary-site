@@ -110,7 +110,7 @@ def collect(env,state):
             stamp=by_route.get(route,{}).get("last_success_at")
             try:age=time.time()-dt.datetime.fromisoformat(stamp).timestamp()
             except (TypeError,ValueError):age=None
-            add("Worker freshness "+route,(age is not None and age<2700) or (age is None and time.time()-state.get("configured_at",0)<900),"last successful run age seconds: "+str(round(age) if age is not None else "unknown"))
+            add("Worker freshness "+route,(age is not None and age<2700 and by_route[route].get("last_status",500)<400) or (route not in by_route and time.time()-state.get("configured_at",0)<900),"last successful run age seconds: "+str(round(age) if age is not None else "unknown"))
     code,growth=readings["growth"]
     expected={k:env.get(k,"").strip().lower() for k in FLAGS}
     live=(growth or {}).get("outreach_switches",{})
@@ -248,13 +248,17 @@ def main():
         decision=policy.alert_decision(checks,state,now)
         if args.test_alert:
             if not state.get("monitor_configured"):raise RuntimeError("Configure the designated owner alert recipient first")
+            if state.get("test_alert_attempted_at") and not state.get("test_alert_smtp_accepted"):
+                print(json.dumps({"test_alert_smtp_accepted":False,"uncertain_prior_attempt":True,"duplicate_avoided":True}));return 2
             if not state.get("test_alert_smtp_accepted"):
+                state["test_alert_attempted_at"]=now;save_state(state)
                 accepted=send_alert(env,"[BMC VPS] Operational alert test",body,make_msgid(domain="bmcservicenetwork.com"))
                 state["test_alert_smtp_accepted"]=accepted
                 state["test_alert_attempted_at"]=now
             else:accepted=True
             save_state(state);print(json.dumps({"test_alert_smtp_accepted":accepted,"duplicate_avoided":accepted and bool(state.get("test_alert_attempted_at",0)<now)}));return 0 if accepted else 2
         if decision["send"] and state.get("monitor_configured"):
+            policy.record_alert(state,decision,now,False);save_state(state)
             accepted=send_alert(env,"[BMC VPS] "+("ACTION NEEDED" if problems else "RECOVERED"),body,make_msgid(domain="bmcservicenetwork.com"))
             policy.record_alert(state,decision,now,accepted)
         state.update(last_check=report["observed_at"],last_report=report)

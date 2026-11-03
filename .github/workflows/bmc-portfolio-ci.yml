@@ -1032,6 +1032,8 @@ jobs:
               prior=m.aiosmtplib.send
               dry=m.SMTP_DRY_RUN
               host=m.SMTP_HOST
+              delivery_pool=await m.asyncpg.create_pool(m.DB_DSN,min_size=1,max_size=2)
+              m.app.state.delivery_pool=delivery_pool
               try:
                   m.aiosmtplib.send=capture
                   m.SMTP_DRY_RUN=False
@@ -1049,6 +1051,7 @@ jobs:
                   m.aiosmtplib.send=prior
                   m.SMTP_DRY_RUN=dry
                   m.SMTP_HOST=host
+                  await delivery_pool.close()
           asyncio.run(check())
           PY
 
