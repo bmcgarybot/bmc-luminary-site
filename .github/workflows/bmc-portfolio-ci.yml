@@ -1029,7 +1029,15 @@ jobs:
           docker compose --env-file .env.ci exec -T ops_api python - <<'PY'
           import asyncio,asyncpg
           import app as m
-          async def smtp_failure(_to,_subject,_body,_html_body=None,_attachments=None):
+          captured_pdfs=[]
+          async def smtp_failure(_to,_subject,_body,_html_body=None,attachments=None):
+              assert attachments and len(attachments)==1
+              name,data,maintype,subtype=attachments[0]
+              assert name.endswith(".pdf") and data.startswith(b"%PDF")
+              assert (maintype,subtype)==("application","pdf")
+              captured_pdfs.append(data)
+              plain,html,unsubscribe=m.email_unsubscribe_content(_to,_body,_html_body)
+              assert unsubscribe and "Stop receiving these emails" in plain and m.html.escape(unsubscribe,quote=True) in html
               return False
           async def check():
               m.send_mail=smtp_failure
@@ -1041,6 +1049,7 @@ jobs:
               async with conn.transaction():
                   first=await m.handle_growth_snapshot(conn,request)
               assert first["status"]=="sample_ready" and len(first["sample"])==5,first
+              assert __import__("base64").b64decode(first["download_pdf_base64"])==captured_pdfs[0]
               sid=first["sample_id"]
               state=await conn.fetchrow("select status,sample_sent_at from growth_sample_requests where sample_id=$1",__import__("uuid").UUID(sid))
               assert state["status"]=="delivery_error" and state["sample_sent_at"] is None,state
