@@ -1,3 +1,13 @@
+## Offer implementation merged; production verification pending — 2026-11-03 03:29 UTC
+
+PR41 merged as 5e9c6d299fff1fcfa557595c65e7a64e6be3170b; final head eccabdbbb3993da437b3da1798e1a401022e7652 passed CI41571482973/41571477976. PR42 fixes a discovered gateway gap: signed UUID offer pages now GET-only through nginx, tokens excluded from logs, private routes denied. Actual nginx test passed; branch CI41572116887/41572111551 succeeded. PR42 merged as 40be4ac1c0f6c9fdc2b709145ff83f33cf53725b. Exact-master checks pending. NO VPS deploy of either merge requested yet; last live remains f1b1e09.
+
+Offer invitation scheduler is wired but hard-gated by global hold and Growth switch; only explicitly approved, current, unexpired offers can send, with durable deduplication. Smaller-pack payment now atomically claims the saved sample to prevent the older full-pack link fulfilling a duplicate purchase. Ten new offer tests pass. All three new Stripe products AND Payment Links remain inactive. No approval invoked, charge, customer email, owner resend, or release.
+
+Review artifact libfile_2cdca95c67ec81918414e2147e4a3b53 is version3. Direct file: /workspace/scratch/627ca3a7afe5/review/BMC_Offer_Ladder_And_Recipient_Review.html. Includes exact launch scope (Phoenix cleaning; existing ECP plus eight additional reviewed drafts), full ladder, HTML/plaintext, eight embedded sample PDFs and strategy PDF. New eight are NOT yet staged/live signed journeys. Actual mailbox/button approval remains unverified.
+
+Next: exact-master CI and Pages; one held deploy; independent snapshot; held staging and candidate verification. Do not duplicate deployments/catalog/owner previews. Preserve original seven and all holds.
+
 ## Offer ladder and recipient review checkpoint — 2026-11-03 03:15 UTC
 
 PR 41: https://github.com/bmcgarybot/bmc-luminary-site/pull/41 . Latest head ddbf63f434bfe7c4a7a2d4bf589282c3fe0dae7e; final CI pending. Not merged or deployed. Earlier head 673eb20691c099a06603ec1bf7828a21c50f821f passed both CI runs, including the added real PostgreSQL payment binding tests. Local offer tests: 9 passed, plus existing PDF, qualification, territory, durable mail, owner preview, reply-hold and unsubscribe checks.
