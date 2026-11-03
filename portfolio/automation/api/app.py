@@ -7216,6 +7216,12 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                 await record_mail_observation(inbound_key,"inbound","received",inbound_fingerprint,
                     "delivery_failure" if msg.get_content_type()=="multipart/report" or sender.split("@",1)[0] in ("mailer-daemon","postmaster") else None)
                 processed+=1
+                if msg.get_content_type()=="multipart/report" or sender.split("@",1)[0] in ("mailer-daemon","postmaster"):
+                    await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+                      select 'inbound_delivery_failure','high',$1,
+                      'Inspect the original delivery report and durable mail evidence. Do not automatically resend uncertain customer mail.'
+                      where not exists(select 1 from exceptions where type='inbound_delivery_failure' and summary=$1)""",
+                      "Delivery-failure message recorded: "+inbound_fingerprint)
                 if not sender:continue
                 row=await conn.fetchrow("""select o.outreach_id,o.entity_type,o.entity_id,o.owner_review_required
                   from outreach o

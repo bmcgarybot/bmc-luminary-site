@@ -104,6 +104,19 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(result["processed"],1)
         self.assertTrue(any("set last_uid" in s for s,*a in conn.writes))
         self.assertEqual(sent,[])
+    async def test_unmatched_bounce_creates_help_request_without_resending(self):
+        ns,conn,sent=self.load();box=Box()
+        box.fetch=lambda *a:("OK",[(b"",b"From: mailer-daemon@example.test\r\nContent-Type: multipart/report\r\n\r\nDelivery failed")])
+        ns["imaplib"]=SimpleNamespace(IMAP4_SSL=lambda *a:box)
+        original=conn.fetchrow
+        async def fetchrow(sql,*args):
+            if "select o.outreach_id" in sql or "select sample_id" in sql:return None
+            return await original(sql,*args)
+        conn.fetchrow=fetchrow
+        result=await ns["process_replies"]("fixture")
+        self.assertEqual(result["processed"],1)
+        self.assertTrue(any("inbound_delivery_failure" in q for q,*a in conn.writes))
+        self.assertEqual(sent,[])
     async def test_owner_hold_records_reply_without_sending_even_when_flag_enabled(self):
         ns,conn,sent=self.load(True,True)
         result=await ns["process_replies"]("fixture")
