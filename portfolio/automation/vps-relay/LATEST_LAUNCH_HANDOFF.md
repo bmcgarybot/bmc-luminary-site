@@ -1,3 +1,14 @@
+## CURRENT VERIFIED WORK CHECKPOINT — November 3, 2026, 01:10 UTC
+
+- PR38 is merged as 6cd2aa340554376eab0b5c4b7a6bfe0e4a7b2a7a. Exact-master Portfolio CI41556533128 and Pages41556533131 both completed successfully. VPS deployment of this release has NOT been requested; last verified VPS remains bef62dc5f0703c02b5d548a6017dc7b78c482bfc.
+- Implemented and CI-tested: immutable owner five/PDF, identical subsequent customer sample, owner-only attachment and durable send deduplication, conditional real checkout inspection link, owner-preview payment quarantine, recipient-specific Phoenix copy. Do not call these backend changes live yet.
+- Critical quality correction: generic national/city chain locator pages are excluded. Old Phoenix120 count is obsolete. Local stricter gate currently returns76 including51 newly enriched official-site rows; older surviving records still need manual review. This is NOT sufficient125 paid-pack reserve, not production inventory, not verified buying intent.
+-51 enriched rows are checkpointed at research/PHOENIX_OFFICIAL_ENRICHMENT_2026-11-03.json, NOT yet imported/deployed. Working artifact portfolio/data/assistant-research-bootstrap-2026-11-03-phoenix-direct-expansion.json. Continue existing research; never pad with aggregate locators or relax reserve.
+- Current one-offer recipient: Environment Control Phoenix, commercial cleaning, Phoenix territory only. Official published contact verified; operational capacity/qualifications/acceptance remain unconfirmed. Five researched prospects: AC Hotel Phoenix Downtown, Arizona Grand Resort, Hilton Tapatio Cliffs, DoubleTree Phoenix Midtown, CBRE Phoenix. They are not open jobs.
+- Branded three-page owner-layout PDF visually checked: https://chatgpt.com/library?file_id=libfile_21efd75c56608191b39b2b955063b1c8&account_id=personal . Review artifact only, not yet emailed or a production saved preview.
+- No owner preview sent in this work segment. One distinct final owner preview remains authorized to contact@bmcservicenetwork.com; no customer outreach, charge, approval recording or release. All four holds remain required. Actual receipts last verified0.
+- Continue inventory verification, publish/import tested data, held deployment and fresh runtime checks, owner preview and deployed journey verification. Actual owner mail-client rendering/click approval and explicit release remain required. Do not use unrelated Gmail inbox. User status questions do not cancel implementation.
+
 ## VERIFIED LIVE CHECKPOINT — November 2, 2026, 5:28 p.m. Arizona
 
 - VPS deploy b-private-pdf-deploy-20261103T002559Z SUCCEEDED at 2026-11-03T00:28:07Z, exact release bef62dc5f0703c02b5d548a6017dc7b78c482bfc. Runtime doctor 0 failures/0 warnings. Exact-master CI41552525967 both jobs and Pages41552525843 passed.
