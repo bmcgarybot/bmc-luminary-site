@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "request_id": "revwatch-20261103T2221Z-a11-11-proof_readout",
+  "action": "proof_readout",
+  "created_at": "2026-11-03T22:22:16.049Z",
+  "allow_external_actions": false,
+  "args": {}
+}
