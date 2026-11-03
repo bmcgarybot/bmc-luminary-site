@@ -407,6 +407,7 @@
     const q=new URLSearchParams(location.search);
     const target=q.get("target"),claim=q.get("claim");
     if(!target||!claim)return;
+    if("scrollRestoration" in history)history.scrollRestoration="manual";
     const form=document.querySelector('form[data-form-type="growth_snapshot"]');
     if(!form)return;
     const note=form.querySelector("[data-form-notice]");

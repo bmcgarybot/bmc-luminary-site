@@ -61,6 +61,7 @@ with sync_playwright() as p:
         assert '100 total' in page.locator('[data-success-card]').inner_text()
         assert page.locator('.owner-checkout-warning').is_visible()
         assert page.evaluate('location.hash')=='#your-prospects'
+        assert page.evaluate('history.scrollRestoration')=='manual'
         print(f'PASS {width}px delayed signed link: verified company heading visible below nav, no extra CTA')
     payload['preview']=False
     page.goto('https://bmc.example.test/growth-packs/commercial-cleaning/?target=fixture&claim=fixture#free5')
