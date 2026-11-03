@@ -14,12 +14,12 @@
   "qualifications": "Not independently verified; service claims only",
   "safe_access": "Manual review required before field activity",
   "subject": "Five Phoenix accounts to review for Katharos Commercial Cleaning",
-  "initial_email": "Hi Katharos Commercial Cleaning team,\n\nI’m Brett with BMC Service Network. We research local commercial accounts so service businesses can spend less time building lists and more time having useful conversations.\n\nYour site describes office, industrial and post-construction cleaning, with Phoenix listed on your contact page.\n\nI put together five Phoenix businesses to review against that scope. For example, TrustBank - Camelback has a published local contact route; the brief explains the facility fit and who to ask about vendor onboarding. Each entry includes its business website and a suggested first conversation.\n\nYou can keep the five free, as a PDF and an online brief. If the fit is useful, $499 buys 100 total, including those five. These are researched prospects—not businesses that requested a quote—and sales are not guaranteed.\n\n[Button: View my five Phoenix prospects]\n\nWould a different facility type be more useful? Reply with the work you want more of.\n\nBrett\nBMC Service Network\ncontact@bmcservicenetwork.com\nBMC Luminary Ventures LLC · 186 E. Sheldon St. #1144, Prescott, AZ 86301\n\n[Small footer: Stop these emails]",
+  "initial_email": "Hi Katharos Commercial Cleaning team,\n\nHey, this is Brett with BMC Service Network. We research local commercial accounts so service businesses can spend less time building lists and more time having useful conversations.\n\nYour site describes office, industrial and post-construction cleaning, with Phoenix listed on your contact page.\n\nI put together five Phoenix businesses to review against that scope. For example, TrustBank - Camelback has a published local contact route; the brief explains the facility fit and who to ask about vendor onboarding. Each entry includes its business website and a suggested first conversation.\n\nYou can keep the five free, as a PDF and an online brief. If the fit is useful, $499 buys 100 total, including those five. These are researched prospects—not businesses that requested a quote—and sales are not guaranteed.\n\n[Button: View my five Phoenix prospects]\n\nWould a different facility type be more useful? Reply with the work you want more of.\n\nBrett\nBMC Service Network\ncontact@bmcservicenetwork.com\nBMC Luminary Ventures LLC · 186 E. Sheldon St. #1144, Prescott, AZ 86301\n\n[Small footer: Stop these emails]",
   "sample": [
     {
       "business_name": "TrustBank - Camelback",
       "market": "Phoenix",
-      "category": "insurance professional",
+      "category": "Professional office",
       "fit_reason": "Official business page confirms 2375 E Camelback Road Suite 155, Phoenix, AZ 85016. Published Phoenix branch and general bank email. Ask for facilities/vendor process, and whether the landlord controls suite cleaning; no financial customer information is relevant. Public contact is a routing contact, not confirmed buying intent. Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.",
       "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas.",
       "public_email": "info@trustbank.net",
@@ -52,7 +52,7 @@
     {
       "business_name": "REDW Advisors & CPAs - Phoenix",
       "market": "Phoenix",
-      "category": "insurance professional",
+      "category": "Professional office",
       "fit_reason": "Official business page confirms 5353 N 16th Street Suite 200, Phoenix, AZ 85016. Published Arizona office and firm switchboard. Ask office administration whether suite cleaning is managed locally or by the landlord, and route to the appropriate vendor process. Public contact is a routing contact, not confirmed buying intent. Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.",
       "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas.",
       "public_email": null,
@@ -63,7 +63,7 @@
     {
       "business_name": "Arizona Escrow & Financial Corporation",
       "market": "Phoenix",
-      "category": "insurance professional",
+      "category": "Professional office",
       "fit_reason": "Official business page confirms 5353 N 16th Street Suite 110, Phoenix, AZ 85016. Escrow office in the Madison complex. Ask the office administrator whether cleaning is tenant-controlled or included by the landlord; avoid assuming the office purchases it independently. Public contact is a routing contact, not confirmed buying intent. Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.",
       "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas.",
       "public_email": "info@arizonaescrow.com",
@@ -72,6 +72,6 @@
       "source_url": "https://www.arizonaescrow.com/contact/"
     }
   ],
-  "live_signed_journey": "NOT PREPARED; must bind these exact five in VPS before sending",
+  "live_signed_journey": "v1 delivered to owner only; v2 review prepared with corrected labels and facility-specific openings; no resend or approval",
   "existing_customer_exclusions": "Recipient must identify existing customers; no exclusivity promised"
 }

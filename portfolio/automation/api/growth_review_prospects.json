@@ -1,0 +1,242 @@
+{
+  "https://tfocpa.com/contact-us/": {
+    "business_name": "Tull Forsberg & Olson",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://arizonaschoolofmusic.com/contact-us/": {
+    "business_name": "Arizona School of Music",
+    "market": "Phoenix",
+    "category": "Education facility",
+    "sales_angle": "Ask administration who handles procurement and vendor qualification. Confirm term schedules and safeguarding requirements before proposing a walkthrough."
+  },
+  "https://nphx.church/contact/": {
+    "business_name": "North Phoenix Baptist Church",
+    "market": "Phoenix",
+    "category": "churches",
+    "sales_angle": "Ask the facilities coordinator how recurring and post-event cleaning is arranged. Offer a walkthrough around their service schedule."
+  },
+  "https://southerncpafirm.com/contact/": {
+    "business_name": "Jermaine A Southern CPA",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://ncseng.com/contact/": {
+    "business_name": "NCS Engineers",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://www.phxcpa.com/contact.htm": {
+    "business_name": "Larry B Betts CPA",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://www.modernarizonaphx.com/about": {
+    "business_name": "Modern Arizona",
+    "market": "Phoenix",
+    "category": "retail",
+    "sales_angle": "Ask the location manager whether cleaning is purchased locally or through corporate facilities. Offer a store-specific walkthrough only if they consider local vendors."
+  },
+  "https://willowsdesign.com/contact/": {
+    "business_name": "Willows",
+    "market": "Phoenix",
+    "category": "retail",
+    "sales_angle": "Ask the location manager whether cleaning is purchased locally or through corporate facilities. Offer a store-specific walkthrough only if they consider local vendors."
+  },
+  "https://americantitleserviceagency.com/contact-us/": {
+    "business_name": "American Title Service Agency",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://beachfleischman.com/locations/phoenix-arizona/": {
+    "business_name": "BeachFleischman Phoenix",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://trustbank.net/locations-hours/phoenix-az": {
+    "business_name": "TrustBank - Camelback",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://www.cereusgraphics.com/contact/": {
+    "business_name": "Cereus Graphics",
+    "market": "Phoenix",
+    "category": "warehouses industrial",
+    "sales_angle": "Ask the site manager who handles offices and staff common areas. Confirm access and safety requirements before proposing warehouse-floor work."
+  },
+  "https://www.workuity.com/contact-us/": {
+    "business_name": "Workuity Phoenix Biltmore",
+    "market": "Phoenix",
+    "category": "property management",
+    "sales_angle": "Ask which Phoenix properties use outside janitorial vendors and how to join their vendor process. Start with one property and a written scope."
+  },
+  "https://www.redw.com/contact-us/": {
+    "business_name": "REDW Advisors & CPAs - Phoenix",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://www.arizonaescrow.com/contact/": {
+    "business_name": "Arizona Escrow & Financial Corporation",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://www.cds-law.com/contact-us/": {
+    "business_name": "Law Office of Cole D Sorenson",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://www.modernmanorphx.com/": {
+    "business_name": "Modern Manor",
+    "market": "Phoenix",
+    "category": "retail",
+    "sales_angle": "Ask the location manager whether cleaning is purchased locally or through corporate facilities. Offer a store-specific walkthrough only if they consider local vendors."
+  },
+  "https://www.backalleyfitnessaz.com/contact-us": {
+    "business_name": "Back Alley Fitness",
+    "market": "Phoenix",
+    "category": "Fitness facility",
+    "sales_angle": "Ask the manager who handles facility cleaning and whether they review backup vendors. Start with a specific common-area scope and their operating hours."
+  },
+  "https://www.jamesfwees.com/contact-us/": {
+    "business_name": "Wees Law Firm",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://www.urkecpa.com/contact": {
+    "business_name": "Urke & Stoller",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://www.michaelahallarchitectllc.com/contact-us.php": {
+    "business_name": "Michael A Hall Architect",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://www.heardbuilding.com/": {
+    "business_name": "Heard Building",
+    "market": "Phoenix",
+    "category": "property management",
+    "sales_angle": "Ask which Phoenix properties use outside janitorial vendors and how to join their vendor process. Start with one property and a written scope."
+  },
+  "https://www.practical-art.com/pages/contact": {
+    "business_name": "Practical Art",
+    "market": "Phoenix",
+    "category": "retail",
+    "sales_angle": "Ask the location manager whether cleaning is purchased locally or through corporate facilities. Offer a store-specific walkthrough only if they consider local vendors."
+  },
+  "https://www.tdinsuranceaz.com/contact": {
+    "business_name": "TD Insurance",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://www.vannengineering.com/contact": {
+    "business_name": "Vann Engineering",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://www.cavanaghlaw.com/contact/": {
+    "business_name": "The Cavanagh Law Firm",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://schmittjewelers.com/pages/contact": {
+    "business_name": "Schmitt Jewelers",
+    "market": "Phoenix",
+    "category": "retail",
+    "sales_angle": "Ask the location manager whether cleaning is purchased locally or through corporate facilities. Offer a store-specific walkthrough only if they consider local vendors."
+  },
+  "https://elontec.com/": {
+    "business_name": "Elontec, LLC",
+    "market": "Phoenix",
+    "category": "warehouses industrial",
+    "sales_angle": "Ask the site manager who handles offices and staff common areas. Confirm access and safety requirements before proposing warehouse-floor work."
+  },
+  "https://www.copperstatecu.org/contact-copper-state-credit-union": {
+    "business_name": "Copper State Credit Union",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://www.smsternberg.com/contact-us/": {
+    "business_name": "Sternberg Law Office",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://fortisengineeringllc.com/contact-us": {
+    "business_name": "Fortis Engineering",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://smileykidsdentalaz.com/contact/": {
+    "business_name": "Smiley Kids Dental",
+    "market": "Phoenix",
+    "category": "dental",
+    "sales_angle": "Ask the practice manager who controls the cleaning contract. Begin with reception and administrative areas; confirm infection-control requirements before discussing clinical spaces."
+  },
+  "https://www.contactphysicaltherapy.com/contact/": {
+    "business_name": "Contact Physical Therapy - Phoenix",
+    "market": "Phoenix",
+    "category": "medical centers",
+    "sales_angle": "Ask operations about the vendor approval process and a defined non-clinical cleaning scope. Do not imply clinical qualifications or an open contract."
+  },
+  "https://arcadiadentalgroup.com/contact/": {
+    "business_name": "Arcadia Dental Group",
+    "market": "Phoenix",
+    "category": "dental",
+    "sales_angle": "Ask the practice manager who controls the cleaning contract. Begin with reception and administrative areas; confirm infection-control requirements before discussing clinical spaces."
+  },
+  "https://thetitleagency.com/": {
+    "business_name": "The Title Agency",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://www.agavehomeloans.com/contact/": {
+    "business_name": "Agave Home Loans",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://ipcaz.com/ipc-home-page": {
+    "business_name": "International Printing",
+    "market": "Phoenix",
+    "category": "warehouses industrial",
+    "sales_angle": "Ask the site manager who handles offices and staff common areas. Confirm access and safety requirements before proposing warehouse-floor work."
+  },
+  "https://www.marriott.com/en-us/hotels/phxiw-the-westin-phoenix-downtown/overview/": {
+    "business_name": "The Westin Phoenix Downtown",
+    "market": "Phoenix",
+    "category": "hotels motels",
+    "sales_angle": "Ask hotel operations about approved vendors for a defined common-area deep clean or event reset; do not assume housekeeping needs outside help."
+  },
+  "https://www.bankerstrust.com/locations/arizona/phoenix-main-branch/": {
+    "business_name": "Bankers Trust Company - Camelback",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  },
+  "https://arusi.net/contact/": {
+    "business_name": "ARUSI Engineering",
+    "market": "Phoenix",
+    "category": "Professional office",
+    "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas."
+  }
+}

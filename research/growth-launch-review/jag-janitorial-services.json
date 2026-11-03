@@ -14,12 +14,12 @@
   "qualifications": "Not independently verified; service claims only",
   "safe_access": "Manual review required before field activity",
   "subject": "Five Phoenix accounts to review for JAG Janitorial Services",
-  "initial_email": "Hi JAG Janitorial Services team,\n\nI’m Brett with BMC Service Network. We research local commercial accounts so service businesses can spend less time building lists and more time having useful conversations.\n\nYour Phoenix team offers office janitorial work and asks for facility scope and frequency before quoting.\n\nI put together five Phoenix businesses to review against that scope. For example, Michael A Hall Architect has a published local contact route; the brief explains the facility fit and who to ask about vendor onboarding. Each entry includes its business website and a suggested first conversation.\n\nYou can keep the five free, as a PDF and an online brief. If the fit is useful, $499 buys 100 total, including those five. These are researched prospects—not businesses that requested a quote—and sales are not guaranteed.\n\n[Button: View my five Phoenix prospects]\n\nWould a different facility type be more useful? Reply with the work you want more of.\n\nBrett\nBMC Service Network\ncontact@bmcservicenetwork.com\nBMC Luminary Ventures LLC · 186 E. Sheldon St. #1144, Prescott, AZ 86301\n\n[Small footer: Stop these emails]",
+  "initial_email": "Hi JAG Janitorial Services team,\n\nHey, this is Brett with BMC Service Network. We research local commercial accounts so service businesses can spend less time building lists and more time having useful conversations.\n\nYour Phoenix team offers office janitorial work and asks for facility scope and frequency before quoting.\n\nI put together five Phoenix businesses to review against that scope. For example, Michael A Hall Architect has a published local contact route; the brief explains the facility fit and who to ask about vendor onboarding. Each entry includes its business website and a suggested first conversation.\n\nYou can keep the five free, as a PDF and an online brief. If the fit is useful, $499 buys 100 total, including those five. These are researched prospects—not businesses that requested a quote—and sales are not guaranteed.\n\n[Button: View my five Phoenix prospects]\n\nWould a different facility type be more useful? Reply with the work you want more of.\n\nBrett\nBMC Service Network\ncontact@bmcservicenetwork.com\nBMC Luminary Ventures LLC · 186 E. Sheldon St. #1144, Prescott, AZ 86301\n\n[Small footer: Stop these emails]",
   "sample": [
     {
       "business_name": "Michael A Hall Architect",
       "market": "Phoenix",
-      "category": "insurance professional",
+      "category": "Professional office",
       "fit_reason": "Official business page confirms 600 N 4th St Suite 404, Phoenix, AZ 85004. Professional firm publishes a physical Phoenix office and direct office contact. Ask office administration whether ordinary workspace cleaning is tenant-controlled and what access/document-security requirements apply; construction-site or specialist laboratory cleaning is excluded. Public contact is a routing contact, not confirmed buying intent. Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.",
       "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas.",
       "public_email": null,
@@ -52,7 +52,7 @@
     {
       "business_name": "TD Insurance",
       "market": "Phoenix",
-      "category": "insurance professional",
+      "category": "Professional office",
       "fit_reason": "Official business page confirms 4020 N 20th St Suite 105, Phoenix, AZ 85016. Agency publishes weekday hours and office contact. Ask whether suite cleaning is tenant-controlled and whether after-hours access is possible. Public contact is a routing contact, not confirmed buying intent. Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.",
       "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas.",
       "public_email": "kirk@tdinsuranceaz.com",
@@ -63,7 +63,7 @@
     {
       "business_name": "Vann Engineering",
       "market": "Phoenix",
-      "category": "insurance professional",
+      "category": "Professional office",
       "fit_reason": "Official business page confirms 2239 E Rose Garden Loop, Phoenix, AZ 85024. Professional firm publishes a physical Phoenix office and direct office contact. Ask office administration whether ordinary workspace cleaning is tenant-controlled and what access/document-security requirements apply; construction-site or specialist laboratory cleaning is excluded. Public contact is a routing contact, not confirmed buying intent. Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.",
       "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas.",
       "public_email": "smorgan@vannengineeringinc.com",
@@ -72,6 +72,6 @@
       "source_url": "https://www.vannengineering.com/contact"
     }
   ],
-  "live_signed_journey": "NOT PREPARED; must bind these exact five in VPS before sending",
+  "live_signed_journey": "v1 delivered to owner only; v2 review prepared with corrected labels and facility-specific openings; no resend or approval",
   "existing_customer_exclusions": "Recipient must identify existing customers; no exclusivity promised"
 }
