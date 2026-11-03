@@ -2,6 +2,7 @@ from growth_pdf import sample_pdf_response, render_sample_pdf
 import growth_offers
 from pathlib import Path
 GROWTH_REVIEW_PACKETS=__import__("json").loads(Path(__file__).with_name("growth_review_packets.json").read_text())
+GROWTH_REVIEW_PROSPECTS=__import__("json").loads(Path(__file__).with_name("growth_review_prospects.json").read_text())
 import base64, os, json, uuid, re, imaplib, email, asyncio, urllib.request, urllib.parse, urllib.error, hmac, hashlib, time, html, random, csv, io
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
@@ -52,6 +53,7 @@ OWNER_LAUNCH_HOLD=os.getenv("BMC_OWNER_LAUNCH_HOLD","true").strip().lower()!="fa
 GROWTH_OUTREACH_ENABLED=os.getenv("GROWTH_OUTREACH_ENABLED","false").lower()=="true"
 GROWTH_OUTREACH_DAILY_LIMIT=env_int("GROWTH_OUTREACH_DAILY_LIMIT",10)
 GROWTH_OUTREACH_WAVE=os.getenv("GROWTH_OUTREACH_WAVE","growth-pressure-1").strip() or "growth-pressure-1"
+GROWTH_OUTREACH_TARGET_IDS=tuple(x.strip() for x in os.getenv("GROWTH_OUTREACH_TARGET_IDS","").split(",") if x.strip())
 GROWTH_SAMPLE_MIN_RESERVE=max(100,env_int("GROWTH_SAMPLE_MIN_RESERVE",125))
 GROWTH_AUTO_FULFILL_ENABLED=os.getenv("GROWTH_AUTO_FULFILL_ENABLED","true").lower()=="true"
 BUSINESS_POSTAL_ADDRESS=os.getenv("BUSINESS_POSTAL_ADDRESS","").strip()
@@ -2773,6 +2775,11 @@ def growth_fit_reason(row,service_key):
     return f"{label} in {market}; this business type commonly operates customer, staff, office, public, or facility space that may need recurring or project cleaning."
 
 def growth_sales_angle(row,service_key):
+    reviewed=globals().get("GROWTH_REVIEW_PROSPECTS",{}).get(clean(row.get("source_url")),{})
+    if (service_key=="commercial_cleaning" and row.get("official_site")
+        and clean(row.get("market"))==reviewed.get("market")=="Phoenix"
+        and clean(row.get("business_name"))==reviewed.get("business_name")):
+        return reviewed["sales_angle"]
     category=clean(row.get("category_key"))
     if service_key=="pressure_washing":
         angles={
@@ -3116,9 +3123,13 @@ def growth_sample_public_rows(rows):
         phone=clean(r.get("public_phone"))
         if not 10<=len(re.sub(r"\D","",phone))<=15 or re.search(r"[{}<>]",phone): phone=""
         contact=email_addr or phone or ("Use the business website" if website else "Contact details need review")
+        reviewed=globals().get("GROWTH_REVIEW_PROSPECTS",{}).get(clean(r.get("source_url")),{})
+        category=clean(r.get("category_label")) or clean(r.get("category_key")).replace("_"," ").title()
+        if clean(r.get("market"))==reviewed.get("market")=="Phoenix" and clean(r.get("business_name"))==reviewed.get("business_name"):
+            category=reviewed["category"]
         out.append({
           "business_name":clean(r.get("business_name")),"market":clean(r.get("market")),
-          "category":clean(r.get("category_label")) or clean(r.get("category_key")).replace("_"," ").title(),
+          "category":category,
           "fit_score":int(r.get("fit_score") or 0),"grade":clean(r.get("grade")),
           "fit_reason":clean(r.get("fit_reason")),"sales_angle":clean(r.get("sales_angle")),
           "contact_route":contact,"public_email":email_addr,"public_phone":phone,
@@ -3392,7 +3403,7 @@ async def handle_growth_snapshot(conn,p):
           "qualified_pool":len(rows),
           "message":"We saved your request. This exact market needs a manual inventory check before we send five; BMC will not pad it with weak records."}
 
-    reviewed=await conn.fetchrow("select candidate_ids from growth_owner_previews where target_id=$1 and version='official-pdf-v1'",target_id) if target_id else None
+    reviewed=await conn.fetchrow("select candidate_ids from growth_owner_previews where target_id=$1 and version='official-pdf-v2'",target_id) if target_id else None
     if reviewed:
         by_id={str(x["candidate_id"]):x for x in rows}
         if not all(str(x) in by_id for x in reviewed["candidate_ids"]):
@@ -3478,8 +3489,9 @@ async def handle_growth_snapshot(conn,p):
       "message":"Your five commercial targets are ready. We also emailed a copy so you can use them later."}
 
 async def growth_owner_sample(conn,target,territory,rows):
-    # A versioned review artifact never changes its five or creates customer demand.
-    version="official-pdf-v1"
+    # Preserve v1 mail and frozen payloads. Corrected labels/openings get a new
+    # review artifact only; reading it never sends mail or grants approval.
+    version="official-pdf-v2"
     await conn.execute("select pg_advisory_xact_lock(hashtextextended($1,0))","owner_preview:"+target["target_id"])
     saved=await conn.fetchrow("select * from growth_owner_previews where target_id=$1 and version=$2",target["target_id"],version)
     if saved and list(saved["selected_markets"])!=list(territory):
@@ -3674,6 +3686,7 @@ async def growth_runtime_status(conn):
     return {"ok":True,"owner_launch_hold_active":OWNER_LAUNCH_HOLD,
       "outreach_switches":{"OUTREACH_ENABLED":OUTREACH_ENABLED,"BUYER_OUTREACH_ENABLED":BUYER_OUTREACH_ENABLED,"GROWTH_OUTREACH_ENABLED":GROWTH_OUTREACH_ENABLED},
       "growth_enabled":GROWTH_OUTREACH_ENABLED,"wave":GROWTH_OUTREACH_WAVE,
+      "recipient_scope_count":len(globals().get("GROWTH_OUTREACH_TARGET_IDS",())),
       "daily_limit":GROWTH_OUTREACH_DAILY_LIMIT,"sample_reserve":GROWTH_SAMPLE_MIN_RESERVE,"historical_contacts_awaiting_review":int(review_required or 0),
       "config":{"smtp":smtp_ready,"imap":imap_ready,"postal":postal_ready,"payment_link":int(links or 0)>=1},
       "config_ready":config_ready,"staged_active":int(staged or 0),"sent":int(sent or 0),"replies":int(replies or 0),
@@ -4667,6 +4680,9 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
                 "message":"Owner launch hold is active."}
     if not GROWTH_OUTREACH_ENABLED:
         return {"ok":True,"enabled":False,"sent":0,"message":"Growth outreach is disabled."}
+    scope=tuple(globals().get("GROWTH_OUTREACH_TARGET_IDS",()))
+    if not scope:
+        return {"ok":True,"enabled":False,"sent":0,"blocked":True,"message":"An exact reviewed recipient scope is required."}
     if not BUSINESS_POSTAL_ADDRESS or "CHANGE_ME" in BUSINESS_POSTAL_ADDRESS:
         raise HTTPException(409,"BUSINESS_POSTAL_ADDRESS must be configured before Growth outreach can send.")
     if not (IMAP_ENABLED and IMAP_HOST and IMAP_USER and IMAP_PASSWORD):
@@ -4688,13 +4704,14 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
         from outreach o join growth_outreach_targets g on g.target_id=o.entity_id
         join growth_experiment_cells e on e.cell_key=g.experiment_cell
         where o.entity_type='growth_customer' and o.campaign='growth_sales' and o.wave=$2 and o.opt_out=false
-          and o.owner_review_required=false
+          and o.owner_review_required=false and o.entity_id=any($3::text[])
           and g.status not in ('suppressed','bad_fit') and e.status in ('exploring','winner','challenger')
           and (o.status='queued' or (o.status='sent' and o.next_followup_at<=now() and o.sequence_step<2))
           and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(g.public_email))
         order by case when o.status='queued' then 0 else 1 end,g.fit_score desc,coalesce(o.next_followup_at,o.created_at) asc
-        limit $1""",allowance,GROWTH_OUTREACH_WAVE)
+        limit $1""",allowance,GROWTH_OUTREACH_WAVE,list(scope))
       for row in rows:
+        if row["target_id"] not in scope:continue
         step=1 if row["status"]=="queued" else 2
         try:
             service_key,subject,body,html_body,landing=growth_outreach_message(row,step)

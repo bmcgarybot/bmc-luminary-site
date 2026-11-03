@@ -14,12 +14,12 @@
   "qualifications": "Not independently verified; service claims only",
   "safe_access": "Manual review required before field activity",
   "subject": "Five Phoenix accounts to review for LJ’s Cleaning Solutions",
-  "initial_email": "Hi LJ’s Cleaning Solutions team,\n\nI’m Brett with BMC Service Network. We research local commercial accounts so service businesses can spend less time building lists and more time having useful conversations.\n\nYour Phoenix headquarters and commercial cleaning services give this research a clear local starting point.\n\nI put together five Phoenix businesses to review against that scope. For example, The Cavanagh Law Firm has a published local contact route; the brief explains the facility fit and who to ask about vendor onboarding. Each entry includes its business website and a suggested first conversation.\n\nYou can keep the five free, as a PDF and an online brief. If the fit is useful, $499 buys 100 total, including those five. These are researched prospects—not businesses that requested a quote—and sales are not guaranteed.\n\n[Button: View my five Phoenix prospects]\n\nWould a different facility type be more useful? Reply with the work you want more of.\n\nBrett\nBMC Service Network\ncontact@bmcservicenetwork.com\nBMC Luminary Ventures LLC · 186 E. Sheldon St. #1144, Prescott, AZ 86301\n\n[Small footer: Stop these emails]",
+  "initial_email": "Hi LJ’s Cleaning Solutions team,\n\nHey, this is Brett with BMC Service Network. We research local commercial accounts so service businesses can spend less time building lists and more time having useful conversations.\n\nYour Phoenix headquarters and commercial cleaning services give this research a clear local starting point.\n\nI put together five Phoenix businesses to review against that scope. For example, The Cavanagh Law Firm has a published local contact route; the brief explains the facility fit and who to ask about vendor onboarding. Each entry includes its business website and a suggested first conversation.\n\nYou can keep the five free, as a PDF and an online brief. If the fit is useful, $499 buys 100 total, including those five. These are researched prospects—not businesses that requested a quote—and sales are not guaranteed.\n\n[Button: View my five Phoenix prospects]\n\nWould a different facility type be more useful? Reply with the work you want more of.\n\nBrett\nBMC Service Network\ncontact@bmcservicenetwork.com\nBMC Luminary Ventures LLC · 186 E. Sheldon St. #1144, Prescott, AZ 86301\n\n[Small footer: Stop these emails]",
   "sample": [
     {
       "business_name": "The Cavanagh Law Firm",
       "market": "Phoenix",
-      "category": "insurance professional",
+      "category": "Professional office",
       "fit_reason": "Official business page confirms 1850 N Central Ave Suite 1900, Phoenix, AZ 85004. Law firm publishes a physical Phoenix office and general contact. Ask office administration whether suite cleaning is tenant-controlled and what confidentiality/access procedures apply. Do not use legal intake forms or imply a need for legal services; count firm once. Public contact is a routing contact, not confirmed buying intent. Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.",
       "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas.",
       "public_email": null,
@@ -52,7 +52,7 @@
     {
       "business_name": "Copper State Credit Union",
       "market": "Phoenix",
-      "category": "insurance professional",
+      "category": "Professional office",
       "fit_reason": "Official business page confirms 15458 N 28th Avenue, Phoenix, AZ 85053. Administrative office is explicitly listed. Count the institution once rather than counting every branch as independent buying demand. Ask for facilities/vendor onboarding; member-service email is not a procurement address. Public contact is a routing contact, not confirmed buying intent. Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.",
       "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas.",
       "public_email": null,
@@ -63,7 +63,7 @@
     {
       "business_name": "Sternberg Law Office",
       "market": "Phoenix",
-      "category": "insurance professional",
+      "category": "Professional office",
       "fit_reason": "Official business page confirms 343 W Roosevelt St Suite 110, Phoenix, AZ 85003. Law firm publishes a physical Phoenix office and general contact. Ask office administration whether suite cleaning is tenant-controlled and what confidentiality/access procedures apply. Do not use legal intake forms or imply a need for legal services; count firm once. Public contact is a routing contact, not confirmed buying intent. Ask permission to discuss a defined non-specialist cleaning scope; no open job, current outsourcing need or safe access confirmed.",
       "sales_angle": "Ask the office manager whether suite cleaning is handled by the practice or the building. Offer a walkthrough and a written scope for reception, restrooms and shared staff areas.",
       "public_email": null,
@@ -72,6 +72,6 @@
       "source_url": "https://www.smsternberg.com/contact-us/"
     }
   ],
-  "live_signed_journey": "NOT PREPARED; must bind these exact five in VPS before sending",
+  "live_signed_journey": "v1 delivered to owner only; v2 review prepared with corrected labels and facility-specific openings; no resend or approval",
   "existing_customer_exclusions": "Recipient must identify existing customers; no exclusivity promised"
 }

@@ -92,6 +92,24 @@ class Tests(unittest.TestCase):
             result=asyncio.run(ns['process_growth_offer_invitations']('fixture'))
             self.assertEqual(result,{'ok':True,'sent':0,'held':True})
 
+    def test_reviewed_facility_openings_and_labels_are_identity_bound(self):
+        import ast,json,re
+        path=Path(__file__).parent/'api'
+        details=json.loads((path/'growth_review_prospects.json').read_text())
+        source=ast.parse((path/'app.py').read_text())
+        nodes=[n for n in source.body if isinstance(n,ast.FunctionDef) and n.name in ('growth_sales_angle','growth_sample_public_rows')]
+        ns=dict(GROWTH_REVIEW_PROSPECTS=details,clean=lambda x:str(x or '').strip(),re=re,growth_customer_url=lambda x:x)
+        exec(compile(ast.Module(body=nodes,type_ignores=[]),'reviewed_details','exec'),ns)
+        for url,d in details.items():
+            row=dict(d,source_url=url,official_site=True,category_key='insurance_professional',category_label='insurance professional')
+            row['sales_angle']=ns['growth_sales_angle'](row,'commercial_cleaning')
+            public=ns['growth_sample_public_rows']([row])[0]
+            self.assertEqual(public['category'],d['category'])
+            self.assertEqual(public['sales_angle'],d['sales_angle'])
+            for bad in (dict(row,market='Prescott'),dict(row,business_name='Different business'),dict(row,official_site=False)):
+                self.assertNotEqual(ns['growth_sales_angle'](bad,'commercial_cleaning'),d['sales_angle'])
+        self.assertGreater(len({d['sales_angle'] for d in details.values()}),4)
+
     def test_digest_binds_content(self):
         a={'rows':rows(25)};b=copy.deepcopy(a);b['rows'][0]['fit_reason']='Changed'
         self.assertNotEqual(g.offer_digest(a),g.offer_digest(b))

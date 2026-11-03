@@ -25,6 +25,19 @@ configured_wave="$(env_value GROWTH_OUTREACH_WAVE)"
 wave="$configured_wave"
 if [ -z "$wave" ] || [ "$wave" = "growth1" ]; then wave="growth-pressure-1"; fi
 echo "Selected launch wave: $wave"
+scope_ids="$(env_value GROWTH_OUTREACH_TARGET_IDS)"
+scope_sql="and false"
+if [[ "$scope_ids" =~ ^inventory:[A-Za-z0-9_-]+(,inventory:[A-Za-z0-9_-]+)*$ ]]; then
+  scope_sql="$(python3 -c 'import sys; print("and entity_id in ("+",".join(repr(x) for x in sys.argv[1].split(","))+")")' "$scope_ids")"
+  pass "Exact recipient scope is configured; broader queued contacts are excluded"
+else
+  fail "Exact reviewed recipient scope is missing or invalid"
+fi
+case "$wave" in
+  growth-cleaning-1) niche="commercial-cleaning";;
+  growth-pressure-1) niche="pressure-washing";;
+  *) niche="commercial-cleaning"; fail "Unsupported Growth wave";;
+esac
 if [ -n "$configured_wave" ] && [ "$configured_wave" != "$wave" ]; then
   warn "Legacy Growth wave '$configured_wave' will migrate to '$wave' when launch is enabled"
 fi
@@ -55,7 +68,7 @@ done
 
 product="$(dbq "select count(*) from products where product_key='growth_pack_starter' and active=true and amount_cents=49900 and coalesce(payment_link_url,'')<>'';")"
 [ "$product" -eq 1 ] && pass "Live \$499 Growth Pack payment link is mapped" || fail "Live \$499 Growth Pack mapping is not ready"
-staged="$(dbq "select count(*) from outreach where entity_type='growth_customer' and campaign='growth_sales' and wave='$wave' and status in ('queued','sent') and opt_out=false and owner_review_required=false;")"
+staged="$(dbq "select count(*) from outreach where entity_type='growth_customer' and campaign='growth_sales' and wave='$wave' and status in ('queued','sent') and opt_out=false and owner_review_required=false $scope_sql;")"
 printf '  active staged Growth targets: %s\n' "$staged"
 [ "$staged" -gt 0 ] && pass "Selected Growth wave has contactable staged targets" || fail "No staged targets exist for selected Growth wave"
 
@@ -79,10 +92,10 @@ else
   fail "Private Growth status endpoint failed"
 fi
 
-if curl --max-time 20 -fsS https://bmcservicenetwork.com/growth-packs/pressure-washing/ >/tmp/bmc_growth_page.html 2>/dev/null   && grep -q 'data-form-type="growth_snapshot"' /tmp/bmc_growth_page.html   && grep -q '5 free' /tmp/bmc_growth_page.html; then
-  pass "Live pressure-washing Growth landing page is reachable and has the free-five form"
+if curl --max-time 20 -fsS https://bmcservicenetwork.com/growth-packs/$niche/ >/tmp/bmc_growth_page.html 2>/dev/null   && grep -q 'data-form-type="growth_snapshot"' /tmp/bmc_growth_page.html   && grep -q '5 free' /tmp/bmc_growth_page.html; then
+  pass "Live selected Growth landing page is reachable and has the free-five form"
 else
-  fail "Live pressure-washing Growth landing page is missing/stale/unreachable"
+  fail "Live selected Growth landing page is missing/stale/unreachable"
 fi
 
 if curl --max-time 20 -fsS https://bmcservicenetwork.com/growth-packs/ >/tmp/bmc_growth_hub.html 2>/dev/null   && grep -q 'Show me 5 free targets' /tmp/bmc_growth_hub.html; then
@@ -91,10 +104,10 @@ else
   fail "Live Growth hub is missing/stale/unreachable"
 fi
 
-if curl --max-time 20 -fsS https://bmcservicenetwork.com/sitemap.xml >/tmp/bmc_growth_sitemap.xml 2>/dev/null   && grep -q 'growth-packs/pressure-washing/' /tmp/bmc_growth_sitemap.xml; then
-  pass "Public sitemap contains the first Growth niche"
+if curl --max-time 20 -fsS https://bmcservicenetwork.com/sitemap.xml >/tmp/bmc_growth_sitemap.xml 2>/dev/null   && grep -q "growth-packs/$niche/" /tmp/bmc_growth_sitemap.xml; then
+  pass "Public sitemap contains the selected Growth niche"
 else
-  fail "Public sitemap does not contain the first Growth niche"
+  fail "Public sitemap does not contain the selected Growth niche"
 fi
 
 if bash ./verify-public-ingress.sh >/tmp/bmc_growth_ingress.txt 2>&1; then

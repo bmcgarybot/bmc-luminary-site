@@ -29,7 +29,7 @@ jobs:
           expected={
               "proof_readout","launch_audit","runtime_doctor","diagnostic_bundle","scheduler_status","search_quality_probe","research_refresh_status",
               "growth_status","growth_launch_audit","operator_snapshot","growth_inventory_audit","growth_preview_candidates","nevada_status",
-              "deploy_update","configure_owner_contact","market_inventory_step","local_demand_step",
+              "deploy_update","configure_owner_contact","configure_growth_review_scope","market_inventory_step","local_demand_step",
               "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","inventory_closure_step","research_refresh_install","scheduler_start","scheduler_stop",
               "growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_launch_enable","growth_launch_disable","growth_owner_replay_email","growth_owner_target_preview","owner_replay_all_email_templates","growth_owner_preview_approve"
           }

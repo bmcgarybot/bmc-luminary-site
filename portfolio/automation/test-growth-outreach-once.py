@@ -37,7 +37,7 @@ class Tests(durable['Tests']):
             BUSINESS_POSTAL_ADDRESS='FIXTURE ONLY', IMAP_ENABLED=True, IMAP_HOST='fixture',
             IMAP_USER='fixture', IMAP_PASSWORD='fixture', ADMIN_KEY='fixture',
             Header=lambda **kwargs: None, GROWTH_OUTREACH_DAILY_LIMIT=10,
-            GROWTH_OUTREACH_WAVE='fixture', growth_outreach_message=render,
+            GROWTH_OUTREACH_WAVE='fixture', GROWTH_OUTREACH_TARGET_IDS=('fixture-target',), growth_outreach_message=render,
             datetime=datetime, timezone=timezone, timedelta=timedelta, event=event)
         tree = ast.parse((HERE/'api/app.py').read_text())
         worker = next(n for n in tree.body if isinstance(n, ast.AsyncFunctionDef) and n.name=='process_growth_outreach')
@@ -84,6 +84,14 @@ class Tests(durable['Tests']):
         await self.work()
         self.assertEqual(self.calls, 2)
         self.assertEqual(set(self.conn.records), {'growth-outreach:fixture-growth:1', 'growth-outreach:fixture-growth:2'})
+    async def test_missing_exact_scope_blocks_even_with_switch_on(self):
+        self.ns['GROWTH_OUTREACH_TARGET_IDS']=()
+        self.assertEqual((await self.work())['sent'],0)
+        self.assertEqual(self.calls,0)
+    async def test_older_target_outside_scope_never_sends(self):
+        self.ns['GROWTH_OUTREACH_TARGET_IDS']=('different-reviewed-target',)
+        self.assertEqual((await self.work())['sent'],0)
+        self.assertEqual(self.calls,0)
     async def test_worker_hold_does_not_create_delivery_claim(self):
         self.ns['OWNER_LAUNCH_HOLD'] = True
         self.assertEqual((await self.work())['sent'], 0)
