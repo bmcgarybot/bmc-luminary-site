@@ -75,6 +75,7 @@ jobs:
           python3 portfolio/automation/test-growth-reply-hold.py
           python3 portfolio/automation/test-email-unsubscribe.py
           python3 portfolio/automation/test-growth-preview-token.py
+          python3 portfolio/automation/test-owner-preview-payment.py
           python3 portfolio/automation/test-owner-preview-scope.py
           python3 portfolio/automation/test-owner-contact-config.py
           python3 portfolio/automation/test-service-outreach-copy.py
@@ -743,8 +744,22 @@ jobs:
           assert d["preview"] is True, d
           assert d["sample_id"] == "owner-preview", d
           assert len(d["sample"]) == 5, d
-          assert d["checkout_url"] == "#owner-preview-checkout", d
+          assert d["checkout_url"].startswith("https://buy.stripe.com/"), d
+          assert "client_reference_id=owner_preview_" in d["checkout_url"], d
+          assert d["preview_id"], d
           PY
+          curl -fsS -X POST http://127.0.0.1:8000/api/growth/claim-free-five \
+            -H 'Content-Type: application/json' \
+            -d '{"target_id":"'"$CI_GROWTH_TARGET"'","claim":"'"$CI_GROWTH_PREVIEW_CLAIM"'","preview":"1"}' \
+            >/tmp/bmc_growth_owner_replay.json
+          python - <<'PYTEST'
+          import json
+          first=json.load(open("/tmp/bmc_growth_owner_preview.json"))
+          replay=json.load(open("/tmp/bmc_growth_owner_replay.json"))
+          assert first["preview_id"] == replay["preview_id"]
+          assert first["sample"] == replay["sample"]
+          assert first["checkout_url"] == replay["checkout_url"]
+          PYTEST
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from growth_sample_requests where source_target_id='$CI_GROWTH_TARGET';")" -eq 0
           test "$(docker compose --env-file .env.ci exec -T postgres psql -U bmc_automation -d bmc_portfolio -Atc "select count(*) from outreach where entity_type='growth_customer' and entity_id='$CI_GROWTH_TARGET' and status='sent' and reply_type is null;")" -eq 1
 
@@ -755,6 +770,8 @@ jobs:
           python - <<'PY'
           import json
           d=json.load(open("/tmp/bmc_growth_one_click.json"))
+          preview=json.load(open("/tmp/bmc_growth_owner_preview.json"))
+          assert d["sample"] == preview["sample"], (d["sample"],preview["sample"])
           assert d["ok"] is True
           assert d["status"] == "sample_ready", d
           assert len(d["sample"]) == 5, d

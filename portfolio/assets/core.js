@@ -338,7 +338,7 @@
       if(response.checkout_url && /^https:\/\/buy\.stripe\.com\//i.test(response.checkout_url)){
         const actions=document.createElement("div");actions.className="actions";
         const checkout=document.createElement("a");checkout.className="btn btn-primary";
-        checkout.href=response.checkout_url;checkout.textContent="Get the full 100 for $499";
+        checkout.href=response.checkout_url;checkout.textContent=response.preview?"Inspect live $499 checkout — do not pay":"Get the full 100 for $499";
         actions.appendChild(checkout);card.appendChild(actions);
       }else if(!response.preview){
         const options=document.createElement("p");

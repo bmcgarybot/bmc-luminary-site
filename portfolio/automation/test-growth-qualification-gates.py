@@ -54,6 +54,16 @@ class Tests(unittest.TestCase):
             last_verified_at=datetime.now(timezone.utc),evidence={"artifact_files":["synthetic-reviewed.json"],"researched_by":"assistant_manual_census"})
         row.update(patch);return row
 
+    def test_chain_indexes_and_recruitment_pages_are_not_property_evidence(self):
+        for url in ('https://www.cvs.com/store-locator/cvs-pharmacy-locations/Arizona/Phoenix',
+                    'https://www.walgreens.com/storelocator/find.jsp?requestType=locator',
+                    'https://www.frysfood.com/stores/grocery/az/phoenix',
+                    'https://local.safeway.com/safeway/az/phoenix.html',
+                    'https://www.sprouts.com/stores/az/',
+                    'https://www.marriott.com/en-us/destinations/united-states/arizona/phoenix/hotels-near-desert-ridge.mi',
+                    'https://ro.careers.tsmc.com/job/Phoenix-test/'):
+            self.assertFalse(ns['growth_candidate_evidence_valid'](self.evidence_row(source_url=url),'Sedona'),url)
+
     def test_live_directory_and_wrong_city_regressions(self):
         rows=[self.evidence_row(),self.evidence_row(
             business_name="Grocery Stores in Sedona, AZ with Ratings, Reviews, Hours and ...",
