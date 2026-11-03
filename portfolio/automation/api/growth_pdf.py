@@ -48,7 +48,7 @@ def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at
                            author='BMC Service Network')
     styles = {
         'title': ParagraphStyle('title', fontName='BMCBold', fontSize=24, leading=29, textColor=NAVY, spaceAfter=12),
-        'heading': ParagraphStyle('heading', fontName='BMCBold', fontSize=13, leading=17, textColor=NAVY, spaceAfter=7),
+        'heading': ParagraphStyle('heading', fontName='BMCBold', fontSize=13, leading=17, textColor=NAVY, spaceAfter=7, keepWithNext=True),
         'body': ParagraphStyle('body', fontName='BMCRegular', fontSize=10, leading=15, textColor=NAVY, spaceAfter=8),
         'small': ParagraphStyle('small', fontName='BMCRegular', fontSize=8, leading=12, textColor=colors.HexColor('#526675'), spaceAfter=7),
     }
@@ -59,7 +59,7 @@ def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at
              p('Prepared for ' + str(business), 'heading'),
              p(f'{service} | {", ".join(territory)} | Prepared {when}'),
              p('A researched shortlist of businesses to approach. These businesses have not requested quotes, and no job or buying interest is confirmed.'),
-             p('Your sample is saved for your business. Limited overlap with other samples is possible; these prospects are not exclusive.', 'small')]
+             p(('Review shortlist only; no customer sample has been saved or delivered. ' if preview else 'Your sample is saved for your business. ') + 'Limited overlap with other samples is possible; these prospects are not exclusive.', 'small')]
     if preview:
         story.append(p('OWNER REVIEW COPY — not a customer delivery or confirmed opportunity.', 'heading'))
     for i, row in enumerate(rows, 1):
