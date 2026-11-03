@@ -58,8 +58,11 @@ def prospect_presentation(row):
     for point in points:
         if re.match(r'^Official (?:Phoenix office:|business page confirms|contact page:|location page:|hotel page:)',point):
             location=re.sub(r'^Official (?:Phoenix office:|business page confirms|contact page:|location page:|hotel page:)\s*','',point).rstrip('.')
+            if ';' in location:
+                location,detail=location.split(';',1)
+                if detail.strip():fit.append('Published facility details: '+detail.strip())
         elif re.match(r'^(?:Ask |Offer |Confirm |Check |Lead )',point):actions.append(point)
-        elif re.match(r'^(?:Do not |Exclude |Never )',point):notes.append(point)
+        elif re.match(r'^(?:Do not |Exclude |Never |Published front-desk |Published general contact |Public general |Shared office line )',point):notes.append(point)
         else:fit.append(point)
     approach=[x.strip() for x in re.split(r'(?<=[.!?])\s+(?=[A-Z])',str(row.get('sales_angle') or '')) if x.strip()]
     supporting_contacts=[]

@@ -163,6 +163,10 @@ class Tests(unittest.TestCase):
         self.assertIn('(602) 735-5622',text);self.assertNotIn('corroborated',text)
         urls=[a.get_object()['/A'].get('/URI') for p in pdf.pages for a in p.get('/Annots',[]) if '/A' in a.get_object()]
         self.assertIn('https://www.cbre.com/people/andi-stjohn',urls)
+        hotel=prospect_presentation(dict(business_name='Hotel',market='Phoenix',category='hotel',fit_reason='Official hotel page: 4000 N Central Avenue, Phoenix AZ 85012; restaurant, meeting rooms and fitness facilities. Published front-desk email is a routing contact, not a purchasing decision-maker.',sales_angle='Ask operations about vendor onboarding.'))
+        self.assertIn('meeting rooms',' '.join(hotel['fit_points']))
+        self.assertNotIn('front-desk',' '.join(hotel['fit_points']))
+        self.assertNotIn('meeting rooms',hotel['location'])
 
     def test_digest_binds_content(self):
         a={'rows':rows(25)};b=copy.deepcopy(a);b['rows'][0]['fit_reason']='Changed'
