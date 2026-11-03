@@ -1,0 +1,27 @@
+{
+  "action": "growth_stage_commercial_cleaning",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-03T01:23:52.109088+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "3684cb5b634502af75b8708830a7a291a0966546",
+  "git_commit_before": "3684cb5b634502af75b8708830a7a291a0966546",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "707960047bc3d17aba242189ac70f8aab5526129",
+  "request_id": "b-phoenix-offer-stage-20261103T012314Z",
+  "request_sha256": "3c906b7fe59779db0c0084a28c895142ff8bdd95307e728b57270edf08a7d33e",
+  "started_at": "2026-11-03T01:23:51.888296+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"iterations\": 1,\n  \"responses\": [\n    {\n      \"ok\": true,\n      \"service_key\": \"commercial_cleaning\",\n      \"wave\": \"growth-cleaning-1\",\n      \"staged\": 1,\n      \"email_candidates\": 9,\n      \"skipped_insufficient_buyer_inventory\": 8,\n      \"qualified_pool_by_market\": {\n        \"Prescott\": 29,\n        \"Flagstaff\": 12,\n        \"Prescott Valley\": 9,\n        \"Phoenix\": 125,\n        \"Cordes Lakes\": 2,\n        \"Mayer\": 8\n      }\n    }\n  ]\n}",
+  "version": 1
+}
