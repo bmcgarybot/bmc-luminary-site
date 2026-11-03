@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "b-private-pdf-deploy-20261103T002559Z",
+  "action": "deploy_update",
+  "required_ci_sha": "bef62dc5f0703c02b5d548a6017dc7b78c482bfc",
+  "allow_external_actions": false,
+  "created_at": "2026-11-03T00:25:59.916Z",
+  "expires_at": "2026-11-03T01:25:59.916Z",
+  "args": {}
+}
