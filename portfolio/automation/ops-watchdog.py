@@ -101,7 +101,7 @@ def collect(env,state):
     add("Business metrics",code==200 and isinstance(metrics,dict),"HTTP "+str(code))
     if isinstance(metrics,dict):
         for name,value in (("Unresolved outbound mail",metrics.get("mail",{}).get("unresolved")),
-                           ("Paid fulfillment overdue",metrics.get("orders",{}).get("paid_unfulfilled_over_30m")),
+                           ("Paid research fulfillment overdue",metrics.get("orders",{}).get("growth_paid_unfulfilled_over_30m")),
                            ("High-priority business exceptions",metrics.get("exceptions",{}).get("high_priority"))):
             add(name,type(value) is int and value==0,str(value)+" recorded")
     if isinstance(metrics,dict):
@@ -144,19 +144,31 @@ def collect(env,state):
     add("Internal operator agent",code==200 and isinstance(tasks,dict),"HTTP "+str(code))
     return checks,metrics,growth,safe
 
+def alert_audit(message_id,status):
+    try:
+        path=STATE_DIR/"alert-attempts.jsonl"
+        with path.open("a") as stream:
+            os.chmod(path,0o600)
+            stream.write(json.dumps({"at":dt.datetime.now(dt.timezone.utc).isoformat(),"message_id":message_id,"status":status})+"\n")
+            stream.flush();os.fsync(stream.fileno())
+    except OSError:print("Operational alert audit unavailable",flush=True)
+
 def send_alert(env,subject,body,message_id):
     recipient=env.get("WATCHDOG_EMAIL","")
     if not re.fullmatch(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}",recipient):return False
     msg=EmailMessage();msg["From"]=env.get("SMTP_FROM") or env.get("SMTP_USER","")
     msg["To"]=recipient;msg["Subject"]=subject;msg["Message-ID"]=message_id
     msg.set_content(body)
+    alert_audit(message_id,"attempting")
     try:
         with smtplib.SMTP(env["SMTP_HOST"],int(env.get("SMTP_PORT","587")),timeout=8) as smtp:
             smtp.ehlo()
             if env.get("SMTP_STARTTLS","true").lower()=="true":smtp.starttls(context=ssl.create_default_context());smtp.ehlo()
             smtp.login(env["SMTP_USER"],env["SMTP_PASSWORD"]);smtp.send_message(msg)
+        alert_audit(message_id,"smtp_accepted")
         return True
-    except Exception:return False
+    except Exception:
+        alert_audit(message_id,"uncertain");return False
 
 def prepare_key():
     private=STATE_DIR/"configuration-key.pem";public=STATE_DIR/"configuration-public.pem"
@@ -199,7 +211,7 @@ def main():
         env=read_env();state=load_state()
         if args.status:
             print(json.dumps({"configured":bool(state.get("monitor_configured")),"recipient_configured":bool(env.get("WATCHDOG_EMAIL")),
-                "autofix":env.get("WATCHDOG_AUTOFIX")=="true","last_check":state.get("last_check"),
+                "autofix":env.get("WATCHDOG_AUTOFIX")=="true","last_check":state.get("last_check"),"private_alert_audit_available":(STATE_DIR/"alert-attempts.jsonl").exists(),
                 "last_report":state.get("last_report"),"pending_alert":state.get("pending_notice"),
                 "test_alert_smtp_accepted":state.get("test_alert_smtp_accepted",False)}));return 0
         checks,metrics,growth,consistent=collect(env,state)
@@ -240,7 +252,7 @@ def main():
         if args.json:print(json.dumps(report));return int(bool(problems))*2
         lines=["BMC VPS "+report["status"],"Checked: "+report["observed_at"],""]
         lines += [("PASS " if c["ok"] else "CHECK ")+c["name"]+": "+c["detail"] for c in checks]
-        lines += ["","Bounded recovery: "+json.dumps(repairs),"","Help needed: review failed checks and preserve the owner launch hold.",
+        lines += ["","Bounded recovery: "+json.dumps(repairs),"",("Help needed: share this report in your BMC maintenance chat." if problems else "No action is needed for these checks."),
                   "No customer outreach, charges, refunds, provider approvals, credential changes or code deployments were authorized by this monitor.",
                   "If the VPS or its mail provider is entirely offline, it cannot send an alert. Independent external monitoring is still required."]
         body="\n".join(lines)

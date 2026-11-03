@@ -28,7 +28,7 @@ async def business_metrics(conn):
           count(*) filter(where payment_status in ('paid','complete')) as paid_orders,
           count(*) filter(where status='fulfilled') as fulfilled_orders,
           count(*) filter(where payment_status in ('paid','complete') and status<>'fulfilled'
-            and updated_at<now()-interval '30 minutes') as paid_unfulfilled_over_30m,
+            and product_key like 'growth_%' and updated_at<now()-interval '30 minutes') as growth_paid_unfulfilled_over_30m,
           count(*) filter(where payment_status in ('refunded','partially_refunded','refund_review')) as refund_related_orders
           from orders""",
         "exceptions": """select count(*) filter(where status='open') as open,
