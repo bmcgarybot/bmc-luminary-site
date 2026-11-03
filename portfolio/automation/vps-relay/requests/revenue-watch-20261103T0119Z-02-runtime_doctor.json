@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "revenue-watch-20261103T0119Z-02-runtime_doctor",
+  "action": "runtime_doctor",
+  "created_at": "2026-11-03T01:19:29.304Z",
+  "expires_at": "2026-11-03T02:49:29.304Z",
+  "allow_external_actions": false,
+  "args": {}
+}
