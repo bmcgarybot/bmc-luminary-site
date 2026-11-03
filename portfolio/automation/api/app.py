@@ -3378,7 +3378,14 @@ async def handle_growth_snapshot(conn,p):
           "qualified_pool":len(rows),
           "message":"We saved your request. This exact market needs a manual inventory check before we send five; BMC will not pad it with weak records."}
 
-    sample=await growth_select_rotated_sample(conn,rows,email_addr,service_key,market)
+    reviewed=await conn.fetchrow("select candidate_ids from growth_owner_previews where target_id=$1 and version='official-pdf-v1'",target_id) if target_id else None
+    if reviewed:
+        by_id={str(x["candidate_id"]):x for x in rows}
+        if not all(str(x) in by_id for x in reviewed["candidate_ids"]):
+            raise HTTPException(409,"The reviewed five need a fresh evidence or availability check. Contact BMC; no replacement sample has been silently substituted.")
+        sample=[by_id[str(x)] for x in reviewed["candidate_ids"]]
+    else:
+        sample=await growth_select_rotated_sample(conn,rows,email_addr,service_key,market)
     if len(sample)<5:
         await conn.execute("""update growth_sample_requests set status='inventory_exception',updated_at=now()
           where sample_id=$1""",sample_id)

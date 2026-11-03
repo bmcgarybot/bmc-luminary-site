@@ -770,6 +770,8 @@ jobs:
           python - <<'PY'
           import json
           d=json.load(open("/tmp/bmc_growth_one_click.json"))
+          preview=json.load(open("/tmp/bmc_growth_owner_preview.json"))
+          assert d["sample"] == preview["sample"], (d["sample"],preview["sample"])
           assert d["ok"] is True
           assert d["status"] == "sample_ready", d
           assert len(d["sample"]) == 5, d
