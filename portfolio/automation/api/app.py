@@ -4197,7 +4197,7 @@ def provider_outreach_parts(row,step,pilot=False):
     network="pilot" if pilot else "provider network"
     if step==1:
         subject=f"A local note for {business}"
-        lines=[f"I'm Brett with BMC Service Network here in Prescott. I found {business} while researching {service.lower()} businesses serving {market}.",
+        lines=[f"Hey, this is Brett with BMC Service Network. I found {business} while researching {service.lower()} businesses serving {market}.",
           f"We're putting together a local {network}. If someone asks us for {examples} in {market}, I want to know whether that work fits your team.",
           "You can tell us the area you cover, the jobs you want, your minimum job size and your capacity. If a request comes in, you see its details and can accept or pass.",
           "Joining is free. We cannot promise jobs. Any future paid terms will be shown before you choose, and passing creates no charge."]
@@ -4631,7 +4631,7 @@ def growth_outreach_message(row,step,owner_preview=False):
     greeting=f"Hello {short_name} team,"
     if step==1:
         lines=[
-          f"I'm Brett with BMC Service Network here in Prescott. {opener}",
+          f"Hey, this is Brett with BMC Service Network. {opener}",
           f"I research potential commercial accounts for local service companies. I can show you five businesses around {market} that may fit your work, with public contact details and a reason each might be worth approaching. They haven't requested quotes, and we haven't contacted them.",
           "The five are free. If useful, an optional list of 100 total, including those five, is $499. No subscription or obligation."
         ]
@@ -4645,7 +4645,7 @@ def growth_outreach_message(row,step,owner_preview=False):
         ]
     if packet and step==1:
         subject=packet["subject"]
-        lines=["I'm Brett with BMC Service Network. We research local commercial accounts so service businesses can spend less time building lists and more time having useful conversations.",
+        lines=["Hey, this is Brett with BMC Service Network. We research local commercial accounts so service businesses can spend less time building lists and more time having useful conversations.",
           packet["opener"],
           f"I put together five Phoenix businesses to review against that scope. For example, {packet['example_name']} has a published local contact route; the brief explains the facility fit and who to ask about vendor onboarding. Each entry includes its business website and a suggested first conversation.",
           "You can keep the five free, as a PDF and an online brief. If the fit is useful, $499 buys 100 total, including those five. These are researched prospects, not businesses that requested a quote, and sales are not guaranteed.",
