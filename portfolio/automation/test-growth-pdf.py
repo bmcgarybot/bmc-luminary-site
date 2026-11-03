@@ -27,6 +27,18 @@ class Tests(unittest.TestCase):
         links=[a.get_object()['/A']['/URI'] for p in pdf.pages for a in p.get('/Annots',[]) if '/A' in a.get_object()]
         self.assertEqual(links,[f'https://example.com/business-{i}' for i in range(1,6)])
         self.assertEqual(result['download_filename'],'BMC-Recipient-A-Five-Prospects.pdf')
+    def test_paid_pdf_contains_all_100_without_free_offer(self):
+        records=[]
+        for i in range(100):
+            row=rows()[0].copy();row['business_name']=f'Paid Account {i:03d}'
+            records.append(row)
+        data=render_sample_pdf(records,'Paid Customer','Cleaning',['Phoenix'],'order-fixture',paid=True)
+        text='\n'.join(p.extract_text() for p in PdfReader(io.BytesIO(data)).pages)
+        for i in range(100):self.assertIn(f'Paid Account {i:03d}',text)
+        self.assertIn('Your 100-prospect Growth Pack',text)
+        self.assertNotIn('The five are free with no obligation',text)
+        with self.assertRaises(ValueError):render_sample_pdf(records[:99],'A','Cleaning',['Phoenix'],'order-fixture',paid=True)
+
     def test_reject_incomplete_or_excess_sample(self):
         for count in [0,4,6]:
             r=(rows()*2)[:count]

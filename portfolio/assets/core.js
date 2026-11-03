@@ -306,7 +306,19 @@
         const why=document.createElement("p");
         why.textContent=row.fit_reason||"Qualified commercial fit.";
         const contact=document.createElement("p");
-        contact.textContent="Contact: "+(row.contact_route||"Contact details need review");
+        contact.className="growth-contact";
+        const route=String(row.contact_route||row.public_email||row.public_phone||"").trim();
+        const digits=route.replace(/\D/g,"");
+        const phone=/^[+()\d\s.-]+$/.test(route) && (digits.length===10 || (digits.length===11 && digits[0]==="1"));
+        const email=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(route);
+        if(phone || email){
+          const link=document.createElement("a");
+          link.className="growth-contact-link";
+          const national=digits.length===11?digits.slice(1):digits;
+          link.href=phone?"tel:+1"+national:"mailto:"+route;
+          link.textContent=phone?"Call ("+national.slice(0,3)+") "+national.slice(3,6)+"-"+national.slice(6):"Email "+route;
+          contact.appendChild(link);
+        }else{contact.textContent="Contact: "+(route||"Contact details need review");}
         const angle=document.createElement("p");
         angle.textContent="Suggested first conversation: "+(row.sales_angle||"Contact the business to confirm who manages this service.");
         item.append(h,why,contact,angle);
@@ -332,7 +344,7 @@
             setTimeout(()=>URL.revokeObjectURL(url),60000);
           }catch(error){download.textContent="Download unavailable — please contact BMC";}
         });
-        card.appendChild(download);
+        card.insertBefore(download,list);
       }
 
       if(response.checkout_url && /^https:\/\/buy\.stripe\.com\//i.test(response.checkout_url)){

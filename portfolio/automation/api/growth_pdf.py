@@ -38,14 +38,14 @@ def safe_website(value):
     except ValueError:
         return ''
 
-def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at=None, preview=False):
+def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at=None, preview=False, paid=False):
     """Render only the caller's already authorized five; no database or URL fetching."""
-    if len(rows) != 5:
+    if len(rows) != (100 if paid else 5):
         raise ValueError('A sample PDF requires exactly five prospects')
     out = io.BytesIO()
     doc = SimpleDocTemplate(out, pagesize=(612, 792), rightMargin=45, leftMargin=45,
                            topMargin=64, bottomMargin=58, title='Your commercial prospect brief',
-                           author='BMC Service Network')
+                           author='BMC Service Network', invariant=1)
     styles = {
         'title': ParagraphStyle('title', fontName='BMCBold', fontSize=24, leading=29, textColor=NAVY, spaceAfter=12),
         'heading': ParagraphStyle('heading', fontName='BMCBold', fontSize=13, leading=17, textColor=NAVY, spaceAfter=7, keepWithNext=True),
@@ -55,11 +55,11 @@ def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at
     def p(value, style='body'):
         return Paragraph(escape(str(value or '')).replace('\n', '<br/>'), styles[style])
     when = str(prepared_at or datetime.now(timezone.utc).date())[:10]
-    story = [p('Five prospects. A practical starting point.', 'title'),
+    story = [p('Your 100-prospect Growth Pack' if paid else 'Five prospects. A practical starting point.', 'title'),
              p('Prepared for ' + str(business), 'heading'),
              p(f'{service} | {", ".join(territory)} | Prepared {when}'),
              p('A researched shortlist of businesses to approach. These businesses have not requested quotes, and no job or buying interest is confirmed.'),
-             p(('Review shortlist only; no customer sample has been saved or delivered. ' if preview else 'Your sample is saved for your business. ') + 'Limited overlap with other samples is possible; these prospects are not exclusive.', 'small')]
+             p(('Review shortlist only; no customer sample has been saved or delivered. ' if preview else ('Your purchased research is prepared for your business. ' if paid else 'Your sample is saved for your business. ')) + 'Limited overlap with other samples is possible; these prospects are not exclusive.', 'small')]
     if preview:
         story.append(p('OWNER REVIEW COPY — not a customer delivery or confirmed opportunity.', 'heading'))
     for i, row in enumerate(rows, 1):
@@ -67,7 +67,11 @@ def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at
                  p(f'{row.get("market", "")} | {row.get("category", "")}', 'small'),
                  p('Why this business: ' + str(row.get('fit_reason') or 'Fit needs review.')),
                  p('Suggested first conversation: ' + str(row.get('sales_angle') or 'Confirm who manages this service and whether outside vendors are considered.'))]
-        contact = ' | '.join(str(row.get(k) or '') for k in ('public_email', 'public_phone') if row.get(k))
+        phone = str(row.get('public_phone') or '')
+        digits = re.sub(r'\D', '', phone)
+        if len(digits) == 11 and digits.startswith('1'): digits = digits[1:]
+        if len(digits) == 10: phone = f'({digits[:3]}) {digits[3:6]}-{digits[6:]}'
+        contact = ' | '.join(v for v in (str(row.get('public_email') or ''), phone) if v)
         block.append(p('Public contact: ' + (contact or str(row.get('contact_route') or 'Contact details need review.'))))
         url = safe_website(row.get('website_url') or row.get('source_url'))
         if url:
@@ -78,7 +82,7 @@ def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at
         story.append(KeepTogether(block))
     story += [p('Your next step', 'heading'),
               p('Review the fit, then use the suggested conversation to ask about their needs and vendor process. Confirm current operations and safe access before arranging a visit.'),
-              p('The five are free with no obligation. Where the reviewed territory supports it, the optional $499 pack contains 100 total researched prospects, including these five. No guaranteed jobs or sales.'),
+              p('Your original five are included in these 100 researched prospects. Reply with any qualifying errors for replacement. No guaranteed jobs or sales.' if paid else 'The five are free with no obligation. Where the reviewed territory supports it, the optional $499 pack contains 100 total researched prospects, including these five. No guaranteed jobs or sales.'),
               p('Questions or corrections? contact@bmcservicenetwork.com'),
               p('BMC Luminary Ventures LLC | 186 E. Sheldon St. #1144, Prescott, AZ 86301', 'small'),
               p('Sample reference: ' + str(sample_id), 'small')]
