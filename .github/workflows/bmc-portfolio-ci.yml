@@ -75,6 +75,7 @@ jobs:
           python3 portfolio/automation/test-growth-reply-hold.py
           python3 portfolio/automation/test-email-unsubscribe.py
           python3 portfolio/automation/test-growth-preview-token.py
+          python3 portfolio/automation/test-owner-preview-payment.py
           python3 portfolio/automation/test-owner-preview-scope.py
           python3 portfolio/automation/test-owner-contact-config.py
           python3 portfolio/automation/test-service-outreach-copy.py

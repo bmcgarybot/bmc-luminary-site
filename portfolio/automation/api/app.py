@@ -4611,6 +4611,9 @@ def growth_outreach_message(row,step,owner_preview=False):
           f"I research potential commercial accounts for local service companies. I can show you five businesses around {market} that may fit your work, with public contact details and a reason each might be worth approaching. They haven't requested quotes, and we haven't contacted them.",
           "The five are free. If useful, an optional list of 100 total, including those five, is $499. No subscription or obligation."
         ]
+        if (market=="Phoenix" and service_key=="commercial_cleaning" and
+            "public_email" in row and clean(row["public_email"]).lower()=="admin@ec-phoenix.com"):
+            lines.insert(2,"For example, CBRE's Phoenix property-management operation offers a route to ask about approved cleaning vendors. DoubleTree Phoenix Midtown publishes a front-desk contact that can route you to operations for its meeting spaces. The brief explains what to ask, rather than treating either as an open job.")
     else:
         lines=[
           f"I sent a note about five free, researched businesses around {market} that may fit your {focus[service_key]} work.",
