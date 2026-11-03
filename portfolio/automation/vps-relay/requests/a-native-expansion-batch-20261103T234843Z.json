@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "request_id": "a-native-expansion-batch-20261103T234843Z",
+  "action": "official_research_step",
+  "allow_external_actions": false,
+  "created_at": "2026-11-03T23:48:43.585Z",
+  "expires_at": "2026-11-04T00:48:43.585Z",
+  "args": {
+    "iterations": 8,
+    "pause_seconds": 2
+  }
+}
