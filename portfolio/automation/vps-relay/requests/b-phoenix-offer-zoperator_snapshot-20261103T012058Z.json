@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "b-phoenix-offer-zoperator_snapshot-20261103T012058Z",
+  "action": "operator_snapshot",
+  "allow_external_actions": false,
+  "created_at": "2026-11-03T01:20:58.536Z",
+  "expires_at": "2026-11-03T02:20:58.536Z",
+  "args": {}
+}
