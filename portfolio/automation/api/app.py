@@ -7643,6 +7643,7 @@ async def approve_growth_purchase_offer(offer_id:uuid.UUID,request:Request,x_bmc
         try:await growth_offer_payload_current(conn,offer)
         except ValueError as exc:raise HTTPException(409,str(exc))
         await conn.execute("update growth_purchase_offers set status='approved',approved_at=now(),updated_at=now() where offer_id=$1",offer_id)
+        await conn.execute("update growth_sample_requests set next_nurture_at=null,updated_at=now() where sample_id=$1",offer["sample_id"])
         await event(conn,"growth_offer",offer_id,"owner_approved",{"payload_sha256":offer["payload_sha256"]})
         return {"ok":True,"status":"approved","outreach_released":False,
           "review_url":urllib.parse.urlsplit(WEBHOOK_URL)._replace(path="",query="",fragment="").geturl()+"/api/growth/offers/"+str(offer_id)+"?"+urllib.parse.urlencode({"token":growth_offers.signed_token(ADMIN_KEY,str(offer_id),offer["email"])})}
@@ -7659,3 +7660,41 @@ async def review_growth_purchase_offer(offer_id:uuid.UUID,x_bmc_admin_key:str|No
         return {"ok":True,"status":offer["status"],"payload_sha256":offer["payload_sha256"],"payload":payload,
           "email":growth_offers.offer_email(offer["product_key"],payload["business"],", ".join(payload["territory"]),url,unsub),
           "note":"Private owner review only. This read does not approve or send the offer."}
+
+@app.post("/api/process-growth-offer-invitations")
+async def process_growth_offer_invitations(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    if OWNER_LAUNCH_HOLD or not GROWTH_OUTREACH_ENABLED:
+        return {"ok":True,"sent":0,"held":True}
+    sent=0
+    async with app.state.pool.acquire() as conn:
+      offers=await conn.fetch("""select f.offer_id from growth_purchase_offers f join products p on p.product_key=f.product_key
+        where f.status='approved' and f.approved_at is not null and f.invited_at is null and f.expires_at>now()
+          and p.active=true and coalesce(p.payment_link_url,'')<>''
+          and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(f.email))
+        order by f.created_at limit 5""")
+      for item in offers:
+       async with conn.transaction():
+        await growth_lock_exposure_allocator(conn)
+        offer=await conn.fetchrow("select * from growth_purchase_offers where offer_id=$1 for update",item['offer_id'])
+        if offer['status']!='approved' or offer['invited_at'] or offer['expires_at']<=datetime.now(timezone.utc):continue
+        if await conn.fetchval("select 1 from outreach_suppressions where lower(email)=lower($1)",offer['email']):continue
+        product=await conn.fetchrow("select * from products where product_key=$1 and active=true",offer['product_key'])
+        if not product:continue
+        try:
+            payload=await growth_offer_payload_current(conn,offer)
+            token=growth_offers.signed_token(ADMIN_KEY,str(offer['offer_id']),offer['email'])
+            growth_offers.checkout_url(dict(offer),product['payment_link_url'],ADMIN_KEY,token)
+            origin=urllib.parse.urlsplit(WEBHOOK_URL)._replace(path='',query='',fragment='').geturl()
+            link=origin+'/api/growth/offers/'+str(offer['offer_id'])+'?'+urllib.parse.urlencode({'token':token})
+            unsub=origin+'/api/email-preferences?'+urllib.parse.urlencode({'email':offer['email'],'token':email_unsubscribe_token(offer['email'])})
+            message=growth_offers.offer_email(offer['product_key'],payload['business'],', '.join(payload['territory']),link,unsub)
+            ok=await send_mail_once('growth-offer-invite:'+str(offer['offer_id']),offer['email'],message['subject'],message['text'],message['html'])
+            if not ok:raise ValueError('Mail submission failed or uncertain; inspect durable delivery record')
+            await conn.execute("update growth_purchase_offers set invited_at=now(),updated_at=now() where offer_id=$1",offer['offer_id'])
+            sent+=1
+        except (ValueError,KeyError,TypeError) as exc:
+            await conn.execute("update growth_purchase_offers set status='exception',updated_at=now() where offer_id=$1",offer['offer_id'])
+            await conn.execute("""insert into exceptions(type,severity,summary,recommended_action)
+              values('growth_offer_invitation_review','high',$1,'Review the offer and durable mail attempt before resuming')""",str(exc))
+    return {"ok":True,"sent":sent,"held":False}

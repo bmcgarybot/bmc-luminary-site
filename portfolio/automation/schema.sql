@@ -1271,3 +1271,5 @@ create table if not exists growth_purchase_offers (
   updated_at timestamptz not null default now(),
   unique(sample_id,product_key)
 );
+
+alter table growth_purchase_offers add column if not exists invited_at timestamptz;

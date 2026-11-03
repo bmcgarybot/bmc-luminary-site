@@ -82,6 +82,16 @@ class Tests(unittest.TestCase):
         for i,a in enumerate(sets):
             for b in sets[i+1:]:self.assertLessEqual(len(a & b),2)
 
+    def test_offer_invitation_worker_obeys_hold_without_database_access(self):
+        import ast,asyncio
+        source=ast.parse((Path(__file__).parent/'api/app.py').read_text())
+        node=next(n for n in source.body if isinstance(n,ast.AsyncFunctionDef) and n.name=='process_growth_offer_invitations');node.decorator_list=[]
+        for hold,enabled in [(True,True),(True,False),(False,False)]:
+            ns=dict(Header=lambda **kw:None,require_admin=lambda key:None,OWNER_LAUNCH_HOLD=hold,GROWTH_OUTREACH_ENABLED=enabled)
+            exec(compile(ast.Module(body=[node],type_ignores=[]),'real_offer_worker','exec'),ns)
+            result=asyncio.run(ns['process_growth_offer_invitations']('fixture'))
+            self.assertEqual(result,{'ok':True,'sent':0,'held':True})
+
     def test_digest_binds_content(self):
         a={'rows':rows(25)};b=copy.deepcopy(a);b['rows'][0]['fit_reason']='Changed'
         self.assertNotEqual(g.offer_digest(a),g.offer_digest(b))
