@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "b-phoenix-offer-deploy-20261103T012043Z",
+  "action": "deploy_update",
+  "required_ci_sha": "3684cb5b634502af75b8708830a7a291a0966546",
+  "allow_external_actions": false,
+  "created_at": "2026-11-03T01:20:43.175Z",
+  "expires_at": "2026-11-03T02:20:43.175Z",
+  "args": {}
+}
