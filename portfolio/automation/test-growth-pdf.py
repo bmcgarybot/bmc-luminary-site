@@ -36,9 +36,17 @@ class Tests(unittest.TestCase):
         text='\n'.join(p.extract_text() for p in PdfReader(io.BytesIO(data)).pages)
         for i in range(100):self.assertIn(f'Paid Account {i:03d}',text)
         self.assertIn('Your 100-prospect Growth Pack',text)
+        self.assertRegex(text,r'100\s+Paid Account 099')
         self.assertNotIn('The five are free with no obligation',text)
         with self.assertRaises(ValueError):render_sample_pdf(records[:99],'A','Cleaning',['Phoenix'],'order-fixture',paid=True)
 
+    def test_card_sections_and_last_page_keep_real_prospect_with_next_steps(self):
+        pdf=PdfReader(io.BytesIO(render_sample_pdf(rows(),'Layout Review','Cleaning',['Phoenix'],'layout',preview=True)))
+        text='\n'.join(p.extract_text() for p in pdf.pages)
+        for label in ('WHY IT FITS','HOW TO APPROACH','CONTACT & SOURCE','01'):
+            self.assertIn(label,text)
+        self.assertIn('Fixture Business 5',pdf.pages[-1].extract_text())
+        self.assertIn('YOUR NEXT STEP',pdf.pages[-1].extract_text())
     def test_reject_incomplete_or_excess_sample(self):
         for count in [0,4,6]:
             r=(rows()*2)[:count]
