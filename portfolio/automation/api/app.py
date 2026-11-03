@@ -3368,6 +3368,7 @@ async def handle_growth_snapshot(conn,p):
         payload=payload if isinstance(payload,list) else []
         checkout=await growth_sample_checkout(conn,email_addr,existing["sample_id"],service_key)
         return {"ok":True,"status":clean(existing["status"]),"sample_id":str(existing["sample_id"]),
+          "business_name":existing["business_name"],"research_scope":clean(existing.get("ideal_customer")),
           "sample":payload,**sample_pdf_response(payload,existing["business_name"],GROWTH_SERVICE_LABELS[existing["provider_service_key"]],growth_request_territory(existing),str(existing["sample_id"]),existing["sample_generated_at"]),"checkout_url":checkout,"selected_markets":growth_request_territory(existing),"message":"Your commercial opportunity snapshot is already saved."}
 
     # A different submission/email must not unlock another free five for the
@@ -3521,7 +3522,7 @@ async def handle_growth_snapshot(conn,p):
           f"SMTP did not accept Growth sample {sample_id} for {email_addr}",
           "Keep the five disclosed prospects reserved for this customer; retry emailing the saved sample only")
         await event(conn,"growth_sample",sample_id,"web_disclosed_email_failed",{"email":email_addr,"smtp_accepted":False})
-        return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"sample":public_rows,**pdf_response,
+        return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"business_name":business,"research_scope":clean(p.get("ideal_customer")),"sample":public_rows,**pdf_response,
           "checkout_url":checkout,"selected_markets":territory,"message":"Your five targets are ready on this page, but the email copy needs a delivery retry."}
     await conn.execute("""update growth_sample_requests
       set status='delivered',sample_sent_at=now(),next_nurture_at=now()+interval '2 days',updated_at=now()
@@ -3529,7 +3530,7 @@ async def handle_growth_snapshot(conn,p):
     await event(conn,"growth_sample",sample_id,"web_disclosed_smtp_accepted",
       {"email":email_addr,"service_key":service_key,"market":market,"qualified_pool":len(rows),
        "smtp_accepted":True,"inbox_delivery_verified":False})
-    return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"sample":public_rows,**pdf_response,
+    return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"business_name":business,"research_scope":clean(p.get("ideal_customer")),"sample":public_rows,**pdf_response,
       "checkout_url":checkout,"selected_markets":territory,"qualified_pool":len(rows),
       "message":"Your five commercial targets are ready. We also emailed a copy so you can use them later."}
 
@@ -3575,7 +3576,8 @@ async def growth_owner_sample(conn,target,territory,rows):
     checkout=growth_checkout_url(clean(base),OWNER_PREVIEW_RECIPIENT,saved["preview_id"],saved["service_key"])
     checkout=checkout.replace("client_reference_id=growth_","client_reference_id=owner_preview_")
     return {"ok":True,"status":"sample_ready","sample_id":"owner-preview",
-      "preview_id":str(saved["preview_id"]),"sample":public_rows,
+      "preview_id":str(saved["preview_id"]),"business_name":saved["business_name"],
+      "research_scope":(globals().get("GROWTH_REVIEW_PACKETS",{}).get(clean(target["public_email"]).lower()) or {}).get("opener") or ("Your Phoenix location lists commercial offices; this brief focuses on local commercial properties and operations contacts." if clean(target["public_email"]).lower()=="admin@ec-phoenix.com" else "Commercial properties and public operations contacts in "+", ".join(territory)+"."),"sample":public_rows,
       **sample_pdf_response(public_rows,saved["business_name"],GROWTH_SERVICE_LABELS[saved["service_key"]],territory,
         "owner-preview-"+str(saved["preview_id"]),saved["created_at"],preview=True),
       "checkout_url":checkout,"qualified_pool":len(rows),"selected_markets":territory,"preview":True,

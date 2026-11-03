@@ -127,7 +127,7 @@ jobs:
           assert 'data-form-type="growth_snapshot"' in cleaning
           assert 'name="service_key" value="commercial_cleaning"' in cleaning
           assert "/growth-packs/pressure-washing/" in sitemap
-          assert "response.sample" in core and "Get the full 100 for $499" in core
+          assert "response.sample" in core and "Get the other 95 — $499" in core and "100 total researched prospects" in core
           assert "maybeClaimGrowthSample" in core and 'preview:q.get("preview")||""' in core
           assert "growth_claim_token" in api and "one_click_sample_claimed" in api
           assert "growth_lock_exposure_allocator" in api and "growth_exposure_filter" in api
