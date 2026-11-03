@@ -92,6 +92,15 @@ class Tests(unittest.TestCase):
             result=asyncio.run(ns['process_growth_offer_invitations']('fixture'))
             self.assertEqual(result,{'ok':True,'sent':0,'held':True})
 
+    def test_offer_worker_requires_nonempty_exact_scope(self):
+        import ast,asyncio
+        source=ast.parse((Path(__file__).parent/'api/app.py').read_text())
+        node=next(n for n in source.body if isinstance(n,ast.AsyncFunctionDef) and n.name=='process_growth_offer_invitations');node.decorator_list=[]
+        ns=dict(Header=lambda **kw:None,require_admin=lambda key:None,OWNER_LAUNCH_HOLD=False,GROWTH_OUTREACH_ENABLED=True,GROWTH_OUTREACH_TARGET_IDS=())
+        exec(compile(ast.Module(body=[node],type_ignores=[]),'real_offer_worker','exec'),ns)
+        result=asyncio.run(ns['process_growth_offer_invitations']('fixture'))
+        self.assertEqual(result['sent'],0);self.assertTrue(result['held'])
+
     def test_reviewed_facility_openings_and_labels_are_identity_bound(self):
         import ast,json,re
         path=Path(__file__).parent/'api'

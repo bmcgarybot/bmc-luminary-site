@@ -108,6 +108,25 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(await self.scalar('select status from growth_purchase_offers'),'paid')
         self.assertEqual(await self.scalar('select sum(amount_cents) from revenue_events'),14900)
         self.assertEqual(await self.scalar('select status from orders'),'ready_for_fulfillment')
+    async def test_offer_invitations_exclude_outside_cohort_and_changed_recipient(self):
+        obj,oid=await self.seed_bound_offer()
+        async with self.pool.acquire() as conn:
+            await conn.execute("update products set active=true,payment_link_url='https://buy.stripe.com/fixture' where product_key='growth_pack_25'")
+            await conn.execute("insert into growth_outreach_targets(target_id,business_name,public_email,market,service_key) values('other-target','Other company','owner@example.com','Phoenix','commercial_cleaning')")
+            await conn.execute("update growth_sample_requests set source_target_id='other-target'")
+        source=ast.parse(Path(__file__).with_name('api').joinpath('app.py').read_text())
+        node=next(n for n in source.body if isinstance(n,ast.AsyncFunctionDef) and n.name=='process_growth_offer_invitations');node.decorator_list=[]
+        async def no_mail(*args,**kwargs):raise AssertionError('Unreleased recipient must never send')
+        ns=dict(app=SimpleNamespace(state=SimpleNamespace(pool=self.pool)),Header=lambda **kw:None,require_admin=lambda key:None,
+          OWNER_LAUNCH_HOLD=False,GROWTH_OUTREACH_ENABLED=True,GROWTH_OUTREACH_TARGET_IDS=('released-target',),send_mail_once=no_mail)
+        exec(compile(ast.Module(body=[node],type_ignores=[]),'production_offer_worker','exec'),ns)
+        self.assertEqual((await ns['process_growth_offer_invitations']('fixture'))['sent'],0)
+        ns['GROWTH_OUTREACH_TARGET_IDS']=('other-target',)
+        async with self.pool.acquire() as conn:
+            await conn.execute("update growth_outreach_targets set public_email='changed@example.com'")
+        self.assertEqual((await ns['process_growth_offer_invitations']('fixture'))['sent'],0)
+        self.assertIsNone(await self.scalar('select invited_at from growth_purchase_offers'))
+
     async def test_bound_offer_wrong_amount_quarantined(self):
         obj,oid=await self.seed_bound_offer();obj['amount_total']=100
         await self.send('evt_offer_bad','checkout.session.completed',obj)
