@@ -38,9 +38,11 @@ def safe_website(value):
     except ValueError:
         return ''
 
-def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at=None, preview=False, paid=False):
+def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at=None, preview=False, paid=False, paid_count=100):
     """Render only the caller's already authorized five; no database or URL fetching."""
-    if len(rows) != (100 if paid else 5):
+    if paid_count not in (25,100):
+        raise ValueError("Unsupported paid pack quantity")
+    if len(rows) != (paid_count if paid else 5):
         raise ValueError('A sample PDF requires exactly five prospects')
     out = io.BytesIO()
     doc = SimpleDocTemplate(out, pagesize=(612, 792), rightMargin=45, leftMargin=45,
@@ -55,7 +57,7 @@ def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at
     def p(value, style='body'):
         return Paragraph(escape(str(value or '')).replace('\n', '<br/>'), styles[style])
     when = str(prepared_at or datetime.now(timezone.utc).date())[:10]
-    story = [p('Your 100-prospect Growth Pack' if paid else 'Five prospects. A practical starting point.', 'title'),
+    story = [p(f'Your {paid_count}-prospect Growth Pack' if paid else 'Five prospects. A practical starting point.', 'title'),
              p('Prepared for ' + str(business), 'heading'),
              p(f'{service} | {", ".join(territory)} | Prepared {when}'),
              p('A researched shortlist of businesses to approach. These businesses have not requested quotes, and no job or buying interest is confirmed.'),
@@ -82,7 +84,7 @@ def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at
         story.append(KeepTogether(block))
     story += [p('Your next step', 'heading'),
               p('Review the fit, then use the suggested conversation to ask about their needs and vendor process. Confirm current operations and safe access before arranging a visit.'),
-              p('Your original five are included in these 100 researched prospects. Reply with any qualifying errors for replacement. No guaranteed jobs or sales.' if paid else 'The five are free with no obligation. Where the reviewed territory supports it, the optional $499 pack contains 100 total researched prospects, including these five. No guaranteed jobs or sales.'),
+              p(f'Your original five are included in these {paid_count} researched prospects. Reply with any qualifying errors for replacement. No guaranteed jobs or sales.' if paid else 'The five are free with no obligation. Where the reviewed territory supports it, the optional $499 pack contains 100 total researched prospects, including these five. No guaranteed jobs or sales.'),
               p('Questions or corrections? contact@bmcservicenetwork.com'),
               p('BMC Luminary Ventures LLC | 186 E. Sheldon St. #1144, Prescott, AZ 86301', 'small'),
               p('Sample reference: ' + str(sample_id), 'small')]
