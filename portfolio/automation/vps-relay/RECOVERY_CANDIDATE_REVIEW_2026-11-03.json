@@ -1,0 +1,135 @@
+{
+  "observed_date": "2026-11-03",
+  "candidates": [
+    {
+      "name": "Copper State Junk Removal & Hauling",
+      "service": "Junk hauling",
+      "city": "Chino Valley",
+      "recipient": "junk@copperstatejunkremoval.com",
+      "phone": "928-224-9381",
+      "source": "https://www.copperstatejunkremoval.com/what-we-take",
+      "evidence": "Direct site lists household junk and yard waste, a Chino Valley address, phone and email. BBB separately identifies the business. Site territory is broader; this draft asks only about Chino Valley.",
+      "gaps": "Current slots, crew/load limits, accepted material condition, disposal destination, insurance and route access remain unconfirmed.",
+      "subject": "Chino Valley: taking junk or yard-debris pickups?",
+      "lines": [
+        "Hey, this is Brett with BMC Service Network. We’re building a local provider network. You would see the items and area before deciding whether to take a request. Joining is free; there is no charge to accept this invitation.",
+        "Are you taking household junk, yard debris or property cleanout pickups in Chino Valley?",
+        "What loads do you want, what do you leave behind, and when could you assess a new request? We’ll confirm disposal and access before any referral.",
+        "Reply with what fits your crew. We are checking capacity, not offering a confirmed job."
+      ],
+      "status": "HELD / UNCONTACTED / NOT ACCEPTED",
+      "capacity_confirmed": false,
+      "qualified_provider": false,
+      "safe_access_confirmed": false,
+      "live_signed_invitation": null,
+      "plain": "Hello Copper State Junk Removal & Hauling team,\n\nHey, this is Brett with BMC Service Network. We’re building a local provider network. You would see the items and area before deciding whether to take a request. Joining is free; there is no charge to accept this invitation.\n\nAre you taking household junk, yard debris or property cleanout pickups in Chino Valley?\n\nWhat loads do you want, what do you leave behind, and when could you assess a new request? We’ll confirm disposal and access before any referral.\n\nReply with what fits your crew. We are checking capacity, not offering a confirmed job.\n\nBrett\nBMC Service Network\nBMC Luminary Ventures LLC\n186 E. Sheldon St. #1144, Prescott, AZ 86301\n\nThis is a promotional email from BMC Service Network.\nReply no if you do not want future BMC outreach.",
+      "send_ready": false,
+      "rechecked_at": "2026-11-03"
+    },
+    {
+      "name": "Rocky’s Landscaping, Maintenance and Irrigation",
+      "service": "Landscaping / yard cleanup",
+      "city": "Prescott",
+      "recipient": null,
+      "phone": "928-445-3346",
+      "source": "https://rockyslandscapingaz.wixsite.com/prescott",
+      "evidence": "Direct site lists landscaping/maintenance and Prescott, Prescott Valley and Chino Valley. No direct public email was verified; phone or the website form is the researched contact route.",
+      "gaps": "One-time cleanup, haul-away, current slots, insurance, current ROC scope/status and safe access remain unconfirmed. No email-ready recipient.",
+      "subject": "Prescott: room for one-time yard cleanup?",
+      "lines": [
+        "Hey, this is Brett with BMC Service Network. We’re building a local provider network. You would see a customer’s request before deciding whether it fits. Joining is free.",
+        "Do you take one-time yard cleanup, brush clearing or green-waste haul-away in Prescott?",
+        "Which cleanup jobs are worth the trip for your crew, and when could you assess another request? We’ll confirm the scope and access before any referral.",
+        "We are checking capacity, not offering a confirmed job."
+      ],
+      "status": "HELD / UNCONTACTED / NOT ACCEPTED",
+      "capacity_confirmed": false,
+      "qualified_provider": false,
+      "safe_access_confirmed": false,
+      "live_signed_invitation": null,
+      "plain": "Hello Rocky’s Landscaping, Maintenance and Irrigation team,\n\nHey, this is Brett with BMC Service Network. We’re building a local provider network. You would see a customer’s request before deciding whether it fits. Joining is free.\n\nDo you take one-time yard cleanup, brush clearing or green-waste haul-away in Prescott?\n\nWhich cleanup jobs are worth the trip for your crew, and when could you assess another request? We’ll confirm the scope and access before any referral.\n\nWe are checking capacity, not offering a confirmed job.\n\nBrett\nBMC Service Network\nBMC Luminary Ventures LLC\n186 E. Sheldon St. #1144, Prescott, AZ 86301\n\nThis is a promotional email from BMC Service Network.\nReply no if you do not want future BMC outreach.",
+      "send_ready": false,
+      "rechecked_at": "2026-11-03"
+    },
+    {
+      "name": "Licensed Handyman, Inc.",
+      "service": "Minor handyman repairs",
+      "city": "Dewey-Humboldt",
+      "recipient": null,
+      "phone": "928-239-3640",
+      "source": "https://www.licensedhandyman.biz/service-area",
+      "evidence": "Direct service-area page explicitly lists Dewey and Humboldt. Main site describes small repairs and publishes ROC 349772. The license/insurance page links document images; current validity was not established.",
+      "gaps": "No direct email verified. Confirm small-repair scope, current credential status, insurance dates, current slots and site access; no assumed structural/electrical/water-restoration qualification.",
+      "subject": "Dewey-Humboldt: taking small repair jobs?",
+      "lines": [
+        "Hey, this is Brett with BMC Service Network. We’re building a local provider network. You would see the repair details before choosing whether to take a request. Joining is free.",
+        "Do you have room for small door, drywall or punch-list repairs in Dewey-Humboldt?",
+        "Which small repairs fit your crew, and when could you assess one? We’ll check the job scope, qualifications and access before any referral.",
+        "We are checking capacity, not offering a confirmed job."
+      ],
+      "status": "HELD / UNCONTACTED / NOT ACCEPTED",
+      "capacity_confirmed": false,
+      "qualified_provider": false,
+      "safe_access_confirmed": false,
+      "live_signed_invitation": null,
+      "plain": "Hello Licensed Handyman, Inc. team,\n\nHey, this is Brett with BMC Service Network. We’re building a local provider network. You would see the repair details before choosing whether to take a request. Joining is free.\n\nDo you have room for small door, drywall or punch-list repairs in Dewey-Humboldt?\n\nWhich small repairs fit your crew, and when could you assess one? We’ll check the job scope, qualifications and access before any referral.\n\nWe are checking capacity, not offering a confirmed job.\n\nBrett\nBMC Service Network\nBMC Luminary Ventures LLC\n186 E. Sheldon St. #1144, Prescott, AZ 86301\n\nThis is a promotional email from BMC Service Network.\nReply no if you do not want future BMC outreach.",
+      "send_ready": false,
+      "rechecked_at": "2026-11-03"
+    },
+    {
+      "name": "Davis Fence Company / Davis Fence LLC",
+      "service": "Fence repair — manual inquiry only",
+      "city": "Prescott",
+      "recipient": "DavisFence1010@gmail.com",
+      "phone": "928-708-0036",
+      "source": "https://www.davisfenceco.net/start-your-fencing-installation",
+      "evidence": "Direct contact page lists fence repair and gates, Prescott-area coverage, this email and phone, and ROC 233707. BBB links Davis Fence Company to Davis Fence LLC. The website has inconsistent ZIP codes, so mailing address remains unresolved.",
+      "gaps": "Confirm repair sizes/materials, current credential/insurance status, materials, current assessment slots and ground/access conditions. No dedicated BMC fence key, intake route or matching workflow exists.",
+      "subject": "Prescott: taking fence and gate repairs?",
+      "lines": [
+        "Hey, this is Brett with BMC Service Network. We’re checking which local businesses want this work. Which fence materials and repair sizes do you take, and when could you assess a new request?",
+        "Do you take small fence or gate repairs in Prescott, such as panels, posts or latches?",
+        "This is a capacity inquiry, not a job offer. Fence requests would need manual review; we are not promising automated matching."
+      ],
+      "status": "HELD / UNCONTACTED / NOT ACCEPTED",
+      "capacity_confirmed": false,
+      "qualified_provider": false,
+      "safe_access_confirmed": false,
+      "live_signed_invitation": null,
+      "plain": "Hello Davis Fence Company / Davis Fence LLC team,\n\nHey, this is Brett with BMC Service Network. We’re checking which local businesses want this work. Which fence materials and repair sizes do you take, and when could you assess a new request?\n\nDo you take small fence or gate repairs in Prescott, such as panels, posts or latches?\n\nThis is a capacity inquiry, not a job offer. Fence requests would need manual review; we are not promising automated matching.\n\nBrett\nBMC Service Network\nBMC Luminary Ventures LLC\n186 E. Sheldon St. #1144, Prescott, AZ 86301\n\nThis is a promotional email from BMC Service Network.\nReply no if you do not want future BMC outreach.",
+      "send_ready": false,
+      "rechecked_at": "2026-11-03"
+    },
+    {
+      "name": "Verde Valley Handyman, LLC",
+      "service": "Minor handyman repairs",
+      "city": "Cottonwood / Verde Valley",
+      "recipient": null,
+      "phone": "928-202-4727",
+      "source": "https://verdehandyman.com/",
+      "evidence": "Official site lists small to medium repair work, door/window replacement, drywall and finish carpentry; published Cottonwood office and phone; serves Cottonwood, Camp Verde, Clarkdale, Sedona and nearby areas.",
+      "gaps": "Site claims ROC333112 and insurance; current registry status/classification and insurance documents not independently verified. No public email verified. Capacity, provider acceptance, requested job scope and route/site access unconfirmed.",
+      "status": "HELD / UNCONTACTED / NOT ACCEPTED",
+      "capacity_confirmed": false,
+      "qualified_provider": false,
+      "safe_access_confirmed": false,
+      "live_signed_invitation": null,
+      "send_ready": false,
+      "subject": "A small-repair introduction for Verde Valley Handyman",
+      "plain": "Hello Verde Valley Handyman team,\n\nHey, this is Brett with BMC Service Network. Your site describes small to medium repairs and lists Cottonwood, Camp Verde and other Verde Valley communities.\n\nWe're preparing a local provider network. You would review the actual job details and decide whether the work fits your team. Joining is free, and we cannot promise jobs.\n\nIf this is relevant, which minor door, drywall or finish-carpentry repairs do you want more of, and what area and assessment availability fit your crew? We would confirm qualifications, scope and access before any referral.\n\nBrett\nBMC Service Network\nBMC Luminary Ventures LLC\n186 E. Sheldon St. #1144, Prescott, AZ 86301\n\nThis is a promotional email from BMC Service Network.\nReply no if you do not want future BMC outreach."
+    }
+  ],
+  "other_candidates": [
+    {
+      "name": "Your Own Retreat Inc.",
+      "status": "Research hold",
+      "reason": "Third-party landscaping listing and an old HOA reference found. No fresh direct business email/site or present scope/capacity established. Do not use the old reference email as a verified recipient."
+    },
+    {
+      "name": "R & R Fencing",
+      "status": "Identity hold",
+      "reason": "Prescott Valley listing cites ROC 303844. A similarly named website appeared, but its identity was not tied to this Arizona license/business. Do not attach that website or its contact details to this record."
+    }
+  ],
+  "status": "OWNER REVIEW ONLY; no outreach or provider acceptance"
+}
