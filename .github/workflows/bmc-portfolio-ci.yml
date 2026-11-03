@@ -491,6 +491,9 @@ jobs:
           grep -Fq 'location / { return 404; }' nginx-webhooks.conf
           ! grep -Eq 'location .*\/api\/admin' nginx-webhooks.conf
 
+      - name: Verify signed offer public gateway
+        run: python portfolio/automation/test-offer-gateway.py
+
       - name: Boot database and API smoke test
         working-directory: portfolio/automation
         run: |
