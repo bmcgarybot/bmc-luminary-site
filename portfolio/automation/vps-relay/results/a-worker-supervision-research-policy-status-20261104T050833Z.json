@@ -1,0 +1,21 @@
+{
+  "action": "research_policy_status",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-04T05:09:01.952678+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "f3aab53474013929887408b99f64884037779855",
+  "git_commit_before": "f3aab53474013929887408b99f64884037779855",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "cb03bd89e58e33e5fe8b65ea52dad424463fe30f",
+  "request_id": "a-worker-supervision-research-policy-status-20261104T050833Z",
+  "request_sha256": "1eaabaca25d1594f75b872d58f066dca2a0ffcfc09cc6ef5bf79e7d7c3910a8f",
+  "started_at": "2026-11-04T05:09:01.941156+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"ok\": true, \"policy\": {\"version\": \"2026-11-03-small-contractors-v1\", \"scope\": \"All configured territories, including previously scanned territories\", \"priority\": \"Smaller and owner-operated contractors, where supported by evidence\", \"ownership_rule\": \"Local ownership, a small website or an LLC name do not establish owner operation or employee count\", \"channels\": [{\"key\": \"nextdoor_public\", \"name\": \"Publicly indexed Nextdoor\", \"domain\": \"nextdoor.com\", \"role\": \"mixed_public_signals\"}, {\"key\": \"facebook_public\", \"name\": \"Publicly indexed Facebook\", \"domain\": \"facebook.com\", \"role\": \"mixed_public_signals\"}, {\"key\": \"craigslist_public\", \"name\": \"Publicly indexed Craigslist\", \"domain\": \"craigslist.org\", \"role\": \"mixed_public_signals\"}, {\"key\": \"whitepages_business_public\", \"name\": \"Public business-only Whitepages results\", \"domain\": \"whitepages.com\", \"role\": \"business_directory_only\"}], \"continuous_rescanning\": true, \"scan_every_scheduler_cycle\": true, \"source_access\": \"Publicly accessible or publicly indexed material only; access failures remain explicit\", \"signal_rules\": [\"Separate contractor advertisements, recommendations, business listings and request candidates\", \"A search snippet is not a verified post, current business, owner operation or confirmed demand\", \"Publication date must be verified from the source; crawl and retrieval dates are not publication dates\", \"Undated, inaccessible and closure-related results require review\", \"Whitepages is for public business discovery and corroboration, never private-person or home-address research\", \"No automatic contact, provider acceptance, order or demand confirmation\"], \"research_batch_limit\": 15, \"search_concurrency\": 3, \"search_timeout_seconds\": 12}, \"coverage\": [{\"source_key\": \"craigslist_public\", \"lanes\": 126, \"policy_scanned_lanes\": 40, \"oldest_last_run\": \"2026-11-04T01:26:22.367498+00:00\", \"newest_last_run\": \"2026-11-04T05:06:00.160168+00:00\", \"error_lanes\": 0}, {\"source_key\": \"facebook_public\", \"lanes\": 126, \"policy_scanned_lanes\": 40, \"oldest_last_run\": \"2026-11-03T20:46:20.684113+00:00\", \"newest_last_run\": \"2026-11-04T05:06:00.160642+00:00\", \"error_lanes\": 0}, {\"source_key\": \"nextdoor_public\", \"lanes\": 126, \"policy_scanned_lanes\": 40, \"oldest_last_run\": \"2026-11-03T23:14:37.942299+00:00\", \"newest_last_run\": \"2026-11-04T05:06:00.161038+00:00\", \"error_lanes\": 0}, {\"source_key\": \"whitepages_business_public\", \"lanes\": 126, \"policy_scanned_lanes\": 30, \"oldest_last_run\": \"2026-11-04T04:17:50.848892+00:00\", \"newest_last_run\": \"2026-11-04T05:06:00.159750+00:00\", \"error_lanes\": 0}], \"observations\": [{\"source_key\": \"facebook_public\", \"observation_kind\": \"unclassified_public_result\", \"records\": 7, \"last_seen\": \"2026-11-04T05:06:00.157673+00:00\"}], \"note\": \"Configured channels and scanned lanes are not verified businesses or confirmed demand\"}",
+  "version": 1
+}
