@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "request_id": "a-scoped-journey-ccs-20261104T051823Z",
+  "action": "prepare_scoped_journey",
+  "allow_external_actions": false,
+  "created_at": "2026-11-04T05:18:23.876451+00:00",
+  "expires_at": "2026-11-04T06:18:23.876451+00:00",
+  "args": {
+    "candidate_id": "9f0188b2-b35c-4723-b7bd-3b5dea4149d1"
+  }
+}
