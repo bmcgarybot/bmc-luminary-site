@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "request_id": "a-native-held25-ccs-20261104T030006Z",
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "created_at": "2026-11-04T03:00:06.437Z",
+  "expires_at": "2026-11-04T04:00:06.437Z",
+  "args": {
+    "candidate_id": "9f0188b2-b35c-4723-b7bd-3b5dea4149d1",
+    "pack_count": 25
+  }
+}
