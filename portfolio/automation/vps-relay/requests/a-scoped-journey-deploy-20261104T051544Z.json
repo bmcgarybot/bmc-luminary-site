@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "a-scoped-journey-deploy-20261104T051544Z",
+  "action": "deploy_update",
+  "allow_external_actions": false,
+  "required_ci_sha": "edc31b0bebc84047aca15493f713ec07b33cda63",
+  "created_at": "2026-11-04T05:15:44.490783+00:00",
+  "expires_at": "2026-11-04T06:15:44.490783+00:00",
+  "args": {}
+}
