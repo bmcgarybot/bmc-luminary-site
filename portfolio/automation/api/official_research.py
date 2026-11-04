@@ -70,7 +70,7 @@ VENDOR_TERMS.update({
  'facility_maintenance':('facility maintenance','facilities maintenance','building maintenance'),
  'home_staging':('home staging','property staging'),
  'realtor_listing_prep':('listing preparation','listing prep','real estate staging')})
-BLOCKED={'whereorg.com','homversa.com','yelp.com','facebook.com','linkedin.com','loc8nearme.com','angi.com','thumbtack.com','bbb.org','yellowpages.com','mapquest.com','tripadvisor.com','booking.com','hotels.com','expedia.com','google.com','bing.com','nextdoor.com'}
+BLOCKED={'yahoo.com','powerwashmaps.com','homeadvisor.com','fandango.com','rehab.com','landscapeatlas.com','industrialspaces.net','corkd.com','whereorg.com','homversa.com','yelp.com','facebook.com','linkedin.com','loc8nearme.com','angi.com','thumbtack.com','bbb.org','yellowpages.com','mapquest.com','tripadvisor.com','booking.com','hotels.com','expedia.com','google.com','bing.com','nextdoor.com'}
 
 def compact(s):return re.sub('[^a-z0-9]','',str(s).lower())
 def place(s):return re.sub(r'[-\s]+',' ',str(s or '').strip()).casefold()
@@ -317,9 +317,13 @@ def install(app,require_admin,search,markets,secret,enabled=True):
         require_admin(x_bmc_admin_key)
         async with app.state.pool.acquire() as conn:
             jobs=await conn.fetch('select market,status,count(*) records from official_research_jobs group by market,status order by market,status')
-            inventory=await conn.fetch("select market,side,category_key,count(*) records from market_inventory_candidates where evidence->>'researched_by'=$1 and status='discovered' and closed_at is null group by market,side,category_key",VERSION)
+            inventory_rows=await conn.fetch("select * from market_inventory_candidates where evidence->>'researched_by'=$1 and status='discovered' and closed_at is null",VERSION)
+            from collections import Counter
+            valid_counts=Counter((r['market'],r['side'],r['category_key']) for r in inventory_rows if auto_evidence_valid(dict(r),secret))
+            inventory=[dict(market=k[0],side=k[1],category_key=k[2],records=n) for k,n in sorted(valid_counts.items())]
+            rejected_native=len(inventory_rows)-sum(valid_counts.values())
             errors=await conn.fetch("select error_code,count(*) records from official_research_jobs where status='needs_review' group by error_code order by count(*) desc limit 12")
         from pathlib import Path
         image_catalog=json.loads(Path(__file__).with_name('service_images.json').read_text())
         imagery={'assigned':len(image_catalog['services']),'needs_review':[k for k,v in image_catalog['services'].items() if v['review_status']=='needs_review']}
-        return {'ok':True,'worker':VERSION,'imagery':imagery,'jobs':[dict(x) for x in jobs],'primary_site_verified':[dict(x) for x in inventory],'review_reasons':[dict(x) for x in errors],'outreach_sent':0}
+        return {'ok':True,'worker':VERSION,'imagery':imagery,'jobs':[dict(x) for x in jobs],'primary_site_verified':[dict(x) for x in inventory],'native_records_requiring_revalidation':rejected_native,'review_reasons':[dict(x) for x in errors],'outreach_sent':0}
