@@ -1,0 +1,21 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-04T06:27:02.132345+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "66fb95d57019bd2405ec6ef56ffb9cc5b7052cc8",
+  "git_commit_before": "66fb95d57019bd2405ec6ef56ffb9cc5b7052cc8",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "47e5897296c00a481909ed8ef118fb136283923e",
+  "request_id": "a-canyon-held25-20261104T062557Z",
+  "request_sha256": "fa3814f53605759eccb621c3920fdff3544384e41283f7820ad9a5953aaa8839",
+  "started_at": "2026-11-04T06:27:01.879710+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"a-canyon-held25-20261104T062557Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"GNMNyLgQsNG/8Wj9ZJ2x1TPfUFHBHCH1dauoO3B4zMgoW6UfkdRLNkfwj3loqYb9PJrusNP6r+id5QNaWF6s3jq2GUANCfhVpqJr44ZOk1MgpSAW1sgGmtf8BG2eVxqvqpDpQXlRrPMqQz4sfZqmkAEaYH8RXTEcL2pQDWyIlAoexvVZ0CDfkh9S5ltJzcwHDia+kk0U/Xuwcl9gExXZLMXn7oLnrhvD9+zTWfLsPkECjUqDlNqMIkGRslW+X5H5Lxh+SflAeUR0vd3n6spHZi3+8nUQ8ezzaaNY41QNX+KgPkeiHr7cf1NZKNLlci2Ep/mgTexEu9/rocOD9jeuPfMrq7pHMLDOGxankdMYHbPADrOIvT/TGknlPCVEZKWV+Q+qLoY8Lw1e6meKGJTIoNZYfjLDfxonqgUK1sTxCts+dgUDpHCE+YBSardO3a9jC7ca2mVRG9lls2BpEXaEyt11TWf7a5UF38Bq/rnCF/UkgjKYmlaq+gy/cdflLf1B\",\"nonce\":\"i8ZX5eiZ0FuYqONM\",\"ciphertext\":\"fAJvEL9MQs/W+huqTzqlRREoERQXPP4tprmbcnxyB6dJQaa11Xd0S+ICBqLLDk1PZb5813rritUpvgCa5G5nTHX+WpzVzzWfi0zxMebbGQdRyeDYxHPXEhh9nJ+pssQ/Nxsg+rHQYGiUFxVxL+RThcmG/GFXmtrnNqO3c4kei+3jGqvIrRIYX3WynAMhj1i6z+ZKDb/GPKGGeM/sWKGHUISCrEobMEMzC+lniekUUWQkjugy2ThZwamgA+25mxf08EsBekvCrwP91oFNiV4EMJx2\"}",
+  "version": 1
+}
