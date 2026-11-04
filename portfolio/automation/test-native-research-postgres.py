@@ -124,12 +124,16 @@ async def main():
             assert await conn.fetchval(held.HISTORY_SQL,mail,[]) is False
             appearance_tx=conn.transaction();await appearance_tx.start()
             try:
+                sample_id=uuid.uuid4();order_id=uuid.uuid4()
+                await conn.execute("""insert into growth_sample_requests(sample_id,submission_id,business_name,contact_name,email,provider_service_key,market)
+                    values($1,$2,'Synthetic other customer','Fixture','other-customer@example.test','commercial_cleaning','Phoenix')""",sample_id,'ci-appearance-'+tag)
+                await conn.execute("insert into orders(order_id,customer_email,payment_status,status) values($1,'other-customer@example.test','unpaid','ci_fixture')",order_id)
                 await conn.execute("""insert into growth_sample_prospects(sample_id,candidate_id,business_name,market,
                     category_key,category_label,fit_score,grade,fit_reason,public_email)
-                    values($1,$2,$3,'Phoenix','commercial_cleaning','Cleaning',90,'A','Synthetic listing',$4)""",uuid.uuid4(),native['candidate_id'],native['business_name'],mail)
+                    values($1,$2,$3,'Phoenix','commercial_cleaning','Cleaning',90,'A','Synthetic listing',$4)""",sample_id,native['candidate_id'],native['business_name'],mail)
                 await conn.execute("""insert into growth_order_prospects(order_id,candidate_id,business_name,market,
                     category_key,category_label,fit_score,grade,fit_reason,public_email)
-                    values($1,$2,$3,'Phoenix','commercial_cleaning','Cleaning',90,'A','Synthetic listing',$4)""",uuid.uuid4(),native['candidate_id'],native['business_name'],mail)
+                    values($1,$2,$3,'Phoenix','commercial_cleaning','Cleaning',90,'A','Synthetic listing',$4)""",order_id,native['candidate_id'],native['business_name'],mail)
                 await conn.execute("""insert into growth_prospect_exposures(prospect_key,recipient_key,service_key,market,candidate_id,
                     delivery_kind,delivery_ref,status,contact_key) values($1,'other-customer@example.test','commercial_cleaning',
                     'Phoenix',$2,'free',$3,'delivered',$4)""",'ci-native-listing-'+tag,native['candidate_id'],'ci-listing-'+tag,'email:'+mail)
