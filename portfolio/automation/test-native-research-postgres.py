@@ -108,6 +108,43 @@ async def main():
         assert await raw(original2['candidate_id'])==before2
         # Actual enrichment SQL writes only separate attestation/email on the same UUID.
         native,_,p,mail=await fixture(3,True);old_evidence=json.loads(native['evidence']) if isinstance(native['evidence'],str) else native['evidence']
+        # Bare discovered inventory presence is not prior contact or acceptance.
+        vendor_id='ci_native_vendor_'+tag;buyer_id='ci_native_buyer_'+tag
+        async with pool.acquire() as conn:
+            await conn.execute("insert into vendors(vendor_id,business_name,public_email,status) values($1,$2,$3,'prospect')",vendor_id,native['business_name'],mail)
+            await conn.execute("insert into buyers(buyer_id,business_name,public_email,status) values($1,$2,$3,'discovered')",buyer_id,native['business_name'],mail)
+            inventory_before=await snapshot(conn)
+            await contact._no_history(conn,native,mail)
+            # The same untouched inventory still blocks every actual outreach state.
+            for status,optout in (('sent',False),('suppressed',True),('replied',False)):
+                tx=conn.transaction();await tx.start()
+                try:
+                    await conn.execute("insert into outreach(entity_type,entity_id,campaign,status,opt_out) values('vendor',$1,'synthetic-ci',$2,$3)",vendor_id,status,optout)
+                    try:await contact._no_history(conn,native,mail)
+                    except contact.Held:pass
+                    else:raise AssertionError('historical outreach accepted: '+status)
+                finally:await tx.rollback()
+            for table,idcol,identity in (('vendors','vendor_id',vendor_id),('buyers','buyer_id',buyer_id)):
+                tx=conn.transaction();await tx.start()
+                try:
+                    await conn.execute('update '+table+" set status='pilot_pending_review' where "+idcol+'=$1',identity)
+                    try:await contact._no_history(conn,native,mail)
+                    except contact.Held:pass
+                    else:raise AssertionError('interacted/accepted inventory allowed')
+                finally:await tx.rollback()
+            # Leads are real form submissions; accepted provider matches protect
+            # the vendor even when its discovery status has not yet changed.
+            for accepted_match in (False,True):
+                tx=conn.transaction();await tx.start()
+                try:
+                    lead=await conn.fetchval("insert into leads(form_type,market,service_key,email,status) values('service_request','Phoenix','commercial_cleaning',$1,'received') returning lead_id",'unrelated-'+tag+'@example.test' if accepted_match else mail)
+                    if accepted_match:
+                        await conn.execute("insert into lead_matches(lead_id,vendor_id,status) values($1,$2,'accepted')",lead,vendor_id)
+                    try:await contact._no_history(conn,native,mail)
+                    except contact.Held:pass
+                    else:raise AssertionError('submitted lead/provider acceptance accepted')
+                finally:await tx.rollback()
+            assert await snapshot(conn)==inventory_before,'History guards changed preexisting inventory/history'
         q=receipt('<section><h1>'+native['business_name']+'</h1><p>602-555-0123</p><address>123 Example Street, Phoenix, AZ 85001</address><a href="mailto:'+mail+'">Email</a></section>',native['source_url']+'contact')
         with patch.object(contact,'fetch_page_receipt',side_effect=lambda url:p if url==p.final_url else q),patch.object(contact,'_seal',side_effect=lambda payload,*args:payload):
             result=await contact.enrich(pool,native['candidate_id'],q.final_url,mail,secret,frozenset(),'ci-contact-'+tag)
@@ -115,6 +152,10 @@ async def main():
         new_evidence=json.loads(enriched['evidence']) if isinstance(enriched['evidence'],str) else enriched['evidence']
         assert new_evidence['vps_verification']==old_evidence['vps_verification'] and new_evidence['vps_verification']['public_email']==''
         assert result['native_record_written']
+        async with pool.acquire() as conn:
+            assert await snapshot(conn)==inventory_before,'Enrichment changed preexisting vendor/buyer/history'
+            await conn.execute('delete from vendors where vendor_id=$1',vendor_id)
+            await conn.execute('delete from buyers where buyer_id=$1',buyer_id)
         # Contact's persisted-proof failure also rolls back its email/token write.
         native4,_,p4,mail4=await fixture(4,True);before4=await raw(native4['candidate_id'])
         q4=receipt(q.document.replace(native['business_name'],native4['business_name']).replace(mail,mail4),native4['source_url']+'contact')
@@ -130,9 +171,43 @@ async def main():
         async with pool.acquire() as conn:
             assert await snapshot(conn)==before,'Customer/history tables changed'
             assert await conn.fetchval('select count(*) from market_inventory_candidates where candidate_id=any($1::uuid[])',ids)==4
+        # Historical review: execute the actual cutoff/member SQL and every
+        # event/count/native-match query against real schema, then roll back all
+        # synthetic ledger fixtures. The audit itself executes no writes.
+        import historical_growth as historical
+        async with pool.acquire() as conn:
+            tx=conn.transaction();await tx.start()
+            try:
+                target='ci_historical_'+tag
+                await conn.execute("""insert into growth_outreach_targets(target_id,business_name,public_email,market,service_key,source_url)
+                  values($1,$2,$3,'Phoenix','commercial_cleaning',$4)""",target,original['business_name'],email,original['source_url'])
+                historical_id=await conn.fetchval("""insert into outreach(entity_type,entity_id,campaign,status,sent_at,historical_review_recorded_at,owner_review_required)
+                  values('growth_customer',$1,'growth_sales','sent','2026-10-29T00:00:00Z',now(),true) returning outreach_id""",target)
+                # Newer sends, absent historical markers and different campaigns
+                # must never enter historical membership.
+                for campaign,sent,marked in (('growth_sales','2026-10-31T00:00:00Z',True),('growth_sales','2026-10-29T00:00:00Z',False),('other_campaign','2026-10-29T00:00:00Z',True)):
+                    await conn.execute("""insert into outreach(entity_type,entity_id,campaign,status,sent_at,historical_review_recorded_at)
+                      values('growth_customer',$1,$2,'sent',$3::text::timestamptz,case when $4 then now() else null end)""",target,campaign,sent,marked)
+                await conn.execute("""insert into events(entity_type,entity_id,event_type,actor,payload)
+                  values('growth_customer',$1,'outreach_reply','ci_fixture','{"classification":"other"}'::jsonb)""",target)
+                history_before=await snapshot(conn)
+                payload=await historical.collect(conn,secret,[])
+                matches=[r for r in payload['historical_ledger'] if r['target_id']==target]
+                assert len(matches)==1 and matches[0]['outreach_id']==historical_id,matches
+                assert matches[0]['sample_order_counts']=={'sample_count':0,'order_count':0}
+                assert matches[0]['actual_outreach_reply_events']
+                assert any(c['candidate_id']==str(original['candidate_id']) and c['native_proof_currently_valid'] for c in matches[0]['matching_native_candidates'])
+                excluded=await historical.collect(conn,secret,[target])
+                match=next(r for r in excluded['historical_ledger'] if r['target_id']==target)
+                assert match['reentry_membership_excluded'] and target not in excluded['reentry_membership_target_ids']
+                assert await snapshot(conn)==history_before,'Historical read-only collector mutated ledger/customer state'
+            finally:await tx.rollback()
+            assert await snapshot(conn)==before,'Historical fixture rollback changed existing history'
         print('PASS actual PostgreSQL native transition/contact SQL, history, same UUID, rollback, untouched customer tables')
     finally:
         async with pool.acquire() as conn:
+            await conn.execute('delete from vendors where vendor_id=$1','ci_native_vendor_'+tag)
+            await conn.execute('delete from buyers where buyer_id=$1','ci_native_buyer_'+tag)
             await conn.execute("delete from events where entity_type='inventory_candidate' and entity_id=any($1::text[])",[str(x) for x in ids])
             await conn.execute('delete from outreach_suppressions where email=any($1::text[])',emails)
             await conn.execute('delete from market_inventory_candidates where candidate_id=any($1::uuid[])',ids)

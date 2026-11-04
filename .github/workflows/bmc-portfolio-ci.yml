@@ -28,13 +28,14 @@ jobs:
           ns=runpy.run_path("vps-gitops-relay.py",run_name="bmc_relay_ci")
           expected={
               "proof_readout","launch_audit","runtime_doctor","diagnostic_bundle","scheduler_status","search_quality_probe","research_refresh_status",
-              "growth_status","growth_launch_audit","operator_snapshot","growth_inventory_audit","growth_preview_candidates","nevada_status","business_metrics","ops_monitor_status","preparation_status","private_research_export","private_held_packet","research_policy_status","census_research_review","census_queue_status","census_queue_export","reply_review_export","queue_census_research","census_queue_step","official_research_step","prepare_scoped_journey", "authorize_scoped_batch","enrich_native_contact","research_promote_census","refresh_uncontacted_vendor",
+              "growth_status","growth_launch_audit","operator_snapshot","growth_inventory_audit","growth_preview_candidates","nevada_status","business_metrics","ops_monitor_status","preparation_status","private_research_export","private_held_packet","research_policy_status","census_research_review","census_queue_status","census_queue_export","reply_review_export","historical_growth_review","authorize_historical_reentry","queue_census_research","census_queue_step","official_research_step","prepare_scoped_journey", "authorize_scoped_batch","enrich_native_contact","research_promote_census","refresh_uncontacted_vendor",
               "deploy_update","configure_owner_contact","configure_growth_review_scope","prepare_ops_configuration","configure_ops_monitoring","ops_alert_test","market_inventory_step","local_demand_step",
               "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","inventory_closure_step","research_refresh_install","scheduler_start","scheduler_stop",
               "growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_launch_enable","growth_launch_disable","growth_owner_replay_email","growth_owner_target_preview","owner_replay_all_email_templates","growth_owner_preview_approve"
           }
           assert ns["ALLOWED_ACTIONS"] == expected, ns["ALLOWED_ACTIONS"]
           assert all("shell" not in x for x in ns["ALLOWED_ACTIONS"])
+          assert "historical_growth_review" in ns["READ_ONLY_ACTIONS"]
           assert "operator_snapshot" in ns["READ_ONLY_ACTIONS"]
           assert "operator_snapshot" not in ns["EXTERNAL_ACTIONS"]
           assert "census_research_review" in ns["READ_ONLY_ACTIONS"]
@@ -129,6 +130,10 @@ jobs:
           python3 portfolio/automation/test-scoped-nonexclusive.py
           python3 portfolio/automation/test-scoped-batch.py
           python3 portfolio/automation/test-reply-review.py
+          python3 portfolio/automation/test-campaign-reentry.py
+          python3 portfolio/automation/test-reentry-preparation.py
+          python3 portfolio/automation/test-historical-growth.py
+          python3 portfolio/automation/test-historical-growth-relay.py
           python3 portfolio/automation/test-pr70-customer-identity-review.py
           python3 portfolio/automation/test-protected-scoped-stage.py
           python3 portfolio/automation/test-authorized-phoenix-launch.py
@@ -612,6 +617,7 @@ jobs:
           docker compose --env-file .env.ci exec -T -e BMC_CI_SCOPED_STAGE=1 ops_api python - < test-protected-scoped-stage.py
           docker compose --env-file .env.ci exec -T -e BMC_CI_SCOPED_BATCH=1 ops_api python - < test-scoped-batch-postgres.py
           docker compose --env-file .env.ci exec -T -e BMC_CI_NATIVE_RESEARCH=1 ops_api python - < test-native-research-postgres.py
+          docker compose --env-file .env.ci exec -T -e BMC_CI_CAMPAIGN_REENTRY=1 ops_api python - < test-campaign-reentry-postgres.py
           docker compose --env-file .env.ci exec -T ops_api python - < ci/unsubscribe-smoke.py
           python3 ci/nevada-intake-smoke.py
           docker compose --env-file .env.ci exec -T ops_api python - < ci/nevada-db-proof.py
@@ -1391,8 +1397,14 @@ jobs:
           import json
           data=json.load(open("/tmp/bmc_growth_inventory_audit.json"))
           assert data["ok"] and data["read_only"] and data["counts_capped_at_reserve"]
-          assert len(data["lanes"]) == 42
-          assert len({(r["market"],r["service_key"]) for r in data["lanes"]}) == 42
+          import ast, pathlib
+          module=ast.parse(pathlib.Path("api/app.py").read_text())
+          labels=ast.literal_eval(next(n.value for n in module.body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=="GROWTH_SERVICE_LABELS" for t in n.targets)))
+          markets={r["market"] for r in data["lanes"]}
+          assert len(markets)==21, markets
+          expected={(market,service) for market in markets for service in labels}
+          actual={(r["market"],r["service_key"]) for r in data["lanes"]}
+          assert actual==expected and len(data["lanes"])==len(expected), (actual,expected)
           assert all(0<=r["qualified_up_to_reserve"]<=data["reserve_required"] for r in data["lanes"])
           assert all(set(r)=={"market","service_key","qualified_up_to_reserve","sample_capacity","paid_reserve_capacity"} for r in data["lanes"])
           PY

@@ -85,7 +85,7 @@ def eligible(row,protected):
         or evidence(row).get('qualification_hold')):raise Held('unheld_discovered_vendor_required')
 
 
-async def no_history(conn,row,new_email=''):
+async def no_history(conn,row,new_email='',secret=None):
     ids=[str(row['candidate_id']),'inventory:'+str(row['candidate_id'])]
     if row.get('promoted_entity_id'):ids.append(str(row['promoted_entity_id']))
     emails=sorted({str(x).lower() for x in (row.get('public_email'),new_email) if x})
@@ -96,6 +96,11 @@ async def no_history(conn,row,new_email=''):
             if values and all(isinstance(values.get(key),bool) for key in HISTORY_BRANCHES):
                 diagnostics={'history_checks':{key:values[key] for key in HISTORY_BRANCHES}}
         except Exception:pass
+        if secret:
+            from campaign_reentry import approved_reentry,ReentryHeld
+            try:
+                return await approved_reentry(conn,dict(row,public_email=new_email or ''),secret)
+            except Exception:pass
         raise Held('existing_customer_target_or_history',diagnostics)
 
 
@@ -139,7 +144,7 @@ async def save_transition(pool,original,parsed,service,secret,protected,request_
             current=await conn.fetchrow(FULL_ROW_SQL+' for update',cid);current=dict(current) if current else None
             eligible(current,protected)
             if snapshot(current)!=snapshot(original):raise Held('source_candidate_changed')
-            await no_history(conn,current,email)
+            await no_history(conn,current,email,secret)
             data=copy.deepcopy(evidence(current));fresh=copy.deepcopy(parsed['evidence'])
             # These are append-only local archives, not resets of queue/audit rows.
             archive={'source_key':source_key,'record':json_record(current),'request_id':request_id,
@@ -179,7 +184,7 @@ async def promote_one(pool,row,service,search,secret,protected,request_id):
         eligible(original,protected)
         if evidence(original).get('researched_by')!='assistant_manual_census':raise Held('manual_census_source_required')
         source_key=raw_source_key(original)
-        async with pool.acquire() as conn:await no_history(conn,original)
+        async with pool.acquire() as conn:await no_history(conn,original,secret=secret)
         research_input=dict(original,public_email='',source_key=source_key)
         proposal=await review_row(research_input,service,search,secret,try_existing_source=True)
         if proposal.get('status')!='source_proposal_only':
@@ -200,7 +205,7 @@ async def refresh_one(pool,candidate_id,secret,protected,request_id):
             if original.get('public_email'):raise Held('empty_native_mailbox_required')
             if (original.get('category_key') not in VENDOR_TERMS or original.get('official_site') is not True
                 or not auto_evidence_valid(original,secret)):raise Held('current_native_proof_required')
-            await no_history(conn,original)
+            await no_history(conn,original,secret=secret)
         url=original['source_url']
         if not research_get_url(url):raise Held('unsupported_primary_url')
         import hashlib

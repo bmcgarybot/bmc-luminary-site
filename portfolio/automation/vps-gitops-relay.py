@@ -47,7 +47,7 @@ LOCAL_RESULTS = STATE_DIR / "results"
 RESEARCH_SCHEDULE_FILE = STATE_DIR / "research-refresh-schedule.json"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status", "private_research_export", "private_held_packet", "research_policy_status", "census_research_review", "census_queue_status", "census_queue_export", "reply_review_export"}
+READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status", "private_research_export", "private_held_packet", "research_policy_status", "census_research_review", "census_queue_status", "census_queue_export", "reply_review_export", "historical_growth_review"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
     "prepare_ops_configuration",
@@ -73,7 +73,7 @@ MUTATING_INTERNAL_ACTIONS = {
     "growth_stage_commercial_cleaning",
 }
 EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates", "ops_alert_test"}
-CONTROL_ACTIONS = {"growth_launch_disable", "growth_owner_preview_approve"}
+CONTROL_ACTIONS = {"growth_launch_disable", "growth_owner_preview_approve", "authorize_historical_reentry"}
 RESEARCH_MUTATION_ACTIONS = {"enrich_native_contact", "research_promote_census", "refresh_uncontacted_vendor"}
 # These bounded research-only transitions enforce no recipient/history changes server-side.
 ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS | RESEARCH_MUTATION_ACTIONS
@@ -892,6 +892,20 @@ def execute(req: dict) -> dict:
     elif action == "nevada_status":
         status=admin_post("/api/admin/nevada/status",timeout=30)
         stdout=json.dumps(status,indent=2,default=str);stderr="";exit_code=0
+
+    elif action == "authorize_historical_reentry":
+        hashes=args.get('target_hashes')
+        if (set(args)!={'target_hashes'} or not isinstance(hashes,list) or not 1<=len(hashes)<=7
+            or any(not isinstance(value,str) or not re.fullmatch('[0-9a-f]{64}',value) for value in hashes)
+            or len(set(hashes))!=len(hashes)):
+            raise RelayError('Exact historical target hashes are required')
+        path='/api/admin/authorize-historical-growth-reentry?'+urllib.parse.urlencode({'request_id':req['request_id']})
+        stdout=json.dumps(admin_post(path,timeout=120,body=args));stderr='';exit_code=0
+
+    elif action == "historical_growth_review":
+        if args:raise RelayError('Historical Growth review takes no arguments')
+        path='/api/admin/historical-growth-review?'+urllib.parse.urlencode({'request_id':req['request_id']})
+        stdout=json.dumps(admin_post(path,timeout=300));stderr='';exit_code=0
 
     elif action == "reply_review_export":
         if args:raise RelayError('Reply review export takes no arguments')

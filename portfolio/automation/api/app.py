@@ -8274,3 +8274,12 @@ install_contact_enrichment_api(app, require_admin, ADMIN_KEY, GROWTH_NONEXCLUSIV
 
 from rolling_vendor_research import install as install_rolling_vendor_research
 install_rolling_vendor_research(app, require_admin, ADMIN_KEY, GROWTH_NONEXCLUSIVE_COHORT_IDS, search_research_web)
+
+# Read-only encrypted history review; never clears holds or authorizes reentry.
+from historical_growth import install as install_historical_growth
+install_historical_growth(app,require_admin,ADMIN_KEY,GROWTH_NONEXCLUSIVE_COHORT_IDS,
+    dict(IMAP_HOST=IMAP_HOST,IMAP_PORT=IMAP_PORT,IMAP_USER=IMAP_USER,IMAP_PASSWORD=IMAP_PASSWORD,IMAP_FOLDER=IMAP_FOLDER))
+
+# Explicit owner-authorized re-entry of the isolated pre-review batch; no sends.
+from campaign_reentry import install as install_campaign_reentry
+install_campaign_reentry(app,require_admin,ADMIN_KEY)

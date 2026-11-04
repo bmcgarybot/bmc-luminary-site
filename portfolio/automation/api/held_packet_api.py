@@ -202,7 +202,13 @@ async def compile_native_packet(conn,candidate,secret,frozen,hold_required,callb
     if row['category_key']=='tree_service' and pack_count!=25:raise ValueError('unsupported_tree_pack_count')
     if row['category_key']=='junk_hauling' and pack_count!=25:raise ValueError('unsupported_junk_pack_count')
     history=await conn.fetchval(HISTORY_SQL,row['public_email'],list(frozen))
-    if history is not False: raise ValueError('recipient_history_or_suppression')
+    reentry=None
+    if history is not False:
+        from campaign_reentry import approved_reentry
+        try:reentry=await approved_reentry(conn,row,secret)
+        except Exception as exc:raise ValueError('recipient_history_or_suppression') from exc
+        if row['public_email'].lower()!=reentry['expected_email'].lower():
+            raise ValueError('reentry_fresh_email_changed')
     receipt=await asyncio.wait_for(
         asyncio.to_thread(official_research.fetch_page_receipt,row['source_url']),timeout=25)
     final,document,digest=receipt.final_url,receipt.document,receipt.content_sha256
@@ -238,6 +244,7 @@ async def compile_native_packet(conn,candidate,secret,frozen,hold_required,callb
         or not same_held_recipient_identity(row['business_name'],parsed['business_name'])):
         raise ValueError('recipient_contact_or_identity_changed')
     fresh=dict(row,**parsed)
+    if reentry and fresh['public_email'].lower()!=reentry['expected_email'].lower():raise ValueError('reentry_fresh_email_changed')
     if not official_research.auto_evidence_valid(fresh,secret): raise ValueError('fresh_evidence_invalid')
     scope=dict(source_focus(document,fresh['category_key']),source_url=final,content_sha256=digest,checked_at=parsed['checked_at'],
                source_signature=parsed['evidence']['vps_verification']['signature'])
