@@ -3587,8 +3587,9 @@ async def growth_owner_sample(conn,target,territory,rows):
       "checkout_url":checkout,"qualified_pool":len(rows),"selected_markets":territory,"preview":True,
       "message":"Owner review: these five are saved for this preview. Checkout is live; inspect only and do not pay. No customer sample or approval has been recorded."}
 
-async def growth_owner_full_pack(conn,target,territory,rows,sample):
+async def growth_owner_full_pack(conn,target,territory,rows,sample,count=100):
     """Owner-token-only, read-only full deliverable preview; no order or exposure writes."""
+    if count not in (25,100):raise HTTPException(400,"Choose a 25 or 100 prospect owner review")
     saved=await conn.fetchrow("select candidate_ids from growth_owner_previews where preview_id=$1 and target_id=$2",uuid.UUID(sample["preview_id"]),target["target_id"])
     by_id={str(r["candidate_id"]):dict(r) for r in rows}
     ids=list(saved["candidate_ids"]) if saved else []
@@ -3600,19 +3601,19 @@ async def growth_owner_full_pack(conn,target,territory,rows,sample):
       exclude_names={clean(r["business_name"]).lower() for r in originals},
       recipient_key=target["public_email"],delivery_kind="paid",
       recipient_business_key=growth_recipient_business_key(target["business_name"]))
-    final=originals+list(candidates[:95])
+    final=originals+list(candidates[:count-5])
     # Reuse all quantity, identity, contact, territory, score and original-row gates.
     try:
         growth_offers.validate_rows("growth_pack_25",final[:25],originals,territory)
-        growth_offers.validate_rows("growth_upgrade_75",final,final[:25],territory)
+        if count==100:growth_offers.validate_rows("growth_upgrade_75",final,final[:25],territory)
     except ValueError as exc:raise HTTPException(409,"Full-pack preview unavailable: "+str(exc))
     public=growth_sample_public_rows(final)
     prepared=datetime.now(timezone.utc)
     pdf=render_sample_pdf(public,target["business_name"],GROWTH_SERVICE_LABELS[target["service_key"]],territory,
-      "owner-full-pack-"+sample["preview_id"],prepared_at=prepared,preview=True,paid=True,paid_count=100)
-    stem="BMC-"+re.sub(r"[^A-Za-z0-9]+","-",target["business_name"]).strip("-")+"-100-Prospects-Owner-Review"
+      "owner-full-pack-"+sample["preview_id"],prepared_at=prepared,preview=True,paid=True,paid_count=count)
+    stem="BMC-"+re.sub(r"[^A-Za-z0-9]+","-",target["business_name"]).strip("-")+f"-{count}-Prospects-Owner-Review"
     return {"ok":True,"status":"owner_pack_ready","preview":True,"business_name":target["business_name"],
-      "selected_markets":territory,"prepared_at":prepared.isoformat(),"pack_count":100,"original_five_preserved":True,
+      "selected_markets":territory,"prepared_at":prepared.isoformat(),"pack_count":count,"original_five_preserved":True,
       "sample":public,"download_filename":stem+".pdf","download_pdf_base64":base64.b64encode(pdf).decode(),
       "download_csv_filename":stem+".csv","download_csv_base64":base64.b64encode(growth_csv_bytes(final)).decode(),
       "checkout_url":"","customer_order_created":False,"customer_delivery_recorded":False,
@@ -3647,8 +3648,11 @@ async def growth_claim_free_five(request:Request):
                   "sample":[],"checkout_url":"","qualified_pool":len(rows),"preview":True,
                   "message":"Owner preview: this market does not currently have five qualified rows."}
             sample=await growth_owner_sample(conn,target,territory,rows)
-            if str(p.get("pack_count") or "")=="100":
-                return await growth_owner_full_pack(conn,target,territory,rows,sample)
+            pack_count=str(p.get("pack_count") or "5")
+            if pack_count not in ("5","25","100"):
+                raise HTTPException(400,"Choose a 5, 25 or 100 prospect owner review")
+            if pack_count in ("25","100"):
+                return await growth_owner_full_pack(conn,target,territory,rows,sample,int(pack_count))
             return sample
         submission_id="growth_claim_"+hashlib.sha256(target_id.encode("utf-8")).hexdigest()[:32]
         payload={

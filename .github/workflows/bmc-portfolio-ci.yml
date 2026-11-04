@@ -50,6 +50,7 @@ jobs:
         run: |
           python -m pip install reportlab==4.4.9 pypdf==6.10.0
           python3 portfolio/automation/test-growth-pdf.py
+          python3 portfolio/automation/test-owner-pack-review.py
           python3 portfolio/automation/test-growth-offers.py
           python3 portfolio/automation/test-official-research.py
 
