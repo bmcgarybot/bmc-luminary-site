@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "request_id": "a-reviewed-census-batch4-20261104T072427Z",
+  "action": "census_research_review",
+  "allow_external_actions": false,
+  "created_at": "2026-11-04T07:24:27.601722+00:00",
+  "expires_at": "2026-11-04T08:24:27.601722+00:00",
+  "args": {
+    "source_keys": [
+      "a795bfbda4f9cf9206573efe5bfd58e7957987941e4d09d0282e454c21aa719e"
+    ],
+    "requested_service": "floor_carpet"
+  }
+}
