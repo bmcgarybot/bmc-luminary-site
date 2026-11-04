@@ -27,6 +27,8 @@ floor-carpet-care/index.html
 garage-door-service/index.html
 grease-drain-service/index.html
 growth-packs/commercial-cleaning/index.html
+growth-packs/tree-service/index.html
+growth-packs/junk-hauling/index.html
 growth-packs/index.html
 growth-packs/pressure-washing/index.html
 growth-packs/sample/index.html
