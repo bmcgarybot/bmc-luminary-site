@@ -83,7 +83,10 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual({row[6] for row in observed},{'request_candidate','contractor_advertisement','closure_mention'})
         demand=[args for query,args in calls if query.lstrip().startswith('insert into local_demand_signals')]
         self.assertEqual(len(demand),1);self.assertEqual(demand[0][0],'nextdoor_public')
-        for args in observed:self.assertFalse(json.loads(args[-1])['confirmed_demand'])
+        for args in observed:
+            evidence=json.loads(args[-1]);self.assertNotIn('confirmed_demand',evidence)
+            self.assertFalse(evidence['index_observation']['confirmed_demand'])
+        for args in demand:self.assertNotIn('source_page_verified',json.loads(args[-1]))
         for query,args in calls:
             self.assertNotIn('insert into orders',query.lower());self.assertNotIn('update outreach ',query.lower())
         updates=[args for query,args in calls if 'research_policy_version=$7' in query]

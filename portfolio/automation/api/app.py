@@ -6358,7 +6358,7 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
                 on conflict(source_key,market,source_url) do update set last_seen_at=now(),
                   observation_kind=excluded.observation_kind,evidence=local_channel_observations.evidence||excluded.evidence""",
                 lane['source_key'],lane['market'],observed_service,result['url'],result['title'],result['snippet'],kind,
-                json.dumps(observation_evidence(result,kind)))
+                json.dumps({'index_observation':observation_evidence(result,kind)}))
               if role=='business_directory_only' or kind=='closure_mention':
                   continue
               if not local_signal_result_relevant(result,lane["market"]):
@@ -6397,9 +6397,8 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
                             "public_index_only":True,"automatic_contact_allowed":False,
                             "group_key":lane["group_key"],"page":page,
                             "query_strategy_version":LOCAL_DEMAND_QUERY_STRATEGY_VERSION,
-                            "market_hint_matched":True,"source_page_verified":False,
-                            "publication_date_verified":False,"confirmed_demand":False,
-                            "observation_kind":"request_candidate","research_policy_version":RESEARCH_POLICY["version"]}))
+                            "market_hint_matched":True,"index_observation":observation_evidence(result,"request_candidate"),
+                            "research_policy_version":RESEARCH_POLICY["version"]}))
               activated=(existing is None or clean(existing["status"]).startswith("superseded_pre_v"))
               if sid and activated:
                   new_signals+=1
