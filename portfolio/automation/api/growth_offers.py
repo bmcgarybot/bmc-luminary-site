@@ -116,32 +116,59 @@ def offer_email(tier,business,territory,url,unsubscribe_url):
     html='<html><meta name="viewport" content="width=device-width,initial-scale=1"><body style="margin:0;background:#f5f7f9;font:16px/1.6 Arial;color:#15334b"><div style="max-width:600px;margin:auto;padding:24px"><p style="font-weight:bold;color:#007e87">BMC SERVICE NETWORK</p><p>Hi '+escape(business)+' team,</p>'+''.join('<p>'+escape(s)+'</p>' for s in lines)+'<p><a style="display:inline-block;background:#007e87;color:white;padding:14px 20px;border-radius:6px;text-decoration:none" href="'+escape(url,quote=True)+'">'+escape(button)+'</a></p><p>Brett<br>BMC Service Network<br><a href="mailto:contact@bmcservicenetwork.com">contact@bmcservicenetwork.com</a></p><p style="font-size:12px;color:#526675">'+escape(POSTAL)+'</p><p style="font-size:12px"><a href="'+escape(unsubscribe_url,quote=True)+'">Stop these emails</a></p></div></body></html>'
     return {'subject':subject,'text':body,'html':html,'button':button}
 
-def strategy_pdf(payload, reference):
-    import io
-    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+def strategy_pdf(payload, reference, preview=False):
+    import io,re
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, KeepTogether
     from reportlab.lib.styles import getSampleStyleSheet
+    from reportlab.lib.pagesizes import letter
+    from reportlab.lib import colors
+    from growth_pdf import NAVY, TEAL, safe_website
     validate_strategy(payload['strategy'])
-    from growth_pdf import NAVY, TEAL
     out=io.BytesIO();styles=getSampleStyleSheet();s=payload['strategy']
     for name in ('BodyText','Title','Heading1','Heading2'):
         styles[name].fontName='BMCRegular' if name=='BodyText' else 'BMCBold'
         styles[name].textColor=NAVY
     styles['BodyText'].fontSize=10;styles['BodyText'].leading=15
-    styles['Title'].textColor=TEAL
-    styles['Heading2'].keepWithNext=True
+    styles['Title'].textColor=TEAL;styles['Title'].fontSize=23
+    styles['Heading2'].fontSize=13;styles['Heading2'].spaceBefore=14;styles['Heading2'].keepWithNext=True
     story=[]
+    def paragraph(text,style='BodyText'):
+        text=str(text);parts=[];last=0
+        for match in re.finditer(r'https?://[^\s]+',text):
+            parts.append(escape(text[last:match.start()]).replace('\n','<br/>'))
+            url=match.group(0);safe=safe_website(url)
+            parts.append('<link href="'+escape(safe,quote=True)+'" color="#007e87"><u>'+escape(url)+'</u></link>' if safe else escape(url))
+            last=match.end()
+        parts.append(escape(text[last:]).replace('\n','<br/>'))
+        return Paragraph(''.join(parts),styles[style])
     def add(text,style='BodyText'):
-        story.append(Paragraph(escape(str(text)).replace('\n','<br/>'),styles[style]));story.append(Spacer(1,10))
-    add('BMC SERVICE NETWORK','Title');add('Competitor snapshot and outreach plan','Heading1')
-    add('Prepared for '+payload['business']);add('Territory: '+', '.join(payload['territory']))
-    add('Public observations are not proof of competitor performance or buyer demand. Recommendations are hypotheses to test. No outreach is sent on your behalf.')
+        story.append(paragraph(text,style));story.append(Spacer(1,8))
+    def card(lines):
+        content=[]
+        for line in lines:content.extend([paragraph(line),Spacer(1,6)])
+        table=Table([[content]],colWidths=[526],hAlign="LEFT");table.setStyle(TableStyle([
+          ('BACKGROUND',(0,0),(-1,-1),colors.HexColor('#eef5f3')),('BOX',(0,0),(-1,-1),.6,colors.HexColor('#d1dfe3')),
+          ('LEFTPADDING',(0,0),(-1,-1),12),('RIGHTPADDING',(0,0),(-1,-1),12),('TOPPADDING',(0,0),(-1,-1),10),('BOTTOMPADDING',(0,0),(-1,-1),6)]))
+        story.extend([KeepTogether(table),Spacer(1,10)])
+    add('BMC SERVICE NETWORK','Title');add('Competitor snapshot & outreach plan','Heading1')
+    add('Prepared for '+payload['business'],'Heading2');add('Territory: '+', '.join(payload['territory']))
+    if preview:card(['OWNER REVIEW DRAFT — no order or customer delivery has been created.'])
+    add('Public observations describe published offers. Recommendations are hypotheses to test; they do not establish competitor performance or buyer demand. This document does not send outreach on your behalf.')
+    add('1. Local competitor observations','Heading2')
     for c in s['competitors']:
-        add(c['name'],'Heading2');add('Observed offer: '+c['observed_offer']);add('Implication: '+c['implication'])
-        add('Source: '+c['source_url']);add('Checked: '+c['checked_at'])
-    for field,title in [('positioning','Positioning'),('priorities','Account priorities'),('first_email','Opening email'),('follow_up','Follow-up'),('phone_opener','Phone opener'),('reply_handling','Reply handling'),('four_week_plan','Four-week plan')]:
-        add(title,'Heading2');add(s[field])
-    add(POSTAL);add('Questions: contact@bmcservicenetwork.com');add('Reference: '+reference)
-    SimpleDocTemplate(out,title='BMC strategy plan',author='BMC Service Network',invariant=1).build(story)
+        add(c['name'],'Heading2')
+        card(['Published offer: '+c['observed_offer'],'What to test: '+c['implication'],'Source: '+c['source_url'],'Source reviewed: '+c['checked_at']])
+    for field,title in [('positioning','2. Positioning to test'),('priorities','3. Priority accounts'),('first_email','4. Company introduction'),('follow_up','5. One follow-up'),('phone_opener','6. Phone introduction'),('reply_handling','7. Reply guidance'),('four_week_plan','8. Four-week plan')]:
+        add(title,'Heading2')
+        for block in s[field].split('\n\n'):
+            if field in ('priorities','four_week_plan'):card([block])
+            else:add(block)
+    add(POSTAL);story.append(Paragraph('Questions: <link href="mailto:contact@bmcservicenetwork.com" color="#007e87">contact@bmcservicenetwork.com</link>',styles['BodyText']))
+    def footer(canvas,doc):
+        canvas.saveState();canvas.setFont('BMCRegular',7);canvas.setFillColor(NAVY)
+        canvas.drawString(43,27,('OWNER REVIEW · ' if preview else '')+payload['business'])
+        canvas.drawRightString(569,27,str(doc.page));canvas.drawString(43,16,'Reference: '+reference);canvas.restoreState()
+    SimpleDocTemplate(out,pagesize=letter,title='BMC strategy plan',author='BMC Service Network',invariant=1,leftMargin=43,rightMargin=43,topMargin=40,bottomMargin=43).build(story,onFirstPage=footer,onLaterPages=footer)
     return out.getvalue()
 
 

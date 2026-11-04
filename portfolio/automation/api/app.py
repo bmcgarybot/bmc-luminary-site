@@ -1,6 +1,7 @@
 from official_research import auto_evidence_valid, install as install_official_research
 from growth_pdf import sample_pdf_response, render_sample_pdf, present_prospect_rows, prospect_presentation, format_business_phone
 import growth_offers
+from growth_strategy import build_owner_strategy
 from ops_metrics import business_metrics
 from pathlib import Path
 GROWTH_REVIEW_PACKETS=__import__("json").loads(Path(__file__).with_name("growth_review_packets.json").read_text())
@@ -3648,6 +3649,18 @@ async def growth_claim_free_five(request:Request):
                   "sample":[],"checkout_url":"","qualified_pool":len(rows),"preview":True,
                   "message":"Owner preview: this market does not currently have five qualified rows."}
             sample=await growth_owner_sample(conn,target,territory,rows)
+            if p.get("review_type")=="strategy":
+                full=await growth_owner_full_pack(conn,target,territory,rows,sample)
+                opener=GROWTH_REVIEW_PACKETS.get(clean(target["public_email"]).lower(),{}).get("opener") or sample["research_scope"]
+                try:
+                    payload=build_owner_strategy(dict(target),full["sample"],GROWTH_REVIEW_PACKETS,opener)
+                    reference="owner-strategy-"+sample["preview_id"]
+                    pdf=growth_offers.strategy_pdf(payload,reference,preview=True)
+                except ValueError as exc:raise HTTPException(409,str(exc))
+                stem="BMC-"+re.sub(r"[^A-Za-z0-9]+","-",target["business_name"]).strip("-")+"-Strategy-Owner-Review.pdf"
+                return {"ok":True,"status":"owner_strategy_draft","preview":True,"business_name":target["business_name"],
+                  "strategy_payload":payload,"download_filename":stem,"download_pdf_base64":base64.b64encode(pdf).decode(),
+                  "customer_order_created":False,"customer_delivery_recorded":False,"checkout_url":""}
             pack_count=str(p.get("pack_count") or "5")
             if pack_count not in ("5","25","100"):
                 raise HTTPException(400,"Choose a 5, 25 or 100 prospect owner review")
