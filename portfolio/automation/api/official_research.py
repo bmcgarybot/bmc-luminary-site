@@ -174,6 +174,18 @@ def parse_record(candidate,url,document,digest,secret):
             if isinstance(c,dict):phones.append(str(c.get('telephone') or ''));emails.append(str(c.get('email') or '').removeprefix('mailto:'))
         phones=[re.sub(r'\D','',p) for p in phones];phones=[p[-10:] for p in phones if len(p)==10 or (len(p)==11 and p[0]=='1')]
         emails=[x.lower() for x in emails if re.fullmatch(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}',x)]
+        if not emails:
+            # A visible business mailbox on the same official domain can
+            # supplement the already-proven structured entity, never replace it.
+            observed=set()
+            for link in page.links:
+                parsed=urlsplit(link)
+                address=parsed.path.lower()
+                if parsed.scheme!='mailto' or not re.fullmatch(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}',address):continue
+                local,domain=address.rsplit('@',1)
+                if domain==host(url) and local in ('info','contact','office','hello','admin','sales','service','services','support','inquiries','enquiries'):
+                    observed.add(address)
+            if len(observed)==1:emails=list(observed)
         if not phones and not emails:continue
         old_phone=re.sub(r'\D','',str(candidate.get('public_phone') or ''))[-10:]
         if len(old_phone)==10 and phones and old_phone not in phones:continue
@@ -206,6 +218,38 @@ def auto_evidence_valid(row,secret):
         if row.get('side') and row['side']!=signed.get('side'):return False
         return bool(signed.get('physical_address') and allowed_url(signed['source_url']))
     except (ValueError,TypeError,KeyError):return False
+
+
+def contact_links(url,document):
+    """Only observed same-site public contact/location pages; no form actions."""
+    page=Page();page.feed(document)
+    found=[]
+    for href in page.links:
+        link=urljoin(url,href);parts=urlsplit(link)
+        if (not allowed_url(link) or host(link)!=host(url) or parts.query or parts.fragment
+            or re.search(r'/(?:admin|api|account|login|logout|unsubscribe|checkout|payment|delete|remove|confirm|activate|subscribe|reset)[^/]*(?:/|$)',parts.path,re.I)):
+            continue
+        if re.search(r'(?:^|/)(?:contact(?:-us)?|locations?|about(?:-us)?)(?:/|[.-]|$)',parts.path,re.I) and link!=url and link not in found:
+            found.append(link)
+    return found[:2]
+
+async def inspect_source_pages(row,urls,secret):
+    queue=list(dict.fromkeys(urls))[:2];seen=set();errors=[]
+    while queue and len(seen)<3:
+        url=queue.pop(0)
+        if url in seen:continue
+        seen.add(url)
+        try:
+            final,document,digest=await asyncio.wait_for(asyncio.to_thread(fetch_page,url),timeout=20)
+        except Exception as exc:
+            errors.append((str(exc) or type(exc).__name__)[:100]);continue
+        try:
+            return parse_record(row,final,document,digest,secret),''
+        except ValueError as exc:
+            errors.append(str(exc)[:100])
+            if str(exc)=='structured_identity_location_or_contact_unproven':
+                queue.extend(x for x in contact_links(final,document) if x not in seen and x not in queue)
+    return None,errors[-1] if errors else 'no_official_source'
 
 
 def install(app,require_admin,search,markets,secret,enabled=True):
@@ -243,17 +287,13 @@ def install(app,require_admin,search,markets,secret,enabled=True):
             urls=[row['source_url']] if allowed_url(row['source_url']) else []
             if not urls:
                 try:
-                    found=await search('"'+row['business_name'][:140]+'" "'+row['market']+'" official website',1,5)
+                    found=await asyncio.wait_for(search('"'+row['business_name'][:140]+'" "'+row['market']+'" official website',1,5),timeout=20)
                     urls=[r['url'] for r in found if allowed_url(r['url'])][:2]
                 except Exception:return row,None,'search_unavailable'
-            errors=[]
-            for url in urls[:2]:
-                try:
-                    final,document,digest=await asyncio.wait_for(asyncio.to_thread(fetch_page,url),timeout=25)
-                    result=parse_record(row,final,document,digest,secret)
-                    return row,result,''
-                except Exception as exc:errors.append((str(exc) or type(exc).__name__)[:100])
-            return row,None,errors[-1] if errors else 'no_official_source'
+            try:
+                result,error=await asyncio.wait_for(inspect_source_pages(row,urls,secret),timeout=55)
+                return row,result,error
+            except asyncio.TimeoutError:return row,None,'candidate_research_timeout'
         inspected=await asyncio.gather(*(inspect(r) for r in claimed));verified=0;held=0
         async with app.state.pool.acquire() as conn:
           for row,result,error in inspected:

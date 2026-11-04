@@ -40,10 +40,44 @@ class Tests(unittest.TestCase):
    with self.assertRaises(ValueError):r.public_addresses('business.example')
   with patch.object(r.socket,'getaddrinfo',return_value=[(2,1,6,'',('93.184.216.34',443)),(2,1,6,'',('10.0.0.1',443))]):
    with self.assertRaises(ValueError):r.public_addresses('business.example')
+ def test_same_site_visible_mailbox_supplements_only_a_verified_entity(self):
+  entity=copy.deepcopy(ENTITY);entity.pop('email')
+  page=document(entity)+'<a href="mailto:info@desertdental.example">Contact</a>'
+  out=r.parse_record(CANDIDATE,URL,page,'c'*64,'test-secret')
+  self.assertEqual(out['public_email'],'info@desertdental.example');self.assertTrue(r.auto_evidence_valid(out,'test-secret'))
+  for links in ['<a href="mailto:info@agency.example">Agency</a>', '<a href="mailto:careers@desertdental.example">Careers</a>', '<a href="mailto:info@desertdental.example">Info</a><a href="mailto:contact@desertdental.example">Contact</a>']:
+   out=r.parse_record(CANDIDATE,URL,document(entity)+links,'c'*64,'test-secret');self.assertEqual(out['public_email'],'')
+  with self.assertRaises(ValueError):r.parse_record(CANDIDATE,URL,'<a href="mailto:info@desertdental.example">Contact</a>','c'*64,'test-secret')
  def test_vendor_requires_explicit_service_evidence(self):
   c=dict(CANDIDATE,side='vendor',category_key='commercial_cleaning',category_label='Commercial cleaning')
   with self.assertRaises(ValueError):r.parse_record(c,URL,document(ENTITY),'a'*64,'test-secret')
   e=copy.deepcopy(ENTITY);e.update({'@type':'LocalBusiness','name':'Desert Cleaning','url':'https://desertcleaning.example/','description':'Commercial cleaning and janitorial services in Phoenix.'})
   c['business_name']='Desert Cleaning Phoenix'
   self.assertTrue(r.parse_record(c,e['url'],document(e),'a'*64,'test-secret')['evidence']['vps_verification'])
+
+class LinkedPageTests(unittest.IsolatedAsyncioTestCase):
+ async def test_observed_contact_page_provides_its_own_sealed_evidence(self):
+  home='https://desertdental.example/'
+  def fetch(url):
+   if url==home:return home,'<a href="/contact">Contact</a><a href="https://evil.example/contact">Other</a>','a'*64
+   self.assertEqual(url,URL);return URL,document(ENTITY),'b'*64
+  with patch.object(r,'fetch_page',side_effect=fetch) as mocked:
+   result,error=await r.inspect_source_pages(CANDIDATE,[home],'test-secret')
+  self.assertEqual(mocked.call_count,2);self.assertEqual(error,'');self.assertEqual(result['source_url'],URL)
+  self.assertTrue(r.auto_evidence_valid(result,'test-secret'))
+  self.assertEqual(result['evidence']['vps_verification']['content_sha256'],'b'*64)
+ async def test_contact_navigation_stays_bounded_and_does_not_qualify_plain_text(self):
+  home='https://desertdental.example/'
+  def fetch(url):return url,'Phoenix dentist6025550111 <a href="/contact/a">Contact</a><a href="/locations/b">Locations</a><a href="/about/c">About</a>','a'*64
+  with patch.object(r,'fetch_page',side_effect=fetch) as mocked:
+   result,error=await r.inspect_source_pages(CANDIDATE,[home],'test-secret')
+  self.assertIsNone(result);self.assertEqual(mocked.call_count,3)
+  self.assertEqual(error,'structured_identity_location_or_contact_unproven')
+ async def test_forbidden_sources_and_action_links_not_followed(self):
+  page='<a href="https://other.example/contact">Other</a><a href="/contact?delete=1">Query</a><a href="/contact/delete-account">Delete</a><a href="/login/contact">Login</a><a href="mailto:x@example.test">Email</a><a href="/contact#form">Form</a>'
+  self.assertEqual(r.contact_links(URL,page),[])
+  with patch.object(r,'fetch_page',side_effect=ValueError('http_403')) as mocked:
+   result,error=await r.inspect_source_pages(CANDIDATE,[URL],'test-secret')
+  self.assertIsNone(result);self.assertEqual(mocked.call_count,1);self.assertEqual(error,'http_403')
+
 if __name__=='__main__':unittest.main()
