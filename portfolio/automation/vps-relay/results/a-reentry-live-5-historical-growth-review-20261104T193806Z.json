@@ -1,0 +1,21 @@
+{
+  "action": "historical_growth_review",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-04T19:48:44.009299+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "526fab47af1ff571395bfca3b42f4b2391296b77",
+  "git_commit_before": "526fab47af1ff571395bfca3b42f4b2391296b77",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "80db6fa545ac0b15b0514d870e36e5861c5debd1",
+  "request_id": "a-reentry-live-5-historical-growth-review-20261104T193806Z",
+  "request_sha256": "084c551d0949b43dc6fb439722334f3827cce1dce6d11ff896539feccd3fadc7",
+  "started_at": "2026-11-04T19:48:41.979638+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\": \"bmc-owner-research-v1\", \"request_id\": \"a-reentry-live-5-historical-growth-review-20261104T193806Z\", \"key_fingerprint\": \"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\", \"wrapped_key\": \"V7fQSE5Bk6Y7BAaprzsA+USElZZuhYonH2002V+nrnQhw47GPGem+zRqOiZK7CM25iBQSu6CYlqyKGyjYHUxeu/dV5gLSP3rZ0WBvT9bhE/QOimLSBfnUdwYW9N4/q8AXcfW0yUTBQIa/q4L4gimwqgtzxKc/2tFKb9lVXMsaa30Z2/+TGe9pHC4gBjGu9SeNnOnrgaMAXF33bng04iTbuLR5Q47gBytCvOh4cPZnyQ4IFCVoM1Oot4yCNyY1LXqk3OhGGo27txYxvexy97vMx8g76tyPxRo3UHgXxYpHmo0UjS8Qy28blWs9mw/hNHqR3KUzn3S+Cbusaau7AkvvYI46tqF8XvOJNtwv2IaWgJjSFOS4fg+lFqLnFlrLsmIkl5W2B7naNxhhWkM2+O92PxwUzSOM76CSRzNdDmAYKGJLJ3IPXmDQ+tOV+T9KSMnlP8N8IPhKXIYqaDQNguk3P+hRWtaMePBgwEy3TpuaHIk5qfZJ8+iY0AKUDNlmg+h\", \"nonce\": \"s7kHhEF73dFwLjMb\", \"ciphertext\": \"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\"}",
+  "version": 1
+}
