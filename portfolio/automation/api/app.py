@@ -8237,5 +8237,5 @@ install_census_research_queue(app, require_admin, ADMIN_KEY,
 # Owner-authorized operational reply alerts; no customer reply or send-scope expansion.
 from reply_review import install as install_reply_review
 record_owner_reply_review=install_reply_review(app,require_admin,ADMIN_KEY,
-    dict(IMAP_HOST=IMAP_HOST,IMAP_PORT=IMAP_PORT,IMAP_USER=IMAP_USER,IMAP_PASSWORD=IMAP_PASSWORD,
+    dict(IMAP_HOST=IMAP_HOST,IMAP_PORT=IMAP_PORT,IMAP_USER=IMAP_USER,IMAP_PASSWORD=IMAP_PASSWORD,IMAP_FOLDER=IMAP_FOLDER,
          WATCHDOG_EMAIL=os.getenv('WATCHDOG_EMAIL','')),send_mail_once)
