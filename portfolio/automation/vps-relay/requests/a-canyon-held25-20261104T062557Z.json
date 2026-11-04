@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "request_id": "a-canyon-held25-20261104T062557Z",
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "created_at": "2026-11-04T06:25:57.812616+00:00",
+  "expires_at": "2026-11-04T07:25:57.812616+00:00",
+  "args": {
+    "candidate_id": "d4233ef0-b430-49e6-936e-86017453a514",
+    "pack_count": 25
+  }
+}
