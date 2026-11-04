@@ -1,0 +1,27 @@
+{
+  "action": "authorize_scoped_batch",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-04T13:58:54.187377+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "447fa96273413dfc6e02d6f09fa8db61cf241f25",
+  "git_commit_before": "447fa96273413dfc6e02d6f09fa8db61cf241f25",
+  "host": "vps-5675821a",
+  "metadata": {
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "ac14dfc3ea5b64df678de17909c0f6072e603bc2",
+  "request_id": "a-frozen-retry-3-authorize-scoped-batch-20261104T135053Z",
+  "request_sha256": "210f6d342ec8c55f56483aba3cf178021bed2f037efda444c5a1aa8e235b90aa",
+  "started_at": "2026-11-04T13:58:51.781052+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"ok\": true, \"registered\": 3, \"already_registered\": 0, \"held\": 0, \"results\": [{\"target_id\": \"inventory:9f0188b2-b35c-4723-b7bd-3b5dea4149d1\", \"status\": \"registered\", \"registered\": true, \"already_registered\": false, \"sent\": 0}, {\"target_id\": \"inventory:d69b13cb-ec90-4b5e-832f-f78c8e8efa31\", \"status\": \"registered\", \"registered\": true, \"already_registered\": false, \"sent\": 0}, {\"target_id\": \"inventory:d4233ef0-b430-49e6-936e-86017453a514\", \"status\": \"registered\", \"registered\": true, \"already_registered\": false, \"sent\": 0}], \"sent\": 0, \"history_reset\": false}",
+  "version": 1
+}
