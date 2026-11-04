@@ -20,6 +20,14 @@ class Tests(unittest.TestCase):
    row=copy.deepcopy(out);row[key]=value;self.assertFalse(r.auto_evidence_valid(row,'test-secret'),key)
   self.assertFalse(r.auto_evidence_valid(out,'wrong-secret'))
   self.assertFalse(r.auto_evidence_valid(dict(CANDIDATE,official_site=True,last_verified_at='now'),'test-secret'))
+ def test_directory_sources_rejected_even_with_signed_matching_business(self):
+  for url in ('https://local.yahoo.com/info-business','https://powerwashmaps.com/landscaping-lawn-care/business','https://www.homeadvisor.com/listing'):
+   self.assertFalse(r.allowed_url(url))
+   with self.assertRaises(ValueError):r.parse_record(CANDIDATE,url,document(ENTITY),'a'*64,'test-secret')
+  # A previous native signature cannot override a newly rejected source policy.
+  out=self.verified();out['source_url']='https://powerwashmaps.com/business'
+  signed=out['evidence']['vps_verification'];signed['source_url']=out['source_url'];signed.pop('signature');signed['signature']=r.seal(signed,'test-secret')
+  self.assertFalse(r.auto_evidence_valid(out,'test-secret'))
  def test_search_snippet_without_structured_identity_never_qualifies(self):
   with self.assertRaises(ValueError):r.parse_record(CANDIDATE,URL,'Phoenix dentist phone6025550111','a'*64,'test-secret')
  def test_wrong_city_region_name_contact_or_directory_cannot_qualify(self):
