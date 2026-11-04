@@ -1,0 +1,21 @@
+{
+  "action": "census_research_review",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-04T07:24:38.440865+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "59d4beb66520229a955f92173346d8095e5e8861",
+  "git_commit_before": "59d4beb66520229a955f92173346d8095e5e8861",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "76216f3ece13389a2b40f422e5497230456f862a",
+  "request_id": "a-reviewed-census-batch2-20261104T072427Z",
+  "request_sha256": "0bce534d1be0d70825310e234d4c41fe979128aed98239dc7b7a938e90fe2d15",
+  "started_at": "2026-11-04T07:24:38.206751+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"a-reviewed-census-batch2-20261104T072427Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"HQxRfY4LoBrKq8Ikmu0F9pOe1qdj3IgD05N3Sjwu7jK2ZzczchppRcbffnClWmZbmkMIMG7J6t/3xkr61z3iAKpBiP7xFvkv0Ck8bxC4jl4+6bWMwE5wibR3/UrYCseSrDRh7ADwrS11r9Owm3N9OBl6BaiUiRaTV896r4qJh0nF9H2/ecmiMk9/GK/1zHHm4UXsHPmiaUeWdGSrCcLZPOHPDiHBj/HdvNQQWXQeBAsy8mgQRoteZqVsKWNKwNzxc94zlG0dJ729AXTAtP2bSb67XtbE/fnNSTC23S71hzsiYYcmxCujkuhg5JDZXoCkmFSQn7O6E4q5AhsAsQJTmOBmOREh7+Oe69qU5pylBpPgQLtJ4Hn8xnqBcobZaI7PE5UETpoRBWBzgoodqonz2OIWfrwegDcTbLhihwq+PRxtYsmF+UXs24656jW4OiDKDDEVCBzgXYEtmLya2uc8ajvdFUt8i+673IswLrBNkBAToBkPgxiic9rKLiVKhqFR\",\"nonce\":\"M+5hsRTQteK2uSkC\",\"ciphertext\":\"bSUbs/lSw8Cd1yCYXfTDMkZjmuTkq39sgw0EJAiJm4ruOKGAlvHT3HQPZL3n/Y51fh9fuejnfbg/613Uahw6NDnWwWnGYgag9AGy2o1UOv1IOJmF5gCGciFs0p/N3bqtH2NGobpEWKYfadHchs8tL5nfkHYkpnTFePfZXUxw2PifJw83j71rbuLYSRGgORLzelDZekIdaOkyH8eolshzJyzXbeHwzuTwFAdUEmJlnVlVy20G/kjAf6k2MFI9jOfc10kjW4qPcYJBM65JW9KbFVKLrDSIVZY2Eh/oOA9rP284/jOyJUNA2Ab8Unc6Uqk+CjYTg8K8/My8i/V/3kV9dZW3+uUm39R3rwmR24+RXJ70SlXsQMbAACq1tywOybK52wo7Lmyib3d9q2oFr9ahfJBTw2XpaMm1lMl9Wvfj7hm0yAcqFlWgf0Mg0+o4fh+dJgIx5jXN0wyXe5G6XUiErJ+G/Sr2nGBZ38ItYEXv/Cwt5N5wglFOP28bWfAIEWcdQZnHGDck6ZJCgXBjnh8P0jxevo+DsUKH5TGGPSkW+wwLSDszNWC4THU/GA==\"}",
+  "version": 1
+}
