@@ -28,7 +28,7 @@ jobs:
           ns=runpy.run_path("vps-gitops-relay.py",run_name="bmc_relay_ci")
           expected={
               "proof_readout","launch_audit","runtime_doctor","diagnostic_bundle","scheduler_status","search_quality_probe","research_refresh_status",
-              "growth_status","growth_launch_audit","operator_snapshot","growth_inventory_audit","growth_preview_candidates","nevada_status","business_metrics","ops_monitor_status","preparation_status","private_research_export","private_held_packet","research_policy_status","official_research_step","prepare_scoped_journey",
+              "growth_status","growth_launch_audit","operator_snapshot","growth_inventory_audit","growth_preview_candidates","nevada_status","business_metrics","ops_monitor_status","preparation_status","private_research_export","private_held_packet","research_policy_status","census_research_review","official_research_step","prepare_scoped_journey",
               "deploy_update","configure_owner_contact","configure_growth_review_scope","prepare_ops_configuration","configure_ops_monitoring","ops_alert_test","market_inventory_step","local_demand_step",
               "public_opportunities_step","source_native_step","assistant_bootstrap_import","assistant_licensed_bootstrap_import","inventory_closure_step","research_refresh_install","scheduler_start","scheduler_stop",
               "growth_stage_pressure_washing","growth_stage_commercial_cleaning","growth_launch_enable","growth_launch_disable","growth_owner_replay_email","growth_owner_target_preview","owner_replay_all_email_templates","growth_owner_preview_approve"
@@ -37,6 +37,8 @@ jobs:
           assert all("shell" not in x for x in ns["ALLOWED_ACTIONS"])
           assert "operator_snapshot" in ns["READ_ONLY_ACTIONS"]
           assert "operator_snapshot" not in ns["EXTERNAL_ACTIONS"]
+          assert "census_research_review" in ns["READ_ONLY_ACTIONS"]
+          assert "census_research_review" not in ns["EXTERNAL_ACTIONS"]
           relay_source=open("vps-gitops-relay.py").read()
           assert 'app_env().get("BMC_OWNER_LAUNCH_HOLD","true")' in relay_source
           readiness_source=open("growth-launch-readiness.sh").read()
@@ -101,6 +103,8 @@ jobs:
           python3 portfolio/automation/test-official-domain-recheck.py
           python3 portfolio/automation/test-official-source-policy-recheck.py
           python3 portfolio/automation/test-research-policy.py
+          python3 portfolio/automation/test-census-research-api.py
+          python3 portfolio/automation/test-census-research-relay.py
           python3 portfolio/automation/test-scoped-growth.py
           python3 portfolio/automation/test-scoped-journey-api.py
           python3 portfolio/automation/test-scoped-owner-flow.py
@@ -580,6 +584,7 @@ jobs:
           done
           cat /tmp/bmc_health.json
           docker compose --env-file .env.ci exec -T -e BMC_CI_SOURCE_RECHECK=1 ops_api python - < test-official-source-policy-postgres.py
+          docker compose --env-file .env.ci exec -T -e BMC_CI_CENSUS_REVIEW=1 ops_api python - < test-census-research-postgres.py
           docker compose --env-file .env.ci exec -T ops_api python - < ci/unsubscribe-smoke.py
           python3 ci/nevada-intake-smoke.py
           docker compose --env-file .env.ci exec -T ops_api python - < ci/nevada-db-proof.py

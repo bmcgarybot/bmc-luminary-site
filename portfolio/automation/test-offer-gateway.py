@@ -27,6 +27,7 @@ try:
     assert request('/api/growth/request-small-pack','GET')[0]==405
     status,body=request('/api/growth/request-small-pack','POST')
     assert status==200 and json.loads(body)['path']=='/api/growth/request-small-pack'
+    assert request('/api/admin/research-census-review','POST')[0]==404
     assert request('/api/admin/prepare-scoped-journey','POST')[0]==404
     assert request('/api/admin/approve-scoped-journey','POST')[0]==404
     for denied in ("/api/admin/growth-offers/prepare","/api/growth/offers/not-a-uuid","/api/growth/offers/00000000-0000-4000-8000-000000000001/review","/api/process-growth-offers"):

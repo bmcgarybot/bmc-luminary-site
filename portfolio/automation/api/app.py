@@ -8130,3 +8130,9 @@ install_scoped_journey_api(app, require_admin, ADMIN_KEY, GROWTH_NONEXCLUSIVE_CO
 
 from scoped_quote_api import install as install_scoped_quote_api
 install_scoped_quote_api(app,ADMIN_KEY,growth_prepare_purchase_offer_record,growth_scoped_profile_for_sample)
+
+# Bounded fresh research of existing reviewed census identities; proposals only.
+from census_research_api import install as install_census_research_api
+install_census_research_api(app, require_admin, ADMIN_KEY,
+    lambda: OWNER_LAUNCH_HOLD and not any((OUTREACH_ENABLED, BUYER_OUTREACH_ENABLED, GROWTH_OUTREACH_ENABLED)),
+    search_research_web)
