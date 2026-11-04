@@ -212,10 +212,10 @@ def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at
     doc.build(story, onFirstPage=chrome, onLaterPages=chrome)
     return out.getvalue()
 
-def sample_pdf_response(rows, business, service, territory, sample_id, prepared_at=None, preview=False):
+def sample_pdf_response(rows, business, service, territory, sample_id, prepared_at=None, preview=False, free_offer_count=100):
     if len(rows) != 5:
         return {}
     name = re.sub(r'[^a-zA-Z0-9-]+', '-', str(business)).strip('-')[:65] or 'Your-Business'
-    data = render_sample_pdf(rows, business, service, territory, sample_id, prepared_at, preview)
+    data = render_sample_pdf(rows, business, service, territory, sample_id, prepared_at, preview, free_offer_count=free_offer_count)
     return {'download_filename': f'BMC-{name}-Five-Prospects.pdf',
             'download_pdf_base64': base64.b64encode(data).decode('ascii')}

@@ -1,4 +1,21 @@
 (function(){
+  const growthOfferOriginals=new Map();
+  function applyGrowthOfferCount(count){
+    const small=Number(count)===25;
+    const replacements=[['.hero-photo-card span','If useful, review 25 total prospects, including your five.'],
+      ['#full-pack .editorial-intro h2','25 total researched prospects for $149.'],
+      ['#full-pack .editorial-intro p','This scoped pack includes your original five. We recheck all 25 against your reviewed territory, account types, sources and contact standard before payment and delivery. A 100-prospect upgrade is not part of this offer.'],
+      ['#full-pack .service-card .num','25']];
+    replacements.forEach(function(pair){const node=document.querySelector(pair[0]);if(!node)return;if(!growthOfferOriginals.has(node))growthOfferOriginals.set(node,node.textContent);node.textContent=small?pair[1]:growthOfferOriginals.get(node);});
+    const section=document.getElementById('full-pack');if(section)section.hidden=false;
+    document.querySelectorAll('.editorial-section .soft-panel p').forEach(function(node){
+      if(node.textContent.includes('free snapshot and $499 pack')){if(!growthOfferOriginals.has(node))growthOfferOriginals.set(node,node.textContent);node.textContent=small?'No sales call is required. Request the 25-prospect scoped pack after reviewing your five; BMC verifies the list before providing payment details.':growthOfferOriginals.get(node);}
+    });
+  }
+  if(new URLSearchParams(location.search).get('target') && new URLSearchParams(location.search).get('claim')){
+    const section=document.getElementById('full-pack');if(section)section.hidden=true;
+    const teaser=document.querySelector('.hero-photo-card span');if(teaser){growthOfferOriginals.set(teaser,teaser.textContent);teaser.textContent='Review the five prepared for your company before choosing a pack.';}
+  }
   // BMC_TWO_SIDED_NAV: keep the two audiences obvious without hiding either path.
   const markets=["Prescott","Prescott Valley","Chino Valley","Dewey-Humboldt","Mayer","Cordes Lakes","Williamson Valley","Ash Fork","Seligman","Skull Valley","Cottonwood","Camp Verde","Sedona","Flagstaff","Winslow","Kingman","Golden Valley","Bullhead City","Phoenix","Scottsdale","Tucson"];
   const GLOBAL_WEBHOOK=window.BMC_WEBHOOK_URL||"https://hooks.bmcservicenetwork.com/api/intake";
@@ -183,7 +200,7 @@
         title="Your 5 commercial targets are ready.";
         steps=[
           "Use the five free targets and judge the fit for yourself.",
-          response.checkout_url?"If they match the work you want, the full pack is 100 total qualified prospects for $499.":"BMC is not offering the 100-prospect pack in this market until the reserve inventory clears the quality gate.",
+          response.offer_count===25?"The scoped option is 25 total researched prospects for $149, including these five.":(response.checkout_url?"If they match the work you want, the full pack is 100 total qualified prospects for $499.":"BMC is not offering the 100-prospect pack in this market until the reserve inventory clears the quality gate."),
           "If a paid prospect later fails the published qualification standard, BMC replaces it."
         ];
       }
@@ -279,6 +296,7 @@
       ];
     }
     const hasSample=formType==="growth_snapshot" && Array.isArray(response.sample) && response.sample.length;
+    if(hasSample)applyGrowthOfferCount(response.offer_count||100);
     if(hasSample && response.business_name)title="Five researched prospects prepared for "+response.business_name+".";
     card.replaceChildren();
     const heading=document.createElement("h3");
@@ -371,18 +389,32 @@
       if(response.checkout_url && /^https:\/\/buy\.stripe\.com\//i.test(response.checkout_url)){
         const actions=document.createElement("div");actions.className="actions";
         const checkout=document.createElement("a");checkout.className="btn btn-primary";
-        checkout.href=response.checkout_url;checkout.textContent="Get the other 95 — $499";
-        const included=document.createElement("p");included.id="growth-upgrade";included.textContent="Your original five are included: 100 total researched prospects. No subscription.";
+        checkout.href=response.checkout_url;checkout.textContent=response.offer_count===25?"Get the other 20 — $149":"Get the other 95 — $499";
+        const included=document.createElement("p");included.id="growth-upgrade";included.textContent=response.offer_count===25?"Your original five are included: 25 total researched prospects. No subscription.":"Your original five are included: 100 total researched prospects. No subscription.";
         card.appendChild(included);
         if(response.preview){
           const warning=document.createElement("p");warning.className="owner-checkout-warning";
           warning.textContent="Owner preview: checkout is live. Inspect only; do not pay.";card.appendChild(warning);
         }
         actions.appendChild(checkout);card.appendChild(actions);
+      }else if(response.offer_count===25 && response.small_pack_request_token && !response.preview){
+        const requestButton=document.createElement('button');requestButton.type='button';requestButton.className='btn btn-primary';requestButton.textContent='Request the other 20 — $149';
+        const note=document.createElement('p');note.textContent='25 total, including your five. The list is verified before payment; clicking this does not charge you.';
+        requestButton.addEventListener('click',async function(){
+          requestButton.disabled=true;requestButton.textContent='Saving your request…';
+          try{
+            const base=document.querySelector('meta[name="bmc-webhook"]')?.content||GLOBAL_WEBHOOK;
+            const endpoint=base.replace(/\/api\/intake(?:\?.*)?$/,'/api/growth/request-small-pack');
+            const reply=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sample_id:response.sample_id,request_token:response.small_pack_request_token,confirm:true})});
+            const result=await reply.json();if(!reply.ok||!result.ok)throw new Error('request_failed');
+            requestButton.textContent='25-pack requested';note.textContent=result.message;
+          }catch(error){requestButton.disabled=false;requestButton.textContent='Try the 25-pack request again';note.textContent='The request could not be confirmed. Please try again or reply to BMC. No payment has been taken.';}
+        });
+        card.appendChild(note);card.appendChild(requestButton);
       }else if(!response.preview){
         const options=document.createElement("p");
-        const link=document.createElement("a");link.textContent="Ask about a smaller territory pack";
-        link.href="/growth-packs/smaller-territory/?cities="+encodeURIComponent((response.selected_markets||[]).join("|"));
+        const link=document.createElement("a");link.textContent=response.offer_count===25?"Request the 25-prospect pack — $149":"Ask about a smaller territory pack";
+        link.href="/growth-packs/smaller-territory/?cities="+encodeURIComponent((response.selected_markets||[]).join("|"))+"&business="+encodeURIComponent(response.business_name||"")+"&sample="+encodeURIComponent(response.sample_id||"");
         options.appendChild(link);card.appendChild(options);
       }
     }
@@ -400,7 +432,7 @@
       document.body.classList.remove("growth-results-loading");
       document.body.classList.add("growth-results-ready");
       document.querySelectorAll('a[href="#full-pack"]').forEach(function(link){
-        if(response.checkout_url){link.href="#growth-upgrade";link.textContent="Get the other 95";}else{link.hidden=true;}
+        if(response.checkout_url){link.href="#growth-upgrade";link.textContent=response.offer_count===25?"Get the other 20":"Get the other 95";}else{link.hidden=true;}
       });
       const intro=document.querySelector(".customer-hero");
       if(intro){

@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 root=Path(__file__).resolve().parents[1]
 css=(root/'assets/core.css').read_text()
 js=(root/'assets/core.js').read_text()
-render=js[js.index('  function showSubmissionSuccess('):js.index('  async function maybeClaimGrowthSample(')]
+render=js[js.index('  const growthOfferOriginals='):js.index('  // BMC_TWO_SIDED_NAV')]+js[js.index('  function showSubmissionSuccess('):js.index('  async function maybeClaimGrowthSample(')]
 page_html=(root/'growth-packs/commercial-cleaning/index.html').read_text()
 # Use real markup and CSS, but never fetch public services or submit forms.
 import re

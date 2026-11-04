@@ -90,13 +90,13 @@ def validate_payment(offer, product_key, email, amount, currency):
     if int(amount)!=TIERS[product_key]['amount'] or currency!='usd': raise ValueError('Payment price or currency mismatch')
     if offer['expires_at']<=datetime.now(timezone.utc): raise ValueError('Offer expired before payment')
 
-def offer_email(tier,business,territory,url,unsubscribe_url):
+def offer_email(tier,business,territory,url,unsubscribe_url,*,upgrade_available=True):
     """One source for HTML/plaintext. Caller decides if/when sending is authorized."""
     if tier=='growth_pack_25':
         subject=f'A smaller first step for {business}'
-        lines=[f'If 100 prospects is more than you want to work through right now, start with 25 researched businesses in {territory} for $149.',
+        lines=[(f'If 100 prospects is more than you want to work through right now, start with 25 researched businesses in {territory} for $149.' if upgrade_available else f'Your reviewed scoped pack contains 25 researched businesses in {territory} for $149.'),
           'Your five free prospects are included, so this adds 20. You get a branded PDF and spreadsheet with business websites, public contact routes, fit notes and suggested first conversations.',
-          'If you later want the full 100, the upgrade is $350. We keep your original 25 and add 75, so your total is still $499. Availability is checked before purchase.',
+          ('If you later want the full 100, the upgrade is $350. We keep your original 25 and add 75, so your total is still $499. Availability is checked before purchase.' if upgrade_available else 'This offer covers only the reviewed 25-prospect scope. Any broader research would need a separate availability check and review.'),
           'Keep using the free five if that is enough for now. There is no subscription or obligation.']
         button='Review my 25-prospect pack — $149'
     elif tier=='growth_upgrade_75':

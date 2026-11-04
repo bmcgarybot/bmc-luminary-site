@@ -18,6 +18,28 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(observation_kind({'url':'https://whitepages.com/name/Someone','title':'Plumber Prescott'},'business_directory_only'),'excluded_nonbusiness_directory')
         self.assertEqual(observation_kind({'url':'https://whitepages.com/business/az/prescott/business'},'business_directory_only'),'business_listing')
         self.assertEqual(observation_kind({'title':'Temporarily closed; looking for cleaning'},'mixed_public_signals',True),'closure_mention')
+    def test_provider_call_to_action_outranks_rhetorical_request(self):
+        ns=self.namespace()
+        result={'title':'Prescott pressure washing: Need a driveway cleaner?',
+                'snippet':'Owner-operated exterior cleaning. Call now: 928-555-0100'}
+        # The old intent helper accepts this rhetorical wording; the evidence
+        # classifier must still prevent it from being labeled a buyer request.
+        intent=ns['local_signal_request_intent'](result)
+        self.assertTrue(intent)
+        self.assertEqual(observation_kind(result,'mixed_public_signals',intent),'contractor_advertisement')
+        for phrase in ('We offer pressure washing','Free estimates','Call/text today','Book now','Contact us'):
+            with self.subTest(phrase=phrase):
+                self.assertEqual(observation_kind({'title':'Need a cleaner?','snippet':phrase},'mixed_public_signals',True),'contractor_advertisement')
+
+    def test_ownership_preference_does_not_turn_a_genuine_request_into_an_ad(self):
+        ns=self.namespace()
+        for phrase in ('owner-operated','family-owned','family owned','locally owned'):
+            result={'title':f'Looking for an {phrase} cleaner; any recommendations?','snippet':'Prescott'}
+            with self.subTest(phrase=phrase):
+                intent=ns['local_signal_request_intent'](result)
+                self.assertTrue(intent)
+                self.assertEqual(observation_kind(result,'mixed_public_signals',intent),'request_candidate')
+
     def test_snippet_and_relative_dates_never_confirm_demand_or_ownership(self):
         value=observation_evidence({'title':'Owner-operated family business','snippet':'Looking for a cleaner 3 days ago'},'request_candidate')
         for key in ('source_page_verified','publication_date_verified','ownership_evidence_verified','confirmed_demand','accepted_provider','automatic_contact_allowed'):
@@ -83,6 +105,9 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual({row[6] for row in observed},{'request_candidate','contractor_advertisement','closure_mention'})
         demand=[args for query,args in calls if query.lstrip().startswith('insert into local_demand_signals')]
         self.assertEqual(len(demand),1);self.assertEqual(demand[0][0],'nextdoor_public')
+        held=[(query,args) for query,args in calls if "set status='needs_review'" in query]
+        self.assertEqual(len(held),2)
+        self.assertTrue(all("status='discovered'" in query for query,args in held))
         for args in observed:
             evidence=json.loads(args[-1]);self.assertNotIn('confirmed_demand',evidence)
             self.assertFalse(evidence['index_observation']['confirmed_demand'])
