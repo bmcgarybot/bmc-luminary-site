@@ -146,32 +146,13 @@ def discovery_identity_match(row,item):
     return False
 
 
-async def review_row(row,service,search,secret):
-    result={'status':'source_review_held','candidate_id':str(row['candidate_id']),'raw_source_key':row['source_key'],
-            'requested_service':service,'gate_reason':'source_unavailable','original_source_url':row['source_url']}
-    try:
-        if raw_source_key(row)!=row['source_key']:raise ValueError('key')
-    except (ValueError,KeyError):
-        result['gate_reason']='server_natural_key_binding_unproven';return result
-    url=row['source_url']
-    if not research_get_url(url) or row['official_site'] is not True:
-        try:
-            found=await asyncio.wait_for(search('"'+row['business_name'][:140]+'" "'+row['market']+'" official website',1,5),20)
-            found=found[:5] if isinstance(found,list) else []
-            allowed=[item for item in found if isinstance(item,dict) and isinstance(item.get('url'),str) and research_get_url(item['url'])]
-            url=next((item['url'] for item in allowed if discovery_identity_match(row,item)),None)
-            if not url and allowed:
-                result['gate_reason']='no_identity_qualified_official_candidate';return result
-            if url:result['discovery_identity_basis']='exact_business_name_in_search_text'
-        except Exception:
-            result['gate_reason']='search_unavailable';return result
-    if not url:
-        result['gate_reason']='no_allowed_official_candidate';return result
+async def _review_source_url(row,service,url,secret,result):
+    """One server fetch + unchanged strict native parser/row binding."""
     try:
         receipt=await asyncio.wait_for(asyncio.to_thread(fetch_page_receipt,url),45)
     except Exception as exc:
         result['gate_reason']='fetch_unavailable';result['fetch_failure_reason']=fetch_failure_reason(exc);return result
-    if not isinstance(receipt,FetchedPageReceipt) or receipt.requested_url!=url or not research_get_url(receipt.final_url) or host(receipt.final_url)!=host(url):
+    if not isinstance(receipt,FetchedPageReceipt) or receipt.requested_url!=url or any(not research_get_url(hop) or host(hop)!=host(url) for hop in (*receipt.redirect_chain,receipt.final_url)):
         result['gate_reason']='receipt_domain_binding_unproven';return result
     try:
         age=datetime.now(timezone.utc)-datetime.fromisoformat(receipt.fetched_at)
@@ -193,6 +174,53 @@ async def review_row(row,service,search,secret):
     facts=dict(parsed['evidence']['vps_verification'])
     return dict(result,status='source_proposal_only',gate_reason=None,parsed_facts=facts,
                 parsed_record=parsed,native_record_written=False,provider_accepted=False,offer_ready=False)
+
+
+async def review_row(row,service,search,secret,*,try_existing_source=False):
+    """Optional promotion policy tries an untrusted saved URL, never its flag.
+
+    Default retains read-only discovery behavior. Promotion may try one allowed
+    saved source and one identity-qualified discovered source, at most two fetch
+    operations total. Successful direct proof is first-party publication, never
+    legal ownership, acceptance or demand verification.
+    """
+    result={'status':'source_review_held','candidate_id':str(row['candidate_id']),'raw_source_key':row['source_key'],
+            'requested_service':service,'gate_reason':'source_unavailable','original_source_url':row['source_url']}
+    try:
+        if raw_source_key(row)!=row['source_key']:raise ValueError('key')
+    except (ValueError,KeyError):
+        result['gate_reason']='server_natural_key_binding_unproven';return result
+    attempted=set();existing_failure=None
+    def usable(proposal):
+        parsed=proposal.get('parsed_record') or {}
+        return proposal.get('status')=='source_proposal_only' and bool(parsed.get('public_email') and parsed.get('public_phone'))
+    if try_existing_source is True and research_get_url(row['source_url']):
+        url=row['source_url'];attempted.add(url)
+        first=await _review_source_url(row,service,url,secret,dict(result))
+        if usable(first):
+            first['discovery_identity_basis']='fresh_existing_source_verified'
+            return first
+        if first.get('status')=='source_proposal_only':
+            first=dict(first,status='source_review_held',gate_reason='published_native_contacts_required')
+            first.pop('parsed_record',None);first.pop('parsed_facts',None)
+        existing_failure=first
+    elif research_get_url(row['source_url']) and row['official_site'] is True:
+        return await _review_source_url(row,service,row['source_url'],secret,result)
+    try:
+        found=await asyncio.wait_for(search('"'+row['business_name'][:140]+'" "'+row['market']+'" official website',1,5),20)
+        found=found[:5] if isinstance(found,list) else []
+        allowed=[item for item in found if isinstance(item,dict) and isinstance(item.get('url'),str) and research_get_url(item['url'])]
+        url=next((item['url'] for item in allowed if item['url'] not in attempted and discovery_identity_match(row,item)),None)
+        if not url:reason='no_identity_qualified_official_candidate' if allowed else 'no_allowed_official_candidate'
+    except Exception:
+        url=None;reason='search_unavailable'
+    if not url:
+        if existing_failure:
+            existing_failure['discovery_fallback_reason']=reason
+            return existing_failure
+        result['gate_reason']=reason;return result
+    result['discovery_identity_basis']='exact_business_name_in_search_text'
+    return await _review_source_url(row,service,url,secret,result)
 
 
 def install(app,require_admin,secret,hold_required,search):

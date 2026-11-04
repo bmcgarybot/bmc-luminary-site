@@ -2637,18 +2637,26 @@ async def health():
 
 # GROWTH_INTELLIGENCE_RUNTIME_V1
 GROWTH_SERVICE_LABELS={
+  "junk_hauling":"commercial junk hauling / cleanouts",
+  "tree_service":"commercial tree care",
   "pressure_washing":"commercial pressure washing / exterior cleaning",
   "commercial_cleaning":"commercial cleaning / janitorial"
 }
 GROWTH_LANDING_PATHS={
+  "junk_hauling":"/growth-packs/junk-hauling/",
+  "tree_service":"/growth-packs/tree-service/",
   "pressure_washing":"/growth-packs/pressure-washing/",
   "commercial_cleaning":"/growth-packs/commercial-cleaning/"
 }
 GROWTH_WAVES={
+  "junk_hauling":"growth-junk-1",
+  "tree_service":"growth-tree-1",
   "pressure_washing":"growth-pressure-1",
   "commercial_cleaning":"growth-cleaning-1"
 }
 GROWTH_BUYER_CATEGORIES={
+  "junk_hauling":[],  # Requires a server-signed source-specific category grant.
+  "tree_service":[],  # Requires a server-signed source-specific category grant.
   "pressure_washing":[
     "auto_dealers","auto_fleet","churches","grocery","gyms_fitness","hotels_motels",
     "medical_centers","property_management","public_facilities","restaurants","retail",
@@ -2662,6 +2670,8 @@ GROWTH_BUYER_CATEGORIES={
   ]
 }
 GROWTH_HIGH_VALUE_CATEGORIES={
+  "junk_hauling":{"property_management","insurance_professional","retail","warehouses_industrial","hotels_motels"},
+  "tree_service":{"property_management","hotels_motels","schools","churches","public_facilities"},
   "pressure_washing":{"auto_dealers","auto_fleet","grocery","hotels_motels","property_management","restaurants","retail","warehouses_industrial"},
   "commercial_cleaning":{"grocery","hotels_motels","medical_centers","property_management","schools","schools_education","senior_daycare","warehouses_industrial"}
 }
@@ -2836,6 +2846,10 @@ def growth_fit_reason(row,service_key):
     label=clean(row.get("category_label")) or clean(row.get("category_key")).replace("_"," ")
     market=clean(row.get("market"))
     detail=clean(row.get("snippet"))
+    if service_key=="junk_hauling":
+        return f"{label} in {market}; assess whether an authorized contact has a cleanout or unwanted-material removal need within the provider's published scope. Business fit only, not a reported junk problem or pickup request."
+    if service_key=="tree_service":
+        return f"{label} in {market}; assess whether the organization controls grounds with trees and who authorizes tree care. Published business fit only, not a reported tree problem or work request."
     if row.get("official_site") and detail:
         return detail[:700]
     if service_key=="pressure_washing":
@@ -2849,6 +2863,10 @@ def growth_sales_angle(row,service_key):
         and clean(row.get("business_name"))==reviewed.get("business_name")):
         return reviewed["sales_angle"]
     category=clean(row.get("category_key"))
+    if service_key=="junk_hauling":
+        return "Ask who authorizes property cleanouts or business-item removal. Confirm actual items, accepted materials, access and removal authority before offering an assessment; do not assume a pickup request or specialist material acceptance."
+    if service_key=="tree_service":
+        return "Ask who controls grounds maintenance and tree-care vendor approval. Confirm actual trees, access, property authority and the provider's published task scope before offering an assessment; do not assume a hazard, removal need or permission to work."
     if service_key=="pressure_washing":
         angles={
           "auto_dealers":"Lead with clean customer-facing concrete, vehicle-display areas, and scheduled exterior upkeep.",
@@ -4895,11 +4913,15 @@ def growth_outreach_message(row,step,owner_preview=False):
     service_key=clean(row["service_key"])
     focus={
       "pressure_washing":"commercial exterior and surface cleaning",
-      "commercial_cleaning":"janitorial cleaning for offices and shared spaces"
+      "commercial_cleaning":"janitorial cleaning for offices and shared spaces",
+      "tree_service":"commercial tree care for the published account types",
+      "junk_hauling":"commercial junk hauling and cleanouts for the published account types"
     }
     if service_key not in focus:
-        raise ValueError("Growth outreach is limited to the two supported services")
+        raise ValueError("Growth outreach service is unsupported")
     profile=growth_target_scoped_profile(row) if 'scoped_offer' in str(row.get('source_data') or '') else None
+    if service_key=='tree_service' and not profile:raise ValueError('Tree service requires a signed source-backed25 scope')
+    if service_key=='junk_hauling' and not profile:raise ValueError('Junk hauling requires a signed source-backed25 scope')
     if profile and not owner_preview and profile['state']!='approved':raise ValueError('Scoped company copy requires explicit owner approval')
     landing=growth_invitation_url(row,owner_preview=owner_preview)
     market=clean(row["market"])
@@ -8252,3 +8274,12 @@ install_contact_enrichment_api(app, require_admin, ADMIN_KEY, GROWTH_NONEXCLUSIV
 
 from rolling_vendor_research import install as install_rolling_vendor_research
 install_rolling_vendor_research(app, require_admin, ADMIN_KEY, GROWTH_NONEXCLUSIVE_COHORT_IDS, search_research_web)
+
+# Read-only encrypted history review; never clears holds or authorizes reentry.
+from historical_growth import install as install_historical_growth
+install_historical_growth(app,require_admin,ADMIN_KEY,GROWTH_NONEXCLUSIVE_COHORT_IDS,
+    dict(IMAP_HOST=IMAP_HOST,IMAP_PORT=IMAP_PORT,IMAP_USER=IMAP_USER,IMAP_PASSWORD=IMAP_PASSWORD,IMAP_FOLDER=IMAP_FOLDER))
+
+# Explicit owner-authorized re-entry of the isolated pre-review batch; no sends.
+from campaign_reentry import install as install_campaign_reentry
+install_campaign_reentry(app,require_admin,ADMIN_KEY)

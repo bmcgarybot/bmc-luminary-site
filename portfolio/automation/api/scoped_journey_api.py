@@ -32,18 +32,35 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                     await conn.fetchval('select pg_advisory_xact_lock(hashtextextended($1,0))','scoped_journey:'+email+'|'+service)
                     existing=await conn.fetchrow('select * from growth_outreach_targets where lower(public_email)=$1 and service_key=$2 for update',email,service)
                     target=dict(existing) if existing else dict(target_id='inventory:'+str(candidate),status='contactable',source_data={})
-                    if target['target_id'] in frozen or target.get('status')!='contactable': raise ValueError('target_unavailable')
+                    reentry=None
+                    if existing and target.get('status')=='contacted':
+                        from campaign_reentry import approved_reentry
+                        reentry=await approved_reentry(conn,dict(recipient,target_id=target['target_id']),secret)
+                    if target['target_id'] in frozen or (target.get('status')!='contactable' and not reentry): raise ValueError('target_unavailable')
                     fields=dict(business_name=recipient['business_name'],public_email=email,public_phone=recipient.get('public_phone'),
                                 market=recipient['market'],service_key=service,source_url=recipient['source_url'])
-                    if existing and any(str(target.get(k) or '').lower()!=str(fields[k] or '').lower()
-                                        for k in ('business_name','public_email','market','service_key','source_url')):
-                        raise ValueError('target_identity_changed')
-                    if await conn.fetchval(HISTORY_SQL,email,list(frozen)) is not False: raise ValueError('history_changed')
+                    if existing:
+                        if reentry:
+                            from campaign_reentry import recipient_matches
+                            from official_research import host,auto_evidence_valid
+                            if (not recipient_matches(target,recipient) or host(target['source_url'])!=host(fields['source_url'])
+                                or not auto_evidence_valid(recipient,secret) or email!=reentry['expected_email'].lower()):
+                                raise ValueError('target_identity_changed')
+                        elif any(str(target.get(k) or '').lower()!=str(fields[k] or '').lower()
+                                 for k in ('business_name','public_email','market','service_key','source_url')):
+                            raise ValueError('target_identity_changed')
+                    if await conn.fetchval(HISTORY_SQL,email,list(frozen)) is not False:
+                        from campaign_reentry import approved_reentry
+                        reentry=await approved_reentry(conn,dict(recipient,target_id=target['target_id']),secret)
+                        if email!=reentry['expected_email'].lower():raise ValueError('reentry_fresh_email_changed')
                     data=target.get('source_data') or {}
                     if isinstance(data,str): data=json.loads(data)
                     if not isinstance(data,dict): raise ValueError('invalid_source_metadata')
-                    target.update(fields,source_data=dict(data))
-                    old=profile_for_target(target,secret)
+                    old=profile_for_target(target,secret) if existing else None
+                    if reentry and 'historical_reentry_target_archive' not in data:
+                        data=dict(data,historical_reentry_target_archive={key:target.get(key) for key in
+                            ('target_id','business_name','public_email','public_phone','source_url','market','service_key','status')})
+                    target.update(fields,source_data=dict(data),status='contactable')
                     if old and old['state']!='draft': raise ValueError('released_profile_immutable')
                     profile=prepare_profile(packet,target['target_id'],secret)
                     sample=packet['artifacts'][5]['rows'];ids=[uuid.UUID(x) for x in profile['sample_ids']]
@@ -71,7 +88,13 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                         remaining_gates=['Owner scope/release review','Current customer purchase/fulfillment/reply proof']),request_id)
                     if len(json.dumps(capsule,separators=(',',':')).encode())>500_000: raise ValueError('capsule_too_large')
                     if existing:
-                        await conn.execute('update growth_outreach_targets set source_data=$2::jsonb,updated_at=now() where target_id=$1',target['target_id'],json.dumps(target['source_data']))
+                        if reentry:
+                            await conn.execute('''update growth_outreach_targets set source_data=$2::jsonb,business_name=$3,
+                                public_email=$4,public_phone=$5,source_url=$6,market=$7,service_key=$8,status='contactable',updated_at=now()
+                                where target_id=$1''',target['target_id'],json.dumps(target['source_data']),fields['business_name'],email,
+                                fields['public_phone'],fields['source_url'],fields['market'],service)
+                        else:
+                            await conn.execute('update growth_outreach_targets set source_data=$2::jsonb,updated_at=now() where target_id=$1',target['target_id'],json.dumps(target['source_data']))
                     else:
                         await conn.execute('''insert into growth_outreach_targets(target_id,business_name,public_email,public_phone,
                             source_url,market,service_key,source_kind,source_data) values($1,$2,$3,$4,$5,$6,$7,'scoped_native_held',$8::jsonb)''',
@@ -183,7 +206,7 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                 raise ValueError('invalid_batch')
         except (ValueError,KeyError,TypeError):raise HTTPException(422,'exact_new_target_batch_required')
         from scoped_batch import register_target
-        waves={'commercial_cleaning':'growth-cleaning-1','pressure_washing':'growth-pressure-1'}
+        waves={'commercial_cleaning':'growth-cleaning-1','pressure_washing':'growth-pressure-1','tree_service':'growth-tree-1','junk_hauling':'growth-junk-1'}
         results=[]
         for target_id in ids:
             try:

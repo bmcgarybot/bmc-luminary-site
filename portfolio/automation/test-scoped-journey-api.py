@@ -33,6 +33,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             async def fetchrow(self,sql,*args):
                 outer.reads.append(sql)
                 return outer.preview if 'growth_owner_previews' in sql else outer.target
+            async def fetch(self,sql,*args):return []
             async def fetchval(self,sql,*args):return None if 'advisory' in sql else outer.history
             async def execute(self,sql,*args):
                 assert any(sql.lower().startswith(prefix) for prefix in ('insert into growth_outreach_targets','update growth_outreach_targets','insert into growth_owner_previews'))

@@ -98,6 +98,35 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         for private in (NAME,EMAIL,URL,'unverified-seed@example.test'):self.assertNotIn(private,json.dumps(out))
         return self.payloads[-1],seen
 
+    async def test_history_diagnostics_exact_static_branches_remain_failclosed(self):
+        self.setup();outer=self
+        class Conn:
+            async def fetchval(inner,sql,*args):
+                outer.assertEqual(sql,api.HISTORY_SQL);return True
+            async def fetchrow(inner,sql,*args):
+                outer.assertEqual(sql,api.HISTORY_DIAGNOSTIC_SQL)
+                return {key:key=='growth_target' for key in api.HISTORY_BRANCHES}
+        with self.assertRaises(api.Held) as held:await api.no_history(Conn(),self.row)
+        self.assertEqual(str(held.exception),'existing_customer_target_or_history')
+        self.assertEqual([key for key,value in held.exception.diagnostics['history_checks'].items() if value],['growth_target'])
+        class Failed(Conn):
+            async def fetchrow(inner,*args):raise RuntimeError('PRIVATE_SQL_ERROR')
+        with self.assertRaises(api.Held) as held:await api.no_history(Failed(),self.row)
+        self.assertEqual(held.exception.diagnostics,{'history_diagnostics_unavailable':True})
+
+    async def test_source_review_reason_and_observations_encrypted_no_exception_leak(self):
+        self.setup();before=copy.deepcopy(self.row)
+        proposal=dict(status='source_review_held',gate_reason='exact_legal_name_mismatch',
+            fetch_failure_reason='PRIVATE_RAW_ERROR /path',visible_excerpt='Published synthetic source name',
+            unverified_schema_observations=[{'name':'Published alternate legal entity'}],unexpected='PRIVATE_RAW_ERROR')
+        with patch.object(api,'review_row',return_value=proposal):payload,seen=await self.invoke()
+        review=payload['results'][0]['diagnostics']['source_review']
+        self.assertEqual(review['gate_reason'],'exact_legal_name_mismatch')
+        self.assertEqual(review['unverified_schema_observations'],proposal['unverified_schema_observations'])
+        self.assertNotIn('PRIVATE_RAW_ERROR',json.dumps(payload));self.assertEqual(self.row,before)
+        self.assertEqual(seen,[]);self.assertEqual(self.events,[])
+        self.assertNotIn('visible_excerpt',api.source_diagnostics({'visible_excerpt':'x'*16001}))
+
     async def test_census_promotes_same_uuid_real_v2_ignores_only_seed_email_and_archives_full_original(self):
         self.setup();before=copy.deepcopy(self.row);payload,seen=await self.invoke()
         self.assertEqual(payload['results'][0]['status'],'native_source_verified');self.assertEqual(seen,[URL])
@@ -109,6 +138,16 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.events[0]['request_id'],'ci-rolling-request-001')
         for field in ('candidate_id','status','closed_at','promoted_entity_id','created_at'):self.assertEqual(self.row[field],before[field])
         self.assertFalse(payload['results'][0]['provider_accepted']);self.assertEqual(payload['results'][0]['outreach_sent'],0)
+
+    async def test_false_official_seed_can_promote_only_after_direct_fresh_v2_verification(self):
+        self.setup();self.row['official_site']=False;before=copy.deepcopy(self.row)
+        payload,seen=await self.invoke()
+        self.assertEqual(payload['results'][0]['status'],'native_source_verified')
+        self.assertEqual(payload['results'][0]['verification_basis'],'fresh_existing_source_verified')
+        self.assertEqual(seen,[URL]);self.assertTrue(auto_evidence_valid(self.row,SECRET))
+        self.assertFalse(self.row['evidence']['census_original_archive']['record']['official_site'])
+        self.assertTrue(self.row['official_site'])
+        self.assertEqual(self.events[0]['verification_basis'],'fresh_existing_source_verified')
 
     async def test_refresh_empty_v1_to_v2_visible_mail_and_archive_old_native(self):
         self.setup(native=True);before=copy.deepcopy(self.row);payload,seen=await self.invoke(refresh=True)
@@ -159,6 +198,33 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         payload,seen=await self.invoke({'source_keys':['b'*64],'requested_service':'pressure_washing'})
         self.assertEqual(seen,[]);self.assertEqual(payload['results'][0]['status'],'native_source_held')
         with self.assertRaises(HTTPException):await self.invoke({'candidate_id':str(self.cid),'source_url':URL},refresh=True)
+
+    async def test_refresh_observed_contact_fresh_parse_can_renew_physical_location(self):
+        self.setup(native=True);before=copy.deepcopy(self.row);seen=[]
+        entity={'@type':'LocalBusiness','name':NAME,'url':URL,'description':'Commercial pressure washing',
+            'telephone':PHONE,'address':{'streetAddress':'100 Main Street','addressLocality':'Prescott','addressRegion':'AZ','postalCode':'86301'}}
+        home='<script type="application/ld+json">'+json.dumps(entity)+'</script><a href="/contact">Contact</a>'
+        entity['url']=URL+'contact';entity['email']='office@fixture.example.test';entity['address']['streetAddress']='200 New Avenue'
+        page='<script type="application/ld+json">'+json.dumps(entity)+'</script>'
+        def fetch(url):seen.append(url);return receipt(home if url==URL else page,url)
+        with patch.object(api,'fetch_page_receipt',side_effect=fetch),patch.object(api,'seal_result',return_value={}):
+            result=await api.refresh_one(self.app.state.pool,self.cid,SECRET,frozenset(),'ci-refresh-contact')
+        self.assertEqual(result['status'],'native_source_verified');self.assertEqual(seen,[URL,URL+'contact'])
+        self.assertEqual(self.row['source_url'],URL+'contact');self.assertTrue(auto_evidence_valid(self.row,SECRET))
+        self.assertEqual(self.row['evidence']['vps_verification']['physical_address'],'200 New Avenue, Prescott, AZ 86301')
+        self.assertEqual(self.row['evidence']['native_original_archive']['record'],api.json_record(before))
+
+    async def test_refresh_unobserved_unsafe_and_recursive_contact_links_never_fetched(self):
+        self.setup(native=True);before=copy.deepcopy(self.row);seen=[]
+        # No mailbox anywhere: two observed safe paths, no recursive expansion.
+        home=DOC.replace('<a href="mailto:'+EMAIL+'">Email us</a>','')
+        home+='<a href="/contact">Contact</a><a href="/about">About</a><a href="/location">Third</a><a href="https://foreign.example/contact">Foreign</a><a href="/contact?send=1">Query</a><a href="/checkout/contact">Checkout</a>'
+        def fetch(url):seen.append(url);return receipt(home,url)
+        with patch.object(api,'fetch_page_receipt',side_effect=fetch):
+            result=await api.refresh_one(self.app.state.pool,self.cid,SECRET,frozenset(),'ci-refresh-contact')
+        self.assertEqual(seen,[URL,URL+'contact',URL+'about']);self.assertEqual(self.row,before)
+        self.assertEqual(result['status'],'native_source_held');self.assertEqual(result['diagnostics']['get_count'],3)
+        self.assertEqual(len(result['diagnostics']['refresh_stages']),3)
 
     async def test_refresh_nonempty_invalid_native_and_protected_are_held(self):
         for mode in ('nonempty','invalid','protected'):

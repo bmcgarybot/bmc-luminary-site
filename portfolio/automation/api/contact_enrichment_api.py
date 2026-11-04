@@ -21,7 +21,8 @@ from owner_research_export import seal_export
 MAX_CAPSULE_BYTES=500_000
 SELECT_SQL='select * from market_inventory_candidates where candidate_id=$1'
 # All names/columns below are from the actual migrated schema; no inferred
-# candidate_id columns on recipient sample/order tables.
+# candidate_id columns on recipient sample/order tables. Bare prospect/discovered
+# inventory is not interaction; other states and all submitted leads remain protected.
 HISTORY_SQL="""select
  exists(select 1 from outreach_suppressions where lower(email)=any($3::text[]))
  or exists(select 1 from growth_outreach_targets where target_id=any($2::text[])
@@ -36,9 +37,14 @@ HISTORY_SQL="""select
    left join buyers b on o.entity_type='buyer' and o.entity_id=b.buyer_id
    where o.entity_id=any($2::text[]) or lower(g.public_email)=any($3::text[])
      or lower(v.public_email)=any($3::text[]) or lower(b.public_email)=any($3::text[]))
- or exists(select 1 from vendors where vendor_id=any($2::text[]) or lower(public_email)=any($3::text[])
-   or lower(business_name)=lower($4))
- or exists(select 1 from buyers where buyer_id=any($2::text[]) or lower(public_email)=any($3::text[]))
+ or exists(select 1 from vendors where
+   (vendor_id=any($2::text[]) or lower(public_email)=any($3::text[]) or lower(business_name)=lower($4))
+   and coalesce(status,'') not in ('prospect','discovered'))
+ or exists(select 1 from buyers where
+   (buyer_id=any($2::text[]) or lower(public_email)=any($3::text[]))
+   and coalesce(status,'') not in ('prospect','discovered'))
+ or exists(select 1 from lead_matches m join vendors v on v.vendor_id=m.vendor_id
+   where v.vendor_id=any($2::text[]) or lower(v.public_email)=any($3::text[]) or lower(v.business_name)=lower($4))
  or exists(select 1 from growth_sample_requests where source_target_id=any($2::text[])
    or lower(email)=any($3::text[]) or (lower(business_name)=lower($4) and market=$5))
  or exists(select 1 from growth_sample_prospects where candidate_id=$1::uuid or lower(public_email)=any($3::text[]))
