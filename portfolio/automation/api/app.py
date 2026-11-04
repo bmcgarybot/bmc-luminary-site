@@ -1,3 +1,5 @@
+from scoped_quote_api import request_fields as scoped_quote_request_fields
+from scoped_growth import profile_for_target, public_offer_fields
 from research_policy import POLICY as RESEARCH_POLICY, contractor_priority, observation_kind, observation_evidence, install as install_research_policy
 from official_research import VENDOR_TERMS, auto_evidence_valid, install as install_official_research
 from growth_pdf import sample_pdf_response, render_sample_pdf, present_prospect_rows, prospect_presentation, format_business_phone
@@ -3223,6 +3225,11 @@ async def growth_sample_checkout(conn,email,sample_id,service_key):
         return ""
     if request["status"] in ("cancelled","rejected","converted","fulfilled"):
         return ""
+    if request.get('source_target_id'):
+        source=await conn.fetchrow('select * from growth_outreach_targets where target_id=$1',request['source_target_id'])
+        if source and 'scoped_offer' in str(source.get('source_data') or ''):
+            growth_target_scoped_profile(source,customer=True)
+            return ''  # The25-product uses its separately reviewed recipient-bound offer.
     territory=growth_request_territory(request)
     saved=await conn.fetch("select * from growth_sample_prospects where sample_id=$1",sample_id)
     if len(saved)!=5 or any(clean(x["market"]) not in territory for x in saved):
@@ -3389,6 +3396,14 @@ async def handle_growth_snapshot(conn,p):
     business_site_host=growth_business_site_host(p.get("business_website"))
     phone_key=growth_business_phone_key(business_phone)
     submission_id=clean(p.get("submission_id")) or str(uuid.uuid4())
+    profile=None
+    if clean(p.get('source_target_id')):
+        scoped_target=await conn.fetchrow('select * from growth_outreach_targets where target_id=$1',clean(p['source_target_id']))
+        if scoped_target and 'scoped_offer' in str(scoped_target.get('source_data') or ''):
+            profile=growth_target_scoped_profile(scoped_target,customer=True)
+            if (email_addr!=profile['email'] or business!=profile['business_name'] or service_key!=profile['service_key'] or territory!=[profile['market']]):
+                raise HTTPException(409,'This prepared offer belongs to another company or territory')
+            p=dict(p,ideal_customer=profile['scope']['ideal_customer'],exclusions=profile['scope'].get('exclusions',''))
     # Both identity and allocation must be protected by the same transaction lock.
     await growth_lock_exposure_allocator(conn)
     existing=await conn.fetchrow("select * from growth_sample_requests where submission_id=$1",submission_id)
@@ -3400,10 +3415,13 @@ async def handle_growth_snapshot(conn,p):
             try: payload=json.loads(payload)
             except json.JSONDecodeError: payload=[]
         payload=present_prospect_rows(payload) if isinstance(payload,list) else []
-        checkout=await growth_sample_checkout(conn,email_addr,existing["sample_id"],service_key)
+        if not profile and existing.get('source_target_id'):
+            source=await conn.fetchrow('select * from growth_outreach_targets where target_id=$1',existing['source_target_id'])
+            if source and 'scoped_offer' in str(source.get('source_data') or ''):profile=growth_target_scoped_profile(source,customer=True)
+        checkout='' if profile else await growth_sample_checkout(conn,email_addr,existing["sample_id"],service_key)
         return {"ok":True,"status":clean(existing["status"]),"sample_id":str(existing["sample_id"]),
           "business_name":existing["business_name"],"research_scope":clean(existing.get("ideal_customer")),
-          "sample":payload,**sample_pdf_response(payload,existing["business_name"],GROWTH_SERVICE_LABELS[existing["provider_service_key"]],growth_request_territory(existing),str(existing["sample_id"]),existing["sample_generated_at"]),"checkout_url":checkout,"selected_markets":growth_request_territory(existing),"message":"Your commercial opportunity snapshot is already saved."}
+          "sample":payload,**sample_pdf_response(payload,existing["business_name"],GROWTH_SERVICE_LABELS[existing["provider_service_key"]],growth_request_territory(existing),str(existing["sample_id"]),existing["sample_generated_at"],free_offer_count=25 if profile else 100),**({**public_offer_fields(profile),**scoped_quote_request_fields(ADMIN_KEY,str(existing["sample_id"]),email_addr)} if profile else {}),"checkout_url":checkout,"selected_markets":growth_request_territory(existing),"message":"Your commercial opportunity snapshot is already saved."}
 
     # A different submission/email must not unlock another free five for the
     # same named contractor. This is anti-abuse only, not account authentication.
@@ -3470,8 +3488,12 @@ async def handle_growth_snapshot(conn,p):
 
     reviewed=await conn.fetchrow("select candidate_ids from growth_owner_previews where target_id=$1 and version='official-pdf-v2'",target_id) if target_id else None
     rows=await growth_qualified_territory_candidates(conn,service_key,territory,clean(p.get("ideal_customer")),clean(p.get("exclusions")),
-      limit=1000 if reviewed else GROWTH_SAMPLE_MIN_RESERVE,recipient_key=email_addr,delivery_kind="free",
+      limit=1000 if (reviewed or profile) else GROWTH_SAMPLE_MIN_RESERVE,recipient_key=email_addr,delivery_kind="free",
       recipient_business_key=growth_recipient_business_key(business))
+    if profile:
+        rows=[r for r in rows if r.get('category_key') in profile['scope']['category_keys']]
+        if not reviewed or list(map(str,reviewed['candidate_ids']))!=profile['sample_ids']:
+            raise HTTPException(409,'The reviewed scoped five require verification')
     if len(rows)<5:
         await conn.execute("""update growth_sample_requests set status='inventory_exception',updated_at=now()
           where sample_id=$1""",sample_id)
@@ -3511,9 +3533,9 @@ async def handle_growth_snapshot(conn,p):
           r["source_url"],r["source_domain"],r["verification_status"])
     public_rows=growth_sample_public_rows(sample)
     territory_label=", ".join(territory)
-    pdf_response=sample_pdf_response(public_rows,business,GROWTH_SERVICE_LABELS[service_key],territory,str(sample_id))
+    pdf_response=sample_pdf_response(public_rows,business,GROWTH_SERVICE_LABELS[service_key],territory,str(sample_id),free_offer_count=25 if profile else 100)
     checkout=""
-    if len(rows)>=GROWTH_SAMPLE_MIN_RESERVE:
+    if not profile and len(rows)>=GROWTH_SAMPLE_MIN_RESERVE:
         checkout=await growth_sample_checkout(conn,email_addr,sample_id,service_key)
     # Prepare the immutable sample before SMTP. SMTP acceptance is not final inbox
     # delivery; reserve the same five while submission is pending.
@@ -3528,6 +3550,8 @@ async def handle_growth_snapshot(conn,p):
     terms="These are researched businesses to approach. They have not requested quotes, and no buying interest or job is confirmed. The five are yours to use free, with no obligation."
     offer=("If this shortlist fits the work you want, the optional $499 pack includes 100 total researched commercial prospects, including these five."
       if checkout else "We are reviewing whether this territory can support a full pack to the same standard. No paid pack is available for this territory yet.")
+    if profile:
+        offer='If this shortlist fits, you can request a 25-prospect scoped pack for $149, including these five. We verify the current list before providing your payment link; no 100-prospect upgrade is promised.'
     guarantee="If a delivered prospect fails our published territory, activity, business type or contact standard, reply and we will replace it."
     body=f"Hi {contact},\n\n"+"\n\n".join([intro,*details,terms,offer,guarantee])
     if checkout: body+="\n\nView the 100-prospect offer: "+checkout
@@ -3556,7 +3580,7 @@ async def handle_growth_snapshot(conn,p):
           f"SMTP did not accept Growth sample {sample_id} for {email_addr}",
           "Keep the five disclosed prospects reserved for this customer; retry emailing the saved sample only")
         await event(conn,"growth_sample",sample_id,"web_disclosed_email_failed",{"email":email_addr,"smtp_accepted":False})
-        return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"business_name":business,"research_scope":clean(p.get("ideal_customer")),"sample":public_rows,**pdf_response,
+        return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"business_name":business,"research_scope":clean(p.get("ideal_customer")),"sample":public_rows,**pdf_response,**({**public_offer_fields(profile),**scoped_quote_request_fields(ADMIN_KEY,str(sample_id),email_addr)} if profile else {}),
           "checkout_url":checkout,"selected_markets":territory,"message":"Your five targets are ready on this page, but the email copy needs a delivery retry."}
     await conn.execute("""update growth_sample_requests
       set status='delivered',sample_sent_at=now(),next_nurture_at=now()+interval '2 days',updated_at=now()
@@ -3564,13 +3588,19 @@ async def handle_growth_snapshot(conn,p):
     await event(conn,"growth_sample",sample_id,"web_disclosed_smtp_accepted",
       {"email":email_addr,"service_key":service_key,"market":market,"qualified_pool":len(rows),
        "smtp_accepted":True,"inbox_delivery_verified":False})
-    return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"business_name":business,"research_scope":clean(p.get("ideal_customer")),"sample":public_rows,**pdf_response,
+    return {"ok":True,"status":"sample_ready","sample_id":str(sample_id),"business_name":business,"research_scope":clean(p.get("ideal_customer")),"sample":public_rows,**pdf_response,**({**public_offer_fields(profile),**scoped_quote_request_fields(ADMIN_KEY,str(sample_id),email_addr)} if profile else {}),
       "checkout_url":checkout,"selected_markets":territory,"qualified_pool":len(rows),
       "message":"Your five commercial targets are ready. We also emailed a copy so you can use them later."}
+
+def growth_target_scoped_profile(target,customer=False):
+    if 'scoped_offer' not in str(target.get('source_data') or ''):return None
+    try:return profile_for_target(dict(target),ADMIN_KEY,customer=customer)
+    except ValueError as exc:raise HTTPException(409,str(exc))
 
 async def growth_owner_sample(conn,target,territory,rows):
     # Preserve v1 mail and frozen payloads. Corrected labels/openings get a new
     # review artifact only; reading it never sends mail or grants approval.
+    profile=growth_target_scoped_profile(target) if 'scoped_offer' in str(target.get('source_data') or '') else None
     version="official-pdf-v2"
     await conn.execute("select pg_advisory_xact_lock(hashtextextended($1,0))","owner_preview:"+target["target_id"])
     saved=await conn.fetchrow("select * from growth_owner_previews where target_id=$1 and version=$2",target["target_id"],version)
@@ -3606,20 +3636,28 @@ async def growth_owner_sample(conn,target,territory,rows):
     if isinstance(public_rows,str):public_rows=json.loads(public_rows)
     public_rows=present_prospect_rows(public_rows)
     current_ids={str(x["candidate_id"]) for x in rows}
-    eligible=len(rows)>=GROWTH_SAMPLE_MIN_RESERVE and all(str(x) in current_ids for x in saved["candidate_ids"])
-    base=await conn.fetchval("select payment_link_url from products where product_key='growth_pack_starter' and active=true") if eligible else ""
+    required=25 if profile else GROWTH_SAMPLE_MIN_RESERVE
+    eligible=len(rows)>=required and all(str(x) in current_ids for x in saved["candidate_ids"])
+    if profile:eligible=eligible and all(cid in current_ids for cid in profile['candidate_ids'])
+    if profile and list(map(str,saved['candidate_ids']))!=profile['sample_ids']:
+        raise HTTPException(409,'Scoped reviewed five changed')
+    product='growth_pack_25' if profile else 'growth_pack_starter'
+    base=await conn.fetchval("select payment_link_url from products where product_key=$1 and active=true",product) if eligible else ""
     checkout=growth_checkout_url(clean(base),OWNER_PREVIEW_RECIPIENT,saved["preview_id"],saved["service_key"])
     checkout=checkout.replace("client_reference_id=growth_","client_reference_id=owner_preview_")
     return {"ok":True,"status":"sample_ready","sample_id":"owner-preview",
       "preview_id":str(saved["preview_id"]),"business_name":saved["business_name"],
       "research_scope":(globals().get("GROWTH_REVIEW_PACKETS",{}).get(clean(target["public_email"]).lower()) or {}).get("opener") or ("Your Phoenix location lists commercial offices; this brief focuses on local commercial properties and operations contacts." if clean(target["public_email"]).lower()=="admin@ec-phoenix.com" else "Commercial properties and public operations contacts in "+", ".join(territory)+"."),"sample":public_rows,
       **sample_pdf_response(public_rows,saved["business_name"],GROWTH_SERVICE_LABELS[saved["service_key"]],territory,
-        "owner-preview-"+str(saved["preview_id"]),saved["created_at"],preview=True),
+        "owner-preview-"+str(saved["preview_id"]),saved["created_at"],preview=True,free_offer_count=25 if profile else 100),
       "checkout_url":checkout,"qualified_pool":len(rows),"selected_markets":territory,"preview":True,
+      **(public_offer_fields(profile) if profile else {}),
       "message":"Owner review: these five are saved for this preview. Checkout is live; inspect only and do not pay. No customer sample or approval has been recorded."}
 
 async def growth_owner_full_pack(conn,target,territory,rows,sample,count=100):
     """Owner-token-only, read-only full deliverable preview; no order or exposure writes."""
+    profile=growth_target_scoped_profile(target) if 'scoped_offer' in str(target.get('source_data') or '') else None
+    if profile and count!=25:raise HTTPException(409,'Only the reviewed 25-prospect scope is available')
     if count not in (25,100):raise HTTPException(400,"Choose a 25 or 100 prospect owner review")
     saved=await conn.fetchrow("select candidate_ids from growth_owner_previews where preview_id=$1 and target_id=$2",uuid.UUID(sample["preview_id"]),target["target_id"])
     by_id={str(r["candidate_id"]):dict(r) for r in rows}
@@ -3628,11 +3666,16 @@ async def growth_owner_full_pack(conn,target,territory,rows,sample,count=100):
         raise HTTPException(409,"The original five require review before a full-pack preview")
     originals=[by_id[str(cid)] for cid in ids]
     candidates=await growth_qualified_territory_candidates(conn,target["service_key"],territory,
+      ideal_customer=profile['scope']['ideal_customer'] if profile else '',exclusions=profile['scope'].get('exclusions','') if profile else '',
       limit=GROWTH_SAMPLE_MIN_RESERVE+100,exclude_ids={str(cid) for cid in ids},
       exclude_names={clean(r["business_name"]).lower() for r in originals},
       recipient_key=target["public_email"],delivery_kind="paid",
       recipient_business_key=growth_recipient_business_key(target["business_name"]))
-    final=originals+list(candidates[:count-5])
+    if profile:
+        by_current={str(r['candidate_id']):r for r in [*originals,*candidates] if r.get('category_key') in profile['scope']['category_keys']}
+        if any(cid not in by_current for cid in profile['candidate_ids']):raise HTTPException(409,'The reviewed 25 need current source and availability checks')
+        final=[by_current[cid] for cid in profile['candidate_ids']]
+    else:final=originals+list(candidates[:count-5])
     # Reuse all quantity, identity, contact, territory, score and original-row gates.
     try:
         growth_offers.validate_rows("growth_pack_25",final[:25],originals,territory)
@@ -3661,7 +3704,7 @@ async def growth_claim_free_five(request:Request):
     preview=str(p.get("preview") or "").lower() in ("1","true","yes")
     async with app.state.pool.acquire() as conn:
       async with conn.transaction():
-        target=await conn.fetchrow("""select g.target_id,g.business_name,g.public_email,g.market,g.service_key,g.source_url,
+        target=await conn.fetchrow("""select g.target_id,g.business_name,g.public_email,g.market,g.service_key,g.source_url,g.source_data,
             exists(select 1 from outreach o where o.entity_type='growth_customer' and o.entity_id=g.target_id
               and o.campaign='growth_sales' and o.sent_at is not null) as was_sent
           from growth_outreach_targets g where g.target_id=$1""",target_id)
@@ -3669,11 +3712,17 @@ async def growth_claim_free_five(request:Request):
             raise HTTPException(404,"This free-five invitation is not active.")
         if not growth_claim_valid(target_id,target["public_email"],token,owner_preview=preview):
             raise HTTPException(403,"This free-five link is invalid or expired.")
+        profile=growth_target_scoped_profile(target,customer=not preview) if 'scoped_offer' in str(target.get('source_data') or '') else None
         if preview:
             territory=growth_territory_markets(target["market"],p.get("selected_markets"))
             rows=await growth_qualified_territory_candidates(
-              conn,target["service_key"],territory,limit=1000
+              conn,target["service_key"],territory,
+              ideal_customer=profile['scope']['ideal_customer'] if profile else '',
+              exclusions=profile['scope'].get('exclusions','') if profile else '',limit=1000
             )
+            if profile:
+                if territory!=[profile['market']]:raise HTTPException(409,'This reviewed offer has one fixed territory')
+                rows=[r for r in rows if r.get('category_key') in profile['scope']['category_keys']]
             if len(rows)<5:
                 return {"ok":True,"status":"sample_pending","sample_id":"owner-preview",
                   "sample":[],"checkout_url":"","qualified_pool":len(rows),"preview":True,
@@ -3715,6 +3764,8 @@ async def growth_claim_free_five(request:Request):
           "utm_campaign":clean(p.get("utm_campaign")) or ("growth_"+clean(target["service_key"])),
           "utm_content":clean(p.get("utm_content")) or target_id
         }
+        if profile:
+            payload.update(ideal_customer=profile['scope']['ideal_customer'],exclusions=profile['scope'].get('exclusions',''))
         result=await handle_growth_snapshot(conn,payload)
         await event(conn,"growth_customer",target_id,"one_click_sample_claimed",{
           "service_key":target["service_key"],"market":target["market"],"sample_id":result.get("sample_id")
@@ -3778,7 +3829,8 @@ async def stage_growth_service(conn,service_key,max_targets=25):
           on conflict(target_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,
             public_phone=excluded.public_phone,website=excluded.website,source_url=excluded.source_url,market=excluded.market,
             service_key=excluded.service_key,experiment_cell=excluded.experiment_cell,source_kind=excluded.source_kind,
-            fit_score=excluded.fit_score,source_data=excluded.source_data,updated_at=now()""",
+            fit_score=excluded.fit_score,source_data=excluded.source_data,updated_at=now()
+          where not (growth_outreach_targets.source_data ? 'scoped_offer')""",
           row["target_id"],row["business_name"],email_addr,row.get("public_phone"),row.get("website"),row.get("source_url"),
           market,service_key,cell,row["source_kind"],int(row["fit_score"]),json.dumps(row.get("source_data") or {}))
         inserted=await conn.fetchval("""insert into outreach(entity_type,entity_id,campaign,wave,channel,sequence_step,status,next_followup_at,opt_out,target_market,target_service_key)
@@ -4702,6 +4754,8 @@ def growth_invitation_url(row,owner_preview=False,source="bmc_outreach"):
       "utm_content":row["target_id"],"target":row["target_id"],"market":row["market"],"business":row["business_name"],
       "claim":growth_claim_token(row["target_id"],row["public_email"],owner_preview=owner_preview)
     }
+    profile=growth_target_scoped_profile(row) if 'scoped_offer' in str(row.get('source_data') or '') else None
+    if profile:query['offer_count']='25'
     if owner_preview:
         query["preview"]="1"
     params=urllib.parse.urlencode(query)
@@ -4722,6 +4776,10 @@ def growth_positive_reply_message(row):
     return subject,body,rendered
 
 def growth_verified_opener(row):
+    if 'scoped_offer' in str(row.get('source_data') or ''):
+        profile=growth_target_scoped_profile(row)
+        return 'Your site mentions '+', '.join(profile['scope']['observed_sector_phrases'])+'. This brief focuses on those account types in '+profile['market']+'.'
+
     """Use reviewed, source-backed facts; never invent a website observation."""
     service=clean(row["service_key"]);market=clean(row["market"])
     target_id=clean(row["target_id"])
@@ -4777,6 +4835,8 @@ def growth_outreach_message(row,step,owner_preview=False):
     }
     if service_key not in focus:
         raise ValueError("Growth outreach is limited to the two supported services")
+    profile=growth_target_scoped_profile(row) if 'scoped_offer' in str(row.get('source_data') or '') else None
+    if profile and not owner_preview and profile['state']!='approved':raise ValueError('Scoped company copy requires explicit owner approval')
     landing=growth_invitation_url(row,owner_preview=owner_preview)
     market=clean(row["market"])
     business=clean(row["business_name"])
@@ -4813,6 +4873,8 @@ def growth_outreach_message(row,step,owner_preview=False):
           f"I put together five Phoenix businesses to review against that scope. For example, {packet['example_name']} has a published local contact route; the brief explains the facility fit and who to ask about vendor onboarding. Each entry includes its business website and a suggested first conversation.",
           "You can keep the five free, as a PDF and an online brief. If the fit is useful, $499 buys 100 total, including those five. These are researched prospects, not businesses that requested a quote, and sales are not guaranteed.",
           "Would a different facility type be more useful? Reply with the work you want more of."]
+    if profile and step==1:
+        lines[-1]='The five are free. If useful, an optional list of 25 total, including those five, is $149. No subscription or obligation. These are nonexclusive research prospects, not businesses that requested quotes.'
     label="Review the five researched businesses"
     body="\n\n".join([greeting,*lines,label+":\n"+landing,
       "Brett\nBMC Service Network\nBMC Luminary Ventures LLC\n"+BUSINESS_POSTAL_ADDRESS,
@@ -6359,7 +6421,11 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
                   observation_kind=excluded.observation_kind,evidence=local_channel_observations.evidence||excluded.evidence""",
                 lane['source_key'],lane['market'],observed_service,result['url'],result['title'],result['snippet'],kind,
                 json.dumps({'index_observation':observation_evidence(result,kind)}))
-              if role=='business_directory_only' or kind=='closure_mention':
+              if role=='business_directory_only' or kind!='request_candidate':
+                  await conn.execute("""update local_demand_signals set status='needs_review',
+                    evidence=evidence||jsonb_build_object('index_reclassification',$4::text),updated_at=now()
+                    where source_key=$1 and market=$2 and source_url=$3 and status='discovered'""",
+                    lane['source_key'],lane['market'],result['url'],kind)
                   continue
               if not local_signal_result_relevant(result,lane["market"]):
                   continue
@@ -7686,6 +7752,19 @@ from warm_leads import register as register_warm_leads
 register_warm_leads(app, ADMIN_KEY)
 
 
+async def growth_scoped_profile_for_sample(conn,sample):
+    target_id=sample.get('source_target_id')
+    if not target_id:return None
+    target=await conn.fetchrow('select * from growth_outreach_targets where target_id=$1',target_id)
+    if not target or 'scoped_offer' not in str(target.get('source_data') or ''):return None
+    profile=growth_target_scoped_profile(target,customer=True)
+    if (clean(sample['email']).lower()!=profile['email'] or sample['business_name']!=profile['business_name']
+        or sample['provider_service_key']!=profile['service_key'] or growth_request_territory(sample)!=[profile['market']]
+        or clean(sample['ideal_customer'])!=profile['scope']['ideal_customer']
+        or clean(sample['exclusions'])!=profile['scope'].get('exclusions','')):
+        raise ValueError('The customer sample no longer matches its reviewed scope')
+    return profile
+
 async def growth_offer_payload_current(conn,offer):
     payload=json_dict(offer["payload"])
     if growth_offers.offer_digest(payload)!=offer["payload_sha256"]:
@@ -7700,6 +7779,12 @@ async def growth_offer_payload_current(conn,offer):
         sample_state=await conn.fetchrow("select converted_at,order_id,status from growth_sample_requests where sample_id=$1 for update",offer["sample_id"])
         if not sample_state or (sample_state["converted_at"] and sample_state["order_id"]!=offer["paid_order_id"]):
             raise ValueError("This sample already belongs to another paid order")
+    if payload.get('scoped_profile_signature'):
+        source_sample=await conn.fetchrow('select * from growth_sample_requests where sample_id=$1',offer['sample_id'])
+        profile=await growth_scoped_profile_for_sample(conn,source_sample) if source_sample else None
+        if (not profile or profile['signature']!=payload['scoped_profile_signature'] or offer['product_key']!='growth_pack_25'
+            or [str(r['candidate_id']) for r in payload.get('rows',[])]!=profile['candidate_ids']):
+            raise ValueError('The reviewed scoped offer changed; purchase requires a fresh review')
     rows=payload.get("rows",[])
     if rows:
         originals=[dict(x) for x in (await conn.fetch("select * from growth_order_prospects where order_id=$1",parent["order_id"]) if parent else await conn.fetch("select * from growth_sample_prospects where sample_id=$1",offer["sample_id"]))]
@@ -7728,51 +7813,60 @@ async def growth_offer_payload_current(conn,offer):
     if offer["product_key"]=="growth_strategy_addon":growth_offers.validate_strategy(payload.get("strategy"))
     return payload
 
-@app.post("/api/admin/growth-offers/prepare")
-async def prepare_growth_purchase_offer(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
-    require_admin(x_bmc_admin_key)
-    p=await request.json()
+async def growth_prepare_purchase_offer_record(conn,p):
     tier=clean(p.get("product_key"))
     if tier not in growth_offers.TIERS:raise HTTPException(400,"Unknown offer")
     try:sid=uuid.UUID(str(p.get("sample_id")))
     except ValueError:raise HTTPException(400,"A saved customer sample is required")
+    await growth_lock_exposure_allocator(conn)
+    sample=await conn.fetchrow("select * from growth_sample_requests where sample_id=$1 for update",sid)
+    if not sample or sample["status"] not in ("delivered","fulfilled","converted"):
+        raise HTTPException(409,"A delivered customer sample is required; owner previews are not demand")
+    profile=await growth_scoped_profile_for_sample(conn,sample)
+    if profile and tier!='growth_pack_25':raise HTTPException(409,'Only the reviewed25-prospect offer is available for this sample')
+    existing=await conn.fetchrow("select * from growth_purchase_offers where sample_id=$1 and product_key=$2",sid,tier)
+    if existing:return {"ok":True,"offer_id":str(existing["offer_id"]),"status":existing["status"],"unchanged":True}
+    parent=None
+    if tier!="growth_pack_25":
+        try:pid=uuid.UUID(str(p.get("parent_order_id")))
+        except ValueError:raise HTTPException(400,"A parent order is required")
+        parent=await conn.fetchrow("select * from orders where order_id=$1 for update",pid)
+    try:growth_offers.validate_parent(tier,dict(parent) if parent else None,sample["email"],sid)
+    except ValueError as exc:raise HTTPException(409,str(exc))
+    if tier=="growth_pack_25" and (sample["converted_at"] or sample["status"]!="delivered"):
+        raise HTTPException(409,"This sample already has a purchase")
+    territory=growth_request_territory(sample)
+    originals=[];final=[]
+    if tier!="growth_strategy_addon":
+        originals=[dict(x) for x in (await conn.fetch("select * from growth_order_prospects where order_id=$1 order by business_name",parent["order_id"]) if parent else await conn.fetch("select * from growth_sample_prospects where sample_id=$1 order by business_name",sid))]
+        candidates=await growth_qualified_territory_candidates(conn,sample["provider_service_key"],territory,sample["ideal_customer"],sample["exclusions"],
+          limit=200,exclude_ids={str(x["candidate_id"]) for x in originals},exclude_names={clean(x["business_name"]).lower() for x in originals},
+          recipient_key=sample["email"],delivery_kind="paid",recipient_business_key=growth_recipient_business_key(sample["business_name"]))
+        if profile:
+            by_id={str(r['candidate_id']):r for r in [*originals,*candidates] if r.get('category_key') in profile['scope']['category_keys']}
+            if any(cid not in by_id for cid in profile['candidate_ids']):raise HTTPException(409,'The reviewed25 are not all currently eligible')
+            final=[by_id[cid] for cid in profile['candidate_ids']]
+        else:final=originals+candidates[:growth_offers.TIERS[tier]["count"]-len(originals)]
+        try:growth_offers.validate_rows(tier,final,originals,territory)
+        except ValueError as exc:raise HTTPException(409,str(exc))
+    else:
+        try:growth_offers.validate_strategy(p.get("strategy"))
+        except ValueError as exc:raise HTTPException(409,str(exc))
+    payload=json.loads(json.dumps({"business":sample["business_name"],"service_key":sample["provider_service_key"],"territory":territory,
+      "ideal_customer":sample["ideal_customer"],"exclusions":sample["exclusions"],"rows":final,"scoped_profile_signature":profile["signature"] if profile else None,"strategy":p.get("strategy") if tier=="growth_strategy_addon" else None},default=str))
+    oid=await conn.fetchval("""insert into growth_purchase_offers(sample_id,parent_order_id,product_key,email,payload,payload_sha256,expires_at)
+      values($1,$2,$3,$4,$5::jsonb,$6,now()+interval '7 days') returning offer_id""",
+      sid,parent["order_id"] if parent else None,tier,sample["email"],json.dumps(payload),growth_offers.offer_digest(payload))
+    return {"ok":True,"offer_id":str(oid),"status":"draft","amount_cents":growth_offers.TIERS[tier]["amount"],
+      "prospect_count":len(final),"checkout_url":"","message":"Prepared for owner review. No approval, payment or customer email recorded."}
+
+@app.post("/api/admin/growth-offers/prepare")
+async def prepare_growth_purchase_offer(request:Request,x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    p=await request.json()
     async with app.state.pool.acquire() as conn:
       async with conn.transaction():
-        await growth_lock_exposure_allocator(conn)
-        sample=await conn.fetchrow("select * from growth_sample_requests where sample_id=$1 for update",sid)
-        if not sample or sample["status"] not in ("delivered","fulfilled","converted"):
-            raise HTTPException(409,"A delivered customer sample is required; owner previews are not demand")
-        existing=await conn.fetchrow("select * from growth_purchase_offers where sample_id=$1 and product_key=$2",sid,tier)
-        if existing:return {"ok":True,"offer_id":str(existing["offer_id"]),"status":existing["status"],"unchanged":True}
-        parent=None
-        if tier!="growth_pack_25":
-            try:pid=uuid.UUID(str(p.get("parent_order_id")))
-            except ValueError:raise HTTPException(400,"A parent order is required")
-            parent=await conn.fetchrow("select * from orders where order_id=$1 for update",pid)
-        try:growth_offers.validate_parent(tier,dict(parent) if parent else None,sample["email"],sid)
-        except ValueError as exc:raise HTTPException(409,str(exc))
-        if tier=="growth_pack_25" and (sample["converted_at"] or sample["status"]!="delivered"):
-            raise HTTPException(409,"This sample already has a purchase")
-        territory=growth_request_territory(sample)
-        originals=[];final=[]
-        if tier!="growth_strategy_addon":
-            originals=[dict(x) for x in (await conn.fetch("select * from growth_order_prospects where order_id=$1 order by business_name",parent["order_id"]) if parent else await conn.fetch("select * from growth_sample_prospects where sample_id=$1 order by business_name",sid))]
-            candidates=await growth_qualified_territory_candidates(conn,sample["provider_service_key"],territory,sample["ideal_customer"],sample["exclusions"],
-              limit=200,exclude_ids={str(x["candidate_id"]) for x in originals},exclude_names={clean(x["business_name"]).lower() for x in originals},
-              recipient_key=sample["email"],delivery_kind="paid",recipient_business_key=growth_recipient_business_key(sample["business_name"]))
-            final=originals+candidates[:growth_offers.TIERS[tier]["count"]-len(originals)]
-            try:growth_offers.validate_rows(tier,final,originals,territory)
-            except ValueError as exc:raise HTTPException(409,str(exc))
-        else:
-            try:growth_offers.validate_strategy(p.get("strategy"))
-            except ValueError as exc:raise HTTPException(409,str(exc))
-        payload=json.loads(json.dumps({"business":sample["business_name"],"service_key":sample["provider_service_key"],"territory":territory,
-          "ideal_customer":sample["ideal_customer"],"exclusions":sample["exclusions"],"rows":final,"strategy":p.get("strategy") if tier=="growth_strategy_addon" else None},default=str))
-        oid=await conn.fetchval("""insert into growth_purchase_offers(sample_id,parent_order_id,product_key,email,payload,payload_sha256,expires_at)
-          values($1,$2,$3,$4,$5::jsonb,$6,now()+interval '7 days') returning offer_id""",
-          sid,parent["order_id"] if parent else None,tier,sample["email"],json.dumps(payload),growth_offers.offer_digest(payload))
-        return {"ok":True,"offer_id":str(oid),"status":"draft","amount_cents":growth_offers.TIERS[tier]["amount"],
-          "prospect_count":len(final),"checkout_url":"","message":"Prepared for owner review. No approval, payment or customer email recorded."}
+        return await growth_prepare_purchase_offer_record(conn,p)
 
 @app.get("/api/growth/offers/{offer_id}")
 async def get_growth_purchase_offer(offer_id:uuid.UUID,token:str=""):
@@ -7958,3 +8052,13 @@ install_held_packet_api(app, require_admin, ADMIN_KEY, GROWTH_NONEXCLUSIVE_COHOR
          recipient_business_key=growth_recipient_business_key))
 
 install_research_policy(app,require_admin)
+
+from scoped_journey_api import install as install_scoped_journey_api
+install_scoped_journey_api(app, require_admin, ADMIN_KEY, GROWTH_NONEXCLUSIVE_COHORT_IDS,
+    lambda: OWNER_LAUNCH_HOLD and not any((OUTREACH_ENABLED, BUYER_OUTREACH_ENABLED, GROWTH_OUTREACH_ENABLED)),
+    dict(qualify=growth_qualified_territory_candidates, select_sample=growth_select_representative_sample,
+         public_rows=growth_sample_public_rows, csv_bytes=growth_csv_bytes,
+         recipient_business_key=growth_recipient_business_key),growth_invitation_url,growth_outreach_message)
+
+from scoped_quote_api import install as install_scoped_quote_api
+install_scoped_quote_api(app,ADMIN_KEY,growth_prepare_purchase_offer_record,growth_scoped_profile_for_sample)

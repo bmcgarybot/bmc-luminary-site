@@ -55,6 +55,7 @@ MUTATING_INTERNAL_ACTIONS = {
     "configure_owner_contact",
     "configure_growth_review_scope",
     "official_research_step",
+    "prepare_scoped_journey",
     "market_inventory_step",
     "local_demand_step",
     "public_opportunities_step",
@@ -848,6 +849,15 @@ def execute(req: dict) -> dict:
     elif action == "nevada_status":
         status=admin_post("/api/admin/nevada/status",timeout=30)
         stdout=json.dumps(status,indent=2,default=str);stderr="";exit_code=0
+
+    elif action == "prepare_scoped_journey":
+        candidate_id=str(args.get('candidate_id') or '')
+        if set(args)!={'candidate_id'} or not re.fullmatch(r'[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}',candidate_id):
+            raise RelayError('One native research candidate UUID is required')
+        if app_env().get('BMC_OWNER_LAUNCH_HOLD','true').strip().lower()!='true' or any(str(v).lower()!='false' for v in outreach_state().values()):
+            raise RelayError('Scoped preparation requires owner hold and all outreach OFF')
+        path='/api/admin/prepare-scoped-journey?'+urllib.parse.urlencode({'request_id':req['request_id'],'candidate_id':candidate_id})
+        stdout=json.dumps(admin_post(path,timeout=180),separators=(',',':'));stderr='';exit_code=0
 
     elif action == "private_held_packet":
         candidate_id=str(args.get("candidate_id") or "")

@@ -53,7 +53,7 @@ def profile_for_target(target,secret,*,customer=False,now=None):
     if len(value.get('candidate_ids',[]))!=25 or len(set(value['candidate_ids']))!=25 or value.get('sample_ids')!=value['candidate_ids'][:5]:
         raise ValueError('Scoped research identities changed')
     if not value.get('scope',{}).get('category_keys'):raise ValueError('Scoped customer sectors are missing')
-    return value
+    return dict(value,signature=signed)
 
 def public_offer_fields(profile):
     if not profile:return dict(offer_count=100,offer_amount_cents=49900)

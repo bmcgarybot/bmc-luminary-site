@@ -5,6 +5,7 @@ class Upstream(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         body=json.dumps({"upstream":True,"path":self.path}).encode()
         self.send_response(200);self.send_header("Content-Type","application/json");self.end_headers();self.wfile.write(body)
+    def do_POST(self):self.do_GET()
     def log_message(self,*args): pass
 server=http.server.HTTPServer(("127.0.0.1",8000),Upstream)
 threading.Thread(target=server.serve_forever,daemon=True).start()
@@ -23,6 +24,11 @@ try:
     status,body=request(path)
     assert status==200 and json.loads(body)["path"]==path,(status,body)
     assert request(path,"POST")[0]==405
+    assert request('/api/growth/request-small-pack','GET')[0]==405
+    status,body=request('/api/growth/request-small-pack','POST')
+    assert status==200 and json.loads(body)['path']=='/api/growth/request-small-pack'
+    assert request('/api/admin/prepare-scoped-journey','POST')[0]==404
+    assert request('/api/admin/approve-scoped-journey','POST')[0]==404
     for denied in ("/api/admin/growth-offers/prepare","/api/growth/offers/not-a-uuid","/api/growth/offers/00000000-0000-4000-8000-000000000001/review","/api/process-growth-offers"):
         assert request(denied)[0]==404,denied
     logs=subprocess.run(["docker","logs",name],capture_output=True,text=True,check=True)

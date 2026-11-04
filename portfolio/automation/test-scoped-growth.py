@@ -17,6 +17,7 @@ class Tests(unittest.TestCase):
         self.profile=prepare_profile(self.packet,self.target['target_id'],'secret');self.target['source_data']={'scoped_offer':self.profile}
     def test_owner_review_of25_does_not_release_customer_or_advertise100(self):
         self.setup();value=profile_for_target(self.target,'secret')
+        self.assertEqual(value['signature'],self.profile['signature'])
         self.assertEqual(public_offer_fields(value)['offer_count'],25);self.assertFalse(public_offer_fields(value)['upgrade_available'])
         with self.assertRaises(ValueError):profile_for_target(self.target,'secret',customer=True)
     def test_tamper_target_change_and_expiry_rejected(self):

@@ -34,8 +34,11 @@ def observation_kind(result,source_role,request_candidate=False):
         if not (path=='/business' or path.startswith('/business/')):return 'excluded_nonbusiness_directory'
         return 'business_listing'
     if any(x in text for x in ('now hiring','job opening','send resume','apply today','sign-on bonus')):return 'job_advertisement'
+    # Provider offers and explicit calls to contact/book outrank rhetorical
+    # request wording. Ownership preferences alone do not establish an ad.
+    if re.search(r'\b(?:free estimates?|we offer|we provide|call/text|call us|call now|services offered|book now|contact us|schedule your)\b',text):
+        return 'contractor_advertisement'
     if request_candidate:return 'request_candidate'
-    if any(x in text for x in ('free estimate','we offer','we provide','call/text','call us','services offered','owner-operated','family owned','family-owned')):return 'contractor_advertisement'
     if 'recommend' in text:return 'recommendation_candidate'
     return 'unclassified_public_result'
 
