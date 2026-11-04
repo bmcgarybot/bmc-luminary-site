@@ -305,28 +305,51 @@ def install(app,require_admin,search,markets,secret,enabled=True):
         require_admin(x_bmc_admin_key)
         if not enabled:return {'ok':True,'enabled':False,'inspected':0,'outreach_sent':0}
         claimed=[]
+        source_policy_version='blocked-domains-v1:'+hashlib.sha256(json.dumps(sorted(BLOCKED),separators=(',',':')).encode()).hexdigest()
         async with app.state.pool.acquire() as conn:
           async with conn.transaction():
+            # IDs originate only in bounded persisted native research, never a request.
+            native_sources=await conn.fetch("""select candidate_id,source_url,source_domain from market_inventory_candidates
+              where market=any($1::text[]) and status='discovered' and closed_at is null
+                and evidence->>'researched_by'=$2
+              order by last_verified_at nulls first,candidate_id limit 1000""",list(markets),VERSION)
+            blocked_ids=[]
+            for source in native_sources:
+                actual=host(source['source_url'])
+                stored=str(source['source_domain'] or '').lower().removeprefix('www.')
+                # Never trust a stored directory label when the actual URL differs.
+                if actual and stored==actual and any(actual==d or actual.endswith('.'+d) for d in BLOCKED):
+                    blocked_ids.append(source['candidate_id'])
             # Raw discoveries stay intact; previously reviewed packets are never rewritten.
             rows=await conn.fetch("""with activity as (select market,max(last_attempt_at) touched from official_research_jobs group by market), ranked as (
-              select c.*,a.touched,row_number() over(partition by c.market,c.side order by
+              select c.*,a.touched,
+                (c.candidate_id=any($2::uuid[]) and coalesce(j.source_policy_version,'')<>$3
+                 and coalesce(j.status,'') not in ('running','needs_review')) source_policy_urgent,
+                row_number() over(partition by c.market,c.side order by
+                case when c.candidate_id=any($2::uuid[]) then 0 else 1 end,
                 case when c.evidence->'vps_verification'->'ownership_evidence'->>'classification'='owner_operated' then 0 else 1 end,c.official_site desc,
                 case when c.category_key in ('commercial_cleaning','pressure_washing','junk_hauling','tree_service','handyman_repairs') then 0 else 1 end,c.updated_at desc,c.candidate_id) pos
               from market_inventory_candidates c left join official_research_jobs j using(candidate_id) left join activity a on a.market=c.market
               where c.market=any($1::text[]) and c.status='discovered' and c.closed_at is null
                 and coalesce(c.evidence->>'researched_by','')<>'assistant_manual_census'
                 and (coalesce(c.evidence->>'researched_by','')<>'vps_primary_site_v1'
-                     or c.last_verified_at is null or c.last_verified_at<now()-interval '30 days')
+                     or c.last_verified_at is null or c.last_verified_at<now()-interval '30 days'
+                     or c.candidate_id=any($2::uuid[]))
                 and (not(c.evidence ? 'qualification_hold') or c.evidence->'qualification_hold' in ('false'::jsonb,'null'::jsonb))
-                and (j.candidate_id is null or j.next_attempt_at<now()))
+                and (j.candidate_id is null or j.next_attempt_at<now()
+                     or (c.candidate_id=any($2::uuid[]) and coalesce(j.source_policy_version,'')<>$3
+                         and coalesce(j.status,'') not in ('running','needs_review'))))
               select * from ranked where (market='Phoenix' and pos<=2) or (market<>'Phoenix' and pos=1)
-              order by case when market='Phoenix' then 0 else 1 end,touched nulls first,market,side limit 6""",list(markets))
+              order by source_policy_urgent desc,case when market='Phoenix' then 0 else 1 end,touched nulls first,market,side limit 6""",list(markets),blocked_ids,source_policy_version)
             for r in rows:
                 row=dict(r)
-                claim=await conn.fetchval("""insert into official_research_jobs(candidate_id,market,status,attempts,last_attempt_at,next_attempt_at)
-                  values($1,$2,'running',1,now(),now()+interval '30 minutes') on conflict(candidate_id) do update
-                  set status='running',attempts=official_research_jobs.attempts+1,last_attempt_at=now(),next_attempt_at=now()+interval '30 minutes'
-                  where official_research_jobs.next_attempt_at<now() returning candidate_id""",r['candidate_id'],r['market'])
+                claim=await conn.fetchval("""insert into official_research_jobs(candidate_id,market,status,attempts,last_attempt_at,next_attempt_at,source_policy_version)
+                  values($1,$2,'running',1,now(),now()+interval '30 minutes',$3) on conflict(candidate_id) do update
+                  set status='running',attempts=official_research_jobs.attempts+1,last_attempt_at=now(),next_attempt_at=now()+interval '30 minutes',source_policy_version=$3
+                  where official_research_jobs.next_attempt_at<now()
+                    or ($4::boolean and coalesce(official_research_jobs.source_policy_version,'')<>$3
+                        and official_research_jobs.status not in ('running','needs_review'))
+                  returning candidate_id""",r['candidate_id'],r['market'],source_policy_version,bool(r['source_policy_urgent']))
                 if claim:claimed.append(row)
         semaphore=asyncio.Semaphore(2)
         async def inspect(row):
@@ -357,7 +380,8 @@ def install(app,require_admin,search,markets,secret,enabled=True):
             else:
                 held+=1
                 await conn.execute("update official_research_jobs set status='needs_review',error_code=$2,next_attempt_at=now()+interval '24 hours' where candidate_id=$1",row['candidate_id'],error[:120])
-        return {'ok':True,'worker':VERSION,'inspected':len(claimed),'verified':verified,'needs_review':held,'outreach_sent':0,'providers_accepted':0,'customer_orders_created':0}
+        return {'ok':True,'worker':VERSION,'inspected':len(claimed),'verified':verified,'needs_review':held,'outreach_sent':0,'providers_accepted':0,'customer_orders_created':0,'source_policy_version':source_policy_version,
+                'blocked_native_sources_considered':len(blocked_ids),'native_source_scan_limit_reached':len(native_sources)==1000}
 
     @app.post('/api/admin/preparation-status')
     async def preparation_status(x_bmc_admin_key:str|None=Header(default=None)):

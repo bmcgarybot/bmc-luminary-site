@@ -1365,3 +1365,6 @@ create table if not exists channel_worker_metadata (
  last_outcome jsonb not null default '{}'::jsonb
 );
 insert into channel_worker_metadata(worker_key) values('local_channels') on conflict do nothing;
+
+-- Consume a changed source policy once without erasing retry/lease history.
+alter table official_research_jobs add column if not exists source_policy_version text not null default '';
