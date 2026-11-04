@@ -58,7 +58,7 @@ class ReviewedPoolTests(unittest.IsolatedAsyncioTestCase):
   handler=next(n for n in source.body if isinstance(n,ast.AsyncFunctionDef) and n.name=='handle_growth_snapshot')
   relevant=[i for i,n in enumerate(handler.body) if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id in ('rows','reviewed') for t in n.targets)]
   finish=next(i for i,n in enumerate(handler.body) if isinstance(n,ast.If) and isinstance(n.test,ast.Name) and n.test.id=='reviewed')
-  probe=ast.parse('async def probe(conn,p,target_id,service_key,territory,email_addr,business): pass').body[0]
+  probe=ast.parse('async def probe(conn,p,target_id,service_key,territory,email_addr,business,profile=None): pass').body[0]
   probe.body=handler.body[min(relevant):finish+1]+[ast.parse('return rows,sample').body[0]]
   ast.fix_missing_locations(probe)
   class Error(Exception):

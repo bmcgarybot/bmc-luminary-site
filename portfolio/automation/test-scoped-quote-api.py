@@ -18,7 +18,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             async def __aexit__(self,*args):pass
             def transaction(self,**kw):outer.transactions.append(kw);return self
             async def fetchrow(self,sql,*args):
-                assert sql=='select * from growth_sample_requests where sample_id=$1 for update'
+                assert sql=='select * from growth_sample_requests where sample_id=$1'  # Do not invert the shared allocator/sample lock order.
                 outer.reads.append((sql,args))
                 return outer.sample if outer.sample and args==(outer.sid,) else None
             async def execute(self,*args):raise AssertionError('Endpoint attempted a write')
@@ -82,5 +82,15 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.prepare.await_count,2);self.assertEqual(self.effects,[])
         self.assertEqual(next(iter(self.drafts.values()))['status'],'draft')
         self.assertEqual(first['checkout_url'],'');self.assertEqual(second['checkout_url'],'')
+    async def test_existing_paid_or_reviewed_offer_is_not_reported_as_a_new_pending_purchase(self):
+        for state in ('paid','fulfilled','approved'):
+            self.setup()
+            existing=dict(offer_id=str(uuid.uuid4()),status=state)
+            self.prepare.side_effect=None;self.prepare.return_value=existing
+            result=await self.call()
+            self.assertEqual(result['status'],'offer_already_reviewed' if state=='approved' else 'already_purchased')
+            self.assertEqual(result['offer_id'],existing['offer_id'])
+            self.assertFalse(result['payment_created']);self.assertEqual(result['checkout_url'],'')
+            self.assertEqual(self.drafts,{})
 
 if __name__=='__main__':unittest.main()
