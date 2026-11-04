@@ -7898,3 +7898,6 @@ async def process_growth_offer_invitations(x_bmc_admin_key:str|None=Header(defau
 
 # Research-only worker; never creates outreach, orders, or accepted providers.
 install_official_research(app,require_admin,search_research_web,DEFAULT_SOURCE_NATIVE_MARKETS,ADMIN_KEY,enabled=RESEARCH_SEARCH_ENABLED)
+
+from owner_research_export import install as install_owner_research_export
+install_owner_research_export(app, require_admin, DEFAULT_SOURCE_NATIVE_MARKETS, ADMIN_KEY)

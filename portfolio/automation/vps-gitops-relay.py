@@ -47,7 +47,7 @@ LOCAL_RESULTS = STATE_DIR / "results"
 RESEARCH_SCHEDULE_FILE = STATE_DIR / "research-refresh-schedule.json"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status"}
+READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status", "private_research_export"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
     "prepare_ops_configuration",
@@ -848,6 +848,11 @@ def execute(req: dict) -> dict:
     elif action == "nevada_status":
         status=admin_post("/api/admin/nevada/status",timeout=30)
         stdout=json.dumps(status,indent=2,default=str);stderr="";exit_code=0
+
+    elif action == "private_research_export":
+        if req.get("args"):
+            raise ValueError("private_research_export takes no arguments")
+        stdout=json.dumps(admin_post("/api/admin/owner-research-export?request_id="+req["request_id"],timeout=90),indent=2);stderr="";exit_code=0
 
     elif action == "preparation_status":
         stdout=json.dumps(admin_post("/api/admin/preparation-status",timeout=60),indent=2,default=str);stderr="";exit_code=0
