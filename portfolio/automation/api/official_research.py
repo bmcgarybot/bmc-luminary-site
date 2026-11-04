@@ -208,6 +208,38 @@ def auto_evidence_valid(row,secret):
     except (ValueError,TypeError,KeyError):return False
 
 
+def contact_links(url,document):
+    """Only observed same-site public contact/location pages; no form actions."""
+    page=Page();page.feed(document)
+    found=[]
+    for href in page.links:
+        link=urljoin(url,href);parts=urlsplit(link)
+        if (not allowed_url(link) or host(link)!=host(url) or parts.query or parts.fragment
+            or re.search(r'/(?:admin|api|account|login|logout|unsubscribe|checkout|payment|delete|remove|confirm|activate|subscribe|reset)[^/]*(?:/|$)',parts.path,re.I)):
+            continue
+        if re.search(r'(?:^|/)(?:contact(?:-us)?|locations?|about(?:-us)?)(?:/|[.-]|$)',parts.path,re.I) and link!=url and link not in found:
+            found.append(link)
+    return found[:2]
+
+async def inspect_source_pages(row,urls,secret):
+    queue=list(dict.fromkeys(urls))[:2];seen=set();errors=[]
+    while queue and len(seen)<3:
+        url=queue.pop(0)
+        if url in seen:continue
+        seen.add(url)
+        try:
+            final,document,digest=await asyncio.wait_for(asyncio.to_thread(fetch_page,url),timeout=20)
+        except Exception as exc:
+            errors.append((str(exc) or type(exc).__name__)[:100]);continue
+        try:
+            return parse_record(row,final,document,digest,secret),''
+        except ValueError as exc:
+            errors.append(str(exc)[:100])
+            if str(exc)=='structured_identity_location_or_contact_unproven':
+                queue.extend(x for x in contact_links(final,document) if x not in seen and x not in queue)
+    return None,errors[-1] if errors else 'no_official_source'
+
+
 def install(app,require_admin,search,markets,secret,enabled=True):
     from fastapi import Header
     @app.post('/api/process-official-research')
@@ -243,17 +275,13 @@ def install(app,require_admin,search,markets,secret,enabled=True):
             urls=[row['source_url']] if allowed_url(row['source_url']) else []
             if not urls:
                 try:
-                    found=await search('"'+row['business_name'][:140]+'" "'+row['market']+'" official website',1,5)
+                    found=await asyncio.wait_for(search('"'+row['business_name'][:140]+'" "'+row['market']+'" official website',1,5),timeout=20)
                     urls=[r['url'] for r in found if allowed_url(r['url'])][:2]
                 except Exception:return row,None,'search_unavailable'
-            errors=[]
-            for url in urls[:2]:
-                try:
-                    final,document,digest=await asyncio.wait_for(asyncio.to_thread(fetch_page,url),timeout=25)
-                    result=parse_record(row,final,document,digest,secret)
-                    return row,result,''
-                except Exception as exc:errors.append((str(exc) or type(exc).__name__)[:100])
-            return row,None,errors[-1] if errors else 'no_official_source'
+            try:
+                result,error=await asyncio.wait_for(inspect_source_pages(row,urls,secret),timeout=55)
+                return row,result,error
+            except asyncio.TimeoutError:return row,None,'candidate_research_timeout'
         inspected=await asyncio.gather(*(inspect(r) for r in claimed));verified=0;held=0
         async with app.state.pool.acquire() as conn:
           for row,result,error in inspected:
