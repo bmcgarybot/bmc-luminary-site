@@ -6,7 +6,7 @@
   const images={
     restaurant_equipment:"https://images.pexels.com/photos/28704740/pexels-photo-28704740.jpeg?auto=compress&cs=tinysrgb&w=900",
     restaurant_repair:"https://images.pexels.com/photos/28704740/pexels-photo-28704740.jpeg?auto=compress&cs=tinysrgb&w=900",
-    ice_machine:"/assets/images/ice-machine-service-illustration-v1.webp",
+    ice_machine:"/assets/images/ice-machine-service-illustration-v1.webp?v=published-20261103",
     restaurant_maintenance:"https://images.pexels.com/photos/28704740/pexels-photo-28704740.jpeg?auto=compress&cs=tinysrgb&w=900",
     equipment_quotes:"https://images.pexels.com/photos/6375553/pexels-photo-6375553.jpeg?auto=compress&cs=tinysrgb&w=900",
     used_equipment:"https://images.pexels.com/photos/6375553/pexels-photo-6375553.jpeg?auto=compress&cs=tinysrgb&w=900",
@@ -51,12 +51,12 @@
     sign_lighting:"https://images.pexels.com/photos/16368418/pexels-photo-16368418.jpeg?auto=compress&cs=tinysrgb&w=900",
     locksmith_access:"https://images.pexels.com/photos/35287856/pexels-photo-35287856.jpeg?auto=compress&cs=tinysrgb&w=900",
     duct_vent:"https://images.pexels.com/photos/16628050/pexels-photo-16628050.jpeg?auto=compress&cs=tinysrgb&w=900",
-    fleet_washing:"/assets/images/fleet-washing-illustration-v1.webp",
+    fleet_washing:"/assets/images/fleet-washing-illustration-v1.webp?v=published-20261103",
     mobile_tire_battery:"https://images.pexels.com/photos/17600886/pexels-photo-17600886.jpeg?auto=compress&cs=tinysrgb&w=900",
     coffee_water:"https://images.pexels.com/photos/11206191/pexels-photo-11206191.jpeg?auto=compress&cs=tinysrgb&w=900",
     parking_lot:"https://images.pexels.com/photos/33966251/pexels-photo-33966251.jpeg?auto=compress&cs=tinysrgb&w=900",
     epoxy_flooring:"https://images.pexels.com/photos/36230768/pexels-photo-36230768.jpeg?auto=compress&cs=tinysrgb&w=900",
-    mobile_detailing:"/assets/images/fleet-washing-illustration-v1.webp",
+    mobile_detailing:"/assets/images/fleet-washing-illustration-v1.webp?v=published-20261103",
     garage_door:"https://images.pexels.com/photos/7996765/pexels-photo-7996765.jpeg?auto=compress&cs=tinysrgb&w=900",
   };
 
@@ -126,7 +126,7 @@
     if(!r.ok)throw new Error("Could not load service list");
     const data=await r.json();
     try{
-      const photoResponse=await fetch("/data/service-images.json",{cache:"no-store"});
+      const photoResponse=await fetch("/data/service-images.json?v=published-20261103",{cache:"no-store"});
       if(photoResponse.ok){
         const photos=await photoResponse.json();
         for(const [key,photo] of Object.entries(photos.services||{}))if(photo.src)images[key]=photo.src;

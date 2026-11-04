@@ -6,6 +6,7 @@ still required. This guards only category coverage and usable source syntax.
 """
 import json
 import re
+from urllib.parse import urlsplit
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -15,7 +16,7 @@ segment=finder.split("const images={",1)[1].split("\n  };",1)[0]
 assigned=dict(re.findall(r'^\s*([a-z_]+):"([^"]+)"',segment,re.M))
 wanted={item["service_key"] for item in registry}
 missing=sorted(wanted-set(assigned))
-invalid=sorted(k for k,url in assigned.items() if k in wanted and not (url.startswith("https://") or (url.startswith("/assets/images/") and (ROOT/url.lstrip("/")).is_file())))
+invalid=sorted(k for k,url in assigned.items() if k in wanted and not (url.startswith("https://") or (url.startswith("/assets/images/") and (ROOT/urlsplit(url).path.lstrip("/")).is_file())))
 unused=sorted(set(assigned)-wanted)
 assert not missing, "No dedicated photo for: "+", ".join(missing)
 assert not invalid, "Invalid photo source: "+", ".join(invalid)
@@ -28,4 +29,4 @@ assert {key:value["src"] for key,value in catalog["services"].items()}==assigned
 
 public=set((ROOT/"automation/public-site-files.txt").read_text().splitlines())
 assert "data/service-images.json" in public, "Image catalog omitted from public artifact"
-assert all(v.lstrip("/") in public for v in assigned.values() if v.startswith("/assets/")), "Local image omitted from public artifact"
+assert all(urlsplit(v).path.lstrip("/") in public for v in assigned.values() if v.startswith("/assets/")), "Local image omitted from public artifact"
