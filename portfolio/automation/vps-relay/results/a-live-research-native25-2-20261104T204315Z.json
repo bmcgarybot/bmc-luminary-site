@@ -1,0 +1,21 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-04T20:43:54.786995+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "85701057386e1bd9c5783614e799248b3126fde8",
+  "git_commit_before": "85701057386e1bd9c5783614e799248b3126fde8",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "d98959e3df986a32752e5f6bbe8e2fd38a19bba8",
+  "request_id": "a-live-research-native25-2-20261104T204315Z",
+  "request_sha256": "3a6d1ca5cabe8c63880af060dcb32214e4de311b24458eba4be7d2f0f93830a8",
+  "started_at": "2026-11-04T20:43:54.363145+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"a-live-research-native25-2-20261104T204315Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"e674BIT8AQw7nDeBnFtLOHZfZOZ4zaATBfO9XSgPECU3B+mp7rHiUNac3mqfU79ggBEHEvEnLpnsuZQlY+xu11PUiDs2AwTYza/BLb2PfX9W+oM72xri5TP/dwXTe/iLjVtzN51bt8SFmEHyZgcEA37SVC+cTZSQVYCjd6aAQ7FEBZJk/SaCs1t9/THhNJYfXr59iIfByWtj/45wyfc335KcnvuZa/liz3hInn7kiSpAbe4FUq46nIw/OSJfheIRG+ONUSsfHWJtrBKeI2JzdiYUeyHnUj15tjYrExSbdOWUaxednpw/k5BonmJeNeHCIUSIYCFjLlVlWKUeHXHEQmLvvYnKIhw8NqeDzgAhSHraUMogoF/r6IpWA8O0K3I7bOR/TKv9LUa8/zUU7wuMcYleXOo97qYKWgBIxRtJFAYVkkzmHqHQOs53cxrG718twp0s6tnOnyl+tuIvlDW7fFR8N+qkX2yw8AsFSHYWf+J94C6PJ963rqcBgLpW3uHY\",\"nonce\":\"yzjEaLOgDT+NEg7O\",\"ciphertext\":\"R2YXPrVXP/sp+5tI3A8q/06c93P4dco3CJ/tDvuvSal3Dl5+WRh5pgxCVdeZcfZFyWtF0B1jv+q9Si9qzWD7nr3YQ/iYbjqS16WnPB1QV8OcWMYbTcy1unKpJ80kIKVkBboEufMAFzOIzPF8DqXSXY24+nSXOij1WT9XIR+9eCX0mKE+qvMme4YPry4A0S4IjqVgpiEtaNRXAVf5SZce3T6Z3X8UztxL4cYOFTFTFpBzOv1Sa3gHNrO5u3/cpfJ8wfnxZ+PGxZzZ6xYovV07sC4D0fKyPR8rUEHjzZ4zD91w7knBsHuuYbReirCqev0+d/nWbvsVBUjdCNHisl4hngGgPSphxVoJCXrBwGCZX5caWH2vvtHHkGXBHxzXMjExJ00s/LE9GMQC/iW8pRchQ0/4Y19YAGPkcuWyDVWA+4ofuZGQKUaDp1f6VXrCxrrIT0e6ZKdi2yhKjAzolZ0HoF12Z0Ld/LSS+RhMoIwN7FNYQtg=\"}",
+  "version": 1
+}
