@@ -97,6 +97,7 @@ jobs:
           python3 portfolio/automation/test-channel-scan-state.py
           python3 portfolio/automation/test-channel-worker-integration.py
           python3 portfolio/automation/test-official-fetch-receipt.py
+          python3 portfolio/automation/test-official-postal-policy.py
           python3 portfolio/automation/test-official-domain-recheck.py
           python3 portfolio/automation/test-official-source-policy-recheck.py
           python3 portfolio/automation/test-research-policy.py

@@ -131,6 +131,43 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             with self.subTest(document=document),self.assertRaisesRegex(ValueError,'unsupported_customer_focus'):
                 api.source_focus(document,'pressure_washing')
 
+    def test_pressure_heading_does_not_leak_into_footer_or_across_containers(self):
+        for document in (
+            '<main><div><h2>Commercial Pressure Washing</h2><p>Exterior concrete cleaning.</p></div></main><footer><p>Office hours Monday-Friday.</p></footer>',
+            '<div><h2>Commercial Pressure Washing</h2></div><div><p>Storefronts and offices.</p></div>',
+            '<h2>Commercial Pressure Washing</h2><p>Exterior concrete cleaning.</p><p>Offices and storefronts.</p>',
+            '<h2>Commercial Pressure Washing</h2><p>Office hours Monday-Friday.</p>'):
+            with self.subTest(document=document),self.assertRaisesRegex(ValueError,'unsupported_customer_focus'):
+                api.source_focus(document,'pressure_washing')
+        card='<main><div class="service-card"><h3>Commercial Soft Washing</h3><p>Low-pressure facade and building washing for storefronts, offices, and multi-tenant properties.</p></div></main>'
+        self.assertEqual(api.source_focus(card,'pressure_washing')['category_keys'],['insurance_professional','property_management','retail'])
+
+    def test_pressure_excluded_list_and_explicit_hidden_attributes_reject(self):
+        documents=[
+            '<h2>Commercial Pressure Washing</h2><p>We exclude storefronts and offices from our service.</p>',
+            '<h2>Commercial Pressure Washing</h2><p>We do not serve:</p><ul><li>Storefronts</li><li>Offices</li></ul>']
+        for attrs in ('hidden','inert','aria-hidden="true"','style="display:none"','style="visibility: hidden"','style="display: none !important"'):
+            documents.append(f'<h2>Commercial Pressure Washing</h2><p {attrs}>Storefronts and offices</p>')
+            documents.append(f'<h2>Commercial Pressure Washing</h2><div {attrs}><p>Storefronts and offices</p></div>')
+            documents.append(f'<div {attrs}><h3>Commercial Soft Washing</h3><p>Storefronts and offices</p></div>')
+        for document in documents:
+            with self.subTest(document=document),self.assertRaisesRegex(ValueError,'unsupported_customer_focus'):
+                api.source_focus(document,'pressure_washing')
+
+    def test_pressure_self_contained_actual_canyon_service_list_markup(self):
+        item='<li style="margin: 0.3rem 0;"><a href="/services/commercial-soft-washing"><strong>Commercial Soft Washing</strong></a>, Low-pressure facade and building washing for storefronts, offices, and multi-tenant properties, without the downtime or the damage risk.</li>'
+        focus=api.source_focus('<section><ul>'+item+'</ul></section>','pressure_washing')
+        self.assertEqual(focus['category_keys'],['insurance_professional','property_management','retail'])
+        for document in (
+            '<p>We do not serve:</p><ul>'+item+'</ul>',
+            '<p>We exclude these services:</p><ul>'+item+'</ul>',
+            '<ul hidden>'+item+'</ul>',
+            '<ul>'+item.replace('<li style="margin: 0.3rem 0;">','<li hidden>')+'</ul>',
+            '<ul><li>Commercial Pressure Washing</li><li>Storefronts and offices</li></ul>',
+            '<ul><li>We no longer offer Commercial Soft Washing for storefronts and offices.</li></ul>'):
+            with self.subTest(document=document),self.assertRaisesRegex(ValueError,'unsupported_customer_focus'):
+                api.source_focus(document,'pressure_washing')
+
     def test_legacy_cleaning_sector_defaults_unchanged(self):
         for document,keys in (
             ('<h2>Office Cleaning</h2><p>Healthcare, education, government, industrial manufacturing.</p>',
