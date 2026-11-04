@@ -1,0 +1,43 @@
+{
+  "action": "growth_owner_preview_approve",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-04T20:41:41.213988+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "85701057386e1bd9c5783614e799248b3126fde8",
+  "git_commit_before": "85701057386e1bd9c5783614e799248b3126fde8",
+  "host": "vps-5675821a",
+  "metadata": {
+    "approved_sha": "85701057386e1bd9c5783614e799248b3126fde8",
+    "outreach_gate": {
+      "BUYER_OUTREACH_ENABLED": "false",
+      "GROWTH_OUTREACH_ENABLED": "false",
+      "OUTREACH_ENABLED": "false"
+    },
+    "owner_release_authorization": {
+      "outreach_enabled": false,
+      "request_id": "a-queue-live-3-growth-owner-preview-approve-20261104T203347Z",
+      "sha": "85701057386e1bd9c5783614e799248b3126fde8",
+      "target_count": 9,
+      "wave": "growth-cleaning-1"
+    },
+    "recipient_authorization": {
+      "already_sent": 9,
+      "approved_queued": 0,
+      "copy_held": 0,
+      "history_reset": false,
+      "ok": true,
+      "sent": 0
+    }
+  },
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "85022f89797f428023ff3a2697b8adc626ca8e81",
+  "request_id": "a-queue-live-3-growth-owner-preview-approve-20261104T203347Z",
+  "request_sha256": "d77fb7fcd84e38636c5b3f1af47ff3b662a8edf1d026037b1453b9a18cf3fb08",
+  "started_at": "2026-11-04T20:41:41.191776+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\n  \"ok\": true,\n  \"approved_sha\": \"85701057386e1bd9c5783614e799248b3126fde8\",\n  \"message\": \"Owner preview approved for this exact deployed commit only.\"\n}",
+  "version": 1
+}
