@@ -60,6 +60,29 @@ class Tests(unittest.TestCase):
             for channel in ('html','text'):
                 self.assertIn(price,m[channel]);self.assertIn('https://example.com/stop',m[channel]);self.assertIn('not quote requests',m[channel])
             self.assertIn('A &amp; B',m['html'])
+    def test_scoped25_email_has_no_unavailable_upgrade_promise_and_legacy_stays(self):
+        args=('growth_pack_25','Scoped Contractor','Cottonwood','https://example.test/review','https://example.test/stop')
+        scoped=g.offer_email(*args,upgrade_available=False)
+        legacy=g.offer_email(*args)
+        for channel in ('text','html'):
+            for required in ('25 researched businesses','$149','five free prospects are included','reviewed 25-prospect scope'):
+                self.assertIn(required,scoped[channel])
+            for unavailable in ('100','$350','$499','add 75'):
+                self.assertNotIn(unavailable,scoped[channel])
+            self.assertIn('the upgrade is $350',legacy[channel])
+            self.assertIn('full 100',legacy[channel])
+        # Both actual application email paths must pass the scoped flag.
+        import ast
+        source=ast.parse((Path(__file__).parent/'api/app.py').read_text())
+        for name in ('review_growth_purchase_offer','process_growth_offer_invitations'):
+            function=next(n for n in source.body if isinstance(n,ast.AsyncFunctionDef) and n.name==name)
+            calls=[n for n in ast.walk(function) if isinstance(n,ast.Call) and isinstance(n.func,ast.Attribute) and n.func.attr=='offer_email']
+            self.assertEqual(len(calls),1)
+            flag=next(k.value for k in calls[0].keywords if k.arg=='upgrade_available')
+            expr=ast.Expression(body=flag);ast.fix_missing_locations(expr)
+            self.assertFalse(eval(compile(expr,'scope_flag','eval'),{'payload':{'scoped_profile_signature':'signed'}}))
+            self.assertTrue(eval(compile(expr,'scope_flag','eval'),{'payload':{}}))
+
     def test_reviewed_recipient_packets_are_distinct_and_scope_bound(self):
         import ast,json
         path=Path(__file__).parent/'api'

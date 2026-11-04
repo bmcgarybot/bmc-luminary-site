@@ -3408,6 +3408,15 @@ async def handle_growth_snapshot(conn,p):
     await growth_lock_exposure_allocator(conn)
     existing=await conn.fetchrow("select * from growth_sample_requests where submission_id=$1",submission_id)
     if existing:
+        # A caller-chosen submission ID is an idempotency key, not identity proof.
+        # Verify the authenticated mailbox/company/service before disclosing any
+        # saved prospects, files, scope or recipient-bound request token.
+        requested_source=clean(p.get('source_target_id'))
+        if (clean(existing['email']).lower()!=email_addr
+            or clean(existing['business_name']).casefold()!=business.casefold()
+            or clean(existing['provider_service_key'])!=service_key
+            or (requested_source and requested_source!=clean(existing.get('source_target_id')))):
+            raise HTTPException(409,'This saved sample belongs to another request identity. Use its original invitation or contact BMC.')
         if set(growth_request_territory(existing))!=set(territory):
             raise HTTPException(409,"This sample already has an agreed territory. Contact BMC to change its scope; the saved five will not rotate.")
         payload=existing["sample_payload"]
@@ -3421,7 +3430,7 @@ async def handle_growth_snapshot(conn,p):
         checkout='' if profile else await growth_sample_checkout(conn,email_addr,existing["sample_id"],service_key)
         return {"ok":True,"status":clean(existing["status"]),"sample_id":str(existing["sample_id"]),
           "business_name":existing["business_name"],"research_scope":clean(existing.get("ideal_customer")),
-          "sample":payload,**sample_pdf_response(payload,existing["business_name"],GROWTH_SERVICE_LABELS[existing["provider_service_key"]],growth_request_territory(existing),str(existing["sample_id"]),existing["sample_generated_at"],free_offer_count=25 if profile else 100),**({**public_offer_fields(profile),**scoped_quote_request_fields(ADMIN_KEY,str(existing["sample_id"]),email_addr)} if profile else {}),"checkout_url":checkout,"selected_markets":growth_request_territory(existing),"message":"Your commercial opportunity snapshot is already saved."}
+          "sample":payload,**sample_pdf_response(payload,existing["business_name"],GROWTH_SERVICE_LABELS[existing["provider_service_key"]],growth_request_territory(existing),str(existing["sample_id"]),existing["sample_generated_at"],free_offer_count=25 if profile else 100),**({**public_offer_fields(profile),**scoped_quote_request_fields(ADMIN_KEY,str(existing["sample_id"]),clean(existing['email']).lower())} if profile else {}),"checkout_url":checkout,"selected_markets":growth_request_territory(existing),"message":"Your commercial opportunity snapshot is already saved."}
 
     # A different submission/email must not unlock another free five for the
     # same named contractor. This is anti-abuse only, not account authentication.
@@ -3607,8 +3616,14 @@ async def growth_owner_sample(conn,target,territory,rows):
     if saved and list(saved["selected_markets"])!=list(territory):
         raise HTTPException(409,"This owner preview has a saved territory. A new review version is required to change it.")
     if not saved:
-        chosen=growth_select_representative_sample(rows,target["public_email"])
-        if (target["market"]=="Phoenix" and target["service_key"]=="commercial_cleaning"
+        if profile:
+            by_id={str(row["candidate_id"]):row for row in rows}
+            if any(cid not in by_id for cid in profile['sample_ids']):
+                raise HTTPException(409,'The scoped reviewed five need current qualification checks')
+            chosen=[by_id[cid] for cid in profile['sample_ids']]
+        else:
+            chosen=growth_select_representative_sample(rows,target["public_email"])
+        if (not profile and target["market"]=="Phoenix" and target["service_key"]=="commercial_cleaning"
             and clean(target["public_email"]).lower()=="admin@ec-phoenix.com"):
             # Exact official pages manually reviewed for this recipient, not five rotating registry hits.
             websites=[
@@ -3622,7 +3637,7 @@ async def growth_owner_sample(conn,target,territory,rows):
                 raise HTTPException(409,"The five reviewed Phoenix records have not all cleared the live qualification gate.")
             chosen=[by_url[u] for u in websites]
         packet=globals().get("GROWTH_REVIEW_PACKETS",{}).get(clean(target["public_email"]).lower())
-        if packet and target["market"]=="Phoenix" and target["service_key"]=="commercial_cleaning":
+        if not profile and packet and target["market"]=="Phoenix" and target["service_key"]=="commercial_cleaning":
             if clean(target["source_url"])!=packet["source_url"]:raise HTTPException(409,"Recipient source changed; review required")
             by_url={clean(x["source_url"]):x for x in rows}
             if len(packet["sample_urls"])!=5 or not all(u in by_url for u in packet["sample_urls"]):
@@ -7988,7 +8003,7 @@ async def review_growth_purchase_offer(offer_id:uuid.UUID,x_bmc_admin_key:str|No
         url=urllib.parse.urlsplit(WEBHOOK_URL)._replace(path="",query="",fragment="").geturl()+"/api/growth/offers/"+str(offer_id)+"?"+urllib.parse.urlencode({"token":growth_offers.signed_token(ADMIN_KEY,str(offer_id),offer["email"])})
         unsub=urllib.parse.urlsplit(WEBHOOK_URL)._replace(path="",query="",fragment="").geturl()+"/api/email-preferences?"+urllib.parse.urlencode({"email":offer["email"],"token":email_unsubscribe_token(offer["email"])})
         return {"ok":True,"status":offer["status"],"payload_sha256":offer["payload_sha256"],"payload":payload,
-          "email":growth_offers.offer_email(offer["product_key"],payload["business"],", ".join(payload["territory"]),url,unsub),
+          "email":growth_offers.offer_email(offer["product_key"],payload["business"],", ".join(payload["territory"]),url,unsub,upgrade_available=not bool(payload.get("scoped_profile_signature"))),
           "note":"Private owner review only. This read does not approve or send the offer."}
 
 @app.post("/api/process-growth-offer-invitations")
@@ -8026,7 +8041,7 @@ async def process_growth_offer_invitations(x_bmc_admin_key:str|None=Header(defau
             origin=urllib.parse.urlsplit(WEBHOOK_URL)._replace(path='',query='',fragment='').geturl()
             link=origin+'/api/growth/offers/'+str(offer['offer_id'])+'?'+urllib.parse.urlencode({'token':token})
             unsub=origin+'/api/email-preferences?'+urllib.parse.urlencode({'email':offer['email'],'token':email_unsubscribe_token(offer['email'])})
-            message=growth_offers.offer_email(offer['product_key'],payload['business'],', '.join(payload['territory']),link,unsub)
+            message=growth_offers.offer_email(offer['product_key'],payload['business'],', '.join(payload['territory']),link,unsub,upgrade_available=not bool(payload.get('scoped_profile_signature')))
             ok=await send_mail_once('growth-offer-invite:'+str(offer['offer_id']),offer['email'],message['subject'],message['text'],message['html'])
             if not ok:raise ValueError('Mail submission failed or uncertain; inspect durable delivery record')
             await conn.execute("update growth_purchase_offers set invited_at=now(),updated_at=now() where offer_id=$1",offer['offer_id'])

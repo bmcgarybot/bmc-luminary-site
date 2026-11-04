@@ -98,6 +98,7 @@ jobs:
           python3 portfolio/automation/test-scoped-growth.py
           python3 portfolio/automation/test-scoped-journey-api.py
           python3 portfolio/automation/test-scoped-owner-flow.py
+          python3 portfolio/automation/test-pr70-customer-identity-review.py
           python3 portfolio/automation/test-scoped-quote-api.py
           python3 portfolio/automation/test-scoped-offer-record.py
           python3 portfolio/automation/test-service-outreach-copy.py

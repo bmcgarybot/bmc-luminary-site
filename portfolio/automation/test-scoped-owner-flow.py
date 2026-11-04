@@ -87,6 +87,50 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(query['offer_count'],['25']);self.assertEqual(query['preview'],['1'])
         with self.assertRaises(HTTPError) as caught:await self.claim(preview=False)
         self.assertEqual(caught.exception.status_code,409);self.ns['handle_growth_snapshot'].assert_not_called()
+    async def test_first_scoped_preview_uses_ordered_signed_five_not_reselection(self):
+        self.setup()
+        template=dict(self.saved);self.saved=None;inserted=[]
+        self.ns['growth_sample_public_rows']=lambda rows:json.loads(json.dumps(rows,default=str))
+        async def first_create(sql,*args):
+            if 'growth_outreach_targets' in sql:return self.target
+            if sql.lstrip().startswith('select'):return self.saved
+            self.assertIn('insert into growth_owner_previews',sql)
+            inserted.append(args)
+            self.saved=dict(template,candidate_ids=args[3],sample_payload=json.loads(args[4]))
+            return self.saved
+        self.conn.fetchrow=first_create
+        # Force a different representative selection; scoped path must never call it.
+        chooser=unittest.mock.Mock(return_value=self.rows[5:10])
+        self.ns['growth_select_representative_sample']=chooser
+        # Qualified row order is deliberately unrelated to reviewed order.
+        result=await self.ns['growth_owner_sample'](self.conn,self.target,['Phoenix'],list(reversed(self.rows)))
+        expected=self.target['source_data']['scoped_offer']['sample_ids']
+        self.assertEqual(list(map(str,inserted[0][3])),expected)
+        self.assertEqual([r['business_name'] for r in result['sample']],[r['business_name'] for r in self.rows[:5]])
+        chooser.assert_not_called()
+    async def test_missing_first_scoped_five_fails_before_preview_insert(self):
+        self.setup();self.saved=None;writes=[]
+        async def missing(sql,*args):
+            if sql.lstrip().startswith('select'):return None
+            writes.append(sql);raise AssertionError('must not insert an incomplete frozen sample')
+        self.conn.fetchrow=missing
+        with self.assertRaises(HTTPError) as caught:
+            await self.ns['growth_owner_sample'](self.conn,self.target,['Phoenix'],self.rows[1:])
+        self.assertEqual(caught.exception.status_code,409);self.assertEqual(writes,[])
+    async def test_legacy_first_preview_still_uses_representative_selector(self):
+        self.setup();self.target['source_data']={};template=dict(self.saved);self.saved=None
+        self.ns['growth_sample_public_rows']=lambda rows:json.loads(json.dumps(rows,default=str))
+        async def legacy(sql,*args):
+            if sql.lstrip().startswith('select'):return self.saved
+            self.saved=dict(template,candidate_ids=args[3],sample_payload=json.loads(args[4]));return self.saved
+        self.conn.fetchrow=legacy
+        self.conn.fetchval=AsyncMock(return_value='')
+        chooser=unittest.mock.Mock(return_value=self.rows[5:10]);self.ns['growth_select_representative_sample']=chooser
+        result=await self.ns['growth_owner_sample'](self.conn,self.target,['Phoenix'],self.rows)
+        chooser.assert_called_once_with(self.rows,self.target['public_email'])
+        self.assertEqual([r['business_name'] for r in result['sample']],[r['business_name'] for r in self.rows[5:10]])
+        self.assertNotIn('offer_count',result)
+
     async def test_changed_frozen_five_and_missing_scoped_paid_id_fail(self):
         self.setup();self.saved['candidate_ids'][0]=uuid.uuid4()
         with self.assertRaises(HTTPError):await self.claim()
