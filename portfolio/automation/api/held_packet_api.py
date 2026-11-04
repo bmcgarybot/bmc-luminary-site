@@ -57,6 +57,44 @@ HISTORY_SQL="""select exists(select 1 from outreach_suppressions where lower(ema
  and g.target_id::text=any($2::text[]))"""
 
 
+async def compile_native_packet(conn,candidate,secret,frozen,hold_required,callbacks,pack_count=100):
+    raw=await conn.fetchrow("""select candidate_id,side,market,category_key,category_label,
+        business_name,source_url,public_email,public_phone,snippet,evidence
+        from market_inventory_candidates where candidate_id=$1 and status='discovered'
+        and closed_at is null and evidence->>'researched_by'='vps_primary_site_v1'""",candidate)
+    if not raw: raise ValueError('recipient_unavailable')
+    row=dict(raw)
+    if (str(row['candidate_id']) in frozen or row.get('side')!='vendor'
+        or row.get('category_key') not in ('commercial_cleaning','pressure_washing')
+        or not re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]+',row.get('public_email') or '')
+        or not official_research.auto_evidence_valid(row,secret)):
+        raise ValueError('recipient_gate_failed')
+    history=await conn.fetchval(HISTORY_SQL,row['public_email'],list(frozen))
+    if history is not False: raise ValueError('recipient_history_or_suppression')
+    final,document,digest=await asyncio.wait_for(
+        asyncio.to_thread(official_research.fetch_page,row['source_url']),timeout=25)
+    if (final!=row['source_url'] or official_research.host(final)!=official_research.host(row['source_url'])
+        or len(document.encode('utf-8'))>1_000_000):
+        raise ValueError('source_changed')
+    parsed=official_research.parse_record(row,final,document,digest,secret)
+    if (parsed['public_email'].lower()!=row['public_email'].lower()
+        or not official_research.identity_matches(row['business_name'],parsed['business_name'],row['market'])):
+        raise ValueError('recipient_contact_or_identity_changed')
+    fresh=dict(row,**parsed)
+    if not official_research.auto_evidence_valid(fresh,secret): raise ValueError('fresh_evidence_invalid')
+    scope=dict(source_focus(document),source_url=final,content_sha256=digest,checked_at=parsed['checked_at'],
+               source_signature=parsed['evidence']['vps_verification']['signature'])
+    allowed=set(scope['category_keys'])
+    async def qualify(*args,**kwargs):
+        values=await callbacks['qualify'](*args,**kwargs)
+        return [value for value in values if value.get('category_key') in allowed]
+    async def verified(*args): return True
+    packet=await compile_held_packet(conn,fresh,scope,verify_recipient=verified,pack_count=pack_count,
+        **dict(callbacks,qualify=qualify))
+    if not hold_required(): raise ValueError('owner_hold_changed')
+    return dict(packet,recipient=fresh)
+
+
 def install(app, require_admin, secret, original_ids, hold_required, compiler_callbacks):
     """Callbacks are existing read-only qualifiers/renderers; frozen nine stay out."""
     from fastapi import Header, HTTPException
@@ -78,45 +116,11 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
         try:
             async with app.state.pool.acquire() as conn:
                 async with conn.transaction(readonly=True,isolation='repeatable_read'):
-                    raw=await conn.fetchrow("""select candidate_id,side,market,category_key,category_label,
-                        business_name,source_url,public_email,public_phone,snippet,evidence
-                        from market_inventory_candidates where candidate_id=$1 and status='discovered'
-                        and closed_at is null and evidence->>'researched_by'='vps_primary_site_v1'""",candidate)
-                    if not raw: raise ValueError('recipient_unavailable')
-                    row=dict(raw)
-                    if (str(row['candidate_id']) in frozen or row.get('side')!='vendor'
-                        or row.get('category_key') not in ('commercial_cleaning','pressure_washing')
-                        or not re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]+',row.get('public_email') or '')
-                        or not official_research.auto_evidence_valid(row,secret)):
-                        raise ValueError('recipient_gate_failed')
-                    history=await conn.fetchval(HISTORY_SQL,row['public_email'],list(frozen))
-                    if history is not False: raise ValueError('recipient_history_or_suppression')
-                    final,document,digest=await asyncio.wait_for(
-                        asyncio.to_thread(official_research.fetch_page,row['source_url']),timeout=25)
-                    if (final!=row['source_url'] or official_research.host(final)!=official_research.host(row['source_url'])
-                        or len(document.encode('utf-8'))>1_000_000):
-                        raise ValueError('source_changed')
-                    parsed=official_research.parse_record(row,final,document,digest,secret)
-                    if (parsed['public_email'].lower()!=row['public_email'].lower()
-                        or not official_research.identity_matches(row['business_name'],parsed['business_name'],row['market'])):
-                        raise ValueError('recipient_contact_or_identity_changed')
-                    fresh=dict(row,**parsed)
-                    if not official_research.auto_evidence_valid(fresh,secret): raise ValueError('fresh_evidence_invalid')
-                    scope=dict(source_focus(document),source_url=final,content_sha256=digest,checked_at=parsed['checked_at'],
-                               source_signature=parsed['evidence']['vps_verification']['signature'])
-                    allowed=set(scope['category_keys'])
-                    async def qualify(*args,**kwargs):
-                        values=await callbacks['qualify'](*args,**kwargs)
-                        return [value for value in values if value.get('category_key') in allowed]
-                    async def verified(*args): return True
-                    packet=await compile_held_packet(conn,fresh,scope,verify_recipient=verified,pack_count=pack_count,
-                        **dict(callbacks,qualify=qualify))
-                    if not hold_required(): raise ValueError('owner_hold_changed')
-                    payload=dict(packet,recipient=fresh)
+                    payload=await compile_native_packet(conn,candidate,secret,frozen,hold_required,callbacks,pack_count)
                     payload['artifacts']={str(count):dict(rows=value['rows'],
                         pdf_base64=base64.b64encode(value['pdf']).decode('ascii'),
                         csv_base64=base64.b64encode(value['csv']).decode('ascii'))
-                        for count,value in packet['artifacts'].items()}
+                        for count,value in payload['artifacts'].items()}
                     capsule=seal_export(payload,request_id)
                     if len(json.dumps(capsule,separators=(',',':')).encode())>500_000:
                         raise ValueError('sealed_packet_too_large')
