@@ -205,7 +205,7 @@ async def compile_native_packet(conn,candidate,secret,frozen,hold_required,callb
     reentry=None
     if history is not False:
         from campaign_reentry import approved_reentry
-        try:reentry=await approved_reentry(conn,row,secret)
+        try:reentry=await approved_reentry(conn,row,secret,read_only=True)
         except Exception as exc:raise ValueError('recipient_history_or_suppression') from exc
         if row['public_email'].lower()!=reentry['expected_email'].lower():
             raise ValueError('reentry_fresh_email_changed')
