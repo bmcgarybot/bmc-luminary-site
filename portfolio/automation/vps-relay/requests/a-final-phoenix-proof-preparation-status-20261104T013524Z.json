@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "a-final-phoenix-proof-preparation-status-20261104T013524Z",
+  "action": "preparation_status",
+  "allow_external_actions": false,
+  "created_at": "2026-11-04T01:35:24.170Z",
+  "expires_at": "2026-11-04T02:35:24.170Z",
+  "args": {}
+}
