@@ -623,7 +623,24 @@ def execute(req: dict) -> dict:
         sha=current_sha()
         if not re.fullmatch(r"[0-9a-f]{40}",sha):
             raise RelayError("Cannot approve owner preview because current git SHA is invalid")
-        set_env_values({"GROWTH_OWNER_APPROVED_SHA":sha})
+        changes={"GROWTH_OWNER_APPROVED_SHA":sha}
+        if args:
+            cohort=json.loads((AUTOMATION/"api/growth_phoenix_cohort.json").read_text())
+            env=app_env()
+            configured=sorted(x for x in env.get("GROWTH_OUTREACH_TARGET_IDS","").split(",") if x)
+            if (set(args)!={"release_owner_hold","expected_sha","wave","target_ids"}
+                or args.get("release_owner_hold") is not True or args.get("expected_sha")!=sha
+                or args.get("wave")!=cohort["wave"] or env.get("GROWTH_OUTREACH_WAVE")!=cohort["wave"]
+                or not isinstance(args.get("target_ids"),list)
+                or sorted(args["target_ids"])!=sorted(cohort["target_ids"])
+                or configured!=sorted(cohort["target_ids"])):
+                raise RelayError("Owner release requires current revision and exact configured Phoenix scope")
+            # This records explicit owner authorization only. All send switches
+            # stay OFF; the separate strict launch audit/action still governs send.
+            changes["BMC_OWNER_LAUNCH_HOLD"]="false"
+            metadata["owner_release_authorization"]={"request_id":req["request_id"],"sha":sha,
+                "wave":cohort["wave"],"target_count":len(configured),"outreach_enabled":False}
+        set_env_values(changes)
         metadata["outreach_gate"]=state
         metadata["approved_sha"]=sha
         stdout=json.dumps({"ok":True,"approved_sha":sha,"message":"Owner preview approved for this exact deployed commit only."},indent=2)
