@@ -1,0 +1,21 @@
+{
+  "action": "authorize_historical_reentry",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-04T19:50:51.571692+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "526fab47af1ff571395bfca3b42f4b2391296b77",
+  "git_commit_before": "526fab47af1ff571395bfca3b42f4b2391296b77",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "700a3c69d3067d09587a12a4f5792d2f57065fe2",
+  "request_id": "a-owner-historical-reentry-20261104T195008Z",
+  "request_sha256": "90042e1681cd26378b1d1ca0437fda3b6b8f2930d2aac6e7f63000292da1932c",
+  "started_at": "2026-11-04T19:50:51.503896+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\": \"bmc-owner-research-v1\", \"request_id\": \"a-owner-historical-reentry-20261104T195008Z\", \"key_fingerprint\": \"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\", \"wrapped_key\": \"RuuMiodOKkNmqz79d6Fpz53QyxWdEWIg0ZBYkAYjIegdxlOT9RbYK9+nOzNnk8htBsjmedNXeYY7pYpQSEGd3QmmI2GLJoq5HhBaSIyhJa9m/q6o6SsWy3qDTQtjnjyiZ/cpTWK1pXhP38Il1ue0VHOXYbtQY7gXmDTNy1POt9Fn0FFOODGzZqpYoVDoGKeX7BGcQswTPdX8BW+K0IWpnU81QhgEtVV0Z5eotElnahdE+YDu2W8FHWeTqbsrgMD9BLwpdFysiM9iiSS+3zQVh/ENG5Q+JyUk2cSrwhQy3dNWjMWJPW+YSPJ4MrSMUgsR4f3I1TUFY4SczUKwmXZ/OhucOIyzbPu0gefbznRIdIYgtmWdnwlWBYOJiQhQesFUNyzzH2bT0+59Gn7NJiHAdQf7C5MiEX4Qk1VbH5jdX1i7S1ppDwQbXHkkYSJH8Y36wdfJxX2AV5IYzgzlMma4YVwzwHPiPLxQ0AnCx22hsNHgp4eCcpddlUnnPowaEAqv\", \"nonce\": \"WvkWBljQYiM1rknz\", \"ciphertext\": \"AVr+x7fsIIYI9ZOl7HZzfljq9yfP+9Py65IE88/ZX024AInec/t5AiodplPsdveQByOIr7Qnf+/4JfGMCsM5OTbgKP4kv9uPuaOUVHFW9eoBcs27R/bD7ngBBnSYIiqssIldnYA8bQKNOR7ubhsrGyO+84rdcTTGv/kcF4tY3lpfT5oqxYp219cdh7yUWLUaB9sAr8ySnOIsn3mzDg+rU8N1MGL882fQ2/HzfamKaLcMIpRXDQ67KGHptal6Vf/LXx/poONRMt+g0hEEMrxhFrzQtna4EQQiUDqY0jhBkyqBzbvUQZ4dl+34MUCcNHihYx7JdwTZenJ+s4xN7jZbO27Z3G5NGEHwt9NA/Rbwjl5apYqFzn0IEXm0hzLYWPfR9CgJzab8HyVr/lHZ2QrBaqQjaFRZU9LctM+G5EFNO335Z8UJiL9O/AMEDTxt8Y16p1xheMo/mLxXPQIbCXLR9yg+lXTEAp7dzi4+yyIb81fCysWd0CD18bGlaMytDRf06skT5B+KOMe0Vx5wIQt2JrycZm0eRztWR/Vmm/fOEKAirUVLBPq7mEvx98DPvSmrnwaHNlmznkO8YHy/ULUNTIsjE2VNze6V2mg6hDlZrAOJa5eLJQcvhuSt0KPZNQX/NI3OtM4nQZG+Px6R3wk07TB3L+DyV9uxjCqlLTu9NGgyRoGNL8GJFONQV4AJ0OL2zfFseRyawDSbUEvz\"}",
+  "version": 1
+}
