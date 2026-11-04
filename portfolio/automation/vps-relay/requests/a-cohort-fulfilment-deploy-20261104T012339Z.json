@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "a-cohort-fulfilment-deploy-20261104T012339Z",
+  "action": "deploy_update",
+  "required_ci_sha": "3caa1dc7968ce3a41154b0ed7844961296aeb215",
+  "allow_external_actions": false,
+  "created_at": "2026-11-04T01:23:39.354Z",
+  "expires_at": "2026-11-04T02:23:39.354Z",
+  "args": {}
+}
