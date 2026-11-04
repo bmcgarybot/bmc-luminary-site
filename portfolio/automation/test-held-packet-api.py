@@ -39,7 +39,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         class Pool:
             def acquire(self):return Conn()
         def admin(key):
-            if key!='allowed':raise PermissionError('admin required')
+            if key!='allowed':raise HTTPException(403,'admin required')
         self.app=FastAPI();self.app.state.pool=Pool()
         self.qualify=AsyncMock(return_value=[dict(category_key='insurance_professional'),dict(category_key='retail')])
         callbacks=dict(qualify=self.qualify,select_sample=lambda *a:[],public_rows=lambda v:v,csv_bytes=lambda v:b'',recipient_business_key=str)
@@ -66,12 +66,19 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         aad=f"{export.VERSION}|test-packet-request|{self.pin}".encode()
         payload=json.loads(gzip.decompress(AESGCM(key).decrypt(base64.b64decode(capsule['nonce']),base64.b64decode(capsule['ciphertext']),aad)))
         self.assertFalse(payload['offer_ready']);self.assertEqual(payload['artifacts']['5']['pdf_base64'],'UERG')
-    async def test_auth_and_hold_before_database(self):
+    async def test_auth_still403_before_database_but_business_on_allows_readonly_inspection(self):
         self.setup()
-        with self.assertRaises(PermissionError):await self.endpoint('test-packet-request',str(self.row['candidate_id']),'bad')
+        with self.assertRaises(HTTPException) as denied:await self.endpoint('test-packet-request',str(self.row['candidate_id']),'bad')
+        self.assertEqual(denied.exception.status_code,403);self.assertEqual(self.calls,[])
         self.hold=False
-        with self.assertRaises(HTTPException):await self.run_endpoint()
-        self.assertEqual(self.calls,[])
+        with patch.object(api,'seal_export',side_effect=lambda payload,request_id:json.loads(json.dumps(payload,default=str))):payload=await self.run_endpoint()
+        self.assertEqual(self.calls[0],dict(readonly=True,isolation='repeatable_read'))
+        self.assertFalse(payload['outreach_held']);self.assertTrue(payload['administrative_read_only']);self.assertTrue(payload['private_not_for_dispatch']);self.assertFalse(payload['offer_ready'])
+        self.assertTrue(all(sql.lstrip().startswith('select') for sql in self.calls if isinstance(sql,str)))
+    async def test_even_held_admin_inspection_is_never_a_dispatch_packet(self):
+        self.setup()
+        with patch.object(api,'seal_export',side_effect=lambda payload,request_id:json.loads(json.dumps(payload,default=str))):payload=await self.run_endpoint()
+        self.assertTrue(payload['outreach_held']);self.assertTrue(payload['administrative_read_only']);self.assertTrue(payload['private_not_for_dispatch'])
     async def test_forged_and_prior_history_fail_before_fetch(self):
         for forged in (False,True):
             self.setup()
@@ -119,7 +126,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         with patch.object(api,'seal_export',return_value={'ciphertext':'x'*500001}):
             with self.assertRaises(HTTPException):await self.run_endpoint()
     async def test_failure_reason_is_encrypted_and_arbitrary_error_text_is_not_exported(self):
-        self.setup()
+        self.setup();self.hold=False
         async def failure(*args,**kwargs):raise ValueError('Qualified sample reserve is incomplete')
         async def request():
             with patch.object(api.official_research,'fetch_page_receipt',return_value=self.receipt()),patch.object(api,'compile_held_packet',side_effect=failure),patch.object(Path,'read_bytes',return_value=self.pem),patch.object(export,'PINNED_FINGERPRINT',self.pin):
@@ -130,7 +137,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         aad=f"{export.VERSION}|test-packet-request|{self.pin}".encode()
         payload=json.loads(gzip.decompress(AESGCM(key).decrypt(base64.b64decode(capsule['nonce']),base64.b64decode(capsule['ciphertext']),aad)))
         self.assertEqual(payload['gate_reason'],'Qualified sample reserve is incomplete')
-        self.assertFalse(payload['offer_ready'])
+        self.assertFalse(payload['offer_ready']);self.assertFalse(payload['outreach_held']);self.assertTrue(payload['administrative_read_only']);self.assertTrue(payload['private_not_for_dispatch'])
         async def failure(*args,**kwargs):raise ValueError('PRIVATE SQL OR CONTACT DETAILS')
         capsule=await request()
         self.assertNotIn('PRIVATE SQL',json.dumps(capsule))
@@ -236,9 +243,22 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             await self.run_endpoint()
             focus.assert_called_once_with(self.document,'commercial_cleaning')
 
-    def test_history_query_does_not_exclude_optout_or_unsent_rows(self):
+    async def test_original_nine_native_uuid_and_inventory_target_freeze(self):
+        for prefixed in (False,True):
+            self.setup();identity=('inventory:' if prefixed else '')+str(self.row['candidate_id'])
+            with patch.object(api.official_research,'fetch_page_receipt') as fetch:
+                with self.assertRaisesRegex(ValueError,'recipient_gate_failed'):
+                    await api.compile_native_packet(self.app.state.pool.acquire(),self.row['candidate_id'],'secret',frozenset({identity}),lambda:True,{})
+                fetch.assert_not_called()
+
+    def test_history_query_protects_actual_contact_while_allowing_clean_unsent_queue(self):
         for table in ('outreach_suppressions','growth_outreach_targets','vendors','buyers'):
             self.assertIn(table,api.HISTORY_SQL)
-        self.assertNotIn('sent_at',api.HISTORY_SQL);self.assertNotIn('opt_out=false',api.HISTORY_SQL)
+        # Only demonstrably never-contacted queue rows may be ignored. Any
+        # sent/replied/opted-out/durable-send evidence remains protected.
+        for predicate in ("o.sent_at is null","o.replied_at is null","coalesce(o.reply_type,'')=''","o.opt_out is false",'mail_delivery_attempts',"event_type='outreach_sent'",'growth_prospect_exposures','growth_sample_requests','orders','outreach_suppressions'):
+            self.assertIn(predicate,api.HISTORY_SQL)
+        self.assertIn('where not (',api.HISTORY_SQL)
+        self.assertNotIn('opt_out=false',api.HISTORY_SQL)
 
 if __name__=='__main__':unittest.main()

@@ -44,16 +44,31 @@ ENGAGEMENT_SQL="""select
 ATTEMPT_SQL="""select exists(select 1 from mail_delivery_attempts where
  delivery_key=any($1::text[]) and status in ('attempting','uncertain'))"""
 
-class ReentryHeld(ValueError):pass
+INERT_QUEUE_HISTORY_SQL="""select
+ exists(select 1 from mail_delivery_attempts where position(':'||$1::text||':' in lower(delivery_key))>0)
+ or exists(select 1 from events where event_type='outreach_sent' and entity_id=$2)"""
+
+class ReentryHeld(ValueError):
+    def __init__(self,reason,diagnostics=None):
+        super().__init__(reason);self.diagnostics=diagnostics or {}
+
+def blocked_row(row):
+    return {'outreach_id':str(row['outreach_id']),
+        **{key:row.get(key) for key in ('entity_type','campaign','status','owner_review_required')},
+        'sent_at':iso(row['sent_at']) if row.get('sent_at') else None,
+        'historical_review_recorded_at':iso(row['historical_review_recorded_at']) if row.get('historical_review_recorded_at') else None}
 
 def canonical(value):return json.dumps(value,sort_keys=True,separators=(',',':'),default=str)
 def mac(value,secret):
     if not secret:raise ReentryHeld('reentry_signing_unavailable')
     return hmac.new(secret.encode(),('bmc-historical-growth-reentry-v1|'+canonical(value)).encode(),hashlib.sha256).hexdigest()
 def data_for(target):
-    data=target.get('source_data') or {}
-    if isinstance(data,str):data=json.loads(data)
-    if not isinstance(data,dict):raise ReentryHeld('target_metadata_invalid')
+    data=target.get('source_data')
+    if isinstance(data,str):
+        try:data=json.loads(data)
+        except (ValueError,TypeError):pass
+    if data is None:return {}
+    if not isinstance(data,dict):return {'legacy_source_data':copy.deepcopy(data)}
     return copy.deepcopy(data)
 def iso(value):return value.isoformat() if isinstance(value,datetime) else str(value)
 def when(value):
@@ -110,7 +125,7 @@ async def locked_target(conn,recipient,*,read_only=False):
     if target.get('status') in ('suppressed','bad_fit','replied','sample_requested','converted'):raise ReentryHeld('recipient_engagement_or_hold')
     return target
 
-async def live_state(conn,target,batch,allowed_new=None,*,read_only=False):
+async def live_state(conn,target,batch,allowed_new=None,*,read_only=False,_inert_rows=None):
     tid=str(target['target_id']);email=target['public_email'].strip().lower()
     if tid not in batch:raise ReentryHeld('not_initial_historical_batch')
     rows=[dict(r) for r in await conn.fetch(RELATED_SQL.replace(' for update of o','') if read_only else RELATED_SQL,tid,email)]
@@ -118,16 +133,25 @@ async def live_state(conn,target,batch,allowed_new=None,*,read_only=False):
     for row in rows:
         oid=str(row['outreach_id'])
         if row.get('opt_out') or row.get('replied_at') or row.get('reply_type') or row.get('status') in ('replied','suppressed','sample_requested','converted'):
-            raise ReentryHeld('response_or_optout_history')
+            raise ReentryHeld('response_or_optout_history',{'blocked_outreach':blocked_row(row)})
         if oid==allowed_new:
             if (row.get('entity_type')!='growth_customer' or row.get('campaign')!='growth_sales'
                 or str(row.get('entity_id'))!=tid or row.get('status')!='queued'
                 or row.get('sequence_step')!=0 or row.get('sent_at') is not None):raise ReentryHeld('new_reentry_outreach_not_fresh')
             new.append(row);continue
+        if row.get('status') in ('queued','superseded') and row.get('sent_at') is None:
+            # A seed queue is inventory, unless durable delivery evidence exists.
+            try:queue_id=str(uuid.UUID(oid))
+            except (ValueError,TypeError):raise ReentryHeld('invalid_outreach_uuid')
+            from recipient_history import inert_outreach
+            if await inert_outreach(conn,row,statuses=('queued','superseded'),authorized_historical_before=CUTOFF.isoformat()):
+                if _inert_rows is not None:_inert_rows.append(oid)
+                continue
+            raise ReentryHeld('queued_outreach_delivery_evidence',{'blocked_outreach':blocked_row(row)})
         if (row.get('entity_type')!='growth_customer' or row.get('campaign')!='growth_sales'
             or str(row.get('entity_id')) not in batch or row.get('sent_at') is None
             or when(row['sent_at'])>=CUTOFF or row.get('historical_review_recorded_at') is None
-            or row.get('owner_review_required') is not True):raise ReentryHeld('nonhistorical_or_changed_outreach')
+            or row.get('owner_review_required') is not True):raise ReentryHeld('nonhistorical_or_changed_outreach',{'blocked_outreach':blocked_row(row)})
         old.append(row)
     if not old or (allowed_new and len(new)!=1):raise ReentryHeld('historical_or_new_outreach_missing')
     if await conn.fetchval(ENGAGEMENT_SQL,tid,email) is not False:raise ReentryHeld('current_response_optout_customer_or_provider_engagement')
@@ -164,9 +188,10 @@ async def approved_reentry(conn,recipient,secret,consume=False,*,read_only=False
         return await consume_reentry(conn,recipient,secret,consume)
     target=await locked_target(conn,recipient,read_only=read_only);token=token_valid(target,secret)
     if token['consumed_outreach_id'] is not None:raise ReentryHeld('reentry_already_consumed')
-    state=await live_state(conn,target,await members(conn),read_only=read_only)
+    inert_ids=[]
+    state=await live_state(conn,target,await members(conn),read_only=read_only,_inert_rows=inert_ids)
     if any(token[k]!=state[k] for k in state):raise ReentryHeld('historical_proof_changed')
-    return {'target':target,'token':token,'expected_email':token['email'],'require_fresh_email_match':True,'preparation_only':True,'outreach_sent':0}
+    return {'target':target,'token':token,'expected_email':token['email'],'require_fresh_email_match':True,'preparation_only':True,'inert_outreach_ids':inert_ids,'outreach_sent':0}
 
 async def consume_reentry(conn,recipient,secret,new_outreach_id):
     """Bind exactly one fresh queued row, within caller's insertion transaction."""
@@ -234,7 +259,7 @@ def install(app,require_admin,secret):
                     resolved={hashlib.sha256(str(r['target_id']).encode('utf-8')).hexdigest():str(r['target_id']) for r in rows}
                     if len(rows)!=len(ids) or set(resolved)!=set(ids):raise ReentryHeld('exact_target_hashes_not_found')
         except ReentryHeld as exc:
-            return sealed({'status':'historical_reentry_held','request_id':request_id,'gate_reason':str(exc),'outreach_sent':0,'history_reset':False})
+            return sealed({'status':'historical_reentry_held','request_id':request_id,'gate_reason':str(exc),'diagnostics':exc.diagnostics,'outreach_sent':0,'history_reset':False})
         except Exception:
             return sealed({'status':'historical_reentry_held','request_id':request_id,'gate_reason':'reentry_audit_unavailable','outreach_sent':0,'history_reset':False})
         results=[]
@@ -249,7 +274,7 @@ def install(app,require_admin,secret):
                             'outreach_sent':0,'history_reset':False,'provider_accepted':False})
                 results.append(item)
             except ReentryHeld as exc:
-                results.append({'status':'held','target_hash':key,'gate_reason':str(exc)})
+                results.append({'status':'held','target_hash':key,'gate_reason':str(exc),'diagnostics':exc.diagnostics})
             except Exception:
                 results.append({'status':'held','target_hash':key,'gate_reason':'reentry_audit_unavailable'})
         authorized=sum(item['status']=='authorized' for item in results)

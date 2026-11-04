@@ -79,10 +79,30 @@ async def main():
         # Owner explicitly permits one NEW campaign despite old uncertain SMTP.
         # Keep that old claim permanently unchanged throughout this test.
         await conn.execute("update mail_delivery_attempts set status='uncertain' where delivery_key=$1",'growth-outreach:'+str(old_ids[0])+':1')
+        # An unsent seed vendor queue is not contact history; preserve it verbatim.
+        seed_vendor='ci-inert-vendor-'+tag;seed_queue=uuid.uuid4()
+        email0=await conn.fetchval('select public_email from growth_outreach_targets where target_id=$1',targets[0])
+        await conn.execute("insert into vendors(vendor_id,business_name,public_email,status) values($1,'Synthetic Seed',$2,'prospect')",seed_vendor,email0)
+        await conn.execute("insert into outreach(outreach_id,entity_type,entity_id,campaign,status,sent_at,opt_out) values($1,'vendor',$2,'vendor_recruitment','queued',null,false)",seed_queue,seed_vendor)
+        await conn.execute('update growth_outreach_targets set source_data=$2::jsonb where target_id=$1',targets[0],json.dumps(['legacy','metadata']))
+        inert_before=await rows_json('outreach','where outreach_id=$1',seed_queue)
+        # A later plan sharing an old contacted target is still distinct from
+        # its old sent UUID. Explicit historical grant may supersede this plan.
+        historical_plan=uuid.uuid4()
+        await conn.execute("""insert into outreach(outreach_id,entity_type,entity_id,campaign,wave,status,sequence_step,
+          sent_at,opt_out,owner_review_required,created_at,subject,body) values($1,'growth_customer',$2,'growth_sales',
+          'ci-inert-old-plan','queued',1,null,false,true,$3,'Historical planned subject','Historical planned body')""",
+          historical_plan,targets[0],reentry.CUTOFF-timedelta(days=2))
+        first_email=await conn.fetchval('select public_email from growth_outreach_targets where target_id=$1',targets[0])
+        await conn.execute("""insert into events(occurred_at,entity_type,entity_id,event_type,payload)
+          values($1,'growth_customer',$2,'outreach_sent',$3::jsonb)""",reentry.CUTOFF-timedelta(days=1),targets[0],
+          json.dumps({'campaign':'growth_sales','email':first_email,'step':1}))
         assert await reentry.members(conn)==set(targets)
         sent_before=await rows_json('outreach','where outreach_id=any($1::uuid[])',old_ids)
         claims_before=await rows_json('mail_delivery_attempts');five_before=await rows_json('growth_owner_previews')
         async with conn.transaction():authorized=await reentry.authorize(conn,targets[0],SECRET,'ci-reentry-authorize-'+tag)
+        assert json.loads((await target(targets[0]))['source_data'])['legacy_source_data']==['legacy','metadata']
+        assert await rows_json('outreach','where outreach_id=$1',seed_queue)==inert_before
         token=authorized['token'];unsigned=dict(token);unsigned.pop('signature')
         assert token['signature']==reentry.mac(unsigned,SECRET)
         assert token['old_outreach_ids']==[str(old_ids[0])]
@@ -98,7 +118,9 @@ async def main():
         new=await conn.fetchrow('select * from outreach where outreach_id=$1',new_id)
         assert new['status']=='queued' and new['sequence_step']==0 and new['sent_at'] is None
         assert new['wave']==WAVES['commercial_cleaning'] and new['owner_review_required'] is False
-        assert await conn.fetchval('select count(*) from outreach')==8
+        assert await conn.fetchval("select count(*) from outreach where entity_type='growth_customer' and status<>'superseded'")==8
+        assert await conn.fetchval('select status from outreach where outreach_id=$1',historical_plan)=='superseded'
+        assert new_id!=historical_plan
         before_retry=await rows_json('outreach')
         async with conn.transaction():again=await register_target(conn,await target(targets[0]),SECRET,'ci-reentry-retry-'+tag,WAVES,message,lambda:True)
         assert again['already_registered'] and not again['registered']
@@ -113,6 +135,20 @@ async def main():
                 except reentry.ReentryHeld as exc:assert reason in str(exc),str(exc)
                 else:raise AssertionError('Unauthorized historical re-entry accepted: '+reason)
             finally:await tx.rollback()
+        async def attempted_seed():
+            email=await conn.fetchval('select public_email from growth_outreach_targets where target_id=$1',targets[1])
+            vid='ci-attempted-seed-'+tag;oid=uuid.uuid4()
+            await conn.execute("insert into vendors(vendor_id,business_name,public_email,status) values($1,'Synthetic Seed',$2,'prospect')",vid,email)
+            await conn.execute("insert into outreach(outreach_id,entity_type,entity_id,campaign,status,sent_at,opt_out) values($1,'vendor',$2,'vendor_recruitment','queued',null,false)",oid,vid)
+            await conn.execute("insert into mail_delivery_attempts(delivery_key,payload_sha256,status) values($1,$2,'submitted')",'vendor-outreach:'+str(oid)+':1','c'*64)
+        await rejected(targets[1],attempted_seed,'queued_outreach_delivery_evidence')
+        async def sent_event_seed():
+            email=await conn.fetchval('select public_email from growth_outreach_targets where target_id=$1',targets[1])
+            vid='ci-event-seed-'+tag
+            await conn.execute("insert into vendors(vendor_id,business_name,public_email,status) values($1,'Synthetic Seed',$2,'prospect')",vid,email)
+            await conn.execute("insert into outreach(entity_type,entity_id,campaign,status,sent_at,opt_out) values('vendor',$1,'vendor_recruitment','queued',null,false)",vid)
+            await conn.execute("insert into events(entity_type,entity_id,event_type,payload) values('vendor',$1,'outreach_sent','{}')",vid)
+        await rejected(targets[1],sent_event_seed,'queued_outreach_delivery_evidence')
         async def optout():await conn.execute('update outreach set opt_out=true where outreach_id=$1',old_ids[1])
         await rejected(targets[1],optout,'response_or_optout')
         async def suppression():
@@ -180,8 +216,70 @@ async def main():
         await rejected(targets[4],bad_company,'response_or_optout')
         assert await conn.fetchval("select source_data->'historical_reentry' from growth_outreach_targets where target_id=$1",targets[3])==good_before
         assert await rows_json('outreach','where outreach_id=any($1::uuid[])',old_ids)==sent_before
+        assert await rows_json('outreach','where outreach_id=$1',seed_queue)==inert_before
         assert await rows_json('mail_delivery_attempts')==claims_before
         assert await rows_json('growth_owner_previews')==five_before
+        # Independent untouched Growth queues: adopt one UUID, supersede other
+        # plans, keep their original metadata in events, retry without changes.
+        adoption=conn.transaction();await adoption.start()
+        try:
+            cid=uuid.uuid4();tid='inventory:'+str(cid);name='Synthetic Queue Adoption '+tag
+            email='queue-'+tag+'@example.test';url='https://fixture.example.test/queue/'+tag
+            recipient={'candidate_id':str(cid),'side':'vendor','market':'Phoenix','category_key':'commercial_cleaning',
+                'category_label':'Commercial cleaning','business_name':name}
+            entity={'@type':'CleaningService','name':name,'url':url,'description':'Commercial cleaning and office cleaning',
+                'telephone':'6025550111','email':email,'address':{'streetAddress':'200 Main Street',
+                    'addressLocality':'Phoenix','addressRegion':'AZ','postalCode':'85004'}}
+            recipient.update(parse_record(recipient,url,'<script type="application/ld+json">'+json.dumps(entity)+'</script>','c'*64,SECRET))
+            ids=[str(uuid.uuid4()) for _ in range(25)];sample=[{'business_name':'Synthetic Queue Office '+str(j)} for j in range(25)]
+            packet={'status':'held_packet_compiled','pack_count':25,'outreach_held':True,'offer_ready':False,'recipient':recipient,
+                'binding':{'scope':{'source_url':url,'category_keys':['insurance_professional'],'observed_sector_phrases':['office cleaning']},'candidate_ids':ids},
+                'artifacts':{5:{'rows':sample[:5]},25:{'rows':sample}}}
+            profile=prepare_profile(packet,tid,SECRET);profile.pop('signature');profile['state']='approved';profile['signature']=signature(profile,SECRET)
+            await conn.execute("""insert into growth_outreach_targets(target_id,business_name,public_email,source_url,market,
+              service_key,status,source_data) values($1,$2,$3,$4,'Phoenix','commercial_cleaning','contactable',$5::jsonb)""",
+              tid,name,email,url,json.dumps({'prior_queue_metadata':'retained','scoped_offer':profile}))
+            planned=[uuid.uuid4() for _ in range(3)]
+            for j,oid in enumerate(planned):
+                await conn.execute("""insert into outreach(outreach_id,entity_type,entity_id,campaign,wave,status,sequence_step,
+                  sent_at,replied_at,opt_out,owner_review_required,subject,body,created_at,next_followup_at)
+                  values($1,'growth_customer',$2,'growth_sales','ci-old-inert-queue',$3,1,null,null,false,true,
+                  'Prior planned subject','Prior planned body',now()-$4::int*interval '1 day',now()+interval '10 days')""",
+                  oid,tid,'superseded' if j==0 else 'queued',2 if j==0 else 1)
+            for evidence_kind in ('attempt','send_event'):
+                held_tx=conn.transaction();await held_tx.start()
+                try:
+                    if evidence_kind=='attempt':
+                        await conn.execute("insert into mail_delivery_attempts(delivery_key,payload_sha256,status) values($1,$2,'submitted')",'growth-outreach:'+str(planned[1])+':1','d'*64)
+                    else:
+                        await conn.execute("insert into events(entity_type,entity_id,event_type,payload) values('growth_customer',$1,'outreach_sent','{}')",tid)
+                    try:await register_target(conn,await target(tid),SECRET,'ci-adopt-held-'+tag,WAVES,message,lambda:True)
+                    except ValueError as exc:assert 'historical_contact' in str(exc),str(exc)
+                    else:raise AssertionError('Attempted/sent queue adopted as uncontacted')
+                finally:await held_tx.rollback()
+            async with conn.transaction():registered=await register_target(conn,await target(tid),SECRET,'ci-adopt-queue-'+tag,WAVES,message,lambda:True)
+            assert registered['registered'] and not registered['already_registered']
+            saved=await conn.fetch('select * from outreach where entity_id=$1 order by outreach_id',tid)
+            assert len(saved)==3 and {r['outreach_id'] for r in saved}==set(planned)
+            active=[r for r in saved if r['status']=='queued'];assert len(active)==1
+            assert active[0]['wave']==WAVES['commercial_cleaning'] and active[0]['sequence_step']==0
+            assert active[0]['owner_review_required'] is False and active[0]['sent_at'] is None
+            assert sum(r['status']=='superseded' for r in saved)==2
+            assert await conn.fetchval("select count(*) from mail_delivery_attempts where delivery_key like '%'||$1||'%'",str(active[0]['outreach_id']))==0
+            archive=await conn.fetch("select event_type,payload from events where entity_id=$1 and event_type like 'scoped_queued_plan_%'",tid)
+            assert len(archive)==2
+            archived=[json.loads(r['payload'])['prior_planned_row'] for r in archive]
+            assert {r['outreach_id'] for r in archived}==set(str(x) for x in planned[1:])
+            assert all(r['body']=='Prior planned body' for r in archived)
+            unchanged=await rows_json('outreach','where entity_id=$1',tid)
+            dispatch=await conn.fetchval('select source_data::text from growth_outreach_targets where target_id=$1',tid)
+            events_count=await conn.fetchval('select count(*) from events where entity_id=$1',tid)
+            async with conn.transaction():retry=await register_target(conn,await target(tid),SECRET,'ci-adopt-retry-'+tag,WAVES,message,lambda:True)
+            assert retry['already_registered'] and not retry['registered']
+            assert await rows_json('outreach','where entity_id=$1',tid)==unchanged
+            assert await conn.fetchval('select source_data::text from growth_outreach_targets where target_id=$1',tid)==dispatch
+            assert await conn.fetchval('select count(*) from events where entity_id=$1',tid)==events_count
+        finally:await adoption.rollback()
         # One outer rollback removes all seven and every appended test row/event.
         await outer.rollback();outer=None
         for table in TABLES:assert await conn.fetchval('select count(*) from '+table)==0,table

@@ -23,34 +23,31 @@ SELECT_SQL='select * from market_inventory_candidates where candidate_id=$1'
 # All names/columns below are from the actual migrated schema; no inferred
 # candidate_id columns on recipient sample/order tables. Bare prospect/discovered
 # inventory is not interaction; other states and all submitted leads remain protected.
-HISTORY_SQL="""select
+from recipient_history import inert_outreach_sql,protected_target_sql
+
+HISTORY_SQL=f"""select
  exists(select 1 from outreach_suppressions where lower(email)=any($3::text[]))
- or exists(select 1 from growth_outreach_targets where target_id=any($2::text[])
+ or exists(select 1 from growth_outreach_targets g where (target_id=any($2::text[])
    or lower(public_email)=any($3::text[]) or source_data->>'candidate_id'=$1::text
    or source_data->'scoped_offer'->>'candidate_id'=$1::text
-   or (lower(business_name)=lower($4) and market=$5))
- or exists(select 1 from growth_owner_previews where target_id=any($2::text[])
-   or $1::uuid=any(candidate_ids) or (lower(business_name)=lower($4) and $5=any(selected_markets)))
+   or (lower(business_name)=lower($4) and market=$5)) and {protected_target_sql('g')})
  or exists(select 1 from outreach o
    left join growth_outreach_targets g on o.entity_type='growth_customer' and o.entity_id=g.target_id
    left join vendors v on o.entity_type='vendor' and o.entity_id=v.vendor_id
    left join buyers b on o.entity_type='buyer' and o.entity_id=b.buyer_id
-   where o.entity_id=any($2::text[]) or lower(g.public_email)=any($3::text[])
-     or lower(v.public_email)=any($3::text[]) or lower(b.public_email)=any($3::text[]))
+   where not {inert_outreach_sql('o')} and (o.entity_id=any($2::text[]) or lower(g.public_email)=any($3::text[])
+     or lower(v.public_email)=any($3::text[]) or lower(b.public_email)=any($3::text[])))
  or exists(select 1 from vendors where
    (vendor_id=any($2::text[]) or lower(public_email)=any($3::text[]) or lower(business_name)=lower($4))
-   and coalesce(status,'') not in ('prospect','discovered'))
+   and coalesce(status,'') not in ('prospect','discovered','research'))
  or exists(select 1 from buyers where
    (buyer_id=any($2::text[]) or lower(public_email)=any($3::text[]))
-   and coalesce(status,'') not in ('prospect','discovered'))
+   and coalesce(status,'') not in ('prospect','discovered','research'))
  or exists(select 1 from lead_matches m join vendors v on v.vendor_id=m.vendor_id
    where v.vendor_id=any($2::text[]) or lower(v.public_email)=any($3::text[]) or lower(v.business_name)=lower($4))
  or exists(select 1 from growth_sample_requests where source_target_id=any($2::text[])
    or lower(email)=any($3::text[]) or (lower(business_name)=lower($4) and market=$5))
- or exists(select 1 from growth_sample_prospects where candidate_id=$1::uuid or lower(public_email)=any($3::text[]))
- or exists(select 1 from growth_order_prospects where candidate_id=$1::uuid or lower(public_email)=any($3::text[]))
- or exists(select 1 from growth_prospect_exposures where candidate_id=$1::uuid or lower(recipient_key)=any($3::text[])
-   or contact_key=any($6::text[]))
+ or exists(select 1 from growth_prospect_exposures where (lower(recipient_key)=any($3::text[]) or 'email:'||lower(recipient_key)=any($6::text[])) and status in ('reserved','delivered'))
  or exists(select 1 from growth_email_verifications where lower(email)=any($3::text[]))
  or exists(select 1 from orders where lower(customer_email)=any($3::text[]))
  or exists(select 1 from growth_purchase_offers where lower(email)=any($3::text[]))

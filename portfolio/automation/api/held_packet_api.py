@@ -164,14 +164,27 @@ def source_focus(document,service_key=None):
                 category_keys=sorted(categories), observed_sector_phrases=excerpts)
 
 
-HISTORY_SQL="""select exists(select 1 from outreach_suppressions where lower(email)=lower($1))
+from recipient_history import inert_outreach_sql,protected_target_sql
+
+HISTORY_SQL=f"""select exists(select 1 from outreach_suppressions where lower(email)=lower($1))
  or exists(select 1 from outreach o
  left join growth_outreach_targets g on o.entity_type='growth_customer' and o.entity_id=g.target_id
  left join vendors v on o.entity_type='vendor' and o.entity_id=v.vendor_id
  left join buyers b on o.entity_type='buyer' and o.entity_id=b.buyer_id
- where lower(g.public_email)=lower($1) or lower(v.public_email)=lower($1) or lower(b.public_email)=lower($1))
+ where not {inert_outreach_sql('o')} and (lower(g.public_email)=lower($1) or lower(v.public_email)=lower($1) or lower(b.public_email)=lower($1)))
  or exists(select 1 from growth_outreach_targets g where lower(g.public_email)=lower($1)
- and g.target_id::text=any($2::text[]))"""
+ and (g.target_id::text=any($2::text[]) or {protected_target_sql('g')}))
+ or exists(select 1 from vendors v where lower(v.public_email)=lower($1)
+   and coalesce(v.status,'') not in ('prospect','discovered','research'))
+ or exists(select 1 from buyers b where lower(b.public_email)=lower($1)
+   and coalesce(b.status,'') not in ('prospect','discovered','research'))
+ or exists(select 1 from lead_matches m join vendors v on v.vendor_id=m.vendor_id where lower(v.public_email)=lower($1))
+ or exists(select 1 from growth_sample_requests where lower(email)=lower($1))
+ or exists(select 1 from growth_prospect_exposures where lower(recipient_key)=lower($1) and status in ('reserved','delivered'))
+ or exists(select 1 from orders where lower(customer_email)=lower($1))
+ or exists(select 1 from growth_purchase_offers where lower(email)=lower($1))
+ or exists(select 1 from growth_email_verifications where lower(email)=lower($1))
+ or exists(select 1 from leads where lower(email)=lower($1))"""
 
 
 def same_held_recipient_identity(original,current):
@@ -194,7 +207,7 @@ async def compile_native_packet(conn,candidate,secret,frozen,hold_required,callb
         and closed_at is null and evidence->>'researched_by' in ('vps_primary_site_v1','vps_vendor_published_area_v2')""",candidate)
     if not raw: raise ValueError('recipient_unavailable')
     row=dict(raw)
-    if (str(row['candidate_id']) in frozen or row.get('side')!='vendor'
+    if (str(row['candidate_id']) in frozen or 'inventory:'+str(row['candidate_id']) in frozen or row.get('side')!='vendor'
         or row.get('category_key') not in ('commercial_cleaning','pressure_washing','tree_service','junk_hauling')
         or not re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]+',row.get('public_email') or '')
         or not official_research.auto_evidence_valid(row,secret)):
@@ -280,7 +293,6 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
     @app.post('/api/admin/held-research-packet')
     async def prepare(request_id: str, candidate_id: str, x_bmc_admin_key: str | None=Header(default=None), pack_count: int=100, diagnostics: bool=False):
         require_admin(x_bmc_admin_key)
-        if not hold_required(): raise HTTPException(409,'owner_hold_required')
         if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{5,118}',request_id):
             raise HTTPException(400,'invalid_request_id')
         if pack_count not in (25,100): raise HTTPException(400,'unsupported_pack_count')
@@ -289,7 +301,10 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
         try:
             async with app.state.pool.acquire() as conn:
                 async with conn.transaction(readonly=True,isolation='repeatable_read'):
-                    payload=await compile_native_packet(conn,candidate,secret,frozen,hold_required,callbacks,pack_count)
+                    payload=await compile_native_packet(conn,candidate,secret,frozen,lambda:True,callbacks,pack_count)
+                    # Administrative inspection is never a dispatch/staging packet,
+                    # even while the real business launch hold is active.
+                    payload.update(outreach_held=bool(hold_required()),administrative_read_only=True,private_not_for_dispatch=True)
                     payload['artifacts']={str(count):dict(rows=value['rows'],
                         pdf_base64=base64.b64encode(value['pdf']).decode('ascii'),
                         csv_base64=base64.b64encode(value['csv']).decode('ascii'))
@@ -311,7 +326,8 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                 if isinstance(exc,asyncio.TimeoutError): reason='source_timeout'
                 elif reason not in known and not re.fullmatch(r'http_[0-9]{3}',reason):reason='preparation_gate_failed'
                 return seal_export(dict(status='held_packet_requires_review',offer_ready=False,
-                    outreach_held=True,candidate_id=str(candidate),pack_count=pack_count,gate_reason=reason,
+                    outreach_held=bool(hold_required()),administrative_read_only=True,private_not_for_dispatch=True,
+                    candidate_id=str(candidate),pack_count=pack_count,gate_reason=reason,
                     customer_order_created=False,customer_delivery_recorded=False,
                     qualification_diagnostics=getattr(exc,'qualification_diagnostics',[])),request_id)
             # No contacts, HTML, SQL or compiled rows in error responses.
