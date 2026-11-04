@@ -4,6 +4,8 @@ from datetime import datetime, timedelta, timezone
 from html.parser import HTMLParser
 from urllib.parse import urlsplit, urlunsplit, urljoin
 
+from research_policy import ownership_evidence
+
 VERSION='vps_primary_site_v1'
 BUYER_TYPES={
  'auto_dealers':('AutoDealer',),'auto_fleet':('MovingCompany','AutomotiveBusiness'),
@@ -200,6 +202,7 @@ def parse_record(candidate,url,document,digest,secret):
     facts=next(iter(unique.values()))
     detail=facts['description'] or 'The official page identifies this business as '+candidate['category_label']+'.'
     facts['snippet']=('Official business page confirms '+facts['physical_address']+'. '+detail)[:700]
+    facts['ownership_evidence']=ownership_evidence(document)
     signed=dict(facts,signature=seal(facts,secret))
     return dict(facts,source_domain=host(url),evidence={'researched_by':VERSION,'vps_verification':signed})
 
@@ -263,7 +266,8 @@ def install(app,require_admin,search,markets,secret,enabled=True):
           async with conn.transaction():
             # Raw discoveries stay intact; previously reviewed packets are never rewritten.
             rows=await conn.fetch("""with activity as (select market,max(last_attempt_at) touched from official_research_jobs group by market), ranked as (
-              select c.*,a.touched,row_number() over(partition by c.market,c.side order by c.official_site desc,
+              select c.*,a.touched,row_number() over(partition by c.market,c.side order by
+                case when c.evidence->'vps_verification'->'ownership_evidence'->>'classification'='owner_operated' then 0 else 1 end,c.official_site desc,
                 case when c.category_key in ('commercial_cleaning','pressure_washing','junk_hauling','tree_service','handyman_repairs') then 0 else 1 end,c.updated_at desc,c.candidate_id) pos
               from market_inventory_candidates c left join official_research_jobs j using(candidate_id) left join activity a on a.market=c.market
               where c.market=any($1::text[]) and c.status='discovered' and c.closed_at is null

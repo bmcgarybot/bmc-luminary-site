@@ -1,4 +1,5 @@
-from official_research import auto_evidence_valid, install as install_official_research
+from research_policy import POLICY as RESEARCH_POLICY, contractor_priority, observation_kind, observation_evidence, install as install_research_policy
+from official_research import VENDOR_TERMS, auto_evidence_valid, install as install_official_research
 from growth_pdf import sample_pdf_response, render_sample_pdf, present_prospect_rows, prospect_presentation, format_business_phone
 import growth_offers
 from growth_strategy import build_owner_strategy
@@ -296,11 +297,7 @@ LOCAL_SIGNAL_MARKETS=(
     "Sedona","Flagstaff","Winslow","Kingman","Golden Valley","Bullhead City",
     "Phoenix","Scottsdale","Tucson"
 )
-LOCAL_SIGNAL_SOURCES=(
-    {"key":"nextdoor_public","name":"Publicly indexed Nextdoor","domain":"nextdoor.com"},
-    {"key":"facebook_public","name":"Publicly indexed Facebook","domain":"facebook.com"},
-    {"key":"craigslist_public","name":"Publicly indexed Craigslist","domain":"craigslist.org"}
-)
+LOCAL_SIGNAL_SOURCES=tuple(RESEARCH_POLICY['channels'])
 LOCAL_SIGNAL_GROUPS=(
     {"key":"home_property","label":"Home & property services",
      "terms":'"plumber" OR "electrician" OR "locksmith" OR "HVAC" OR "heating" OR "air conditioning" OR "handyman" OR "garage door" OR "pest control"'},
@@ -518,6 +515,10 @@ def build_local_signal_query(market,domain,terms,variant=0):
         raw_terms=["service"]
     v=max(0,int(variant or 0))
     term=raw_terms[v % len(raw_terms)]
+    if clean(domain)=='whitepages.com':
+        return f'site:whitepages.com/business "{place}" "{term}"'
+    if v % 2:
+        return f'site:{clean(domain)} {place} Arizona "{term}"'
     intent_terms=("looking for","recommend","need a","who can","seeking")
     intent=intent_terms[(v // max(1,len(raw_terms))) % len(intent_terms)]
     return f'site:{clean(domain)} {place} Arizona "{term}" "{intent}"'
@@ -550,12 +551,20 @@ def local_signal_result_relevant(result,market):
     # and genuine buyer/request intent; ads and job posts are not demand leads.
     return bool(result_matches_market(result,market) and local_signal_request_intent(result))
 
-def classify_local_signal_service(text):
+def classify_local_signal_service(text,require_intent=True):
     t=clean(text).lower()
     intent=("looking for","recommend","recommendation","need a ","need an ","anyone know","seeking","looking to hire","who can")
-    if not any(x in t for x in intent):
+    if require_intent and not any(x in t for x in intent):
         return None
+    # Prefer explicit, longer service phrases over broad words such as cleaner.
+    matches=[(len(term),key) for key,terms in globals().get('CONTRACTOR_RESEARCH_TERMS',globals().get('SERVICE_SEARCH_SYNONYMS',{})).items()
+      for term in terms if len(term)>=5 and re.search(r'(?<!\w)'+re.escape(term.lower())+r'(?!\w)',t)]
+    if matches:return max(matches)[1]
     rules=(
+      (("commercial cleaning","janitorial","office cleaning"),"commercial_cleaning"),
+      (("pressure washing","power washing","pressure wash"),"pressure_washing"),
+      (("window cleaning","window washing"),"window_cleaning"),
+      (("carpet cleaning","floor cleaning"),"floor_carpet"),
       (("locksmith","rekey","locked out","lock out","access control"),"locksmith_access"),
       (("electrician","electrical","breaker","outlet","panel"),"electrical_service"),
       (("plumber","plumbing","water leak","pipe leak","backflow"),"backflow_plumbing"),
@@ -1033,6 +1042,13 @@ SERVICE_SEARCH_SYNONYMS={
  "duct_vent":["air duct cleaning","duct cleaning","dryer vent cleaning","commercial duct cleaning","vent cleaning"],
  "floor_carpet":["carpet cleaning","steam clean carpet","tile and grout cleaning","floor stripping","floor waxing","strip and wax","floor care"],
 }
+
+# Search every supported contractor type, including the earlier-scanned markets.
+CONTRACTOR_RESEARCH_TERMS={key:tuple(dict.fromkeys([*SERVICE_SEARCH_SYNONYMS.get(key,()),*terms]))
+    for key,terms in VENDOR_TERMS.items()}
+LOCAL_SIGNAL_GROUPS += ({"key":"additional_configured_services","label":"Other configured contractor types",
+    "terms":' OR '.join('"'+terms[0]+'"' for terms in CONTRACTOR_RESEARCH_TERMS.values() if terms)},)
+
 def classify_curated_service_search(text):
     t=" "+re.sub(r"[^a-z0-9]+"," ",clean(text).lower())+" "
     matches=[]
@@ -3725,7 +3741,8 @@ async def stage_growth_service(conn,service_key,max_targets=25):
           case when verification_status in ('direct_evidence','government_record','credential_corroborated') then 80 else 70 end fit_score,
           jsonb_build_object('candidate_id',candidate_id,'source_tier',source_tier,
             'verification_status',verification_status,'official_site',official_site,
-            'research_note',snippet,'last_verified_at',last_verified_at) source_data
+            'research_note',snippet,'last_verified_at',last_verified_at,
+            'vps_verification',evidence->'vps_verification') source_data
         from market_inventory_candidates
         where side='vendor' and category_key=$1 and status='discovered' and closed_at is null
           and coalesce(public_email,'')<>''
@@ -3734,6 +3751,7 @@ async def stage_growth_service(conn,service_key,max_targets=25):
         order by case when verification_status='direct_evidence' then 0 else 1 end,
           coalesce(last_verified_at,last_seen_at,updated_at) desc nulls last""",service_key)
     candidates.extend(dict(x) for x in inventory)
+    candidates.sort(key=lambda row:contractor_priority(row,ADMIN_KEY))
     pool_cache={}; staged=0; skipped_inventory=0; seen_emails=set()
     wave=GROWTH_WAVES[service_key]
     for row in candidates:
@@ -6280,28 +6298,41 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
     async with app.state.pool.acquire() as conn:
       expired_signals=int(await conn.fetchval("""with expired as (
           update local_demand_signals set status='expired',updated_at=now()
-          where status='discovered' and last_seen_at < now()-interval '14 days'
+          where status='discovered' and created_at < now()-interval '14 days'
+            and coalesce(evidence->>'publication_date_verified','false')<>'true'
           returning 1
         ) select count(*) from expired""") or 0)
 
-      lanes=await conn.fetch("""select source_key,source_name,source_domain,market,group_key,group_label,
-             next_page,scans,results_seen,signals_found,no_progress_scans
-        from local_demand_scan_state
-        order by last_run_at nulls first,no_progress_scans,source_key,market,group_key
-        limit 15""")
+      lanes=await conn.fetch("""with ranked as (select *,row_number() over(partition by source_key
+          order by (research_policy_version=$1),last_run_at nulls first,no_progress_scans,market,group_key) policy_rank
+          from local_demand_scan_state)
+        select source_key,source_name,source_domain,market,group_key,group_label,next_page,scans,
+          results_seen,signals_found,no_progress_scans
+        from ranked order by policy_rank,source_key limit 15""",RESEARCH_POLICY['version'])
+      search_limit=asyncio.Semaphore(RESEARCH_POLICY['search_concurrency'])
+      async def channel_search(lane):
+          group=next((g for g in LOCAL_SIGNAL_GROUPS if g['key']==lane['group_key']),None)
+          if not group:return None,None,None
+          page=max(1,int(lane['next_page'] or 1))
+          query=build_local_signal_query(lane['market'],lane['source_domain'],group['terms'],int(lane['scans'] or 0))
+          async with search_limit:
+              try:
+                  results=await asyncio.wait_for(search_research_web(query,page),timeout=RESEARCH_POLICY['search_timeout_seconds'])
+                  return query,results,None
+              except Exception as exc:return query,None,type(exc).__name__
+      searched=await asyncio.gather(*(channel_search(lane) for lane in lanes))
 
       group_map={g["key"]:g for g in LOCAL_SIGNAL_GROUPS}
-      for lane in lanes:
+      for lane,search_result in zip(lanes,searched):
           group=group_map.get(lane["group_key"])
           if not group:
               continue
           page=max(1,int(lane["next_page"] or 1))
           query=build_local_signal_query(lane["market"],lane["source_domain"],group["terms"],int(lane["scans"] or 0))
-          try:
-              results=await search_research_web(query,page)
-              searches+=1
-          except Exception as exc:
-              err=str(exc)[:300]
+          query,results,search_error=search_result
+          searches+=1
+          if search_error:
+              err=search_error
               errors.append({"market":lane["market"],"source":lane["source_key"],
                              "group":lane["group_key"],"page":page,"error":err})
               await conn.execute("""update local_demand_scan_state
@@ -6314,6 +6345,21 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
           lane_seen=0
           for result in results:
               if not public_source_host_allowed(result["domain"],lane["source_domain"]):
+                  continue
+              if not result_matches_market(result,lane["market"]):
+                  continue
+              role=next((x['role'] for x in LOCAL_SIGNAL_SOURCES if x['key']==lane['source_key']),'mixed_public_signals')
+              kind=observation_kind(result,role,local_signal_request_intent(result))
+              if kind in ('excluded_nonbusiness_directory','job_advertisement'):
+                  continue
+              observed_service=classify_local_signal_service(f'{result["title"]} {result["snippet"]}',require_intent=False)
+              await conn.execute("""insert into local_channel_observations(source_key,market,service_key,source_url,title,snippet,observation_kind,evidence)
+                values($1,$2,$3,$4,$5,$6,$7,$8::jsonb)
+                on conflict(source_key,market,source_url) do update set last_seen_at=now(),
+                  observation_kind=excluded.observation_kind,evidence=local_channel_observations.evidence||excluded.evidence""",
+                lane['source_key'],lane['market'],observed_service,result['url'],result['title'],result['snippet'],kind,
+                json.dumps({'index_observation':observation_evidence(result,kind)}))
+              if role=='business_directory_only' or kind=='closure_mention':
                   continue
               if not local_signal_result_relevant(result,lane["market"]):
                   continue
@@ -6351,7 +6397,8 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
                             "public_index_only":True,"automatic_contact_allowed":False,
                             "group_key":lane["group_key"],"page":page,
                             "query_strategy_version":LOCAL_DEMAND_QUERY_STRATEGY_VERSION,
-                            "market_relevance_verified":True}))
+                            "market_hint_matched":True,"index_observation":observation_evidence(result,"request_candidate"),
+                            "research_policy_version":RESEARCH_POLICY["version"]}))
               activated=(existing is None or clean(existing["status"]).startswith("superseded_pre_v"))
               if sid and activated:
                   new_signals+=1
@@ -6368,9 +6415,9 @@ async def process_local_demand_signals(x_bmc_admin_key:str|None=Header(default=N
             set next_page=$4,scans=scans+1,results_seen=results_seen+$5,
                 signals_found=signals_found+$6,
                 no_progress_scans=case when $6=0 then no_progress_scans+1 else 0 end,
-                last_run_at=now(),last_error=null,updated_at=now()
+                last_run_at=now(),last_error=null,research_policy_version=$7,updated_at=now()
             where source_key=$1 and market=$2 and group_key=$3""",
-            lane["source_key"],lane["market"],lane["group_key"],next_page,lane_seen,lane_new)
+            lane["source_key"],lane["market"],lane["group_key"],next_page,lane_seen,lane_new,RESEARCH_POLICY["version"])
           lane_results.append({"source":lane["source_key"],"market":lane["market"],
                                "group":lane["group_key"],"page":page,
                                "results_seen":lane_seen,"new_signals":lane_new})
@@ -7909,3 +7956,5 @@ install_held_packet_api(app, require_admin, ADMIN_KEY, GROWTH_NONEXCLUSIVE_COHOR
     dict(qualify=growth_qualified_territory_candidates, select_sample=growth_select_representative_sample,
          public_rows=growth_sample_public_rows, csv_bytes=growth_csv_bytes,
          recipient_business_key=growth_recipient_business_key))
+
+install_research_policy(app,require_admin)

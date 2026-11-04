@@ -1316,3 +1316,21 @@ create table if not exists official_research_jobs (
  error_code text
 );
 create index if not exists idx_official_research_due on official_research_jobs(next_attempt_at,status);
+
+-- Public-channel discovery stays separate from accepted providers and demand.
+alter table local_demand_scan_state add column if not exists research_policy_version text not null default '';
+create table if not exists local_channel_observations (
+  observation_id uuid primary key default gen_random_uuid(),
+  source_key text not null,
+  market text not null,
+  service_key text,
+  source_url text not null,
+  title text not null,
+  snippet text,
+  observation_kind text not null,
+  status text not null default 'needs_review',
+  evidence jsonb not null default '{}'::jsonb,
+  created_at timestamptz not null default now(),
+  last_seen_at timestamptz not null default now(),
+  unique(source_key,market,source_url)
+);
