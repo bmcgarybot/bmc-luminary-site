@@ -27,6 +27,8 @@ try:
     assert request('/api/growth/request-small-pack','GET')[0]==405
     status,body=request('/api/growth/request-small-pack','POST')
     assert status==200 and json.loads(body)['path']=='/api/growth/request-small-pack'
+    for private_path in ('/api/admin/queue-census-research','/api/process-census-research','/api/admin/census-research-queue-status','/api/admin/export-census-research-queue'):
+        assert request(private_path,'POST')[0]==404
     assert request('/api/admin/research-census-review','POST')[0]==404
     assert request('/api/admin/prepare-scoped-journey','POST')[0]==404
     assert request('/api/admin/approve-scoped-journey','POST')[0]==404

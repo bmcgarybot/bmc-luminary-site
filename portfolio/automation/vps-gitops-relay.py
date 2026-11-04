@@ -47,7 +47,7 @@ LOCAL_RESULTS = STATE_DIR / "results"
 RESEARCH_SCHEDULE_FILE = STATE_DIR / "research-refresh-schedule.json"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status", "private_research_export", "private_held_packet", "research_policy_status", "census_research_review"}
+READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status", "private_research_export", "private_held_packet", "research_policy_status", "census_research_review", "census_queue_status", "census_queue_export"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
     "prepare_ops_configuration",
@@ -56,6 +56,8 @@ MUTATING_INTERNAL_ACTIONS = {
     "configure_growth_review_scope",
     "official_research_step",
     "prepare_scoped_journey",
+    "queue_census_research",
+    "census_queue_step",
     "market_inventory_step",
     "local_demand_step",
     "public_opportunities_step",
@@ -865,6 +867,34 @@ def execute(req: dict) -> dict:
             raise RelayError("One research candidate UUID is required")
         path="/api/admin/held-research-packet?"+urllib.parse.urlencode({"request_id":req["request_id"],"candidate_id":candidate_id,"pack_count":args.get("pack_count",100),"diagnostics":"true"})
         stdout=json.dumps(admin_post(path,timeout=180),separators=(",",":"));stderr="";exit_code=0
+
+    elif action == "queue_census_research":
+        keys=args.get('source_keys');service=args.get('requested_service')
+        if (set(args)!={'source_keys','requested_service'} or not isinstance(keys,list)
+            or not 1<=len(keys)<=2 or len(set(str(k) for k in keys))!=len(keys)
+            or any(not isinstance(k,str) or not re.fullmatch('[0-9a-f]{64}',k) for k in keys)
+            or not isinstance(service,str) or not re.fullmatch('[a-z][a-z0-9_]{2,63}',service)):
+            raise RelayError('Bounded existing source keys and service are required')
+        if app_env().get('BMC_OWNER_LAUNCH_HOLD','true').strip().lower()!='true':
+            raise RelayError('Census enrollment requires owner hold')
+        stdout=json.dumps(admin_post('/api/admin/queue-census-research',timeout=60,body=args),default=str);stderr='';exit_code=0
+
+    elif action == "census_queue_step":
+        if args:raise RelayError('One bounded census queue step accepts no arguments')
+        stdout=json.dumps(admin_post('/api/process-census-research',timeout=180),default=str);stderr='';exit_code=0
+
+    elif action == "census_queue_status":
+        if args:raise RelayError('Census status accepts no arguments')
+        stdout=json.dumps(admin_post('/api/admin/census-research-queue-status',timeout=30),default=str);stderr='';exit_code=0
+
+    elif action == "census_queue_export":
+        ids=args.get('job_ids')
+        if (set(args)!={'job_ids'} or not isinstance(ids,list) or not 1<=len(ids)<=5
+            or len(set(str(x) for x in ids))!=len(ids)
+            or any(not isinstance(x,str) or not re.fullmatch('[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}',x) for x in ids)):
+            raise RelayError('One to five distinct queue UUIDs are required')
+        path='/api/admin/export-census-research-queue?'+urllib.parse.urlencode({'request_id':req['request_id']})
+        stdout=json.dumps(admin_post(path,timeout=60,body=args),separators=(',',':'));stderr='';exit_code=0
 
     elif action == "census_research_review":
         keys=args.get('source_keys');service=args.get('requested_service')
