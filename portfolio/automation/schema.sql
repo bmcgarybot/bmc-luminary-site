@@ -1368,3 +1368,32 @@ insert into channel_worker_metadata(worker_key) values('local_channels') on conf
 
 -- Consume a changed source policy once without erasing retry/lease history.
 alter table official_research_jobs add column if not exists source_policy_version text not null default '';
+
+-- Private source-review proposals: never a native promotion or provider acceptance.
+create table if not exists census_research_jobs (
+ job_id uuid primary key default gen_random_uuid(),
+ candidate_id uuid not null references market_inventory_candidates(candidate_id),
+ source_key text not null check(source_key ~ '^[0-9a-f]{64}$'),
+ requested_service text not null check(requested_service ~ '^[a-z][a-z0-9_]{2,63}$'),
+ status text not null default 'queued' check(status in ('queued','running','retry_wait','needs_review','proposal_ready')),
+ attempts integer not null default 0 check(attempts>=0),
+ failure_streak integer not null default 0 check(failure_streak>=0),
+ priority integer not null default 0 check(priority between 0 and 100),
+ lease_token uuid,lease_until timestamptz,
+ next_attempt_at timestamptz not null default now(),
+ last_error text,proposal jsonb,
+ created_at timestamptz not null default now(),updated_at timestamptz not null default now(),last_completed_at timestamptz,
+ unique(candidate_id,requested_service),
+ check((status='running')=(lease_token is not null and lease_until is not null))
+);
+create index if not exists idx_census_research_jobs_due on census_research_jobs(status,next_attempt_at,priority desc);
+create table if not exists census_research_attempts (
+ attempt_id uuid primary key default gen_random_uuid(),
+ job_id uuid not null references census_research_jobs(job_id),
+ lease_token uuid not null unique,
+ attempt_no integer not null check(attempt_no>0),
+ started_at timestamptz not null,completed_at timestamptz,
+ status text not null check(status in ('running','proposal_ready','retry_wait','needs_review','lease_expired')),
+ error_code text,proposal jsonb,
+ unique(job_id,attempt_no)
+);

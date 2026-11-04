@@ -8158,3 +8158,9 @@ from census_research_api import install as install_census_research_api
 install_census_research_api(app, require_admin, ADMIN_KEY,
     lambda: OWNER_LAUNCH_HOLD and not any((OUTREACH_ENABLED, BUYER_OUTREACH_ENABLED, GROWTH_OUTREACH_ENABLED)),
     search_research_web)
+
+# Private persistent source proposals; no raw/native/customer promotion or mail.
+from census_research_queue import install as install_census_research_queue
+install_census_research_queue(app, require_admin, ADMIN_KEY,
+    lambda: OWNER_LAUNCH_HOLD and not any((OUTREACH_ENABLED, BUYER_OUTREACH_ENABLED, GROWTH_OUTREACH_ENABLED)),
+    search_research_web, enabled=RESEARCH_SEARCH_ENABLED)
