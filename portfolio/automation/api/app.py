@@ -4926,7 +4926,6 @@ def growth_outreach_message(row,step,owner_preview=False):
 
 @app.post("/api/process-growth-outreach")
 async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None)):
-    from scoped_dispatch import resolve_dispatch_scopes, target_dispatch_wave
     if not ADMIN_KEY or x_bmc_admin_key!=ADMIN_KEY: raise HTTPException(403,"Forbidden")
     if OWNER_LAUNCH_HOLD:
         return {"ok":True,"enabled":False,"sent":0,"blocked":True,
@@ -4940,6 +4939,7 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
         raise HTTPException(409,"BUSINESS_POSTAL_ADDRESS must be configured before Growth outreach can send.")
     if not (IMAP_ENABLED and IMAP_HOST and IMAP_USER and IMAP_PASSWORD):
         raise HTTPException(409,"IMAP reply/opt-out handling must be configured before Growth outreach can send.")
+    from scoped_dispatch import resolve_dispatch_scopes, target_dispatch_wave
     sent=0
     async with app.state.pool.acquire() as conn:
       dispatch_scopes=await resolve_dispatch_scopes(conn,ADMIN_KEY,scope,globals().get('GROWTH_OUTREACH_WAVE','growth-cleaning-1'),globals().get('GROWTH_WAVES',{}))
@@ -8125,12 +8125,12 @@ async def review_growth_purchase_offer(offer_id:uuid.UUID,x_bmc_admin_key:str|No
 
 @app.post("/api/process-growth-offer-invitations")
 async def process_growth_offer_invitations(x_bmc_admin_key:str|None=Header(default=None)):
-    from scoped_dispatch import resolve_dispatch_scopes, target_dispatch_wave
     require_admin(x_bmc_admin_key)
     if OWNER_LAUNCH_HOLD or not GROWTH_OUTREACH_ENABLED:
         return {"ok":True,"sent":0,"held":True}
     scope=tuple(globals().get("GROWTH_OUTREACH_TARGET_IDS",()))
     if not scope:return {"ok":True,"sent":0,"held":True,"message":"An exact reviewed recipient scope is required."}
+    from scoped_dispatch import resolve_dispatch_scopes, target_dispatch_wave
     sent=0
     async with app.state.pool.acquire() as conn:
       dispatch_scopes=await resolve_dispatch_scopes(conn,ADMIN_KEY,scope,globals().get('GROWTH_OUTREACH_WAVE','growth-cleaning-1'),globals().get('GROWTH_WAVES',{}))
