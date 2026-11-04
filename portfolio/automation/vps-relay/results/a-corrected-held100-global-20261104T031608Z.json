@@ -1,0 +1,21 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-04T03:17:18.774397+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "f081c30e6c49bfccca5627921ed239cf3944f79a",
+  "git_commit_before": "f081c30e6c49bfccca5627921ed239cf3944f79a",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "9531b203910db3d8b30ac42c9ff68887e1344bcb",
+  "request_id": "a-corrected-held100-global-20261104T031608Z",
+  "request_sha256": "aa4a979b0fdd42fa0cc89e34062e7704987091f709eace5568aa130c3d270c7b",
+  "started_at": "2026-11-04T03:17:18.191785+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"a-corrected-held100-global-20261104T031608Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"Ilrlia/6osfjCrCiSZKj6LlZs/5/BuWkV11q77bTLyqBupyZNzcso0swLVV1mSrKz3lwzE9efaKjm9PjYu79NaBcqg2D0biBqjtUP71OArSuKb7jg9db3D+AcUOVDikVNKx7y/uAjGu3TaqTnRUChJ+zU5/QSPIsF5PMi5vlkTVVnp4xfhh8AtfsURGVhvzFAGOE26pooiaY1Jb5DcN6O8edcBeUBAIJCZ6D911UJyXXOK/4u7pLKRugihCfDCelCuIF8yDZfdgCGEf8L9fgaAXwh3ZR7+BThx/yuUjbzUlnWNMZ1WL6/m+ecxbdkW2h/oFh0ddTIq/iokulmvlaAJKG1TUxGW29nisLLUIy8l7F0a1PARrpLE2tsOx0jyx2wD+cQt0N5G2zEFuVzBVM0f1kM4JcfJ9QWpLNLUAj+Iaz0pPxddGve7PdNi+EIkr9TfVi6Tsgylsdk44oZKUvubHKqN7ZZV7FtXizlOlySsqvyYKG3TYDDMsDuP3sfK9z\",\"nonce\":\"3K/q1yITgmhG9aTm\",\"ciphertext\":\"fFVh5le/6fzLeZGIGon+GLTKz6oZ9Ky3TzAHQ1yehN5CRKWGmYtoxVn7pYoqJSrJ5jESl+M6j+Hh8xLi8U4DYd3MSo38TOax933/of9qTwNaLpptIHZbqifpK6814R5Y3FU/iXFLJTSPUcuI4mh2Bf6pr3uTVufkzZ6Y/Wun+RdZAlm+j0VDnqRRy/KjP+QCZ+GZeets9Bn2yO2BNxITrOUnRInRA6LQgCayhiyS2f23kqiMNmN/TOVc9DV3iZXvlRnVr4+N7edc/Y80SRG8mgpFObTj6+PEvaK8Ip06X7utf3I=\"}",
+  "version": 1
+}
