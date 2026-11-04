@@ -101,6 +101,8 @@ jobs:
           python3 portfolio/automation/test-official-domain-recheck.py
           python3 portfolio/automation/test-official-source-policy-recheck.py
           python3 portfolio/automation/test-research-policy.py
+          python3 portfolio/automation/test-census-research-api.py
+          python3 portfolio/automation/test-census-research-relay.py
           python3 portfolio/automation/test-scoped-growth.py
           python3 portfolio/automation/test-scoped-journey-api.py
           python3 portfolio/automation/test-scoped-owner-flow.py
@@ -580,6 +582,7 @@ jobs:
           done
           cat /tmp/bmc_health.json
           docker compose --env-file .env.ci exec -T -e BMC_CI_SOURCE_RECHECK=1 ops_api python - < test-official-source-policy-postgres.py
+          docker compose --env-file .env.ci exec -T -e BMC_CI_CENSUS_REVIEW=1 ops_api python - < test-census-research-postgres.py
           docker compose --env-file .env.ci exec -T ops_api python - < ci/unsubscribe-smoke.py
           python3 ci/nevada-intake-smoke.py
           docker compose --env-file .env.ci exec -T ops_api python - < ci/nevada-db-proof.py
