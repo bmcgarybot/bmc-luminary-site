@@ -1,4 +1,4 @@
-import json,runpy,sys,unittest
+import copy,json,runpy,sys,unittest,uuid
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).parent/'api'))
 from scoped_batch import register_target
@@ -24,5 +24,37 @@ class Tests(unittest.IsolatedAsyncioTestCase):
  async def test_hold_off_never_writes(self):
   c=Conn()
   with self.assertRaises(ValueError):await self.invoke(c,hold=lambda:False)
+  self.assertEqual(c.writes,[])
+ async def test_inert_queued_rows_adopt_one_uuid_archive_and_supersede_others(self):
+  t=target();ids=[uuid.uuid4(),uuid.uuid4()]
+  plans=[dict(outreach_id=x,entity_id=t['target_id'],entity_type='growth_customer',campaign='growth_sales',
+    status='queued',sent_at=None,replied_at=None,reply_type=None,opt_out=False,created_at=str(i),body='Prior planned body') for i,x in enumerate(ids)]
+  before=copy.deepcopy(plans)
+  class QueueConn(Conn):
+   async def fetchrow(self,*args):return plans[0]
+   async def fetch(self,*args):return plans
+   async def fetchval(self,sql,*args):
+    if 'from outreach o where o.outreach_id=$1' in sql:return True
+    return await super().fetchval(sql,*args)
+  c=QueueConn();r=await self.invoke(c,t)
+  self.assertTrue(r['registered']);self.assertEqual(plans,before)
+  self.assertFalse(any('insert into outreach(' in sql for sql,args in c.writes))
+  adopted=[args[0] for sql,args in c.writes if sql.startswith('update outreach set wave=')]
+  self.assertEqual(adopted,[ids[0]])
+  superseded=[args[0] for sql,args in c.writes if sql.startswith("update outreach set status='superseded'")]
+  self.assertEqual(superseded,[ids[1]])
+  archives=[json.loads(args[2])['prior_planned_row'] for sql,args in c.writes if sql.startswith('insert into events')]
+  self.assertEqual({p['outreach_id'] for p in archives},set(str(x) for x in ids))
+ async def test_queued_durable_attempt_never_adopted_or_written(self):
+  t=target();plan=dict(outreach_id=uuid.uuid4(),entity_id=t['target_id'],entity_type='growth_customer',
+   campaign='growth_sales',status='queued',opt_out=False)
+  class AttemptConn(Conn):
+   async def fetchrow(self,*args):return plan
+   async def fetch(self,*args):return [plan]
+   async def fetchval(self,sql,*args):
+    if 'from outreach o where o.outreach_id=$1' in sql:return False
+    return await super().fetchval(sql,*args)
+  c=AttemptConn()
+  with self.assertRaises(ValueError):await self.invoke(c,t)
   self.assertEqual(c.writes,[])
 if __name__=='__main__':unittest.main()

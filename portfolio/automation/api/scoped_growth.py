@@ -14,6 +14,7 @@ def prepare_profile(packet,target_id,secret):
     recipient=packet['recipient'];scope=packet['binding']['scope'];ids=packet['binding']['candidate_ids']
     if (packet.get('status')!='held_packet_compiled' or packet.get('pack_count')!=25
         or packet.get('outreach_held') is not True or packet.get('offer_ready') is not False
+        or packet.get('private_not_for_dispatch') is True or packet.get('administrative_read_only') is True
         or not auto_evidence_valid(recipient,secret)):
         raise ValueError('A current native held25 packet is required')
     if len(ids)!=25 or len(set(ids))!=25 or not scope.get('category_keys') or not scope.get('observed_sector_phrases'):

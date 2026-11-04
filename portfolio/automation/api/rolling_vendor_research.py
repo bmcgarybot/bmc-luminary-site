@@ -14,32 +14,36 @@ from owner_research_export import seal_export
 
 FULL_ROW_SQL='select * from market_inventory_candidates where candidate_id=$1'
 MAX_CAPSULE_BYTES=500_000
-HISTORY_SQL="""select
+from recipient_history import inert_outreach_sql,protected_target_sql
+
+HISTORY_SQL=f"""select
  exists(select 1 from outreach_suppressions where lower(email)=any($3::text[]))
- or exists(select 1 from growth_outreach_targets where target_id=any($2::text[])
+ or exists(select 1 from growth_outreach_targets g where (target_id=any($2::text[])
    or lower(public_email)=any($3::text[]) or source_data->>'candidate_id'=$1::text
    or source_data->'scoped_offer'->>'candidate_id'=$1::text
-   or (lower(business_name)=lower($4) and market=$5))
- or exists(select 1 from growth_owner_previews where target_id=any($2::text[])
-   or $1::uuid=any(candidate_ids) or (lower(business_name)=lower($4) and $5=any(selected_markets)))
+   or (lower(business_name)=lower($4) and market=$5)) and {protected_target_sql('g')})
  or exists(select 1 from outreach o
    left join growth_outreach_targets g on o.entity_type='growth_customer' and o.entity_id=g.target_id
    left join vendors v on o.entity_type='vendor' and o.entity_id=v.vendor_id
    left join buyers b on o.entity_type='buyer' and o.entity_id=b.buyer_id
-   where o.entity_id=any($2::text[]) or lower(g.public_email)=any($3::text[])
-     or lower(v.public_email)=any($3::text[]) or lower(b.public_email)=any($3::text[]))
+   where not {inert_outreach_sql('o')} and (o.entity_id=any($2::text[]) or lower(g.public_email)=any($3::text[])
+     or lower(v.public_email)=any($3::text[]) or lower(b.public_email)=any($3::text[])))
+ or exists(select 1 from vendors v where (v.vendor_id=any($2::text[]) or lower(v.public_email)=any($3::text[])
+   or lower(v.business_name)=lower($4)) and coalesce(v.status,'') not in ('prospect','discovered','research'))
+ or exists(select 1 from buyers b where (b.buyer_id=any($2::text[]) or lower(b.public_email)=any($3::text[]))
+   and coalesce(b.status,'') not in ('prospect','discovered','research'))
+ or exists(select 1 from lead_matches m join vendors v on v.vendor_id=m.vendor_id
+   where v.vendor_id=any($2::text[]) or lower(v.public_email)=any($3::text[]) or lower(v.business_name)=lower($4))
+ or exists(select 1 from leads where lower(email)=any($3::text[]))
  or exists(select 1 from growth_sample_requests where source_target_id=any($2::text[])
    or lower(email)=any($3::text[]) or (lower(business_name)=lower($4) and market=$5))
- or exists(select 1 from growth_sample_prospects where candidate_id=$1::uuid or lower(public_email)=any($3::text[]))
- or exists(select 1 from growth_order_prospects where candidate_id=$1::uuid or lower(public_email)=any($3::text[]))
- or exists(select 1 from growth_prospect_exposures where candidate_id=$1::uuid
-   or lower(recipient_key)=any($3::text[]) or contact_key=any($6::text[]))
+ or exists(select 1 from growth_prospect_exposures where (lower(recipient_key)=any($3::text[]) or 'email:'||lower(recipient_key)=any($6::text[])) and status in ('reserved','delivered'))
  or exists(select 1 from growth_email_verifications where lower(email)=any($3::text[]))
  or exists(select 1 from orders where lower(customer_email)=any($3::text[]))
  or exists(select 1 from growth_purchase_offers where lower(email)=any($3::text[]))"""
 
-HISTORY_BRANCHES=('suppression','growth_target','owner_preview','outreach','sample_request',
-                  'sample_prospect','order_prospect','prospect_exposure','email_verification','customer_order','purchase_offer')
+HISTORY_BRANCHES=('suppression','growth_target','outreach','vendor_interaction','buyer_interaction','provider_match','submitted_lead','sample_request',
+                  'prospect_exposure','email_verification','customer_order','purchase_offer')
 # Reuse the exact gate expressions; diagnostics never replace the original gate.
 _HISTORY_EXPRESSIONS=re.split(r'\n or (?=exists)',HISTORY_SQL.removeprefix('select\n '))
 assert len(_HISTORY_EXPRESSIONS)==len(HISTORY_BRANCHES)

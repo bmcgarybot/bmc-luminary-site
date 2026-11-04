@@ -260,11 +260,13 @@ class Tests(unittest.IsolatedAsyncioTestCase):
 
     async def test_actual_schema_relations_and_only_two_column_update(self):
         self.setup();await self.invoke()
-        for table in ('growth_outreach_targets','growth_owner_previews','outreach_suppressions','outreach',
-                      'vendors','buyers','growth_sample_requests','growth_sample_prospects','growth_order_prospects',
+        for table in ('growth_outreach_targets','outreach_suppressions','outreach',
+                      'vendors','buyers','growth_sample_requests',
                       'growth_prospect_exposures','growth_email_verifications','orders','growth_purchase_offers','leads'):
             self.assertIn('from '+table,api.HISTORY_SQL)
-        self.assertIn('$1::uuid=any(candidate_ids)',api.HISTORY_SQL)
+        for table in ('growth_owner_previews','growth_sample_prospects','growth_order_prospects'):
+            self.assertNotIn('from '+table,api.HISTORY_SQL)
+        self.assertIn('mail_delivery_attempts',api.HISTORY_SQL)
         self.assertFalse(any(sql.lower().startswith(('insert ','delete ')) for sql,args in self.calls))
 
 

@@ -32,6 +32,10 @@ class Tests(unittest.TestCase):
         with self.assertRaises(ValueError):prepare_profile(self.packet,self.target['target_id'],'secret')
         self.setup();self.packet['artifacts'][5]['rows']=[{'business_name':'Changed'}]*5
         with self.assertRaises(ValueError):prepare_profile(self.packet,self.target['target_id'],'secret')
+    def test_admin_readonly_packets_cannot_mint_staged_profiles_even_when_held(self):
+        for flags in ({'private_not_for_dispatch':True},{'administrative_read_only':True},{'private_not_for_dispatch':True,'administrative_read_only':True,'outreach_held':False}):
+            self.setup();self.packet.update(flags)
+            with self.assertRaises(ValueError):prepare_profile(self.packet,self.target['target_id'],'secret')
     def test_legacy_targets_stay_on_existing100_offer(self):
         self.assertIsNone(profile_for_target({'source_data':{}},'secret'))
         self.assertEqual(public_offer_fields(None)['offer_count'],100)

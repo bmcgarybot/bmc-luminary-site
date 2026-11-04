@@ -50,6 +50,8 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             async def fetchval(self,sql,*args):
                 outer.calls.append((sql,args))
                 if sql==c.ENGAGEMENT_SQL:return outer.engaged
+                if sql==c.INERT_QUEUE_HISTORY_SQL:return outer.uncertain
+                if 'from outreach o where o.outreach_id=$1' in sql:return not outer.uncertain
                 if sql==c.ATTEMPT_SQL:return outer.uncertain
                 assert 'pg_advisory_xact_lock' in sql
             async def execute(self,sql,*args):
@@ -75,6 +77,24 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         row=dict(self.old,outreach_id=uuid.uuid4(),wave='new-scoped-wave',status='queued',sent_at=None,
                  historical_review_recorded_at=None,owner_review_required=False,sequence_step=0)
         self.rows.append(row);return row
+
+    async def test_inert_othercampaign_queue_and_legacy_metadata_preserved(self):
+        for legacy in (['old','metadata'],42,'legacy scalar',False):
+            self.setup();self.target['source_data']=legacy
+            queued=dict(self.old,outreach_id=uuid.uuid4(),entity_type='vendor',entity_id='seed-vendor',campaign='vendor_recruitment',status='queued',sent_at=None,historical_review_recorded_at=None)
+            self.rows.append(queued);before=copy.deepcopy(self.rows)
+            await self.authorize()
+            self.assertEqual(self.target['source_data']['legacy_source_data'],legacy)
+            self.assertEqual(self.rows,before)
+            await c.approved_reentry(self.conn,self.recipient(),SECRET)
+    async def test_queued_durable_attempt_or_sent_othercampaign_held_with_private_diagnostics(self):
+        for attempted in (False,True):
+            self.setup();self.uncertain=attempted
+            queued=dict(self.old,outreach_id=uuid.uuid4(),entity_type='vendor',entity_id='seed-vendor',campaign='vendor_recruitment',status='queued' if attempted else 'sent',sent_at=None if attempted else c.CUTOFF-timedelta(days=1))
+            self.rows.append(queued)
+            with self.assertRaises(c.ReentryHeld) as held:await self.authorize()
+            self.assertEqual(held.exception.diagnostics['blocked_outreach']['outreach_id'],str(queued['outreach_id']))
+            self.assertNotIn('public_email',held.exception.diagnostics['blocked_outreach'])
 
     async def test_authorization_preserves_original_ledger_and_live_preparation(self):
         self.setup();old=copy.deepcopy(self.rows);a=await self.authorize()
