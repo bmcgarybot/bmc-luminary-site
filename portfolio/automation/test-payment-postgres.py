@@ -121,7 +121,7 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
         cid=uuid.uuid4()
         async with self.pool.acquire() as conn:
             await conn.execute("""insert into market_inventory_candidates(candidate_id,side,market,category_key,category_label,business_name,source_url,source_domain,public_phone,official_site,status,evidence)
-              values($1,'buyer','Phoenix','dental','Dental practice','Desert Dental Phoenix','https://desertdental.example/contact','desertdental.example','6025550111',true,'discovered','{}')""",cid)
+              values($1,'buyer','Phoenix','dental','Dental practice','Desert Dental','https://desertdental.example/contact','desertdental.example','6025550111',true,'discovered','{}')""",cid)
         entity={'@type':'Dentist','name':'Desert Dental','url':'https://desertdental.example/contact','telephone':'6025550111','address':{'streetAddress':'100 Central Avenue','addressLocality':'Phoenix','addressRegion':'AZ','postalCode':'85004'}}
         document='<script type="application/ld+json">'+json.dumps(entity)+'</script>'
         with patch.object(module,'fetch_page',return_value=('https://desertdental.example/contact',document,'a'*64)) as fetch:
