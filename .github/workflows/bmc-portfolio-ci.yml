@@ -114,6 +114,7 @@ jobs:
           python3 portfolio/automation/test-scoped-journey-api.py
           python3 portfolio/automation/test-scoped-owner-flow.py
           python3 portfolio/automation/test-pr70-customer-identity-review.py
+          python3 portfolio/automation/test-protected-scoped-stage.py
           python3 portfolio/automation/test-scoped-quote-api.py
           python3 portfolio/automation/test-scoped-offer-record.py
           python3 portfolio/automation/test-service-outreach-copy.py
@@ -591,6 +592,7 @@ jobs:
           docker compose --env-file .env.ci exec -T -e BMC_CI_SOURCE_RECHECK=1 ops_api python - < test-official-source-policy-postgres.py
           docker compose --env-file .env.ci exec -T -e BMC_CI_CENSUS_REVIEW=1 ops_api python - < test-census-research-postgres.py
           docker compose --env-file .env.ci exec -T -e BMC_CI_CENSUS_QUEUE=1 ops_api python - < test-census-research-queue-postgres.py
+          docker compose --env-file .env.ci exec -T -e BMC_CI_SCOPED_STAGE=1 ops_api python - < test-protected-scoped-stage.py
           docker compose --env-file .env.ci exec -T ops_api python - < ci/unsubscribe-smoke.py
           python3 ci/nevada-intake-smoke.py
           docker compose --env-file .env.ci exec -T ops_api python - < ci/nevada-db-proof.py
