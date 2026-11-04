@@ -1,0 +1,21 @@
+{
+  "action": "research_promote_census",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-04T18:45:54.207062+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "55fe1a4689de60df77e39702e8c65ab47763c44d",
+  "git_commit_before": "55fe1a4689de60df77e39702e8c65ab47763c44d",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "5010801cbff3fa2077a83bf85d6907b0a725f588",
+  "request_id": "a-native-live-5-research-promote-census-20261104T183653Z",
+  "request_sha256": "995c7391b3f9eecaacbd2c8b78349e9391d62c4ca991c6b59e011417f755aec3",
+  "started_at": "2026-11-04T18:45:52.089368+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\": \"bmc-owner-research-v1\", \"request_id\": \"a-native-live-5-research-promote-census-20261104T183653Z\", \"key_fingerprint\": \"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\", \"wrapped_key\": \"H7QcNaumzjxYiL5Yl29r6V+t4UVYGiU3+eupcUCXplT9aCA34Uil00oSdd59sAqsHYHI383S09IkNsiEFdJAzorV3df+LjjRRDezFSKM/mCZrB5Zv3bFx/BariXRmf93ux9alyfCor+fnPVg62ulfFkXq9yROdGgwHG71vRm/zLsnKmDWi4rfdR/nZKaoMTVbjU89S/gNv/lo9+TNdsTwVy30W4XK0uWB3x0mjm09e6P5HvfAqZ5KFm8jaR1uGz7/UThLKqYvd4YADOnLkHzEd9U17qhiKnmgPeo8YDM05TyGd8m9JtCBHe1RQzKRcsXm5EZ41xw5uQ+im1uLS41GYcaAO76EvdZC8w/X6/PaKOOovfSOp3S155JJ/I4iBFHYJjNIDbDlIDtHHeL1gf6go8dgNi92r7huNQNaxcbtkJstZ4i99tQKcUVJncwWQTEz3KiwJrpzOCmeocDvt/2AfIR3tRVO3kh1vjOQMdXHHBNRtTiXYdCZHu1HYEJDmGU\", \"nonce\": \"Sa83SCdwFemrZ+U+\", \"ciphertext\": \"ZxEON3edgiICItuwRxGL2sADLTa7T0YTbDvdJjufUEUBPuD5FHoxlFaT1txUijgxfOrlVQriokdP8v1U2uUprafXXZHT931PEsmvpzevFoazbNh9xb6XQ40JjrL3I38/4BKzmvQ8cXpUOpkr/7Y6N60CMRB7UjocNxMrrWxAlE2blq+ojE+vlWxg/XrDvABfqeb0mgvpEnIRX2Dz6+ssNFqR3uebintCo9sBAi/qbwZfHLLXDdMEYmT88hzr3B6EXzRmswM7xvrrYw9WvwPSjm3CwmCurXjWGO32V5fzzolTmgUYMoXSKdazZlcXJAHEiYpnNocxLIZf9DKdNfjm71KDBhLJ/BHobmS1jJEwMEUwcqTuMzsKEVZ23T9rrrNvpTSm7/wEwRwIjulNZyyskilXXe47Yjd9o29Xx98CBbigO2RYtEXg8A==\"}",
+  "version": 1
+}
