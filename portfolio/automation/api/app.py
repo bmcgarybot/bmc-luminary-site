@@ -3837,7 +3837,7 @@ async def stage_growth_service(conn,service_key,max_targets=25):
           coalesce(last_verified_at,last_seen_at,updated_at) desc nulls last""",service_key)
     candidates.extend(dict(x) for x in inventory)
     candidates.sort(key=lambda row:contractor_priority(row,ADMIN_KEY))
-    pool_cache={}; staged=0; skipped_inventory=0; seen_emails=set()
+    pool_cache={}; staged=0; skipped_inventory=0; skipped_scoped=0; seen_emails=set()
     wave=GROWTH_WAVES[service_key]
     for row in candidates:
         email_addr=clean(row.get("public_email")).lower(); market=clean(row.get("market"))
@@ -3857,16 +3857,21 @@ async def stage_growth_service(conn,service_key,max_targets=25):
         await conn.execute("""insert into growth_experiment_cells(cell_key,service_key,market_group,status,next_review_at)
           values($1,$2,$3,'exploring',now()+interval '7 days')
           on conflict(cell_key) do update set updated_at=now()""",cell,service_key,market)
-        await conn.execute("""insert into growth_outreach_targets(
+        staged_target=await conn.fetchval("""insert into growth_outreach_targets(
           target_id,business_name,public_email,public_phone,website,source_url,market,service_key,experiment_cell,source_kind,fit_score,source_data)
           values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12::jsonb)
           on conflict(target_id) do update set business_name=excluded.business_name,public_email=excluded.public_email,
             public_phone=excluded.public_phone,website=excluded.website,source_url=excluded.source_url,market=excluded.market,
             service_key=excluded.service_key,experiment_cell=excluded.experiment_cell,source_kind=excluded.source_kind,
             fit_score=excluded.fit_score,source_data=excluded.source_data,updated_at=now()
-          where not (growth_outreach_targets.source_data ? 'scoped_offer')""",
+          where not (growth_outreach_targets.source_data ? 'scoped_offer') returning target_id""",
           row["target_id"],row["business_name"],email_addr,row.get("public_phone"),row.get("website"),row.get("source_url"),
           market,service_key,cell,row["source_kind"],int(row["fit_score"]),json.dumps(row.get("source_data") or {}))
+        # A protected scoped target's conflict update returns no row. Do not let
+        # legacy staging create outreach/history or review changes for that target.
+        if not staged_target:
+            skipped_scoped+=1
+            continue
         inserted=await conn.fetchval("""insert into outreach(entity_type,entity_id,campaign,wave,channel,sequence_step,status,next_followup_at,opt_out,target_market,target_service_key)
           select 'growth_customer',$1,'growth_sales',$2,'email',0,'queued',now(),false,$3,$4
           where not exists(select 1 from outreach where entity_type='growth_customer' and entity_id=$1 and campaign='growth_sales' and wave=$2)
@@ -3879,7 +3884,8 @@ async def stage_growth_service(conn,service_key,max_targets=25):
         if staged>=max_targets:
             break
     return {"service_key":service_key,"wave":wave,"staged":staged,"email_candidates":len(seen_emails),
-      "skipped_insufficient_buyer_inventory":skipped_inventory,"qualified_pool_by_market":pool_cache}
+      "skipped_insufficient_buyer_inventory":skipped_inventory,"skipped_protected_scoped_target":skipped_scoped,
+      "qualified_pool_by_market":pool_cache}
 
 async def growth_runtime_status(conn):
     links=await conn.fetchval("""select count(*) from products where product_key='growth_pack_starter' and active=true
