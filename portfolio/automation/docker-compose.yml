@@ -44,6 +44,7 @@ services:
       SMTP_FROM: ${SMTP_FROM}
       SMTP_REPLY_TO: ${SMTP_REPLY_TO:-contact@bmcservicenetwork.com}
       OWNER_PREVIEW_RECIPIENT: ${OWNER_PREVIEW_RECIPIENT:-contact@bmcservicenetwork.com}
+      WATCHDOG_EMAIL: ${WATCHDOG_EMAIL:-}
       SMTP_STARTTLS: ${SMTP_STARTTLS}
       SMTP_DRY_RUN: ${SMTP_DRY_RUN}
       OUTREACH_ENABLED: ${OUTREACH_ENABLED}

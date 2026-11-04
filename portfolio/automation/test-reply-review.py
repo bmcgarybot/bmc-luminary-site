@@ -120,4 +120,10 @@ class Tests(unittest.IsolatedAsyncioTestCase):
  def test_classification_questions_payment_and_positive(self):
   for kind in ('other','question','payment','refund','complaint','negotiation'):self.assertTrue(r.needs_input(kind,'Please review'))
   self.assertFalse(r.needs_input('positive','Yes please'));self.assertTrue(r.needs_input('positive','How much?'))
+class QuotedIntentTests(unittest.TestCase):
+    def test_prior_campaign_price_question_does_not_create_owner_request(self):
+        self.assertFalse(r.needs_input('positive','Yes please\n\nOn Tuesday Brett wrote:\nWhat price for the upgrade?','Five commercial prospects'))
+    def test_new_purchase_question_does_require_owner_input(self):
+        self.assertTrue(r.needs_input('positive','Yes, I am interested in the smaller pack.','Re: Five commercial prospects'))
+
 if __name__=='__main__':unittest.main()
