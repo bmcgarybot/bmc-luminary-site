@@ -144,8 +144,10 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                         await conn.execute('update growth_outreach_targets set source_data=$2::jsonb,updated_at=now() where target_id=$1',target_id,json.dumps(data))
                     if not hold_required(): raise ValueError('owner_hold_changed')
                     return capsule
-        except (ValueError,KeyError,TypeError):
-            raise HTTPException(409,'scoped_approval_requires_review')
+        except (ValueError,KeyError,TypeError) as exc:
+            reason=str(exc)
+            gate=reason if re.fullmatch('[a-z_]{3,80}',reason) else 'current_evidence_incomplete'
+            raise HTTPException(409,{'code':'scoped_approval_requires_review','gate':gate})
     @app.post('/api/admin/authorize-scoped-batch')
     async def authorize_batch(request:Request,request_id:str,x_bmc_admin_key:str|None=Header(default=None)):
         require_admin(x_bmc_admin_key)
@@ -178,8 +180,11 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                         target=await conn.fetchrow('select * from growth_outreach_targets where target_id=$1 for update',target_id)
                         result=await register_target(conn,dict(target),secret,request_id,waves,outreach_message,hold_required)
                 results.append(dict(target_id=target_id,status='registered',**result))
-            except (ValueError,KeyError,TypeError,HTTPException):
-                results.append(dict(target_id=target_id,status='held',sent=0))
+            except (ValueError,KeyError,TypeError,HTTPException) as exc:
+                detail=exc.detail if isinstance(exc,HTTPException) else str(exc)
+                reason=detail.get('gate') if isinstance(detail,dict) else detail
+                gate=reason if isinstance(reason,str) and re.fullmatch('[a-z_]{3,80}',reason) else 'current_evidence_incomplete'
+                results.append(dict(target_id=target_id,status='held',gate_reason=gate,sent=0))
         return {'ok':True,'registered':sum(x.get('registered',False) for x in results),
             'already_registered':sum(x.get('already_registered',False) for x in results),
             'held':sum(x['status']=='held' for x in results),'results':results,'sent':0,'history_reset':False}
