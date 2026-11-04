@@ -110,15 +110,32 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                         if not profile.get('approved_at'): raise ValueError('approval_timestamp_missing')
                         changed=False
                     else:
+                        # Approval validates the reviewed identities, never a newly ranked pool.
+                        frozen_ids=profile['candidate_ids'];sample_ids=profile['sample_ids']
+                        async def qualify_frozen(*args,**kwargs):
+                            kwargs=dict(kwargs,limit=10000)
+                            rows=await compiler_callbacks['qualify'](*args,**kwargs)
+                            excluded={str(x) for x in kwargs.get('exclude_ids',set())}
+                            names={str(x).strip().lower() for x in kwargs.get('exclude_names',set())}
+                            by_id={str(row['candidate_id']):row for row in rows
+                                   if str(row['candidate_id']) not in excluded
+                                   and str(row.get('business_name','')).strip().lower() not in names}
+                            return [by_id[value] for value in frozen_ids if value in by_id]
+                        def select_frozen(rows,*args):
+                            by_id={str(row['candidate_id']):row for row in rows}
+                            if any(value not in by_id for value in sample_ids):
+                                raise ValueError('reviewed_five_ineligible')
+                            return [by_id[value] for value in sample_ids]
+                        callbacks=dict(compiler_callbacks,qualify=qualify_frozen,select_sample=select_frozen)
                         packet=await compile_native_packet(conn,uuid.UUID(profile['candidate_id']),secret,frozen,
-                            hold_required,compiler_callbacks,pack_count=25)
+                            hold_required,callbacks,pack_count=25)
                         fresh=prepare_profile(packet,target_id,secret)
                         for field in ('candidate_id','business_name','email','market','service_key','source_url',
                                       'candidate_ids','sample_ids','pack_count','amount_cents','nonexclusive'):
                             if fresh[field]!=profile[field]: raise ValueError('reviewed_profile_drift')
                         scope=profile['scope'];new_scope=fresh['scope']
                         if not scope.get('content_sha256'): raise ValueError('source_digest_missing')
-                        for field in ('source_url','content_sha256','category_keys','observed_sector_phrases','ideal_customer'):
+                        for field in ('source_url','category_keys','observed_sector_phrases','ideal_customer'):
                             if scope.get(field)!=new_scope.get(field): raise ValueError('reviewed_source_drift')
                         if scope.get('exclusions','')!=new_scope.get('exclusions',''): raise ValueError('reviewed_exclusions_drift')
                         saved=await conn.fetchrow('select * from growth_owner_previews where target_id=$1 and version=$2 for update',target_id,VERSION)
@@ -129,7 +146,8 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                             or saved['business_name']!=profile['business_name'] or saved['service_key']!=profile['service_key']):
                             raise ValueError('reviewed_five_drift')
                         profile=dict(current);profile.pop('signature')
-                        profile.update(state='approved',approved_at=datetime.now(timezone.utc).isoformat())
+                        profile.update(state='approved',approved_at=datetime.now(timezone.utc).isoformat(),
+                                       scope=new_scope,previous_draft_signature=current['signature'])
                         profile['signature']=signature(profile,secret)
                         data=dict(data,scoped_offer=profile);target['source_data']=data
                         profile_for_target(target,secret,customer=True)
@@ -144,8 +162,10 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                         await conn.execute('update growth_outreach_targets set source_data=$2::jsonb,updated_at=now() where target_id=$1',target_id,json.dumps(data))
                     if not hold_required(): raise ValueError('owner_hold_changed')
                     return capsule
-        except (ValueError,KeyError,TypeError):
-            raise HTTPException(409,'scoped_approval_requires_review')
+        except (ValueError,KeyError,TypeError) as exc:
+            reason=str(exc)
+            gate=reason if re.fullmatch('[a-z_]{3,80}',reason) else 'current_evidence_incomplete'
+            raise HTTPException(409,{'code':'scoped_approval_requires_review','gate':gate})
     @app.post('/api/admin/authorize-scoped-batch')
     async def authorize_batch(request:Request,request_id:str,x_bmc_admin_key:str|None=Header(default=None)):
         require_admin(x_bmc_admin_key)
@@ -178,8 +198,11 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                         target=await conn.fetchrow('select * from growth_outreach_targets where target_id=$1 for update',target_id)
                         result=await register_target(conn,dict(target),secret,request_id,waves,outreach_message,hold_required)
                 results.append(dict(target_id=target_id,status='registered',**result))
-            except (ValueError,KeyError,TypeError,HTTPException):
-                results.append(dict(target_id=target_id,status='held',sent=0))
+            except (ValueError,KeyError,TypeError,HTTPException) as exc:
+                detail=exc.detail if isinstance(exc,HTTPException) else str(exc)
+                reason=detail.get('gate') if isinstance(detail,dict) else detail
+                gate=reason if isinstance(reason,str) and re.fullmatch('[a-z_]{3,80}',reason) else 'current_evidence_incomplete'
+                results.append(dict(target_id=target_id,status='held',gate_reason=gate,sent=0))
         return {'ok':True,'registered':sum(x.get('registered',False) for x in results),
             'already_registered':sum(x.get('already_registered',False) for x in results),
             'held':sum(x['status']=='held' for x in results),'results':results,'sent':0,'history_reset':False}

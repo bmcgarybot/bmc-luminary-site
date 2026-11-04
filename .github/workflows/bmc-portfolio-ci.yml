@@ -114,6 +114,7 @@ jobs:
           python3 portfolio/automation/test-scoped-journey-api.py
           python3 portfolio/automation/test-scoped-owner-flow.py
           python3 portfolio/automation/test-scoped-dispatch.py
+          python3 portfolio/automation/test-scoped-nonexclusive.py
           python3 portfolio/automation/test-scoped-batch.py
           python3 portfolio/automation/test-reply-review.py
           python3 portfolio/automation/test-pr70-customer-identity-review.py

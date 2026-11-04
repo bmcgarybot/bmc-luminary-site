@@ -2926,6 +2926,24 @@ async def growth_exposure_filter(conn,rows,recipient_key="",delivery_kind="free"
           where target_id=any($1::text[]) and market='Phoenix' and service_key='commercial_cleaning'""",list(cohort_ids))
         addresses={clean(x["email"]).lower() for x in cohort}
         if len(addresses)==9 and clean(recipient_key).lower() in addresses:cohort_emails=addresses
+    # A signed, still-current frozen25 scope is explicitly nonexclusive. Only
+    # those exact IDs may ignore OTHER recipients' reuse budgets; own-recipient
+    # and shared-contact duplicates and suppressions remain mandatory below.
+    scoped_ids=set();scoped_market='';scoped_categories=set()
+    if recipient_key and recipient_business_key and globals().get('ADMIN_KEY'):
+        scoped_targets=await conn.fetch("""select * from growth_outreach_targets
+          where lower(public_email)=lower($1) and service_key=$2
+          and source_data ? 'scoped_offer' and status not in ('suppressed','bad_fit')""",recipient_key,service_key)
+        if len(scoped_targets)==1:
+            try:
+                from scoped_growth import profile_for_target
+                profile=profile_for_target(dict(scoped_targets[0]),ADMIN_KEY,customer=False)
+                if (profile and profile.get('nonexclusive') is True and profile['service_key']==service_key
+                    and profile['email']==clean(recipient_key).lower()
+                    and growth_recipient_business_key(profile['business_name'])==clean(recipient_business_key).lower()):
+                    scoped_ids=set(profile['candidate_ids']);scoped_market=profile['market'];scoped_categories=set(profile['scope']['category_keys'])
+            except (ValueError,KeyError,TypeError):
+                pass  # No valid scope means ordinary exposure policy, never broader reuse.
     now=datetime.now(timezone.utc)
     result=[]
     recipient_key=clean(recipient_key).lower()
@@ -2956,12 +2974,15 @@ async def growth_exposure_filter(conn,rows,recipient_key="",delivery_kind="free"
         budget90={clean(e["recipient_key"]).lower() for e in budget if (now-e["created_at"]).days<90}
         latest=max((e["created_at"] for e in budget),default=None)
         cooldown=GROWTH_FREE_COOLDOWN_DAYS if delivery_kind=="free" else GROWTH_PAID_COOLDOWN_DAYS
-        if budget_lifetime>=GROWTH_ALL_DISTINCT_LIFETIME or len(budget90)>=GROWTH_ALL_DISTINCT_90D:
-            continue
-        if delivery_kind=="free" and len(free90)>=GROWTH_FREE_DISTINCT_90D:
-            continue
-        if cooldown and latest and (now-latest).total_seconds()<cooldown*86400:
-            continue
+        scoped_nonexclusive=(str(r.get('candidate_id') or '') in scoped_ids
+          and clean(r.get('market'))==scoped_market and r.get('category_key') in scoped_categories)
+        if not scoped_nonexclusive:
+            if budget_lifetime>=GROWTH_ALL_DISTINCT_LIFETIME or len(budget90)>=GROWTH_ALL_DISTINCT_90D:
+                continue
+            if delivery_kind=="free" and len(free90)>=GROWTH_FREE_DISTINCT_90D:
+                continue
+            if cooldown and latest and (now-latest).total_seconds()<cooldown*86400:
+                continue
         copy=dict(r)
         copy["exposure_count_90d"]=len(last90)
         copy["exposure_count_lifetime"]=lifetime
@@ -3897,8 +3918,10 @@ async def growth_runtime_status(conn):
       and campaign='growth_sales' and sent_at is not null""")
     review_required=await conn.fetchval("""select count(*) from outreach where entity_type='growth_customer'
       and campaign='growth_sales' and owner_review_required=true""")
-    replies=await conn.fetchval("""select count(*) from outreach where entity_type='growth_customer'
-      and campaign='growth_sales' and replied_at is not null""")
+    # Sample requests set engagement timestamps too; email replies come only
+    # from the actual inbound-reply journal, not the sample funnel state.
+    replies=await conn.fetchval("""select count(distinct entity_id) from events
+      where entity_type='growth_customer' and event_type='outreach_reply'""")
     samples=await conn.fetchval("select count(*) from growth_sample_requests")
     delivered=await conn.fetchval("select count(*) from growth_sample_requests where status in ('delivered','converted','fulfilled')")
     converted=await conn.fetchval("select count(*) from growth_sample_requests where converted_at is not null")

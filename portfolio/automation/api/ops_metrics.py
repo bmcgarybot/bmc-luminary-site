@@ -15,7 +15,8 @@ async def business_metrics(conn):
           from mail_observations""",
         "outreach": """select count(*) as total_records,
           count(*) filter(where sent_at is not null) as historic_smtp_submissions,
-          count(*) filter(where replied_at is not null) as replies,
+          (select count(distinct (entity_type,entity_id)) from events where event_type='outreach_reply') as replies,
+          count(*) filter(where reply_type='sample_requested') as sample_engagements,
           count(*) filter(where opt_out=true) as suppressed,
           count(*) filter(where owner_review_required=true) as awaiting_owner_review
           from outreach""",
