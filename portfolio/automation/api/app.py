@@ -3772,10 +3772,18 @@ async def growth_runtime_status(conn):
     imap_ready=bool(IMAP_ENABLED and IMAP_HOST and IMAP_USER and IMAP_PASSWORD)
     postal_ready=bool(BUSINESS_POSTAL_ADDRESS and "CHANGE_ME" not in BUSINESS_POSTAL_ADDRESS)
     config_ready=smtp_ready and imap_ready and postal_ready and int(links or 0)>=1
+    scoped_ids=list(globals().get("GROWTH_OUTREACH_TARGET_IDS",()))
+    scope_targets=await conn.fetch("""select status,count(*)::int records from growth_outreach_targets
+      where target_id=any($1::text[]) group by status order by status""",scoped_ids)
+    scope_outreach=await conn.fetch("""select wave,status,owner_review_required,opt_out,count(*)::int records
+      from outreach where entity_type='growth_customer' and campaign='growth_sales'
+      and entity_id=any($1::text[]) group by wave,status,owner_review_required,opt_out
+      order by wave,status,owner_review_required,opt_out""",scoped_ids)
     return {"ok":True,"owner_launch_hold_active":OWNER_LAUNCH_HOLD,
       "outreach_switches":{"OUTREACH_ENABLED":OUTREACH_ENABLED,"BUYER_OUTREACH_ENABLED":BUYER_OUTREACH_ENABLED,"GROWTH_OUTREACH_ENABLED":GROWTH_OUTREACH_ENABLED},
       "growth_enabled":GROWTH_OUTREACH_ENABLED,"wave":GROWTH_OUTREACH_WAVE,
-      "recipient_scope_count":len(globals().get("GROWTH_OUTREACH_TARGET_IDS",())),
+      "recipient_scope_count":len(scoped_ids),
+      "scoped_cohort":{"configured_count":len(scoped_ids),"target_statuses":[dict(x) for x in scope_targets],"outreach_statuses":[dict(x) for x in scope_outreach]},
       "daily_limit":GROWTH_OUTREACH_DAILY_LIMIT,"sample_reserve":GROWTH_SAMPLE_MIN_RESERVE,"historical_contacts_awaiting_review":int(review_required or 0),
       "config":{"smtp":smtp_ready,"imap":imap_ready,"postal":postal_ready,"payment_link":int(links or 0)>=1},
       "config_ready":config_ready,"staged_active":int(staged or 0),"sent":int(sent or 0),"replies":int(replies or 0),

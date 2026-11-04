@@ -87,6 +87,25 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(row['paid_orders'],5)
         self.assertEqual(row['revenue_cents'],199700)
 
+    async def test_scoped_cohort_diagnostics_include_held_and_opted_out_without_mutation(self):
+        source=ast.parse(Path(__file__).with_name('api').joinpath('app.py').read_text())
+        fn=next(n for n in source.body if isinstance(n,ast.AsyncFunctionDef) and n.name=='growth_runtime_status')
+        queries=[n.value for n in ast.walk(fn) if isinstance(n,ast.Constant) and isinstance(n.value,str)]
+        targets=next(q for q in queries if 'target_id=any($1::text[])' in q)
+        outreach=next(q for q in queries if 'entity_id=any($1::text[])' in q)
+        async with self.pool.acquire() as conn:
+            for ident,held,optout in [('held',True,False),('opted',True,True),('other',False,False)]:
+                await conn.execute("insert into growth_outreach_targets(target_id,business_name,public_email,market,service_key) values($1,$1,$2,'Phoenix','commercial_cleaning')",ident,ident+'@example.test')
+                await conn.execute("insert into outreach(entity_type,entity_id,campaign,wave,status,owner_review_required,opt_out) values('growth_customer',$1,'growth_sales','growth-cleaning-1','queued',$2,$3)",ident,held,optout)
+            scope=['held','opted']
+            statuses=await conn.fetch(targets,scope);details=await conn.fetch(outreach,scope)
+            self.assertEqual(sum(r['records'] for r in statuses),2)
+            self.assertEqual(sum(r['records'] for r in details),2)
+            self.assertTrue(all(r['owner_review_required'] for r in details))
+            self.assertEqual(sum(r['records'] for r in details if r['opt_out']),1)
+            self.assertEqual(await conn.fetchval('select count(*) from outreach where owner_review_required=true'),2)
+            self.assertEqual(await conn.fetchval('select count(*) from orders'),0)
+
     async def test_native_primary_research_is_durable_and_never_sends_or_accepts_providers(self):
         import official_research as module
         from unittest.mock import patch
@@ -102,7 +121,7 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
         cid=uuid.uuid4()
         async with self.pool.acquire() as conn:
             await conn.execute("""insert into market_inventory_candidates(candidate_id,side,market,category_key,category_label,business_name,source_url,source_domain,public_phone,official_site,status,evidence)
-              values($1,'buyer','Phoenix','dental','Dental practice','Desert Dental Phoenix','https://desertdental.example/contact','desertdental.example','6025550111',true,'discovered','{}')""",cid)
+              values($1,'buyer','Phoenix','dental','Dental practice','Desert Dental','https://desertdental.example/contact','desertdental.example','6025550111',true,'discovered','{}')""",cid)
         entity={'@type':'Dentist','name':'Desert Dental','url':'https://desertdental.example/contact','telephone':'6025550111','address':{'streetAddress':'100 Central Avenue','addressLocality':'Phoenix','addressRegion':'AZ','postalCode':'85004'}}
         document='<script type="application/ld+json">'+json.dumps(entity)+'</script>'
         with patch.object(module,'fetch_page',return_value=('https://desertdental.example/contact',document,'a'*64)) as fetch:
@@ -117,6 +136,22 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(await conn.fetchval('select count(*) from orders'),0)
             self.assertEqual(await conn.fetchval("select count(*) from vendors where status in ('pilot','active')"),0)
         self.assertEqual((await routes['/api/process-official-research']('fixture'))['inspected'],0)
+        # A same-URL discovery becomes the verified row itself. It must renew
+        # when due instead of being permanently excluded by its native tag.
+        async with self.pool.acquire() as conn:
+            await conn.execute("update market_inventory_candidates set last_verified_at=now()-interval '31 days' where candidate_id=$1",cid)
+            await conn.execute("update official_research_jobs set next_attempt_at=now()-interval '1 minute' where candidate_id=$1",cid)
+        with patch.object(module,'fetch_page',return_value=('https://desertdental.example/contact',document,'b'*64)) as fetch:
+            outcome=await routes['/api/process-official-research']('fixture')
+            self.assertEqual(outcome['inspected'],1);self.assertEqual(outcome['verified'],1);self.assertEqual(fetch.call_count,1)
+        async with self.pool.acquire() as conn:
+            native=dict(await conn.fetchrow("select * from market_inventory_candidates where candidate_id=$1",cid))
+            self.assertTrue(module.auto_evidence_valid(native,'test-secret'))
+            evidence=json.loads(native['evidence']) if isinstance(native['evidence'],str) else native['evidence']
+            self.assertEqual(evidence['vps_verification']['content_sha256'],'b'*64)
+            self.assertEqual(await conn.fetchval("select attempts from official_research_jobs where candidate_id=$1",cid),2)
+        self.assertEqual((await routes['/api/process-official-research']('fixture'))['inspected'],0)
+
 
     async def seed_bound_offer(self):
         obj=await self.seed_growth()
