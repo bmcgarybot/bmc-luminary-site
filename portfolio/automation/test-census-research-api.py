@@ -109,6 +109,40 @@ class Tests(unittest.IsolatedAsyncioTestCase):
   with patch.object(c,'fetch_page_receipt') as fetch:
    result=await c.review_row(self.row,'pressure_washing',search,'synthetic-secret')
   fetch.assert_not_called();self.assertEqual(result['gate_reason'],'no_allowed_official_candidate')
+ async def test_held_schema_observations_unverified_and_specific_mismatch_reasons(self):
+  cases=[({key:value for key,value in E.items() if key!='address'},'structured_identity_location_service_or_contact_unproven'),
+         ({**E,'name':'Juniper Wash Equipment Supply Inc'},'exact_legal_name_mismatch'),
+         ({**E,'email':'new@juniper.example'},'public_email_mismatch')]
+  for entity,reason in cases:
+   self.setup();entity=dict(entity,alternateName='Juniper Mobile Wash',areaServed=[{'@type':'City','name':'Prescott','addressRegion':'AZ'}])
+   out,fetch=await self.run_review(fetched=receipt(entity));proposal=self.payloads[-1]['proposals'][0]
+   self.assertEqual(proposal['status'],'source_review_held');self.assertEqual(proposal['gate_reason'],reason)
+   self.assertEqual(proposal['original_source_url'],URL);self.assertEqual(proposal['source_url'],URL)
+   self.assertEqual(proposal['source_receipt_sha256'],receipt(entity).content_sha256)
+   observations=proposal['unverified_schema_observations'];self.assertIs(observations['physical_address_verified'],False)
+   self.assertIs(observations['provider_accepted'],False);self.assertEqual(observations['status'],'unverified_published_schema_only')
+   self.assertEqual(observations['nodes'][0]['alternateName'],'Juniper Mobile Wash')
+   self.assertNotIn('parsed_record',proposal);self.assertNotIn('Juniper',json.dumps(out));fetch.assert_called_once()
+ def test_schema_diagnostic_depth_node_string_byte_and_key_bounds(self):
+  nodes=[{'@type':'LocalBusiness','name':'Fixture '+str(i),'alternateName':['x'*2000]*20,
+          'description':'<b>inert</b>\x00'+'z'*5000,'url':'javascript:alert(1)',
+          'password':'SECRET-OMIT','arbitrary':'SECRET-OMIT',
+          'areaServed':{'address':{'address':{'address':{'name':'TOO-DEEP'}}}}} for i in range(20)]
+  result=c.published_schema_observations('<script type="application/ld+json">'+json.dumps({'@graph':nodes})+'</script>')
+  self.assertLessEqual(len(result['nodes']),6);self.assertGreater(len(result['nodes']),0)
+  encoded=json.dumps(result);self.assertLessEqual(len(encoded.encode()),12000)
+  self.assertNotIn('SECRET-OMIT',encoded);self.assertNotIn('javascript:',encoded);self.assertNotIn('<b>',encoded);self.assertNotIn('TOO-DEEP',encoded)
+  self.assertLessEqual(len(result['nodes'][0]['description']),800);self.assertLessEqual(len(result['nodes'][0]['alternateName']),6)
+  malformed=c.published_schema_observations('<script type="application/ld+json">{bad}</script>')
+  self.assertEqual(malformed['nodes'],[])
+ async def test_fetch_errors_only_trusted_static_reason_never_arbitrary_text(self):
+  for error,reason in [(ValueError(code),code) for code in ('http_403','http_404','http_429','not_html','page_too_large','redirect_limit')]+[(TimeoutError('private timeout detail'),'timeout'),(RuntimeError('private SQL password secret'),'fetch_unavailable'),(ValueError('http_500 private details'),'fetch_unavailable')]:
+   self.setup()
+   with patch.object(c,'fetch_page_receipt',side_effect=error):
+    result=await c.review_row(self.row,'pressure_washing',self.search,'synthetic-secret')
+   self.assertEqual(result['status'],'source_review_held');self.assertEqual(result['gate_reason'],'fetch_unavailable')
+   self.assertEqual(result['fetch_failure_reason'],reason);self.assertNotIn('private',json.dumps(result))
+   self.assertNotIn('unverified_schema_observations',result)
  async def test_hold_callback_failure_prevents_fetch_and_database(self):
   self.setup();app=FastAPI();app.state.pool=self.app.state.pool
   def held():return False

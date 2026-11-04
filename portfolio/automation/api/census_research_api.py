@@ -10,7 +10,7 @@ import re
 from datetime import datetime, timedelta, timezone
 from urllib.parse import urlsplit
 
-from official_research import VENDOR_TERMS, FetchedPageReceipt, allowed_url, fetch_page_receipt, host, parse_record, auto_evidence_valid
+from official_research import VENDOR_TERMS, FetchedPageReceipt, allowed_url, fetch_page_receipt, host, parse_record, auto_evidence_valid, Page, entities
 from owner_research_export import seal_export
 from research_policy import VisibleText
 
@@ -59,9 +59,75 @@ def excerpt(document):
     return ' '.join(' '.join(parser.parts).split())[:1800]
 
 
+SCHEMA_KEYS=frozenset(('@type','name','alternateName','url','address','areaServed','serviceArea','telephone','email','description',
+    'streetAddress','addressLocality','addressRegion','postalCode','addressCountry','containedInPlace'))
+TOP_SCHEMA_KEYS=frozenset(('@type','name','alternateName','url','address','areaServed','serviceArea','telephone','email','description'))
+
+
+def published_schema_observations(document):
+    """Bounded unverified source assertions, never physical/native proof.
+
+    Copy only declared diagnostic fields, excluding arbitrary JSON-LD keys,
+    executable HTML and URL userinfo. Scalars remain inert, unverified strings
+    in the encrypted owner capsule.
+    """
+    def sanitize(value,depth=0,key=''):
+        if depth>3:return None
+        if isinstance(value,str):
+            value=re.sub(r'[\x00-\x1f\x7f]',' ',re.sub('<[^>]*>',' ',value))
+            value=' '.join(value.split())[:(800 if key=='description' else 500)]
+            if key=='url':
+                try:
+                    parsed_url=urlsplit(value)
+                    if parsed_url.scheme not in ('http','https') or parsed_url.username or parsed_url.password:return None
+                except ValueError:return None
+            return value
+        if isinstance(value,(int,float)) and not isinstance(value,bool):return str(value)[:40]
+        if isinstance(value,list):
+            return [cleaned for child in value[:6] if (cleaned:=sanitize(child,depth+1,key)) is not None]
+        if isinstance(value,dict):
+            return {k:cleaned for k,v in value.items() if k in SCHEMA_KEYS and (cleaned:=sanitize(v,depth+1,k)) is not None}
+        return None
+    page=Page()
+    result={'status':'unverified_published_schema_only','physical_address_verified':False,'provider_accepted':False,
+            'note':'Published JSON-LD assertions only; not verified identity, physical location, service area or provider acceptance.',
+            'nodes':[]}
+    try:
+        from itertools import islice
+        seen=set()
+        page.feed(document)
+        for obj in islice(entities(page.ld),200):
+            # Skip container/@graph-only and noninformative type-only fragments.
+            if not any(k in obj for k in TOP_SCHEMA_KEYS-{'@type'}):continue
+            if '@type' not in obj and not ('name' in obj and any(k in obj for k in ('url','description','address','areaServed','serviceArea','telephone','email'))):continue
+            clean={key:value for key in TOP_SCHEMA_KEYS if key in obj and (value:=sanitize(obj[key],0,key)) is not None}
+            encoded=json.dumps(clean,ensure_ascii=True,sort_keys=True)
+            if not clean or encoded in seen:continue
+            proposed=dict(result,nodes=result['nodes']+[clean])
+            if len(json.dumps(proposed,ensure_ascii=True).encode())>12000:break
+            seen.add(encoded);result['nodes'].append(clean)
+            if len(result['nodes'])>=6:break
+    except (ValueError,TypeError,RecursionError):
+        pass  # Malformed source schema is diagnostic-only and remains unverified.
+    return result
+
+
+def fetch_failure_reason(exc):
+    if isinstance(exc,(TimeoutError,asyncio.TimeoutError)):return 'timeout'
+    # Match only known transport exception values; never serialize arbitrary text.
+    text=str(exc)
+    if isinstance(exc,ValueError) and text in {'http_403','http_404','http_429','not_html','page_too_large','redirect_limit'}:return text
+    return 'fetch_unavailable'
+
+
+def held_source_result(result,receipt,reason):
+    return dict(result,gate_reason=reason,visible_excerpt=excerpt(receipt.document),
+                unverified_schema_observations=published_schema_observations(receipt.document))
+
+
 async def review_row(row,service,search,secret):
     result={'status':'source_review_held','candidate_id':str(row['candidate_id']),'raw_source_key':row['source_key'],
-            'requested_service':service,'gate_reason':'source_unavailable'}
+            'requested_service':service,'gate_reason':'source_unavailable','original_source_url':row['source_url']}
     try:
         if raw_source_key(row)!=row['source_key']:raise ValueError('key')
     except (ValueError,KeyError):
@@ -77,8 +143,8 @@ async def review_row(row,service,search,secret):
         result['gate_reason']='no_allowed_official_candidate';return result
     try:
         receipt=await asyncio.wait_for(asyncio.to_thread(fetch_page_receipt,url),45)
-    except Exception:
-        result['gate_reason']='fetch_unavailable';return result
+    except Exception as exc:
+        result['gate_reason']='fetch_unavailable';result['fetch_failure_reason']=fetch_failure_reason(exc);return result
     if not isinstance(receipt,FetchedPageReceipt) or receipt.requested_url!=url or not research_get_url(receipt.final_url) or host(receipt.final_url)!=host(url):
         result['gate_reason']='receipt_domain_binding_unproven';return result
     try:
@@ -90,13 +156,14 @@ async def review_row(row,service,search,secret):
     result.update(source_url=receipt.final_url,source_receipt_sha256=receipt.content_sha256,source_fetched_at=receipt.fetched_at)
     try:
         parsed=parse_record(dict(row,category_key=service),receipt.final_url,receipt.document,receipt.content_sha256,secret)
-        if not legal_name(row['business_name']) or legal_name(parsed['business_name'])!=legal_name(row['business_name']):raise ValueError('identity')
-        if row.get('public_email') and parsed.get('public_email','').lower()!=row['public_email'].lower():raise ValueError('contact')
-    except (ValueError,TypeError,KeyError):
-        result['gate_reason']='structured_identity_location_service_or_contact_unproven'
-        result['visible_excerpt']=excerpt(receipt.document);return result
+    except (ValueError,TypeError,KeyError,RecursionError):
+        return held_source_result(result,receipt,'structured_identity_location_service_or_contact_unproven')
+    if not legal_name(row['business_name']) or legal_name(parsed['business_name'])!=legal_name(row['business_name']):
+        return held_source_result(result,receipt,'exact_legal_name_mismatch')
+    if row.get('public_email') and parsed.get('public_email','').lower()!=row['public_email'].lower():
+        return held_source_result(result,receipt,'public_email_mismatch')
     if not auto_evidence_valid({**row,**parsed,'category_key':service},secret):
-        result['gate_reason']='current_native_proof_unproven';return result
+        return held_source_result(result,receipt,'current_native_proof_unproven')
     facts=dict(parsed['evidence']['vps_verification'])
     return dict(result,status='source_proposal_only',gate_reason=None,parsed_facts=facts,
                 parsed_record=parsed,native_record_written=False,provider_accepted=False,offer_ready=False)
