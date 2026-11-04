@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "a-census-queue-deploy-20261104T084752Z",
+  "action": "deploy_update",
+  "allow_external_actions": false,
+  "required_ci_sha": "359ea7c6628f379486efda4363194f1e895c08eb",
+  "created_at": "2026-11-04T08:47:52.079501+00:00",
+  "expires_at": "2026-11-04T09:47:52.079501+00:00",
+  "args": {}
+}
