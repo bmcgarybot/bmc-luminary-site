@@ -184,7 +184,7 @@ class PaymentPostgres(unittest.IsolatedAsyncioTestCase):
         node=next(n for n in source.body if isinstance(n,ast.AsyncFunctionDef) and n.name=='process_growth_offer_invitations');node.decorator_list=[]
         async def no_mail(*args,**kwargs):raise AssertionError('Unreleased recipient must never send')
         ns=dict(app=SimpleNamespace(state=SimpleNamespace(pool=self.pool)),Header=lambda **kw:None,require_admin=lambda key:None,
-          OWNER_LAUNCH_HOLD=False,GROWTH_OUTREACH_ENABLED=True,GROWTH_OUTREACH_TARGET_IDS=('released-target',),send_mail_once=no_mail)
+          OWNER_LAUNCH_HOLD=False,GROWTH_OUTREACH_ENABLED=True,GROWTH_OUTREACH_TARGET_IDS=('released-target',),ADMIN_KEY='synthetic-test-key',send_mail_once=no_mail)
         exec(compile(ast.Module(body=[node],type_ignores=[]),'production_offer_worker','exec'),ns)
         self.assertEqual((await ns['process_growth_offer_invitations']('fixture'))['sent'],0)
         ns['GROWTH_OUTREACH_TARGET_IDS']=('other-target',)

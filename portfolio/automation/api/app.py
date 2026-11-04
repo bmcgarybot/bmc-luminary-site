@@ -4939,8 +4939,10 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
         raise HTTPException(409,"BUSINESS_POSTAL_ADDRESS must be configured before Growth outreach can send.")
     if not (IMAP_ENABLED and IMAP_HOST and IMAP_USER and IMAP_PASSWORD):
         raise HTTPException(409,"IMAP reply/opt-out handling must be configured before Growth outreach can send.")
+    from scoped_dispatch import resolve_dispatch_scopes, target_dispatch_wave
     sent=0
     async with app.state.pool.acquire() as conn:
+      dispatch_scopes=await resolve_dispatch_scopes(conn,ADMIN_KEY,scope,globals().get('GROWTH_OUTREACH_WAVE','growth-cleaning-1'),globals().get('GROWTH_WAVES',{}))
       critical=await conn.fetchval("""select count(*) from exceptions
         where status='open' and severity='critical' and type like 'growth_%'""")
       if int(critical or 0)>0:
@@ -4951,19 +4953,20 @@ async def process_growth_outreach(x_bmc_admin_key:str|None=Header(default=None))
       allowance=max(0,GROWTH_OUTREACH_DAILY_LIMIT-int(already or 0))
       if allowance<=0:
         return {"ok":True,"enabled":True,"sent":0,"message":"Growth daily outreach limit reached."}
-      rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,o.target_market,o.target_service_key,
+      rows=await conn.fetch("""select o.outreach_id,o.sequence_step,o.status,o.entity_id,o.target_market,o.target_service_key,o.wave,
           g.business_name,g.public_email,g.market,g.service_key,g.target_id,g.experiment_cell,g.source_url,g.source_kind,g.source_data
         from outreach o join growth_outreach_targets g on g.target_id=o.entity_id
+        join unnest($2::text[],$3::text[]) authorized(target_id,wave) on authorized.target_id=o.entity_id and authorized.wave=o.wave
         join growth_experiment_cells e on e.cell_key=g.experiment_cell
-        where o.entity_type='growth_customer' and o.campaign='growth_sales' and o.wave=$2 and o.opt_out=false
-          and o.owner_review_required=false and o.entity_id=any($3::text[])
+        where o.entity_type='growth_customer' and o.campaign='growth_sales' and o.opt_out=false
+          and o.owner_review_required=false
           and g.status not in ('suppressed','bad_fit') and e.status in ('exploring','winner','challenger')
           and (o.status='queued' or (o.status='sent' and o.next_followup_at<=now() and o.sequence_step<2))
           and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(g.public_email))
         order by case when o.status='queued' then 0 else 1 end,g.fit_score desc,coalesce(o.next_followup_at,o.created_at) asc
-        limit $1""",allowance,GROWTH_OUTREACH_WAVE,list(scope))
+        limit $1""",allowance,list(dispatch_scopes),list(dispatch_scopes.values()))
       for row in rows:
-        if row["target_id"] not in scope:continue
+        if (target_dispatch_wave(dict(row),ADMIN_KEY,scope,globals().get('GROWTH_OUTREACH_WAVE','growth-cleaning-1'),globals().get('GROWTH_WAVES',{}))!=row['wave'] or row['target_id'] not in dispatch_scopes):continue
         step=1 if row["status"]=="queued" else 2
         try:
             service_key,subject,body,html_body,landing=growth_outreach_message(row,step)
@@ -5058,7 +5061,9 @@ async def authorize_reviewed_phoenix_launch(x_bmc_admin_key:str|None=Header(defa
                 held+=1;continue
             await conn.execute("update outreach set owner_review_required=false where outreach_id=$1",row['outreach_id'])
             approved+=1
-    return {"ok":True,"approved_queued":approved,"copy_held":held,"sent":0,"history_reset":False}
+        already_sent=await conn.fetchval("""select count(*) from outreach where entity_type='growth_customer'
+          and campaign='growth_sales' and entity_id=any($1::text[]) and wave=$2 and sent_at is not null""",cohort['target_ids'],cohort['wave'])
+    return {"ok":True,"approved_queued":approved,"already_sent":int(already_sent or 0),"copy_held":held,"sent":0,"history_reset":False}
 
 @app.get("/api/admin/growth-preview-candidates")
 async def growth_preview_candidates(service_key:str="commercial_cleaning",x_bmc_admin_key:str|None=Header(default=None)):
@@ -7537,7 +7542,7 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                       where not exists(select 1 from exceptions where type='inbound_delivery_failure' and summary=$1)""",
                       "Delivery-failure message recorded: "+inbound_fingerprint)
                 if not sender:continue
-                row=await conn.fetchrow("""select o.outreach_id,o.entity_type,o.entity_id,o.owner_review_required
+                row=await conn.fetchrow("""select o.outreach_id,o.entity_type,o.entity_id,o.owner_review_required,o.wave
                   from outreach o
                   where (o.entity_type='vendor' and o.entity_id in (select vendor_id from vendors where lower(public_email)=lower($1)))
                      or (o.entity_type='buyer' and o.entity_id in (select buyer_id from buyers where lower(public_email)=lower($1)))
@@ -7550,6 +7555,8 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                 if msg.get_content_type()=="multipart/report" or sender.split("@",1)[0] in ("mailer-daemon","postmaster"):
                     classification="delivery_failure"
                 await record_mail_observation(inbound_key,"inbound","received",inbound_fingerprint,classification)
+                if callable(globals().get('record_owner_reply_review')):
+                    await record_owner_reply_review(conn,inbound_key,sender,body,classification,msg.get('Subject',''),str(row['entity_id']) if row else None)
                 if row:
                     await conn.execute("""update outreach set replied_at=now(),reply_type=$2,
                       status=case when $2='opt_out' then 'suppressed' else 'replied' end,
@@ -7564,9 +7571,12 @@ async def process_replies(x_bmc_admin_key:str|None=Header(default=None)):
                               where cell_key=$1""",target["experiment_cell"])
                             # Reply ingestion continues during a hold, but customer
                             # follow-up remains behind the same owner/campaign gates.
+                            from scoped_dispatch import target_dispatch_wave
+                            reply_wave=target_dispatch_wave(dict(target),ADMIN_KEY,GROWTH_OUTREACH_TARGET_IDS,globals().get('GROWTH_OUTREACH_WAVE','growth-cleaning-1'),globals().get('GROWTH_WAVES',{}))
                             if (not OWNER_LAUNCH_HOLD and GROWTH_OUTREACH_ENABLED
-                                and str(target["target_id"]) in GROWTH_OUTREACH_TARGET_IDS
-                                and not row.get("owner_review_required",True)):
+                                and reply_wave is not None and row.get('wave')==reply_wave
+                                and not row.get("owner_review_required",True)
+                                and not await conn.fetchval("select 1 from outreach_suppressions where lower(email)=lower($1)",sender)):
                                 subject,reply_body,reply_html=growth_positive_reply_message(target)
                                 ok=await send_mail_once("growth-positive:"+str(target["target_id"]),sender,
                                   subject,reply_body,reply_html)
@@ -8120,8 +8130,10 @@ async def process_growth_offer_invitations(x_bmc_admin_key:str|None=Header(defau
         return {"ok":True,"sent":0,"held":True}
     scope=tuple(globals().get("GROWTH_OUTREACH_TARGET_IDS",()))
     if not scope:return {"ok":True,"sent":0,"held":True,"message":"An exact reviewed recipient scope is required."}
+    from scoped_dispatch import resolve_dispatch_scopes, target_dispatch_wave
     sent=0
     async with app.state.pool.acquire() as conn:
+      dispatch_scopes=await resolve_dispatch_scopes(conn,ADMIN_KEY,scope,globals().get('GROWTH_OUTREACH_WAVE','growth-cleaning-1'),globals().get('GROWTH_WAVES',{}))
       offers=await conn.fetch("""select f.offer_id from growth_purchase_offers f join products p on p.product_key=f.product_key
         join growth_sample_requests s on s.sample_id=f.sample_id
         join growth_outreach_targets g on g.target_id=s.source_target_id
@@ -8129,14 +8141,16 @@ async def process_growth_offer_invitations(x_bmc_admin_key:str|None=Header(defau
           and lower(f.email)=lower(g.public_email) and f.status='approved' and f.approved_at is not null and f.invited_at is null and f.expires_at>now()
           and p.active=true and coalesce(p.payment_link_url,'')<>''
           and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(f.email))
-        order by f.created_at limit 5""",list(scope))
+        order by f.created_at limit 5""",list(dispatch_scopes))
       for item in offers:
        async with conn.transaction():
         await growth_lock_exposure_allocator(conn)
         offer=await conn.fetchrow("select * from growth_purchase_offers where offer_id=$1 for update",item['offer_id'])
         scoped=await conn.fetchval("""select exists(select 1 from growth_sample_requests s join growth_outreach_targets g on g.target_id=s.source_target_id
-          where s.sample_id=$1 and s.source_target_id=any($2::text[]) and lower(s.email)=lower($3) and lower(g.public_email)=lower($3))""",offer['sample_id'],list(scope),offer['email'])
+          where s.sample_id=$1 and s.source_target_id=any($2::text[]) and lower(s.email)=lower($3) and lower(g.public_email)=lower($3))""",offer['sample_id'],list(dispatch_scopes),offer['email'])
         if not scoped:continue
+        dispatch_target=await conn.fetchrow('select g.* from growth_outreach_targets g join growth_sample_requests s on s.source_target_id=g.target_id where s.sample_id=$1',offer['sample_id'])
+        if not dispatch_target or target_dispatch_wave(dict(dispatch_target),ADMIN_KEY,scope,globals().get('GROWTH_OUTREACH_WAVE','growth-cleaning-1'),globals().get('GROWTH_WAVES',{})) is None:continue
         if offer['status']!='approved' or offer['invited_at'] or offer['expires_at']<=datetime.now(timezone.utc):continue
         if await conn.fetchval("select 1 from outreach_suppressions where lower(email)=lower($1)",offer['email']):continue
         product=await conn.fetchrow("select * from products where product_key=$1 and active=true",offer['product_key'])
@@ -8196,3 +8210,9 @@ from census_research_queue import install as install_census_research_queue
 install_census_research_queue(app, require_admin, ADMIN_KEY,
     lambda: OWNER_LAUNCH_HOLD and not any((OUTREACH_ENABLED, BUYER_OUTREACH_ENABLED, GROWTH_OUTREACH_ENABLED)),
     search_research_web, enabled=RESEARCH_SEARCH_ENABLED)
+
+# Owner-authorized operational reply alerts; no customer reply or send-scope expansion.
+from reply_review import install as install_reply_review
+record_owner_reply_review=install_reply_review(app,require_admin,ADMIN_KEY,
+    dict(IMAP_HOST=IMAP_HOST,IMAP_PORT=IMAP_PORT,IMAP_USER=IMAP_USER,IMAP_PASSWORD=IMAP_PASSWORD,
+         WATCHDOG_EMAIL=os.getenv('WATCHDOG_EMAIL','')),send_mail_once)

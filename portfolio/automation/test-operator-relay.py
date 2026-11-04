@@ -166,6 +166,28 @@ class CohortScopeTests(unittest.TestCase):
                     self.assertEqual(changes,[{'GROWTH_OWNER_APPROVED_SHA':SHA,'BMC_OWNER_LAUNCH_HOLD':'false'}])
                     self.assertFalse(result['metadata']['owner_release_authorization']['outreach_enabled'])
 
+    def test_scoped_batch_registration_is_bounded_and_held(self):
+        ids=['inventory:00000000-0000-4000-8000-000000000001'];calls=[]
+        with patch.dict(G,{'app_env':lambda:dict(BASE_ENV),'current_sha':lambda:SHA,'current_branch':lambda:'master',
+            'admin_post':lambda path,**kw:calls.append((path,kw)) or {'ok':True,'registered':1,'sent':0}}):
+            execute(dict(REQ,action='authorize_scoped_batch',args={'target_ids':ids}))
+            self.assertEqual(calls,[('/api/admin/authorize-scoped-batch?request_id='+REQ['request_id'],{'timeout':300,'body':{'target_ids':ids}})])
+        for args in ({'target_ids':ids*2},{'target_ids':ids,'send':True},{'target_ids':['other']}):
+            with patch.dict(G,{'app_env':lambda:dict(BASE_ENV),'current_sha':lambda:SHA,'current_branch':lambda:'master','admin_post':lambda *a,**k:self.fail('Invalid batch cannot call API')}):
+                with self.assertRaises(namespace['RelayError']):execute(dict(REQ,action='authorize_scoped_batch',args=args))
+    def test_launch_daily_limit_requires_explicit_bounded_integer(self):
+        cohort=json.loads(PATH.with_name('api').joinpath('growth_phoenix_cohort.json').read_text())
+        env=dict(BASE_ENV,BMC_OWNER_LAUNCH_HOLD='false',GROWTH_OUTREACH_WAVE=cohort['wave'],GROWTH_OUTREACH_TARGET_IDS=','.join(cohort['target_ids']))
+        for limit in (0,101,True,'25'):
+            with patch.dict(G,{'app_env':lambda:env,'current_sha':lambda:SHA,'current_branch':lambda:'master','run':lambda *a,**k:self.fail('Invalid limit cannot launch')}):
+                with self.assertRaises(namespace['RelayError']):execute(dict(REQ,action='growth_launch_enable',args=dict(wave=cohort['wave'],target_ids=cohort['target_ids'],daily_limit=limit)))
+    def test_explicit_preparation_pause_sets_only_growth_and_hold(self):
+        changes=[]
+        with patch.dict(G,{'app_env':lambda:dict(BASE_ENV),'current_sha':lambda:SHA,'current_branch':lambda:'master',
+            'set_env_values':lambda value:changes.append(value),'run':lambda *a,**k:subprocess.CompletedProcess([],0,'','')}):
+            execute(dict(REQ,action='growth_launch_disable',args={'hold_for_preparation':True}))
+        self.assertEqual(changes,[{'GROWTH_OUTREACH_ENABLED':'false','BMC_OWNER_LAUNCH_HOLD':'true'}])
+
     def test_no_scope_launch_is_rejected_before_restart_or_send(self):
         env=dict(BASE_ENV,BMC_OWNER_LAUNCH_HOLD='false')
         with patch.dict(G,{'app_env':lambda:env,'current_sha':lambda:SHA,'current_branch':lambda:'master',

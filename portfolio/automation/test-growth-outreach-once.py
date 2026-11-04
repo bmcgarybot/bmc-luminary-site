@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Execute the real Growth worker and delivery claim with fake SMTP/DB only."""
 import ast
+import sys
 import asyncio
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -9,6 +10,7 @@ from types import SimpleNamespace
 import unittest
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0,str(HERE/'api'))
 durable = runpy.run_path(str(HERE / 'test-paid-mail-once.py'))
 Context = durable['Context']
 
@@ -16,7 +18,7 @@ class BusinessConnection:
     def __init__(self):
         self.writes = []
         self.row = dict(outreach_id='fixture-growth', sequence_step=0, status='queued',
-            entity_id='fixture-target', target_id='fixture-target', business_name='Fixture Co',
+            entity_id='fixture-target', target_id='fixture-target', wave='fixture', business_name='Fixture Co',
             public_email='fixture@example.invalid', market='Prescott', service_key='commercial_cleaning',
             experiment_cell='fixture-cell')
     async def fetchval(self, *args): return 0
