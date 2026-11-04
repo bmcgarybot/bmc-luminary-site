@@ -85,6 +85,25 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.setup()
         with patch.object(api,'seal_export',return_value={'ciphertext':'x'*500001}):
             with self.assertRaises(HTTPException):await self.run_endpoint()
+    async def test_failure_reason_is_encrypted_and_arbitrary_error_text_is_not_exported(self):
+        self.setup()
+        async def failure(*args,**kwargs):raise ValueError('Qualified sample reserve is incomplete')
+        async def request():
+            with patch.object(api.official_research,'fetch_page',return_value=(self.row['source_url'],self.document,self.digest)),patch.object(api,'compile_held_packet',side_effect=failure),patch.object(Path,'read_bytes',return_value=self.pem),patch.object(export,'PINNED_FINGERPRINT',self.pin):
+                return await self.endpoint('test-packet-request',str(self.row['candidate_id']),'allowed',diagnostics=True)
+        capsule=await request()
+        self.assertNotIn('reserve',json.dumps(capsule))
+        key=self.key.decrypt(base64.b64decode(capsule['wrapped_key']),padding.OAEP(mgf=padding.MGF1(hashes.SHA256()),algorithm=hashes.SHA256(),label=None))
+        aad=f"{export.VERSION}|test-packet-request|{self.pin}".encode()
+        payload=json.loads(gzip.decompress(AESGCM(key).decrypt(base64.b64decode(capsule['nonce']),base64.b64decode(capsule['ciphertext']),aad)))
+        self.assertEqual(payload['gate_reason'],'Qualified sample reserve is incomplete')
+        self.assertFalse(payload['offer_ready'])
+        async def failure(*args,**kwargs):raise ValueError('PRIVATE SQL OR CONTACT DETAILS')
+        capsule=await request()
+        self.assertNotIn('PRIVATE SQL',json.dumps(capsule))
+        key=self.key.decrypt(base64.b64decode(capsule['wrapped_key']),padding.OAEP(mgf=padding.MGF1(hashes.SHA256()),algorithm=hashes.SHA256(),label=None))
+        payload=json.loads(gzip.decompress(AESGCM(key).decrypt(base64.b64decode(capsule['nonce']),base64.b64decode(capsule['ciphertext']),aad)))
+        self.assertEqual(payload['gate_reason'],'preparation_gate_failed')
     def test_focus_ignores_scripts_and_refuses_broad_fallback(self):
         for html in ('<p>Commercial cleaning</p>','<script>Office Cleaning</script>','<style>Healthcare</style>'):
             with self.assertRaises(ValueError):api.source_focus(html)

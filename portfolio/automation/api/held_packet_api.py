@@ -67,7 +67,7 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
     if set(callbacks)!=required: raise ValueError('compiler_callbacks_required')
 
     @app.post('/api/admin/held-research-packet')
-    async def prepare(request_id: str, candidate_id: str, x_bmc_admin_key: str | None=Header(default=None), pack_count: int=100):
+    async def prepare(request_id: str, candidate_id: str, x_bmc_admin_key: str | None=Header(default=None), pack_count: int=100, diagnostics: bool=False):
         require_admin(x_bmc_admin_key)
         if not hold_required(): raise HTTPException(409,'owner_hold_required')
         if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{5,118}',request_id):
@@ -121,7 +121,21 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                     if len(json.dumps(capsule,separators=(',',':')).encode())>500_000:
                         raise ValueError('sealed_packet_too_large')
                     return capsule
-        except (ValueError,KeyError,TypeError,asyncio.TimeoutError):
+        except (ValueError,KeyError,TypeError,asyncio.TimeoutError) as exc:
+            if diagnostics:
+                # Bounded static codes only, inside authenticated owner encryption.
+                known={'recipient_unavailable','recipient_gate_failed','recipient_history_or_suppression',
+                    'source_changed','recipient_contact_or_identity_changed','fresh_evidence_invalid',
+                    'unsupported_customer_focus','owner_hold_changed','sealed_packet_too_large',
+                    'structured_identity_location_or_contact_unproven','untrusted_source',
+                    'Qualified sample reserve is incomplete','The promised quantity is incomplete',
+                    'export_size_exceeded','page_too_large','not_html','redirect_limit'}
+                reason=str(exc)
+                if isinstance(exc,asyncio.TimeoutError): reason='source_timeout'
+                elif reason not in known and not re.fullmatch(r'http_[0-9]{3}',reason):reason='preparation_gate_failed'
+                return seal_export(dict(status='held_packet_requires_review',offer_ready=False,
+                    outreach_held=True,candidate_id=str(candidate),pack_count=pack_count,gate_reason=reason,
+                    customer_order_created=False,customer_delivery_recorded=False),request_id)
             # No contacts, HTML, SQL or compiled rows in error responses.
             raise HTTPException(409,'held_packet_requires_review')
     return prepare

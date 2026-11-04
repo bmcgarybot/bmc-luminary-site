@@ -853,7 +853,7 @@ def execute(req: dict) -> dict:
         candidate_id=str(args.get("candidate_id") or "")
         if not {"candidate_id"}<=set(args)<={"candidate_id","pack_count"} or args.get("pack_count",100) not in (25,100) or not re.fullmatch(r"[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}",candidate_id):
             raise RelayError("One research candidate UUID is required")
-        path="/api/admin/held-research-packet?"+urllib.parse.urlencode({"request_id":req["request_id"],"candidate_id":candidate_id,"pack_count":args.get("pack_count",100)})
+        path="/api/admin/held-research-packet?"+urllib.parse.urlencode({"request_id":req["request_id"],"candidate_id":candidate_id,"pack_count":args.get("pack_count",100),"diagnostics":"true"})
         stdout=json.dumps(admin_post(path,timeout=180),separators=(",",":"));stderr="";exit_code=0
 
     elif action == "private_research_export":
