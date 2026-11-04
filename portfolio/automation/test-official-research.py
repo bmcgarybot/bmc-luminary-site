@@ -40,6 +40,14 @@ class Tests(unittest.TestCase):
    with self.assertRaises(ValueError):r.public_addresses('business.example')
   with patch.object(r.socket,'getaddrinfo',return_value=[(2,1,6,'',('93.184.216.34',443)),(2,1,6,'',('10.0.0.1',443))]):
    with self.assertRaises(ValueError):r.public_addresses('business.example')
+ def test_same_site_visible_mailbox_supplements_only_a_verified_entity(self):
+  entity=copy.deepcopy(ENTITY);entity.pop('email')
+  page=document(entity)+'<a href="mailto:info@desertdental.example">Contact</a>'
+  out=r.parse_record(CANDIDATE,URL,page,'c'*64,'test-secret')
+  self.assertEqual(out['public_email'],'info@desertdental.example');self.assertTrue(r.auto_evidence_valid(out,'test-secret'))
+  for links in ['<a href="mailto:info@agency.example">Agency</a>', '<a href="mailto:careers@desertdental.example">Careers</a>', '<a href="mailto:info@desertdental.example">Info</a><a href="mailto:contact@desertdental.example">Contact</a>']:
+   out=r.parse_record(CANDIDATE,URL,document(entity)+links,'c'*64,'test-secret');self.assertEqual(out['public_email'],'')
+  with self.assertRaises(ValueError):r.parse_record(CANDIDATE,URL,'<a href="mailto:info@desertdental.example">Contact</a>','c'*64,'test-secret')
  def test_vendor_requires_explicit_service_evidence(self):
   c=dict(CANDIDATE,side='vendor',category_key='commercial_cleaning',category_label='Commercial cleaning')
   with self.assertRaises(ValueError):r.parse_record(c,URL,document(ENTITY),'a'*64,'test-secret')

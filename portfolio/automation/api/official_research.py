@@ -174,6 +174,18 @@ def parse_record(candidate,url,document,digest,secret):
             if isinstance(c,dict):phones.append(str(c.get('telephone') or ''));emails.append(str(c.get('email') or '').removeprefix('mailto:'))
         phones=[re.sub(r'\D','',p) for p in phones];phones=[p[-10:] for p in phones if len(p)==10 or (len(p)==11 and p[0]=='1')]
         emails=[x.lower() for x in emails if re.fullmatch(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}',x)]
+        if not emails:
+            # A visible business mailbox on the same official domain can
+            # supplement the already-proven structured entity, never replace it.
+            observed=set()
+            for link in page.links:
+                parsed=urlsplit(link)
+                address=parsed.path.lower()
+                if parsed.scheme!='mailto' or not re.fullmatch(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}',address):continue
+                local,domain=address.rsplit('@',1)
+                if domain==host(url) and local in ('info','contact','office','hello','admin','sales','service','services','support','inquiries','enquiries'):
+                    observed.add(address)
+            if len(observed)==1:emails=list(observed)
         if not phones and not emails:continue
         old_phone=re.sub(r'\D','',str(candidate.get('public_phone') or ''))[-10:]
         if len(old_phone)==10 and phones and old_phone not in phones:continue
