@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "request_id": "a-pressure-scope-canyon25-20261104T070107Z",
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "created_at": "2026-11-04T07:01:07.432773+00:00",
+  "expires_at": "2026-11-04T08:01:07.432773+00:00",
+  "args": {
+    "candidate_id": "d4233ef0-b430-49e6-936e-86017453a514",
+    "pack_count": 25
+  }
+}
