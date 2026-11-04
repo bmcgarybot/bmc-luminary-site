@@ -1,0 +1,21 @@
+{
+  "action": "runtime_doctor",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-04T19:33:09.728270+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "55fe1a4689de60df77e39702e8c65ab47763c44d",
+  "git_commit_before": "55fe1a4689de60df77e39702e8c65ab47763c44d",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "127de76fa2265342ceb27c68e3b8830080baa6f4",
+  "request_id": "rw11-20261104T1930Z-03-runtime_doctor",
+  "request_sha256": "59c49318b999c0dcd8e1cebe4079036217b7eb8a1f28b6d093ccb4c6149cd6b9",
+  "started_at": "2026-11-04T19:33:07.396008+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "BMC runtime doctor\n==================\nPASS  Deployment target is cloud-vps\nPASS  Host memory fits 8 GB production class (11671 MB visible)\nPASS  Working filesystem has 74 GB free\nPASS  Emergency swap is configured\nPASS  Docker command is installed\nPASS  Docker Compose plugin is available\nPASS  .env exists\nPASS  Public site URL is bmcservicenetwork.com\nPASS  Vendor outreach global switch is OFF\nPASS  Buyer outreach global switch is OFF\nPASS  Growth Pack outreach is ON in isolated Growth-only launch mode\nPASS  Provider and buyer outbound waves are restricted to pilot1\nPASS  Docker Compose configuration validates\nPASS  Continuous bulk research refresher is running\nPASS  Cloudflare Tunnel is running patched cloudflared (2026.10.3)\nPASS  Ops API health endpoint is OK\nPASS  Service registry seeded (54)\nPASS  Traditional auto repair service is active\nPASS  Research refresh state is available (23 source rows)\nPASS  Vendor research pool seeded (212)\nPASS  Buyer research pool seeded (3819)\nPASS  First Wave provider cohort is exactly 12\nPASS  First Wave buyer cohort is exactly 7\nPASS  Research backlog is fully drained (0 queued)\nPASS  Recovered Arizona expansion research cells are seeded (198)\nPASS  Source-native market scope includes recovered Arizona expansion\nPASS  Private admin preflight endpoint is reachable\nLaunch gates:\n  live_intake_ready: BLOCKED\n  outreach_ready: READY\n  payments_ready: READY\n  intelligent_search_ai_ready: READY\nExternal/launch actions still required:\n  - Activate at least one verified pilot provider\nPASS  Growth-only launch health gate is OK\nPASS  Private agent status endpoint is reachable\nAgent:\n  enabled: True\n  mode: bounded_internal_operator_v1\n  external actions allowed: False\n  open agent tasks: 1\n  research queued: 0\n  research assigned: 0\nPASS  Local AI service is reachable\nPASS  Configured local AI model is loaded (qwen3:1.7b)\nPASS  Intelligent service search maps 'fix my fryer' to restaurant equipment repair\nPASS  Intelligent service search maps 'brake repair' to traditional auto repair\nPASS  Private research search is reachable\n\nCore failures: 0 \u00b7 warnings: 0\nCore runtime is healthy. Warnings are launch/external configuration items.\n",
+  "version": 1
+}
