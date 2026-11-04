@@ -2883,7 +2883,7 @@ async def growth_lock_exposure_allocator(conn):
     # distributing the same limited inventory. Scoped locks are future optimization.
     await conn.execute("select pg_advisory_xact_lock(20261027, 5182)")
 
-async def growth_exposure_filter(conn,rows,recipient_key="",delivery_kind="free",recipient_business_key=""):
+async def growth_exposure_filter(conn,rows,recipient_key="",delivery_kind="free",recipient_business_key="",service_key=""):
     if not rows:
         return []
     keys=list({growth_prospect_key(r) for r in rows if growth_prospect_key(r)})
@@ -2903,7 +2903,7 @@ async def growth_exposure_filter(conn,rows,recipient_key="",delivery_kind="free"
                 by_key.setdefault(k,[]).append(r)
     cohort_emails=set()
     cohort_ids=tuple(globals().get("GROWTH_NONEXCLUSIVE_COHORT_IDS",()))
-    if recipient_key and recipient_business_key and len(cohort_ids)==9 and {clean(r.get("market")) for r in rows}=={"Phoenix"}:
+    if service_key=="commercial_cleaning" and recipient_key and recipient_business_key and len(cohort_ids)==9 and {clean(r.get("market")) for r in rows}=={"Phoenix"}:
         cohort=await conn.fetch("""select lower(public_email) as email from growth_outreach_targets
           where target_id=any($1::text[]) and market='Phoenix' and service_key='commercial_cleaning'""",list(cohort_ids))
         addresses={clean(x["email"]).lower() for x in cohort}
@@ -3020,7 +3020,7 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
         r["fit_reason"]=growth_fit_reason(r,service_key)
         r["sales_angle"]=growth_sales_angle(r,service_key)
         qualified.append(r)
-    qualified=await growth_exposure_filter(conn,qualified,recipient_key,delivery_kind,recipient_business_key)
+    qualified=await growth_exposure_filter(conn,qualified,recipient_key,delivery_kind,recipient_business_key,service_key)
     # Representative distribution: low exposure first, then category diversity,
     # then stable recipient/prospect hash within comparable score bands.
     qualified.sort(key=lambda x:(

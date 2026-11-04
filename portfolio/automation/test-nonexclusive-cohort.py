@@ -24,12 +24,17 @@ class Tests(unittest.IsolatedAsyncioTestCase):
   for i in range(9):conn.record(samples[i],i,'free')
   return conn,rows,samples
  async def select(self,conn,rows,who,kind='paid',business=None):
-  return await ns['growth_exposure_filter'](conn,rows,f'cohort{who}@example.test',kind,business or f'business:cohort{who}')
+  return await ns['growth_exposure_filter'](conn,rows,f'cohort{who}@example.test',kind,business or f'business:cohort{who}','commercial_cleaning')
  async def test_all_nine_100_packs_after_all_45_free_samples(self):
   conn,rows,samples=self.setup()
   for i in range(9):
    eligible=await self.select(conn,rows,i);self.assertGreaterEqual(len(eligible)+5,125)
    final=samples[i]+eligible[:95];self.assertEqual(len({r['business_name'] for r in final}),100);conn.record(final,i,'paid')
+ async def test_late_free_samples_work_after_other_cohort_purchases(self):
+  conn,rows,samples=self.setup();conn.history=[]
+  for i in range(9):
+   free=await self.select(conn,samples[i],i,'free');self.assertEqual(len(free),5);conn.record(free,i,'free')
+   eligible=await self.select(conn,rows,i);self.assertGreaterEqual(len(eligible),95);conn.record(free+eligible[:95],i,'paid')
  async def test_all_nine_smaller_packs_and_then_75_upgrades(self):
   conn,rows,samples=self.setup();small={}
   for i in range(9):
@@ -42,7 +47,8 @@ class Tests(unittest.IsolatedAsyncioTestCase):
   eligible=await self.select(conn,rows,0);self.assertNotIn(blocked,eligible)
   self.assertTrue(all(r not in samples[0] for r in eligible))
   alias=await self.select(conn,samples[0],1,business='business:cohort0');self.assertEqual(alias,[])
-  outsider=await ns['growth_exposure_filter'](conn,rows[:45],'outsider@example.test','paid','business:outsider');self.assertEqual(outsider,[])
+  outsider=await ns['growth_exposure_filter'](conn,rows[:45],'outsider@example.test','paid','business:outsider','commercial_cleaning');self.assertEqual(outsider,[])
+  wrong_service=await ns['growth_exposure_filter'](conn,rows[5:45],'cohort0@example.test','paid','business:cohort0','pressure_washing');self.assertEqual(wrong_service,[])
  async def test_free_sample_distinct_recipient_limit_still_applies(self):
   conn,rows,samples=self.setup();conn.record([rows[0]],1,'free')
   self.assertEqual(await self.select(conn,[rows[0]],2,'free'),[])
