@@ -34,7 +34,51 @@ SECTORS=(
 )
 
 
-def source_focus(document):
+class PressureBlocks(VisibleText):
+    """Visible text blocks bound to their immediately preceding service heading."""
+    def __init__(self):
+        super().__init__();self.context='';self.heading=False;self.heading_parts=[];self.buffer=[];self.blocks=[]
+    def flush(self):
+        text=' '.join(' '.join(self.buffer).split()).lower();self.buffer=[]
+        if text:self.blocks.append((self.context,text))
+    def handle_starttag(self,tag,attrs):
+        if not self.hidden:
+            if re.fullmatch(r'h[1-6]',tag):
+                self.flush();self.context='';self.heading=True;self.heading_parts=[]
+            elif tag in ('p','li','div','section','article','br'):
+                self.flush()
+        super().handle_starttag(tag,attrs)
+    def handle_endtag(self,tag):
+        if not self.hidden:
+            if re.fullmatch(r'h[1-6]',tag):
+                self.context=' '.join(' '.join(self.heading_parts).split()).lower();self.heading=False
+            elif tag in ('p','li','div','section','article'):
+                self.flush()
+                if tag in ('section','article'):self.context=''
+        super().handle_endtag(tag)
+    def handle_data(self,data):
+        if not self.hidden:
+            (self.heading_parts if self.heading else self.buffer).append(data)
+
+
+def source_focus(document,service_key=None):
+    if service_key=='pressure_washing':
+        parser=PressureBlocks();parser.feed(document);parser.flush()
+        categories=set();terms=[];excerpts=[]
+        for heading,text in parser.blocks:
+            context=heading+' '+text
+            if not re.search(r'\bcommercial\s+(?:soft|pressure)\s+washing\b',context):continue
+            # Explicitly withdrawn service or excluded customer scope is held.
+            if re.search(r"\b(?:no longer|do not|does not|don['’]t|doesn['’]t|not (?:currently |presently )?(?:available|offered|providing|offering|for|serving)|unavailable|discontinued|withdrawn)\b|\bno commercial\b",context):continue
+            for pattern,key,term in (
+                (r'\bstorefronts?\b','retail','retail'),
+                (r'\boffices?\b','insurance_professional','office'),
+                (r'\bmulti[- ]tenant properties\b','property_management','property management')):
+                match=re.search(pattern,text)
+                if match and key not in categories:
+                    categories.add(key);terms.append(term);excerpts.append(match.group())
+        if not categories:raise ValueError('unsupported_customer_focus')
+        return dict(ideal_customer=', '.join(terms),exclusions='',category_keys=sorted(categories),observed_sector_phrases=excerpts)
     parser=VisibleText(); parser.feed(document)
     text=' '.join(' '.join(parser.parts).split()).lower()
     categories=set(); terms=[]; excerpts=[]
@@ -82,7 +126,7 @@ async def compile_native_packet(conn,candidate,secret,frozen,hold_required,callb
         raise ValueError('recipient_contact_or_identity_changed')
     fresh=dict(row,**parsed)
     if not official_research.auto_evidence_valid(fresh,secret): raise ValueError('fresh_evidence_invalid')
-    scope=dict(source_focus(document),source_url=final,content_sha256=digest,checked_at=parsed['checked_at'],
+    scope=dict(source_focus(document,fresh['category_key']),source_url=final,content_sha256=digest,checked_at=parsed['checked_at'],
                source_signature=parsed['evidence']['vps_verification']['signature'])
     allowed=set(scope['category_keys'])
     async def qualify(*args,**kwargs):

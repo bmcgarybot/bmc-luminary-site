@@ -389,6 +389,11 @@ def install(app,require_admin,search,markets,secret,enabled=True):
         async with app.state.pool.acquire() as conn:
             jobs=await conn.fetch('select market,status,count(*) records from official_research_jobs group by market,status order by market,status')
             inventory_rows=await conn.fetch("select * from market_inventory_candidates where evidence->>'researched_by'=$1 and status='discovered' and closed_at is null",VERSION)
+            rechecks=await conn.fetch("""select c.market,j.source_policy_version,j.status,count(*) records,
+              max(j.last_attempt_at) last_attempt_at from official_research_jobs j
+              join market_inventory_candidates c using(candidate_id)
+              where c.evidence->>'researched_by'=$1 and j.source_policy_version<>''
+              group by c.market,j.source_policy_version,j.status order by c.market,j.source_policy_version,j.status""",VERSION)
             from collections import Counter
             valid_counts=Counter((r['market'],r['side'],r['category_key']) for r in inventory_rows if auto_evidence_valid(dict(r),secret))
             inventory=[dict(market=k[0],side=k[1],category_key=k[2],records=n) for k,n in sorted(valid_counts.items())]
@@ -397,4 +402,4 @@ def install(app,require_admin,search,markets,secret,enabled=True):
         from pathlib import Path
         image_catalog=json.loads(Path(__file__).with_name('service_images.json').read_text())
         imagery={'assigned':len(image_catalog['services']),'needs_review':[k for k,v in image_catalog['services'].items() if v['review_status']=='needs_review']}
-        return {'ok':True,'worker':VERSION,'imagery':imagery,'jobs':[dict(x) for x in jobs],'primary_site_verified':[dict(x) for x in inventory],'native_records_requiring_revalidation':rejected_native,'review_reasons':[dict(x) for x in errors],'outreach_sent':0}
+        return {'ok':True,'worker':VERSION,'imagery':imagery,'jobs':[dict(x) for x in jobs],'native_revalidation_jobs':[dict(x) for x in rechecks],'primary_site_verified':[dict(x) for x in inventory],'native_records_requiring_revalidation':rejected_native,'review_reasons':[dict(x) for x in errors],'outreach_sent':0}

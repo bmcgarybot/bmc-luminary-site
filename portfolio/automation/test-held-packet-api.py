@@ -109,6 +109,43 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             with self.assertRaises(ValueError):api.source_focus(html)
         focus=api.source_focus('<h2>Office Cleaning</h2><p>Manufacturing Facility Cleaning</p>')
         self.assertEqual(focus['category_keys'],['insurance_professional','warehouses_industrial'])
+    def test_pressure_focus_exact_commercial_soft_washing_sectors_only(self):
+        document='<h3>Commercial Soft Washing</h3><p>Low-pressure facade and building washing for storefronts, offices, and multi-tenant properties.</p><h3>Commercial Pressure Washing</h3><p>Sidewalks, entryways, drive-throughs, parking structures and dumpster pads.</p>'
+        focus=api.source_focus(document,'pressure_washing')
+        self.assertEqual(focus['category_keys'],['insurance_professional','property_management','retail'])
+        self.assertEqual(focus['observed_sector_phrases'],['storefronts','offices','multi-tenant properties'])
+        self.assertNotIn('restaurants',focus['category_keys']);self.assertNotIn('auto_fleet',focus['category_keys'])
+        with self.assertRaisesRegex(ValueError,'unsupported_customer_focus'):api.source_focus(document)
+        with self.assertRaisesRegex(ValueError,'unsupported_customer_focus'):api.source_focus(document,'commercial_cleaning')
+
+    def test_pressure_focus_rejects_residential_negated_hidden_and_broad_context(self):
+        for document in (
+            '<h3>Residential Soft Washing</h3><p>House and home exterior cleaning for offices and storefronts.</p>',
+            '<h3>Commercial Soft Washing</h3><p>We no longer provide washing for storefronts, offices and multi-tenant properties.</p>',
+            '<h3>No Commercial Soft Washing</h3><p>Storefronts and offices.</p>',
+            '<h3>Commercial Pressure Washing</h3><p>Not available for storefronts and offices.</p>',
+            '<h3>Commercial Pressure Washing</h3><p>Sidewalks and dumpster pads.</p><h3>Residential Cleaning</h3><p>Storefronts and offices.</p>',
+            '<h3>Commercial Services</h3><p>Storefronts and offices.</p>',
+            '<script>Commercial Soft Washing for storefronts, offices and multi-tenant properties</script>',
+            '<h3>Commercial Soft Washing</h3><p>Homes only.</p><script>Storefronts offices multi-tenant properties</script>'):
+            with self.subTest(document=document),self.assertRaisesRegex(ValueError,'unsupported_customer_focus'):
+                api.source_focus(document,'pressure_washing')
+
+    def test_legacy_cleaning_sector_defaults_unchanged(self):
+        for document,keys in (
+            ('<h2>Office Cleaning</h2><p>Healthcare, education, government, industrial manufacturing.</p>',
+             ['insurance_professional','medical_centers','public_facilities','schools','schools_education','warehouses_industrial']),
+            ('<p>Offices and professional suites; dental and medical facilities; manufacturing facility.</p>',
+             ['dental','insurance_professional','medical_centers','warehouses_industrial'])):
+            self.assertEqual(api.source_focus(document)['category_keys'],keys)
+            self.assertEqual(api.source_focus(document,'commercial_cleaning'),api.source_focus(document))
+
+    async def test_compile_passes_fresh_recipient_service_key_to_focus(self):
+        self.setup()
+        with patch.object(api,'source_focus',wraps=api.source_focus) as focus:
+            await self.run_endpoint()
+            focus.assert_called_once_with(self.document,'commercial_cleaning')
+
     def test_history_query_does_not_exclude_optout_or_unsent_rows(self):
         for table in ('outreach_suppressions','growth_outreach_targets','vendors','buyers'):
             self.assertIn(table,api.HISTORY_SQL)
