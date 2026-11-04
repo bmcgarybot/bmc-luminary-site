@@ -145,6 +145,27 @@ class CohortScopeTests(unittest.TestCase):
                         with self.assertRaises(namespace['RelayError']):execute(req)
                         self.assertEqual(env_path.read_text(),original)
 
+    def test_explicit_owner_release_is_exact_and_does_not_send(self):
+        cohort=json.loads(PATH.with_name('api').joinpath('growth_phoenix_cohort.json').read_text())
+        env=dict(BASE_ENV,GROWTH_OUTREACH_WAVE=cohort['wave'],GROWTH_OUTREACH_TARGET_IDS=','.join(cohort['target_ids']))
+        args=dict(release_owner_hold=True,expected_sha=SHA,wave=cohort['wave'],target_ids=cohort['target_ids'])
+        for bad in (None,'expected_sha','target_ids','release_owner_hold'):
+            changes=[];a=dict(args)
+            if bad=='expected_sha':a[bad]='b'*40
+            elif bad=='target_ids':a[bad]=cohort['target_ids'][:-1]
+            elif bad=='release_owner_hold':a[bad]=False
+            with patch.dict(G,{'app_env':lambda:dict(env),'current_sha':lambda:SHA,'current_branch':lambda:'master',
+                'set_env_values':lambda values:changes.append(values),
+                'run':lambda *a,**k:self.fail('No restart/send command permitted'),
+                'admin_post':lambda path,**k:({'ok':True,'approved_queued':2,'sent':0} if path=='/api/admin/authorize-reviewed-phoenix-launch' else self.fail('No send API permitted'))}):
+                if bad:
+                    with self.assertRaises(namespace['RelayError']):execute(dict(REQ,action='growth_owner_preview_approve',args=a))
+                    self.assertEqual(changes,[])
+                else:
+                    result=execute(dict(REQ,action='growth_owner_preview_approve',args=a))
+                    self.assertEqual(changes,[{'GROWTH_OWNER_APPROVED_SHA':SHA,'BMC_OWNER_LAUNCH_HOLD':'false'}])
+                    self.assertFalse(result['metadata']['owner_release_authorization']['outreach_enabled'])
+
     def test_no_scope_launch_is_rejected_before_restart_or_send(self):
         env=dict(BASE_ENV,BMC_OWNER_LAUNCH_HOLD='false')
         with patch.dict(G,{'app_env':lambda:env,'current_sha':lambda:SHA,'current_branch':lambda:'master',
