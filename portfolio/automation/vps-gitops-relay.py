@@ -47,7 +47,7 @@ LOCAL_RESULTS = STATE_DIR / "results"
 RESEARCH_SCHEDULE_FILE = STATE_DIR / "research-refresh-schedule.json"
 REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{7,119}$")
 
-READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status", "private_research_export"}
+READ_ONLY_ACTIONS = {"proof_readout", "launch_audit", "runtime_doctor", "diagnostic_bundle", "scheduler_status", "search_quality_probe", "research_refresh_status", "growth_status", "growth_launch_audit", "operator_snapshot", "growth_inventory_audit", "growth_preview_candidates", "nevada_status", "business_metrics", "ops_monitor_status", "preparation_status", "private_research_export", "private_held_packet"}
 MUTATING_INTERNAL_ACTIONS = {
     "deploy_update",
     "prepare_ops_configuration",
@@ -848,6 +848,13 @@ def execute(req: dict) -> dict:
     elif action == "nevada_status":
         status=admin_post("/api/admin/nevada/status",timeout=30)
         stdout=json.dumps(status,indent=2,default=str);stderr="";exit_code=0
+
+    elif action == "private_held_packet":
+        candidate_id=str(args.get("candidate_id") or "")
+        if set(args)!={"candidate_id"} or not re.fullmatch(r"[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}",candidate_id):
+            raise RelayError("One research candidate UUID is required")
+        path="/api/admin/held-research-packet?"+urllib.parse.urlencode({"request_id":req["request_id"],"candidate_id":candidate_id})
+        stdout=json.dumps(admin_post(path,timeout=180),separators=(",",":"));stderr="";exit_code=0
 
     elif action == "private_research_export":
         if req.get("args"):

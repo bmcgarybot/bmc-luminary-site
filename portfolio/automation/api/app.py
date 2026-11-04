@@ -7901,3 +7901,11 @@ install_official_research(app,require_admin,search_research_web,DEFAULT_SOURCE_N
 
 from owner_research_export import install as install_owner_research_export
 install_owner_research_export(app, require_admin, DEFAULT_SOURCE_NATIVE_MARKETS, ADMIN_KEY)
+
+# Private preparation only: no target staging, samples, payments or mail writes.
+from held_packet_api import install as install_held_packet_api
+install_held_packet_api(app, require_admin, ADMIN_KEY, GROWTH_NONEXCLUSIVE_COHORT_IDS,
+    lambda: OWNER_LAUNCH_HOLD and not any((OUTREACH_ENABLED, BUYER_OUTREACH_ENABLED, GROWTH_OUTREACH_ENABLED)),
+    dict(qualify=growth_qualified_territory_candidates, select_sample=growth_select_representative_sample,
+         public_rows=growth_sample_public_rows, csv_bytes=growth_csv_bytes,
+         recipient_business_key=growth_recipient_business_key))
