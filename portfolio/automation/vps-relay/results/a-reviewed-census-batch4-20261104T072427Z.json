@@ -1,0 +1,21 @@
+{
+  "action": "census_research_review",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-04T07:24:44.464772+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "59d4beb66520229a955f92173346d8095e5e8861",
+  "git_commit_before": "59d4beb66520229a955f92173346d8095e5e8861",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "6c61a40b7da47739a2b76892277ed2292b4976b4",
+  "request_id": "a-reviewed-census-batch4-20261104T072427Z",
+  "request_sha256": "d41a3730d6548de76096f772f5aba2ad18a2bfae86f97ed434f144f0ce56f438",
+  "started_at": "2026-11-04T07:24:42.710618+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"a-reviewed-census-batch4-20261104T072427Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"rxgZM7tsRNZCoUkD+uyQMeIRlG9U8S+ftOSDHMKp60mdTZF9AxgEmTByw/3YfwwM586TAmFtBiuk8b2B5nIsIg4QAvJZObwoQFsrRtqMluxwk3MNdO2DRhkHnXzn/Nkga7Pa7wnUpFEaQhqv0/VDQFEtaumP2xVtPbBxbTlOnlQwDrbkzd0yEh+jIpv4gYgxLwOLAxaKgHpGb0hmiivCGd4DKUJkbdkM2gOuc6zI0vgAltdJmI29UVjh8S1Q/KQ3g58v3d4fMV7kw5IMTSLOs6x5GkaNRtFPDrKPht/KwoTSvhyrtzBVGgIwZmtNopiVvrdVgnQEHoZxBgzyC9RxSss730h1E0C8sdTolPy2H+IN69Oo8br4+VQPqCQ0h2ekycd1OcuCA8q5gdeAzbcxdj/1DoNHXcZx7w83ZchQMyPWTbOgBWow/Ebia+KihW9/vbomgJpukKb3QcK57f0qP3PwQ9RPzRTLCZx/VbaRVCQwQXDagPWncH+p2a1LtHtu\",\"nonce\":\"gq/oTF3x0cE60tlA\",\"ciphertext\":\"3wrzo8G1R2hz25RpdrAceON41nyr2t5SY6HOpE75erVYNpz38ng5TRmGFm1q+NX+lD5VMKZgFsPp/bkzSkAFpHC7HUyB6cqk4DjwYyTdiXdtCOKduZQIJJBUIOnOCtyIgXspX0elooahfb/YVSHqU5/iylb1sZcSVu9XGKHyLfF8TS75v+B3jNdMjUlqTksk2e2UskJPPb/GJ00JZ+4ZAufV0Sug4GSzmK8HrFZJSfEvizMNMJKvx80u9CTXbMwsZQlNGpWs9bpPmS5/essBdfdL/BzGMSAH00if4bvwwRhhJftaX2nK8/I4TM/pz63hHI0b9I9U3k0t1L0oKiEzcXP18ieW9jASZmNcnVRGihZ9ptHxQai3JyCjMw+gF83mQdGiueCkStA6/qiMfDQzKUJo3a3kZimyZAbbqJcZw/w1FEPc4lbEVK85c8jk7TP/a0em5g8vpvOGstjh9klnPwvrYd2hiupgvl8RnRqrdtV8tq5OnOPb+o1PM6GP3bk43MxyL45HX2Ckc7oVgS2xDyZSI5ErrqKVV8dRfBFK1/it+52K\"}",
+  "version": 1
+}
