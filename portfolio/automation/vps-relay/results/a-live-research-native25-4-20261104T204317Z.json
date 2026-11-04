@@ -1,0 +1,21 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-04T20:44:01.046903+00:00",
+  "exit_code": 0,
+  "git_branch_before": "master",
+  "git_commit_after": "85701057386e1bd9c5783614e799248b3126fde8",
+  "git_commit_before": "85701057386e1bd9c5783614e799248b3126fde8",
+  "host": "vps-5675821a",
+  "metadata": {},
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_blob_sha": "13cb4410a9d854cdd82383cb0fa59be7273a7cde",
+  "request_id": "a-live-research-native25-4-20261104T204317Z",
+  "request_sha256": "9867fe2814dde2c835a9723bec702d51628f60b70f74332e43e58c1f835636fc",
+  "started_at": "2026-11-04T20:44:00.442316+00:00",
+  "status": "success",
+  "stderr": "",
+  "stdout": "{\"version\":\"bmc-owner-research-v1\",\"request_id\":\"a-live-research-native25-4-20261104T204317Z\",\"key_fingerprint\":\"e2076ac16d076fdded5f0090e9b3df53ccbe8be859d861371221bd9818818cc6\",\"wrapped_key\":\"pYrUKQHKg+sQY9U6Xr87Mhx5BaSpbW5R471ajLGKC1ybyvLW12gQn3pZSh5krdlrsorptHrMkCuZA4hVE7sNJX2kPd3e+T+n8wM2UqG9CiJFgXoVhpwR+S42PhD4xN3tM0SgPUgyytc4/gd3fQYCYzAblenqn3ZUTdeR8PDiwADa6siNqrZUrClRp5HSU8MK2i+rfesdHqW2PnY8JIGZx7r5K4I/5NPok9VLpFx3i4HVnAmWu/b1hi9eZgmViEXyHtVgSmS9NlU5GgsnUAP99PRZp13oRqq92zJJOeIWXY25kQa2i3VHxaI8++S1Gm/HquI0tviTdOEHPr0ibwCRg8Lj8oiRIFen+KsqgOZM/6Bv4m5lWbFnmKCX9/HEdz7gHNgxHGIMwVl6iGK10VxTdARpCuS9P+Q0a3Shf7WXTWMnk0mSmfjlXkEbcOHiMwswYf2Dp2YRM6qKbej9IvAJPjwIFBPmQK7ySTjyGsi6LfPBP/m8SW5ic+Ahx+PGntAr\",\"nonce\":\"iNLWach1JQ2Dv6ur\",\"ciphertext\":\"9SQudKSUDU7BQyQHv+HyGsqT1L6cMe6OMSOzFq4G52KISsaZ2/WMWeFUFo7dU/m6vb9NCjxnUdfeckiiwLaT9Y1ss/cULIq2TdY2iGF4PIEjWV7pDTCw81Gjkp24aGuoqJvDP+48p72AGHAIp8V15GNFZ1Ab6l/VDtF4HVMNxhTcT2rkaY0XD+/+9ekpHDkqBm8EwSd5SlEpGxPGd2QkbYKWB7ugmx37WJ/CQdZwMi8CYaJWVh0i44UB84EVAc9N8KioSm22dbacRrnBHqj+6MDNGxRM0p1p8OJSQJq4M7Z/q+joOHJ6am0i0X0XGV4lo+mF3Nvs2lUA8Y1Ss21qtypUUCrGvw==\"}",
+  "version": 1
+}
