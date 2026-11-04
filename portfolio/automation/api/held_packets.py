@@ -70,7 +70,7 @@ async def compile_held_packet(conn, recipient, scope, *, verify_recipient,
         artifacts[count] = dict(rows=public, csv=csv_bytes(rows), pdf=render_sample_pdf(
             public, recipient['business_name'], 'Commercial cleaning' if recipient['category_key']=='commercial_cleaning'
             else recipient['category_key'].replace('_', ' ').title(), territory,
-            'held-'+digest, prepared_at=prepared, preview=True, paid=count!=5,
+            'held-'+digest, prepared_at=prepared, preview=True, paid=count!=5, free_offer_count=pack_count,
             **({'paid_count': count} if count!=5 else {})))
     return dict(status='held_packet_compiled', pack_count=pack_count, outreach_held=True, offer_ready=False,
                 checkout_url='', customer_order_created=False, customer_delivery_recorded=False,

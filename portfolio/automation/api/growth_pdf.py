@@ -96,7 +96,7 @@ def prospect_presentation(row):
 def present_prospect_rows(rows):
     return [dict(row,presentation=prospect_presentation(row)) for row in rows]
 
-def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at=None, preview=False, paid=False, paid_count=100):
+def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at=None, preview=False, paid=False, paid_count=100, free_offer_count=100):
     """Render only the caller's already authorized five; no database or URL fetching."""
     if paid_count not in (25,100):
         raise ValueError("Unsupported paid pack quantity")
@@ -187,11 +187,13 @@ def render_sample_pdf(rows, business, service, territory, sample_id, prepared_at
           ('BOX',(0,0),(-1,-1),.7,colors.HexColor('#CADBE5')),
           ('LINEABOVE',(0,2),(-1,3),.5,colors.HexColor('#DCE6EB'))]))
         prospect_blocks.append([card,Spacer(1,16)])
+    if free_offer_count not in (25,100): raise ValueError('Unsupported researched offer quantity')
+    free_offer_price=149 if free_offer_count==25 else 499
     closing=[p('YOUR NEXT STEP','label'),
       p('Review the fit, then use the suggested conversation to ask about needs and the vendor process. Confirm current operations and safe access before a visit.'),
-      p(f'Your original five are included in these {paid_count} researched prospects. Reply with qualifying errors for replacement. No guaranteed jobs or sales.' if paid else 'The five are free with no obligation. Where the reviewed territory supports it, the optional $499 pack contains 100 total researched prospects, including these five. No guaranteed jobs or sales.'),
+      p(f'Your original five are included in these {paid_count} researched prospects. Reply with qualifying errors for replacement. No guaranteed jobs or sales.' if paid else f'The five are free with no obligation. Where the reviewed territory supports it, the optional ${free_offer_price} pack contains {free_offer_count} total researched prospects, including these five. No guaranteed jobs or sales.'),
       p('Questions or corrections? contact@bmcservicenetwork.com','small'),
-      p('Limited overlap with other samples is possible; these prospects are not exclusive.','small')]
+      p('These prospects are nonexclusive and may also appear in other customers’ research.','small')]
     story += [KeepTogether(block) for block in prospect_blocks[:-1]]
     # Keep the next-step box with the last prospect; never create a mostly empty closing page.
     story.append(KeepTogether(prospect_blocks[-1]+[panel(closing),Spacer(1,9),
