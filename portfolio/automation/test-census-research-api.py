@@ -78,13 +78,51 @@ class Tests(unittest.IsolatedAsyncioTestCase):
   for fetched,reason in [(receipt(final='https://thirdparty.example/'),'receipt_domain_binding_unproven'),(receipt(age=600),'receipt_freshness_or_digest_unproven')]:
    self.setup();await self.run_review(fetched=fetched);self.assertEqual(self.payloads[-1]['proposals'][0]['gate_reason'],reason)
   self.setup();self.row['business_name']='Tampered';out,fetch=await self.run_review();fetch.assert_not_called()
- async def test_directory_discovers_only_first_allowed_url_once_no_form(self):
+ async def test_directory_discovers_first_identity_qualified_url_once_no_form(self):
   self.setup();self.row.update(source_url='https://nextdoor.com/listing',official_site=False);self.row['source_key']=c.raw_source_key(self.row);self.payload['source_keys']=[self.row['source_key']]
-  async def search(*args):return [{'url':'https://nextdoor.com/x'},{'url':URL},{'url':'https://other.example/'}]
+  async def search(*args):return [{'url':'https://nextdoor.com/x','title':'Juniper Wash LLC'},{'url':URL,'title':'Juniper Wash LLC | Official services'},{'url':'https://other.example/','title':'Other Contractor'}]
   # Direct helper to use deterministic discovery; only one immutable GET receipt.
   with patch.object(c,'fetch_page_receipt',return_value=receipt()) as fetch:
    result=await c.review_row(self.row,'pressure_washing',search,'synthetic-secret')
   self.assertEqual(result['status'],'source_proposal_only');fetch.assert_called_once_with(URL)
+ async def test_bob_discovery_skips_hibob_login_and_fetches_exact_contractors_only(self):
+  self.setup();row=dict(self.row,business_name="Bob's Tree and Landscaping",market='Camp Verde',category_key='landscaping',
+    source_url='https://campverdebiz.com/hwy-260-east',source_domain='campverdebiz.com',official_site=False,public_email=None,public_phone='9285676744')
+  row['source_key']=c.raw_source_key(row);correct='https://bobstreeandlandscaping.com/'
+  async def search(*args):
+   self.assertEqual(args[1:],(1,5))
+   return [{'url':'https://app.hibob.com/','title':'Customer login','snippet':'HiBob customer login'},
+     {'url':'https://bobstreeandlandscaping.com/','title':"Bob’s Tree and Landscaping | Camp Verde",'snippet':'Landscaping and tree services in Camp Verde.'}]
+  e={'@type':'LocalBusiness','name':row['business_name'],'url':correct,'description':'Landscape design and landscape maintenance',
+     'telephone':'9285676744','address':{'streetAddress':'100 Commercial Way','addressLocality':'Camp Verde','addressRegion':'AZ','postalCode':'86322'}}
+  with patch.object(c,'fetch_page_receipt',return_value=receipt(e,url=correct)) as fetch:
+   result=await c.review_row(row,'landscaping',search,'synthetic-secret')
+  fetch.assert_called_once_with(correct)
+  self.assertEqual(result['status'],'source_proposal_only');self.assertFalse(result['native_record_written'])
+  self.assertEqual(result['discovery_identity_basis'],'exact_business_name_in_search_text')
+
+ async def test_portal_identity_text_and_name_like_host_never_substitute_for_relevance(self):
+  self.setup();self.row.update(source_url='https://nextdoor.com/listing',official_site=False);self.row['source_key']=c.raw_source_key(self.row)
+  async def search(*args):return [
+    {'url':'https://app.juniper.example/','title':'Juniper Wash LLC'},
+    {'url':'https://juniper.example/sign-in','title':'Juniper Wash LLC'},
+    {'url':'https://juniper.example/','title':'Customer login','snippet':'Juniper Wash LLC'},
+    {'url':'https://juniperwashllc.example/','title':'Unrelated company','snippet':'Other services'},
+    {'url':'https://other.example/','title':'Juniper','snippet':'Wash LLC'}]
+  with patch.object(c,'fetch_page_receipt') as fetch:
+   result=await c.review_row(self.row,'pressure_washing',search,'synthetic-secret')
+  fetch.assert_not_called();self.assertEqual(result['gate_reason'],'no_identity_qualified_official_candidate')
+
+ async def test_exact_name_snippet_ampersand_and_bound_five_search_results(self):
+  self.setup();row=dict(self.row,business_name='Juniper & Wash LLC')
+  self.assertTrue(c.discovery_identity_match(row,{'url':URL,'title':'Local exterior services','snippet':'Juniper and Wash LLC serving Prescott.'}))
+  self.assertFalse(c.discovery_identity_match(row,{'url':URL,'title':'Juniper equipment Wash'}))
+  self.row.update(source_url='https://nextdoor.com/listing',official_site=False);self.row['source_key']=c.raw_source_key(self.row)
+  async def search(*args):return [{'url':f'https://other{i}.example/','title':'Unrelated'} for i in range(5)]+[{'url':URL,'title':'Juniper Wash LLC'}]
+  with patch.object(c,'fetch_page_receipt') as fetch:
+   result=await c.review_row(self.row,'pressure_washing',search,'synthetic-secret')
+  fetch.assert_not_called();self.assertEqual(result['gate_reason'],'no_identity_qualified_official_candidate')
+
  async def test_body_and_capsule_byte_bounds_and_postfetch_hold(self):
   self.setup()
   with self.assertRaises(HTTPException):await self.run_review(dict(self.payload,extra='x'*3000))
