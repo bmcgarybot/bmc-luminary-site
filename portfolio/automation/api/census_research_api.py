@@ -125,6 +125,27 @@ def held_source_result(result,receipt,reason):
                 unverified_schema_observations=published_schema_observations(receipt.document))
 
 
+def discovery_identity_match(row,item):
+    """Search relevance hint only; never establish domain ownership from URL text."""
+    if not isinstance(item,dict) or not isinstance(item.get('url'),str) or not research_get_url(item['url']):return False
+    parts=urlsplit(item['url']);labels=host(item['url']).split('.')
+    if labels[0] in {'app','apps','auth','login','signin','sso','account','accounts','portal','dashboard'}:return False
+    if re.search(r'/(?:auth|sign[-_]?in|sso|portal|dashboard)(?:/|[.-]|$)',parts.path,re.I):return False
+    fields=[item.get('title'),item.get('snippet')]
+    fields=[value[:3500] for value in fields if isinstance(value,str)]
+    if any(re.search(r'\b(?:customer login|employee login|sign[- ]?in|log[- ]?in|authentication portal)\b',value,re.I) for value in fields):return False
+    def words(value):return re.findall('[a-z0-9]+',str(value).lower().replace('&',' and '))
+    name=words(row['business_name'])
+    while name and name[-1] in ('llc','inc','incorporated','corp','corporation','ltd','limited'):name.pop()
+    if not name:return False
+    # Match every identity token in order in one actual search text field; no
+    # fuzzy overlap, URL-host similarity, split-field inference or self binding.
+    for field in fields:
+        tokens=words(field)
+        if any(tokens[i:i+len(name)]==name for i in range(len(tokens)-len(name)+1)):return True
+    return False
+
+
 async def review_row(row,service,search,secret):
     result={'status':'source_review_held','candidate_id':str(row['candidate_id']),'raw_source_key':row['source_key'],
             'requested_service':service,'gate_reason':'source_unavailable','original_source_url':row['source_url']}
@@ -136,7 +157,12 @@ async def review_row(row,service,search,secret):
     if not research_get_url(url) or row['official_site'] is not True:
         try:
             found=await asyncio.wait_for(search('"'+row['business_name'][:140]+'" "'+row['market']+'" official website',1,5),20)
-            url=next((item['url'] for item in found if isinstance(item,dict) and isinstance(item.get('url'),str) and research_get_url(item['url'])),None)
+            found=found[:5] if isinstance(found,list) else []
+            allowed=[item for item in found if isinstance(item,dict) and isinstance(item.get('url'),str) and research_get_url(item['url'])]
+            url=next((item['url'] for item in allowed if discovery_identity_match(row,item)),None)
+            if not url and allowed:
+                result['gate_reason']='no_identity_qualified_official_candidate';return result
+            if url:result['discovery_identity_basis']='exact_business_name_in_search_text'
         except Exception:
             result['gate_reason']='search_unavailable';return result
     if not url:
