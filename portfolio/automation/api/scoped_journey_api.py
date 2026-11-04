@@ -110,15 +110,32 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                         if not profile.get('approved_at'): raise ValueError('approval_timestamp_missing')
                         changed=False
                     else:
+                        # Approval validates the reviewed identities, never a newly ranked pool.
+                        frozen_ids=profile['candidate_ids'];sample_ids=profile['sample_ids']
+                        async def qualify_frozen(*args,**kwargs):
+                            kwargs=dict(kwargs,limit=10000)
+                            rows=await compiler_callbacks['qualify'](*args,**kwargs)
+                            excluded={str(x) for x in kwargs.get('exclude_ids',set())}
+                            names={str(x).strip().lower() for x in kwargs.get('exclude_names',set())}
+                            by_id={str(row['candidate_id']):row for row in rows
+                                   if str(row['candidate_id']) not in excluded
+                                   and str(row.get('business_name','')).strip().lower() not in names}
+                            return [by_id[value] for value in frozen_ids if value in by_id]
+                        def select_frozen(rows,*args):
+                            by_id={str(row['candidate_id']):row for row in rows}
+                            if any(value not in by_id for value in sample_ids):
+                                raise ValueError('reviewed_five_ineligible')
+                            return [by_id[value] for value in sample_ids]
+                        callbacks=dict(compiler_callbacks,qualify=qualify_frozen,select_sample=select_frozen)
                         packet=await compile_native_packet(conn,uuid.UUID(profile['candidate_id']),secret,frozen,
-                            hold_required,compiler_callbacks,pack_count=25)
+                            hold_required,callbacks,pack_count=25)
                         fresh=prepare_profile(packet,target_id,secret)
                         for field in ('candidate_id','business_name','email','market','service_key','source_url',
                                       'candidate_ids','sample_ids','pack_count','amount_cents','nonexclusive'):
                             if fresh[field]!=profile[field]: raise ValueError('reviewed_profile_drift')
                         scope=profile['scope'];new_scope=fresh['scope']
                         if not scope.get('content_sha256'): raise ValueError('source_digest_missing')
-                        for field in ('source_url','content_sha256','category_keys','observed_sector_phrases','ideal_customer'):
+                        for field in ('source_url','category_keys','observed_sector_phrases','ideal_customer'):
                             if scope.get(field)!=new_scope.get(field): raise ValueError('reviewed_source_drift')
                         if scope.get('exclusions','')!=new_scope.get('exclusions',''): raise ValueError('reviewed_exclusions_drift')
                         saved=await conn.fetchrow('select * from growth_owner_previews where target_id=$1 and version=$2 for update',target_id,VERSION)
@@ -129,7 +146,8 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                             or saved['business_name']!=profile['business_name'] or saved['service_key']!=profile['service_key']):
                             raise ValueError('reviewed_five_drift')
                         profile=dict(current);profile.pop('signature')
-                        profile.update(state='approved',approved_at=datetime.now(timezone.utc).isoformat())
+                        profile.update(state='approved',approved_at=datetime.now(timezone.utc).isoformat(),
+                                       scope=new_scope,previous_draft_signature=current['signature'])
                         profile['signature']=signature(profile,secret)
                         data=dict(data,scoped_offer=profile);target['source_data']=data
                         profile_for_target(target,secret,customer=True)

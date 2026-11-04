@@ -43,7 +43,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
                 else:outer.preview=dict(zip(('target_id','version','selected_markets','candidate_ids','sample_payload','business_name','service_key'),args));outer.preview['sample_payload']=json.loads(args[4])
         class Pool:
             def acquire(self):return Conn()
-        app=FastAPI();app.state.pool=Pool()
+        app=FastAPI();app.state.pool=Pool();self.app_pool=app.state.pool
         def admin(key):
             if key!='allowed':raise PermissionError('admin')
         self.endpoint=api.install(app,admin,'secret',self.frozen,lambda:self.hold,{},
@@ -132,6 +132,56 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         calls=self.compiler.call_count;await self.approve()
         self.assertEqual(self.compiler.call_count,calls);self.assertEqual(len(self.writes),count+1)
         with self.assertRaises(HTTPException):await self.approve(expected=original['signature'])
+    async def test_approval_renews_source_bytes_only_with_same_semantics_and_five(self):
+        self.setup();await self.call()
+        original=copy.deepcopy(self.target['source_data']['scoped_offer'])
+        self.packet['binding']['scope'].update(content_sha256='b'*64,checked_at=datetime.now(timezone.utc).isoformat(),source_signature='c'*64)
+        await self.approve()
+        current=self.target['source_data']['scoped_offer']
+        self.assertEqual(current['scope'],self.packet['binding']['scope'])
+        self.assertEqual(current['previous_draft_signature'],original['signature'])
+        self.assertEqual(current['candidate_ids'],original['candidate_ids'])
+        self.assertEqual(profile_for_target(self.target,'secret',customer=True)['state'],'approved')
+
+    async def test_approval_current_pool_reordered_and_new_better_rows_never_replace_frozen(self):
+        for missing,changed in ((False,False),(True,False),(False,True)):
+            self.setup();await self.call();before=len(self.writes)
+            ids=self.packet['binding']['candidate_ids']
+            rows=[dict(row,candidate_id=value) for row,value in zip(self.packet['artifacts'][25]['rows'],ids)]
+            pool=list(reversed(rows))+[dict(candidate_id=str(uuid.uuid4()),business_name='New higher-ranked business')]
+            if missing:pool=[row for row in pool if row['candidate_id']!=ids[-1]]
+            if changed:
+                pool=[dict(row,business_name='Changed qualified payload') if row['candidate_id']==ids[0] else row for row in pool]
+            # Exercise the actual approval callbacks against a qualifier that ignores exclusions.
+            async def qualifier(*args,**kw):
+                self.assertEqual(kw['limit'],10000)
+                return pool
+            callbacks={'qualify':qualifier}
+            async def compiler(conn,candidate,secret,frozen,hold,wrapped,pack_count):
+                free=await wrapped['qualify'](conn,'commercial_cleaning',['Phoenix'],limit=1000)
+                if len(free)!=25:raise ValueError('frozen_ineligible')
+                five=wrapped['select_sample'](free,'email')
+                paid=await wrapped['qualify'](conn,'commercial_cleaning',['Phoenix'],limit=125,
+                    exclude_ids=set(ids[:5]),exclude_names={row['business_name'].lower() for row in five})
+                actual=five+paid
+                packet=copy.deepcopy(self.packet)
+                packet['binding']['candidate_ids']=[row['candidate_id'] for row in actual]
+                packet['artifacts'][5]['rows']=[{k:v for k,v in row.items() if k!='candidate_id'} for row in five]
+                packet['artifacts'][25]['rows']=[{k:v for k,v in row.items() if k!='candidate_id'} for row in actual]
+                return packet
+            # Reinstall only to inject the real qualifier; target/preview/pool remain unchanged.
+            app=FastAPI()
+            app.state.pool=self.app_pool
+            api.install(app,lambda key:None,'secret',self.frozen,lambda:self.hold,callbacks,lambda *a,**k:'',lambda *a,**k:())
+            self.approval=next(r.endpoint for r in app.routes if getattr(r,'path','')=='/api/admin/approve-scoped-journey')
+            self.compiler=AsyncMock(side_effect=compiler)
+            if missing or changed:
+                with self.assertRaises(HTTPException):await self.approve()
+                self.assertEqual(len(self.writes),before)
+            else:
+                await self.approve()
+                self.assertEqual(self.target['source_data']['scoped_offer']['candidate_ids'],ids)
+
     async def test_approval_stale_expired_tampered_and_original_nine_refused(self):
         for kind in ('stale','expired','tampered','original'):
             self.setup();await self.call();count=len(self.writes);expected=None
@@ -144,7 +194,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             with self.assertRaises(HTTPException):await self.approve(expected=expected)
             self.assertEqual(len(self.writes),count)
     async def test_approval_explicit_admin_hold_and_native_drift_refused(self):
-        for kind in ('explicit','admin','hold','source','categories','sectors','ids','five'):
+        for kind in ('explicit','admin','hold','categories','sectors','ids','five'):
             self.setup();await self.call();count=len(self.writes)
             if kind=='hold':self.hold=False
             elif kind=='source':self.packet['binding']['scope']['content_sha256']='b'*64
