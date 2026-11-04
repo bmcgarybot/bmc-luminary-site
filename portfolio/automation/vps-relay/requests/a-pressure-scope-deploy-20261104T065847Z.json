@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "request_id": "a-pressure-scope-deploy-20261104T065847Z",
+  "action": "deploy_update",
+  "allow_external_actions": false,
+  "required_ci_sha": "798bce76284804b0636f627ff7f4426383c75962",
+  "created_at": "2026-11-04T06:58:47.637041+00:00",
+  "expires_at": "2026-11-04T07:58:47.637041+00:00",
+  "args": {}
+}
