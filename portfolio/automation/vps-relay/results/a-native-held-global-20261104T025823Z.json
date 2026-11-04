@@ -1,0 +1,16 @@
+{
+  "action": "private_held_packet",
+  "allow_external_actions": false,
+  "completed_at": "2026-11-04T02:59:18.817889+00:00",
+  "error": "local admin POST /api/admin/held-research-packet?request_id=a-native-held-global-20261104T025823Z&candidate_id=d69b13cb-ec90-4b5e-832f-f78c8e8efa31&pack_count=100 failed: HTTP Error 409: Conflict",
+  "exit_code": null,
+  "git_commit_after": "da073dae77be5ddb261cc7b01a5456ecc5229b5a",
+  "git_commit_before": "da073dae77be5ddb261cc7b01a5456ecc5229b5a",
+  "host": "vps-5675821a",
+  "relay_branch": "vps-relay",
+  "repo": "bmcgarybot/bmc-luminary-site",
+  "request_id": "a-native-held-global-20261104T025823Z",
+  "started_at": "2026-11-04T02:59:18.817865+00:00",
+  "status": "rejected",
+  "version": 1
+}
