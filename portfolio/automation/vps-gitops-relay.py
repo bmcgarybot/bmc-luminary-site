@@ -722,13 +722,22 @@ def execute(req: dict) -> dict:
             raise RelayError("OWNER LAUNCH HOLD: no customer outreach authorized")
         cohort=json.loads((AUTOMATION/"api/growth_phoenix_cohort.json").read_text())
         configured=sorted(x for x in app_env().get("GROWTH_OUTREACH_TARGET_IDS","").split(",") if x)
-        if (not {"wave","target_ids"}<=set(args)<={"wave","target_ids","daily_limit"} or args.get("wave")!=cohort["wave"]
+        if (not {"wave","target_ids"}<=set(args)<={"wave","target_ids","daily_limit","auto_approve_requested_25"} or args.get("wave")!=cohort["wave"]
             or not isinstance(args.get("target_ids"),list) or sorted(args["target_ids"])!=configured
             or configured!=sorted(cohort["target_ids"]) or app_env().get("GROWTH_OUTREACH_WAVE")!=cohort["wave"]):
             raise RelayError("Launch requires the exact configured Phoenix cohort; broad or historic waves are refused")
         daily_limit=args.get('daily_limit',10)
         if type(daily_limit) is not int or not 1<=daily_limit<=100:
             raise RelayError('Explicit daily limit must be between 1 and 100')
+        if 'auto_approve_requested_25' in args and type(args['auto_approve_requested_25']) is not bool:
+            raise RelayError('Requested fixed25 approval policy must be an explicit boolean')
+        # Omission preserves the independently configured policy; marketing ON
+        # alone never grants authority to approve a customer purchase offer.
+        policy_changes={}
+        rollback_changes={'GROWTH_OUTREACH_ENABLED':'false'}
+        if 'auto_approve_requested_25' in args:
+            policy_changes['GROWTH_AUTO_APPROVE_REQUESTED_25']='true' if args['auto_approve_requested_25'] else 'false'
+            rollback_changes['GROWTH_AUTO_APPROVE_REQUESTED_25']=app_env().get('GROWTH_AUTO_APPROVE_REQUESTED_25','false')
         state=outreach_state()
         if str(state.get("OUTREACH_ENABLED","")).lower()!="false" or str(state.get("BUYER_OUTREACH_ENABLED","")).lower()!="false":
             raise RelayError("Growth-only launch requires provider and buyer Service-Network outreach to remain OFF")
@@ -744,10 +753,11 @@ def execute(req: dict) -> dict:
           "GROWTH_OUTREACH_WAVE":cohort["wave"],
           "GROWTH_SAMPLE_MIN_RESERVE":"125",
           "GROWTH_AUTO_FULFILL_ENABLED":"true",
+          **policy_changes,
         })
         restart=run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api","scheduler","webhook_proxy"],timeout=300)
         if restart.returncode!=0:
-            set_env_values({"GROWTH_OUTREACH_ENABLED":"false"})
+            set_env_values(rollback_changes)
             raise RelayError("Growth launch container restart failed; switch restored OFF")
         healthy=False
         for _ in range(30):
@@ -756,12 +766,12 @@ def execute(req: dict) -> dict:
                 healthy=True; break
             time.sleep(1)
         if not healthy:
-            set_env_values({"GROWTH_OUTREACH_ENABLED":"false"})
+            set_env_values(rollback_changes)
             run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api","scheduler","webhook_proxy"],timeout=300)
             raise RelayError("Growth launch API health failed; switch restored OFF")
         health_status=admin_post("/api/process-growth-health",timeout=120)
         if not health_status.get("health_ok",False):
-            set_env_values({"GROWTH_OUTREACH_ENABLED":"false"})
+            set_env_values(rollback_changes)
             run(["docker","compose","--env-file",ENV_FILE,"up","-d","--force-recreate","ops_api","scheduler","webhook_proxy"],timeout=300)
             raise RelayError(f"Growth health gate failed after enable; switch restored OFF: {health_status.get('problems')}")
         first_send=admin_post("/api/process-growth-outreach",timeout=180)

@@ -181,6 +181,41 @@ class CohortScopeTests(unittest.TestCase):
         for limit in (0,101,True,'25'):
             with patch.dict(G,{'app_env':lambda:env,'current_sha':lambda:SHA,'current_branch':lambda:'master','run':lambda *a,**k:self.fail('Invalid limit cannot launch')}):
                 with self.assertRaises(namespace['RelayError']):execute(dict(REQ,action='growth_launch_enable',args=dict(wave=cohort['wave'],target_ids=cohort['target_ids'],daily_limit=limit)))
+    def test_launch_optional_fixed25_policy_type_rejected_before_any_mutation(self):
+        cohort=json.loads(PATH.with_name('api').joinpath('growth_phoenix_cohort.json').read_text())
+        env=dict(BASE_ENV,BMC_OWNER_LAUNCH_HOLD='false',GROWTH_OUTREACH_WAVE=cohort['wave'],GROWTH_OUTREACH_TARGET_IDS=','.join(cohort['target_ids']))
+        for value in ('true','false',1,0,None,[],{}):
+            with patch.dict(G,{'app_env':lambda:env,'current_sha':lambda:SHA,'current_branch':lambda:'master',
+                'set_env_values':lambda *a:self.fail('Invalid policy cannot mutate config'),'run':lambda *a,**k:self.fail('Invalid policy cannot launch')}):
+                with self.assertRaises(namespace['RelayError']):execute(dict(REQ,action='growth_launch_enable',args=dict(wave=cohort['wave'],target_ids=cohort['target_ids'],auto_approve_requested_25=value)))
+    def test_launch_fixed25_policy_explicit_bool_and_omission_preserve_env(self):
+        cohort=json.loads(PATH.with_name('api').joinpath('growth_phoenix_cohort.json').read_text())
+        for value in ('omitted',True,False):
+            env=dict(BASE_ENV,BMC_OWNER_LAUNCH_HOLD='false',GROWTH_OUTREACH_WAVE=cohort['wave'],GROWTH_OUTREACH_TARGET_IDS=','.join(cohort['target_ids']),GROWTH_AUTO_APPROVE_REQUESTED_25='true')
+            changes=[];calls=[]
+            def fake_run(cmd,**kw):return subprocess.CompletedProcess(cmd,0,'{}','')
+            def post(path,**kw):
+                calls.append(path)
+                return {'health_ok':True} if path=='/api/process-growth-health' else {'sent':0}
+            args=dict(wave=cohort['wave'],target_ids=cohort['target_ids'])
+            if value!='omitted':args['auto_approve_requested_25']=value
+            with patch.dict(G,{'app_env':lambda:env,'outreach_state':lambda:dict(BASE_ENV),'current_sha':lambda:SHA,'current_branch':lambda:'master',
+                'set_env_values':lambda values:changes.append(values),'run':fake_run,'admin_post':post,'redact':lambda text:text}):
+                result=execute(dict(REQ,action='growth_launch_enable',args=args))
+            self.assertEqual(result['status'],'success');self.assertEqual(len(changes),1)
+            if value=='omitted':self.assertNotIn('GROWTH_AUTO_APPROVE_REQUESTED_25',changes[0])
+            else:self.assertEqual(changes[0]['GROWTH_AUTO_APPROVE_REQUESTED_25'],'true' if value else 'false')
+            self.assertEqual(calls,['/api/process-growth-health','/api/process-growth-outreach'])
+    def test_failed_launch_restores_prior_explicit_fixed25_policy(self):
+        cohort=json.loads(PATH.with_name('api').joinpath('growth_phoenix_cohort.json').read_text())
+        env=dict(BASE_ENV,BMC_OWNER_LAUNCH_HOLD='false',GROWTH_OUTREACH_WAVE=cohort['wave'],GROWTH_OUTREACH_TARGET_IDS=','.join(cohort['target_ids']),GROWTH_AUTO_APPROVE_REQUESTED_25='false')
+        changes=[]
+        def fake_run(cmd,**kw):return subprocess.CompletedProcess(cmd,1 if cmd[0]=='docker' else 0,'','')
+        with patch.dict(G,{'app_env':lambda:env,'outreach_state':lambda:dict(BASE_ENV),'current_sha':lambda:SHA,'current_branch':lambda:'master',
+            'set_env_values':lambda values:changes.append(values),'run':fake_run,'redact':lambda text:text}):
+            with self.assertRaises(namespace['RelayError']):execute(dict(REQ,action='growth_launch_enable',args=dict(wave=cohort['wave'],target_ids=cohort['target_ids'],auto_approve_requested_25=True)))
+        self.assertEqual(changes[0]['GROWTH_AUTO_APPROVE_REQUESTED_25'],'true')
+        self.assertEqual(changes[1],{'GROWTH_OUTREACH_ENABLED':'false','GROWTH_AUTO_APPROVE_REQUESTED_25':'false'})
     def test_explicit_preparation_pause_sets_only_growth_and_hold(self):
         changes=[]
         with patch.dict(G,{'app_env':lambda:dict(BASE_ENV),'current_sha':lambda:SHA,'current_branch':lambda:'master',
