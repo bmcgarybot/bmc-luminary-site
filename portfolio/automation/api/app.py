@@ -2982,8 +2982,15 @@ async def growth_record_exposures(conn,rows,recipient_key,service_key,delivery_k
           key,growth_contact_key(r),clean(recipient_key).lower(),clean(recipient_business_key).lower(),service_key,clean(r.get("market")),
           r.get("candidate_id"),delivery_kind,delivery_ref,status)
 
-async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",exclusions="",limit=400,exclude_ids=None,exclude_names=None,recipient_key="",delivery_kind="free",recipient_business_key=""):
+async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",exclusions="",limit=400,exclude_ids=None,exclude_names=None,recipient_key="",delivery_kind="free",recipient_business_key="",_qualification_scope=None,_qualification_diagnostics=None):
     categories=growth_selected_categories(service_key,ideal_customer,exclusions)
+    if _qualification_scope is not None:
+        from qualification_scope import validate
+        categories=validate(_qualification_scope,ADMIN_KEY,service_key=service_key,market=market,email=recipient_key,
+            recipient_business_key=recipient_business_key,ideal_customer=ideal_customer,exclusions=exclusions)
+        categories=[cat for cat in categories if not any(term in clean(exclusions).lower() for term in growth_category_terms(cat))]
+    diagnostic={'market':market,'service_key':service_key,'queried_category_keys':list(categories),'raw_rows':0,'qualified_rows':0}
+    if _qualification_diagnostics is not None:_qualification_diagnostics.append(diagnostic)
     if service_key not in GROWTH_SERVICE_LABELS or not categories:
         return []
     rows=await conn.fetch("""select candidate_id,side,market,category_key,category_label,business_name,source_url,source_domain,
@@ -3010,6 +3017,8 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
           case when coalesce(public_email,'')<>'' then 0 when coalesce(public_phone,'')<>'' then 1 else 2 end,
           coalesce(last_verified_at,last_seen_at,updated_at) desc nulls last
         limit $3""",market,categories,max(limit*4,500))
+    diagnostic['raw_rows']=len(rows)
+    diagnostic['raw_category_counts']={cat:sum(row.get('category_key')==cat for row in rows) for cat in categories}
     excluded_ids={str(x) for x in (exclude_ids or [])}
     excluded_names={clean(x).lower() for x in (exclude_names or [])}
     seen=set(); qualified=[]
@@ -3037,6 +3046,9 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
         r["grade"]="A" if score>=80 else "B"
         r["fit_reason"]=growth_fit_reason(r,service_key)
         r["sales_angle"]=growth_sales_angle(r,service_key)
+        if _qualification_scope is not None and service_key=='pressure_washing' and r.get('category_key')=='insurance_professional':
+            from qualification_scope import exterior_notes
+            r['fit_reason'],r['sales_angle']=exterior_notes(market)
         qualified.append(r)
     qualified=await growth_exposure_filter(conn,qualified,recipient_key,delivery_kind,recipient_business_key,service_key)
     # Representative distribution: low exposure first, then category diversity,
@@ -3058,6 +3070,8 @@ async def growth_qualified_candidates(conn,service_key,market,ideal_customer="",
     if len(picked)<limit:
         used={growth_prospect_key(x) for x in picked}
         picked.extend(x for x in qualified if growth_prospect_key(x) not in used)
+    diagnostic['qualified_rows']=len(qualified)
+    diagnostic['returned_rows']=len(picked[:limit])
     return picked[:limit]
 
 def growth_territory_markets(primary,selected=None):
@@ -3382,6 +3396,7 @@ def growth_business_phone_key(value):
     return digits[-10:] if len(digits)>=10 else ""
 
 async def handle_growth_snapshot(conn,p):
+    from qualification_scope import from_profile as qualification_scope_from_profile
     service_key=clean(p.get("service_key") or p.get("provider_service_key"))
     if service_key not in GROWTH_SERVICE_LABELS:
         raise HTTPException(400,"This free commercial-opportunity snapshot is not active for that service yet")
@@ -3498,7 +3513,7 @@ async def handle_growth_snapshot(conn,p):
     reviewed=await conn.fetchrow("select candidate_ids from growth_owner_previews where target_id=$1 and version='official-pdf-v2'",target_id) if target_id else None
     rows=await growth_qualified_territory_candidates(conn,service_key,territory,clean(p.get("ideal_customer")),clean(p.get("exclusions")),
       limit=1000 if (reviewed or profile) else GROWTH_SAMPLE_MIN_RESERVE,recipient_key=email_addr,delivery_kind="free",
-      recipient_business_key=growth_recipient_business_key(business))
+      recipient_business_key=growth_recipient_business_key(business),_qualification_scope=qualification_scope_from_profile(profile,ADMIN_KEY,customer=True) if profile else None)
     if profile:
         rows=[r for r in rows if r.get('category_key') in profile['scope']['category_keys']]
         if not reviewed or list(map(str,reviewed['candidate_ids']))!=profile['sample_ids']:
@@ -3671,6 +3686,7 @@ async def growth_owner_sample(conn,target,territory,rows):
 
 async def growth_owner_full_pack(conn,target,territory,rows,sample,count=100):
     """Owner-token-only, read-only full deliverable preview; no order or exposure writes."""
+    from qualification_scope import from_profile as qualification_scope_from_profile
     profile=growth_target_scoped_profile(target) if 'scoped_offer' in str(target.get('source_data') or '') else None
     if profile and count!=25:raise HTTPException(409,'Only the reviewed 25-prospect scope is available')
     if count not in (25,100):raise HTTPException(400,"Choose a 25 or 100 prospect owner review")
@@ -3685,7 +3701,7 @@ async def growth_owner_full_pack(conn,target,territory,rows,sample,count=100):
       limit=GROWTH_SAMPLE_MIN_RESERVE+100,exclude_ids={str(cid) for cid in ids},
       exclude_names={clean(r["business_name"]).lower() for r in originals},
       recipient_key=target["public_email"],delivery_kind="paid",
-      recipient_business_key=growth_recipient_business_key(target["business_name"]))
+      recipient_business_key=growth_recipient_business_key(target["business_name"]),_qualification_scope=qualification_scope_from_profile(profile,ADMIN_KEY,customer=False) if profile else None)
     if profile:
         by_current={str(r['candidate_id']):r for r in [*originals,*candidates] if r.get('category_key') in profile['scope']['category_keys']}
         if any(cid not in by_current for cid in profile['candidate_ids']):raise HTTPException(409,'The reviewed 25 need current source and availability checks')
@@ -3711,6 +3727,7 @@ async def growth_owner_full_pack(conn,target,territory,rows,sample,count=100):
 @app.post("/api/growth/claim-free-five")
 async def growth_claim_free_five(request:Request):
     """Turn a signed outreach click into the free-five sample without asking for known details again."""
+    from qualification_scope import from_profile as qualification_scope_from_profile
     p=await request.json()
     target_id=clean(p.get("target_id") or p.get("target"))
     token=clean(p.get("claim"))
@@ -3733,8 +3750,10 @@ async def growth_claim_free_five(request:Request):
             rows=await growth_qualified_territory_candidates(
               conn,target["service_key"],territory,
               ideal_customer=profile['scope']['ideal_customer'] if profile else '',
-              exclusions=profile['scope'].get('exclusions','') if profile else '',limit=1000
-            )
+              exclusions=profile['scope'].get('exclusions','') if profile else '',limit=1000,
+              recipient_key=target['public_email'] if profile else '',delivery_kind='free',
+              recipient_business_key=growth_recipient_business_key(target['business_name']) if profile else ''
+            ,_qualification_scope=qualification_scope_from_profile(profile,ADMIN_KEY,customer=not preview) if profile else None)
             if profile:
                 if territory!=[profile['market']]:raise HTTPException(409,'This reviewed offer has one fixed territory')
                 rows=[r for r in rows if r.get('category_key') in profile['scope']['category_keys']]
@@ -7834,6 +7853,8 @@ async def growth_scoped_profile_for_sample(conn,sample):
     return profile
 
 async def growth_offer_payload_current(conn,offer):
+    from qualification_scope import from_profile as qualification_scope_from_profile
+    profile=None
     payload=json_dict(offer["payload"])
     if growth_offers.offer_digest(payload)!=offer["payload_sha256"]:
         raise ValueError("Offer contents changed after preparation")
@@ -7874,7 +7895,7 @@ async def growth_offer_payload_current(conn,offer):
         eligible=await growth_qualified_territory_candidates(conn,payload["service_key"],payload["territory"],
           payload.get("ideal_customer",""),payload.get("exclusions",""),limit=10000,
           recipient_key=offer["email"],delivery_kind="paid",
-          recipient_business_key=growth_recipient_business_key(payload["business"]))
+          recipient_business_key=growth_recipient_business_key(payload["business"]),_qualification_scope=qualification_scope_from_profile(profile,ADMIN_KEY,customer=True) if profile else None)
         eligible_ids={str(r["candidate_id"]) for r in eligible}|original_ids
         if any(str(r["candidate_id"]) not in eligible_ids for r in rows):
             raise ValueError("A saved prospect is no longer eligible")
@@ -7882,6 +7903,7 @@ async def growth_offer_payload_current(conn,offer):
     return payload
 
 async def growth_prepare_purchase_offer_record(conn,p):
+    from qualification_scope import from_profile as qualification_scope_from_profile
     tier=clean(p.get("product_key"))
     if tier not in growth_offers.TIERS:raise HTTPException(400,"Unknown offer")
     try:sid=uuid.UUID(str(p.get("sample_id")))
@@ -7909,7 +7931,7 @@ async def growth_prepare_purchase_offer_record(conn,p):
         originals=[dict(x) for x in (await conn.fetch("select * from growth_order_prospects where order_id=$1 order by business_name",parent["order_id"]) if parent else await conn.fetch("select * from growth_sample_prospects where sample_id=$1 order by business_name",sid))]
         candidates=await growth_qualified_territory_candidates(conn,sample["provider_service_key"],territory,sample["ideal_customer"],sample["exclusions"],
           limit=200,exclude_ids={str(x["candidate_id"]) for x in originals},exclude_names={clean(x["business_name"]).lower() for x in originals},
-          recipient_key=sample["email"],delivery_kind="paid",recipient_business_key=growth_recipient_business_key(sample["business_name"]))
+          recipient_key=sample["email"],delivery_kind="paid",recipient_business_key=growth_recipient_business_key(sample["business_name"]),_qualification_scope=qualification_scope_from_profile(profile,ADMIN_KEY,customer=True) if profile else None)
         if profile:
             by_id={str(r['candidate_id']):r for r in [*originals,*candidates] if r.get('category_key') in profile['scope']['category_keys']}
             if any(cid not in by_id for cid in profile['candidate_ids']):raise HTTPException(409,'The reviewed25 are not all currently eligible')

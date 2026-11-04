@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Read-only endpoint, fresh native proof, scope filter and ciphertext boundaries."""
 import asyncio,base64,gzip,hashlib,json,sys,unittest,uuid
+from datetime import datetime,timezone
 from pathlib import Path
 from unittest.mock import patch,AsyncMock
 sys.path.insert(0,str(Path(__file__).parent/'api'))
@@ -50,8 +51,12 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual([v['category_key'] for v in values],['insurance_professional'])
             return dict(offer_ready=False,outreach_held=True,checkout_url='',artifacts={5:dict(rows=[],pdf=b'PDF',csv=b'CSV')})
         self.compiler=compiler
+    def receipt(self,final=None):
+        return research.FetchedPageReceipt(requested_url=self.row['source_url'],final_url=final or self.row['source_url'],
+            raw_bytes=self.document.encode(),content_sha256=self.digest,fetched_at=datetime.now(timezone.utc).isoformat(),
+            http_status=200,content_type='text/html',redirect_chain=())
     async def run_endpoint(self):
-        with patch.object(api.official_research,'fetch_page',return_value=(self.row['source_url'],self.document,self.digest)),patch.object(api,'compile_held_packet',side_effect=self.compiler),patch.object(Path,'read_bytes',return_value=self.pem),patch.object(export,'PINNED_FINGERPRINT',self.pin):
+        with patch.object(api.official_research,'fetch_page_receipt',return_value=self.receipt()),patch.object(api,'compile_held_packet',side_effect=self.compiler),patch.object(Path,'read_bytes',return_value=self.pem),patch.object(export,'PINNED_FINGERPRINT',self.pin):
             return await self.endpoint('test-packet-request',str(self.row['candidate_id']),'allowed')
     async def test_real_encryption_readonly_and_explicit_scope_filter(self):
         self.setup();capsule=await self.run_endpoint()
@@ -72,15 +77,43 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             self.setup()
             if forged:self.row['public_email']='different@example.test'
             else:self.history=True
-            with patch.object(api.official_research,'fetch_page') as fetch:
+            with patch.object(api.official_research,'fetch_page_receipt') as fetch:
                 with self.assertRaises(HTTPException):await self.endpoint('test-packet-request',str(self.row['candidate_id']),'allowed')
                 fetch.assert_not_called()
     async def test_source_and_current_email_changes_fail(self):
         self.setup()
-        with patch.object(api.official_research,'fetch_page',return_value=('https://different.example/',self.document,self.digest)):
+        with patch.object(api.official_research,'fetch_page_receipt',return_value=self.receipt('https://different.example/')):
             with self.assertRaises(HTTPException):await self.endpoint('test-packet-request',str(self.row['candidate_id']),'allowed')
         self.document=self.document.replace('info@fixture.example','other@fixture.example')
         with self.assertRaises(HTTPException):await self.run_endpoint()
+    async def test_fresh_held_identity_rejects_supplier_extension_before_packet_compile(self):
+        self.setup();original_id=self.row['candidate_id'];original_name=self.row['business_name']
+        self.document=self.document.replace(original_name,original_name+' Equipment Supply')
+        self.digest=hashlib.sha256(self.document.encode()).hexdigest()
+        with patch.object(api.official_research,'fetch_page_receipt',return_value=self.receipt()),patch.object(api,'compile_held_packet') as compiler:
+            with self.assertRaisesRegex(ValueError,'recipient_contact_or_identity_changed'):
+                await api.compile_native_packet(self.app.state.pool.acquire(),original_id,'secret',frozenset(),lambda:True,{})
+            compiler.assert_not_called()
+        self.assertEqual((self.row['candidate_id'],self.row['business_name']),(original_id,original_name))
+
+    async def test_fresh_held_exact_legal_and_ampersand_variants_keep_native_uuid(self):
+        for original,current in [('Synthetic Fixture Cleaning','Synthetic Fixture Cleaning LLC'),
+                                 ('Synthetic Fixture Cleaning & Care LLC','Synthetic Fixture Cleaning and Care Inc.'),
+                                 ('Synthetic Fixture Cleaning L.L.C.','Synthetic Fixture Cleaning Corp')]:
+            self.setup();self.document=self.document.replace(self.row['business_name'],original)
+            self.row['business_name']=original;self.digest=hashlib.sha256(self.document.encode()).hexdigest()
+            self.row.update(research.parse_record(self.row,self.row['source_url'],self.document,self.digest,'secret'))
+            original_id=self.row['candidate_id'];self.document=self.document.replace(original,current)
+            self.digest=hashlib.sha256(self.document.encode()).hexdigest()
+            async def compile_packet(conn,recipient,scope,**kwargs):
+                self.assertEqual(recipient['candidate_id'],original_id)
+                self.assertEqual(recipient['business_name'],current)
+                return {'offer_ready':False}
+            with patch.object(api.official_research,'fetch_page_receipt',return_value=self.receipt()),patch.object(api,'compile_held_packet',side_effect=compile_packet):
+                result=await api.compile_native_packet(self.app.state.pool.acquire(),original_id,'secret',frozenset(),lambda:True,{})
+            self.assertEqual(result['recipient']['candidate_id'],original_id)
+            self.assertEqual(self.row['business_name'],original)
+
     async def test_oversize_capsule_fails_closed(self):
         self.setup()
         with patch.object(api,'seal_export',return_value={'ciphertext':'x'*500001}):
@@ -89,7 +122,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.setup()
         async def failure(*args,**kwargs):raise ValueError('Qualified sample reserve is incomplete')
         async def request():
-            with patch.object(api.official_research,'fetch_page',return_value=(self.row['source_url'],self.document,self.digest)),patch.object(api,'compile_held_packet',side_effect=failure),patch.object(Path,'read_bytes',return_value=self.pem),patch.object(export,'PINNED_FINGERPRINT',self.pin):
+            with patch.object(api.official_research,'fetch_page_receipt',return_value=self.receipt()),patch.object(api,'compile_held_packet',side_effect=failure),patch.object(Path,'read_bytes',return_value=self.pem),patch.object(export,'PINNED_FINGERPRINT',self.pin):
                 return await self.endpoint('test-packet-request',str(self.row['candidate_id']),'allowed',diagnostics=True)
         capsule=await request()
         self.assertNotIn('reserve',json.dumps(capsule))
