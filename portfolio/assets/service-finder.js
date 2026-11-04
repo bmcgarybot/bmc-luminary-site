@@ -126,7 +126,7 @@
     if(!r.ok)throw new Error("Could not load service list");
     const data=await r.json();
     try{
-      const photoResponse=await fetch("/data/service-images.json",{cache:"no-store"});
+      const photoResponse=await fetch("/data/service-images.json?v=published-20261103",{cache:"no-store"});
       if(photoResponse.ok){
         const photos=await photoResponse.json();
         for(const [key,photo] of Object.entries(photos.services||{}))if(photo.src)images[key]=photo.src;
