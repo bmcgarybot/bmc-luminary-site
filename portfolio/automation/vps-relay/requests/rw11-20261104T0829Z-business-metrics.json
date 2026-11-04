@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "rw11-20261104T0829Z-business-metrics",
+  "created_at": "2026-11-04T08:29:08.474Z",
+  "expires_at": "2026-11-04T09:29:08.474Z",
+  "action": "business_metrics",
+  "args": {},
+  "allow_external_actions": false
+}
