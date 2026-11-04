@@ -14,6 +14,8 @@ i=0
 while true; do
   post /api/process-expired
   post /api/process-official-research 240
+  # Revisit public channels across old and new territories every cycle.
+  post /api/process-local-demand-signals 240
 
   if [ $((i % 3)) -eq 0 ]; then
     post /api/agent-cycle
@@ -47,7 +49,6 @@ while true; do
   fi
 
   if [ $((i % 6)) -eq 0 ]; then
-    post /api/process-local-demand-signals 240
     post /api/process-inventory-closure-audit 240
   fi
 
