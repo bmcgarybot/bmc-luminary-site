@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "a-smallerpack-snapshot-20261104T002238Z",
+  "action": "operator_snapshot",
+  "allow_external_actions": false,
+  "created_at": "2026-11-04T00:22:38.687Z",
+  "expires_at": "2026-11-04T01:22:38.687Z",
+  "args": {}
+}
