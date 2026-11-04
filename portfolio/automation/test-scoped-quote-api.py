@@ -92,5 +92,19 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(result['offer_id'],existing['offer_id'])
             self.assertFalse(result['payment_created']);self.assertEqual(result['checkout_url'],'')
             self.assertEqual(self.drafts,{})
+    async def test_invalid_json_shape_and_scope_drift_are_controlled_errors(self):
+        self.setup()
+        class WrongShape:
+            async def json(self):return []
+        with self.assertRaises(HTTPException) as error:await self.endpoint(WrongShape())
+        self.assertEqual(error.exception.status_code,400);self.assertEqual(self.reads,[])
+        class InvalidJson:
+            async def json(self):raise ValueError('bad json')
+        with self.assertRaises(HTTPException) as error:await self.endpoint(InvalidJson())
+        self.assertEqual(error.exception.status_code,400)
+        self.profile.side_effect=ValueError('private source-scope details')
+        with self.assertRaises(HTTPException) as error:await self.call()
+        self.assertEqual(error.exception.status_code,409)
+        self.assertNotIn('private source',error.exception.detail);self.prepare.assert_not_awaited()
 
 if __name__=='__main__':unittest.main()

@@ -14,7 +14,9 @@ def install(app,secret,prepare_offer,profile_for_sample):
     from fastapi import Request,HTTPException
     @app.post('/api/growth/request-small-pack')
     async def request_pack(request:Request):
-        p=await request.json()
+        try:p=await request.json()
+        except (ValueError,TypeError):raise HTTPException(400,'A valid sample request is required')
+        if not isinstance(p,dict):raise HTTPException(400,'A valid sample request is required')
         try:sid=uuid.UUID(str(p.get('sample_id')))
         except (ValueError,TypeError):raise HTTPException(400,'A saved sample is required')
         if p.get('confirm') is not True:raise HTTPException(400,'Confirm that you want the scoped 25-pack review')
@@ -28,7 +30,8 @@ def install(app,secret,prepare_offer,profile_for_sample):
                     raise HTTPException(403,'This sample request is unavailable')
                 created=sample['created_at'];created=created.replace(tzinfo=timezone.utc) if created.tzinfo is None else created
                 if datetime.now(timezone.utc)-created>timedelta(days=30):raise HTTPException(409,'The sample scope needs a fresh review')
-                profile=await profile_for_sample(conn,sample)
+                try:profile=await profile_for_sample(conn,sample)
+                except ValueError:raise HTTPException(409,'The saved scope needs a fresh review')
                 if not profile:raise HTTPException(409,'This sample has no reviewed 25-pack scope')
                 # The shared allocator acquires its advisory lock before locking the sample.
                 result=await prepare_offer(conn,{'sample_id':str(sid),'product_key':'growth_pack_25'})
