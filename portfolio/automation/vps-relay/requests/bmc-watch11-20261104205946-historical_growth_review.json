@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "request_id": "bmc-watch11-20261104205946-historical_growth_review",
+  "created_at": "2026-11-04T20:59:46.416Z",
+  "action": "historical_growth_review",
+  "args": {},
+  "allow_external_actions": false
+}
