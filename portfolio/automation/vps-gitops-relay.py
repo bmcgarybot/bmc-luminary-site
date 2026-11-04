@@ -637,6 +637,10 @@ def execute(req: dict) -> dict:
                 raise RelayError("Owner release requires current revision and exact configured Phoenix scope")
             # This records explicit owner authorization only. All send switches
             # stay OFF; the separate strict launch audit/action still governs send.
+            authorization=admin_post("/api/admin/authorize-reviewed-phoenix-launch",timeout=120)
+            if authorization.get("ok") is not True or int(authorization.get("approved_queued",0))<1:
+                raise RelayError("No current qualified unsent Phoenix recipients could be authorized")
+            metadata["recipient_authorization"]=authorization
             changes["BMC_OWNER_LAUNCH_HOLD"]="false"
             metadata["owner_release_authorization"]={"request_id":req["request_id"],"sha":sha,
                 "wave":cohort["wave"],"target_count":len(configured),"outreach_enabled":False}

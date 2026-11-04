@@ -157,7 +157,7 @@ class CohortScopeTests(unittest.TestCase):
             with patch.dict(G,{'app_env':lambda:dict(env),'current_sha':lambda:SHA,'current_branch':lambda:'master',
                 'set_env_values':lambda values:changes.append(values),
                 'run':lambda *a,**k:self.fail('No restart/send command permitted'),
-                'admin_post':lambda *a,**k:self.fail('No send API permitted')}):
+                'admin_post':lambda path,**k:({'ok':True,'approved_queued':2,'sent':0} if path=='/api/admin/authorize-reviewed-phoenix-launch' else self.fail('No send API permitted'))}):
                 if bad:
                     with self.assertRaises(namespace['RelayError']):execute(dict(REQ,action='growth_owner_preview_approve',args=a))
                     self.assertEqual(changes,[])

@@ -5034,6 +5034,32 @@ async def replay_first_growth_email_to_owner(x_bmc_admin_key:str|None=Header(def
       "campaign_switches":{"provider":OUTREACH_ENABLED,"buyer":BUYER_OUTREACH_ENABLED,"growth":GROWTH_OUTREACH_ENABLED}
     }
 
+@app.post("/api/admin/authorize-reviewed-phoenix-launch")
+async def authorize_reviewed_phoenix_launch(x_bmc_admin_key:str|None=Header(default=None)):
+    require_admin(x_bmc_admin_key)
+    if not OWNER_LAUNCH_HOLD or OUTREACH_ENABLED or BUYER_OUTREACH_ENABLED or GROWTH_OUTREACH_ENABLED:
+        raise HTTPException(409,"Authorization requires owner hold and all outreach off")
+    cohort=json.loads(Path(__file__).with_name("growth_phoenix_cohort.json").read_text())
+    approved=0;held=0
+    async with app.state.pool.acquire() as conn:
+      async with conn.transaction():
+        rows=await conn.fetch("""select g.*,o.outreach_id from growth_outreach_targets g
+          join outreach o on o.entity_id=g.target_id and o.entity_type='growth_customer'
+          and o.campaign='growth_sales' and o.wave=$2
+          where g.target_id=any($1::text[]) and o.status='queued' and o.sent_at is null
+          and o.opt_out=false and g.status not in ('suppressed','bad_fit')
+          and g.market='Phoenix' and g.service_key='commercial_cleaning'
+          and g.fit_score>=65 and coalesce(g.public_email,'')<>''
+          and not exists(select 1 from outreach_suppressions s where lower(s.email)=lower(g.public_email))
+          for update of o,g""",cohort['target_ids'],cohort['wave'])
+        for row in rows:
+            try:growth_outreach_message(row,1)
+            except ValueError:
+                held+=1;continue
+            await conn.execute("update outreach set owner_review_required=false where outreach_id=$1",row['outreach_id'])
+            approved+=1
+    return {"ok":True,"approved_queued":approved,"copy_held":held,"sent":0,"history_reset":False}
+
 @app.get("/api/admin/growth-preview-candidates")
 async def growth_preview_candidates(service_key:str="commercial_cleaning",x_bmc_admin_key:str|None=Header(default=None)):
     require_admin(x_bmc_admin_key)

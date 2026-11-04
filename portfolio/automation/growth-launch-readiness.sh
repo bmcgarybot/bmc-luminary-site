@@ -72,7 +72,7 @@ staged="$(dbq "select count(*) from outreach where entity_type='growth_customer'
 printf '  active staged Growth targets: %s\n' "$staged"
 [ "$staged" -gt 0 ] && pass "Selected Growth wave has contactable staged targets" || fail "No staged targets exist for selected Growth wave"
 
-bad_targets="$(dbq "select count(*) from growth_outreach_targets g where g.status not in ('suppressed','bad_fit') and (coalesce(g.public_email,'')='' or g.fit_score<65);")"
+bad_targets="$(dbq "select count(*) from growth_outreach_targets g join outreach o on o.entity_id=g.target_id where o.entity_type='growth_customer' and o.campaign='growth_sales' and o.wave='$wave' and o.status='queued' and o.opt_out=false and o.owner_review_required=false $scope_sql and g.status not in ('suppressed','bad_fit') and (coalesce(g.public_email,'')='' or g.fit_score<65);")"
 [ "$bad_targets" -eq 0 ] && pass "Staged Growth targets pass email/fit floor" || fail "$bad_targets Growth targets fail email/fit floor"
 
 critical="$(dbq "select count(*) from exceptions where status='open' and severity='critical' and type like 'growth_%';")"
