@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "request_id": "a-research-state-proof-research-policy-status-20261104T060704Z",
+  "action": "research_policy_status",
+  "allow_external_actions": false,
+  "created_at": "2026-11-04T06:07:04.878079+00:00",
+  "expires_at": "2026-11-04T07:07:04.878079+00:00",
+  "args": {}
+}
