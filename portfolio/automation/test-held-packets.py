@@ -48,6 +48,17 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(artifacts[25]['rows'],artifacts[100]['rows'][:25])
         self.assertEqual([c['delivery_kind'] for c in self.calls],['free','paid'])
         self.assertTrue(all(c['ideal_customer']==self.scope['ideal_customer'] for c in self.calls))
+    async def test_smaller_territory_generates_only_supported_25(self):
+        self.setup();self.rows=self.rows[:29]
+        result=await compile_held_packet(object(),self.recipient,self.scope,pack_count=25,**self.kw)
+        self.assertEqual(result['pack_count'],25)
+        self.assertEqual(set(result['artifacts']),{5,25})
+        self.assertEqual(len(result['artifacts'][25]['rows']),25)
+        self.assertEqual(result['artifacts'][5]['rows'],result['artifacts'][25]['rows'][:5])
+        self.assertEqual(len(list(csv.reader(io.StringIO(result['artifacts'][25]['csv'].decode('utf-8-sig'))))),26)
+        self.assertGreater(len(PdfReader(io.BytesIO(result['artifacts'][25]['pdf'])).pages),0)
+        self.rows=self.rows[:24]
+        with self.assertRaises(ValueError):await compile_held_packet(object(),self.recipient,self.scope,pack_count=25,**self.kw)
     async def test_recipient_gate_stops_before_inventory(self):
         self.setup()
         async def denied(*args):return False

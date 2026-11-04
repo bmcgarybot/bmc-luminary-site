@@ -14,7 +14,7 @@ from growth_pdf import render_sample_pdf
 
 async def compile_held_packet(conn, recipient, scope, *, verify_recipient,
                               qualify, select_sample, public_rows, csv_bytes,
-                              recipient_business_key, minimum_reserve=125):
+                              recipient_business_key, minimum_reserve=None, pack_count=100):
     """Compile 5/25/100 from current source-scoped rows, retaining each prefix.
 
     verify_recipient(conn, recipient, scope) is async, fails closed, and must
@@ -23,6 +23,11 @@ async def compile_held_packet(conn, recipient, scope, *, verify_recipient,
     Scope carries source_url/content_sha256/checked_at plus ideal_customer and
     exclusions; its current source digest must match the verified recipient.
     """
+    if pack_count not in (25,100):
+        raise ValueError('Unsupported scoped pack count')
+    minimum_reserve = minimum_reserve if minimum_reserve is not None else (125 if pack_count==100 else 25)
+    if minimum_reserve < pack_count:
+        raise ValueError('Reserve cannot be below the promised quantity')
     if not all(recipient.get(k) for k in
                ('candidate_id', 'business_name', 'market', 'category_key', 'public_email', 'source_url')):
         raise ValueError('Recipient identity and public email are required')
@@ -50,15 +55,16 @@ async def compile_held_packet(conn, recipient, scope, *, verify_recipient,
     paid = await qualify(conn, recipient['category_key'], territory, limit=minimum_reserve+100,
                          delivery_kind='paid', exclude_ids={str(r['candidate_id']) for r in originals},
                          exclude_names={r['business_name'].strip().lower() for r in originals}, **common)
-    final = originals + list(paid[:95])
+    final = originals + list(paid[:pack_count-5])
     growth_offers.validate_rows('growth_pack_25', final[:25], originals, territory)
-    growth_offers.validate_rows('growth_upgrade_75', final, final[:25], territory)
+    if pack_count==100:
+        growth_offers.validate_rows('growth_upgrade_75', final, final[:25], territory)
     prepared = datetime.now(timezone.utc)
     binding = dict(candidate_id=str(recipient['candidate_id']), scope=scope,
                    candidate_ids=[str(r['candidate_id']) for r in final])
     digest = hashlib.sha256(json.dumps(binding, sort_keys=True, default=str).encode()).hexdigest()
     artifacts = {}
-    for count in (5, 25, 100):
+    for count in ((5,25,100) if pack_count==100 else (5,25)):
         rows = final[:count]
         public = public_rows(rows)
         artifacts[count] = dict(rows=public, csv=csv_bytes(rows), pdf=render_sample_pdf(
@@ -66,7 +72,7 @@ async def compile_held_packet(conn, recipient, scope, *, verify_recipient,
             else recipient['category_key'].replace('_', ' ').title(), territory,
             'held-'+digest, prepared_at=prepared, preview=True, paid=count!=5,
             **({'paid_count': count} if count!=5 else {})))
-    return dict(status='held_packet_compiled', outreach_held=True, offer_ready=False,
+    return dict(status='held_packet_compiled', pack_count=pack_count, outreach_held=True, offer_ready=False,
                 checkout_url='', customer_order_created=False, customer_delivery_recorded=False,
                 prepared_at=prepared.isoformat(), binding=binding, digest=digest, artifacts=artifacts,
                 missing=['Live purchase/fulfillment/reply review', 'Owner release approval'])

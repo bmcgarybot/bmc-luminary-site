@@ -67,11 +67,12 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
     if set(callbacks)!=required: raise ValueError('compiler_callbacks_required')
 
     @app.post('/api/admin/held-research-packet')
-    async def prepare(request_id: str, candidate_id: str, x_bmc_admin_key: str | None=Header(default=None)):
+    async def prepare(request_id: str, candidate_id: str, x_bmc_admin_key: str | None=Header(default=None), pack_count: int=100):
         require_admin(x_bmc_admin_key)
         if not hold_required(): raise HTTPException(409,'owner_hold_required')
         if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{5,118}',request_id):
             raise HTTPException(400,'invalid_request_id')
+        if pack_count not in (25,100): raise HTTPException(400,'unsupported_pack_count')
         try: candidate=uuid.UUID(candidate_id)
         except ValueError: raise HTTPException(400,'invalid_candidate_id')
         try:
@@ -108,7 +109,7 @@ def install(app, require_admin, secret, original_ids, hold_required, compiler_ca
                         values=await callbacks['qualify'](*args,**kwargs)
                         return [value for value in values if value.get('category_key') in allowed]
                     async def verified(*args): return True
-                    packet=await compile_held_packet(conn,fresh,scope,verify_recipient=verified,
+                    packet=await compile_held_packet(conn,fresh,scope,verify_recipient=verified,pack_count=pack_count,
                         **dict(callbacks,qualify=qualify))
                     if not hold_required(): raise ValueError('owner_hold_changed')
                     payload=dict(packet,recipient=fresh)
