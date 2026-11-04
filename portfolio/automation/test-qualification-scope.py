@@ -11,6 +11,7 @@ import held_packet_api as packet_api
 from held_packet_api import source_focus
 from scoped_growth import signature,VERSION
 SECRET='synthetic-secret'
+CANYON_SECTORS={'insurance_professional','retail','property_management'}
 class Tests(unittest.IsolatedAsyncioTestCase):
     def setup(self):
         self.now=datetime.now(timezone.utc)
@@ -33,7 +34,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
           source_url=self.recipient['source_url'],pack_count=25,amount_cents=14900,state='approved',expires_at=(self.now+timedelta(days=1)).isoformat(),scope=self.scope,candidate_ids=ids,sample_ids=ids[:5])
         return dict(value,signature=signature(value,SECRET))
     def test_fresh_source_digest_contact_sectors_and_timing_bind(self):
-        self.setup();self.assertEqual(set(q.validate(self.grant,SECRET,**self.binding)),q.ALLOWED)
+        self.setup();self.assertEqual(set(q.validate(self.grant,SECRET,**self.binding)),{'insurance_professional','retail','property_management'})
         for change in ('doc','digest','signature','native'):
             row=copy.deepcopy(self.recipient);scope=copy.deepcopy(self.scope);doc=self.doc
             if change=='doc':doc=doc.replace('offices','schools')
@@ -53,9 +54,26 @@ class Tests(unittest.IsolatedAsyncioTestCase):
                         replace(receipt,final_url='https://other.example/'),replace(receipt,fetched_at=(self.now-timedelta(minutes=6)).isoformat())):
             with self.assertRaises(ValueError):q.from_fresh(row,scope,changed,SECRET)
 
+    def test_explicit_property_and_fleet_scope_factory_rederives_source_and_mac(self):
+        self.setup()
+        paragraphs=['<p>Present a clean image at your commercial property with professional exterior cleaning and maintenance services.</p>',
+            '<p>Whether you have a fleet of 5 or 50 trucks, box trucks, vans, or semis, our pressure washing and fleet washing service is available.</p>']
+        self.doc=self.doc[:self.doc.index('<ul>')]+''.join(paragraphs)
+        raw=self.doc.encode();digest=hashlib.sha256(raw).hexdigest()
+        recipient=dict(self.recipient,**native.parse_record(self.recipient,self.recipient['source_url'],self.doc,digest,SECRET))
+        scope=dict(source_focus(self.doc,'pressure_washing'),source_url=recipient['source_url'],content_sha256=digest,
+            checked_at=recipient['checked_at'],source_signature=recipient['evidence']['vps_verification']['signature'])
+        receipt=replace(self.receipt,raw_bytes=raw,content_sha256=digest)
+        grant=q.from_fresh(recipient,scope,receipt,SECRET)
+        binding=dict(self.binding,ideal_customer=scope['ideal_customer'])
+        self.assertEqual(q.validate(grant,SECRET,**binding),['auto_fleet','property_management'])
+        for field,value in [('category_keys',['retail']),('observed_sector_phrases',['storefronts'])]:
+            with self.assertRaises(ValueError):q.from_fresh(recipient,dict(scope,**{field:value}),receipt,SECRET)
+        with self.assertRaises(ValueError):q.validate(dict(grant,category_keys=['auto_fleet','retail']),SECRET,**binding)
+
     def test_profile_mac_approval_expiry_and_no_restaurant_fleet_guess(self):
         self.setup();profile=self.profile();derived=q.from_profile(profile,SECRET)
-        self.assertEqual(q.validate(derived,SECRET,**self.binding),sorted(q.ALLOWED))
+        self.assertEqual(q.validate(derived,SECRET,**self.binding),['insurance_professional','property_management','retail'])
         for change in ('forged','draft','expired','restaurant'):
             value=copy.deepcopy(profile);value.pop('signature')
             if change=='draft':value['state']='draft'
@@ -98,21 +116,21 @@ class Tests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(await ns['growth_qualified_candidates'](Conn(),'pressure_washing','Phoenix',self.scope['ideal_customer'],'',**args),[])
         diagnostic=[]
         rows=await ns['growth_qualified_candidates'](Conn(),'pressure_washing','Phoenix',self.scope['ideal_customer'],'',_qualification_scope=self.grant,_qualification_diagnostics=diagnostic,**args)
-        self.assertEqual(len(rows),1);self.assertEqual(set(queries[-1][1]),q.ALLOWED)
-        self.assertEqual(diagnostic[0]['queried_category_keys'],sorted(q.ALLOWED));self.assertEqual(diagnostic[0]['raw_rows'],1)
+        self.assertEqual(len(rows),1);self.assertEqual(set(queries[-1][1]),CANYON_SECTORS)
+        self.assertEqual(diagnostic[0]['queried_category_keys'],sorted(CANYON_SECTORS));self.assertEqual(diagnostic[0]['raw_rows'],1)
         self.assertIn('authorization',rows[0]['sales_angle']);self.assertIn('exterior',rows[0]['sales_angle']);self.assertNotIn('restrooms',rows[0]['sales_angle'])
         self.assertNotIn('insurance_professional',ns['GROWTH_BUYER_CATEGORIES']['pressure_washing'])
     async def test_actual_offer_prepare_and_current_payload_propagate_profile_grant(self):
         fixture=runpy.run_path(str(ROOT/'test-scoped-offer-record.py'))['Tests']();fixture.setup()
         profile=fixture.target['source_data']['scoped_offer'];profile.pop('signature');profile['service_key']='pressure_washing'
-        profile['scope'].update(category_keys=sorted(q.ALLOWED),observed_sector_phrases=['storefronts','offices','multi-tenant properties'],source_signature='b'*64,
+        profile['scope'].update(category_keys=sorted(CANYON_SECTORS),observed_sector_phrases=['storefronts','offices','multi-tenant properties'],source_signature='b'*64,
           source_url=profile['source_url'],ideal_customer='retail, office, property management',content_sha256='a'*64)
         profile['signature']=signature(profile,'secret');fixture.target['service_key']='pressure_washing';fixture.sample.update(provider_service_key='pressure_washing',ideal_customer=profile['scope']['ideal_customer'])
         await fixture.prepare();await fixture.ns['growth_offer_payload_current'](fixture.conn,fixture.offer)
         for call in fixture.qualify.await_args_list:
             self.assertIsNotNone(call.kwargs['_qualification_scope'])
             grant=call.kwargs['_qualification_scope']
-            self.assertEqual(set(grant['category_keys']),q.ALLOWED)
+            self.assertEqual(set(grant['category_keys']),CANYON_SECTORS)
         fixture.candidates=fixture.candidates[1:];fixture.offer=None
         with self.assertRaises(Exception):await fixture.prepare()  # Never force a thin25.
     async def test_held_thin25_receives_grant_and_sealed_diagnostic_contract(self):
@@ -121,7 +139,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             async def fetchrow(self,*args):return outer.recipient
             async def fetchval(self,*args):return False
         async def qualify(*args,**kwargs):
-            value=kwargs['_qualification_scope'];self.assertEqual(set(value['category_keys']),q.ALLOWED)
+            value=kwargs['_qualification_scope'];self.assertEqual(set(value['category_keys']),CANYON_SECTORS)
             kwargs['_qualification_diagnostics'].append(dict(queried_category_keys=value['category_keys'],raw_rows=3,qualified_rows=3))
             return []
         callbacks=dict(qualify=qualify,select_sample=lambda *args:[],public_rows=list,csv_bytes=lambda rows:b'',recipient_business_key=q.business_key)
@@ -129,11 +147,11 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             with self.assertRaisesRegex(ValueError,'Qualified sample reserve is incomplete') as caught:
                 await packet_api.compile_native_packet(Conn(),self.recipient['candidate_id'],SECRET,frozenset(),lambda:True,callbacks,25)
         self.assertEqual(caught.exception.qualification_diagnostics[0]['raw_rows'],3)
-        self.assertEqual(set(caught.exception.qualification_diagnostics[0]['queried_category_keys']),q.ALLOWED)
+        self.assertEqual(set(caught.exception.qualification_diagnostics[0]['queried_category_keys']),CANYON_SECTORS)
     async def test_actual_owner_pressure_preview_supplies_bound_recipient_and_preserves25(self):
         fixture=runpy.run_path(str(ROOT/'test-scoped-owner-flow.py'))['Tests']();fixture.setup()
         profile=fixture.target['source_data']['scoped_offer'];profile.pop('signature');profile['service_key']='pressure_washing'
-        profile['scope'].update(category_keys=sorted(q.ALLOWED),observed_sector_phrases=['storefronts','offices','multi-tenant properties'],source_signature='b'*64,
+        profile['scope'].update(category_keys=sorted(CANYON_SECTORS),observed_sector_phrases=['storefronts','offices','multi-tenant properties'],source_signature='b'*64,
             source_url=profile['source_url'],ideal_customer='retail, office, property management',content_sha256='a'*64)
         profile['signature']=signature(profile,'secret');fixture.target['service_key']='pressure_washing';fixture.saved['service_key']='pressure_washing'
         fixture.ns['GROWTH_SERVICE_LABELS']['pressure_washing']='Pressure washing';fixture.ns['growth_recipient_business_key']=q.business_key
@@ -160,7 +178,7 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(ideal,profile['scope']['ideal_customer'])
             q.validate(kwargs['_qualification_scope'],SECRET,service_key=service,market=markets[0],email=kwargs['recipient_key'],
                 recipient_business_key=kwargs['recipient_business_key'],ideal_customer=ideal,exclusions=exclusions)
-            self.assertEqual(set(kwargs['_qualification_scope']['category_keys']),q.ALLOWED)
+            self.assertEqual(set(kwargs['_qualification_scope']['category_keys']),CANYON_SECTORS)
             raise StopAtQualifiedQuery()
         class Conn:
             async def fetchrow(self,sql,*args):

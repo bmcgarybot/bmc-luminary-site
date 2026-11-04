@@ -142,6 +142,26 @@ class Tests(unittest.IsolatedAsyncioTestCase):
             with self.assertRaises(ValueError):api.source_focus(html)
         focus=api.source_focus('<h2>Office Cleaning</h2><p>Manufacturing Facility Cleaning</p>')
         self.assertEqual(focus['category_keys'],['insurance_professional','warehouses_industrial'])
+    def test_pressure_explicit_property_exterior_and_fleet_services(self):
+        property_text='Present a clean image at your commercial property with professional exterior cleaning and maintenance services.'
+        fleet_text='Whether you have a fleet of 5 or 50 trucks, box trucks, vans, or semis, our pressure washing and fleet washing service is available.'
+        for tag in ('p','li'):
+            doc=f'<main><{tag}>{property_text}</{tag}><{tag}>{fleet_text}</{tag}></main>'
+            self.assertEqual(api.source_focus(doc,'pressure_washing')['category_keys'],['auto_fleet','property_management'])
+        self.assertEqual(api.source_focus('<p>We provide commercial pressure washing for fleet operators.</p>','pressure_washing')['category_keys'],['auto_fleet'])
+        negatives=[f'<footer><p>{property_text}</p><p>{fleet_text}</p></footer>',
+            f'<p hidden>{property_text}</p><p style="display:none">{fleet_text}</p>',
+            f'<p>We do not offer {property_text} {fleet_text}</p>',
+            f'<p>We do not serve:</p><ul><li>{property_text}</li><li>{fleet_text}</li></ul>',
+            '<p>Residential property exterior cleaning and maintenance services.</p>',
+            '<p>Commercial property restroom cleaning and building maintenance services.</p>',
+            '<p>Pressure washing for drive-throughs, dumpster pads and gas stations.</p>',
+            '<p>We have fleet washing equipment for sale.</p>',
+            '<h2>Fleet Washing</h2><p>We sell trucks and vans.</p>',
+            '<p>Commercial property</p><p>Exterior cleaning and maintenance services.</p>']
+        for doc in negatives:
+            with self.subTest(doc=doc),self.assertRaisesRegex(ValueError,'unsupported_customer_focus'):api.source_focus(doc,'pressure_washing')
+
     def test_pressure_focus_exact_commercial_soft_washing_sectors_only(self):
         document='<h3>Commercial Soft Washing</h3><p>Low-pressure facade and building washing for storefronts, offices, and multi-tenant properties.</p><h3>Commercial Pressure Washing</h3><p>Sidewalks, entryways, drive-throughs, parking structures and dumpster pads.</p>'
         focus=api.source_focus(document,'pressure_washing')

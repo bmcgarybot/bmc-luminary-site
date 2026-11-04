@@ -5,19 +5,25 @@ from official_research import auto_evidence_valid,allowed_url,FetchedPageReceipt
 from scoped_growth import signature as profile_signature,VERSION as PROFILE_VERSION
 VERSION='source-pressure-categories-v1'
 CONTEXT='bmc-qualification-scope-v1|'
-ALLOWED={'insurance_professional','retail','property_management'}
+ALLOWED={'insurance_professional','retail','property_management','auto_fleet'}
+# Only exact source extracts from affirmative, visible pressure-service blocks.
+PROPERTY_EXTERIOR_PATTERN=r'commercial propert(?:y|ies)\b[^.!?;]{0,100}\bexterior (?:cleaning|washing)\b[^.!?;]{0,60}\bmaintenance(?: services)?'
+def sector_category(phrase):
+    mapping={'storefront':'retail','storefronts':'retail','offices':'insurance_professional','multi-tenant properties':'property_management','multi tenant properties':'property_management',
+        'fleet operators':'auto_fleet','fleet washing service':'auto_fleet','fleet washing services':'auto_fleet'}
+    phrase=str(phrase).lower()
+    return mapping.get(phrase) or ('property_management' if re.fullmatch(PROPERTY_EXTERIOR_PATTERN,phrase) else None)
 
 def business_key(value):return 'business:'+re.sub('[^a-z0-9]+','',str(value).lower())
 def mac(value,secret):
     if not secret:raise ValueError('qualification_scope_signing_unavailable')
     return hmac.new(secret.encode(),(CONTEXT+json.dumps(value,sort_keys=True,separators=(',',':'))).encode(),hashlib.sha256).hexdigest()
 def categories(scope):
-    mapping={'storefront':'retail','storefronts':'retail','offices':'insurance_professional','multi-tenant properties':'property_management','multi tenant properties':'property_management'}
     observed=scope.get('observed_sector_phrases')
     keys=scope.get('category_keys')
     if not isinstance(observed,list) or not observed or not isinstance(keys,list) or not keys or len(keys)!=len(set(keys)):
         raise ValueError('qualification_scope_sectors_missing')
-    derived={mapping.get(str(phrase).lower()) for phrase in observed}
+    derived={sector_category(phrase) for phrase in observed}
     if None in derived or set(keys)!=derived or not derived<=ALLOWED:raise ValueError('qualification_scope_sectors_unproven')
     return sorted(derived)
 def mint(scope,*,email,business,market,source_url,source_signature,expires_at,secret):

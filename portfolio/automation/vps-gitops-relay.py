@@ -74,7 +74,9 @@ MUTATING_INTERNAL_ACTIONS = {
 }
 EXTERNAL_ACTIONS = {"growth_launch_enable", "growth_owner_replay_email", "growth_owner_target_preview", "owner_replay_all_email_templates", "ops_alert_test"}
 CONTROL_ACTIONS = {"growth_launch_disable", "growth_owner_preview_approve"}
-ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS
+RESEARCH_MUTATION_ACTIONS = {"enrich_native_contact", "research_promote_census", "refresh_uncontacted_vendor"}
+# These bounded research-only transitions enforce no recipient/history changes server-side.
+ALLOWED_ACTIONS = READ_ONLY_ACTIONS | MUTATING_INTERNAL_ACTIONS | EXTERNAL_ACTIONS | CONTROL_ACTIONS | RESEARCH_MUTATION_ACTIONS
 
 API_ACTIONS = {
     "official_research_step": "/api/process-official-research",
@@ -885,6 +887,33 @@ def execute(req: dict) -> dict:
         if args:raise RelayError('Reply review export takes no arguments')
         path='/api/admin/reply-review-export?'+urllib.parse.urlencode({'request_id':req['request_id']})
         stdout=json.dumps(admin_post(path,timeout=120));stderr='';exit_code=0
+
+    elif action in RESEARCH_MUTATION_ACTIONS:
+        candidate_re=r'[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}'
+        if action == 'research_promote_census':
+            keys=args.get('source_keys');service=args.get('requested_service')
+            if (set(args)!={'source_keys','requested_service'} or not isinstance(keys,list)
+                or not 1<=len(keys)<=2 or any(not isinstance(k,str) or not re.fullmatch('[0-9a-f]{64}',k) for k in keys)
+                or len(set(keys))!=len(keys) or not isinstance(service,str) or not re.fullmatch('[a-z][a-z0-9_]{2,63}',service)):
+                raise RelayError('Bounded existing source keys and service are required')
+            endpoint='/api/admin/research-promote-census'
+        elif action == 'enrich_native_contact':
+            from urllib.parse import unquote
+            contact=args.get('contact_path')
+            if (set(args)!={'candidate_id','contact_path','email_sha256'}
+                or not isinstance(args.get('candidate_id'),str) or not re.fullmatch(candidate_re,args['candidate_id'])
+                or not isinstance(contact,str) or not 1<=len(contact)<=1024 or not contact.startswith('/')
+                or contact.startswith('//') or not contact.isascii() or any(c in contact for c in ('?', '#', '\\'))
+                or '..' in unquote(contact) or not isinstance(args.get('email_sha256'),str)
+                or not re.fullmatch('[0-9a-f]{64}',args['email_sha256'])):
+                raise RelayError('One native candidate, relative contact path and mailbox hash are required')
+            endpoint='/api/admin/enrich-native-contact-by-hash'
+        else:
+            if set(args)!={'candidate_id'} or not isinstance(args.get('candidate_id'),str) or not re.fullmatch(candidate_re,args['candidate_id']):
+                raise RelayError('One native candidate UUID is required')
+            endpoint='/api/admin/refresh-uncontacted-vendor'
+        path=endpoint+'?'+urllib.parse.urlencode({'request_id':req['request_id']})
+        stdout=json.dumps(admin_post(path,timeout=180,body=args));stderr='';exit_code=0
 
     elif action == "authorize_scoped_batch":
         ids=args.get('target_ids')

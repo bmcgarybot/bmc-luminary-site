@@ -1,5 +1,5 @@
-"""Customer-initiated smaller-pack requests: draft only, never payment approval."""
-import hashlib,hmac,uuid
+"""Customer-initiated draft requests and durable consent; no payment approval here."""
+import hashlib,hmac,json,uuid
 from datetime import datetime,timedelta,timezone
 
 
@@ -35,6 +35,15 @@ def install(app,secret,prepare_offer,profile_for_sample):
                 if not profile:raise HTTPException(409,'This sample has no reviewed 25-pack scope')
                 # The shared allocator acquires its advisory lock before locking the sample.
                 result=await prepare_offer(conn,{'sample_id':str(sid),'product_key':'growth_pack_25'})
+                if result.get('status')=='draft':
+                    from auto_scoped_offer import request_marker,REQUEST_EVENT
+                    marker=request_marker(result['offer_id'],sid,sample['email'],profile.get('signature',''),secret)
+                    # The allocator lock in prepare_offer serializes repeated requests.
+                    # Only this token+confirmation-validated public path emits consent.
+                    await conn.execute("""insert into events(entity_type,entity_id,event_type,actor,payload)
+                      select 'growth_offer',$1,$2,'customer_token_confirmed',$3::jsonb
+                      where not exists(select 1 from events where entity_type='growth_offer' and entity_id=$1 and event_type=$2)""",
+                      str(result['offer_id']),REQUEST_EVENT,json.dumps(marker))
                 if result.get('status') in ('paid','fulfilled'):
                     return {'ok':True,'status':'already_purchased','offer_id':result['offer_id'],'offer_count':25,'checkout_url':'','payment_created':False,'message':'This scoped pack has already been purchased. Use the delivered files or reply to BMC for help; no additional purchase was created.'}
                 if result.get('status')=='approved':

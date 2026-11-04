@@ -48,12 +48,20 @@ def reviewed_row(row, secret):
     result['readiness'] = 'primary_source_verified' if valid else 'candidate_requires_review'
     if valid:
         signed = evidence.get('vps_verification') or {}
-        result['source_facts'] = {k: signed.get(k) for k in
-            ('checked_at','physical_address','category_evidence','content_sha256','description')}
+        if signed.get('verifier')=='vps_vendor_published_area_v2':
+            result['source_facts']={k:signed.get(k) for k in ('verifier','checked_at','content_sha256',
+                'location_type','physical_address_verified','service_area','identity_evidence','service_evidence',
+                'service_area_evidence','email_provenance')}
+            result['source_facts']['scope']='Published vendor service area; physical premises are not verified'
+        else:
+            result['source_facts'] = {k: signed.get(k) for k in
+                ('checked_at','physical_address','category_evidence','content_sha256','description')}
+            result['source_facts'].update(location_type='published_physical_address',physical_address_verified=True)
     return result
 
 def install(app, require_admin, markets, secret):
     from fastapi import Header, HTTPException
+    from official_research import NATIVE_VERSIONS
     @app.post('/api/admin/owner-research-export')
     async def export(request_id: str, x_bmc_admin_key: str | None = Header(default=None)):
         require_admin(x_bmc_admin_key)
@@ -64,8 +72,8 @@ def install(app, require_admin, markets, secret):
                 native = await conn.fetch("""select candidate_id,side,market,category_key,category_label,
                     business_name,source_url,public_email,public_phone,snippet,evidence
                     from market_inventory_candidates where market=any($1::text[]) and status='discovered'
-                    and closed_at is null and evidence->>'researched_by'='vps_primary_site_v1'
-                    order by last_verified_at desc nulls last,candidate_id limit 500""", list(markets))
+                    and closed_at is null and evidence->>'researched_by'=any($2::text[])
+                    order by last_verified_at desc nulls last,candidate_id limit 500""", list(markets),list(NATIVE_VERSIONS))
                 held = await conn.fetch("""with ranked as (select c.*,j.error_code,
                     row_number() over(partition by c.market order by j.last_attempt_at desc,c.candidate_id) pos
                     from market_inventory_candidates c join official_research_jobs j using(candidate_id)
