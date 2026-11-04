@@ -223,7 +223,9 @@ def install(app,require_admin,search,markets,secret,enabled=True):
                 case when c.category_key in ('commercial_cleaning','pressure_washing','junk_hauling','tree_service','handyman_repairs') then 0 else 1 end,c.updated_at desc,c.candidate_id) pos
               from market_inventory_candidates c left join official_research_jobs j using(candidate_id) left join activity a on a.market=c.market
               where c.market=any($1::text[]) and c.status='discovered' and c.closed_at is null
-                and coalesce(c.evidence->>'researched_by','') not in ('assistant_manual_census','vps_primary_site_v1')
+                and coalesce(c.evidence->>'researched_by','')<>'assistant_manual_census'
+                and (coalesce(c.evidence->>'researched_by','')<>'vps_primary_site_v1'
+                     or c.last_verified_at is null or c.last_verified_at<now()-interval '30 days')
                 and (not(c.evidence ? 'qualification_hold') or c.evidence->'qualification_hold' in ('false'::jsonb,'null'::jsonb))
                 and (j.candidate_id is null or j.next_attempt_at<now()))
               select * from ranked where (market='Phoenix' and pos<=2) or (market<>'Phoenix' and pos=1)
